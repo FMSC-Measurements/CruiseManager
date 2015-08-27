@@ -500,7 +500,7 @@
       <Project>{83CCFC7F-D667-4550-B335-B48C2F67A207}</Project>
       <Name>FMSCUI_FF35</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FMSC.Utility\FMSC.Utility\FMSCUtil_FF35.csproj">
+    <ProjectReference Include="..\FMSC.Util\FMSC.Utility\FMSCUtil_FF35.csproj">
       <Project>{F882E97D-A121-41F6-916F-8FA956F84BCC}</Project>
       <Name>FMSCUtil_FF35</Name>
     </ProjectReference>
