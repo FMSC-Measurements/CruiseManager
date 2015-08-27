@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CruiseSystemManager", "Crui
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8C87E62C-0D7C-4022-BA87-34250974078D}"
 	ProjectSection(SolutionItems) = preProject
+		CruiseSystemManager.tdl = CruiseSystemManager.tdl
+		CruiseSystemManager2.vsmdi = CruiseSystemManager2.vsmdi
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
 	EndProjectSection
 EndProject
@@ -20,6 +22,9 @@ Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
 		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = CruiseSystemManager2.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug with args|x86 = Debug with args|x86
@@ -56,14 +61,11 @@ Global
 		{83CCFC7F-D667-4550-B335-B48C2F67A207}.Release with args|x86.Build.0 = Release PC|Any CPU
 		{83CCFC7F-D667-4550-B335-B48C2F67A207}.Release|x86.ActiveCfg = Release|Any CPU
 		{83CCFC7F-D667-4550-B335-B48C2F67A207}.Release|x86.Build.0 = Release|Any CPU
-		{F882E97D-A121-41F6-916F-8FA956F84BCC}.Debug with args|x86.ActiveCfg = Debug|x86
-		{F882E97D-A121-41F6-916F-8FA956F84BCC}.Debug with args|x86.Build.0 = Debug|x86
-		{F882E97D-A121-41F6-916F-8FA956F84BCC}.Debug|x86.ActiveCfg = Debug|x86
-		{F882E97D-A121-41F6-916F-8FA956F84BCC}.Debug|x86.Build.0 = Debug|x86
-		{F882E97D-A121-41F6-916F-8FA956F84BCC}.Release with args|x86.ActiveCfg = Release PC|x86
-		{F882E97D-A121-41F6-916F-8FA956F84BCC}.Release with args|x86.Build.0 = Release PC|x86
-		{F882E97D-A121-41F6-916F-8FA956F84BCC}.Release|x86.ActiveCfg = Release|x86
-		{F882E97D-A121-41F6-916F-8FA956F84BCC}.Release|x86.Build.0 = Release|x86
+		{F882E97D-A121-41F6-916F-8FA956F84BCC}.Debug with args|x86.ActiveCfg = Debug|Any CPU
+		{F882E97D-A121-41F6-916F-8FA956F84BCC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F882E97D-A121-41F6-916F-8FA956F84BCC}.Debug|x86.Build.0 = Debug|Any CPU
+		{F882E97D-A121-41F6-916F-8FA956F84BCC}.Release with args|x86.ActiveCfg = Release|Any CPU
+		{F882E97D-A121-41F6-916F-8FA956F84BCC}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

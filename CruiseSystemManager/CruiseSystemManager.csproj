@@ -106,15 +106,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataTypes\SaleVM.cs" />
+    <None Include="Logic\ApplicationController.cs" />
     <Compile Include="Logic\ApplicationState.cs" />
-    <Compile Include="Logic\CreateComponentPresenter.cs" />
+    <Compile Include="Logic\CancelWorkerException.cs" />
+    <Compile Include="Logic\Components\ComponentFile.cs" />
+    <Compile Include="Logic\Components\CreateComponentPresenter.cs" />
+    <Compile Include="Logic\Components\MergeDataTypes.cs" />
+    <Compile Include="Logic\Components\MergeSyncWorker.cs" />
+    <Compile Include="Logic\Components\MergeTableCommandBuilder.cs" />
+    <Compile Include="Logic\Components\PrepareMergeWorker.cs" />
+    <Compile Include="Logic\Components\UpdateMasterWorker.cs" />
     <Compile Include="Logic\IPresentor.cs" />
     <Compile Include="Logic\ISaveHandler.cs" />
     <Compile Include="Logic\IWindowPresenter.cs" />
     <Compile Include="DataTypes\LogVM.cs" />
-    <Compile Include="Logic\MergeComponentsPresenter.cs" />
+    <Compile Include="Logic\Components\MergeComponentsPresenter.cs" />
     <Compile Include="DataTypes\StratumVM.cs" />
     <Compile Include="DataTypes\TreeVM.cs" />
+    <Compile Include="Logic\IWorker.cs" />
+    <Compile Include="Logic\ProgressChangedEventArgs.cs" />
     <Compile Include="Logic\TypeComparers.cs" />
     <Compile Include="UI\AboutDialog.cs">
       <SubType>Form</SubType>
@@ -122,11 +132,23 @@
     <Compile Include="UI\AboutDialog.Designer.cs">
       <DependentUpon>AboutDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\CreateComponentView.cs">
+    <Compile Include="UI\Components\CreateComponentView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\CreateComponentView.Designer.cs">
+    <Compile Include="UI\Components\CreateComponentView.Designer.cs">
       <DependentUpon>CreateComponentView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Components\PreMergeReportView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Components\PreMergeReportView.Designer.cs">
+      <DependentUpon>PreMergeReportView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Components\MergeInfoView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Components\MergeInfoView.Designer.cs">
+      <DependentUpon>MergeInfoView.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\CruiseCustomize\CruiseCustomizeView.cs">
       <SubType>UserControl</SubType>
@@ -194,10 +216,10 @@
     <Compile Include="UI\FormSupervisorLogin.Designer.cs">
       <DependentUpon>FormSupervisorLogin.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\MergeComponentView.cs">
+    <Compile Include="UI\Components\MergeComponentView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\MergeComponentView.Designer.cs">
+    <Compile Include="UI\Components\MergeComponentView.Designer.cs">
       <DependentUpon>MergeComponentView.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\MergeCruise\CombineCruisePresenter.cs" />
@@ -209,6 +231,12 @@
     </Compile>
     <Compile Include="UI\PageHost.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\RecordEditDialogs\TreeEditDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\RecordEditDialogs\TreeEditDialog.Designer.cs">
+      <DependentUpon>TreeEditDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\TemplateEditor\ImportFromCruiseView.cs">
       <SubType>UserControl</SubType>
@@ -264,9 +292,15 @@
       <DependentUpon>AboutDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\CreateComponentView.resx">
+    <EmbeddedResource Include="UI\Components\CreateComponentView.resx">
       <DependentUpon>CreateComponentView.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Components\PreMergeReportView.resx">
+      <DependentUpon>PreMergeReportView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Components\MergeInfoView.resx">
+      <DependentUpon>MergeInfoView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\CruiseCustomize\CruiseCustomizeView.resx">
       <DependentUpon>CruiseCustomizeView.cs</DependentUpon>
@@ -332,7 +366,7 @@
       <DependentUpon>FormSupervisorLogin.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\MergeComponentView.resx">
+    <EmbeddedResource Include="UI\Components\MergeComponentView.resx">
       <DependentUpon>MergeComponentView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -348,6 +382,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\RecordEditDialogs\TreeEditDialog.resx">
+      <DependentUpon>TreeEditDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\TemplateEditor\ImportFromCruiseView.resx">
       <DependentUpon>ImportFromCruiseView.cs</DependentUpon>
@@ -400,6 +437,12 @@
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.TreeFieldSetupDefaultDO.datasource" />
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.TreeFieldSetupDO.datasource" />
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.VolumeEquationDO.datasource" />
+    <None Include="Properties\DataSources\CSM.Logic.Components.ComponentFileVM.datasource" />
+    <None Include="Properties\DataSources\CSM.Logic.Components.MergeLog.datasource" />
+    <None Include="Properties\DataSources\CSM.Logic.Components.MergeObject.datasource" />
+    <None Include="Properties\DataSources\CSM.Logic.Components.MergePlot.datasource" />
+    <None Include="Properties\DataSources\CSM.Logic.Components.MergeStem.datasource" />
+    <None Include="Properties\DataSources\CSM.Logic.Components.MergeTree.datasource" />
     <None Include="Properties\DataSources\CSM.Logic.MergeComponentsPresenter+ComponentFileVM.datasource" />
     <None Include="Properties\DataSources\CSM.Logic.TreeVM.datasource" />
     <None Include="Properties\DataSources\CSM.UI.CruiseCustomize.TallyViewModel.datasource" />
@@ -414,6 +457,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\cruisetree_setup.ico" />
+    <Content Include="Resources\Gradiant_Red.png" />
+    <Content Include="Resources\Gradiant_Yellow.PNG" />
     <None Include="Resources\Icon.bmp" />
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.CountTreeDO.datasource" />
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.LogDO.datasource" />
@@ -422,6 +467,7 @@
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.TreeDO.datasource" />
     <None Include="Properties\DataSources\CSM.UI.CruiseWizard.CruiseWizardPresenter.datasource" />
     <None Include="Properties\DataSources\CSM.UI.SetupEditor.SetupPresenter.datasource" />
+    <None Include="Resources\redX.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">

@@ -90,7 +90,6 @@
             this.speciesDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.primaryProductDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.liveDeadDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.chargeableDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.FIAcode = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cullPrimaryDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.hiddenPrimaryDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -887,7 +886,6 @@
             this.speciesDataGridViewTextBoxColumn,
             this.primaryProductDataGridViewTextBoxColumn,
             this.liveDeadDataGridViewTextBoxColumn,
-            this.chargeableDataGridViewTextBoxColumn,
             this.FIAcode,
             this.cullPrimaryDataGridViewTextBoxColumn,
             this.hiddenPrimaryDataGridViewTextBoxColumn,
@@ -944,16 +942,6 @@
             this.liveDeadDataGridViewTextBoxColumn.ReadOnly = true;
             this.liveDeadDataGridViewTextBoxColumn.ToolTipText = "Default Live/Dead Code";
             this.liveDeadDataGridViewTextBoxColumn.Width = 58;
-            // 
-            // chargeableDataGridViewTextBoxColumn
-            // 
-            this.chargeableDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.chargeableDataGridViewTextBoxColumn.DataPropertyName = "Chargeable";
-            this.chargeableDataGridViewTextBoxColumn.HeaderText = "Chargeable *";
-            this.chargeableDataGridViewTextBoxColumn.Name = "chargeableDataGridViewTextBoxColumn";
-            this.chargeableDataGridViewTextBoxColumn.ReadOnly = true;
-            this.chargeableDataGridViewTextBoxColumn.ToolTipText = "Yeild Component (CL,CD,NL,ND)";
-            this.chargeableDataGridViewTextBoxColumn.Width = 93;
             // 
             // FIAcode
             // 

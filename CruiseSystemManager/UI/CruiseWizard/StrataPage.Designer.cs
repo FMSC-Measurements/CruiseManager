@@ -63,6 +63,7 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this._kzTB = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this._SLTB_YealdComponent = new FMSC.Controls.SideLabelTextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.CuttingUnitGridView = new FMSC.Controls.SelectedItemsGridView();
@@ -396,6 +397,7 @@
             this.tableLayoutPanel2.Controls.Add(this.CodeTextBox, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.sideLabelTextBox1, 0, 3);
             this.tableLayoutPanel2.Controls.Add(this.panel3, 2, 1);
+            this.tableLayoutPanel2.Controls.Add(this._SLTB_YealdComponent, 2, 2);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(163, 23);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -502,6 +504,29 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "3PPNT KZ";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // _SLTB_YealdComponent
+            // 
+            this._SLTB_YealdComponent.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this._SLTB_YealdComponent.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.StrataBindingSource, "YieldComponent", true));
+            this._SLTB_YealdComponent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._SLTB_YealdComponent.LabelTextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this._SLTB_YealdComponent.LabelWidth = 100F;
+            this._SLTB_YealdComponent.LableText = "Yield Component";
+            this._SLTB_YealdComponent.Location = new System.Drawing.Point(308, 62);
+            this._SLTB_YealdComponent.Margin = new System.Windows.Forms.Padding(0);
+            this._SLTB_YealdComponent.Name = "_SLTB_YealdComponent";
+            this._SLTB_YealdComponent.Size = new System.Drawing.Size(150, 31);
+            this._SLTB_YealdComponent.TabIndex = 9;
+            // 
+            // 
+            // 
+            this._SLTB_YealdComponent.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._SLTB_YealdComponent.TextBox.Location = new System.Drawing.Point(100, 5);
+            this._SLTB_YealdComponent.TextBox.Margin = new System.Windows.Forms.Padding(0);
+            this._SLTB_YealdComponent.TextBox.Name = ".TextBox";
+            this._SLTB_YealdComponent.TextBox.Size = new System.Drawing.Size(50, 20);
+            this._SLTB_YealdComponent.TextBox.TabIndex = 1;
             // 
             // label3
             // 
@@ -689,5 +714,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn loggingMethodDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn paymentUnitDataGridViewTextBoxColumn;
+        private FMSC.Controls.SideLabelTextBox _SLTB_YealdComponent;
     }
 }

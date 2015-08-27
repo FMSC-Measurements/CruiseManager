@@ -2,7 +2,7 @@
 
 namespace CSM.DataTypes
 {
-    [Table(TableName="Log", 
+    [SQLEntity(TableName="Log", 
         JoinCommand=@"JOIN Tree USING (Tree_CN) 
 JOIN CuttingUnit USING (CuttingUnit_CN) 
 JOIN Stratum USING (Stratum_CN) 

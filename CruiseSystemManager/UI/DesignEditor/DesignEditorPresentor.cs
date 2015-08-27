@@ -66,6 +66,7 @@ namespace CSM.UI.DesignEditor
             get { return Controller.Database; }
         }
 
+
         public List<Region> Regions { get; set; }
         public List<string> CruiseMethods { get; set; }
         public List<ProductCode> ProductCodes { get; set; }
@@ -500,6 +501,12 @@ namespace CSM.UI.DesignEditor
                     tdv.Save();
                 }
 
+                foreach (TreeDefaultValueDO tdv in Data.DeletedTreeDefaults)
+                {
+                    DAL.Execute("DELETE FROM SampleGroupTreeDefaultValue WHERE TreeDefaultValue_CN = ?", tdv.TreeDefaultValue_CN);
+                    tdv.Delete();
+                }
+
                 foreach (CuttingUnitDO unit in Data.DeletedCuttingUnits)
                 {
                     CuttingUnitDO.RecursiveDelete(unit);
@@ -641,8 +648,8 @@ namespace CSM.UI.DesignEditor
         public bool CanRemoveTreeDefault(SampleGroupDO sampleGroup, TreeDefaultValueDO tdv)
         {
             if (sampleGroup.IsPersisted == false || tdv.IsPersisted == false) { return true; }
-            bool hasTreeCounts = this.Controller.Database.GetRowCount("CountTree", "WHERE TreeCount > 0 AND TreeDefaultValue_CN = ? AND SampleGroup_CN = ?") > 0;
-            bool hasTrees = this.Controller.Database.GetRowCount("Tree", "WHERE TreeDefaultValue_CN = ? AND SampleGroup_CN = ?") > 0;
+            bool hasTreeCounts = this.Controller.Database.GetRowCount("CountTree", "WHERE TreeCount > 0 AND TreeDefaultValue_CN = ? AND SampleGroup_CN = ?", tdv.TreeDefaultValue_CN, sampleGroup.SampleGroup_CN) > 0;
+            bool hasTrees = this.Controller.Database.GetRowCount("Tree", "WHERE TreeDefaultValue_CN = ? AND SampleGroup_CN = ?", tdv.TreeDefaultValue_CN, sampleGroup.SampleGroup_CN) > 0;
             return !(hasTreeCounts && hasTrees);
         }
 
@@ -743,6 +750,7 @@ namespace CSM.UI.DesignEditor
         private List<CuttingUnitDO> _ToBeDeletedCuttingUnits;
         private List<StratumDO> _ToBeDeletedStrata;
         private List<SampleGroupDO> _ToBeDeletedSampleGroups;
+        private List<TreeDefaultValueDO> _ToBeDelectedTreeDefaults; 
         private bool _hasUnsavedChanges = false;
         public bool HasUnsavedChanges
         {
@@ -820,6 +828,18 @@ namespace CSM.UI.DesignEditor
                     _ToBeDeletedSampleGroups = new List<SampleGroupDO>();
                 }
                 return _ToBeDeletedSampleGroups;
+            }
+        }
+
+        public List<TreeDefaultValueDO> DeletedTreeDefaults 
+        {
+            get
+            {
+                if(_ToBeDelectedTreeDefaults == null)
+                {
+                    _ToBeDelectedTreeDefaults = new List<TreeDefaultValueDO>();
+                }
+                return _ToBeDelectedTreeDefaults; 
             }
         }
 

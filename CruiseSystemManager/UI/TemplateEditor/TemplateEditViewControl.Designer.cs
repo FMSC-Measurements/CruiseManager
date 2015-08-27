@@ -74,7 +74,6 @@
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -101,7 +100,6 @@
             this.speciesDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.primaryProductDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.liveDeadDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.chargeableDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fIAcodeDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cullPrimaryDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.hiddenPrimaryDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -531,7 +529,6 @@
             this.dataGridViewTextBoxColumn2,
             this.dataGridViewTextBoxColumn1,
             this.dataGridViewTextBoxColumn3,
-            this.dataGridViewTextBoxColumn10,
             this.dataGridViewTextBoxColumn4,
             this.dataGridViewTextBoxColumn5,
             this.dataGridViewTextBoxColumn6,
@@ -592,15 +589,6 @@
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             this.dataGridViewTextBoxColumn3.ToolTipText = "Live/Dead Code";
             this.dataGridViewTextBoxColumn3.Width = 51;
-            // 
-            // dataGridViewTextBoxColumn10
-            // 
-            this.dataGridViewTextBoxColumn10.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.dataGridViewTextBoxColumn10.DataPropertyName = "Chargeable";
-            this.dataGridViewTextBoxColumn10.HeaderText = "Chargeable";
-            this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
-            this.dataGridViewTextBoxColumn10.ToolTipText = "Yield Component (CL,CD,NL,ND)";
-            this.dataGridViewTextBoxColumn10.Width = 86;
             // 
             // dataGridViewTextBoxColumn4
             // 
@@ -853,7 +841,6 @@
             this.speciesDataGridViewTextBoxColumn2,
             this.primaryProductDataGridViewTextBoxColumn2,
             this.liveDeadDataGridViewTextBoxColumn1,
-            this.chargeableDataGridViewTextBoxColumn1,
             this.fIAcodeDataGridViewTextBoxColumn1,
             this.cullPrimaryDataGridViewTextBoxColumn1,
             this.hiddenPrimaryDataGridViewTextBoxColumn1,
@@ -910,15 +897,6 @@
             this.liveDeadDataGridViewTextBoxColumn1.Name = "liveDeadDataGridViewTextBoxColumn1";
             this.liveDeadDataGridViewTextBoxColumn1.ToolTipText = "Live/Dead Code";
             this.liveDeadDataGridViewTextBoxColumn1.Width = 58;
-            // 
-            // chargeableDataGridViewTextBoxColumn1
-            // 
-            this.chargeableDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.chargeableDataGridViewTextBoxColumn1.DataPropertyName = "Chargeable";
-            this.chargeableDataGridViewTextBoxColumn1.HeaderText = "Chargeable *";
-            this.chargeableDataGridViewTextBoxColumn1.Name = "chargeableDataGridViewTextBoxColumn1";
-            this.chargeableDataGridViewTextBoxColumn1.ToolTipText = "Yield Component (CL,CD,NL,ND)";
-            this.chargeableDataGridViewTextBoxColumn1.Width = 93;
             // 
             // fIAcodeDataGridViewTextBoxColumn1
             // 

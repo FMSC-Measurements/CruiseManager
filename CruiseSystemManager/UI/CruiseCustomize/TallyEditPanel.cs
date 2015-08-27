@@ -81,9 +81,9 @@ namespace CSM.UI.CruiseCustomize
             }
         }
 
-        private List<TallyDO> _tallyPresets;
+        private List<TallyVM> _tallyPresets;
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public List<TallyDO> TallyPresets 
+        public List<TallyVM> TallyPresets 
         {
             get { return _tallyPresets; }
             set
@@ -230,7 +230,7 @@ namespace CSM.UI.CruiseCustomize
             if (this.SampleGroup == null) { return; }
             this.SampleGroup.HasTallyEdits = true;
             
-            TallyDO tally = _BS_tallyPresets.Current as TallyDO;
+            TallyVM tally = _BS_tallyPresets.Current as TallyVM;
             if (this._currTDV != null)
             {
                 this.SampleGroup.Tallies[_currTDV] = tally;

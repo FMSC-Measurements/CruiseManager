@@ -41,7 +41,7 @@ namespace CSM.Utility
             //public static readonly string[] THREE_P_METHODS = new string[] { "3P", "S3P", "F3P", "P3P" };//moved to CruiseDAL.Schema.CruiseMethods
 
             public static readonly string[] EDITABLE_UNIT_FILEDS = new string[] { CUTTINGUNIT.AREA, CUTTINGUNIT.DESCRIPTION, CUTTINGUNIT.LOGGINGMETHOD };
-            public static readonly string[] EDITABLE_ST_FIELDS = new string[] { STRATUM.DESCRIPTION, STRATUM.MONTH, STRATUM.YEAR };
+            public static readonly string[] EDITABLE_ST_FIELDS = new string[] { STRATUM.DESCRIPTION, STRATUM.MONTH, STRATUM.YEAR, STRATUM.YIELDCOMPONENT };
             public static readonly string[] EDITABLE_SG_FIELDS = new string[] { SAMPLEGROUP.BIGBAF };
 
             public static readonly string[] HOTKEYS = new string[] { "A", "B", "C", "D",

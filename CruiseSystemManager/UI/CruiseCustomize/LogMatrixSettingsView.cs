@@ -158,9 +158,9 @@ namespace CSM.UI.CruiseCustomize
             {
                 _r008RB.Checked = true;
                 //HACK editing property while current logMatrix is changind causes exception to be thrown when property changed event is thrown
-                lm.StartWrite();//prevent property changed events from fireing
+                lm.SuspendEvents();//prevent property changed events from fireing
                 lm.ReportNumber = "R008";
-                lm.EndWrite();
+                lm.ResumeEvents();
             }
 
             //UpdateLogGradeCode();

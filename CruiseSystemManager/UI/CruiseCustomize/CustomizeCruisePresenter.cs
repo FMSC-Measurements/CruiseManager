@@ -13,6 +13,13 @@ namespace CSM.UI.CruiseCustomize
     //[Flags]
     //public enum TallyMode {Unknown = 0, None = 1, BySpecies = 2, BySampleGroup = 4, Locked = 8, Manual = 16 }
 
+    [SQLEntity(TableName="Tally", IsCached=false)]
+    public class TallyVM : TallyDO
+    {
+        public TallyVM() : base() { }
+        public TallyVM(DAL db) : base(db) { }
+    }
+
     public class StratumCustomizeViewModel : StratumDO
     {
         public List<TreeFieldSetupDO> SelectedTreeFields { get; set; }
@@ -32,7 +39,7 @@ namespace CSM.UI.CruiseCustomize
     public class SampleGroupViewModel : SampleGroupDO
     {
 
-        private TallyDO _sgTallie;
+        private TallyVM _sgTallie;
         private bool _hasTallyEdits = false;
         private bool _tallieDataLoaded = false;
 
@@ -50,9 +57,9 @@ namespace CSM.UI.CruiseCustomize
         { }
 
         //public SampleGroupDO SampleGroup { get; set; }
-        public Dictionary<TreeDefaultValueDO, TallyDO> Tallies { get; set; }
+        public Dictionary<TreeDefaultValueDO, TallyVM> Tallies { get; set; }
 
-        public TallyDO SgTallie 
+        public TallyVM SgTallie 
         {
             get { return _sgTallie; }
             set { _sgTallie = value; }
@@ -190,14 +197,14 @@ namespace CSM.UI.CruiseCustomize
             if (this._tallieDataLoaded) { return; }//we have already loaded this samplegroup before, dont reload it
 
             //initialize a tally entity for use with tally by sample group
-            TallyDO sgTally = base.DAL.ReadSingleRow<TallyDO>("Tally", false,
+            TallyVM sgTally = base.DAL.ReadSingleRow<TallyVM>("Tally",
                 "JOIN CountTree WHERE CountTree.Tally_CN = Tally.Tally_CN AND CountTree.SampleGroup_CN = ? AND ifnull(CountTree.TreeDefaultValue_CN, 0) = 0",
                 this.SampleGroup_CN);
 
             
             if(sgTally == null)
             {
-                sgTally = new TallyDO() { Description = this.Code };
+                sgTally = new TallyVM() { Description = this.Code };
             }
 
             this.SgTallie = sgTally;
@@ -207,16 +214,16 @@ namespace CSM.UI.CruiseCustomize
 
 
             //initialize a list of tallys for use with tally by species 
-            this.Tallies = new Dictionary<TreeDefaultValueDO, TallyDO>();
+            this.Tallies = new Dictionary<TreeDefaultValueDO, TallyVM>();
             this.TreeDefaultValues.Populate();
             foreach (TreeDefaultValueDO tdv in this.TreeDefaultValues)
             {
-                TallyDO tally = base.DAL.Read<TallyDO>("Tally", false, "JOIN CountTree WHERE CountTree.Tally_CN = Tally.Tally_CN AND CountTree.SampleGroup_CN = ? AND CountTree.TreeDefaultValue_CN = ?", 
+                TallyVM tally = base.DAL.Read<TallyVM>("Tally", "JOIN CountTree WHERE CountTree.Tally_CN = Tally.Tally_CN AND CountTree.SampleGroup_CN = ? AND CountTree.TreeDefaultValue_CN = ?", 
                     this.SampleGroup_CN, tdv.TreeDefaultValue_CN).FirstOrDefault();
 
                 if(tally == null)
                 {
-                    tally = new TallyDO() { Description = tdv.Species + ((tdv.LiveDead == "D") ? "/D" : "") };
+                    tally = new TallyVM() { Description = tdv.Species + ((tdv.LiveDead == "D") ? "/D" : "") };
                 }
 
                 //if (tally == null)
@@ -334,7 +341,7 @@ namespace CSM.UI.CruiseCustomize
         public List<TreeFieldSetupDO> TreeFields { get; set; }
         public List<TreeFieldSetupDefaultDO> TreeFieldsDefault { get; set; }
         public List<LogFieldSetupDO> LogFields { get; set; }
-        public List<TallyDO> TallyPresets { get; set; }
+        public List<TallyVM> TallyPresets { get; set; }
         public List<LogMatrixDO> LogMatrix { get; set; }
 
         public bool IsLogGradingEnabled { get; protected set; }
@@ -399,7 +406,7 @@ namespace CSM.UI.CruiseCustomize
             DAL dal = Controller.Database;
             try
             {
-                dal.EnterConnectionHold();
+                //dal.EnterConnectionHold();
                 StrataVM = dal.Read<StratumCustomizeViewModel>("Stratum", null);
                 foreach (StratumCustomizeViewModel st in StrataVM)
                 {
@@ -428,12 +435,12 @@ namespace CSM.UI.CruiseCustomize
 
                 TreeAudits = dal.Read<TreeAuditValueDO>("TreeAuditValue", "Order By Field");
                 TreeDefaults = dal.Read<TreeDefaultValueDO>("TreeDefaultValue", null);
-                TallyPresets = dal.Read<TallyDO>("Tally", null);
+                TallyPresets = dal.Read<TallyVM>("Tally", null);
                 this.LogMatrix = dal.Read<LogMatrixDO>("LogMatrix", null);
             }
             finally
             {
-                dal.ExitConnectionHold();
+                //dal.ExitConnectionHold();
             }
 
             this.View.UpdateView();
@@ -668,10 +675,10 @@ namespace CSM.UI.CruiseCustomize
 
                 Controller.Database.Execute(makeCountsCommand);
             }
-            TallyDO tally = Controller.Database.ReadSingleRow<TallyDO>("Tally", false, "WHERE Description = ? AND HotKey = ?", sgVM.SgTallie.Description, sgVM.SgTallie.Hotkey);
+            TallyVM tally = Controller.Database.ReadSingleRow<TallyVM>("Tally", "WHERE Description = ? AND HotKey = ?", sgVM.SgTallie.Description, sgVM.SgTallie.Hotkey);
             if (tally == null)
             {
-                tally = new TallyDO(Controller.Database) { Description = sgVM.SgTallie.Description, Hotkey = sgVM.SgTallie.Hotkey };
+                tally = new TallyVM(Controller.Database) { Description = sgVM.SgTallie.Description, Hotkey = sgVM.SgTallie.Hotkey };
                 //tally = sgVM.SgTallie;
                 tally.Save();
             }
@@ -703,12 +710,12 @@ namespace CSM.UI.CruiseCustomize
 
                 Controller.Database.Execute(makeCountsCommand);
             }
-            foreach (KeyValuePair<TreeDefaultValueDO, TallyDO> pair in sgVM.Tallies)
+            foreach (KeyValuePair<TreeDefaultValueDO, TallyVM> pair in sgVM.Tallies)
             {
-                TallyDO tally = Controller.Database.ReadSingleRow<TallyDO>("Tally", "WHERE Description = ? AND HotKey = ?", pair.Value.Description, pair.Value.Hotkey);
+                TallyVM tally = Controller.Database.ReadSingleRow<TallyVM>("Tally", "WHERE Description = ? AND HotKey = ?", pair.Value.Description, pair.Value.Hotkey);
                 if (tally == null)
                 {
-                    tally = new TallyDO(Controller.Database) { Description = pair.Value.Description, Hotkey = pair.Value.Hotkey };
+                    tally = new TallyVM(Controller.Database) { Description = pair.Value.Description, Hotkey = pair.Value.Hotkey };
                     //tally = pair.Value;
                     //tally.DAL = Controller.Database;
                     tally.Save();
@@ -757,7 +764,7 @@ namespace CSM.UI.CruiseCustomize
                 }
                 else if ((sgVM.TallyMethod & TallyMode.BySpecies) == TallyMode.BySpecies)
                 {
-                    foreach (TallyDO t in sgVM.Tallies.Values)
+                    foreach (TallyVM t in sgVM.Tallies.Values)
                     {
                         char hk = HotKeyToChar(t.Hotkey);
                         if (hk == char.MinValue) { continue; } //not hot key set, SKIP

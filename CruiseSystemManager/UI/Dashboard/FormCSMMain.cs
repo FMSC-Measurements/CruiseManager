@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using CSM.Logic;
+using System.IO;
 
 namespace CSM.UI.Dashboard
 {
@@ -19,7 +20,7 @@ namespace CSM.UI.Dashboard
 
             this.FormClosing +=new FormClosingEventHandler(this.Presenter.HandleAppClosing);
             this.openToolStripMenuItem.Click += new EventHandler(this.Presenter.HandleOpenFileClick);
-            this.newToolStripMenuItem.Click +=new EventHandler(this.Presenter.HandleNewCruiseClick);
+            this.newToolStripMenuItem.Click +=new EventHandler(this.Presenter.HandleCreateCruiseClick);
             this.saveToolStripMenuItem.Click += new EventHandler(this.Presenter.HandleSaveClick);
             this.aboutToolStripMenuItem.Click += new EventHandler(this.Presenter.HandleAboutClick);
             this.saveAsToolStripMenuItem.Click += new EventHandler(this.Presenter.HandleSaveAsClick);
@@ -30,6 +31,11 @@ namespace CSM.UI.Dashboard
         public Panel ViewNavPanel { get { return this._viewNavPanel; } }
 
         public void AddNavButton(String text, EventHandler eventHandler)
+        {
+            this.AddNavButton(text, eventHandler, true);
+        }
+
+        public void AddNavButton(String text, EventHandler eventHandler, bool enabled)
         {
 
             Button newNavButton = new Button();
@@ -48,6 +54,7 @@ namespace CSM.UI.Dashboard
             newNavButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             newNavButton.UseVisualStyleBackColor = false;
             newNavButton.Click += eventHandler;
+            newNavButton.Enabled = enabled;
 
             newNavButton.Parent = this._viewNavPanel;
         }
@@ -79,6 +86,25 @@ namespace CSM.UI.Dashboard
             {
                 this.saveAsToolStripMenuItem.Enabled = value;
             }
+        }
+
+
+        private void _recentFilesMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            string path = e.ClickedItem.ToolTipText as string; 
+            if(!string.IsNullOrEmpty(path))
+            {
+                Presenter.OpenFile(path);
+            }
+        }
+
+        private void fileToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+        {
+            _recentFilesMenu.Items.Clear();
+            ToolStripMenuItem[] items = (from String path in Presenter.RecentFiles
+                                         select new ToolStripMenuItem(Path.GetFileName(path)) { ToolTipText = path, }).ToArray();
+
+            _recentFilesMenu.Items.AddRange(items);
         }
 
 

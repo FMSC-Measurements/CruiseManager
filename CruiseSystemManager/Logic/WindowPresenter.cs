@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq; 
 using System.Collections.Generic;
 using System.Windows.Forms;
 using CruiseDAL;
@@ -16,6 +17,8 @@ using System.Diagnostics;
 using CSM.UI.CruiseCustomize;
 using CSM.DataTypes;
 using CSM.Utility.Setup;
+using CSM.Logic.Components;
+using CSM.UI.Components;
 
 namespace CSM
 {
@@ -39,7 +42,8 @@ namespace CSM
         private string _convertedFilePath;
 
 
-        public const string Version = "2015.05.01.1";
+        public const string Version = "2015.08.27";
+        public const int RECENT_FILE_LIST_SIZE = 10;
 
 
         #region Ctor
@@ -131,7 +135,46 @@ namespace CSM
                 Properties.Settings.Default.Save();
             }
         }
-        #endregion 
+
+        private string[] _recentFiles; 
+        public string[] RecentFiles
+        {
+            get
+            {
+                if (_recentFiles == null)
+                {
+                    string raw = Properties.Settings.Default.RecentFiles ?? string.Empty;
+                    _recentFiles = raw.Split(new char[]{';'}, RECENT_FILE_LIST_SIZE, StringSplitOptions.RemoveEmptyEntries);
+                }
+
+                return _recentFiles;               
+            }
+        }
+
+        protected void AddRecentFile(String path)
+        {
+            string[] oldRecentFiles = this.RecentFiles;
+            string[] newRecentFiles = null;
+            if (oldRecentFiles.Length > 0)
+            {
+                string[] union = new String[oldRecentFiles.Length + 1];
+                union[0] = path;
+                Array.Copy(oldRecentFiles, 0, union, 1, oldRecentFiles.Length);
+                newRecentFiles = union.Distinct().Take(RECENT_FILE_LIST_SIZE).ToArray();
+            }
+            else
+            {
+                newRecentFiles = new string[1]{ path };
+            }
+
+            this._recentFiles = newRecentFiles;
+            Properties.Settings.Default.RecentFiles = String.Join(";", this._recentFiles);
+            Properties.Settings.Default.Save();
+            
+
+        }
+
+        #endregion
 
         /// <summary>
         /// Gets the application state
@@ -183,7 +226,7 @@ namespace CSM
         /// <param name="filePath"></param>
         public void OpenFile(String filePath)
         {
-            bool hasError = false; 
+            bool hasError = false;
             try
             {
                 //start wait cursor incase this takes a long time 
@@ -193,6 +236,7 @@ namespace CSM
                     case R.Strings.CRUISE_FILE_EXTENTION:
                         {
                             this.AppState.Database = new DAL(filePath);
+                            this.AddRecentFile(filePath);
                             String[] errors;
                             if (this.AppState.Database.HasCruiseErrors(out errors))
                             {
@@ -204,6 +248,7 @@ namespace CSM
                     case R.Strings.CRUISE_TEMPLATE_FILE_EXTENTION:
                         {
                             this.AppState.Database = new DAL(filePath);
+                            this.AddRecentFile(filePath);
                             ShowTemplateLandingLayout();
                             break;
                         }
@@ -231,6 +276,11 @@ namespace CSM
                 hasError = true;
                 MessageBox.Show("Unable to open file becaus it is read only");
             }
+            catch (CruiseDAL.IncompatibleSchemaException ex)
+            {
+                hasError = true;
+                MessageBox.Show("File is not compatible with this version of Cruise Manager: " + ex.Message);
+            }
             catch (CruiseDAL.DatabaseExecutionException ex)
             {
                 hasError = true;
@@ -244,7 +294,7 @@ namespace CSM
             catch (System.Exception e)
             {
                 Trace.TraceError(e.ToString());
-                throw e;
+                throw;
             }
             finally
             {
@@ -260,12 +310,14 @@ namespace CSM
         }
 
 
+
         public void HandleConvertDone(IAsyncResult result)
         {
             if (_converter.EndConvert(result))
             {
 
                 this.AppState.Database = new DAL(_convertedFilePath);
+                this.AddRecentFile(_convertedFilePath); 
                 if (MainWindow.InvokeRequired)
                 {
                     Action act = this.ShowCruiseLandingLayout;
@@ -299,7 +351,7 @@ namespace CSM
             ShowOpenCruiseDialog();
         }
 
-        public void HandleNewCruiseClick(object sender, EventArgs e)
+        public void HandleCreateCruiseClick(object sender, EventArgs e)
         {
             ShowCruiseWizardDiolog();
         }
@@ -502,9 +554,10 @@ namespace CSM
         {
             this.MainWindow.ClearNavPanel();
             this.MainWindow.ViewContentPanel.Controls.Clear();
+            //this.MainWindow.ViewContentPanel.Controls.Add(new RecentFilesView(this) { Dock = DockStyle.Right });
             this.MainWindow.Text = R.Strings.HOME_LAYOUT_TITLE_BAR;
             this.MainWindow.AddNavButton("Open File", this.HandleOpenFileClick);
-            this.MainWindow.AddNavButton("Create New Cruise", this.HandleNewCruiseClick);
+            this.MainWindow.AddNavButton("Create New Cruise", this.HandleCreateCruiseClick);
             this.ActivePresentor = null;
         }
 
@@ -545,24 +598,33 @@ namespace CSM
 
         public void ShowCruiseLandingLayout()
         {
-            this.MainWindow.ClearNavPanel();
-            this.MainWindow.ViewContentPanel.Controls.Clear();
-            this.MainWindow.Text = System.IO.Path.GetFileName(this.AppState.Database.Path);
-
-            //populate navigation buttons, last first
-            this.MainWindow.AddNavButton("Back", this.HandleHomePageClick);
-            //this.MainWindow.AddNavButton("Combine Sale Data", this.HandleCombineSaleClick);
-
-            if (GlobalsDO.IsCruiseComponentMaster(this.AppState.Database))
+            if (this.MainWindow.InvokeRequired)
             {
-                this.MainWindow.AddNavButton("Manage Component Files", this.HandleManageComponensClick);
+                this.MainWindow.Invoke((Action)this.ShowCruiseLandingLayout);
             }
+            else
+            {
+                this.MainWindow.ClearNavPanel();
+                this.MainWindow.ViewContentPanel.Controls.Clear();
+                this.MainWindow.Text = System.IO.Path.GetFileName(this.AppState.Database.Path);
 
-            this.MainWindow.AddNavButton("Create Component Files", this.HandleCreateComponentsClick);
-            this.MainWindow.AddNavButton("Field Data", this.HandleExportCruiseClick);
-            this.MainWindow.AddNavButton("Customize", this.HandleCruiseCustomizeClick);
-            this.MainWindow.AddNavButton("Edit Design", this.HandleEditViewCruiseClick);
-            this.MainWindow.AddNavButton("Design Wizard", this.HandleEditWizardClick);
+                bool enableManageComponents = this.Database.CruiseFileType == CruiseFileType.Master;
+                bool enableEditDesign = true;//this.Database.CruiseFileType != CruiseFileType.Component;
+                bool enableCreateComponents = this.Database.CruiseFileType != CruiseFileType.Component;
+                bool enableCostomize = true;//this.Database.CruiseFileType != CruiseFileType.Component;
+
+                //populate navigation buttons, last first
+                this.MainWindow.AddNavButton("Back", this.HandleHomePageClick, true);
+                //this.MainWindow.AddNavButton("Combine Sale Data", this.HandleCombineSaleClick);
+
+
+                this.MainWindow.AddNavButton("Merge Component Files", this.HandleManageComponensClick, enableManageComponents);
+                this.MainWindow.AddNavButton("Create Component Files", this.HandleCreateComponentsClick, enableCreateComponents);
+                this.MainWindow.AddNavButton("Field Data", this.HandleExportCruiseClick, true);
+                this.MainWindow.AddNavButton("Customize", this.HandleCruiseCustomizeClick, enableCostomize);
+                this.MainWindow.AddNavButton("Edit Design", this.HandleEditViewCruiseClick, enableEditDesign);
+                this.MainWindow.AddNavButton("Design Wizard", this.HandleEditWizardClick, enableEditDesign);
+            }
         }
 
         public void ShowTemplateLandingLayout()
@@ -618,7 +680,7 @@ namespace CSM
 
         public void ShowCruiseWizardDiolog()
         {
-            DAL tempfile = CheckForUnfinishedCruise();
+            DAL tempfile = GetNewOrUnfinishedCruise();
 
             this.ShowWaitCursor();
 
@@ -643,15 +705,17 @@ namespace CSM
         private void ShowManageComponentsLayout()
         {
             MergeComponentView view = new MergeComponentView();
-            MergeComponentsPresenter presenter = new MergeComponentsPresenter(this);
-
-            view.Presenter = presenter;
-            presenter.View = view;
+            MergeComponentsPresenter presenter = new MergeComponentsPresenter(this, view);
             
             this.ActivePresentor = presenter;
             SetActiveView(view);
             
             //this.MainWindow.AddNavButton("Back", this.HandleReturnCruiseLandingClick);
+        }
+
+        public void ShowMessage(String message, String caption)
+        {
+            MessageBox.Show(message, caption);
         }
 
         private void ShowCreateComponentsLayout()
@@ -739,13 +803,14 @@ namespace CSM
             }
         }
 
-        private DAL CheckForUnfinishedCruise()
+        private DAL GetNewOrUnfinishedCruise()
         {
             string tempPath = System.IO.Path.GetDirectoryName(Application.LocalUserAppDataPath) + "\\~temp.cruise";
             if (System.IO.File.Exists(tempPath) &&
                (MessageBox.Show("Partially created cruise file found, would you like to resume?\r\nSelecting No will discard existing partial cruise.", "?", MessageBoxButtons.YesNo) == DialogResult.Yes))
             {
-                return new DAL(tempPath);
+                DAL newCruise = new DAL(tempPath);
+                return newCruise;
             }
             return null;
         }

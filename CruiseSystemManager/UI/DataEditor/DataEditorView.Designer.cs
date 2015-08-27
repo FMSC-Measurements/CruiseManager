@@ -185,7 +185,6 @@
             this.poleLengthDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.crownRatioDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.formClassDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.upperStemDOBDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dBHDoubleBarkThicknessDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.defectCodeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.diameterAtDefectDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -510,7 +509,6 @@
             this.poleLengthDataGridViewTextBoxColumn,
             this.crownRatioDataGridViewTextBoxColumn,
             this.formClassDataGridViewTextBoxColumn,
-            this.upperStemDOBDataGridViewTextBoxColumn,
             this.dBHDoubleBarkThicknessDataGridViewTextBoxColumn,
             this.defectCodeDataGridViewTextBoxColumn,
             this.diameterAtDefectDataGridViewTextBoxColumn,
@@ -1690,13 +1688,6 @@
             this.formClassDataGridViewTextBoxColumn.ToolTipText = "Form Class";
             this.formClassDataGridViewTextBoxColumn.Width = 63;
             // 
-            // upperStemDOBDataGridViewTextBoxColumn
-            // 
-            this.upperStemDOBDataGridViewTextBoxColumn.DataPropertyName = "UpperStemDOB";
-            this.upperStemDOBDataGridViewTextBoxColumn.HeaderText = "Up Stem D";
-            this.upperStemDOBDataGridViewTextBoxColumn.Name = "upperStemDOBDataGridViewTextBoxColumn";
-            this.upperStemDOBDataGridViewTextBoxColumn.ToolTipText = "Upper Stem Diameter Outside Bark";
-            // 
             // dBHDoubleBarkThicknessDataGridViewTextBoxColumn
             // 
             this.dBHDoubleBarkThicknessDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
@@ -2024,6 +2015,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn programDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewCheckBoxColumn suppressDataGridViewCheckBoxColumn;
         private System.Windows.Forms.BindingSource _BS_TreeSampleGroups;
+        private System.Windows.Forms.DataGridViewTextBoxColumn upperStemDOBDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn Tree_CN;
         private System.Windows.Forms.DataGridViewTextBoxColumn cuttingUnitDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn stratumDataGridViewTextBoxColumn;
@@ -2056,7 +2048,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn poleLengthDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn crownRatioDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn formClassDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn upperStemDOBDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn dBHDoubleBarkThicknessDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn defectCodeDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn diameterAtDefectDataGridViewTextBoxColumn;

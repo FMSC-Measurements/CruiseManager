@@ -59,8 +59,6 @@
             this._RecoverableTB = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
-            this._chargeableTB = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
             this.panel6 = new System.Windows.Forms.Panel();
             this._contractSpTB = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -99,7 +97,6 @@
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
-            this.panel5.SuspendLayout();
             this.panel6.SuspendLayout();
             this.panel7.SuspendLayout();
             this.panel8.SuspendLayout();
@@ -434,33 +431,12 @@
             // 
             // panel5
             // 
-            this.panel5.Controls.Add(this._chargeableTB);
-            this.panel5.Controls.Add(this.label9);
             this.panel5.Location = new System.Drawing.Point(138, 76);
             this.panel5.Margin = new System.Windows.Forms.Padding(0);
             this.panel5.Name = "panel5";
             this.panel5.Padding = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.panel5.Size = new System.Drawing.Size(196, 28);
             this.panel5.TabIndex = 9;
-            // 
-            // _chargeableTB
-            // 
-            this._chargeableTB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this._BS_TDV, "Chargeable", true));
-            this._chargeableTB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._chargeableTB.Location = new System.Drawing.Point(91, 3);
-            this._chargeableTB.Name = "_chargeableTB";
-            this._chargeableTB.Size = new System.Drawing.Size(105, 20);
-            this._chargeableTB.TabIndex = 0;
-            // 
-            // label9
-            // 
-            this.label9.Dock = System.Windows.Forms.DockStyle.Left;
-            this.label9.Location = new System.Drawing.Point(0, 3);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(91, 22);
-            this.label9.TabIndex = 0;
-            this.label9.Text = "Chargeable";
-            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // panel6
             // 
@@ -756,8 +732,6 @@
             this.panel3.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
-            this.panel5.ResumeLayout(false);
-            this.panel5.PerformLayout();
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
             this.panel7.ResumeLayout(false);
@@ -805,8 +779,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox _RecoverableTB;
         private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.TextBox _chargeableTB;
-        private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.TextBox _contractSpTB;
         private System.Windows.Forms.Label label10;

@@ -44,16 +44,7 @@ namespace CSM.UI.CruiseWizard
             this._BS_TDV.EndEdit();
             if (this.TreeDefault.Validate() == true)
             {
-                if(this.TreeDefault.Chargeable == null)
-                {
-                    this.TreeDefault.Chargeable = String.Empty; //HACK barbara cant handle null so we need to use empty strings
-                }
-
-                if (this.TreeDefault.ContractSpecies == null)
-                {
-                    this.TreeDefault.ContractSpecies = string.Empty;
-                }
-
+                
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }

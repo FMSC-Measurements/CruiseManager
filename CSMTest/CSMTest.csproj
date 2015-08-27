@@ -1,7 +1,7 @@
 ﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{9147D46C-4F97-436E-840B-2754371B8D26}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -82,6 +82,10 @@
     <Content Include="AuthoringTests.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CruiseDAL\CruiseDAL\CruiseDAL_FF35.csproj">
+      <Project>{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}</Project>
+      <Name>CruiseDAL_FF35</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CruiseSystemManager\CruiseSystemManager.csproj">
       <Project>{5F44AC1F-055D-41BA-826F-DBAD8E14062A}</Project>
       <Name>CruiseSystemManager</Name>

@@ -1,0 +1,33 @@
+table level variables:
+has CN field
+has natural key
+has GUID
+has RowVersion
+needs copy new from component 
+needs copy new from master
+needs update from component 
+needs update from master
+needs delete from component
+needs delete from master// not support?
+
+record level variables:
+RowID match 
+Natural match
+GUID match 
+
+MasterRowID
+ComponentRowID
+
+Component ID 
+
+CrossComponentConflict//where two or more incoming records have the same natural key 
+CrossMatchConflict//where two or more records resolve to the same match
+
+MasterRowVersion
+ComponentRowVersion 
+
+IsDeleted 
+
+
+
+

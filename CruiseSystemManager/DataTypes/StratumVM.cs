@@ -7,7 +7,7 @@ using CruiseDAL;
 
 namespace CSM.DataTypes
 {
-    [Table(TableName="Stratum"
+    [SQLEntity(TableName = "Stratum"
         , JoinCommand="JOIN (Select Stratum_CN, group_concat(Field) AS Fields From TreeFieldSetup GROUP BY Stratum_cn) USING (Stratum_CN)")]
     public class StratumVM : StratumDO
     {

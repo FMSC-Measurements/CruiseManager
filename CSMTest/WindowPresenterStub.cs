@@ -79,7 +79,7 @@ namespace CSMTest
             throw new NotImplementedException();
         }
 
-        public void HandleNewCruiseClick(object sender, EventArgs e)
+        public void HandleCreateCruiseClick(object sender, EventArgs e)
         {
             throw new NotImplementedException();
         }
@@ -164,6 +164,37 @@ namespace CSMTest
         }
 
         public List<CSM.Utility.Setup.CruiseMethod> GetCruiseMethods(DAL database, bool reconMethodsOnly)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IWindowPresenter Members
+
+
+        List<string> CSM.Logic.IWindowPresenter.GetCruiseMethods(bool reconMethodsOnly)
+        {
+            throw new NotImplementedException();
+        }
+
+        List<string> CSM.Logic.IWindowPresenter.GetCruiseMethods(DAL database, bool reconMethodsOnly)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object GetSampleGroupsByStratum(long? st_cn)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public void ShowCruiseLandingLayout()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ShowMessage(string message, string caption)
         {
             throw new NotImplementedException();
         }

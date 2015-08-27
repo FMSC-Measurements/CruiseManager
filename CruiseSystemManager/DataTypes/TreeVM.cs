@@ -7,7 +7,7 @@ using CruiseDAL;
 
 namespace CSM.DataTypes
 {
-    [Table( TableName= "Tree", 
+    [SQLEntity(TableName = "Tree", 
         JoinCommand= "JOIN Stratum USING (Stratum_CN) JOIN CuttingUnit USING (CuttingUnit_CN) LEFT JOIN SampleGroup USING (SampleGroup_CN)")]
         
     public class TreeVM : TreeDO
