@@ -457,8 +457,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\cruisetree_setup.ico" />
-    <Content Include="Resources\Gradiant_Red.png" />
-    <Content Include="Resources\Gradiant_Yellow.PNG" />
     <None Include="Resources\Icon.bmp" />
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.CountTreeDO.datasource" />
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.LogDO.datasource" />
@@ -467,7 +465,6 @@
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.TreeDO.datasource" />
     <None Include="Properties\DataSources\CSM.UI.CruiseWizard.CruiseWizardPresenter.datasource" />
     <None Include="Properties\DataSources\CSM.UI.SetupEditor.SetupPresenter.datasource" />
-    <None Include="Resources\redX.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">

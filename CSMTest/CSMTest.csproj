@@ -95,12 +95,9 @@
     <Shadow Include="Test References\CruiseSystemManager.accessor" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TESTMETH.crz">
+    <Content Include="Test Files\TESTMETH.crz">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Test Files\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
