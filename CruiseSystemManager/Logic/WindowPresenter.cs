@@ -42,7 +42,7 @@ namespace CSM
         private string _convertedFilePath;
 
 
-        public const string Version = "2015.08.27";
+        public const string Version = "2015.09.01";
         public const int RECENT_FILE_LIST_SIZE = 10;
 
 
