@@ -85,6 +85,7 @@
   <ItemGroup>
     <Compile Include="DataTypes\SaleVM.cs" />
     <None Include="Logic\ApplicationController.cs" />
+    <Compile Include="DataTypes\TypeComparers.cs" />
     <Compile Include="Logic\ApplicationState.cs" />
     <Compile Include="Logic\CancelWorkerException.cs" />
     <Compile Include="Logic\Components\ComponentFile.cs" />
@@ -132,6 +133,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UI\CruiseCustomize\CustomizeCruisePresenter.cs" />
+    <Compile Include="UI\CruiseCustomize\FieldSetupStratum.cs" />
     <Compile Include="UI\CruiseCustomize\LogMatrixSettingsView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -144,6 +146,9 @@
     <Compile Include="UI\CruiseCustomize\TallyEditPanel.Designer.cs">
       <DependentUpon>TallyEditPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\CruiseCustomize\TallyPopulation.cs" />
+    <Compile Include="UI\CruiseCustomize\TallySetupSampleGroup.cs" />
+    <Compile Include="UI\CruiseCustomize\TallySetupStratum.cs" />
     <Compile Include="UI\CruiseWizard\CreateSaleFolerDialog.cs">
       <SubType>Form</SubType>
     </Compile>

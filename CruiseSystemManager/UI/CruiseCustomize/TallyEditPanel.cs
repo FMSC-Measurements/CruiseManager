@@ -50,24 +50,16 @@ namespace CSM.UI.CruiseCustomize
             }
         }
 
-        public String[] HotKeyOptions
+        public void SetHotKeys(string[] hotkeys)
         {
-            get { return null; }
-            set
-            {
-                if (value != null)
-                {
-                    this._hotKeyCB.Items.Clear();
-                    this._hotKeyCB.Items.AddRange(value);
-                }
-
-            }
-
+            this._hotKeyCB.Items.Clear();
+            //if hotkeys null use empty string array
+            this._hotKeyCB.Items.AddRange(hotkeys ?? new String[0]);
         }
 
-        private SampleGroupViewModel _sampleGroup;
+        private TallySetupSampleGroup _sampleGroup;
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public SampleGroupViewModel SampleGroup 
+        public TallySetupSampleGroup SampleGroup 
         {
             get { return _sampleGroup; }
             set
@@ -100,7 +92,7 @@ namespace CSM.UI.CruiseCustomize
         {
             get 
             {
-                if (_sampleGroup == null) { return (CruiseDAL.Enums.TallyMode)0; }
+                if (_sampleGroup == null) { return CruiseDAL.Enums.TallyMode.Unknown; }
                 return _sampleGroup.TallyMethod; 
             }
             set
