@@ -50,9 +50,9 @@
             this.label7 = new System.Windows.Forms.Label();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.forestsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.RegionForestBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label3 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.RegionForestBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -251,9 +251,9 @@
             this._logGradingEnabledCB.DataBindings.Add(new System.Windows.Forms.Binding("Checked", this.SaleDOBindingSource, "LogGradingEnabled", true));
             this._logGradingEnabledCB.Location = new System.Drawing.Point(285, 115);
             this._logGradingEnabledCB.Name = "_logGradingEnabledCB";
-            this._logGradingEnabledCB.Size = new System.Drawing.Size(126, 17);
+            this._logGradingEnabledCB.Size = new System.Drawing.Size(112, 17);
             this._logGradingEnabledCB.TabIndex = 8;
-            this._logGradingEnabledCB.Text = "Log Grading Enabled";
+            this._logGradingEnabledCB.Text = "Log Data Enabled";
             this._logGradingEnabledCB.UseVisualStyleBackColor = true;
             // 
             // _districtMTB
@@ -294,6 +294,10 @@
             this.forestsBindingSource.DataMember = "Forests";
             this.forestsBindingSource.DataSource = this.RegionForestBindingSource;
             // 
+            // RegionForestBindingSource
+            // 
+            this.RegionForestBindingSource.DataSource = typeof(CSM.Utility.Setup.Region);
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -316,10 +320,6 @@
             this.comboBox1.Size = new System.Drawing.Size(142, 21);
             this.comboBox1.TabIndex = 5;
             this.comboBox1.ValueMember = "RegionNumber";
-            // 
-            // RegionForestBindingSource
-            // 
-            this.RegionForestBindingSource.DataSource = typeof(CSM.Utility.Setup.Region);
             // 
             // label2
             // 
