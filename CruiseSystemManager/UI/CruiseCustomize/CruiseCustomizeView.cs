@@ -203,7 +203,6 @@ namespace CSM.UI.CruiseCustomize
             this.speciesDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.primaryProductDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.liveDeadDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.chargeableDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fIAcodeDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cullPrimaryDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.hiddenPrimaryDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -220,6 +219,9 @@ namespace CSM.UI.CruiseCustomize
             this.referenceHeightPercentDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this._BS_treeDefaults = new System.Windows.Forms.BindingSource(this.components);
             this._treeAuditDGV = new System.Windows.Forms.DataGridView();
+            this.fieldDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.minDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.maxDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this._BS_treeAudits = new System.Windows.Forms.BindingSource(this.components);
             this.panel5 = new System.Windows.Forms.Panel();
             this._treeAuditClearSelectionBtn = new System.Windows.Forms.Button();
@@ -291,9 +293,6 @@ namespace CSM.UI.CruiseCustomize
             this.referenceHeightPercentDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.fieldDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.minDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.maxDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             _treeAuditRulesLayout = new System.Windows.Forms.TableLayoutPanel();
             label8 = new System.Windows.Forms.Label();
             label7 = new System.Windows.Forms.Label();
@@ -364,7 +363,6 @@ namespace CSM.UI.CruiseCustomize
             this.speciesDataGridViewTextBoxColumn1,
             this.primaryProductDataGridViewTextBoxColumn1,
             this.liveDeadDataGridViewTextBoxColumn1,
-            this.chargeableDataGridViewTextBoxColumn1,
             this.fIAcodeDataGridViewTextBoxColumn1,
             this.cullPrimaryDataGridViewTextBoxColumn1,
             this.hiddenPrimaryDataGridViewTextBoxColumn1,
@@ -426,15 +424,6 @@ namespace CSM.UI.CruiseCustomize
             this.liveDeadDataGridViewTextBoxColumn1.Name = "liveDeadDataGridViewTextBoxColumn1";
             this.liveDeadDataGridViewTextBoxColumn1.ToolTipText = "Default Live/Dead Code";
             this.liveDeadDataGridViewTextBoxColumn1.Width = 51;
-            // 
-            // chargeableDataGridViewTextBoxColumn1
-            // 
-            this.chargeableDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.chargeableDataGridViewTextBoxColumn1.DataPropertyName = "Chargeable";
-            this.chargeableDataGridViewTextBoxColumn1.HeaderText = "Chargeable";
-            this.chargeableDataGridViewTextBoxColumn1.Name = "chargeableDataGridViewTextBoxColumn1";
-            this.chargeableDataGridViewTextBoxColumn1.ToolTipText = "Yield Component (CL,CD,NL,ND)";
-            this.chargeableDataGridViewTextBoxColumn1.Width = 86;
             // 
             // fIAcodeDataGridViewTextBoxColumn1
             // 
@@ -604,6 +593,40 @@ namespace CSM.UI.CruiseCustomize
             this._treeAuditDGV.TabIndex = 0;
             this._treeAuditDGV.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this._treeAuditDGV_DataError);
             // 
+            // fieldDataGridViewTextBoxColumn
+            // 
+            this.fieldDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.fieldDataGridViewTextBoxColumn.DataPropertyName = "Field";
+            this.fieldDataGridViewTextBoxColumn.HeaderText = "Field";
+            this.fieldDataGridViewTextBoxColumn.Items.AddRange(new object[] {
+            "DBH",
+            "DRC",
+            "TotalHeight",
+            "MerchHeightPrimary",
+            "MerchHeightSecondary",
+            "UpperStemHeight",
+            "SeenDefectPrimary",
+            "SeenDefectSecondary",
+            "RecoverablePrimary"});
+            this.fieldDataGridViewTextBoxColumn.Name = "fieldDataGridViewTextBoxColumn";
+            this.fieldDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.fieldDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.fieldDataGridViewTextBoxColumn.ToolTipText = "Select Field to Create Edit Check";
+            // 
+            // minDataGridViewTextBoxColumn
+            // 
+            this.minDataGridViewTextBoxColumn.DataPropertyName = "Min";
+            this.minDataGridViewTextBoxColumn.HeaderText = "Min";
+            this.minDataGridViewTextBoxColumn.Name = "minDataGridViewTextBoxColumn";
+            this.minDataGridViewTextBoxColumn.ToolTipText = "Minimum Value Allowed";
+            // 
+            // maxDataGridViewTextBoxColumn
+            // 
+            this.maxDataGridViewTextBoxColumn.DataPropertyName = "Max";
+            this.maxDataGridViewTextBoxColumn.HeaderText = "Max";
+            this.maxDataGridViewTextBoxColumn.Name = "maxDataGridViewTextBoxColumn";
+            this.maxDataGridViewTextBoxColumn.ToolTipText = "Maximum Value Allowed";
+            // 
             // _BS_treeAudits
             // 
             this._BS_treeAudits.DataSource = typeof(CruiseDAL.DataObjects.TreeAuditValueDO);
@@ -735,7 +758,7 @@ namespace CSM.UI.CruiseCustomize
             this._fieldSetupPage.Controls.Add(this.groupBox3);
             this._fieldSetupPage.Location = new System.Drawing.Point(4, 22);
             this._fieldSetupPage.Name = "_fieldSetupPage";
-            this._fieldSetupPage.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this._fieldSetupPage.Padding = new System.Windows.Forms.Padding(3);
             this._fieldSetupPage.Size = new System.Drawing.Size(632, 391);
             this._fieldSetupPage.TabIndex = 0;
             this._fieldSetupPage.Text = "Field Setup";
@@ -760,7 +783,7 @@ namespace CSM.UI.CruiseCustomize
             this._treeField_TabPage.Controls.Add(this.panel3);
             this._treeField_TabPage.Location = new System.Drawing.Point(4, 22);
             this._treeField_TabPage.Name = "_treeField_TabPage";
-            this._treeField_TabPage.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this._treeField_TabPage.Padding = new System.Windows.Forms.Padding(3);
             this._treeField_TabPage.Size = new System.Drawing.Size(484, 359);
             this._treeField_TabPage.TabIndex = 0;
             this._treeField_TabPage.Text = "Tree Field Setup";
@@ -831,8 +854,8 @@ namespace CSM.UI.CruiseCustomize
             this._logField_TabPage.Controls.Add(this.panel4);
             this._logField_TabPage.Location = new System.Drawing.Point(4, 22);
             this._logField_TabPage.Name = "_logField_TabPage";
-            this._logField_TabPage.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this._logField_TabPage.Size = new System.Drawing.Size(486, 363);
+            this._logField_TabPage.Padding = new System.Windows.Forms.Padding(3);
+            this._logField_TabPage.Size = new System.Drawing.Size(484, 359);
             this._logField_TabPage.TabIndex = 1;
             this._logField_TabPage.Text = "Log Field Setup";
             this._logField_TabPage.UseVisualStyleBackColor = true;
@@ -847,7 +870,7 @@ namespace CSM.UI.CruiseCustomize
             this._logFieldWidget.Name = "_logFieldWidget";
             this._logFieldWidget.SelectedItemsDataSource = null;
             this._logFieldWidget.SelectedValue = null;
-            this._logFieldWidget.Size = new System.Drawing.Size(480, 308);
+            this._logFieldWidget.Size = new System.Drawing.Size(478, 304);
             this._logFieldWidget.TabIndex = 0;
             this._logFieldWidget.ValueMember = null;
             this._logFieldWidget.SelectedValueChanged += new FMSC.Controls.SelectedValueChangedEventHandler(this._logFieldWidget_SelectedValueChanged);
@@ -861,9 +884,9 @@ namespace CSM.UI.CruiseCustomize
             this.panel4.Controls.Add(this._logFieldHeadingTB);
             this.panel4.Controls.Add(this.label6);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel4.Location = new System.Drawing.Point(3, 311);
+            this.panel4.Location = new System.Drawing.Point(3, 307);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(480, 49);
+            this.panel4.Size = new System.Drawing.Size(478, 49);
             this.panel4.TabIndex = 3;
             // 
             // _logFieldWidthTB
@@ -931,7 +954,7 @@ namespace CSM.UI.CruiseCustomize
             this._tallySetupPage.Controls.Add(this.flowLayoutPanel1);
             this._tallySetupPage.Location = new System.Drawing.Point(4, 22);
             this._tallySetupPage.Name = "_tallySetupPage";
-            this._tallySetupPage.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this._tallySetupPage.Padding = new System.Windows.Forms.Padding(3);
             this._tallySetupPage.Size = new System.Drawing.Size(632, 391);
             this._tallySetupPage.TabIndex = 1;
             this._tallySetupPage.Text = "Tally Setup";
@@ -1031,7 +1054,7 @@ namespace CSM.UI.CruiseCustomize
             this._tallyEditPanel.AllowTallyBySpecies = true;
             this._tallyEditPanel.HotKeyOptions = null;
             this._tallyEditPanel.Location = new System.Drawing.Point(4, 66);
-            this._tallyEditPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this._tallyEditPanel.Margin = new System.Windows.Forms.Padding(4);
             this._tallyEditPanel.Name = "_tallyEditPanel";
             this._tallyEditPanel.Size = new System.Drawing.Size(342, 258);
             this._tallyEditPanel.TabIndex = 9;
@@ -1156,7 +1179,7 @@ namespace CSM.UI.CruiseCustomize
             this._treeAuditFieldList.FormattingEnabled = true;
             this._treeAuditFieldList.Location = new System.Drawing.Point(3, 16);
             this._treeAuditFieldList.Name = "_treeAuditFieldList";
-            this._treeAuditFieldList.Size = new System.Drawing.Size(194, 201);
+            this._treeAuditFieldList.Size = new System.Drawing.Size(194, 199);
             this._treeAuditFieldList.TabIndex = 0;
             // 
             // _treeAuditTDVSelectDGV
@@ -1304,40 +1327,6 @@ namespace CSM.UI.CruiseCustomize
             this.dataGridViewTextBoxColumn1.HeaderText = "Tag";
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
-            // fieldDataGridViewTextBoxColumn
-            // 
-            this.fieldDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.fieldDataGridViewTextBoxColumn.DataPropertyName = "Field";
-            this.fieldDataGridViewTextBoxColumn.HeaderText = "Field";
-            this.fieldDataGridViewTextBoxColumn.Items.AddRange(new object[] {
-            "DBH",
-            "DRC",
-            "TotalHeight",
-            "MerchHeightPrimary",
-            "MerchHeightSecondary",
-            "UpperStemHeight",
-            "SeenDefectPrimary",
-            "SeenDefectSecondary",
-            "RecoverablePrimary"});
-            this.fieldDataGridViewTextBoxColumn.Name = "fieldDataGridViewTextBoxColumn";
-            this.fieldDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.fieldDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.fieldDataGridViewTextBoxColumn.ToolTipText = "Select Field to Create Edit Check";
-            // 
-            // minDataGridViewTextBoxColumn
-            // 
-            this.minDataGridViewTextBoxColumn.DataPropertyName = "Min";
-            this.minDataGridViewTextBoxColumn.HeaderText = "Min";
-            this.minDataGridViewTextBoxColumn.Name = "minDataGridViewTextBoxColumn";
-            this.minDataGridViewTextBoxColumn.ToolTipText = "Minimum Value Allowed";
-            // 
-            // maxDataGridViewTextBoxColumn
-            // 
-            this.maxDataGridViewTextBoxColumn.DataPropertyName = "Max";
-            this.maxDataGridViewTextBoxColumn.HeaderText = "Max";
-            this.maxDataGridViewTextBoxColumn.Name = "maxDataGridViewTextBoxColumn";
-            this.maxDataGridViewTextBoxColumn.ToolTipText = "Maximum Value Allowed";
             // 
             // CruiseCustomizeView
             // 
@@ -1650,7 +1639,10 @@ namespace CSM.UI.CruiseCustomize
         {
             TreeAuditValueDO tav = _BS_treeAudits.Current as TreeAuditValueDO;
             if (tav == null) { return; }
-            tav.Delete();
+            if (tav.IsPersisted)
+            {
+                tav.Delete();
+            }
             _BS_treeAudits.Remove(tav);
         }
 
