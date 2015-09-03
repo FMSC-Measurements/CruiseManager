@@ -11,7 +11,7 @@ namespace CSM.Utility
     {
         internal static readonly TreeDefaultValueDO[] EMPTY_SPECIES_LIST = new TreeDefaultValueDO[] { };
 
-        public static readonly String[] LOGGING_METHODS = new String[] { "1", "2", "3", "..." };
+        //public static readonly String[] LOGGING_METHODS = new String[] { "1", "2", "3", "..." };
 
         public static readonly String[] SALE_PURPOSE = new string[] { "Timber Sale", "Check Cruise", "Right of Way", "Recon", "Other" };
     }
@@ -47,7 +47,7 @@ namespace CSM.Utility
             public static readonly string[] HOTKEYS = new string[] { "A", "B", "C", "D",
                 "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P",
                 "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "1", "2",
-                "3", "4", "5", "6", "7", "8", "9", "0" };
+                "3", "4", "5", "6", "7", "8", "9", "0", "*", "." };
 
             public static readonly string[] INDICATOR_TYPES = new string[] { "Beep", "None" };
 
