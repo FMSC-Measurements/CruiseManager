@@ -325,6 +325,11 @@ namespace CSM.UI.CruiseWizard
             UOMCodes = setupServ.GetUOMCodes();
             ProductCodes = setupServ.GetProductCodes();
             Regions = setupServ.GetRegions();
+            //insert dummy forest, so that the comboboxes have a option when no forest is selected
+            foreach (Region r in Regions)
+            {
+                r.Forests.Insert(0, new Forest() { Name = String.Empty });
+            }
         }
 
 
