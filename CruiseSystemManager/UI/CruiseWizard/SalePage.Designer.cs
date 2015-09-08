@@ -313,7 +313,7 @@
             this.comboBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBox1.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.SaleDOBindingSource, "Region", true));
             this.comboBox1.DataSource = this.RegionForestBindingSource;
-            this.comboBox1.DisplayMember = "Name";
+            this.comboBox1.DisplayMember = "FormatNumberName";
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(285, 22);
             this.comboBox1.Name = "comboBox1";

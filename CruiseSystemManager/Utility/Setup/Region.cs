@@ -20,6 +20,15 @@ namespace CSM.Utility.Setup
         [XmlAttribute]
         public String Name { get; set; }
 
+        [XmlIgnore]
+        public String FormatNumberName
+        {
+            get
+            {
+                return String.Format("{0} - {1}", this.RegionNumber, this.Name);
+            }
+        }
+
         [XmlArray]
         public List<Forest> Forests { get; set; }
 

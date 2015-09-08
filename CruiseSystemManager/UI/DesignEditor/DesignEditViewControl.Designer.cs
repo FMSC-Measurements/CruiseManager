@@ -338,7 +338,7 @@
             this._saleRegion_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this._saleRegion_CB.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.SaleBindingSource, "Region", true));
             this._saleRegion_CB.DataSource = this.RegionBindingSource;
-            this._saleRegion_CB.DisplayMember = "Name";
+            this._saleRegion_CB.DisplayMember = "FormatNumberName";
             this._saleRegion_CB.Location = new System.Drawing.Point(65, 3);
             this._saleRegion_CB.Name = "_saleRegion_CB";
             this._saleRegion_CB.Size = new System.Drawing.Size(172, 21);
