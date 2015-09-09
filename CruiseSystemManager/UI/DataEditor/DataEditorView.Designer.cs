@@ -2015,7 +2015,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn programDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewCheckBoxColumn suppressDataGridViewCheckBoxColumn;
         private System.Windows.Forms.BindingSource _BS_TreeSampleGroups;
-        private System.Windows.Forms.DataGridViewTextBoxColumn upperStemDOBDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn Tree_CN;
         private System.Windows.Forms.DataGridViewTextBoxColumn cuttingUnitDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn stratumDataGridViewTextBoxColumn;

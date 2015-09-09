@@ -81,7 +81,6 @@ namespace CSM.UI.CruiseCustomize
         private System.Windows.Forms.DataGridViewTextBoxColumn speciesDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn primaryProductDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn liveDeadDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn chargeableDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn fIAcodeDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn cullPrimaryDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn hiddenPrimaryDataGridViewTextBoxColumn1;

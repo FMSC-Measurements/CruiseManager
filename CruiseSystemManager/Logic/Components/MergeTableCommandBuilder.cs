@@ -139,18 +139,14 @@ namespace CSM.Logic.Components
         public bool DoKeyMatch { get; set; }
         public bool DoGUIDMatch
         {
-            get { return _doGuidMatch && _hasGuidKey; }
+            get { return _doGuidMatch && this.HasGUIDKey; }
             set { _doGuidMatch = value; }
         }
         public bool HasGUIDKey
         {
             get { return this.ClientGUIDKeyField != null; }
         }
-        public bool HasRowVersion
-        {
-            get { return _hasRowVersion; }
-            set { _hasRowVersion = value; }
-        }
+        public bool HasRowVersion { get; set; }
 
         public bool RecordsUniqueAccrossComponents { get; set; }
         public bool MergeNewFromComponent { get; set; }
@@ -707,8 +703,6 @@ namespace CSM.Logic.Components
 
         #endregion
 
-        private bool _hasGuidKey;
-        private bool _hasRowVersion;
         private bool _doGuidMatch; 
     }
 }

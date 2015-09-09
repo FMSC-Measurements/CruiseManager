@@ -1253,7 +1253,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn speciesDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn primaryProductDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn liveDeadDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn chargeableDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn FIAcode;
         private System.Windows.Forms.DataGridViewTextBoxColumn cullPrimaryDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn hiddenPrimaryDataGridViewTextBoxColumn;

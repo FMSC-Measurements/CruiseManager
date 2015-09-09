@@ -212,13 +212,6 @@
     <Compile Include="UI\LicencesDialog.Designer.cs">
       <DependentUpon>LicencesDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\MergeCruise\CombineCruisePresenter.cs" />
-    <Compile Include="UI\MergeCruise\ComponentSelectPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\MergeCruise\ComponentSelectPage.Designer.cs">
-      <DependentUpon>ComponentSelectPage.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\PageHost.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -368,10 +361,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\LicencesDialog.resx">
       <DependentUpon>LicencesDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\MergeCruise\ComponentSelectPage.resx">
-      <DependentUpon>ComponentSelectPage.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\PageHost.resx">
       <DependentUpon>PageHost.cs</DependentUpon>

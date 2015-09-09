@@ -65,20 +65,20 @@ namespace CSM.Logic.Components
         private const string SELECT_STEMS = "WHERE Stem_GUID IS NULL OR Stem_GUID = ''";
         private const string SELECT_TREEEST = "WHERE TreeEstimate_GUID IS NULL OR TreeEstimate_GUID = ''";
 
-        private DAL _master;
-        private DAL _components;
+        //private DAL _master;
+        //private DAL _components;
 
 
-        public UpdateMasterWorker(DAL master, DAL[] components)
-        {
+        //public UpdateMasterWorker(DAL master, DAL[] components)
+        //{
 
 
-        }
+        //}
 
-        public void Begin()
-        {
+        //public void Begin()
+        //{
 
-        }
+        //}
 
         public static bool HasUnassignedGUIDs(DAL db)
         {

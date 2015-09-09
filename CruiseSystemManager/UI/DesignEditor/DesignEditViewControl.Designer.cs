@@ -1703,7 +1703,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn speciesDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn primaryProductDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn liveDeadDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn chargeableDataGridViewTextBoxColumn;
         private System.Windows.Forms.CheckBox _logGradingEnabledCB;
         private System.Windows.Forms.DataGridViewTextBoxColumn codeDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn areaDataGridViewTextBoxColumn;

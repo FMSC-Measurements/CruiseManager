@@ -8,7 +8,6 @@ using CSM.UI.DataEditor;
 using CSM.UI.TemplateEditor;
 using CSM.UI.DesignEditor;
 using CruiseDAL.DataObjects;
-using CSM.UI.CombineCruise;
 using CSM.UI;
 using CSM.Utility;
 using CSM.UI.Dashboard;
@@ -561,35 +560,35 @@ namespace CSM
             this.ActivePresentor = null;
         }
 
-        public void ShowCombineSaleLayout()
-        {
-            OpenFileDialog ofd = new OpenFileDialog();
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                try
-                {
-                    DAL mergeFromDAL = new DAL(ofd.FileName);
+        //public void ShowCombineSaleLayout()
+        //{
+        //    OpenFileDialog ofd = new OpenFileDialog();
+        //    if (ofd.ShowDialog() == DialogResult.OK)
+        //    {
+        //        try
+        //        {
+        //            DAL mergeFromDAL = new DAL(ofd.FileName);
 
-                    this.MainWindow.ClearNavPanel();
-                    this.MainWindow.ViewContentPanel.Controls.Clear();
-                    this.MainWindow.Text = System.IO.Path.GetFileName(this.AppState.Database.Path) + " - Combine Sale";
-                    this.MainWindow.AddNavButton("Back", this.HandleReturnCruiseLandingClick);
-                    CombineCruisePresenter presenter = new CombineCruisePresenter(this, mergeFromDAL);
-                    ComponentSelectPage view = new ComponentSelectPage(presenter);
-                    this.ActivePresentor = presenter;
-                    this.SetActiveView(view);
-                }
-                catch
-                {
-                    return;
-                }
-            }
-            else
-            {
-                return;
-            }
+        //            this.MainWindow.ClearNavPanel();
+        //            this.MainWindow.ViewContentPanel.Controls.Clear();
+        //            this.MainWindow.Text = System.IO.Path.GetFileName(this.AppState.Database.Path) + " - Combine Sale";
+        //            this.MainWindow.AddNavButton("Back", this.HandleReturnCruiseLandingClick);
+        //            CombineCruisePresenter presenter = new CombineCruisePresenter(this, mergeFromDAL);
+        //            ComponentSelectPage view = new ComponentSelectPage(presenter);
+        //            this.ActivePresentor = presenter;
+        //            this.SetActiveView(view);
+        //        }
+        //        catch
+        //        {
+        //            return;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        return;
+        //    }
 
-        }
+        //}
 
         public void ShowCombineSaleSubComponentSelectPage()
         {
@@ -730,26 +729,26 @@ namespace CSM
             SetActiveView(view);
         }
 
-        public void ShowImportParts()
-        {
-            if (AppState.Database == null) { return; }
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Multiselect = false;
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                DAL exterDB = new DAL(ofd.FileName);
+        //public void ShowImportParts()
+        //{
+        //    if (AppState.Database == null) { return; }
+        //    OpenFileDialog ofd = new OpenFileDialog();
+        //    ofd.Multiselect = false;
+        //    if (ofd.ShowDialog() == DialogResult.OK)
+        //    {
+        //        DAL exterDB = new DAL(ofd.FileName);
 
-                var presenter = new CombineCruisePresenter(this, exterDB);
-                //var view = new MergeCruiseView(presenter);
-                //CurrentWindow = view;
-                //view.Owner = WindowStack.Last() as Form;
-                //view.FormClosed += new FormClosedEventHandler(OnWindowClosed);
-                //WindowStack.Push(view);
-                //return view.ShowDialog();
-            }
+        //        var presenter = new CombineCruisePresenter(this, exterDB);
+        //        //var view = new MergeCruiseView(presenter);
+        //        //CurrentWindow = view;
+        //        //view.Owner = WindowStack.Last() as Form;
+        //        //view.FormClosed += new FormClosedEventHandler(OnWindowClosed);
+        //        //WindowStack.Push(view);
+        //        //return view.ShowDialog();
+        //    }
       
-            //DisplayCurrentWindow();
-        }
+        //    //DisplayCurrentWindow();
+        //}
 
         public void ShowSimpleErrorMessage(string errorMessage)
         {
