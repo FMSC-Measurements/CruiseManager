@@ -206,6 +206,12 @@
     <Compile Include="UI\Components\MergeComponentView.Designer.cs">
       <DependentUpon>MergeComponentView.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\LicencesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LicencesDialog.Designer.cs">
+      <DependentUpon>LicencesDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\MergeCruise\CombineCruisePresenter.cs" />
     <Compile Include="UI\MergeCruise\ComponentSelectPage.cs">
       <SubType>UserControl</SubType>

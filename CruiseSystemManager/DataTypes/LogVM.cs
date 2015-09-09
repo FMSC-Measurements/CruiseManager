@@ -6,7 +6,7 @@ namespace CSM.DataTypes
         JoinCommand=@"JOIN Tree USING (Tree_CN) 
 JOIN CuttingUnit USING (CuttingUnit_CN) 
 JOIN Stratum USING (Stratum_CN) 
-JOIN Samplegroup USING (SampleGroup_CN)
+LEFT JOIN Samplegroup USING (SampleGroup_CN)
 LEFT JOIN Plot USING (Plot_CN)")]
     public class LogVM : CruiseDAL.DataObjects.LogDO
     {

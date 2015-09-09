@@ -42,19 +42,19 @@ namespace CSM.UI.DesignEditor
 
         public void BindData()
         {
-            this.SaleBindingSource.DataSource = Presentor.Data.Sale;
+            this.SaleBindingSource.DataSource = Presentor.DataContext.Sale;
 
-            this.SampleGroup_TDVBindingSource.DataSource = Presentor.Data.AllTreeDefaults;
+            this.SampleGroup_TDVBindingSource.DataSource = Presentor.DataContext.AllTreeDefaults;
 
-            this.CuttingUnitsBindingSource.DataSource = Presentor.Data.CuttingUnits;
-            this.StrataBindingSource.DataSource = Presentor.Data.Strata;
-            this.SampleGroupBindingSource.DataSource = Presentor.Data.SampleGroups;
+            this.CuttingUnitsBindingSource.DataSource = Presentor.DataContext.CuttingUnits;
+            this.StrataBindingSource.DataSource = Presentor.DataContext.Strata;
+            this.SampleGroupBindingSource.DataSource = Presentor.DataContext.SampleGroups;
             //this.PlotBindingSource.DataSource = Presentor.Data.Plots;
 
-            this.CuttingUnits_StrataSelectionBindingSource.DataSource = Presentor.Data.StrataFilterSelectionList;
-            this.Strata_CuttingUnitsSelectionBindingSource.DataSource = Presentor.Data.CuttingUnitFilterSelectionList;
-            this.SampleGroups_StrataSelectionBindingSource.DataSource = Presentor.Data.AllStrata;
-            Strata_CuttingUnitBindingSource.DataSource = Presentor.Data.AllCuttingUnits;
+            this.CuttingUnits_StrataSelectionBindingSource.DataSource = Presentor.DataContext.StrataFilterSelectionList;
+            this.Strata_CuttingUnitsSelectionBindingSource.DataSource = Presentor.DataContext.CuttingUnitFilterSelectionList;
+            this.SampleGroups_StrataSelectionBindingSource.DataSource = Presentor.DataContext.AllStrata;
+            Strata_CuttingUnitBindingSource.DataSource = Presentor.DataContext.AllCuttingUnits;
         }
 
         public void ForceEndEdits()
@@ -93,23 +93,16 @@ namespace CSM.UI.DesignEditor
         
         private void CuttingUnitDataGridView_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
-            CuttingUnitDO unit = CuttingUnitsBindingSource[e.RowIndex] as CuttingUnitDO;
-            if (unit == null) { return; }
-
-            DataGridViewCell cell = null;
             try
             {
-                cell = CuttingUnitDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                String field = CuttingUnitDataGridView.Columns[e.ColumnIndex].DataPropertyName;
-                cell.ReadOnly = !Presentor.CanEditCuttingUnitField(unit, field);
+                var unit = CuttingUnitsBindingSource[e.RowIndex] as CuttingUnitDO;
+                if (unit == null) { return; }
+                var cell = CuttingUnitDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                String fieldName = CuttingUnitDataGridView.Columns[e.ColumnIndex].DataPropertyName;
+                cell.ReadOnly = !Presentor.CanEditCuttingUnitField(unit, fieldName);
             }
-            catch
-            {
-                if (cell != null)
-                {
-                    cell.ReadOnly = true;
-                }
-            }
+            catch (IndexOutOfRangeException) { }
+
         }
         
         private void CuttingUnitDataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
@@ -117,7 +110,6 @@ namespace CSM.UI.DesignEditor
             //ignore
             //it would be nice to beable to handle a situation where the lookup value in a combobox column
             //isn't exactly the same as the cell's value. EX. stored value is "421 " but value in combobox is "421" and causes a data error. 
-
         }
         #endregion
 
@@ -253,13 +245,13 @@ namespace CSM.UI.DesignEditor
 
         private void _addSubPopBTN_Click(object sender, EventArgs e)
         {
-            TreeDefaultValueDO newTDV = new TreeDefaultValueDO(Presentor.DAL);
+            TreeDefaultValueDO newTDV = new TreeDefaultValueDO(Presentor.Database);
             ApplicationState appState = ApplicationState.GetHandle();
 
             CSM.UI.CruiseWizard.FormAddTreeDefault dialog = new CSM.UI.CruiseWizard.FormAddTreeDefault(appState.SetupServ.GetProductCodes());
             if (dialog.ShowDialog(newTDV) == DialogResult.OK)
             {
-                this.Presentor.Data.AllTreeDefaults.Add(newTDV);
+                this.Presentor.DataContext.AllTreeDefaults.Add(newTDV);
                 try
                 {
                     newTDV.Save();
@@ -304,8 +296,8 @@ namespace CSM.UI.DesignEditor
         {
             TreeDefaultValueDO tdv = this.SampleGroup_TDVBindingSource.Current as TreeDefaultValueDO;
             if (tdv == null) { return; }
-            this.Presentor.Data.AllTreeDefaults.Remove(tdv);
-            this.Presentor.Data.DeletedTreeDefaults.Add(tdv);
+            this.Presentor.DataContext.AllTreeDefaults.Remove(tdv);
+            this.Presentor.DataContext.DeletedTreeDefaults.Add(tdv);
         }
 
         private void SampleGroupBindingSource_CurrentChanged(object sender, EventArgs e)
