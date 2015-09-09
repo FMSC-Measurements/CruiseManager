@@ -70,5 +70,17 @@ namespace CSM.Properties {
                 this["RecentFiles"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string FileNameFormat {
+            get {
+                return ((string)(this["FileNameFormat"]));
+            }
+            set {
+                this["FileNameFormat"] = value;
+            }
+        }
     }
 }

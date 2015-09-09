@@ -221,6 +221,12 @@
     <Compile Include="UI\RecordEditDialogs\TreeEditDialog.Designer.cs">
       <DependentUpon>TreeEditDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\SettingsView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\SettingsView.Designer.cs">
+      <DependentUpon>SettingsView.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\TemplateEditor\ImportFromCruiseView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -368,6 +374,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\RecordEditDialogs\TreeEditDialog.resx">
       <DependentUpon>TreeEditDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\SettingsView.resx">
+      <DependentUpon>SettingsView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\TemplateEditor\ImportFromCruiseView.resx">
       <DependentUpon>ImportFromCruiseView.cs</DependentUpon>
