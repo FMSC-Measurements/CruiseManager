@@ -180,6 +180,7 @@
     <Compile Include="UI\DataEditor\DataExportDialog.Designer.cs">
       <DependentUpon>DataExportDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\DesignEditor\DesignEditorDataContext.cs" />
     <Compile Include="UI\DesignEditor\DesignEditViewControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -358,6 +359,9 @@
     <EmbeddedResource Include="UI\Components\MergeComponentView.resx">
       <DependentUpon>MergeComponentView.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LicencesDialog.resx">
+      <DependentUpon>LicencesDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MergeCruise\ComponentSelectPage.resx">
       <DependentUpon>ComponentSelectPage.cs</DependentUpon>

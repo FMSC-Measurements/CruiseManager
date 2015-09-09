@@ -84,4 +84,36 @@ namespace CSM.DataTypes
 
         #endregion
     }
+
+    public class TreeDefaultComparer : IEqualityComparer<TreeDefaultValueDO>
+    {
+        #region IEqualityComparer<TreeDefaultValueDO> Members
+
+        private static TreeDefaultComparer _instance; 
+        public static TreeDefaultComparer Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new TreeDefaultComparer();
+                }
+                return _instance; 
+            }
+        }
+
+        public bool Equals(TreeDefaultValueDO x, TreeDefaultValueDO y)
+        {
+            return ((x.PrimaryProduct == y.PrimaryProduct) &&
+                (x.Species == y.Species) &&
+                (x.LiveDead == y.LiveDead));
+        }
+
+        public int GetHashCode(TreeDefaultValueDO obj)
+        {
+            return obj.PrimaryProduct.GetHashCode() ^ 3 + obj.Species.GetHashCode() ^ 2 + obj.LiveDead.GetHashCode();
+        }
+
+        #endregion
+    }
 }
