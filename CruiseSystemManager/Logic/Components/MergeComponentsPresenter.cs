@@ -6,6 +6,7 @@ using CSM.UI;
 using CruiseDAL;
 using CruiseDAL.DataObjects;
 using CSM.UI.Components;
+using CSM.Common;
 
 namespace CSM.Logic.Components
 {
@@ -17,7 +18,7 @@ namespace CSM.Logic.Components
         {
             this.View = view;
             view.Presenter = this;
-            this.Controller = controller;
+            this.WindowPresenter = controller;
 
             this.FindComponents();
 
@@ -34,7 +35,7 @@ namespace CSM.Logic.Components
         public Dictionary<String, MergeTableCommandBuilder> CommandBuilders = new Dictionary<string, MergeTableCommandBuilder>();
 
         public MergeComponentView View { get; set; }
-        public DAL MasterDB { get { return Controller.Database; } }
+        public DAL MasterDB { get { return WindowPresenter.Database; } }
         public List<ComponentFileVM> ActiveComponents { get; set; }
         public List<ComponentFileVM> MissingComponents { get; set; }
         public List<ComponentFileVM> AllComponents { get; set; }
@@ -137,7 +138,7 @@ namespace CSM.Logic.Components
             System.Diagnostics.Debug.Assert(MasterDB != null);
             this.MissingComponents = new List<ComponentFileVM>();
             this.ActiveComponents = new List<ComponentFileVM>(); 
-            this.AllComponents = Controller.Database.Read<ComponentFileVM>("Component", null);
+            this.AllComponents = WindowPresenter.Database.Read<ComponentFileVM>("Component", null);
 
             foreach (ComponentFileVM comp in this.AllComponents)
             {
@@ -325,7 +326,7 @@ namespace CSM.Logic.Components
 
         #region IPresentor Members
 
-        public IWindowPresenter Controller
+        public IWindowPresenter WindowPresenter
         {
             get;
             set; 

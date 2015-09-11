@@ -724,7 +724,7 @@ namespace CSM
             }
         }
 
-        public void ShowCruiseWizardDiolog()
+        public void ShowCruiseWizardDialog()
         {
             DAL tempfile = GetNewOrUnfinishedCruise();
 

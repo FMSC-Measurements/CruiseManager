@@ -20,7 +20,7 @@ namespace CSM.UI.Dashboard
             InitializeComponent();
 
             var _openClickDispatcher = new NavOption(this.WindowPresenter.ShowOpenCruiseDialog, this.openToolStripMenuItem);
-            var _newFileClickDispatcher = new NavOption(this.WindowPresenter.ShowCruiseWizardDiolog, this.newToolStripMenuItem);
+            var _newFileClickDispatcher = new NavOption(this.WindowPresenter.ShowCruiseWizardDialog, this.newToolStripMenuItem);
             var _saveClickDispatcher = new NavOption(this.WindowPresenter.Save, this.saveAsToolStripMenuItem);
             var _aboutClickDispatcher = new NavOption(this.WindowPresenter.ShowAboutDialog, this.aboutToolStripMenuItem);
             var _saveAsClickDispatcher = new NavOption(this.WindowPresenter.SaveAs); 
@@ -145,77 +145,6 @@ namespace CSM.UI.Dashboard
 
             _recentFilesMenu.Items.AddRange(items);
         }
-
-        #region click hanlders
-        public void HandleAboutClick(object sender, EventArgs e)
-        {
-            this.WindowPresenter.ShowAboutDialog();
-        }
-
-        public void HandleOpenFileClick(object sender, EventArgs e)
-        {
-            this.WindowPresenter.ShowOpenCruiseDialog();
-        }
-
-        public void HandleCreateCruiseClick(object sender, EventArgs e)
-        {
-            this.WindowPresenter.ShowCruiseWizardDiolog();
-        }
-
-        public void HandleSaveClick(object sender, EventArgs e)
-        {
-            this.WindowPresenter.Save();
-        }
-
-        public void HandleSaveAsClick(object sender, EventArgs e)
-        {
-            this.WindowPresenter.SaveAs();
-        }
-
-        public void HandleEditViewCruiseClick(object sender, EventArgs e)
-        {
-            this.WindowPresenter.ShowEditDesign();
-        }
-
-        public void HandleExportCruiseClick(object sender, EventArgs e)
-        {
-            this.WindowPresenter.ShowDataEditor();
-        }
-
-        public void HandleManageComponensClick(object sender, EventArgs e)
-        {
-            this.WindowPresenter.ShowManageComponentsLayout();
-        }
-
-        public void HandleEditWizardClick(object sender, EventArgs e)
-        {
-            this.WindowPresenter.ShowEditWizard();
-        }
-
-        public void HandleCreateComponentsClick(object sender, EventArgs e)
-        {
-            this.WindowPresenter.ShowCreateComponentsLayout();
-        }
-
-        public void HandleCruiseCustomizeClick(object sender, EventArgs e)
-        {
-            this.WindowPresenter.ShowCustomizeCruiseLayout();
-        }
-        public void HandleHomePageClick(object sender, EventArgs e)
-        {
-            this.WindowPresenter.ShowHomeLayout();
-        }
-
-        public void HandleReturnCruiseLandingClick(object sender, EventArgs e)
-        {
-            this.WindowPresenter.ShowCruiseLandingLayout();
-        }
-
-        public void HandleImportTemplateClick(object sender, EventArgs e)
-        {
-            this.WindowPresenter.ShowImportTemplate();
-        }
-        #endregion
 
     }
 }
