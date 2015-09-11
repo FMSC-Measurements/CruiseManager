@@ -8,6 +8,8 @@ using System.Text;
 using System.Windows.Forms;
 using CruiseDAL.DataObjects;
 using System.Collections;
+using CSM.Logic;
+using CSM.Common;
 
 namespace CSM.UI.DesignEditor
 {
@@ -15,6 +17,7 @@ namespace CSM.UI.DesignEditor
     {
 
         private DesignEditorPresentor _presentor;
+        private IExceptionHandler _exceptionHandler; 
 
         public DesignEditViewControl()
         {
@@ -86,9 +89,16 @@ namespace CSM.UI.DesignEditor
 
         private void CuttingUnits_DeleteButton_Click(object sender, EventArgs e)
         {
-            var curCuttingUnit = CuttingUnitsBindingSource.Current as CuttingUnitDO;
-            if (curCuttingUnit == null) { return; }
-            Presentor.DeleteCuttingUnit(curCuttingUnit);
+            try
+            {
+                var curCuttingUnit = CuttingUnitsBindingSource.Current as CuttingUnitDO;
+                if (curCuttingUnit == null) { return; }
+                Presentor.DeleteCuttingUnit(curCuttingUnit);
+            }
+            catch (Exception ex)
+            {
+                _exceptionHandler.Handel(ex);
+            }            
         }
         
         private void CuttingUnitDataGridView_CellEnter(object sender, DataGridViewCellEventArgs e)
@@ -102,6 +112,10 @@ namespace CSM.UI.DesignEditor
                 cell.ReadOnly = !Presentor.CanEditCuttingUnitField(unit, fieldName);
             }
             catch (IndexOutOfRangeException) { }
+            catch (Exception ex)
+            {
+                _exceptionHandler.Handel(ex);
+            }
 
         }
         
@@ -110,6 +124,7 @@ namespace CSM.UI.DesignEditor
             //ignore
             //it would be nice to beable to handle a situation where the lookup value in a combobox column
             //isn't exactly the same as the cell's value. EX. stored value is "421 " but value in combobox is "421" and causes a data error. 
+            System.Diagnostics.Debug.WriteLine(e.Exception, "DataGridViewDataError");
         }
         #endregion
 
@@ -124,9 +139,16 @@ namespace CSM.UI.DesignEditor
 
         private void Strata_DeleteButton_Click(object sender, EventArgs e)
         {
-            var curST = StrataBindingSource.Current as StratumDO;
-            if (curST == null) { return; }
-            Presentor.DeleteStratum(curST);
+            try
+            {
+                var curST = StrataBindingSource.Current as StratumDO;
+                if (curST == null) { return; }
+                Presentor.DeleteStratum(curST);
+            }
+            catch (Exception ex)
+            {
+                _exceptionHandler.Handel(ex);
+            }
         }
 
         private void Strata_CuttingUnitsSelectionBindingSource_CurrentChanged(object sender, EventArgs e)
@@ -139,12 +161,23 @@ namespace CSM.UI.DesignEditor
 
         private void Strata_CuttingUnitsGridView_SelectionChanging(object sender, FMSC.Controls.SelectionChangingEventArgs e)
         {
-            //stratum is being removed from cutting unit             
-            StratumDO st = this.StrataBindingSource.Current as StratumDO;
-            if (e.IsRemoving == false) { return; } // we don't care if they are adding 
-            if (st == null) { e.Cancel = true; return; }
-            //see if that stratum can be edited
-            e.Cancel = !Presentor.CanEditStratumField(st, null);
+            try
+            {
+                //stratum is being removed from cutting unit             
+                StratumDO st = this.StrataBindingSource.Current as StratumDO;
+                if (e.IsRemoving == false) { return; } // we don't care if they are adding 
+                if (st == null) { e.Cancel = true; return; }
+                //see if that stratum can be edited
+                if (!Presentor.CanEditStratumField(st, null))
+                {
+                    throw new UserFacingException("Stratum Can Not Be Removed", null);
+                }
+            }
+            catch (Exception ex)
+            {
+                _exceptionHandler.Handel(ex);
+                e.Cancel = true; 
+            }
         }
 
         private void StrataBindingSource_CurrentChanged(object sender, EventArgs e)
@@ -160,28 +193,25 @@ namespace CSM.UI.DesignEditor
 
         private void StrataDataGridView_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
-            StratumDO stratum = StrataBindingSource[e.RowIndex] as StratumDO;
-            if (stratum == null) { return; }
 
-            DataGridViewCell cell = null;
             try
             {
-                cell = StrataDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                var stratum = StrataBindingSource[e.RowIndex] as StratumDO;
+                if (stratum == null) { return; }
+                var cell = StrataDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
                 String field = StrataDataGridView.Columns[e.ColumnIndex].DataPropertyName;
                 cell.ReadOnly = !Presentor.CanEditStratumField(stratum, field);
             }
-            catch
+            catch (IndexOutOfRangeException) { }
+            catch (Exception ex)
             {
-                if (cell != null)
-                {
-                    cell.ReadOnly = true;
-                }
+                _exceptionHandler.Handel(ex);
             }
         }
 
         private void StrataDataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
-
+            System.Diagnostics.Debug.WriteLine(e.Exception, "DataGridViewDataError");
         }
         #endregion
 
@@ -189,20 +219,28 @@ namespace CSM.UI.DesignEditor
 
         private void SampleGroups_AddButton_Click(object sender, EventArgs e)
         {
-            if (Presentor.SampleGroups_SelectedStrata == null)
-            {
-                MessageBox.Show("Please Select a Stratum");
-            }
-            else
+            try
             {
                 Presentor.GetNewSampleGroup();
             }
+            catch (Exception ex)
+            {
+                _exceptionHandler.Handel(ex);
+            }
+            
         }
 
         private void SampleGroups_DeleteButton_Click(object sender, EventArgs e)
         {
-            var curSG = SampleGroupBindingSource.Current as SampleGroupDO;
-            Presentor.DeleteSampleGroup(curSG);
+            try
+            {
+                var curSG = SampleGroupBindingSource.Current as SampleGroupDO;
+                Presentor.DeleteSampleGroup(curSG);
+            }
+            catch (Exception ex)
+            {
+                _exceptionHandler.Handel(ex);
+            }
         }
 
         private void SampleGroups_StrataSelectionBindingSource_CurrentChanged(object sender, EventArgs e)
@@ -215,15 +253,21 @@ namespace CSM.UI.DesignEditor
 
         private void SampleGroups_TDVGridView_SelectionChanging(object sender, FMSC.Controls.SelectionChangingEventArgs e)
         {
-            SampleGroupDO sg = this.SampleGroupBindingSource.Current as SampleGroupDO;
-            TreeDefaultValueDO tdv = e.Item as TreeDefaultValueDO;
-            if (e.IsRemoving == false) { return; } // we don't care if they are adding 
-            if (sg == null || tdv == null) { e.Cancel = true; return; }
-            bool canRemove = Presentor.CanRemoveTreeDefault(sg, tdv);
-            e.Cancel = !canRemove;
-            if (!canRemove)
+            try
             {
-                MessageBox.Show("Can't remove this species because it has tree data or tree counts.");
+                SampleGroupDO sg = this.SampleGroupBindingSource.Current as SampleGroupDO;
+                TreeDefaultValueDO tdv = e.Item as TreeDefaultValueDO;
+                if (e.IsRemoving == false) { return; } // we don't care if they are adding 
+                if (sg == null || tdv == null) { e.Cancel = true; return; }
+                if (!Presentor.CanRemoveTreeDefault(sg, tdv))
+                {
+                    throw new UserFacingException("Can't remove this species because it has tree data or tree counts.", null);
+                }
+            }
+            catch (Exception ex)
+            {
+                _exceptionHandler.Handel(ex);
+                e.Cancel = false;
             }
         }
 
@@ -236,10 +280,7 @@ namespace CSM.UI.DesignEditor
                 String propName = this.SampleGroupDataGridView.Columns[e.ColumnIndex].DataPropertyName;
                 this.Presentor.HandleSampleGroupValueChanged(sg, propName);
             }
-            catch (ArgumentOutOfRangeException)
-            {
-                return;
-            }
+            catch (ArgumentOutOfRangeException) { }
 
         }
 
@@ -247,19 +288,19 @@ namespace CSM.UI.DesignEditor
         {
             TreeDefaultValueDO newTDV = new TreeDefaultValueDO(Presentor.Database);
             ApplicationState appState = ApplicationState.GetHandle();
-
-            CSM.UI.CruiseWizard.FormAddTreeDefault dialog = new CSM.UI.CruiseWizard.FormAddTreeDefault(appState.SetupServ.GetProductCodes());
-            if (dialog.ShowDialog(newTDV) == DialogResult.OK)
+            try
             {
-                this.Presentor.DataContext.AllTreeDefaults.Add(newTDV);
-                try
+                CSM.UI.CruiseWizard.FormAddTreeDefault dialog = new CSM.UI.CruiseWizard.FormAddTreeDefault(appState.SetupServ.GetProductCodes());
+                if (dialog.ShowDialog(newTDV) == DialogResult.OK)
                 {
+                    this.Presentor.DataContext.AllTreeDefaults.Add(newTDV);
+
                     newTDV.Save();
                 }
-                catch (CruiseDAL.UniqueConstraintException)
-                {
-                    MessageBox.Show("Tree Default Already Exists");
-                }
+            }
+            catch (Exception ex)
+            {
+                _exceptionHandler.Handel(ex);
             }
         }
 
@@ -270,25 +311,32 @@ namespace CSM.UI.DesignEditor
             TreeDefaultValueDO temp = new TreeDefaultValueDO(tdv);
             ApplicationState appState = ApplicationState.GetHandle();
 
-            CSM.UI.CruiseWizard.FormAddTreeDefault dialog = new CSM.UI.CruiseWizard.FormAddTreeDefault(appState.SetupServ.GetProductCodes());
-            if (dialog.ShowDialog(tdv) == DialogResult.OK)
+            try
             {
-                try
+                CSM.UI.CruiseWizard.FormAddTreeDefault dialog = new CSM.UI.CruiseWizard.FormAddTreeDefault(appState.SetupServ.GetProductCodes());
+                if (dialog.ShowDialog(tdv) == DialogResult.OK)
                 {
-                    tdv.Save();
+                    try
+                    {
+                        tdv.Save();
+                    }
+                    catch (CruiseDAL.UniqueConstraintException ex)
+                    {
+                        throw new UserFacingException("Values Conflict With Existing Tree Default", ex);
+                    }
+                    catch (CruiseDAL.ConstraintException ex)
+                    {
+                        throw new UserFacingException("Invalid Values", ex);
+                    }
                 }
-                catch (CruiseDAL.UniqueConstraintException)
+                else
                 {
-                    MessageBox.Show("Values Conflict With Existing Tree Default");
-                }
-                catch (CruiseDAL.ConstraintException)
-                {
-                    MessageBox.Show("Invalid Values");
+                    tdv.SetValues(temp);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                tdv.SetValues(temp);
+                _exceptionHandler.Handel(ex);
             }
         }
 
@@ -296,8 +344,14 @@ namespace CSM.UI.DesignEditor
         {
             TreeDefaultValueDO tdv = this.SampleGroup_TDVBindingSource.Current as TreeDefaultValueDO;
             if (tdv == null) { return; }
-            this.Presentor.DataContext.AllTreeDefaults.Remove(tdv);
-            this.Presentor.DataContext.DeletedTreeDefaults.Add(tdv);
+            try
+            {
+                Presentor.DeleteTreeDefaultValue(tdv);
+            }
+            catch (Exception ex)
+            {
+                _exceptionHandler.Handel(ex);
+            }
         }
 
         private void SampleGroupBindingSource_CurrentChanged(object sender, EventArgs e)
@@ -313,39 +367,42 @@ namespace CSM.UI.DesignEditor
 
         private void SampleGroupDataGridView_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
-            SampleGroupDO sg = SampleGroupBindingSource[e.RowIndex] as SampleGroupDO;
-            if (sg == null) { return; }
-            DataGridViewCell cell = null;
+
             try
             {
-                cell = SampleGroupDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                String field = SampleGroupDataGridView.Columns[e.ColumnIndex].DataPropertyName;
-                cell.ReadOnly = !Presentor.CanEditSampleGroupField(sg, field);
+                var sg = SampleGroupBindingSource[e.RowIndex] as SampleGroupDO;
+                if (sg == null) { return; }
+                var cell = SampleGroupDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                String fieldName = SampleGroupDataGridView.Columns[e.ColumnIndex].DataPropertyName;
+                cell.ReadOnly = !Presentor.CanEditSampleGroupField(sg, fieldName);
             }
-            catch
+            catch (IndexOutOfRangeException) { }
+            catch (Exception ex)
             {
-                if (cell != null)
-                {
-                    cell.ReadOnly = true;
-                }
+                _exceptionHandler.Handel(ex);
             }
         }
 
         private void SampleGroupDataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
-
+            System.Diagnostics.Debug.WriteLine(e.Exception, "DataGridViewDataErrror");
         }
         #endregion
 
-        
+        //#region IView Members
+        //protected void InitializeView(IWindowPresenter windowPresenter)
+        //{
+        //    this.WindowPresenter = windowPresenter;
+        //    this.NavOptions = null; 
+        //    this.ViewActions = null; 
+        //}
 
+        //public IWindowPresenter WindowPresenter { get; set; }
 
+        //public NavOption[] NavOptions { get; protected set; } 
 
+        //public NavOption[] ViewActions { get; protected set; 
 
-
-
-
-
-
+        //#endregion
     }
 }

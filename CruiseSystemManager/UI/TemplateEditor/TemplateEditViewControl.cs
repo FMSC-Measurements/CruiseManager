@@ -4,17 +4,21 @@ using System.Linq;
 using System.Windows.Forms;
 using CruiseDAL.DataObjects;
 using System.Collections.ObjectModel;
+using CSM.Logic;
 
 namespace CSM.UI.TemplateEditor
 {
-    public partial class TemplateEditViewControl : UserControl
+    public partial class TemplateEditViewControl : UserControl, IView
     {
 
-        public TemplateEditViewControl()
+        public TemplateEditViewControl(IWindowPresenter windowPresenter)
         {
+            
+
             InitializeComponent();
         }
 
+        
         public TemplateEditViewPresenter Presenter { get; set; }
         protected TreeDefaultValueDO TreeAudit_CurrentTDV { get; set; }
         protected CruiseMethodsDO FieldSetup_CurrentMethod { get; set; }
@@ -193,7 +197,7 @@ namespace CSM.UI.TemplateEditor
 
         private void _addTDVButton_Click(object sender, EventArgs e)
         {
-            TreeDefaultValueDO newTDV = new TreeDefaultValueDO(this.Presenter.Controller.Database);
+            TreeDefaultValueDO newTDV = new TreeDefaultValueDO(this.Presenter.WindowPresenter.Database);
             ApplicationState appState = ApplicationState.GetHandle();
 
             CSM.UI.CruiseWizard.FormAddTreeDefault dialog = new CSM.UI.CruiseWizard.FormAddTreeDefault(appState.SetupServ.GetProductCodes());
@@ -277,7 +281,7 @@ namespace CSM.UI.TemplateEditor
 
         private void _volEq_add_button_Click(object sender, EventArgs e)
         {
-            this._BS_VolEquations.Add(new VolumeEquationDO(this.Presenter.Controller.Database));
+            this._BS_VolEquations.Add(new VolumeEquationDO(this.Presenter.WindowPresenter.Database));
         }
 
         private void _volEq_delete_button_Click(object sender, EventArgs e)
@@ -292,9 +296,29 @@ namespace CSM.UI.TemplateEditor
 
         private void _BS_treeAudits_AddingNew(object sender, System.ComponentModel.AddingNewEventArgs e)
         {
-           e.NewObject = new TreeAuditValueDO(this.Presenter.Controller.Database);
+           e.NewObject = new TreeAuditValueDO(this.Presenter.WindowPresenter.Database);
         }
 
 
+
+        #region IView Members
+        protected void InitializeView(IWindowPresenter windowPresenter)
+        {
+            this.WindowPresenter = windowPresenter;
+            this.NavOptions = new NavOption[]{
+                new NavOption("Close File", this.WindowPresenter.ShowCruiseLandingLayout),
+                new NavOption("Import From File", this.WindowPresenter.ShowImportTemplate)
+            };
+
+            this.ViewActions = null;
+        }
+
+        public IWindowPresenter WindowPresenter { get; set; }
+
+        public NavOption[] NavOptions { get; set; }
+
+        public NavOption[] ViewActions { get; set; }
+
+        #endregion
     }
 }

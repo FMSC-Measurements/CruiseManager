@@ -6,6 +6,7 @@ using CruiseDAL;
 using CruiseDAL.DataObjects;
 using System.Threading;
 using System.Diagnostics;
+using CSM.Common;
 
 namespace CSM.Logic.Components
 {
