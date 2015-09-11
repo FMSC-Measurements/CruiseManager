@@ -30,28 +30,28 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this._TB_defaultFileFormat = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this._CB_createCruiseFolder = new System.Windows.Forms.CheckBox();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this._BTN_browseDefaultCruiseFolder = new System.Windows.Forms.Button();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.panel3 = new System.Windows.Forms.Panel();
             this._BTN_browseTemplateFolder = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this._BTN_browseDefaultCruiseFolder = new System.Windows.Forms.Button();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -75,18 +75,6 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Create Files";
             this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.panel3);
-            this.tabPage2.Controls.Add(this.panel2);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(534, 302);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Folders";
-            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // flowLayoutPanel1
             // 
@@ -148,47 +136,17 @@
             this._CB_createCruiseFolder.Text = "Create Cruise Folder";
             this._CB_createCruiseFolder.UseVisualStyleBackColor = true;
             // 
-            // panel2
+            // tabPage2
             // 
-            this.panel2.Controls.Add(this._BTN_browseDefaultCruiseFolder);
-            this.panel2.Controls.Add(this.textBox2);
-            this.panel2.Controls.Add(this.label5);
-            this.panel2.Location = new System.Drawing.Point(9, 6);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(359, 44);
-            this.panel2.TabIndex = 4;
-            // 
-            // _BTN_browseDefaultCruiseFolder
-            // 
-            this._BTN_browseDefaultCruiseFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this._BTN_browseDefaultCruiseFolder.Location = new System.Drawing.Point(281, 13);
-            this._BTN_browseDefaultCruiseFolder.Name = "_BTN_browseDefaultCruiseFolder";
-            this._BTN_browseDefaultCruiseFolder.Size = new System.Drawing.Size(75, 23);
-            this._BTN_browseDefaultCruiseFolder.TabIndex = 5;
-            this._BTN_browseDefaultCruiseFolder.Text = "Browse";
-            this._BTN_browseDefaultCruiseFolder.UseVisualStyleBackColor = true;
-            this._BTN_browseDefaultCruiseFolder.Click += new System.EventHandler(this._BTN_browseDefaultCruiseFolder_Click);
-            // 
-            // textBox2
-            // 
-            this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox2.Location = new System.Drawing.Point(3, 16);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(5);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(273, 20);
-            this.textBox2.TabIndex = 4;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label5.Location = new System.Drawing.Point(0, 0);
-            this.label5.Name = "label5";
-            this.label5.Padding = new System.Windows.Forms.Padding(3);
-            this.label5.Size = new System.Drawing.Size(111, 19);
-            this.label5.TabIndex = 3;
-            this.label5.Text = "Default Cruise Folder";
+            this.tabPage2.Controls.Add(this.panel3);
+            this.tabPage2.Controls.Add(this.panel2);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(534, 302);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Folders";
+            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // panel3
             // 
@@ -232,6 +190,48 @@
             this.label3.TabIndex = 3;
             this.label3.Text = "Default Template Folder";
             // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this._BTN_browseDefaultCruiseFolder);
+            this.panel2.Controls.Add(this.textBox2);
+            this.panel2.Controls.Add(this.label5);
+            this.panel2.Location = new System.Drawing.Point(9, 6);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(359, 44);
+            this.panel2.TabIndex = 4;
+            // 
+            // _BTN_browseDefaultCruiseFolder
+            // 
+            this._BTN_browseDefaultCruiseFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._BTN_browseDefaultCruiseFolder.Location = new System.Drawing.Point(281, 13);
+            this._BTN_browseDefaultCruiseFolder.Name = "_BTN_browseDefaultCruiseFolder";
+            this._BTN_browseDefaultCruiseFolder.Size = new System.Drawing.Size(75, 23);
+            this._BTN_browseDefaultCruiseFolder.TabIndex = 5;
+            this._BTN_browseDefaultCruiseFolder.Text = "Browse";
+            this._BTN_browseDefaultCruiseFolder.UseVisualStyleBackColor = true;
+            this._BTN_browseDefaultCruiseFolder.Click += new System.EventHandler(this._BTN_browseDefaultCruiseFolder_Click);
+            // 
+            // textBox2
+            // 
+            this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox2.Location = new System.Drawing.Point(3, 16);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(5);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(273, 20);
+            this.textBox2.TabIndex = 4;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label5.Location = new System.Drawing.Point(0, 0);
+            this.label5.Name = "label5";
+            this.label5.Padding = new System.Windows.Forms.Padding(3);
+            this.label5.Size = new System.Drawing.Size(111, 19);
+            this.label5.TabIndex = 3;
+            this.label5.Text = "Default Cruise Folder";
+            // 
             // SettingsView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -241,15 +241,15 @@
             this.Size = new System.Drawing.Size(542, 328);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
 
         }

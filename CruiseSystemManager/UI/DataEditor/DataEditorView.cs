@@ -13,7 +13,7 @@ using CSM.DataTypes;
 
 namespace CSM.UI.DataEditor
 {
-    public partial class DataEditorView : Form, IView
+    public partial class DataEditorView : Form
     {
         public const string CUTTING_UNIT_COLUMN_NAME = "Cutting Unit";
         public const string STRATUM_COLUMN_NAME = "Stratum";
@@ -1043,34 +1043,6 @@ namespace CSM.UI.DataEditor
         //    _BS_treeDefaults.DataSource = tree.SampleGroup.TreeDefaultValues;
         //    _BS_sampleGroups.DataSource = DAL.Read<SampleGroupDO>("SampleGroup", "WHERE Stratum_CN = ?", tree.Stratum_CN);
         //}
-
-        
-
-
-
-
-
-        #region IView Members
-
-
-        public void HandleLoad()
-        {
-            
-        }
-
-        #endregion
-
-        
-
-
-        
-
-        
-
-        
-
-
-
         
     }
 

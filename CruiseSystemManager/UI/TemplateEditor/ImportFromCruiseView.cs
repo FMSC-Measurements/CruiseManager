@@ -9,35 +9,40 @@ using System.Windows.Forms;
 using CruiseDAL;
 using CruiseDAL.DataObjects;
 using CSM.Logic;
+using CSM.Common;
 
 namespace CSM.UI.TemplateEditor
 {
-    public partial class ImportFromCruiseView : UserControl, IPresentor 
+    public partial class ImportFromCruiseView : UserControl, IPresentor , IView
     {
-        public ImportFromCruiseView(IWindowPresenter controller, string fileName)
+        public ImportFromCruiseView(IWindowPresenter windowPresenter)
         {
+            
             InitializeComponent();
-            this.Controller = controller;
-            this.FileName = fileName;
+            this.WindowPresenter = windowPresenter;
+
+            this.NavOptions = null;
+            this.ViewActions = new NavOption[]{
+                new NavOption("Import", this.Finish),
+                new NavOption("Cancel", this.WindowPresenter.ShowTemplateLandingLayout)
+            };
 
             this.TreeDefaultsToCopy = new List<TreeDefaultValueDO>();
             this.selectedItemsGridView1.SelectedItems = this.TreeDefaultsToCopy;
-            this.TreeDefaults = this._copyFromDB.Read<TreeDefaultValueDO>("TreeDefaultValue", null);
-            this._BS_TDV.DataSource = this.TreeDefaults;
-            
         }
 
-        public IWindowPresenter Controller { get; set; }
+        public ImportFromCruiseView(IWindowPresenter windowPresenter, string fileName) : this(windowPresenter)
+        {
+            this._copyFromDB = new DAL(fileName);
+        }
+
+        public IWindowPresenter WindowPresenter { get; set; }
         public List<TreeDefaultValueDO> TreeDefaults { get; set; }
         public List<TreeDefaultValueDO> TreeDefaultsToCopy { get; set; }
 
         public string FileName 
         {
             get { return this._copyFromDB.Path; }
-            set 
-            {
-                this._copyFromDB = new DAL(value);
-            }
         }
 
         private DAL _copyFromDB; 
@@ -52,42 +57,28 @@ namespace CSM.UI.TemplateEditor
             this._volEqOptGB.Enabled = this._importVolEqCB.Checked;
         }
 
+        private void LoadTreeDefaults()
+        {
+            this.TreeDefaults = this._copyFromDB.Read<TreeDefaultValueDO>("TreeDefaultValue", null);
+            this._BS_TDV.DataSource = this.TreeDefaults;
+        }
+
         public void Finish()
         {
             if (this._importVolEqCB.Checked)
             {
                 OnConflictOption cOpt = (this.ReplaceExistingVolEq == true) ? OnConflictOption.Replace : OnConflictOption.Ignore;
-                this.Controller.Database.DirectCopy(this._copyFromDB, CruiseDAL.Schema.VOLUMEEQUATION._NAME, null, cOpt);
+                this.WindowPresenter.Database.DirectCopy(this._copyFromDB, CruiseDAL.Schema.VOLUMEEQUATION._NAME, null, cOpt);
             }
 
             foreach (TreeDefaultValueDO tdv in TreeDefaultsToCopy)
             {
-                tdv.DAL = this.Controller.Database;
+                tdv.DAL = this.WindowPresenter.Database;
                 tdv.Save(OnConflictOption.Ignore);
             }
         }
 
-        #region ISaveHandler Members
-
-        public void HandleSave()
-        {
-            
-        }
-
-        public void HandleAppClosing(object sender, FormClosingEventArgs e)
-        {
-            
-        }
-
-        public bool CanHandleSave
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        #endregion
+        
 
         private void _selectAllTDVBTN_Click(object sender, EventArgs e)
         {
@@ -112,6 +103,16 @@ namespace CSM.UI.TemplateEditor
         {
             throw new NotImplementedException();
         }
+
+        #endregion
+
+        #region IView Members
+
+        public NavOption[] NavOptions { get; protected set; }
+
+
+        public NavOption[] ViewActions { get; protected set; }
+
 
         #endregion
     }

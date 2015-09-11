@@ -7,6 +7,7 @@ using System.ComponentModel;
 using CSM.Logic;
 using System.Windows.Forms;
 using CruiseDAL;
+using CSM.Common;
 
 namespace CSM.UI.TemplateEditor
 {
@@ -30,12 +31,12 @@ namespace CSM.UI.TemplateEditor
 
 
 
-    public class TemplateEditViewPresenter : IPresentor
+    public class TemplateEditViewPresenter : IPresentor, ISaveHandler
     {
         private FMSC.Utility.Collections.BindingListRedux<TreeDefaultValueDO> _treeDefaultValues;
         //private List<TreeDefaultValueDO> _toBeDeletedTreeDefaults = new List<TreeDefaultValueDO>();
 
-        public IWindowPresenter Controller { get; set; }
+        public IWindowPresenter WindowPresenter { get; set; }
         public TemplateEditViewControl View { get; set; }
 
 
@@ -71,14 +72,14 @@ namespace CSM.UI.TemplateEditor
 
         public TemplateEditViewPresenter(IWindowPresenter controller, TemplateEditViewControl view)
         {
-            this.Controller = controller;
+            this.WindowPresenter = controller;
             this.View = view;
 
             //read TreeFiedleSetup info from .setup file and convert the data to TreeFieldSetupDefault
             //it may be posible to simplify this task by asking for the data in the form of a TreeFieldSetupDefault object
             //the xmlSerializer may beable to handle this conversion
             this.TreeFields = new List<TreeFieldSetupDefaultDO>();
-            foreach (TreeFieldSetupDO tf in this.Controller.AppState.SetupServ.GetTreeFieldSetups())
+            foreach (TreeFieldSetupDO tf in this.WindowPresenter.AppState.SetupServ.GetTreeFieldSetups())
             {
                 TreeFieldSetupDefaultDO newTF = new TreeFieldSetupDefaultDO();
                 newTF.Field = tf.Field;
@@ -90,7 +91,7 @@ namespace CSM.UI.TemplateEditor
                 this.TreeFields.Add(newTF);
             }
             this.LogFields = new List<LogFieldSetupDefaultDO>();
-            foreach(LogFieldSetupDO lf in this.Controller.AppState.SetupServ.GetLogFieldSetups())
+            foreach(LogFieldSetupDO lf in this.WindowPresenter.AppState.SetupServ.GetLogFieldSetups())
             {
                 LogFieldSetupDefaultDO newLF = new LogFieldSetupDefaultDO();
                 newLF.Field = lf.Field;
@@ -114,11 +115,11 @@ namespace CSM.UI.TemplateEditor
                 try
                 {
                     CruiseMethods = new BindingList<CruiseMethodViewModel>();
-                    List<CruiseMethodsDO> methods = this.Controller.Database.Read<CruiseMethodsDO>("CruiseMethods", null);
+                    List<CruiseMethodsDO> methods = this.WindowPresenter.Database.Read<CruiseMethodsDO>("CruiseMethods", null);
                     foreach (CruiseMethodsDO method in methods)
                     {
                         CruiseMethodViewModel vm = new CruiseMethodViewModel(method);
-                        List<TreeFieldSetupDefaultDO> treeFields = this.Controller.Database.Read<TreeFieldSetupDefaultDO>("TreeFieldSetupDefault", "WHERE Method = ? ORDER BY FieldOrder", method.Code);
+                        List<TreeFieldSetupDefaultDO> treeFields = this.WindowPresenter.Database.Read<TreeFieldSetupDefaultDO>("TreeFieldSetupDefault", "WHERE Method = ? ORDER BY FieldOrder", method.Code);
 
                         vm.TreeFields = new BindingList<TreeFieldSetupDefaultDO>(treeFields);
 
@@ -144,7 +145,7 @@ namespace CSM.UI.TemplateEditor
             {
                 try
                 {
-                    List<LogFieldSetupDefaultDO> logFields = this.Controller.Database.Read<LogFieldSetupDefaultDO>("LogFieldSetupDefault", "ORDER BY FieldOrder");
+                    List<LogFieldSetupDefaultDO> logFields = this.WindowPresenter.Database.Read<LogFieldSetupDefaultDO>("LogFieldSetupDefault", "ORDER BY FieldOrder");
                     SelectedLogFields = new BindingList<LogFieldSetupDefaultDO>(logFields);
                     List<LogFieldSetupDefaultDO> unselectedLogFields = (from lfs in this.LogFields.Except(logFields, new CSM.Logic.TypeComparers.LogFieldDefaultComparer()) 
                                                                         select new LogFieldSetupDefaultDO(lfs)).ToList();
@@ -163,7 +164,7 @@ namespace CSM.UI.TemplateEditor
         {
             if (this.TreeDefaultValues == null)
             {
-                List<TreeDefaultValueDO> defaults = this.Controller.Database.Read<TreeDefaultValueDO>("TreeDefaultValue", null);
+                List<TreeDefaultValueDO> defaults = this.WindowPresenter.Database.Read<TreeDefaultValueDO>("TreeDefaultValue", null);
                 this.TreeDefaultValues = new FMSC.Utility.Collections.BindingListRedux<TreeDefaultValueDO>(defaults);
             }
 
@@ -184,7 +185,7 @@ namespace CSM.UI.TemplateEditor
         {
             if (this.VolumeEQs == null)
             {
-                List<VolumeEquationDO> volumeEQs = this.Controller.Database.Read<VolumeEquationDO>("VolumeEquation", null);
+                List<VolumeEquationDO> volumeEQs = this.WindowPresenter.Database.Read<VolumeEquationDO>("VolumeEquation", null);
                 this.VolumeEQs = new BindingList<VolumeEquationDO>(volumeEQs);
                 this.View.UpdateVolumeEqs();
             }
@@ -194,7 +195,7 @@ namespace CSM.UI.TemplateEditor
         {
             if (this.Reports == null)
             {
-                List<ReportsDO> reports = this.Controller.Database.Read<ReportsDO>("Reports", null);
+                List<ReportsDO> reports = this.WindowPresenter.Database.Read<ReportsDO>("Reports", null);
                 this.Reports = new BindingList<ReportsDO>(reports);
                 this.View.UpdateReports();
             }
@@ -204,13 +205,13 @@ namespace CSM.UI.TemplateEditor
         {
             if (this.TreeDefaultValues == null)
             {
-                List<TreeDefaultValueDO> defaults = this.Controller.Database.Read<TreeDefaultValueDO>("TreeDefaultValue", null);
+                List<TreeDefaultValueDO> defaults = this.WindowPresenter.Database.Read<TreeDefaultValueDO>("TreeDefaultValue", null);
                 this.TreeDefaultValues = new FMSC.Utility.Collections.BindingListRedux<TreeDefaultValueDO>(defaults);
             }
 
             if (TreeAudits == null)
             {
-                this.TreeAudits = this.Controller.Database.Read<TreeAuditValueDO>("TreeAuditValue", "Order By Field");
+                this.TreeAudits = this.WindowPresenter.Database.Read<TreeAuditValueDO>("TreeAuditValue", "Order By Field");
             }
 
             this.View.UpdateTreeAudit();
@@ -228,12 +229,12 @@ namespace CSM.UI.TemplateEditor
 
         public List<TreeFieldSetupDefaultDO> GetSelectedTreeFields(CruiseMethodsDO method)
         {
-           return this.Controller.Database.Read<TreeFieldSetupDefaultDO>("TreeFieldSetupDefault", "WHERE Method = ? ORDER BY FieldOrder", method.Code);
+           return this.WindowPresenter.Database.Read<TreeFieldSetupDefaultDO>("TreeFieldSetupDefault", "WHERE Method = ? ORDER BY FieldOrder", method.Code);
         }
 
         public List<LogFieldSetupDefaultDO> GetSelectedLogFields()
         {
-            return this.Controller.Database.Read<LogFieldSetupDefaultDO>("LogFieldSetupDefault", "ORDER BY FieldOrder");
+            return this.WindowPresenter.Database.Read<LogFieldSetupDefaultDO>("LogFieldSetupDefault", "ORDER BY FieldOrder");
         }
 
         public void Save()
@@ -261,7 +262,7 @@ namespace CSM.UI.TemplateEditor
                     {
                         if (tfs.DAL == null || tfs.IsPersisted == false)
                         {
-                            tfs.DAL = Controller.Database;
+                            tfs.DAL = WindowPresenter.Database;
                             tfs.Method = method.CruiseMethod.Code;
                             tfs.Save();
                         }
@@ -285,7 +286,7 @@ namespace CSM.UI.TemplateEditor
             {
                 if (lfs.DAL == null || lfs.IsPersisted == false)
                 {
-                    lfs.DAL = Controller.Database;
+                    lfs.DAL = WindowPresenter.Database;
                     //lfs.Method = method.CruiseMethod.Code;
                     lfs.Save(OnConflictOption.Ignore);
                 }
@@ -301,7 +302,7 @@ namespace CSM.UI.TemplateEditor
                 {
                     if (tdv.DAL == null)
                     {
-                        tdv.DAL = this.Controller.Database;
+                        tdv.DAL = this.WindowPresenter.Database;
                     }
                     tdv.Save();
                 }
@@ -325,7 +326,7 @@ namespace CSM.UI.TemplateEditor
                 {
                     if (volEQ.DAL == null)
                     {
-                        volEQ.DAL = this.Controller.Database;
+                        volEQ.DAL = this.WindowPresenter.Database;
                     }
                     volEQ.Save();
                 }
@@ -337,7 +338,7 @@ namespace CSM.UI.TemplateEditor
                 {
                     if (report.DAL == null)
                     {
-                        report.DAL = this.Controller.Database;
+                        report.DAL = this.WindowPresenter.Database;
                     }
                     report.Save();
                 }
@@ -349,7 +350,7 @@ namespace CSM.UI.TemplateEditor
                 {
                     if (tav.DAL == null)
                     {
-                        tav.DAL = this.Controller.Database;
+                        tav.DAL = this.WindowPresenter.Database;
                     }
                     tav.Save();
                     tav.TreeDefaultValues.Save();
@@ -361,9 +362,17 @@ namespace CSM.UI.TemplateEditor
 
         #region ISaveHandler Members
 
-        public void HandleSave()
+        public bool HandleSave()
         {
-            this.Save();
+            try
+            {
+                this.Save();
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw new NotImplementedException(null, e);
+            }
         }
 
         public void HandleAppClosing(object sender, FormClosingEventArgs e)

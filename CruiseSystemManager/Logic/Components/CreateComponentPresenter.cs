@@ -7,6 +7,7 @@ using CruiseDAL.DataObjects;
 using CSM.UI;
 using System.IO;
 using CSM.UI.Components;
+using CSM.Common;
 
 namespace CSM.Logic
 {
@@ -46,13 +47,13 @@ namespace CSM.Logic
             }
         }
 
-        public DAL ParentDB { get { return Controller.Database; } }
+        public DAL ParentDB { get { return WindowPresenter.Database; } }
         public CreateComponentView View { get; set; }
         
 
         public CreateComponentPresenter(IWindowPresenter controller)
         {
-            this.Controller = controller;
+            this.WindowPresenter = controller;
 
             InitializeState();
 
@@ -235,7 +236,7 @@ namespace CSM.Logic
 
         #region IPresentor Members
 
-        public IWindowPresenter Controller { get; set; }
+        public IWindowPresenter WindowPresenter { get; set; }
 
         public void UpdateView()
         {
@@ -257,28 +258,6 @@ namespace CSM.Logic
         public void Dispose()
         {
             
-        }
-
-        #endregion
-
-        #region ISaveHandler Members
-
-        public void HandleSave()
-        {
-            return; //nothing to save
-        }
-
-        public void HandleAppClosing(object sender, System.Windows.Forms.FormClosingEventArgs e)
-        {
-            return; //do nothing
-        }
-
-        public bool CanHandleSave
-        {
-            get
-            {
-                return false;
-            }
         }
 
         #endregion

@@ -10,10 +10,11 @@ using CSM.Utility.Setup;
 using CSM.Logic;
 using CSM.Utility;
 using CSM.DataTypes;
+using CSM.Common;
 
 namespace CSM.UI.DesignEditor
 {
-    public class DesignEditorPresentor : IPresentor
+    public class DesignEditorPresentor : IPresentor, ISaveHandler
     {
         private CuttingUnitDO _anyUnitOption;
         private StratumDO _anyStratumOption;
@@ -21,7 +22,7 @@ namespace CSM.UI.DesignEditor
         
         public DesignEditorPresentor(IWindowPresenter windowPresenter)
         {
-            this.Controller = windowPresenter;
+            this.WindowPresenter = windowPresenter;
             this.DataContext = new DesignEditorDataContext();
             if (Database != null)
             {
@@ -46,12 +47,12 @@ namespace CSM.UI.DesignEditor
                 }
             }
         }
-        public IWindowPresenter Controller { get; set; }
+        public IWindowPresenter WindowPresenter { get; set; }
         public DAL Database 
         { 
-            get { return Controller.Database; }
+            get { return WindowPresenter.Database; }
         }
-        public bool IsSupervisor { get { return Controller.AppState.InSupervisorMode; } }
+        public bool IsSupervisor { get { return WindowPresenter.AppState.InSupervisorMode; } }
 
         public DesignEditorDataContext DataContext { get; set; }
 
@@ -161,7 +162,11 @@ namespace CSM.UI.DesignEditor
         public SampleGroupDO GetNewSampleGroup()
         {
             System.Diagnostics.Debug.Assert(DataContext.AllSampleGroups != null);
-            System.Diagnostics.Debug.Assert(SampleGroups_SelectedStrata != null);
+
+            if (SampleGroups_SelectedStrata == null)
+            {
+                throw new UserFacingException("Please Select Stratum", null);
+            }
 
             var newSampleGroup = new SampleGroupDO(Database);
             newSampleGroup.Code = "<blank>";
@@ -181,15 +186,14 @@ namespace CSM.UI.DesignEditor
 
             if (!CanEditCuttingUnitField(unit, null))
             {
-                MessageBox.Show("Can not delete unit because it contains cruise data");
-                return;
+                throw new UserFacingException("Can not delete unit because it contains cruise data", null);
             }
 
             DataContext.CuttingUnits.Remove(unit);
             DataContext.AllCuttingUnits.Remove(unit);
-            DataContext.CuttingUnitFilterSelectionList.Remove(unit);
-
             DataContext.DeletedCuttingUnits.Add(unit);
+
+            DataContext.CuttingUnitFilterSelectionList.Remove(unit);            
         }
 
         public void DeleteStratum(StratumDO stratum)
@@ -222,12 +226,11 @@ namespace CSM.UI.DesignEditor
 
         public void DeleteSampleGroup(SampleGroupDO sampleGroup)
         {
-            if(DataContext.SampleGroups == null || DataContext.AllSampleGroups == null) { return; }
+            System.Diagnostics.Debug.Assert(DataContext.SampleGroups != null && DataContext.AllSampleGroups != null);
 
             if (!CanEditSampleGroupField(sampleGroup, null))
             {
-                MessageBox.Show("Can not delete sample group because it contains cruise data");
-                return;
+                throw new UserFacingException("Can Not Delete Sample Group With Cruise Data", null);
             }
 
             DataContext.SampleGroups.Remove(sampleGroup);
@@ -235,12 +238,23 @@ namespace CSM.UI.DesignEditor
             DataContext.DeletedSampleGroups.Add(sampleGroup);
         }
 
+        public void DeleteTreeDefaultValue(TreeDefaultValueDO tdv)
+        {
+            if (!this.CanDeleteTreeDefault(tdv))
+            {
+                throw new UserFacingException("Can't Delete Species Because it has tree data or tree counts.", null);
+            }
+
+            this.DataContext.AllTreeDefaults.Remove(tdv);
+            this.DataContext.DeletedTreeDefaults.Add(tdv);
+        }
+
 
         public void LoadSetup()
         {
             var setupServ = SetupService.GetHandle();
             Regions = setupServ.GetRegions();
-            CruiseMethods = this.Controller.GetCruiseMethods(this.DataContext.Sale.Purpose == "Recon");
+            CruiseMethods = this.WindowPresenter.GetCruiseMethods(this.DataContext.Sale.Purpose == "Recon");
             LoggingMethods = setupServ.GetLoggingMethods();
             UOMCodes = setupServ.GetUOMCodes();
             ProductCodes = setupServ.GetProductCodes();
@@ -352,7 +366,7 @@ namespace CSM.UI.DesignEditor
                 || (Database.GetRowCount("CountTree", "WHERE SampleGroup_CN = ? AND TreeCount > 0", sg.SampleGroup_CN.Value) > 0); 
         }
 
-        public bool ValidateData(ref string error)
+        public bool ValidateData(ref StringBuilder errorBuilder)
         {
             System.Diagnostics.Debug.Assert(DataContext.CuttingUnits != null && DataContext.Strata != null && DataContext.SampleGroups != null);
 
@@ -360,7 +374,7 @@ namespace CSM.UI.DesignEditor
 
             if(!DataContext.Sale.Validate())
             {
-                error += DataContext.Sale.Error; 
+                errorBuilder.AppendLine(DataContext.Sale.Error);
                 isValid = false;
             }
 
@@ -368,7 +382,7 @@ namespace CSM.UI.DesignEditor
             {
                 if (!st.Validate())
                 {
-                    error += st.Error;
+                    errorBuilder.AppendLine(st.Error);
                     isValid = false;
                 }
             }
@@ -377,7 +391,7 @@ namespace CSM.UI.DesignEditor
             {
                 if (!unit.Validate())
                 {
-                    error += unit.Error;
+                    errorBuilder.AppendLine(unit.Error);
                     isValid = false;
                 }
             }
@@ -386,7 +400,13 @@ namespace CSM.UI.DesignEditor
             {
                 if(!sg.Validate())
                 {
-                    error += sg.Error;
+                    errorBuilder.AppendLine(sg.Error);
+                    isValid = false;
+                }
+                string er; 
+                if (!SampleGroupDO.ValidateSetup(sg, sg.Stratum, out er))
+                {
+                    errorBuilder.AppendLine(er);
                     isValid = false;
                 }
                 //isValid = sg.ValidatePProdOnTDVs(ref error) && isValid;
@@ -396,7 +416,7 @@ namespace CSM.UI.DesignEditor
             {
                 if (!tdv.Validate())
                 {
-                    error += tdv.Error;
+                    errorBuilder.AppendLine(tdv.Error);
                     isValid = false;
                 }
             }
@@ -404,22 +424,11 @@ namespace CSM.UI.DesignEditor
             return isValid;
         }
 
-        public bool SaveData(ref string error)
+
+
+        private bool SaveData()
         {
-            System.Diagnostics.Debug.Assert(Database != null);
-            System.Diagnostics.Debug.Assert(DataContext.CuttingUnits != null && DataContext.Strata != null && DataContext.SampleGroups != null);
-
-            if (View != null)
-            {
-                View.ForceEndEdits();
-            }
-
-            bool passedValidation = true;
-            if (!this.ValidateData(ref error))
-            {
-                passedValidation = false;
-            }
-
+            
             Database.BeginTransaction();            
             try
             {
@@ -427,29 +436,17 @@ namespace CSM.UI.DesignEditor
 
                 foreach (CuttingUnitDO unit in DataContext.AllCuttingUnits)
                 {
-                    if (unit == null) { continue; }
                     SaveCuttingUnit(unit);
                 }
 
                 foreach (StratumDO st in DataContext.AllStrata)
                 {
-                    if (st == null) { continue; }
                     SaveStratum(st);
                 }
 
                 foreach (SampleGroupDO sg in DataContext.AllSampleGroups)
-                {
-                    if (sg == null) { continue; }
-                    string er;
-                    if (!SampleGroupDO.ValidateSetup(sg, sg.Stratum,out er))
-                    {
-                        error += er;
-                        passedValidation = false;
-                    }
-                    else
-                    {
-                        SaveSampleGroup(sg);
-                    }
+                {               
+                    SaveSampleGroup(sg);                  
                 }
 
                 foreach (TreeDefaultValueDO tdv in DataContext.AllTreeDefaults)
@@ -478,21 +475,22 @@ namespace CSM.UI.DesignEditor
                     StratumDO.RecursiveDeleteStratum(st);
                 }
 
+                Database.EndTransaction();
+
                 DataContext.DeletedTreeDefaults.Clear();
                 DataContext.DeletedStrata.Clear();
                 DataContext.DeletedCuttingUnits.Clear();
-                DataContext.DeletedSampleGroups.Clear();                
+                DataContext.DeletedSampleGroups.Clear();
 
                 DataContext.HasUnsavedChanges = false;
-                Database.EndTransaction();
+                return true; 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //replace any existing error message, just because 
-                error = "Error saving data, please check for errors and try saving again";
-                return false;
+                Database.CancelTransaction();
+                throw new UserFacingException("Error saving data, please check for errors and try saving again", ex);
             }
-            return passedValidation;
+            
         }
 
         public void SetFieldSetup(StratumDO stratum, DAL database)
@@ -570,7 +568,6 @@ namespace CSM.UI.DesignEditor
 
         public bool CanEditSampleGroupField(SampleGroupDO sampleGroup, String fieldName)
         {
-            
 
             if (sampleGroup.IsPersisted == false) { return true; }
             if (HasCruiseData(sampleGroup) == false) { return true; }
@@ -585,8 +582,16 @@ namespace CSM.UI.DesignEditor
         public bool CanRemoveTreeDefault(SampleGroupDO sampleGroup, TreeDefaultValueDO tdv)
         {
             if (sampleGroup.IsPersisted == false || tdv.IsPersisted == false) { return true; }
-            bool hasTreeCounts = this.Controller.Database.GetRowCount("CountTree", "WHERE TreeCount > 0 AND TreeDefaultValue_CN = ? AND SampleGroup_CN = ?", tdv.TreeDefaultValue_CN, sampleGroup.SampleGroup_CN) > 0;
-            bool hasTrees = this.Controller.Database.GetRowCount("Tree", "WHERE TreeDefaultValue_CN = ? AND SampleGroup_CN = ?", tdv.TreeDefaultValue_CN, sampleGroup.SampleGroup_CN) > 0;
+            bool hasTreeCounts = this.WindowPresenter.Database.GetRowCount("CountTree", "WHERE TreeCount > 0 AND TreeDefaultValue_CN = ? AND SampleGroup_CN = ?", tdv.TreeDefaultValue_CN, sampleGroup.SampleGroup_CN) > 0;
+            bool hasTrees = this.WindowPresenter.Database.GetRowCount("Tree", "WHERE TreeDefaultValue_CN = ? AND SampleGroup_CN = ?", tdv.TreeDefaultValue_CN, sampleGroup.SampleGroup_CN) > 0;
+            return !(hasTreeCounts && hasTrees);
+        }
+
+        public bool CanDeleteTreeDefault(TreeDefaultValueDO tdv)
+        {
+            if (tdv.IsPersisted == false) { return true; }
+            bool hasTreeCounts = this.WindowPresenter.Database.GetRowCount("CountTree", "WHERE TreeCount > 0 AND TreeDefaultValue_CN = ?", tdv.TreeDefaultValue_CN) > 0;
+            bool hasTrees = this.WindowPresenter.Database.GetRowCount("Tree", "WHERE TreeDefaultValue_CN = ?", tdv.TreeDefaultValue_CN) > 0;
             return !(hasTreeCounts && hasTrees);
         }
 
@@ -595,19 +600,12 @@ namespace CSM.UI.DesignEditor
         {
             if (this.DataContext.HasUnsavedChanges)
             {
-                var result = MessageBox.Show( "You Have Unsaved Data, Would You Like To Save Before Closing?", "Warning", MessageBoxButtons.YesNoCancel);
+                var result = this.WindowPresenter.AskYesNoCancel("You Have Unsaved Data, Would You Like To Save Before Closing?", "Save Changes", DialogResult.Yes);
                 switch (result)
                 {
                     case DialogResult.Yes:
                         {
-                            string error = null;
-                            if (!this.SaveData(ref error))
-                            {
-                                error = "Errors Detected\r\n" + error;
-                                this.Controller.ShowSimpleErrorMessage(error);
-                                e.Cancel = true;
-                            }
-
+                            e.Cancel = !HandleSave();
                             return;
                         }
                     case DialogResult.No:
@@ -623,14 +621,27 @@ namespace CSM.UI.DesignEditor
             }
         }
 
-        public void HandleSave()
+        public bool HandleSave()
         {
-            string error = null;
-            if (!this.SaveData(ref error))
+            AssertDataContextValid();//DEBUG only
+
+            if (View != null)
             {
-                error = "Errors Detected\r\n" + error;
-                this.Controller.ShowSimpleErrorMessage(error);
+                View.ForceEndEdits();
             }
+
+            StringBuilder validationErrorBuilder = new StringBuilder();
+            bool rtnVal = true; 
+            if (!this.ValidateData(ref validationErrorBuilder))
+            {
+                this.WindowPresenter.ShowSimpleErrorMessage("Validation Errors Found:\r\n" + validationErrorBuilder.ToString());
+                rtnVal = false;
+            }
+
+            this.SaveData();
+
+            return rtnVal;
+            
         }
 
         public bool CanHandleSave
@@ -641,13 +652,28 @@ namespace CSM.UI.DesignEditor
             }
         }
 
-        public bool CanHandleSaveAs
+        [System.Diagnostics.Conditional("DEBUG")]
+        private void AssertDataContextValid()
         {
-            get
-            {
-                return true;
-            }
+            System.Diagnostics.Debug.Assert(Database != null);
+            System.Diagnostics.Debug.Assert(
+                DataContext.AllCuttingUnits != null
+                && DataContext.AllStrata != null
+                && DataContext.AllSampleGroups != null
+                && DataContext.DeletedCuttingUnits != null
+                && DataContext.DeletedSampleGroups != null
+                && DataContext.DeletedStrata != null
+                && DataContext.DeletedTreeDefaults != null);
+            System.Diagnostics.Debug.Assert(
+                !DataContext.AllCuttingUnits.Contains(null)
+                && !DataContext.AllStrata.Contains(null)
+                && !DataContext.AllSampleGroups.Contains(null)
+                && !DataContext.DeletedCuttingUnits.Contains(null)
+                && !DataContext.DeletedSampleGroups.Contains(null)
+                && !DataContext.DeletedStrata.Contains(null)
+                && !DataContext.DeletedTreeDefaults.Contains(null));
         }
+
         #endregion
 
         #region IDisposable Members

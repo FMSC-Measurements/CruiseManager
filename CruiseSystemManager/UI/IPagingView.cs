@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CSM
 {
-    public interface IPagingView : IView
+    public interface IPagingView
     {
         void Display(String Name);
         void Display(IPage Page);

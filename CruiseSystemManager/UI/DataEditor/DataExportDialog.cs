@@ -14,7 +14,7 @@ using CSM.DataTypes;
 
 namespace CSM.UI.DataEditor
 {
-    public partial class DataExportDialog : Form, IView
+    public partial class DataExportDialog : Form
     {
         #region CTor
         public DataExportDialog()
@@ -642,18 +642,6 @@ namespace CSM.UI.DataEditor
 
             #endregion
         }
-
-
-
-        #region IView Members
-
-
-        public void HandleLoad()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
     }
 
 }

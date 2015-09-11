@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using CSM.Logic.Components;
 using CSM.Logic;
+using CSM.Common;
 
 namespace CSM.UI.Components
 {

@@ -135,7 +135,7 @@ namespace CSM.UI.CruiseCustomize
 
 
 
-            if (this.Presenter.Controller.AppState.InSupervisorMode)
+            if (this.Presenter.WindowPresenter.AppState.InSupervisorMode)
             {
                 this._logMatrixPage = new LogMatrixSettingsView(this.Presenter);
                 this._logMatrixPage.SuspendLayout();

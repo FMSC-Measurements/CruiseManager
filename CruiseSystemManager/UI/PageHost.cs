@@ -267,19 +267,5 @@ namespace CSM.UI
         }
 
         #endregion
-
-
-
-
-
-        #region IView Members
-
-
-        public void HandleLoad()
-        {
-            
-        }
-
-        #endregion
     }
 }

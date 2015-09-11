@@ -87,7 +87,7 @@
     <None Include="Logic\ApplicationController.cs" />
     <Compile Include="DataTypes\TypeComparers.cs" />
     <Compile Include="Logic\ApplicationState.cs" />
-    <Compile Include="Logic\CancelWorkerException.cs" />
+    <Compile Include="Common\CancelWorkerException.cs" />
     <Compile Include="Logic\Components\ComponentFile.cs" />
     <Compile Include="Logic\Components\CreateComponentPresenter.cs" />
     <Compile Include="Logic\Components\MergeDataTypes.cs" />
@@ -95,15 +95,18 @@
     <Compile Include="Logic\Components\MergeTableCommandBuilder.cs" />
     <Compile Include="Logic\Components\PrepareMergeWorker.cs" />
     <Compile Include="Logic\Components\UpdateMasterWorker.cs" />
-    <Compile Include="Logic\IPresentor.cs" />
-    <Compile Include="Logic\ISaveHandler.cs" />
+    <Compile Include="Logic\ExceptionHandler.cs" />
+    <Compile Include="Logic\IApplicationController.cs" />
+    <Compile Include="Common\IExceptionHandler.cs" />
+    <Compile Include="Common\IPresentor.cs" />
+    <Compile Include="Common\ISaveHandler.cs" />
     <Compile Include="Logic\IWindowPresenter.cs" />
     <Compile Include="DataTypes\LogVM.cs" />
     <Compile Include="Logic\Components\MergeComponentsPresenter.cs" />
     <Compile Include="DataTypes\StratumVM.cs" />
     <Compile Include="DataTypes\TreeVM.cs" />
-    <Compile Include="Logic\IWorker.cs" />
-    <Compile Include="Logic\ProgressChangedEventArgs.cs" />
+    <Compile Include="Common\IWorker.cs" />
+    <Compile Include="Common\ProgressChangedEventArgs.cs" />
     <Compile Include="Logic\TypeComparers.cs" />
     <Compile Include="UI\AboutDialog.cs">
       <SubType>Form</SubType>
@@ -194,6 +197,7 @@
     <Compile Include="UI\ErrorMessageDialog.Designer.cs">
       <DependentUpon>ErrorMessageDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Exceptions.cs" />
     <Compile Include="UI\FormSupervisorLogin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -212,6 +216,7 @@
     <Compile Include="UI\LicencesDialog.Designer.cs">
       <DependentUpon>LicencesDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\NavOption.cs" />
     <Compile Include="UI\PageHost.cs">
       <SubType>UserControl</SubType>
     </Compile>

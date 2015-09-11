@@ -18,6 +18,7 @@ using CSM.DataTypes;
 using CSM.Utility.Setup;
 using CSM.Logic.Components;
 using CSM.UI.Components;
+using CSM.Common;
 
 namespace CSM
 {
@@ -26,7 +27,7 @@ namespace CSM
     /// provide a common place to for all the forms to access data and other infomation about the application state.
     /// it is the glue that binds the application together
     /// </summary>
-    public class WindowPresenter : IWindowPresenter, IDisposable
+    public class WindowPresenter : IWindowPresenter
     {
         public static string GetApplicationDirectory()
         {
@@ -49,6 +50,7 @@ namespace CSM
 
         public WindowPresenter()
         {
+            this.ExceptionHandler = new ExceptionHandler(); 
             this.MainWindow = new FormCSMMain(this);
             ShowHomeLayout();
         }
@@ -60,16 +62,35 @@ namespace CSM
             //{
             //    setDAL(dalPath);
             //}
-            MainWindow = new FormCSMMain(this);
+            //MainWindow = new FormCSMMain(this);
             this.OpenFile(dalPath);
         }
         #endregion 
 
-        public FormCSMMain MainWindow { get; set; }
+        public IExceptionHandler ExceptionHandler { get; protected set; }
+
+        private FormCSMMain _mainWindow; 
+        public FormCSMMain MainWindow 
+        {
+            get { return _mainWindow; }
+            set
+            {
+                if (_mainWindow != null)
+                {
+                    _mainWindow.Dispose();
+                }
+                if (value != null)
+                {
+                    value.FormClosing += new FormClosingEventHandler(this.HandleAppClosing);
+                }
+                _mainWindow = value;
+            }
+        }
+
 
         //the current save handler is the active locical component of the program that is 
         //responceable for saving the user's data 
-        public ISaveHandler SaveHandler { get { return ActivePresentor; } }
+        public ISaveHandler SaveHandler { get { return ActivePresentor as ISaveHandler; } }
         private IPresentor _activePresentor;
         public IPresentor ActivePresentor 
         {
@@ -79,19 +100,23 @@ namespace CSM
             }
             set
             {
+                if (SaveHandler != null)
+                {
+                    SaveHandler.HandleSave();
+                }
                 if (_activePresentor != null)
                 {
-                    _activePresentor.HandleSave();
                     _activePresentor.Dispose();
                 }
+
                 _activePresentor = value;
-                if (value == null)
+                if (SaveHandler == null)
                 {
                     this.MainWindow.EnableSave = false;
                 }
                 else
                 {
-                    this.MainWindow.EnableSave = value.CanHandleSave;
+                    this.MainWindow.EnableSave = SaveHandler.CanHandleSave;
                 }
             }
         }
@@ -196,17 +221,24 @@ namespace CSM
                 c.Dispose();
             }
             this.MainWindow.ViewContentPanel.Controls.Clear();
-            
+
+            IView iView = view as IView;
+            if (iView != null)
+            {
+                this.MainWindow.SetNavOptions(iView.NavOptions);
+                throw new NotImplementedException();
+            }
+
             //dock new view 
             view.Dock = DockStyle.Fill;
             view.Parent = this.MainWindow.ViewContentPanel;
             
             //signal view to handle load
-            IView iView = view as IView;
-            if (iView != null)
-            {
-                iView.HandleLoad();
-            }
+            //IView iView = view as IView;
+            //if (iView != null)
+            //{
+            //    iView.HandleLoad();
+            //}
         }
 
         /// <summary>
@@ -338,32 +370,27 @@ namespace CSM
         }
 
         #region click event handlers
-        public void HandleAboutClick(object sender, EventArgs e)
-        {
-            ShowAboutDialog();
-        }
 
-        
 
-        public void HandleOpenFileClick(object sender, EventArgs e)
-        {
-            ShowOpenCruiseDialog();
-        }
 
-        public void HandleCreateCruiseClick(object sender, EventArgs e)
-        {
-            ShowCruiseWizardDiolog();
-        }
 
-        public void HandleSaveClick(object sender, EventArgs e)
+
+        public void Save()
         {
-            if (this.SaveHandler != null)
+            try
             {
-                SaveHandler.HandleSave();
+                if (this.SaveHandler != null)
+                {
+                    SaveHandler.HandleSave();
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ExceptionHandler.Handel(ex);
             }
         }
 
-        public void HandleSaveAsClick(object sender, EventArgs e)
+        public void SaveAs()
         {
             //show save file dialog
             SaveFileDialog sfd = new SaveFileDialog()
@@ -373,58 +400,62 @@ namespace CSM
             };
             if (sfd.ShowDialog() == DialogResult.OK)
             {
-                if (this.Database.CopyAs(sfd.FileName))
+                this.SaveAs(sfd.FileName);
+            }
+        }
+
+        public void SaveAs(String fileName)
+        {
+            try
+            {
+                if (this.Database.CopyAs(fileName))
                 {
-                    //handle the save after copying 
-                    if (this.SaveHandler != null) { this.SaveHandler.HandleSave(); }
+                    //save after copying 
+                    this.Save();
                     this.MainWindow.Text = System.IO.Path.GetFileName(this.Database.Path);
                 }
             }
+            catch (Exception ex)
+            {
+                this.ExceptionHandler.Handel(ex);
+            }
         }
+        
+
+        
 
         public void HandleAppClosing(object sender, FormClosingEventArgs e)
         {
-            if (this.SaveHandler != null)
+            try
             {
-                SaveHandler.HandleAppClosing(sender, e);
+                if (this.SaveHandler != null)
+                {
+                    SaveHandler.HandleAppClosing(sender, e);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ExceptionHandler.Handel(ex);
             }
         }
 
-        public void HandleEditViewCruiseClick(object sender, EventArgs e)
+        
+
+        public void ShowEditDesign()
         {
             ActivePresentor = null;
             DesignEditViewControl view = new DesignEditViewControl();
             SetActiveView(view);
-            
+
             DesignEditorPresentor presenter = new DesignEditorPresentor(this);
             presenter.View = view;
             ActivePresentor = presenter;
-            
-        }
-
-        public void HandleExportCruiseClick(object sender, EventArgs e)
-        {
-            ShowDataEditor();
-        }
-
-        public void HandleManageComponensClick(object sender, EventArgs e)
-        {
-            ShowManageComponentsLayout();
-        }
-
-        public void HandleEditWizardClick(object sender, EventArgs e)
-        {
-            
-            this.ShowEditWizard();
-            
         }
 
 
+        
 
-        public void HandleCreateComponentsClick(object sender, EventArgs e)
-        {
-            ShowCreateComponentsLayout();
-        }
+        
 
 
 
@@ -434,31 +465,17 @@ namespace CSM
             ShowUnimplementedFeatureDialog();
         }
 
-        public void HandleCruiseCustomizeClick(object sender, EventArgs e)
-        {
-           ShowCustomizeCruiseLayout();
-        }
-        public void HandleHomePageClick(object sender, EventArgs e)
-        {
-           ShowHomeLayout();
-        }
-
-        public void HandleReturnCruiseLandingClick(object sender, EventArgs e)
-        {
-            ShowCruiseLandingLayout();
-        }
-
-        public void HandleImportTemplateClick(object sender, EventArgs e)
+        public void ShowImportTemplate()
         {
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Filter = R.Strings.OPEN_CRUISE_FILE_DIALOG_FILTER;
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                this.MainWindow.ClearNavPanel();
+                //this.MainWindow.ClearNavPanel();
                 this.MainWindow.ViewContentPanel.Controls.Clear();
-                this.MainWindow.AddNavButton("Finish", this.HandleFinishImportTemplateClick);
-                this.MainWindow.AddNavButton("Cancel", this.HandleCancelImportTemplateClick);
+                //this.MainWindow.AddNavButton("Finish", this.HandleFinishImportTemplateClick);
+                //this.MainWindow.AddNavButton("Cancel", this.HandleCancelImportTemplateClick);
 
                 ImportFromCruiseView view = new ImportFromCruiseView(this, dialog.FileName);
                 view.Dock = DockStyle.Fill;
@@ -466,16 +483,17 @@ namespace CSM
                 this.MainWindow.ViewContentPanel.Controls.Add(view);
 
             }
-           // find table to import
-           // open dialog box
-           // select cruise
-           //Form form = new Form();
-           //form.Size = new System.Drawing.Size(400, 400);
-           //CSM.NavPages.COConverterPage convertPage = new CSM.NavPages.COConverterPage();
-           //form.Controls.Add(convertPage);
-           //form.ShowDialog();
-
+            // find table to import
+            // open dialog box
+            // select cruise
+            //Form form = new Form();
+            //form.Size = new System.Drawing.Size(400, 400);
+            //CSM.NavPages.COConverterPage convertPage = new CSM.NavPages.COConverterPage();
+            //form.Controls.Add(convertPage);
+            //form.ShowDialog();
         }
+
+        
 
         public void HandleFinishImportTemplateClick(object sender, EventArgs e)
         {
@@ -523,7 +541,7 @@ namespace CSM
 
                 this.ShowDefaultCursor();
 
-                view.ShowDialog();
+                view.ShowDialog(this.MainWindow);
                 if (this.ActivePresentor != null) //refresh page in main window after wizard closes 
                 {
                     this.ActivePresentor.UpdateView();
@@ -545,18 +563,18 @@ namespace CSM
         {
             using (AboutDialog dialog = new AboutDialog())
             {
-                dialog.ShowDialog();
+                dialog.ShowDialog(this.MainWindow);
             }
         }
 
         public void ShowHomeLayout()
         {
-            this.MainWindow.ClearNavPanel();
-            this.MainWindow.ViewContentPanel.Controls.Clear();
-            //this.MainWindow.ViewContentPanel.Controls.Add(new RecentFilesView(this) { Dock = DockStyle.Right });
-            this.MainWindow.Text = R.Strings.HOME_LAYOUT_TITLE_BAR;
-            this.MainWindow.AddNavButton("Open File", this.HandleOpenFileClick);
-            this.MainWindow.AddNavButton("Create New Cruise", this.HandleCreateCruiseClick);
+            //this.MainWindow.ClearNavPanel();
+            //this.MainWindow.ViewContentPanel.Controls.Clear();
+
+            //this.MainWindow.Text = R.Strings.HOME_LAYOUT_TITLE_BAR;
+            //this.MainWindow.AddNavButton("Open File", this.HandleOpenFileClick);
+            //this.MainWindow.AddNavButton("Create New Cruise", this.HandleCreateCruiseClick);
             this.ActivePresentor = null;
         }
 
@@ -590,10 +608,10 @@ namespace CSM
 
         //}
 
-        public void ShowCombineSaleSubComponentSelectPage()
-        {
+        //public void ShowCombineSaleSubComponentSelectPage()
+        //{
 
-        }
+        //}
 
         public void ShowCruiseLandingLayout()
         {
@@ -603,43 +621,72 @@ namespace CSM
             }
             else
             {
-                this.MainWindow.ClearNavPanel();
+                //this.MainWindow.ClearNavPanel();
                 this.MainWindow.ViewContentPanel.Controls.Clear();
                 this.MainWindow.Text = System.IO.Path.GetFileName(this.AppState.Database.Path);
 
-                bool enableManageComponents = this.Database.CruiseFileType == CruiseFileType.Master;
-                bool enableEditDesign = true;//this.Database.CruiseFileType != CruiseFileType.Component;
-                bool enableCreateComponents = this.Database.CruiseFileType != CruiseFileType.Component;
-                bool enableCostomize = true;//this.Database.CruiseFileType != CruiseFileType.Component;
+                //bool enableManageComponents = this.Database.CruiseFileType == CruiseFileType.Master;
+                //bool enableEditDesign = true;//this.Database.CruiseFileType != CruiseFileType.Component;
+                //bool enableCreateComponents = this.Database.CruiseFileType != CruiseFileType.Component;
+                //bool enableCostomize = true;//this.Database.CruiseFileType != CruiseFileType.Component;
 
-                //populate navigation buttons, last first
-                this.MainWindow.AddNavButton("Back", this.HandleHomePageClick, true);
-                //this.MainWindow.AddNavButton("Combine Sale Data", this.HandleCombineSaleClick);
+                ////populate navigation buttons, last first
+                //this.MainWindow.AddNavButton("Back", this.HandleHomePageClick, true);
+                ////this.MainWindow.AddNavButton("Combine Sale Data", this.HandleCombineSaleClick);
 
 
-                this.MainWindow.AddNavButton("Merge Component Files", this.HandleManageComponensClick, enableManageComponents);
-                this.MainWindow.AddNavButton("Create Component Files", this.HandleCreateComponentsClick, enableCreateComponents);
-                this.MainWindow.AddNavButton("Field Data", this.HandleExportCruiseClick, true);
-                this.MainWindow.AddNavButton("Customize", this.HandleCruiseCustomizeClick, enableCostomize);
-                this.MainWindow.AddNavButton("Edit Design", this.HandleEditViewCruiseClick, enableEditDesign);
-                this.MainWindow.AddNavButton("Design Wizard", this.HandleEditWizardClick, enableEditDesign);
+                //this.MainWindow.AddNavButton("Merge Component Files", this.HandleManageComponensClick, enableManageComponents);
+                //this.MainWindow.AddNavButton("Create Component Files", this.HandleCreateComponentsClick, enableCreateComponents);
+                //this.MainWindow.AddNavButton("Field Data", this.HandleExportCruiseClick, true);
+                //this.MainWindow.AddNavButton("Customize", this.HandleCruiseCustomizeClick, enableCostomize);
+                //this.MainWindow.AddNavButton("Edit Design", this.HandleEditViewCruiseClick, enableEditDesign);
+                //this.MainWindow.AddNavButton("Design Wizard", this.HandleEditWizardClick, enableEditDesign);
+                this.MainWindow.SetNavOptions(this.cruiseLandingNavOptions);
             }
         }
 
+        private NavOption[] cruiseLandingNavOptions;
+
+        private void InitializeNavOptions()
+        {
+            this.cruiseLandingNavOptions = new NavOption[]
+            {
+                new NavOption("Design Wizard", this.ShowEditWizard),
+                new NavOption("Edit Design", this.ShowEditDesign),
+                new NavOption("Customize", this.ShowCustomizeCruiseLayout),
+                new NavOption("Field Data", this.ShowDataEditor),
+                new NavOption("Create Component Files", this.ShowCreateComponentsLayout),
+                new NavOption("Merge Component Files", this.ShowManageComponentsLayout)
+            };
+        }
+
+        private NavOption[] templateLandingNavOptions;
+        private void InitializeTemplateNavOptions()
+        {
+            this.templateLandingNavOptions = new NavOption[]{
+                new NavOption("Import From Cruise", this.ShowImportTemplate),
+                new NavOption("Close File", null )
+            };
+
+        }
+
+
+
         public void ShowTemplateLandingLayout()
         {
-            this.MainWindow.ClearNavPanel();
-            this.MainWindow.ViewContentPanel.Controls.Clear();
+            //this.MainWindow.ClearNavPanel();
+            //this.MainWindow.ViewContentPanel.Controls.Clear();
             this.MainWindow.Text = System.IO.Path.GetFileName(this.AppState.Database.Path);
-            this.MainWindow.AddNavButton("Back", this.HandleHomePageClick);
-            this.MainWindow.AddNavButton("Import From Cruise", this.HandleImportTemplateClick);
-            TemplateEditViewControl view = new TemplateEditViewControl();
+            //this.MainWindow.AddNavButton("Back", this.HandleHomePageClick);
+            //this.MainWindow.AddNavButton("Import From Cruise", this.HandleImportTemplateClick);
+            TemplateEditViewControl view = new TemplateEditViewControl(this);
             TemplateEditViewPresenter presenter = new TemplateEditViewPresenter(this, view);
             view.Presenter = presenter;
-
-            view.Dock = DockStyle.Fill;
-            view.Parent = this.MainWindow.ViewContentPanel;
             ActivePresentor = presenter;
+            this.SetActiveView(view);
+            this.MainWindow.SetNavOptions(this.templateLandingNavOptions);
+           
+            
         }
 
         public void ShowCustomizeCruiseLayout()
@@ -701,15 +748,35 @@ namespace CSM
 
         
 
-        private void ShowManageComponentsLayout()
+        public void ShowManageComponentsLayout()
         {
             MergeComponentView view = new MergeComponentView();
             MergeComponentsPresenter presenter = new MergeComponentsPresenter(this, view);
             
             this.ActivePresentor = presenter;
             SetActiveView(view);
-            
-            //this.MainWindow.AddNavButton("Back", this.HandleReturnCruiseLandingClick);
+        }
+
+        public DialogResult AskYesNoCancel(String message, String caption)
+        {
+            return AskYesNoCancel(message, caption, DialogResult.Yes);
+        }
+
+        public DialogResult AskYesNoCancel(String message, String caption, DialogResult defaultOption)
+        {
+            MessageBoxDefaultButton defaultButton; 
+            switch (defaultOption)
+            {
+                case DialogResult.Yes:
+                    { defaultButton = MessageBoxDefaultButton.Button1; break; }
+                case DialogResult.No:
+                    { defaultButton = MessageBoxDefaultButton.Button2; break; }
+                case DialogResult.Cancel:
+                    { defaultButton = MessageBoxDefaultButton.Button3; break; }
+                default:
+                    { defaultButton = MessageBoxDefaultButton.Button1; break; }
+            }
+            return MessageBox.Show(message, caption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, defaultButton);
         }
 
         public void ShowMessage(String message, String caption)
@@ -717,7 +784,7 @@ namespace CSM
             MessageBox.Show(message, caption);
         }
 
-        private void ShowCreateComponentsLayout()
+        public void ShowCreateComponentsLayout()
         {
             CreateComponentView view = new CreateComponentView();
             CreateComponentPresenter presenter = new CreateComponentPresenter(this);
@@ -762,19 +829,19 @@ namespace CSM
         {
             if (AppState.Database != null)
             {
-                if (this.ActivePresentor != null)
+                if (this.SaveHandler != null)
                 {
-                    this.ActivePresentor.HandleSave();
+                    this.SaveHandler.HandleSave();
                 }
                 using (DataEditorView view = new DataEditorView(this))
                 {
                     //CurrentWindow = view;
-                    view.Owner = MainWindow;
+                    //view.Owner = MainWindow;
                     //view.Owner = WindowStack.Last() as Form;
                     //view.FormClosed += new FormClosedEventHandler(OnWindowClosed);
                     //WindowStack.Push(view);
                     //DisplayCurrentWindow();
-                    view.ShowDialog();
+                    view.ShowDialog(this.MainWindow);
                 }
             }
         }
@@ -929,11 +996,6 @@ namespace CSM
             }
             return this.Database.Read<SampleGroupDO>("SampleGroup", "WHERE Stratum_CN = ?", st_cn);
         }
-
-        //private  void DisplayCurrentWindow()
-        //{
-        //    CurrentWindow.Show();
-        //}
 
         public bool Shutdown()
         {
