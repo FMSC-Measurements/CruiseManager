@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CSM.Logic
+namespace CSM.Common
 {
     public interface IWorker
     {
