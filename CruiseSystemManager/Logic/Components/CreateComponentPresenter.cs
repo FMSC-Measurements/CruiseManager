@@ -262,27 +262,5 @@ namespace CSM.Logic
 
         #endregion
 
-        #region ISaveHandler Members
-
-        public void HandleSave()
-        {
-            return; //nothing to save
-        }
-
-        public void HandleAppClosing(object sender, System.Windows.Forms.FormClosingEventArgs e)
-        {
-            return; //do nothing
-        }
-
-        public bool CanHandleSave
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        #endregion
-
     }
 }

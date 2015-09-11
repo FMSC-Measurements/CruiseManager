@@ -10,9 +10,7 @@ namespace CSM.Logic
 {
     public interface IWindowPresenter : IApplicationController
     {
-
-
-
+           
         void ShowAboutDialog();
         void ShowCruiseLandingLayout();
         void ShowCustomizeCruiseLayout();
@@ -38,9 +36,7 @@ namespace CSM.Logic
         //void HideWaitCursor();
         void ShowDefaultCursor();
 
+
         //void OnActivePresentorChanged();
-
-       
-
     }
 }

@@ -21,6 +21,7 @@ namespace CSM.UI.Dashboard
 
             var _openClickDispatcher = new NavOption(this.WindowPresenter.ShowOpenCruiseDialog, this.openToolStripMenuItem);
             var _newFileClickDispatcher = new NavOption(this.WindowPresenter.ShowCruiseWizardDialog, this.newToolStripMenuItem);
+
             var _saveClickDispatcher = new NavOption(this.WindowPresenter.Save, this.saveAsToolStripMenuItem);
             var _aboutClickDispatcher = new NavOption(this.WindowPresenter.ShowAboutDialog, this.aboutToolStripMenuItem);
             var _saveAsClickDispatcher = new NavOption(this.WindowPresenter.SaveAs); 
@@ -145,6 +146,5 @@ namespace CSM.UI.Dashboard
 
             _recentFilesMenu.Items.AddRange(items);
         }
-
     }
 }

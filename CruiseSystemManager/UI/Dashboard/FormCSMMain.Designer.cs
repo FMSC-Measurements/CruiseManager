@@ -33,7 +33,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormCSMMain));
             System.Windows.Forms.Button ExampleButton;
             this._viewContentPanel = new System.Windows.Forms.Panel();
-            this._viewNavPanel = new System.Windows.Forms.Panel();
+            this._viewNavPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -200,7 +200,7 @@
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
-        private System.Windows.Forms.Panel _viewNavPanel;
+        private System.Windows.Forms.FlowLayoutPanel _viewNavPanel;
         private System.Windows.Forms.Panel _viewContentPanel;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
