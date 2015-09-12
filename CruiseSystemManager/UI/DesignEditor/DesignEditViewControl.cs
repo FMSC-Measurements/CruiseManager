@@ -17,10 +17,13 @@ namespace CSM.UI.DesignEditor
     {
 
         private DesignEditorPresentor _presentor;
-        private IExceptionHandler _exceptionHandler; 
 
-        public DesignEditViewControl()
+        protected IExceptionHandler ExceptionHandler { get { return this.WindowPresenter.ExceptionHandler; } } 
+
+        public IWindowPresenter WindowPresenter { get; set; }
+        public DesignEditViewControl(IWindowPresenter windowPresenter)
         {
+            this.WindowPresenter = windowPresenter;
             InitializeComponent();
             this.SalePurposeComboBox.DataSource = Utility.Constants.SALE_PURPOSE;
         }
@@ -97,7 +100,7 @@ namespace CSM.UI.DesignEditor
             }
             catch (Exception ex)
             {
-                _exceptionHandler.Handel(ex);
+                this.ExceptionHandler.Handel(ex);
             }            
         }
         
@@ -114,7 +117,7 @@ namespace CSM.UI.DesignEditor
             catch (IndexOutOfRangeException) { }
             catch (Exception ex)
             {
-                _exceptionHandler.Handel(ex);
+                this.ExceptionHandler.Handel(ex);
             }
 
         }
@@ -147,7 +150,7 @@ namespace CSM.UI.DesignEditor
             }
             catch (Exception ex)
             {
-                _exceptionHandler.Handel(ex);
+                this.ExceptionHandler.Handel(ex);
             }
         }
 
@@ -175,7 +178,7 @@ namespace CSM.UI.DesignEditor
             }
             catch (Exception ex)
             {
-                _exceptionHandler.Handel(ex);
+                this.ExceptionHandler.Handel(ex);
                 e.Cancel = true; 
             }
         }
@@ -205,7 +208,7 @@ namespace CSM.UI.DesignEditor
             catch (IndexOutOfRangeException) { }
             catch (Exception ex)
             {
-                _exceptionHandler.Handel(ex);
+                this.ExceptionHandler.Handel(ex);
             }
         }
 
@@ -225,7 +228,7 @@ namespace CSM.UI.DesignEditor
             }
             catch (Exception ex)
             {
-                _exceptionHandler.Handel(ex);
+                this.ExceptionHandler.Handel(ex);
             }
             
         }
@@ -239,7 +242,7 @@ namespace CSM.UI.DesignEditor
             }
             catch (Exception ex)
             {
-                _exceptionHandler.Handel(ex);
+                this.ExceptionHandler.Handel(ex);
             }
         }
 
@@ -266,7 +269,7 @@ namespace CSM.UI.DesignEditor
             }
             catch (Exception ex)
             {
-                _exceptionHandler.Handel(ex);
+                this.ExceptionHandler.Handel(ex);
                 e.Cancel = false;
             }
         }
@@ -300,7 +303,7 @@ namespace CSM.UI.DesignEditor
             }
             catch (Exception ex)
             {
-                _exceptionHandler.Handel(ex);
+                this.ExceptionHandler.Handel(ex);
             }
         }
 
@@ -336,7 +339,7 @@ namespace CSM.UI.DesignEditor
             }
             catch (Exception ex)
             {
-                _exceptionHandler.Handel(ex);
+                this.ExceptionHandler.Handel(ex);
             }
         }
 
@@ -350,7 +353,7 @@ namespace CSM.UI.DesignEditor
             }
             catch (Exception ex)
             {
-                _exceptionHandler.Handel(ex);
+                this.ExceptionHandler.Handel(ex);
             }
         }
 
@@ -379,7 +382,7 @@ namespace CSM.UI.DesignEditor
             catch (IndexOutOfRangeException) { }
             catch (Exception ex)
             {
-                _exceptionHandler.Handel(ex);
+                this.ExceptionHandler.Handel(ex);
             }
         }
 

@@ -107,6 +107,7 @@ namespace CSM.UI.CruiseCustomize
             try
             {
                 this.LogMatrix = this.Database.Read<LogMatrixDO>("LogMatrix", null);
+                _isLogMatrixInitialized = true; 
             }
             catch (Exception e)
             {
@@ -446,7 +447,7 @@ namespace CSM.UI.CruiseCustomize
 
         private bool SaveLogMatrix(ref StringBuilder errorBuilder)
         {
-            if (_isLogMatrixInitialized) { return true; }
+            if (!_isLogMatrixInitialized) { return true; }
             try
             {
                 this.WindowPresenter.Database.BeginTransaction();

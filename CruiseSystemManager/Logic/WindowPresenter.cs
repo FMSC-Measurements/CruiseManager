@@ -444,7 +444,7 @@ namespace CSM
         public void ShowEditDesign()
         {
             ActivePresentor = null;
-            DesignEditViewControl view = new DesignEditViewControl();
+            DesignEditViewControl view = new DesignEditViewControl(this);
             SetActiveView(view);
 
             DesignEditorPresentor presenter = new DesignEditorPresentor(this);
@@ -575,6 +575,11 @@ namespace CSM
             //this.MainWindow.Text = R.Strings.HOME_LAYOUT_TITLE_BAR;
             //this.MainWindow.AddNavButton("Open File", this.HandleOpenFileClick);
             //this.MainWindow.AddNavButton("Create New Cruise", this.HandleCreateCruiseClick);
+
+            var _openFileAction = new NavOption("Create New Cruise", this.ShowCruiseWizardDialog);
+            var _createNewCruise = new NavOption("Open File", this.ShowOpenCruiseDialog);
+            this.MainWindow.SetNavOptions(new NavOption[] { _createNewCruise, _openFileAction });
+
             this.ActivePresentor = null;
         }
 
@@ -641,13 +646,19 @@ namespace CSM
                 //this.MainWindow.AddNavButton("Customize", this.HandleCruiseCustomizeClick, enableCostomize);
                 //this.MainWindow.AddNavButton("Edit Design", this.HandleEditViewCruiseClick, enableEditDesign);
                 //this.MainWindow.AddNavButton("Design Wizard", this.HandleEditWizardClick, enableEditDesign);
+                if (this.cruiseLandingNavOptions == null)
+                {
+                    this.InitializeCruiseNavOptions();
+                }
+
                 this.MainWindow.SetNavOptions(this.cruiseLandingNavOptions);
+                this.ShowCustomizeCruiseLayout();
             }
         }
 
         private NavOption[] cruiseLandingNavOptions;
 
-        private void InitializeNavOptions()
+        private void InitializeCruiseNavOptions()
         {
             this.cruiseLandingNavOptions = new NavOption[]
             {

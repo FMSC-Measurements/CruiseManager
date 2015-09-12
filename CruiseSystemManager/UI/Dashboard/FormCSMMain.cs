@@ -42,25 +42,43 @@ namespace CSM.UI.Dashboard
         {
             if (navOptions == null) { return; }
             this._viewNavPanel.Controls.Clear();
-            foreach (NavOption clickDispatcher in navOptions)
+            using (Graphics g = CreateGraphics())
             {
-                Button newNavButton = new Button();
-                newNavButton.AutoSize = true;
-                newNavButton.BackColor = System.Drawing.Color.Green;
-                newNavButton.Dock = System.Windows.Forms.DockStyle.Top;
-                newNavButton.FlatAppearance.BorderColor = System.Drawing.Color.Gold;
-                newNavButton.FlatAppearance.BorderSize = 2;
-                newNavButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-                //newNavButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-                newNavButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                newNavButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-                newNavButton.Location = new System.Drawing.Point(0, 0);
-                newNavButton.Size = new System.Drawing.Size(200, 35);
-                newNavButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-                newNavButton.UseVisualStyleBackColor = false;
+                foreach (NavOption clickDispatcher in navOptions.Reverse())
+                {
+                    Button newNavButton = new Button();
+                    //newNavButton.AutoSize = true;
+                    newNavButton.BackColor = System.Drawing.Color.ForestGreen;
 
-                clickDispatcher.Bind(newNavButton);
-                this._viewNavPanel.Controls.Add(newNavButton);
+                    newNavButton.FlatAppearance.BorderColor = System.Drawing.Color.DimGray;
+                    newNavButton.FlatAppearance.BorderSize = 0;
+                    newNavButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.LightGreen;
+                    newNavButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+                    newNavButton.Font = global::CSM.Properties.Settings.Default.App_NavFont;
+                    newNavButton.ForeColor = System.Drawing.SystemColors.ControlText;
+                    //newNavButton.Location = new System.Drawing.Point(0, 0);
+                    //newNavButton.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
+                    newNavButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+                    //newNavButton.Size = new System.Drawing.Size(0, 50);
+                    newNavButton.UseVisualStyleBackColor = false;
+                    newNavButton.Dock = System.Windows.Forms.DockStyle.Top;
+                    
+                    clickDispatcher.Bind(newNavButton);
+                    Size s = g.MeasureString(newNavButton.Text, newNavButton.Font, this._viewNavPanel.Width - 10).ToSize();
+                    newNavButton.Height = s.Height + 6;
+                    
+                    
+
+                    this._viewNavPanel.Controls.Add(newNavButton);
+                    Panel spacer = new Panel()
+                    {
+                        Height = 1,
+                        Dock = DockStyle.Top,
+                        BackColor = System.Drawing.Color.DimGray
+                    };
+
+                    this._viewNavPanel.Controls.Add(spacer);
+                }
             }
         }
 

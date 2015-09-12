@@ -82,5 +82,17 @@ namespace CSM.Properties {
                 this["FileNameFormat"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Segoe UI Semibold, 12pt, style=Bold")]
+        public global::System.Drawing.Font App_NavFont {
+            get {
+                return ((global::System.Drawing.Font)(this["App_NavFont"]));
+            }
+            set {
+                this["App_NavFont"] = value;
+            }
+        }
     }
 }
