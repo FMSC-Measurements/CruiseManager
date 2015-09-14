@@ -24,15 +24,5 @@ namespace CSM.Logic
                 throw new Exception(string.Empty, e);
             }
         }
-
-        public void Handel(CSM.UI.UserFacingException e)
-        {
-            MessageBox.Show(e.Message);
-        }
-
-        public void Handel(CruiseDAL.UniqueConstraintException e)
-        {
-            MessageBox.Show("Record Already Exists");
-        }
     }
 }
