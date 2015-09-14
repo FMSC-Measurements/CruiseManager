@@ -144,7 +144,7 @@ namespace CSM.UI.DesignEditor
         {
             try
             {
-                var curST = StrataBindingSource.Current as StratumDO;
+                var curST = StrataBindingSource.Current as DesignEditorStratum;
                 if (curST == null) { return; }
                 Presentor.DeleteStratum(curST);
             }
@@ -214,6 +214,7 @@ namespace CSM.UI.DesignEditor
 
         private void StrataDataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
+            
             System.Diagnostics.Debug.WriteLine(e.Exception, "DataGridViewDataError");
         }
         #endregion

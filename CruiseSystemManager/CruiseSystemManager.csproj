@@ -184,6 +184,7 @@
       <DependentUpon>DataExportDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\DesignEditor\DesignEditorDataContext.cs" />
+    <Compile Include="UI\DesignEditor\DesignEditorStratum.cs" />
     <Compile Include="UI\DesignEditor\DesignEditViewControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

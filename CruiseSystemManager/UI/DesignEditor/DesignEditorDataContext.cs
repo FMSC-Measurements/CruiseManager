@@ -7,7 +7,7 @@ namespace CSM.UI.DesignEditor
     public class DesignEditorDataContext
     {
         private List<CuttingUnitDO> _ToBeDeletedCuttingUnits = new List<CuttingUnitDO>();
-        private List<StratumDO> _ToBeDeletedStrata = new List<StratumDO>();
+        private List<DesignEditorStratum> _ToBeDeletedStrata = new List<DesignEditorStratum>();
         private List<SampleGroupDO> _ToBeDeletedSampleGroups = new List<SampleGroupDO>();
         private List<TreeDefaultValueDO> _ToBeDelectedTreeDefaults = new List<TreeDefaultValueDO>();
 
@@ -50,7 +50,7 @@ namespace CSM.UI.DesignEditor
 
 
         public BindingList<CuttingUnitDO> CuttingUnits { get; set; }
-        public BindingList<StratumDO> Strata { get; set; }
+        public BindingList<DesignEditorStratum> Strata { get; set; }
         public BindingList<SampleGroupDO> SampleGroups { get; set; }
         public BindingList<PlotDO> Plots { get; set; }
 
@@ -61,7 +61,7 @@ namespace CSM.UI.DesignEditor
                 return _ToBeDeletedCuttingUnits;
             }
         }
-        public List<StratumDO> DeletedStrata
+        public List<DesignEditorStratum> DeletedStrata
         {
             get
             {
@@ -105,8 +105,8 @@ namespace CSM.UI.DesignEditor
             }
         }
 
-        private BindingList<StratumDO> _AllStrata ;
-        public BindingList<StratumDO> AllStrata
+        private BindingList<DesignEditorStratum> _AllStrata;
+        public BindingList<DesignEditorStratum> AllStrata
         {
             get { return _AllStrata; }
             set
@@ -144,7 +144,7 @@ namespace CSM.UI.DesignEditor
         }
 
         public BindingList<CuttingUnitDO> CuttingUnitFilterSelectionList { get; set; }
-        public BindingList<StratumDO> StrataFilterSelectionList { get; set; }
+        public BindingList<DesignEditorStratum> StrataFilterSelectionList { get; set; }
 
 
 

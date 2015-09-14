@@ -17,7 +17,7 @@ namespace CSM.UI.DesignEditor
     public class DesignEditorPresentor : IPresentor, ISaveHandler
     {
         private CuttingUnitDO _anyUnitOption;
-        private StratumDO _anyStratumOption;
+        private DesignEditorStratum _anyStratumOption;
         private DesignEditViewControl _view;
         
         public DesignEditorPresentor(IWindowPresenter windowPresenter)
@@ -112,10 +112,10 @@ namespace CSM.UI.DesignEditor
             if (DataContext.AllStrata == null) { return; }
             if (filterBy.Code != "ANY")
             {
-                List<StratumDO> strata = (from st in DataContext.AllStrata
+                var strata = (from st in DataContext.AllStrata
                                           where st.CuttingUnits.Contains(filterBy)
                                           select st).ToList();
-                DataContext.Strata = new BindingList<StratumDO>(strata);
+                DataContext.Strata = new BindingList<DesignEditorStratum>(strata);
             }
             else
             {
@@ -151,7 +151,7 @@ namespace CSM.UI.DesignEditor
         public StratumDO GetNewStratum()
         {
             if (DataContext.AllStrata == null) { return null; }
-            var newStratum = new StratumDO(Database);
+            var newStratum = new DesignEditorStratum(Database);
             DataContext.AllStrata.Add(newStratum);
             //Data.Strata.Add(newStratum);
             DataContext.OnDataModified();
@@ -196,7 +196,7 @@ namespace CSM.UI.DesignEditor
             DataContext.CuttingUnitFilterSelectionList.Remove(unit);            
         }
 
-        public void DeleteStratum(StratumDO stratum)
+        public void DeleteStratum(DesignEditorStratum stratum)
         {
 
             if (!CanEditStratumField(stratum, null))
@@ -307,16 +307,16 @@ namespace CSM.UI.DesignEditor
             
 
             //initialize strata
-            var strata = Database.Read<StratumDO>("Stratum", null, null);
+            var strata = Database.Read<DesignEditorStratum>("Stratum", null, null);
             foreach (StratumDO st in strata)
             {
                 st.CuttingUnits.Populate();
             }
-            DataContext.AllStrata = new BindingList<StratumDO>(strata);
-            DataContext.Strata = new BindingList<StratumDO>(strata);
+            DataContext.AllStrata = new BindingList<DesignEditorStratum>(strata);
+            DataContext.Strata = new BindingList<DesignEditorStratum>(strata);
 
-            BindingList<StratumDO> filterStrata = new BindingList<StratumDO>(strata.ToList());
-            _anyStratumOption = new StratumDO();
+            BindingList<DesignEditorStratum> filterStrata = new BindingList<DesignEditorStratum>(strata.ToList());
+            _anyStratumOption = new DesignEditorStratum();
             _anyStratumOption.Code = "ANY";
             filterStrata.Insert(0, _anyStratumOption);
             DataContext.StrataFilterSelectionList = filterStrata;

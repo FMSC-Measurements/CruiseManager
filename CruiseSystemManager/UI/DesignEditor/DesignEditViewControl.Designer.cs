@@ -39,13 +39,12 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.SalePurposeComboBox = new System.Windows.Forms.ComboBox();
             this.SaleBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.TabControl1 = new System.Windows.Forms.TabControl();
@@ -91,21 +90,7 @@
             this.comboBox6 = new System.Windows.Forms.ComboBox();
             this.Strata_CuttingUnitsSelectionBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.StrataDataGridView = new System.Windows.Forms.DataGridView();
-            this.codeDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.descriptionDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Method = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.cruiseMethodBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.basalAreaFactorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.fixedPlotSizeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.KZ3PPNT = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.fBSCodeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.monthDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.yearDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.YieldComponent = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.createdByDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.createdDateDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.modifiedByDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.modifiedDateDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.StrataBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
@@ -157,6 +142,20 @@
             this.label2 = new System.Windows.Forms.Label();
             this._deleteSubPopBTN = new System.Windows.Forms.Button();
             this.CuttingUnitErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.codeDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.descriptionDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Method = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.basalAreaFactorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fixedPlotSizeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.KZ3PPNT = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fBSCodeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Month = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.yearDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.YieldComponent = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.createdByDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.createdDateDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.modifiedByDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.modifiedDateDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             panel1 = new System.Windows.Forms.Panel();
             label6 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
@@ -817,7 +816,7 @@
             this.fixedPlotSizeDataGridViewTextBoxColumn,
             this.KZ3PPNT,
             this.fBSCodeDataGridViewTextBoxColumn,
-            this.monthDataGridViewTextBoxColumn,
+            this.Month,
             this.yearDataGridViewTextBoxColumn,
             this.YieldComponent,
             this.createdByDataGridViewTextBoxColumn1,
@@ -825,172 +824,34 @@
             this.modifiedByDataGridViewTextBoxColumn1,
             this.modifiedDateDataGridViewTextBoxColumn1});
             this.StrataDataGridView.DataSource = this.StrataBindingSource;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.StrataDataGridView.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.StrataDataGridView.DefaultCellStyle = dataGridViewCellStyle5;
             this.StrataDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.StrataDataGridView.Location = new System.Drawing.Point(3, 28);
             this.StrataDataGridView.Name = "StrataDataGridView";
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.StrataDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.StrataDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.StrataDataGridView.RowTemplate.Height = 24;
             this.StrataDataGridView.Size = new System.Drawing.Size(459, 352);
             this.StrataDataGridView.TabIndex = 0;
             this.StrataDataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.StrataDataGridView_DataError);
             this.StrataDataGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.StrataDataGridView_CellEnter);
             // 
-            // codeDataGridViewTextBoxColumn1
-            // 
-            this.codeDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.codeDataGridViewTextBoxColumn1.DataPropertyName = "Code";
-            this.codeDataGridViewTextBoxColumn1.HeaderText = "Stratum";
-            this.codeDataGridViewTextBoxColumn1.MaxInputLength = 2;
-            this.codeDataGridViewTextBoxColumn1.Name = "codeDataGridViewTextBoxColumn1";
-            this.codeDataGridViewTextBoxColumn1.ToolTipText = "Stratum Code";
-            this.codeDataGridViewTextBoxColumn1.Width = 68;
-            // 
-            // descriptionDataGridViewTextBoxColumn1
-            // 
-            this.descriptionDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.descriptionDataGridViewTextBoxColumn1.DataPropertyName = "Description";
-            this.descriptionDataGridViewTextBoxColumn1.HeaderText = "Description";
-            this.descriptionDataGridViewTextBoxColumn1.Name = "descriptionDataGridViewTextBoxColumn1";
-            this.descriptionDataGridViewTextBoxColumn1.ToolTipText = "Stratum Description";
-            this.descriptionDataGridViewTextBoxColumn1.Width = 85;
-            // 
-            // Method
-            // 
-            this.Method.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.Method.DataPropertyName = "Method";
-            this.Method.DataSource = this.cruiseMethodBindingSource;
-            this.Method.DisplayStyleForCurrentCellOnly = true;
-            this.Method.HeaderText = "Method";
-            this.Method.Name = "Method";
-            this.Method.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Method.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Method.ToolTipText = "Cruising Method";
-            this.Method.Width = 68;
-            // 
             // cruiseMethodBindingSource
             // 
             this.cruiseMethodBindingSource.DataSource = typeof(string);
-            // 
-            // basalAreaFactorDataGridViewTextBoxColumn
-            // 
-            this.basalAreaFactorDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.basalAreaFactorDataGridViewTextBoxColumn.DataPropertyName = "BasalAreaFactor";
-            this.basalAreaFactorDataGridViewTextBoxColumn.HeaderText = "BAF";
-            this.basalAreaFactorDataGridViewTextBoxColumn.Name = "basalAreaFactorDataGridViewTextBoxColumn";
-            this.basalAreaFactorDataGridViewTextBoxColumn.ToolTipText = "Basal Area Factor";
-            this.basalAreaFactorDataGridViewTextBoxColumn.Width = 52;
-            // 
-            // fixedPlotSizeDataGridViewTextBoxColumn
-            // 
-            this.fixedPlotSizeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.fixedPlotSizeDataGridViewTextBoxColumn.DataPropertyName = "FixedPlotSize";
-            this.fixedPlotSizeDataGridViewTextBoxColumn.HeaderText = "Fixed";
-            this.fixedPlotSizeDataGridViewTextBoxColumn.Name = "fixedPlotSizeDataGridViewTextBoxColumn";
-            this.fixedPlotSizeDataGridViewTextBoxColumn.ToolTipText = "Fixed Plot Size";
-            this.fixedPlotSizeDataGridViewTextBoxColumn.Width = 57;
-            // 
-            // KZ3PPNT
-            // 
-            this.KZ3PPNT.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.KZ3PPNT.DataPropertyName = "KZ3PPNT";
-            this.KZ3PPNT.HeaderText = "KZ";
-            this.KZ3PPNT.Name = "KZ3PPNT";
-            this.KZ3PPNT.ToolTipText = "KZ Value for Plot Level Estimates of Volume";
-            this.KZ3PPNT.Width = 46;
-            // 
-            // fBSCodeDataGridViewTextBoxColumn
-            // 
-            this.fBSCodeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.fBSCodeDataGridViewTextBoxColumn.DataPropertyName = "FBSCode";
-            this.fBSCodeDataGridViewTextBoxColumn.HeaderText = "FBSCode";
-            this.fBSCodeDataGridViewTextBoxColumn.Name = "fBSCodeDataGridViewTextBoxColumn";
-            this.fBSCodeDataGridViewTextBoxColumn.ToolTipText = "Fall Buck and Scale Code";
-            this.fBSCodeDataGridViewTextBoxColumn.Width = 77;
-            // 
-            // monthDataGridViewTextBoxColumn
-            // 
-            this.monthDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.monthDataGridViewTextBoxColumn.DataPropertyName = "Month";
-            dataGridViewCellStyle5.Format = "[Month]";
-            this.monthDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle5;
-            this.monthDataGridViewTextBoxColumn.HeaderText = "Month";
-            this.monthDataGridViewTextBoxColumn.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12"});
-            this.monthDataGridViewTextBoxColumn.Name = "monthDataGridViewTextBoxColumn";
-            this.monthDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.monthDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.monthDataGridViewTextBoxColumn.ToolTipText = "Month";
-            this.monthDataGridViewTextBoxColumn.Width = 62;
-            // 
-            // yearDataGridViewTextBoxColumn
-            // 
-            this.yearDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.yearDataGridViewTextBoxColumn.DataPropertyName = "Year";
-            this.yearDataGridViewTextBoxColumn.HeaderText = "Year";
-            this.yearDataGridViewTextBoxColumn.Name = "yearDataGridViewTextBoxColumn";
-            this.yearDataGridViewTextBoxColumn.ToolTipText = "Year";
-            this.yearDataGridViewTextBoxColumn.Width = 54;
-            // 
-            // YieldComponent
-            // 
-            this.YieldComponent.DataPropertyName = "YieldComponent";
-            this.YieldComponent.HeaderText = "Yield Component";
-            this.YieldComponent.Name = "YieldComponent";
-            this.YieldComponent.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            // 
-            // createdByDataGridViewTextBoxColumn1
-            // 
-            this.createdByDataGridViewTextBoxColumn1.DataPropertyName = "CreatedBy";
-            this.createdByDataGridViewTextBoxColumn1.HeaderText = "CreatedBy";
-            this.createdByDataGridViewTextBoxColumn1.Name = "createdByDataGridViewTextBoxColumn1";
-            this.createdByDataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
-            // createdDateDataGridViewTextBoxColumn1
-            // 
-            this.createdDateDataGridViewTextBoxColumn1.DataPropertyName = "CreatedDate";
-            this.createdDateDataGridViewTextBoxColumn1.HeaderText = "CreatedDate";
-            this.createdDateDataGridViewTextBoxColumn1.Name = "createdDateDataGridViewTextBoxColumn1";
-            this.createdDateDataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
-            // modifiedByDataGridViewTextBoxColumn1
-            // 
-            this.modifiedByDataGridViewTextBoxColumn1.DataPropertyName = "ModifiedBy";
-            this.modifiedByDataGridViewTextBoxColumn1.HeaderText = "ModifiedBy";
-            this.modifiedByDataGridViewTextBoxColumn1.Name = "modifiedByDataGridViewTextBoxColumn1";
-            this.modifiedByDataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
-            // modifiedDateDataGridViewTextBoxColumn1
-            // 
-            this.modifiedDateDataGridViewTextBoxColumn1.DataPropertyName = "ModifiedDate";
-            this.modifiedDateDataGridViewTextBoxColumn1.HeaderText = "ModifiedDate";
-            this.modifiedDateDataGridViewTextBoxColumn1.Name = "modifiedDateDataGridViewTextBoxColumn1";
-            this.modifiedDateDataGridViewTextBoxColumn1.ReadOnly = true;
             // 
             // StrataBindingSource
             // 
@@ -1201,14 +1062,14 @@
             this.SampleGroupDataGridView.AllowUserToAddRows = false;
             this.SampleGroupDataGridView.AllowUserToDeleteRows = false;
             this.SampleGroupDataGridView.AutoGenerateColumns = false;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.SampleGroupDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.SampleGroupDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.SampleGroupDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.SampleGroupDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.stratumDataGridViewTextBoxColumn,
@@ -1229,25 +1090,25 @@
             this.modifiedByDataGridViewTextBoxColumn2,
             this.modifiedDateDataGridViewTextBoxColumn2});
             this.SampleGroupDataGridView.DataSource = this.SampleGroupBindingSource;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.SampleGroupDataGridView.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.SampleGroupDataGridView.DefaultCellStyle = dataGridViewCellStyle9;
             this.SampleGroupDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SampleGroupDataGridView.Location = new System.Drawing.Point(3, 28);
             this.SampleGroupDataGridView.Name = "SampleGroupDataGridView";
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.SampleGroupDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.SampleGroupDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle10;
             this.SampleGroupDataGridView.RowTemplate.Height = 24;
             this.SampleGroupDataGridView.Size = new System.Drawing.Size(423, 352);
             this.SampleGroupDataGridView.TabIndex = 5;
@@ -1259,8 +1120,8 @@
             // 
             this.stratumDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
             this.stratumDataGridViewTextBoxColumn.DataPropertyName = "Stratum";
-            dataGridViewCellStyle9.Format = "[Code]";
-            this.stratumDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle8.Format = "[Code]";
+            this.stratumDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle8;
             this.stratumDataGridViewTextBoxColumn.HeaderText = "Stratum";
             this.stratumDataGridViewTextBoxColumn.Name = "stratumDataGridViewTextBoxColumn";
             this.stratumDataGridViewTextBoxColumn.ReadOnly = true;
@@ -1570,6 +1431,139 @@
             this.CuttingUnitErrorProvider.ContainerControl = this;
             this.CuttingUnitErrorProvider.DataSource = this.CuttingUnitsBindingSource;
             // 
+            // codeDataGridViewTextBoxColumn1
+            // 
+            this.codeDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.codeDataGridViewTextBoxColumn1.DataPropertyName = "Code";
+            this.codeDataGridViewTextBoxColumn1.HeaderText = "Stratum";
+            this.codeDataGridViewTextBoxColumn1.MaxInputLength = 2;
+            this.codeDataGridViewTextBoxColumn1.Name = "codeDataGridViewTextBoxColumn1";
+            this.codeDataGridViewTextBoxColumn1.ToolTipText = "Stratum Code";
+            this.codeDataGridViewTextBoxColumn1.Width = 68;
+            // 
+            // descriptionDataGridViewTextBoxColumn1
+            // 
+            this.descriptionDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.descriptionDataGridViewTextBoxColumn1.DataPropertyName = "Description";
+            this.descriptionDataGridViewTextBoxColumn1.HeaderText = "Description";
+            this.descriptionDataGridViewTextBoxColumn1.Name = "descriptionDataGridViewTextBoxColumn1";
+            this.descriptionDataGridViewTextBoxColumn1.ToolTipText = "Stratum Description";
+            this.descriptionDataGridViewTextBoxColumn1.Width = 85;
+            // 
+            // Method
+            // 
+            this.Method.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.Method.DataPropertyName = "Method";
+            this.Method.DataSource = this.cruiseMethodBindingSource;
+            this.Method.DisplayStyleForCurrentCellOnly = true;
+            this.Method.HeaderText = "Method";
+            this.Method.Name = "Method";
+            this.Method.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Method.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Method.ToolTipText = "Cruising Method";
+            this.Method.Width = 68;
+            // 
+            // basalAreaFactorDataGridViewTextBoxColumn
+            // 
+            this.basalAreaFactorDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.basalAreaFactorDataGridViewTextBoxColumn.DataPropertyName = "BasalAreaFactor";
+            this.basalAreaFactorDataGridViewTextBoxColumn.HeaderText = "BAF";
+            this.basalAreaFactorDataGridViewTextBoxColumn.Name = "basalAreaFactorDataGridViewTextBoxColumn";
+            this.basalAreaFactorDataGridViewTextBoxColumn.ToolTipText = "Basal Area Factor";
+            this.basalAreaFactorDataGridViewTextBoxColumn.Width = 52;
+            // 
+            // fixedPlotSizeDataGridViewTextBoxColumn
+            // 
+            this.fixedPlotSizeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.fixedPlotSizeDataGridViewTextBoxColumn.DataPropertyName = "FixedPlotSize";
+            this.fixedPlotSizeDataGridViewTextBoxColumn.HeaderText = "Fixed";
+            this.fixedPlotSizeDataGridViewTextBoxColumn.Name = "fixedPlotSizeDataGridViewTextBoxColumn";
+            this.fixedPlotSizeDataGridViewTextBoxColumn.ToolTipText = "Fixed Plot Size";
+            this.fixedPlotSizeDataGridViewTextBoxColumn.Width = 57;
+            // 
+            // KZ3PPNT
+            // 
+            this.KZ3PPNT.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.KZ3PPNT.DataPropertyName = "KZ3PPNT";
+            this.KZ3PPNT.HeaderText = "KZ";
+            this.KZ3PPNT.Name = "KZ3PPNT";
+            this.KZ3PPNT.ToolTipText = "KZ Value for Plot Level Estimates of Volume";
+            this.KZ3PPNT.Width = 46;
+            // 
+            // fBSCodeDataGridViewTextBoxColumn
+            // 
+            this.fBSCodeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.fBSCodeDataGridViewTextBoxColumn.DataPropertyName = "FBSCode";
+            this.fBSCodeDataGridViewTextBoxColumn.HeaderText = "FBSCode";
+            this.fBSCodeDataGridViewTextBoxColumn.Name = "fBSCodeDataGridViewTextBoxColumn";
+            this.fBSCodeDataGridViewTextBoxColumn.ToolTipText = "Fall Buck and Scale Code";
+            this.fBSCodeDataGridViewTextBoxColumn.Width = 77;
+            // 
+            // Month
+            // 
+            this.Month.DataPropertyName = "MonthStr";
+            this.Month.HeaderText = "Month";
+            this.Month.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12"});
+            this.Month.Name = "Month";
+            this.Month.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Month.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // yearDataGridViewTextBoxColumn
+            // 
+            this.yearDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.yearDataGridViewTextBoxColumn.DataPropertyName = "Year";
+            this.yearDataGridViewTextBoxColumn.HeaderText = "Year";
+            this.yearDataGridViewTextBoxColumn.Name = "yearDataGridViewTextBoxColumn";
+            this.yearDataGridViewTextBoxColumn.ToolTipText = "Year";
+            this.yearDataGridViewTextBoxColumn.Width = 54;
+            // 
+            // YieldComponent
+            // 
+            this.YieldComponent.DataPropertyName = "YieldComponent";
+            this.YieldComponent.HeaderText = "Yield Component";
+            this.YieldComponent.Name = "YieldComponent";
+            this.YieldComponent.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // createdByDataGridViewTextBoxColumn1
+            // 
+            this.createdByDataGridViewTextBoxColumn1.DataPropertyName = "CreatedBy";
+            this.createdByDataGridViewTextBoxColumn1.HeaderText = "CreatedBy";
+            this.createdByDataGridViewTextBoxColumn1.Name = "createdByDataGridViewTextBoxColumn1";
+            this.createdByDataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // createdDateDataGridViewTextBoxColumn1
+            // 
+            this.createdDateDataGridViewTextBoxColumn1.DataPropertyName = "CreatedDate";
+            this.createdDateDataGridViewTextBoxColumn1.HeaderText = "CreatedDate";
+            this.createdDateDataGridViewTextBoxColumn1.Name = "createdDateDataGridViewTextBoxColumn1";
+            this.createdDateDataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // modifiedByDataGridViewTextBoxColumn1
+            // 
+            this.modifiedByDataGridViewTextBoxColumn1.DataPropertyName = "ModifiedBy";
+            this.modifiedByDataGridViewTextBoxColumn1.HeaderText = "ModifiedBy";
+            this.modifiedByDataGridViewTextBoxColumn1.Name = "modifiedByDataGridViewTextBoxColumn1";
+            this.modifiedByDataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // modifiedDateDataGridViewTextBoxColumn1
+            // 
+            this.modifiedDateDataGridViewTextBoxColumn1.DataPropertyName = "ModifiedDate";
+            this.modifiedDateDataGridViewTextBoxColumn1.HeaderText = "ModifiedDate";
+            this.modifiedDateDataGridViewTextBoxColumn1.Name = "modifiedDateDataGridViewTextBoxColumn1";
+            this.modifiedDateDataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
             // DesignEditViewControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1732,6 +1726,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn modifiedByDataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn modifiedDateDataGridViewTextBoxColumn2;
         private System.Windows.Forms.Button _deleteSubPopBTN;
+        private System.Windows.Forms.DataGridViewComboBoxColumn monthDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn codeDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewComboBoxColumn Method;
@@ -1739,7 +1734,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn fixedPlotSizeDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn KZ3PPNT;
         private System.Windows.Forms.DataGridViewTextBoxColumn fBSCodeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewComboBoxColumn monthDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Month;
         private System.Windows.Forms.DataGridViewTextBoxColumn yearDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn YieldComponent;
         private System.Windows.Forms.DataGridViewTextBoxColumn createdByDataGridViewTextBoxColumn1;
