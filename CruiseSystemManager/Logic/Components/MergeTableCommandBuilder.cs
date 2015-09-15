@@ -484,10 +484,10 @@ namespace CSM.Logic.Components
 
                 List<string> conditions = new List<string>(3);
 
-                if (this.DoGUIDMatch)
-                {
-                    conditions.Add("GUIDMatch IS NOT NULL");
-                }
+                //if (this.DoGUIDMatch)
+                //{
+                //    conditions.Add("GUIDMatch IS NOT NULL");
+                //}
                 if (this.DoKeyMatch)
                 {
                     conditions.Add("RowIDMatch IS NOT NULL");
@@ -498,11 +498,11 @@ namespace CSM.Logic.Components
                 }
                 if (this.DoGUIDMatch && this.DoNaturalMatch)
                 {
-                    conditions.Add("GUIDMatch = NaturalMatch");
+                    conditions.Add("(GUIDMatch IS NULL OR GUIDMatch = NaturalMatch)");
                 }
                 if (this.DoGUIDMatch && this.DoKeyMatch)
                 {
-                    conditions.Add("RowIDMatch = GUIDMatch");
+                    conditions.Add("(GUIDMatch IS NULL OR RowIDMatch = GUIDMatch)");
                 }
                 if (this.DoNaturalMatch && this.DoKeyMatch)
                 {
