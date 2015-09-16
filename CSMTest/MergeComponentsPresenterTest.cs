@@ -5,6 +5,7 @@ using CruiseDAL.DataObjects;
 using CSM.Logic.Components;
 using System.Collections.Generic;
 using System;
+using CSM.Common;
 namespace CSMTest
 {    
     /// <summary>
@@ -79,7 +80,7 @@ namespace CSMTest
             using (DAL master = GetMaster())
             {
                 wPresenter.Database = master;
-                MergeComponentsPresenter cmPresenter = new MergeComponentsPresenter(wPresenter);
+                MergeComponentsPresenter cmPresenter = new MergeComponentsPresenter(wPresenter, null);
 
                 Assert.IsTrue(cmPresenter.MissingComponents.Count == 0);
 
@@ -116,11 +117,11 @@ namespace CSMTest
             using (DAL master = GetMaster())
             {
                 wPresenter.Database = master;
-                MergeComponentsPresenter cmPresenter = new MergeComponentsPresenter(wPresenter);
+                MergeComponentsPresenter cmPresenter = new MergeComponentsPresenter(wPresenter, null);
 
                 Assert.IsTrue(cmPresenter.MissingComponents.Count == 0);
 
-                PrepareMergeWorker worker = new PrepareMergeWorker(cmPresenter.MasterDB, cmPresenter.ActiveComponents);
+                PrepareMergeWorker worker = new PrepareMergeWorker(cmPresenter);
                 worker.ProgressChanged += HandleProgressChanged;
 
                 worker.BeginWork();
@@ -137,18 +138,18 @@ namespace CSMTest
             using (DAL master = GetMaster())
             {
                 wPresenter.Database = master;
-                MergeComponentsPresenter cmPresenter = new MergeComponentsPresenter(wPresenter);
+                MergeComponentsPresenter cmPresenter = new MergeComponentsPresenter(wPresenter, null);
 
                 Assert.IsTrue(cmPresenter.MissingComponents.Count == 0);
 
-                PrepareMergeWorker worker = new PrepareMergeWorker(cmPresenter.MasterDB, cmPresenter.ActiveComponents);
+                PrepareMergeWorker worker = new PrepareMergeWorker(cmPresenter);
                 worker.ProgressChanged += HandleProgressChanged;
 
                 worker.BeginWork();
 
                 worker.Wait();
 
-                MergeSyncWorker syncWorker = new MergeSyncWorker(cmPresenter.MasterDB, cmPresenter.ActiveComponents);
+                MergeSyncWorker syncWorker = new MergeSyncWorker(cmPresenter);
                 syncWorker.ProgressChanged += HandleProgressChanged;
 
                 syncWorker.BeginWork();

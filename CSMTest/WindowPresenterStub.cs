@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CruiseDAL;
-using CSM.DataTypes;
+using CSM.Models;
 
 namespace CSMTest
 {
@@ -172,17 +172,6 @@ namespace CSMTest
 
         #region IWindowPresenter Members
 
-
-        List<string> CSM.Logic.IWindowPresenter.GetCruiseMethods(bool reconMethodsOnly)
-        {
-            throw new NotImplementedException();
-        }
-
-        List<string> CSM.Logic.IWindowPresenter.GetCruiseMethods(DAL database, bool reconMethodsOnly)
-        {
-            throw new NotImplementedException();
-        }
-
         public object GetSampleGroupsByStratum(long? st_cn)
         {
             throw new NotImplementedException();
@@ -195,6 +184,119 @@ namespace CSMTest
         }
 
         public void ShowMessage(string message, string caption)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IWindowPresenter Members
+
+        public void ShowAboutDialog()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ShowCustomizeCruiseLayout()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ShowCreateComponentsLayout()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ShowHomeLayout()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ShowImportTemplate()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ShowEditDesign()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ShowDataEditor()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ShowEditWizard()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ShowCruiseWizardDialog()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ShowManageComponentsLayout()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ShowOpenCruiseDialog()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ShowTemplateLandingLayout()
+        {
+            throw new NotImplementedException();
+        }
+
+        public System.Windows.Forms.DialogResult AskYesNoCancel(string message, string caption)
+        {
+            throw new NotImplementedException();
+        }
+
+        public System.Windows.Forms.DialogResult AskYesNoCancel(string message, string caption, System.Windows.Forms.DialogResult defaultOption)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IApplicationController Members
+
+        public CSM.Common.IExceptionHandler ExceptionHandler
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public string[] RecentFiles
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public void Save()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveAs()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OpenFile(string filePath)
+        {
+            throw new NotImplementedException();
+        }
+
+        List<string> CSM.Logic.IApplicationController.GetCruiseMethods(bool reconMethodsOnly)
+        {
+            throw new NotImplementedException();
+        }
+
+        List<string> CSM.Logic.IApplicationController.GetCruiseMethods(DAL database, bool reconMethodsOnly)
         {
             throw new NotImplementedException();
         }

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CSM.UI;
+using CSM.Winforms;
 using CruiseDAL;
 using CruiseDAL.DataObjects;
-using CSM.UI.Components;
+using CSM.Winforms.Components;
 using CSM.Common;
 
 namespace CSM.Logic.Components

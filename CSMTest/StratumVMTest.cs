@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CruiseDAL;
 using CSM.Logic;
-using CSM.DataTypes;
+using CSM.Models;
 
 namespace CSMTest
 {

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using CruiseDAL;
 using CruiseDAL.DataObjects;
-using CSM.UI;
+using CSM.Winforms;
 using System.IO;
-using CSM.UI.Components;
+using CSM.Winforms.Components;
 using CSM.Common;
 
 namespace CSM.Logic

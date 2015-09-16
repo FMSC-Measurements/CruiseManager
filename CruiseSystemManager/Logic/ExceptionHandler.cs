@@ -11,7 +11,7 @@ namespace CSM.Logic
     {
         public void Handel(Exception e)
         {
-            if(e is CSM.UI.UserFacingException)
+            if(e is CSM.Winforms.UserFacingException)
             {
                  MessageBox.Show(e.Message);
             }

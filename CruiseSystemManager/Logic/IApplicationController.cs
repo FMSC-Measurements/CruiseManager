@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CruiseDAL;
-using CSM.DataTypes;
+using CSM.Models;
 using CSM.Common;
 
 namespace CSM.Logic

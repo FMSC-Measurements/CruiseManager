@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+
+namespace CSM.Winforms.RecordEditDialogs
+{
+    public partial class TreeEditDialog : Form
+    {
+        public TreeEditDialog()
+        {
+            InitializeComponent();
+        }
+
+    }
+}

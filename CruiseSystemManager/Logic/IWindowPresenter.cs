@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using CruiseDAL;
 using CruiseDAL.DataObjects;
-using CSM.DataTypes;
+using CSM.Models;
 using CSM.Utility.Setup;
 using System.Windows.Forms;
 

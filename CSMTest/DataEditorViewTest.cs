@@ -1,9 +1,9 @@
-﻿using CSM.UI.DataEditor;
+﻿using CSM.Winforms.DataEditor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CruiseDAL.DataObjects;
 using System.Collections.Generic;
 using CSM.Logic;
-using CSM.DataTypes;
+using CSM.Models;
 
 namespace CSMTest
 {
