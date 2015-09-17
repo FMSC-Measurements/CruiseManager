@@ -112,18 +112,18 @@ namespace CSM.Winforms.CruiseCustomize
             if (this._tallieDataLoaded) { return; }//we have already loaded this samplegroup before, dont reload it
 
             //initialize a tally entity for use with tally by sample group
-            TallyVM sgTally = base.DAL.ReadSingleRow<TallyVM>("Tally",
+            TallyVM sgTally = DAL.ReadSingleRow<TallyVM>("Tally",
                 "JOIN CountTree WHERE CountTree.Tally_CN = Tally.Tally_CN AND CountTree.SampleGroup_CN = ? AND ifnull(CountTree.TreeDefaultValue_CN, 0) = 0",
                 this.SampleGroup_CN);
 
 
             if (sgTally == null)
             {
-                sgTally = new TallyVM() { Description = this.Code };
+                sgTally = new TallyVM() { Description = Code };
             }
 
-            this.SgTallie = sgTally;
-            this.SgTallie.Validate();
+            SgTallie = sgTally;
+            SgTallie.Validate();
 
 
 

@@ -43,7 +43,7 @@ namespace CSM.Winforms.CruiseCustomize
         {
             WindowPresenter = presenter;
                         
-            this.IsLogGradingEnabled = this.WindowPresenter.Database.Read<SaleDO>("Sale", null)[0].LogGradingEnabled;
+            this.IsLogGradingEnabled = this.Database.Read<SaleDO>("Sale", null)[0].LogGradingEnabled;
 
         }
 
@@ -338,13 +338,13 @@ namespace CSM.Winforms.CruiseCustomize
         #region Tree / Log Field Setup
         public List<TreeFieldSetupDO> GetSelectedTreeFields(StratumDO stratum)
         {
-            return this.WindowPresenter.Database.Read<TreeFieldSetupDO>("TreeFieldSetup", "WHERE Stratum_CN = ? ORDER BY FieldOrder", stratum.Stratum_CN);
+            return this.Database.Read<TreeFieldSetupDO>("TreeFieldSetup", "WHERE Stratum_CN = ? ORDER BY FieldOrder", stratum.Stratum_CN);
         }
 
         public List<TreeFieldSetupDO> GetSelectedTreeFieldsDefault(StratumDO stratum)
         {
            //select from TreeFieldSetupDefault where method = stratum.method
-           List<TreeFieldSetupDefaultDO> treeFieldDefaults = WindowPresenter.Database.Read<TreeFieldSetupDefaultDO>("TreeFieldSetupDefault", "WHERE Method = ? ORDER BY FieldOrder", stratum.Method);
+           List<TreeFieldSetupDefaultDO> treeFieldDefaults = this.Database.Read<TreeFieldSetupDefaultDO>("TreeFieldSetupDefault", "WHERE Method = ? ORDER BY FieldOrder", stratum.Method);
            
            List<TreeFieldSetupDO> treeFields = new List<TreeFieldSetupDO>();
            
@@ -367,7 +367,7 @@ namespace CSM.Winforms.CruiseCustomize
 
         public List<LogFieldSetupDO> GetSelectedLogFields(StratumDO stratum)
         {
-            return this.WindowPresenter.Database.Read<LogFieldSetupDO>("LogFieldSetup", "WHERE Stratum_CN = ? ORDER BY FieldOrder", stratum.Stratum_CN);
+            return this.Database.Read<LogFieldSetupDO>("LogFieldSetup", "WHERE Stratum_CN = ? ORDER BY FieldOrder", stratum.Stratum_CN);
         }
 
         #endregion
@@ -423,23 +423,23 @@ namespace CSM.Winforms.CruiseCustomize
             if (!_isTreeAuditsInitialized) { return true; }
             try
             {
-                this.WindowPresenter.Database.BeginTransaction();
+                this.Database.BeginTransaction();
                 foreach (TreeAuditValueDO tav in TreeAudits)
                 {
                     if (tav.DAL == null)
                     {
-                        tav.DAL = this.WindowPresenter.Database;
+                        tav.DAL = this.Database;
                     }
                     tav.Save();
                     tav.TreeDefaultValues.Save();
                 }
-                this.WindowPresenter.Database.EndTransaction();
+                this.Database.EndTransaction();
                 return true;
             }
             catch (Exception ex)
             {
                 errorBuilder.AppendFormat("File save error. Tree Audit Rules was not saved. <Error details: {0}>", ex.ToString());
-                this.WindowPresenter.Database.CancelTransaction();
+                this.Database.CancelTransaction();
                 return false;
             }
 
@@ -450,23 +450,23 @@ namespace CSM.Winforms.CruiseCustomize
             if (!_isLogMatrixInitialized) { return true; }
             try
             {
-                this.WindowPresenter.Database.BeginTransaction();
+                this.Database.BeginTransaction();
 
                 foreach (LogMatrixDO lm in this.LogMatrix)
                 {
                     if (lm.IsPersisted == false)
                     {
-                        lm.DAL = this.WindowPresenter.Database;
+                        lm.DAL = this.Database;
                     }
                     lm.Save();
                 }
-                this.WindowPresenter.Database.EndTransaction();
+                this.Database.EndTransaction();
                 return true;
             }
             catch (Exception ex)
             {
                 errorBuilder.AppendFormat("File save error. Log Matrix data was not saved. <Error details: {0}>", ex.ToString());
-                this.WindowPresenter.Database.CancelTransaction();
+                this.Database.CancelTransaction();
                 return false;
             }
         }
@@ -477,7 +477,7 @@ namespace CSM.Winforms.CruiseCustomize
             try
             {
                 //begin transaction for saving strata and their field set up info
-                this.WindowPresenter.Database.BeginTransaction();
+                this.Database.BeginTransaction();
                 foreach (FieldSetupStratum stratum in this.FieldSetupStrata)
                 {
 
@@ -507,7 +507,7 @@ namespace CSM.Winforms.CruiseCustomize
                     {
                         if (tf.IsPersisted == false)
                         {
-                            tf.DAL = this.WindowPresenter.Database;
+                            tf.DAL = this.Database;
                             tf.Stratum = stratum;
                         }
                         tf.Save();
@@ -516,19 +516,19 @@ namespace CSM.Winforms.CruiseCustomize
                     {
                         if (lf.IsPersisted == false)
                         {
-                            lf.DAL = this.WindowPresenter.Database;
+                            lf.DAL = this.Database;
                             lf.Stratum = stratum;
                         }
                         lf.Save();
                     }
                 }//end foreach
-                this.WindowPresenter.Database.EndTransaction();
+                this.Database.EndTransaction();
                 return true;
             }
             catch (Exception ex)
             {
                 errorBuilder.AppendFormat("Field setup was not saved. <Error details: {0}>", ex.ToString());
-                this.WindowPresenter.Database.CancelTransaction();
+                this.Database.CancelTransaction();
                 return false;
             }
         }
@@ -558,7 +558,7 @@ namespace CSM.Winforms.CruiseCustomize
         {
             try
             {
-                WindowPresenter.Database.BeginTransaction();
+                this.Database.BeginTransaction();
 
                 //if ((sgVM.TallyMethod & TallyMode.Locked) != TallyMode.Locked)
                 //{
@@ -574,13 +574,13 @@ namespace CSM.Winforms.CruiseCustomize
                 {
                     SaveTallyBySpecies(sgVM);
                 }
-                WindowPresenter.Database.EndTransaction();
+                this.Database.EndTransaction();
                 sgVM.HasTallyEdits = false;
                 return true;
             }
             catch (Exception)
             {
-                WindowPresenter.Database.CancelTransaction();
+                this.Database.CancelTransaction();
                 errorBuilder.AppendFormat("Error: failed to setup tallies for SampleGroup({0} ) in Stratum ({1})", sgVM.Code, sgVM.Stratum.Code);
                 return false;
             }
@@ -590,10 +590,11 @@ namespace CSM.Winforms.CruiseCustomize
         {
             if ((sgVM.TallyMethod & TallyMode.Locked) != TallyMode.Locked)
             {
+                //remove any possible tally by species records
                 string command = "DELETE FROM CountTree WHERE SampleGroup_CN = ? AND ifnull(TreeDefaultValue_CN, 0) != 0;";
-                WindowPresenter.Database.Execute(command, sgVM.SampleGroup_CN);
+                this.Database.Execute(command, sgVM.SampleGroup_CN);
 
-                string user = WindowPresenter.Database.User;
+                string user = this.Database.User;
                 String makeCountsCommand = String.Format(@"INSERT  OR Fail INTO CountTree (CuttingUnit_CN, SampleGroup_CN,  CreatedBy)
                             Select CuttingUnitStratum.CuttingUnit_CN, SampleGroup.SampleGroup_CN,  '{0}' AS CreatedBy
                             From SampleGroup 
@@ -601,30 +602,31 @@ namespace CSM.Winforms.CruiseCustomize
                             ON SampleGroup.Stratum_CN = CuttingUnitStratum.Stratum_CN 
                             WHERE SampleGroup.SampleGroup_CN = {1};", user, sgVM.SampleGroup_CN);
 
-                WindowPresenter.Database.Execute(makeCountsCommand);
+                this.Database.Execute(makeCountsCommand);
             }
-            TallyVM tally = WindowPresenter.Database.ReadSingleRow<TallyVM>("Tally", "WHERE Description = ? AND HotKey = ?", sgVM.SgTallie.Description, sgVM.SgTallie.Hotkey);
+            TallyVM tally = this.Database.ReadSingleRow<TallyVM>("Tally", "WHERE Description = ? AND HotKey = ?", sgVM.SgTallie.Description, sgVM.SgTallie.Hotkey);
             if (tally == null)
             {
-                tally = new TallyVM(WindowPresenter.Database) { Description = sgVM.SgTallie.Description, Hotkey = sgVM.SgTallie.Hotkey };
+                tally = new TallyVM(this.Database) { Description = sgVM.SgTallie.Description, Hotkey = sgVM.SgTallie.Hotkey };
                 //tally = sgVM.SgTallie;
                 tally.Save();
             }
 
             String setTallyCommand = String.Format("UPDATE CountTree Set Tally_CN = {0} WHERE SampleGroup_CN = {1};",
                 tally.Tally_CN, sgVM.SampleGroup_CN);
-
-            WindowPresenter.Database.Execute(setTallyCommand);
+            
+            this.Database.Execute(setTallyCommand);
         }
 
         private void SaveTallyBySpecies(TallySetupSampleGroup sgVM)
         {
             if ((sgVM.TallyMethod & TallyMode.Locked) != TallyMode.Locked)
             {
+                //remove any pre existing tally by sg entries
                 string command = "DELETE FROM CountTree WHERE SampleGroup_CN = ? AND ifnull(TreeDefaultValue_CN, 0) = 0;";
-                WindowPresenter.Database.Execute(command, sgVM.SampleGroup_CN);
+                this.Database.Execute(command, sgVM.SampleGroup_CN);
 
-                string user = WindowPresenter.Database.User;
+                string user = this.Database.User;
                 String makeCountsCommand = String.Format(@"INSERT  OR IGNORE INTO CountTree (CuttingUnit_CN, SampleGroup_CN, TreeDefaultValue_CN, CreatedBy)
                         Select CuttingUnitStratum.CuttingUnit_CN, SampleGroup.SampleGroup_CN, SampleGroupTreeDefaultValue.TreeDefaultValue_CN, '{0}' AS CreatedBy 
                         From SampleGroup 
@@ -636,14 +638,14 @@ namespace CSM.Winforms.CruiseCustomize
                         user, sgVM.SampleGroup_CN);
 
 
-                WindowPresenter.Database.Execute(makeCountsCommand);
+                this.Database.Execute(makeCountsCommand);
             }
             foreach (KeyValuePair<TreeDefaultValueDO, TallyVM> pair in sgVM.Tallies)
             {
-                TallyVM tally = WindowPresenter.Database.ReadSingleRow<TallyVM>("Tally", "WHERE Description = ? AND HotKey = ?", pair.Value.Description, pair.Value.Hotkey);
+                TallyVM tally = this.Database.ReadSingleRow<TallyVM>("Tally", "WHERE Description = ? AND HotKey = ?", pair.Value.Description, pair.Value.Hotkey);
                 if (tally == null)
                 {
-                    tally = new TallyVM(WindowPresenter.Database) { Description = pair.Value.Description, Hotkey = pair.Value.Hotkey };
+                    tally = new TallyVM(this.Database) { Description = pair.Value.Description, Hotkey = pair.Value.Hotkey };
                     //tally = pair.Value;
                     //tally.DAL = Controller.Database;
                     tally.Save();
@@ -652,7 +654,7 @@ namespace CSM.Winforms.CruiseCustomize
                 string setTallyCommand = String.Format("UPDATE CountTree Set Tally_CN = {0} WHERE SampleGroup_CN = {1} AND TreeDefaultValue_CN = {2}",
                     tally.Tally_CN, sgVM.SampleGroup_CN, pair.Key.TreeDefaultValue_CN);
 
-                WindowPresenter.Database.Execute(setTallyCommand);
+                this.Database.Execute(setTallyCommand);
             }
         }
 
