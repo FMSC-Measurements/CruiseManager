@@ -22,9 +22,9 @@ namespace CSM.Winforms.Dashboard
             var _openClickDispatcher = new NavOption(this.WindowPresenter.ShowOpenCruiseDialog, this.openToolStripMenuItem);
             var _newFileClickDispatcher = new NavOption(this.WindowPresenter.ShowCruiseWizardDialog, this.newToolStripMenuItem);
 
-            var _saveClickDispatcher = new NavOption(this.WindowPresenter.Save, this.saveAsToolStripMenuItem);
+            var _saveClickDispatcher = new NavOption(this.WindowPresenter.Save, this.saveToolStripMenuItem);
             var _aboutClickDispatcher = new NavOption(this.WindowPresenter.ShowAboutDialog, this.aboutToolStripMenuItem);
-            var _saveAsClickDispatcher = new NavOption(this.WindowPresenter.SaveAs); 
+            var _saveAsClickDispatcher = new NavOption(this.WindowPresenter.SaveAs, this.saveAsToolStripMenuItem); 
 
 
             //this.openToolStripMenuItem.Click += new EventHandler(this.WindowPresenter.HandleOpenFileClick);
