@@ -33,29 +33,43 @@ namespace CSM.Winforms.CruiseCustomize
             set { _sgTallie = value; }
         }
 
+        public Dictionary<TreeDefaultValueDO, TallyPopulation> TallyPopulations { get; protected set; }
+
         public bool HasTallyEdits
         {
             get { return _hasTallyEdits; }
             set { _hasTallyEdits = value; }
         }
 
+        public bool IsTallyModeLocked
+        {
+            get
+            {
+                return (TallyMethod & CruiseDAL.Enums.TallyMode.Locked) == CruiseDAL.Enums.TallyMode.Locked;
+            }
+        }
 
         public bool UseSystematicSampling
         {
             get
             {
-                if (IsSTR)
-                {
-                    return base.SampleSelectorType == CruiseDAL.Schema.Constants.CruiseMethods.SYSTEMATIC_SAMPLER_TYPE;
-                }
-                return false;
+       
+                return base.SampleSelectorType == CruiseDAL.Schema.Constants.CruiseMethods.SYSTEMATIC_SAMPLER_TYPE;                
             }
             set
             {
-                if (IsSTR && CanChangeSamplerType)
+                if(UseSystematicSampling == value) { return; }
+                if(CanChangeSamplerType)
                 {
-                    base.SampleSelectorType = (value) ? CruiseDAL.Schema.Constants.CruiseMethods.SYSTEMATIC_SAMPLER_TYPE : string.Empty;
-                    this.HasTallyEdits = true;
+                    if(IsSTR)
+                    {
+                        base.SampleSelectorType = (value) ? CruiseDAL.Schema.Constants.CruiseMethods.SYSTEMATIC_SAMPLER_TYPE : string.Empty;
+                        this.HasTallyEdits = true;
+                    }
+                }
+                else
+                {
+                    throw new UserFacingException("Sample Settings are locked on this Sample Group");
                 }
             }
         }
@@ -67,6 +81,17 @@ namespace CSM.Winforms.CruiseCustomize
                 return SampleGroupDO.CanChangeSamplerType(this);
             }
         }
+
+        public bool CanTallyBySG
+        {
+            get
+            {
+                return (this.Stratum.Method != CruiseDAL.Schema.Constants.CruiseMethods.THREEP);
+            }
+        }
+
+        public bool CanTallyBySpecies
+        {  get { return true; } }
 
         public bool IsSTR
         {
@@ -111,29 +136,38 @@ namespace CSM.Winforms.CruiseCustomize
         {
             if (this._tallieDataLoaded) { return; }//we have already loaded this samplegroup before, dont reload it
 
+            this.TallyPopulations = new Dictionary<TreeDefaultValueDO, TallyPopulation>();
+
             //initialize a tally entity for use with tally by sample group
             TallyVM sgTally = DAL.ReadSingleRow<TallyVM>("Tally",
                 "JOIN CountTree WHERE CountTree.Tally_CN = Tally.Tally_CN AND CountTree.SampleGroup_CN = ? AND ifnull(CountTree.TreeDefaultValue_CN, 0) = 0",
                 this.SampleGroup_CN);
 
+            TallyPopulation sgTallyPopulation = DAL.QuerySingleRecord<TallyPopulation>("SELECT SampleGroup_CN, TreeDefaultValue_CN, tally.HotKey as HotKey, tally.Description as Description " +
+                "FROM CountTree " +
+                "JOIN Tally USING (Tally_CN) " +
+                "WHERE CountTree.Tally_CN = Tally.Tally_CN " +
+                "AND CountTree.SampleGroup_CN = ? " + 
+                "AND ifnull(CountTree.TreeDefaultValue_CN, 0) = 0;") 
+                ?? new TallyPopulation() { Description = Code };
+
+            this.TallyPopulations.Add(null, sgTallyPopulation);
 
             if (sgTally == null)
             {
                 sgTally = new TallyVM() { Description = Code };
+                
             }
 
             SgTallie = sgTally;
             SgTallie.Validate();
-
-
-
 
             //initialize a list of tallys for use with tally by species 
             this.Tallies = new Dictionary<TreeDefaultValueDO, TallyVM>();
             this.TreeDefaultValues.Populate();
             foreach (TreeDefaultValueDO tdv in this.TreeDefaultValues)
             {
-                TallyVM tally = base.DAL.Read<TallyVM>("Tally", "JOIN CountTree WHERE CountTree.Tally_CN = Tally.Tally_CN AND CountTree.SampleGroup_CN = ? AND CountTree.TreeDefaultValue_CN = ?",
+                TallyVM tally = DAL.Read<TallyVM>("Tally", "JOIN CountTree WHERE CountTree.Tally_CN = Tally.Tally_CN AND CountTree.SampleGroup_CN = ? AND CountTree.TreeDefaultValue_CN = ?",
                     this.SampleGroup_CN, tdv.TreeDefaultValue_CN).FirstOrDefault();
 
                 if (tally == null)
@@ -141,12 +175,18 @@ namespace CSM.Winforms.CruiseCustomize
                     tally = new TallyVM() { Description = tdv.Species + ((tdv.LiveDead == "D") ? "/D" : "") };
                 }
 
-                //if (tally == null)
-                //{
-                //    tally = new TallyDO(base.DAL) { Description = tdv.Species + ((tdv.LiveDead == "D") ? "/D" : "") };
-                //}
                 tally.Validate();
                 this.Tallies.Add(tdv, tally);
+
+                TallyPopulation tallyPopulation = DAL.QuerySingleRecord<TallyPopulation>("SELECT SampleGroup_CN, TreeDefaultValue_CN, tally.HotKey, tally.Description " +
+                "FROM CountTree " +
+                "JOIN Tally USING (Tally_CN) " +
+                "WHERE CountTree.Tally_CN = Tally.Tally_CN " +
+                "AND CountTree.SampleGroup_CN = ? " +
+                "AND CountTree.TreeDefaultValue_CN = ?;", tdv.TreeDefaultValue_CN)
+                ?? new TallyPopulation() { Description = tdv.Species + ((tdv.LiveDead == "D") ? "/D" : "") };
+
+                this.TallyPopulations.Add(tdv, tallyPopulation);
             }
 
             this._tallieDataLoaded = true;

@@ -12,9 +12,11 @@ namespace CSM.Winforms.CruiseCustomize
     public delegate void TallyItemChangedEventHandler(TallyDO tally);
     public delegate TallyDO AddNewTallyEventHandler();
 
+    
 
     public partial class TallyEditPanel : UserControl
     {
+        private static readonly TreeDefaultValueDO[] EMPTY_SPECIES_LIST = new TreeDefaultValueDO[0];
         private bool _changingSampleGroup = false;
         private bool _changingCurrTally = false;
 
@@ -28,24 +30,20 @@ namespace CSM.Winforms.CruiseCustomize
             this._behaviorCB.Items.AddRange(CSM.Utility.R.Strings.INDICATOR_TYPES);
         }
 
-        private bool _allowTallyBySp = true; 
-        public bool AllowTallyBySpecies 
+        protected bool AllowTallyBySpecies 
         {
-            get { return _allowTallyBySp; }
+            get { return this._tallyBySpRB.Enabled; }
             set
             {
-                _allowTallyBySp = value;
                 this._tallyBySpRB.Enabled = value;
             }
         }
 
-        private bool _allowTallyBySG = true;
-        public bool AllowTallyBySG
+        protected bool AllowTallyBySG
         {
-            get { return _allowTallyBySG; }
+            get { return this._tallyBySGRB.Enabled; }
             set
             {
-                _allowTallyBySG = value;
                 this._tallyBySGRB.Enabled = value;
             }
         }
@@ -68,22 +66,22 @@ namespace CSM.Winforms.CruiseCustomize
 
                 _sampleGroup = value;
                 _changingSampleGroup = true;
-                OnTallyModeChanged();
+                OnSampleGroupChanged();
                 _changingSampleGroup = false;
             }
         }
 
-        private List<TallyVM> _tallyPresets;
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public List<TallyVM> TallyPresets 
-        {
-            get { return _tallyPresets; }
-            set
-            {
-                _BS_tallyPresets.DataSource = value;
-                _tallyPresets = value;
-            }
-        }
+        //private List<TallyVM> _tallyPresets;
+        //[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        //public List<TallyVM> TallyPresets 
+        //{
+        //    get { return _tallyPresets; }
+        //    set
+        //    {
+        //        _BS_tallyPresets.DataSource = value;
+        //        _tallyPresets = value;
+        //    }
+        //}
 
 
         [Browsable(false)]
@@ -95,7 +93,7 @@ namespace CSM.Winforms.CruiseCustomize
                 if (_sampleGroup == null) { return CruiseDAL.Enums.TallyMode.Unknown; }
                 return _sampleGroup.TallyMethod; 
             }
-            set
+            protected set
             {
                 if (SampleGroup.TallyMethod == value) { return; }
                 SampleGroup.TallyMethod = value;
@@ -111,36 +109,31 @@ namespace CSM.Winforms.CruiseCustomize
         public TallyDO CurrentTally
         {
             get { return _currentTally; }
-            set
+            protected set
             {
                 if (_currentTally == value) { return; }
                 _currentTally = value;
                 _changingCurrTally = true;
-                if (value != null)
+                if (value == null || string.IsNullOrEmpty(value.Hotkey))
                 {
-                    int index = _BS_tallyPresets.IndexOf(value);
-                    _BS_tallyPresets.Position = index;
-                    if (index == -1)
-                    {
-                        _presetCB.Text = "";
-                    }
-                    if (string.IsNullOrEmpty(value.Hotkey))
-                    {
-                        _hotKeyCB.Text = "";
-                    }
-                    if (string.IsNullOrEmpty(value.IndicatorType))
-                    {
-                        _behaviorCB.Text = "";
-                    }
-                    _BS_CurTally.DataSource = value;
-                    
-                    
+                    _hotKeyCB.Text = "";
                 }
-                else
+                if (value == null || string.IsNullOrEmpty(value.IndicatorType))
                 {
-                    //_BS_CurTally.DataSource = null;
-                    //_BS_tallyPresets.Position = -1;
+                    _behaviorCB.Text = "";
                 }
+                //if (value != null)
+                //{
+                //    //int index = _BS_tallyPresets.IndexOf(value);
+                //    //_BS_tallyPresets.Position = index;
+                //    //if (index == -1)
+                //    //{
+                //    //    _presetCB.Text = "";
+                //    //}                                        
+                //}
+
+                _BS_CurTally.DataSource = (object)value ?? (object)typeof(TallyDO);
+
                 _changingCurrTally = false;
             }
         }
@@ -156,35 +149,52 @@ namespace CSM.Winforms.CruiseCustomize
             }
         }
 
-        protected void OnTallyModeChanged()
+        protected void OnSampleGroupChanged()
         {
-            if ((this.TallyMode & CruiseDAL.Enums.TallyMode.Locked) == CruiseDAL.Enums.TallyMode.Locked)
+            if(this.SampleGroup != null)
             {
-                _tallyBySGRB.Enabled = false;
-                _tallyBySpRB.Enabled = false;
-                _dontTallyRB.Enabled = false;
+                if (this.SampleGroup.IsTallyModeLocked)
+                {
+                    _tallyBySGRB.Enabled = false;
+                    _tallyBySpRB.Enabled = false;
+                    _dontTallyRB.Enabled = false;
+                }
+                else
+                {
+                    _tallyBySGRB.Enabled = this.SampleGroup.CanTallyBySG;
+                    _tallyBySpRB.Enabled = this.SampleGroup.CanTallyBySpecies;
+                    _dontTallyRB.Enabled = true;
+                }
+
+                OnTallyModeChanged();
             }
             else
             {
-                _tallyBySGRB.Enabled = this.AllowTallyBySG;
-                _tallyBySpRB.Enabled = this.AllowTallyBySpecies;
-                _dontTallyRB.Enabled = true;
+                this._GB_topLevelContainer.Enabled = false;
+                _tallyBySGRB.Checked = false;
+                _tallyBySpRB.Checked = false;
+                _dontTallyRB.Checked = false;
+                _BS_SPList.DataSource = EMPTY_SPECIES_LIST;
             }
+            
+        }
 
+        protected void OnTallyModeChanged()
+        {
             if ((this.TallyMode & CruiseDAL.Enums.TallyMode.BySampleGroup) == CruiseDAL.Enums.TallyMode.BySampleGroup)
             {
-                _contentPanel.Enabled = true;
+                _GB_tallyFields.Enabled = true;
                 _tallyBySGRB.Checked = true;
                 _tallyBySpRB.Checked = false;
                 _dontTallyRB.Checked = false;
                 _speciesGB.Enabled = false;
-                _BS_SPList.DataSource = null;
+                _BS_SPList.DataSource = EMPTY_SPECIES_LIST;
                 CurrentTally = SampleGroup.SgTallie;
 
             }
             else if ((this.TallyMode & CruiseDAL.Enums.TallyMode.BySpecies) == CruiseDAL.Enums.TallyMode.BySpecies)
             {
-                _contentPanel.Enabled = true;
+                _GB_tallyFields.Enabled = true;
                 _tallyBySGRB.Checked = false;
                 _tallyBySpRB.Checked = true;
                 _dontTallyRB.Checked = false;
@@ -195,13 +205,13 @@ namespace CSM.Winforms.CruiseCustomize
             }
             else if ((this.TallyMode & CruiseDAL.Enums.TallyMode.None) == CruiseDAL.Enums.TallyMode.None)
             {
-                _contentPanel.Enabled = false;
+                _GB_tallyFields.Enabled = false;
                 _tallyBySGRB.Checked = false;
                 _tallyBySpRB.Checked = false;
                 _dontTallyRB.Checked = true;
                 _speciesGB.Enabled = false;
-                //_speciesLB.DataSource = null;
-                _BS_SPList.DataSource = null;
+                _BS_SPList.DataSource = EMPTY_SPECIES_LIST;
+                CurrentTally = null;
             }
 
             if (!_changingSampleGroup)
@@ -216,24 +226,24 @@ namespace CSM.Winforms.CruiseCustomize
         }
 
 
-        private void _BS_tallyPresets_CurrentChanged(object sender, EventArgs e)
-        {
-            if (_changingCurrTally == true) { return; }
-            if (this.SampleGroup == null) { return; }
-            this.SampleGroup.HasTallyEdits = true;
+        //private void _BS_tallyPresets_CurrentChanged(object sender, EventArgs e)
+        //{
+        //    if (_changingCurrTally == true) { return; }
+        //    if (this.SampleGroup == null) { return; }
+        //    this.SampleGroup.HasTallyEdits = true;
             
-            TallyVM tally = _BS_tallyPresets.Current as TallyVM;
-            if (this._currTDV != null)
-            {
-                this.SampleGroup.Tallies[_currTDV] = tally;
-            }
-            else
-            {
-                this.SampleGroup.SgTallie = tally;
-            }
+        //    TallyVM tally = _BS_tallyPresets.Current as TallyVM;
+        //    if (this._currTDV != null)
+        //    {
+        //        this.SampleGroup.Tallies[_currTDV] = tally;
+        //    }
+        //    else
+        //    {
+        //        this.SampleGroup.SgTallie = tally;
+        //    }
 
-            CurrentTally = tally;
-        }
+        //    CurrentTally = tally;
+        //}
 
 
         private void _addTallyButton_Click(object sender, EventArgs e)
@@ -280,7 +290,7 @@ namespace CSM.Winforms.CruiseCustomize
 
         private void _BS_CurTally_CurrentItemChanged(object sender, EventArgs e)
         {
-            if (!_changingSampleGroup)
+            if (!_changingSampleGroup && !_changingCurrTally)
             {
                 this.SampleGroup.HasTallyEdits = true;
             }

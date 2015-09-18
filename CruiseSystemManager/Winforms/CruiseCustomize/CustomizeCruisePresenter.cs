@@ -47,11 +47,6 @@ namespace CSM.Winforms.CruiseCustomize
 
         }
 
-        public void UpdateView()
-        {
-            
-                        
-        }
         
         public void InitializeFieldSetup()
         {
@@ -86,6 +81,7 @@ namespace CSM.Winforms.CruiseCustomize
 
                     st.UnselectedLogFields = unselectedLogFields;
                     st.UnselectedTreeFields = unselectedTreeFields;
+                    this._isFieldSetupInitialized = true;
                 }
 
             }
@@ -123,6 +119,8 @@ namespace CSM.Winforms.CruiseCustomize
             {
                 TreeDefaults = this.Database.Read<TreeDefaultValueDO>("TreeDefaultValue", null);
                 TreeAudits = this.Database.Read<TreeAuditValueDO>("TreeAuditValue", "Order By Field");
+                _isTreeAuditsInitialized = true;
+                
             }
             catch (Exception e)
             {
@@ -145,12 +143,14 @@ namespace CSM.Winforms.CruiseCustomize
                     this.LoadSampleGroups(stratum);
                 }
                 TallyPresets = this.Database.Read<TallyVM>("Tally", null);
-                this.View.UpdateTallySetupView();
+                _isTallySetupInitialized = true;
+                
             }
             catch (Exception e)
             {
                 throw new NotImplementedException(null,e);
             }
+            this.View.UpdateTallySetupView();
         }
 
         #region Tally Setup
@@ -700,7 +700,16 @@ namespace CSM.Winforms.CruiseCustomize
             //GC.SuppressFinalize(this);
         }
 
-     
+
+
+
+        #endregion
+
+        #region IPresenter Members
+        public void UpdateView()
+        {
+
+        }
         #endregion
     }
 }

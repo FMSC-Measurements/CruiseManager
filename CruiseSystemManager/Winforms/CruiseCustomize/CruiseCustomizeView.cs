@@ -137,37 +137,37 @@ namespace CSM.Winforms.CruiseCustomize
 
             if (this.Presenter.WindowPresenter.AppState.InSupervisorMode)
             {
-                this._logMatrixPage = new LogMatrixSettingsView(this.Presenter);
-                this._logMatrixPage.SuspendLayout();
-                this._logMatrixPage.Dock = DockStyle.Fill;
-
-                this._logMatrixTabPage = new System.Windows.Forms.TabPage();
-                this._logMatrixTabPage.SuspendLayout();
-
-
-                // 
-                // _logMatrixTabPage
-                // 
-                this._logMatrixTabPage.Controls.Add(this._logMatrixPage);
-                this._logMatrixTabPage.Location = new System.Drawing.Point(4, 22);
-                this._logMatrixTabPage.Name = "_logMatrixTabPage";
-                this._logMatrixTabPage.Padding = new System.Windows.Forms.Padding(3);
-                this._logMatrixTabPage.Size = new System.Drawing.Size(632, 391);
-                this._logMatrixTabPage.TabIndex = 7;
-                this._logMatrixTabPage.Text = "Log Matrix";
-                this._logMatrixTabPage.UseVisualStyleBackColor = true;
-                this._logMatrixTabPage.Enter += new EventHandler(_logMatrixTabPage_Enter);
-
-                this._logMatrixTabPage.ResumeLayout(false);
-                this._logMatrixPage.ResumeLayout(false);
-
-                this._tabControl.Controls.Add(this._logMatrixTabPage);
-
-
+                InitializeLogMatrixComponent();
             }        
         }
 
-        
+        private void InitializeLogMatrixComponent()
+        {
+            this._logMatrixPage = new LogMatrixSettingsView(this.Presenter);
+            this._logMatrixPage.SuspendLayout();
+            this._logMatrixPage.Dock = DockStyle.Fill;
+
+            this._logMatrixTabPage = new System.Windows.Forms.TabPage();
+            this._logMatrixTabPage.SuspendLayout();
+
+
+            // 
+            // _logMatrixTabPage
+            // 
+            this._logMatrixTabPage.Controls.Add(this._logMatrixPage);
+            this._logMatrixTabPage.Location = new System.Drawing.Point(4, 22);
+            this._logMatrixTabPage.Name = "_logMatrixTabPage";
+            this._logMatrixTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this._logMatrixTabPage.Size = new System.Drawing.Size(632, 391);
+            this._logMatrixTabPage.TabIndex = 7;
+            this._logMatrixTabPage.Text = "Log Matrix";
+            this._logMatrixTabPage.UseVisualStyleBackColor = true;
+
+            this._logMatrixTabPage.ResumeLayout(false);
+            this._logMatrixPage.ResumeLayout(false);
+
+            this._tabControl.Controls.Add(this._logMatrixTabPage);
+        }
 
         #region Component Designer generated code
 
@@ -179,10 +179,10 @@ namespace CSM.Winforms.CruiseCustomize
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.TableLayoutPanel _treeAuditRulesLayout;
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.Label label8;
             System.Windows.Forms.Label label7;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CruiseCustomizeView));
@@ -339,14 +339,14 @@ namespace CSM.Winforms.CruiseCustomize
             this._tdvDGV.AllowUserToAddRows = false;
             this._tdvDGV.AllowUserToResizeRows = false;
             this._tdvDGV.AutoGenerateColumns = false;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this._tdvDGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this._tdvDGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this._tdvDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this._tdvDGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.speciesDataGridViewTextBoxColumn1,
@@ -367,14 +367,14 @@ namespace CSM.Winforms.CruiseCustomize
             this.averageZDataGridViewTextBoxColumn1,
             this.referenceHeightPercentDataGridViewTextBoxColumn1});
             this._tdvDGV.DataSource = this._BS_treeDefaults;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this._tdvDGV.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this._tdvDGV.DefaultCellStyle = dataGridViewCellStyle6;
             this._tdvDGV.Dock = System.Windows.Forms.DockStyle.Fill;
             this._tdvDGV.Location = new System.Drawing.Point(0, 236);
             this._tdvDGV.Margin = new System.Windows.Forms.Padding(0);
@@ -548,28 +548,28 @@ namespace CSM.Winforms.CruiseCustomize
             // 
             this._treeAuditDGV.AllowUserToResizeRows = false;
             this._treeAuditDGV.AutoGenerateColumns = false;
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this._treeAuditDGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this._treeAuditDGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this._treeAuditDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this._treeAuditDGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.fieldDataGridViewTextBoxColumn,
             this.minDataGridViewTextBoxColumn,
             this.maxDataGridViewTextBoxColumn});
             this._treeAuditDGV.DataSource = this._BS_treeAudits;
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this._treeAuditDGV.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this._treeAuditDGV.DefaultCellStyle = dataGridViewCellStyle8;
             this._treeAuditDGV.Dock = System.Windows.Forms.DockStyle.Fill;
             this._treeAuditDGV.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this._treeAuditDGV.Location = new System.Drawing.Point(0, 20);
@@ -752,7 +752,6 @@ namespace CSM.Winforms.CruiseCustomize
             this._fieldSetupPage.TabIndex = 0;
             this._fieldSetupPage.Text = "Field Setup";
             this._fieldSetupPage.UseVisualStyleBackColor = true;
-            this._fieldSetupPage.Enter += new System.EventHandler(this._fieldSetupPage_Enter);
             // 
             // _fieldSetup_Child_TabControl
             // 
@@ -792,9 +791,9 @@ namespace CSM.Winforms.CruiseCustomize
             this._treeFieldWidget.Size = new System.Drawing.Size(478, 304);
             this._treeFieldWidget.TabIndex = 0;
             this._treeFieldWidget.ValueMember = null;
-            this._treeFieldWidget.SelectedValueChanged += new FMSC.Controls.SelectedValueChangedEventHandler(this._treeFieldWidget_SelectedValueChanged);
-            this._treeFieldWidget.SelectionAdded += new FMSC.Controls.SelectionAddedEventHandler(this._treeFieldWidget_SelectionAdded);
             this._treeFieldWidget.SelectionMoved += new FMSC.Controls.ItemMovedEventHandler(this._treeFieldWidget_SelectionMoved);
+            this._treeFieldWidget.SelectionAdded += new FMSC.Controls.SelectionAddedEventHandler(this._treeFieldWidget_SelectionAdded);
+            this._treeFieldWidget.SelectedValueChanged += new FMSC.Controls.SelectedValueChangedEventHandler(this._treeFieldWidget_SelectedValueChanged);
             // 
             // panel3
             // 
@@ -863,9 +862,9 @@ namespace CSM.Winforms.CruiseCustomize
             this._logFieldWidget.Size = new System.Drawing.Size(478, 304);
             this._logFieldWidget.TabIndex = 0;
             this._logFieldWidget.ValueMember = null;
-            this._logFieldWidget.SelectedValueChanged += new FMSC.Controls.SelectedValueChangedEventHandler(this._logFieldWidget_SelectedValueChanged);
-            this._logFieldWidget.SelectionAdded += new FMSC.Controls.SelectionAddedEventHandler(this._logFieldWidget_SelectionAdded);
             this._logFieldWidget.SelectionMoved += new FMSC.Controls.ItemMovedEventHandler(this._logFieldWidget_SelectionMoved);
+            this._logFieldWidget.SelectionAdded += new FMSC.Controls.SelectionAddedEventHandler(this._logFieldWidget_SelectionAdded);
+            this._logFieldWidget.SelectedValueChanged += new FMSC.Controls.SelectedValueChangedEventHandler(this._logFieldWidget_SelectedValueChanged);
             // 
             // panel4
             // 
@@ -935,7 +934,7 @@ namespace CSM.Winforms.CruiseCustomize
             this._strataLB.FormattingEnabled = true;
             this._strataLB.Location = new System.Drawing.Point(3, 16);
             this._strataLB.Name = "_strataLB";
-            this._strataLB.Size = new System.Drawing.Size(128, 355);
+            this._strataLB.Size = new System.Drawing.Size(128, 366);
             this._strataLB.TabIndex = 0;
             this._strataLB.SelectedValueChanged += new System.EventHandler(this._strataLB_SelectedValueChanged);
             // 
@@ -949,7 +948,6 @@ namespace CSM.Winforms.CruiseCustomize
             this._tallySetupPage.TabIndex = 1;
             this._tallySetupPage.Text = "Tally Setup";
             this._tallySetupPage.UseVisualStyleBackColor = true;
-            this._tallySetupPage.Enter += new System.EventHandler(this._tallySetupPage_Enter);
             // 
             // flowLayoutPanel1
             // 
@@ -1041,8 +1039,6 @@ namespace CSM.Winforms.CruiseCustomize
             // 
             // _tallyEditPanel
             // 
-            this._tallyEditPanel.AllowTallyBySG = true;
-            this._tallyEditPanel.AllowTallyBySpecies = true;
             this._tallyEditPanel.Location = new System.Drawing.Point(4, 66);
             this._tallyEditPanel.Margin = new System.Windows.Forms.Padding(4);
             this._tallyEditPanel.Name = "_tallyEditPanel";
@@ -1069,7 +1065,6 @@ namespace CSM.Winforms.CruiseCustomize
             this._treeAuditTabPage.TabIndex = 6;
             this._treeAuditTabPage.Text = "Tree Audit Rules";
             this._treeAuditTabPage.UseVisualStyleBackColor = true;
-            this._treeAuditTabPage.Enter += new System.EventHandler(this._treeAuditTabPage_Enter);
             // 
             // panel2
             // 
@@ -1360,25 +1355,6 @@ namespace CSM.Winforms.CruiseCustomize
 
         #endregion
 
-        private void _fieldSetupPage_Enter(object sender, EventArgs e)
-        {
-            this.Presenter.InitializeFieldSetup();
-        }
-
-        private void _tallySetupPage_Enter(object sender, EventArgs e)
-        {
-            this.Presenter.InitializeTallySetup();
-        }
-
-        private void _treeAuditTabPage_Enter(object sender, EventArgs e)
-        {
-            this.Presenter.InitializeTreeAudits();
-        }
-        private void _logMatrixTabPage_Enter(object sender, EventArgs e)
-        {
-            this.Presenter.InitializeLogMatrix();
-        }
-
         public void UpdateView()
         {
             
@@ -1387,7 +1363,7 @@ namespace CSM.Winforms.CruiseCustomize
         public void UpdateTallySetupView()
         {
             _strataCB.DataSource = Presenter.TallySetupStrata;
-            _tallyEditPanel.TallyPresets = Presenter.TallyPresets;
+            //_tallyEditPanel.TallyPresets = Presenter.TallyPresets;
         }
 
         public void UpdateFieldSetupViews()
@@ -1447,7 +1423,15 @@ namespace CSM.Winforms.CruiseCustomize
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            Presenter.UpdateView();
+
+            this.Presenter.InitializeFieldSetup();
+ 
+            this.Presenter.InitializeTallySetup();
+
+            this.Presenter.InitializeTreeAudits();
+   
+            this.Presenter.InitializeLogMatrix();
+     
         }
 
 
@@ -1493,10 +1477,7 @@ namespace CSM.Winforms.CruiseCustomize
                 this._systematicOptCB.Checked = _currentSG.UseSystematicSampling;
             }
 
-            string method = _currentSG.Stratum.Method;
-            //_currentSG.LoadTallieData();
             _tallyEditPanel.SampleGroup = _currentSG;
-            _tallyEditPanel.AllowTallyBySG = (method != CruiseDAL.Schema.Constants.CruiseMethods.THREEP);
             _tallyEditPanel.SetHotKeys(this.Presenter.GetAvalibleHotKeysInStratum(_currentTallySetupStratum));
         }
 
@@ -1987,6 +1968,5 @@ namespace CSM.Winforms.CruiseCustomize
         }
 
         
-
     }
 }
