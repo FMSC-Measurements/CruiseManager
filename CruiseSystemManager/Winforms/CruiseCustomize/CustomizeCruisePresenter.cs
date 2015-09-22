@@ -560,6 +560,22 @@ namespace CSM.Winforms.CruiseCustomize
             {
                 this.Database.BeginTransaction();
 
+                this.Database.Execute(
+                    @"CREATE temp TRIGGER IgnoreConflictsOnCountTree
+                    BEFORE INSERT
+                    ON CountTree
+                    WHEN Exists
+                    (
+                        SELECT 1 FROM CountTree WHERE CountTree.CuttingUnit_CN = new.CuttingUnit_CN
+                        AND CountTree.SampleGroup_CN = new.SampleGroup_CN
+                        AND ifnull(CountTree.TreeDefaultValue_CN, 0) = ifnull(new.TreeDefaultValue_CN, 0)
+                        AND ifnull(CountTree.Component_CN, 0) = ifnull(new.Component_CN, 0)
+                    )
+                    BEGIN
+                    SELECT RAISE(IGNORE);
+                    END;"
+                    );
+
                 //if ((sgVM.TallyMethod & TallyMode.Locked) != TallyMode.Locked)
                 //{
                 //    string delCommand = String.Format("DELETE FROM CountTree WHERE SampleGroup_CN = {0}", sgVM.SampleGroup_CN);
@@ -595,7 +611,7 @@ namespace CSM.Winforms.CruiseCustomize
                 this.Database.Execute(command, sgVM.SampleGroup_CN);
 
                 string user = this.Database.User;
-                String makeCountsCommand = String.Format(@"INSERT  OR Fail INTO CountTree (CuttingUnit_CN, SampleGroup_CN,  CreatedBy)
+                String makeCountsCommand = String.Format(@"INSERT  OR Ignore INTO CountTree (CuttingUnit_CN, SampleGroup_CN,  CreatedBy)
                             Select CuttingUnitStratum.CuttingUnit_CN, SampleGroup.SampleGroup_CN,  '{0}' AS CreatedBy
                             From SampleGroup 
                             INNER JOIN CuttingUnitStratum 
@@ -636,6 +652,7 @@ namespace CSM.Winforms.CruiseCustomize
                         ON SampleGroupTreeDefaultValue.SampleGroup_CN = SampleGroup.SampleGroup_CN 
                         WHERE SampleGroup.SampleGroup_CN = {1};",
                         user, sgVM.SampleGroup_CN);
+
 
 
                 this.Database.Execute(makeCountsCommand);

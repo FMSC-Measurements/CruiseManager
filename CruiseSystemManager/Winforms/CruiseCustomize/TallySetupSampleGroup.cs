@@ -33,7 +33,7 @@ namespace CSM.Winforms.CruiseCustomize
             set { _sgTallie = value; }
         }
 
-        public Dictionary<TreeDefaultValueDO, TallyPopulation> TallyPopulations { get; protected set; }
+        public Dictionary<String, TallyPopulation> TallyPopulations { get; protected set; }
 
         public bool HasTallyEdits
         {
@@ -136,27 +136,26 @@ namespace CSM.Winforms.CruiseCustomize
         {
             if (this._tallieDataLoaded) { return; }//we have already loaded this samplegroup before, dont reload it
 
-            this.TallyPopulations = new Dictionary<TreeDefaultValueDO, TallyPopulation>();
+            this.TallyPopulations = new Dictionary<String, TallyPopulation>();
 
             //initialize a tally entity for use with tally by sample group
             TallyVM sgTally = DAL.ReadSingleRow<TallyVM>("Tally",
                 "JOIN CountTree WHERE CountTree.Tally_CN = Tally.Tally_CN AND CountTree.SampleGroup_CN = ? AND ifnull(CountTree.TreeDefaultValue_CN, 0) = 0",
                 this.SampleGroup_CN);
 
-            TallyPopulation sgTallyPopulation = DAL.QuerySingleRecord<TallyPopulation>("SELECT SampleGroup_CN, TreeDefaultValue_CN, tally.HotKey as HotKey, tally.Description as Description " +
+            TallyPopulation sgTallyPopulation = DAL.QuerySingleRecord<TallyPopulation>("SELECT SampleGroup_CN, TreeDefaultValue_CN, Tally.HotKey as HotKey, Tally.Description as Description " +
                 "FROM CountTree " +
                 "JOIN Tally USING (Tally_CN) " +
                 "WHERE CountTree.Tally_CN = Tally.Tally_CN " +
                 "AND CountTree.SampleGroup_CN = ? " + 
-                "AND ifnull(CountTree.TreeDefaultValue_CN, 0) = 0;") 
+                "AND ifnull(CountTree.TreeDefaultValue_CN, 0) = 0;", this.SampleGroup_CN) 
                 ?? new TallyPopulation() { Description = Code };
 
-            this.TallyPopulations.Add(null, sgTallyPopulation);
+            this.TallyPopulations.Add("", sgTallyPopulation);
 
             if (sgTally == null)
             {
                 sgTally = new TallyVM() { Description = Code };
-                
             }
 
             SgTallie = sgTally;
@@ -183,10 +182,10 @@ namespace CSM.Winforms.CruiseCustomize
                 "JOIN Tally USING (Tally_CN) " +
                 "WHERE CountTree.Tally_CN = Tally.Tally_CN " +
                 "AND CountTree.SampleGroup_CN = ? " +
-                "AND CountTree.TreeDefaultValue_CN = ?;", tdv.TreeDefaultValue_CN)
+                "AND CountTree.TreeDefaultValue_CN = ?;", this.SampleGroup_CN, tdv.TreeDefaultValue_CN)
                 ?? new TallyPopulation() { Description = tdv.Species + ((tdv.LiveDead == "D") ? "/D" : "") };
 
-                this.TallyPopulations.Add(tdv, tallyPopulation);
+                this.TallyPopulations.Add(tdv.Species, tallyPopulation);
             }
 
             this._tallieDataLoaded = true;
