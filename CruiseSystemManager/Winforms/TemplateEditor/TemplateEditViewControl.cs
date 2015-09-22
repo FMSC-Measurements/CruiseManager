@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 using CruiseDAL.DataObjects;
-using System.Collections.ObjectModel;
-using CSM.Logic;
+using CruiseManager.Core.App;
+using CSM.App;
 
 namespace CSM.Winforms.TemplateEditor
 {
     public partial class TemplateEditViewControl : UserControl, IView
     {
 
-        public TemplateEditViewControl(IWindowPresenter windowPresenter)
+        public TemplateEditViewControl(WindowPresenter windowPresenter)
         {
             
 
@@ -198,9 +197,9 @@ namespace CSM.Winforms.TemplateEditor
         private void _addTDVButton_Click(object sender, EventArgs e)
         {
             TreeDefaultValueDO newTDV = new TreeDefaultValueDO(this.Presenter.WindowPresenter.Database);
-            ApplicationState appState = ApplicationState.GetHandle();
+            SetupService setupService = SetupService.GetHandle();
 
-            CSM.Winforms.CruiseWizard.FormAddTreeDefault dialog = new CSM.Winforms.CruiseWizard.FormAddTreeDefault(appState.SetupServ.GetProductCodes());
+            CSM.Winforms.CruiseWizard.FormAddTreeDefault dialog = new CSM.Winforms.CruiseWizard.FormAddTreeDefault(setupService.GetProductCodes());
             if (dialog.ShowDialog(newTDV) == DialogResult.OK)
             {
                 try
@@ -302,22 +301,22 @@ namespace CSM.Winforms.TemplateEditor
 
 
         #region IView Members
-        protected void InitializeView(IWindowPresenter windowPresenter)
+        protected void InitializeView(WindowPresenter windowPresenter)
         {
             this.WindowPresenter = windowPresenter;
-            this.NavOptions = new NavOption[]{
-                new NavOption("Close File", this.WindowPresenter.ShowCruiseLandingLayout),
-                new NavOption("Import From File", this.WindowPresenter.ShowImportTemplate)
+            this.NavOptions = new CommandBinding[]{
+                new CommandBinding("Close File", this.WindowPresenter.ShowCruiseLandingLayout),
+                new CommandBinding("Import From File", this.WindowPresenter.ShowImportTemplate)
             };
 
             this.ViewActions = null;
         }
 
-        public IWindowPresenter WindowPresenter { get; set; }
+        public WindowPresenter WindowPresenter { get; set; }
 
-        public NavOption[] NavOptions { get; set; }
+        public CommandBinding[] NavOptions { get; set; }
 
-        public NavOption[] ViewActions { get; set; }
+        public CommandBinding[] ViewActions { get; set; }
 
         #endregion
     }

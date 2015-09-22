@@ -6,11 +6,12 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using CruiseDAL; 
+using CruiseDAL;
 using CruiseDAL.DataObjects;
 using System.Diagnostics;
-using CSM.Utility.Setup;
 using System.IO;
+using CruiseManager.Core.Models;
+using CruiseManager.Core.SetupModels;
 
 namespace CSM.Winforms.CruiseWizard
 {
@@ -91,7 +92,7 @@ namespace CSM.Winforms.CruiseWizard
             strataPage.CuttingUnitBindingSource.DataSource = list;
         }
 
-        public void UpdateStrata(IList<CSM.Models.StratumVM> list)
+        public void UpdateStrata(IList<StratumVM> list)
         {
             strataPage.StrataBindingSource.DataSource = list;
             sampleGroupPage.StratumBindingSource.DataSource = list;
@@ -128,7 +129,7 @@ namespace CSM.Winforms.CruiseWizard
             sampleGroupPage.UOMBindingSource.DataSource = list;
         }
 
-        public void UpdateRegions(IList<CSM.Utility.Setup.Region> list)
+        public void UpdateRegions(IList<CruiseManager.Core.SetupModels.Region> list)
         {
             salePage.RegionForestBindingSource.DataSource = list;
         }

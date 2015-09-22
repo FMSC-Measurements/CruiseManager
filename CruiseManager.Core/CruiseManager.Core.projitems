@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>f02b1a95-c7a4-40e2-8648-e858714eedbb</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>CruiseManager.Core</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)App\ApplicationState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App\Constants.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App\ExceptionHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App\Exceptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App\PlatformHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App\SetupService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App\WindowPresenter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CancelWorkerException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Components\ComponentFile.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Components\CreateComponentPresenter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Components\MergeComponentsPresenter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Components\MergeDataTypes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Components\MergeSyncWorker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Components\MergeTableCommandBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Components\PrepareMergeWorker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Components\UpdateMasterWorker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IExceptionHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IPresentor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ISaveHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IWorker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\LogVM.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\SaleVM.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\StratumVM.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\TreeVM.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\TypeComparers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProgressChangedEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SetupModels\CruiseMethod.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SetupModels\Forest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SetupModels\LoggingMethod.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SetupModels\ProductCode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SetupModels\Region.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SetupModels\ThreePCode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SetupModels\TreeAudit.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SetupModels\TreeFieldValidator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SetupModels\UOMCode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\CreateComponentView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\MainWindow.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\MergeComponentView.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)App\ApplicationController.cs" />
+  </ItemGroup>
+</Project>

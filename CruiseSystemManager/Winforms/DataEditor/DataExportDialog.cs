@@ -8,9 +8,8 @@ using OfficeOpenXml;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.Reflection;
-using CSM.Utility.Setup;
-using CSM.Logic;
-using CSM.Models;
+using CruiseManager.Core.Models;
+using CruiseManager.Core.App;
 
 namespace CSM.Winforms.DataEditor
 {
@@ -22,7 +21,7 @@ namespace CSM.Winforms.DataEditor
             InitializeComponent();
         }
 
-        public DataExportDialog(IWindowPresenter windowPresenter, IList<TreeVM> Trees, IList<LogVM> Logs, IList<PlotDO> Plots, IList<CountTreeDO> Counts)
+        public DataExportDialog(WindowPresenter windowPresenter, IList<TreeVM> Trees, IList<LogVM> Logs, IList<PlotDO> Plots, IList<CountTreeDO> Counts)
         {
             this.InitializeComponent();
             this.Trees = Trees;
@@ -34,7 +33,7 @@ namespace CSM.Winforms.DataEditor
         }
 
 
-        public void SetUpFieldWidgets(IWindowPresenter windowPresenter)
+        public void SetUpFieldWidgets(WindowPresenter windowPresenter)
         {
             var setupServ = SetupService.GetHandle();
 

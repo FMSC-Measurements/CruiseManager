@@ -8,8 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using CruiseDAL.DataObjects;
 using System.Collections;
-using CSM.Logic;
-using CSM.Common;
+using CruiseManager.Core.App;
 
 namespace CSM.Winforms.DesignEditor
 {
@@ -18,14 +17,19 @@ namespace CSM.Winforms.DesignEditor
 
         private DesignEditorPresentor _presentor;
 
-        protected IExceptionHandler ExceptionHandler { get { return this.WindowPresenter.ExceptionHandler; } } 
+        protected ExceptionHandler ExceptionHandler { get; set; } 
+        protected ApplicationController ApplicationController { get; set; }
+        public WindowPresenter WindowPresenter { get; set; }
 
-        public IWindowPresenter WindowPresenter { get; set; }
-        public DesignEditViewControl(IWindowPresenter windowPresenter)
+
+
+        public DesignEditViewControl(WindowPresenter windowPresenter, ApplicationController applicationController, ExceptionHandler exceptionHandler)
         {
+            this.ExceptionHandler = exceptionHandler;
             this.WindowPresenter = windowPresenter;
+            this.ApplicationController = applicationController;
             InitializeComponent();
-            this.SalePurposeComboBox.DataSource = Utility.Constants.SALE_PURPOSE;
+            this.SalePurposeComboBox.DataSource = Constants.SALE_PURPOSE;
         }
 
         public DesignEditorPresentor Presentor

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using CruiseDAL.DataObjects;
-using CSM.Utility.Setup;
+using CruiseManager.Core.SetupModels;
 
 namespace CSM.Winforms.CruiseWizard
 {

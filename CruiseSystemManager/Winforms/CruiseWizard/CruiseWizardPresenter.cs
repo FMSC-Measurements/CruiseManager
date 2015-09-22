@@ -6,13 +6,13 @@ using System.ComponentModel;
 using CruiseDAL.DataObjects;
 using System.Windows.Forms;
 using System.Diagnostics;
-using CSM.Utility.Setup;
 using System.IO;
 using CSM.Utility;
 using FMSC.Utility.Collections;
-using CSM.Logic;
 using System.Threading;
-using CSM.Models;
+using CruiseManager.Core.Models;
+using CruiseManager.Core.SetupModels;
+using CruiseManager.Core.App;
 
 namespace CSM.Winforms.CruiseWizard
 {
@@ -41,7 +41,7 @@ namespace CSM.Winforms.CruiseWizard
 
 
         #region Properties
-        public IWindowPresenter WindowPresenter { get; set; }
+        public WindowPresenter WindowPresenter { get; set; }
         public CruiseWizardView View { get; set; }
 
         public DAL Database 
@@ -185,7 +185,7 @@ namespace CSM.Winforms.CruiseWizard
         #region CTor 
         //TODO make testable constructor 
 
-        public CruiseWizardPresenter(CruiseWizardView View, IWindowPresenter windowPresenter, DAL database)
+        public CruiseWizardPresenter(CruiseWizardView View, WindowPresenter windowPresenter, DAL database)
         {
             this.View = View;
             this.WindowPresenter = windowPresenter;
@@ -227,17 +227,17 @@ namespace CSM.Winforms.CruiseWizard
             dialog.AutoUpgradeEnabled = true;
             dialog.CustomPlaces.Add(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\CruiseFiles");
 
-            dialog.InitialDirectory = this.WindowPresenter.TemplateSaveLocation; 
+            dialog.InitialDirectory = ApplicationController.Instance.TemplateSaveLocation; 
 
             dialog.Multiselect = false;
-            dialog.Filter = String.Format("Template Files ({0})|*{0}", CSM.Utility.R.Strings.CRUISE_TEMPLATE_FILE_EXTENTION);
+            dialog.Filter = String.Format("Template Files ({0})|*{0}", R.Strings.CRUISE_TEMPLATE_FILE_EXTENTION);
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 string filePath = dialog.FileName;
                 string dir = System.IO.Path.GetDirectoryName(filePath);
 
 
-                this.WindowPresenter.TemplateSaveLocation = dir;
+                ApplicationController.Instance.TemplateSaveLocation = dir;
 
                 return filePath;
             }
@@ -353,7 +353,7 @@ namespace CSM.Winforms.CruiseWizard
 
 
                 //only load FIX and PNT Cruise methods for Recon cruises 
-                CruiseMethods = WindowPresenter.GetCruiseMethods(_templateDatabase, this.Sale.Purpose == "Recon");
+                CruiseMethods = ApplicationController.Instance.GetCruiseMethods(_templateDatabase, this.Sale.Purpose == "Recon");
 
                 this.StartAsynCopyTemplate(_templateDatabase);
             }
@@ -546,7 +546,7 @@ namespace CSM.Winforms.CruiseWizard
 
             if (CruiseMethods.Count == 0)
             {
-                CruiseMethods = WindowPresenter.GetCruiseMethods(null, this.Sale.Purpose == "Recon");
+                CruiseMethods = ApplicationController.Instance.GetCruiseMethods(null, this.Sale.Purpose == "Recon");
             }
 
             this.ShowCuttingUnits();
@@ -740,35 +740,35 @@ namespace CSM.Winforms.CruiseWizard
         protected String AskSavePath()
         {
             bool createSaleFolder = false;
-            if (this.WindowPresenter.AppState.CreateSaleFolder == null)
+            if (ApplicationState.GetHandle().CreateSaleFolder == null)
             {
                 using (var dialog = new CreateSaleFolerDialog())
                 {
                     createSaleFolder = (dialog.ShowDialog() == DialogResult.Yes);
                     if (dialog.RememberSelection)
                     {
-                        this.WindowPresenter.AppState.CreateSaleFolder = createSaleFolder;
-                        this.WindowPresenter.AppState.Save();
+                        ApplicationState.GetHandle().CreateSaleFolder = createSaleFolder;
+                        ApplicationState.GetHandle().Save();
                     }
                 }
             }
             else
             {
-                createSaleFolder = (bool)this.WindowPresenter.AppState.CreateSaleFolder;
+                createSaleFolder = (bool)ApplicationState.GetHandle().CreateSaleFolder;
             }
 
             using (var saveFileDialog = new System.Windows.Forms.SaveFileDialog())
             {
                 saveFileDialog.AutoUpgradeEnabled = true;
                 saveFileDialog.CustomPlaces.Add(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\CruiseFiles");
-                saveFileDialog.InitialDirectory = this.WindowPresenter.CruiseSaveLocation;
+                saveFileDialog.InitialDirectory = ApplicationController.Instance.CruiseSaveLocation;
                 saveFileDialog.DefaultExt = "cruise";
                 saveFileDialog.Filter = "Cruise files(*.cruise)|*.cruise";
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     string fileName = saveFileDialog.FileName;
                     string dir = System.IO.Path.GetDirectoryName(fileName);
-                    this.WindowPresenter.CruiseSaveLocation = dir;
+                    ApplicationController.Instance.CruiseSaveLocation = dir;
 
                     if (createSaleFolder)
                     {

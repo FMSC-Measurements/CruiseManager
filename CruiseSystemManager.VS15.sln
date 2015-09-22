@@ -19,10 +19,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMSC.Controls.VS15", "FMSC.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMSC.Utility.VS15", "FMSC.Util\FMSC.Utility\FMSC.Utility.VS15.csproj", "{F882E97D-A121-41F6-916F-8FA956F84BCC}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CruiseManager.Core", "CruiseManager.Core\CruiseManager.Core.shproj", "{F02B1A95-C7A4-40E2-8648-E858714EEDBB}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
 		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		CruiseManager.Core\CruiseManager.Core.projitems*{f02b1a95-c7a4-40e2-8648-e858714eedbb}*SharedItemsImports = 13
+		CruiseManager.Core\CruiseManager.Core.projitems*{baf1842e-f8c5-47a5-94c6-adaba8a4b3af}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug with args|Any CPU = Debug with args|Any CPU

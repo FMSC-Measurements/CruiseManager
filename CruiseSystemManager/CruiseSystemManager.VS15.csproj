@@ -129,35 +129,15 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\ISaveHandler.cs" />
-    <Compile Include="Common\IWorker.cs" />
-    <Compile Include="Common\ProgressChangedEventArgs.cs" />
-    <Compile Include="Models\SaleVM.cs" />
-    <None Include="Logic\ApplicationController.cs" />
-    <Compile Include="Models\TypeComparers.cs" />
-    <Compile Include="Logic\ApplicationState.cs" />
-    <Compile Include="Common\CancelWorkerException.cs" />
-    <Compile Include="Logic\Components\ComponentFile.cs" />
-    <Compile Include="Logic\Components\CreateComponentPresenter.cs" />
-    <Compile Include="Logic\Components\MergeDataTypes.cs" />
-    <Compile Include="Logic\Components\MergeSyncWorker.cs" />
-    <Compile Include="Logic\Components\MergeTableCommandBuilder.cs" />
-    <Compile Include="Logic\Components\PrepareMergeWorker.cs" />
-    <Compile Include="Logic\Components\UpdateMasterWorker.cs" />
-    <Compile Include="Logic\ExceptionHandler.cs" />
-    <Compile Include="Logic\IApplicationController.cs" />
-    <Compile Include="Common\IExceptionHandler.cs" />
-    <Compile Include="Common\IPresentor.cs" />
-    <Compile Include="Logic\IWindowPresenter.cs" />
-    <Compile Include="Models\LogVM.cs" />
-    <Compile Include="Logic\Components\MergeComponentsPresenter.cs" />
-    <Compile Include="Models\StratumVM.cs" />
-    <Compile Include="Models\TreeVM.cs" />
-    <Compile Include="Logic\TypeComparers.cs" />
+    <Compile Include="App\ApplicationController.WinForms.cs" />
+    <Compile Include="App\PlatformHelperWinForms.cs" />
+    <Compile Include="App\WinFormsSetupService.cs" />
+    <Compile Include="App\WinFormsWindowPresenter.cs" />
     <Compile Include="Winforms\AboutDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -248,18 +228,17 @@
     <Compile Include="Winforms\ErrorMessageDialog.Designer.cs">
       <DependentUpon>ErrorMessageDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\Exceptions.cs" />
     <Compile Include="Winforms\FormSupervisorLogin.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Winforms\FormSupervisorLogin.Designer.cs">
       <DependentUpon>FormSupervisorLogin.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\Components\MergeComponentView.cs">
+    <Compile Include="Winforms\Components\WinformsMergeComponentView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Winforms\Components\MergeComponentView.Designer.cs">
-      <DependentUpon>MergeComponentView.cs</DependentUpon>
+    <Compile Include="Winforms\Components\WinformsMergeComponentView.Designer.cs">
+      <DependentUpon>WinformsMergeComponentView.cs</DependentUpon>
     </Compile>
     <Compile Include="Winforms\LicencesDialog.cs">
       <SubType>Form</SubType>
@@ -267,7 +246,7 @@
     <Compile Include="Winforms\LicencesDialog.Designer.cs">
       <DependentUpon>LicencesDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\NavOption.cs" />
+    <Compile Include="App\CommandBinding.cs" />
     <Compile Include="Winforms\PageHost.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -411,8 +390,8 @@
       <DependentUpon>FormSupervisorLogin.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\Components\MergeComponentView.resx">
-      <DependentUpon>MergeComponentView.cs</DependentUpon>
+    <EmbeddedResource Include="Winforms\Components\WinformsMergeComponentView.resx">
+      <DependentUpon>WinformsMergeComponentView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Winforms\LicencesDialog.resx">
@@ -459,18 +438,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Utility\Constants.cs" />
-    <Compile Include="Utility\Setup\CruiseMethod.cs" />
-    <Compile Include="Utility\Setup\Forest.cs" />
-    <Compile Include="Utility\Setup\LoggingMethod.cs" />
-    <Compile Include="Utility\Setup\ProductCode.cs" />
-    <Compile Include="Utility\Setup\Region.cs" />
-    <Compile Include="Utility\Setup\SetupService.cs" />
-    <Compile Include="Utility\Setup\ThreePCode.cs" />
-    <Compile Include="Utility\Setup\TreeAudit.cs" />
-    <Compile Include="Utility\Setup\TreeFieldValidator.cs" />
-    <Compile Include="Utility\Setup\UOMCode.cs" />
-    <Compile Include="Logic\WindowPresenter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -552,6 +519,9 @@
       <Project>{f882e97d-a121-41f6-916f-8fa956f84bcc}</Project>
       <Name>FMSC.Utility.VS15</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="WPF\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

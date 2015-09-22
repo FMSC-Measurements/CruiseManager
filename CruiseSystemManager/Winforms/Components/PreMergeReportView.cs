@@ -6,7 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using CSM.Logic.Components;
+using CruiseManager.Core.Components;
 
 namespace CSM.Winforms.Components
 {

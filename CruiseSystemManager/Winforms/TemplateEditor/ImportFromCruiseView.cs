@@ -8,35 +8,37 @@ using System.Text;
 using System.Windows.Forms;
 using CruiseDAL;
 using CruiseDAL.DataObjects;
-using CSM.Logic;
-using CSM.Common;
+using CruiseManager.Core;
+using CruiseManager.Core.App;
+using CSM.App;
 
 namespace CSM.Winforms.TemplateEditor
 {
     public partial class ImportFromCruiseView : UserControl, IPresentor , IView
     {
-        public ImportFromCruiseView(IWindowPresenter windowPresenter)
+        public ImportFromCruiseView(WindowPresenter windowPresenter)
         {
             
             InitializeComponent();
             this.WindowPresenter = windowPresenter;
 
             this.NavOptions = null;
-            this.ViewActions = new NavOption[]{
-                new NavOption("Import", this.Finish),
-                new NavOption("Cancel", this.WindowPresenter.ShowTemplateLandingLayout)
+            this.ViewActions = new CommandBinding[]{
+                new CommandBinding("Import", this.Finish),
+                new CommandBinding("Cancel", this.WindowPresenter.ShowTemplateLandingLayout)
             };
 
             this.TreeDefaultsToCopy = new List<TreeDefaultValueDO>();
             this.selectedItemsGridView1.SelectedItems = this.TreeDefaultsToCopy;
         }
 
-        public ImportFromCruiseView(IWindowPresenter windowPresenter, string fileName) : this(windowPresenter)
+        public ImportFromCruiseView(WindowPresenter windowPresenter, string fileName) : this(windowPresenter)
         {
             this._copyFromDB = new DAL(fileName);
         }
 
-        public IWindowPresenter WindowPresenter { get; set; }
+        public WindowPresenter WindowPresenter { get; set; }
+        public ApplicationController ApplicationController { get; set; }
         public List<TreeDefaultValueDO> TreeDefaults { get; set; }
         public List<TreeDefaultValueDO> TreeDefaultsToCopy { get; set; }
 
@@ -68,12 +70,12 @@ namespace CSM.Winforms.TemplateEditor
             if (this._importVolEqCB.Checked)
             {
                 OnConflictOption cOpt = (this.ReplaceExistingVolEq == true) ? OnConflictOption.Replace : OnConflictOption.Ignore;
-                this.WindowPresenter.Database.DirectCopy(this._copyFromDB, CruiseDAL.Schema.VOLUMEEQUATION._NAME, null, cOpt);
+                this.ApplicationController.Database.DirectCopy(this._copyFromDB, CruiseDAL.Schema.VOLUMEEQUATION._NAME, null, cOpt);
             }
 
             foreach (TreeDefaultValueDO tdv in TreeDefaultsToCopy)
             {
-                tdv.DAL = this.WindowPresenter.Database;
+                tdv.DAL = this.ApplicationController.Database;
                 tdv.Save(OnConflictOption.Ignore);
             }
         }
@@ -108,10 +110,10 @@ namespace CSM.Winforms.TemplateEditor
 
         #region IView Members
 
-        public NavOption[] NavOptions { get; protected set; }
+        public CommandBinding[] NavOptions { get; protected set; }
 
 
-        public NavOption[] ViewActions { get; protected set; }
+        public CommandBinding[] ViewActions { get; protected set; }
 
 
         #endregion

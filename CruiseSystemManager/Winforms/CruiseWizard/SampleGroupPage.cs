@@ -4,8 +4,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using CruiseDAL.DataObjects;
-using CSM.Utility.Setup;
-using CSM.Models;
+using CruiseManager.Core.Models;
+using CruiseManager.Core.SetupModels;
+using CruiseManager.Core.App;
 
 namespace CSM.Winforms.CruiseWizard
 {

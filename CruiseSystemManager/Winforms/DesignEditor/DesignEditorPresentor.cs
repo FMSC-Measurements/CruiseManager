@@ -6,11 +6,10 @@ using CruiseDAL.DataObjects;
 using System.ComponentModel;
 using CruiseDAL;
 using System.Windows.Forms;
-using CSM.Utility.Setup;
-using CSM.Logic;
-using CSM.Utility;
-using CSM.Models;
-using CSM.Common;
+using CruiseManager.Core;
+using CruiseManager.Core.SetupModels;
+using CruiseManager.Core.App;
+using CruiseManager.Core.Models;
 
 namespace CSM.Winforms.DesignEditor
 {
@@ -20,7 +19,7 @@ namespace CSM.Winforms.DesignEditor
         private DesignEditorStratum _anyStratumOption;
         private DesignEditViewControl _view;
         
-        public DesignEditorPresentor(IWindowPresenter windowPresenter)
+        public DesignEditorPresentor(WindowPresenter windowPresenter)
         {
             this.WindowPresenter = windowPresenter;
             this.DataContext = new DesignEditorDataContext();
@@ -47,12 +46,13 @@ namespace CSM.Winforms.DesignEditor
                 }
             }
         }
-        public IWindowPresenter WindowPresenter { get; set; }
+        public WindowPresenter WindowPresenter { get; set; }
+        public ApplicationController ApplicationController { get; set; }
         public DAL Database 
         { 
-            get { return WindowPresenter.Database; }
+            get { return ApplicationController.Database; }
         }
-        public bool IsSupervisor { get { return WindowPresenter.AppState.InSupervisorMode; } }
+        public bool IsSupervisor { get { return ApplicationState.GetHandle().InSupervisorMode; } }
 
         public DesignEditorDataContext DataContext { get; set; }
 
@@ -254,7 +254,7 @@ namespace CSM.Winforms.DesignEditor
         {
             var setupServ = SetupService.GetHandle();
             Regions = setupServ.GetRegions();
-            CruiseMethods = this.WindowPresenter.GetCruiseMethods(this.DataContext.Sale.Purpose == "Recon");
+            CruiseMethods = this.ApplicationController.GetCruiseMethods(this.DataContext.Sale.Purpose == "Recon");
             LoggingMethods = setupServ.GetLoggingMethods();
             UOMCodes = setupServ.GetUOMCodes();
             ProductCodes = setupServ.GetProductCodes();
@@ -582,41 +582,46 @@ namespace CSM.Winforms.DesignEditor
         public bool CanRemoveTreeDefault(SampleGroupDO sampleGroup, TreeDefaultValueDO tdv)
         {
             if (sampleGroup.IsPersisted == false || tdv.IsPersisted == false) { return true; }
-            bool hasTreeCounts = this.WindowPresenter.Database.GetRowCount("CountTree", "WHERE TreeCount > 0 AND TreeDefaultValue_CN = ? AND SampleGroup_CN = ?", tdv.TreeDefaultValue_CN, sampleGroup.SampleGroup_CN) > 0;
-            bool hasTrees = this.WindowPresenter.Database.GetRowCount("Tree", "WHERE TreeDefaultValue_CN = ? AND SampleGroup_CN = ?", tdv.TreeDefaultValue_CN, sampleGroup.SampleGroup_CN) > 0;
+            bool hasTreeCounts = this.Database.GetRowCount("CountTree", "WHERE TreeCount > 0 AND TreeDefaultValue_CN = ? AND SampleGroup_CN = ?", tdv.TreeDefaultValue_CN, sampleGroup.SampleGroup_CN) > 0;
+            bool hasTrees = this.Database.GetRowCount("Tree", "WHERE TreeDefaultValue_CN = ? AND SampleGroup_CN = ?", tdv.TreeDefaultValue_CN, sampleGroup.SampleGroup_CN) > 0;
             return !(hasTreeCounts && hasTrees);
         }
 
         public bool CanDeleteTreeDefault(TreeDefaultValueDO tdv)
         {
             if (tdv.IsPersisted == false) { return true; }
-            bool hasTreeCounts = this.WindowPresenter.Database.GetRowCount("CountTree", "WHERE TreeCount > 0 AND TreeDefaultValue_CN = ?", tdv.TreeDefaultValue_CN) > 0;
-            bool hasTrees = this.WindowPresenter.Database.GetRowCount("Tree", "WHERE TreeDefaultValue_CN = ?", tdv.TreeDefaultValue_CN) > 0;
+            bool hasTreeCounts = this.Database.GetRowCount("CountTree", "WHERE TreeCount > 0 AND TreeDefaultValue_CN = ?", tdv.TreeDefaultValue_CN) > 0;
+            bool hasTrees = this.Database.GetRowCount("Tree", "WHERE TreeDefaultValue_CN = ?", tdv.TreeDefaultValue_CN) > 0;
             return !(hasTreeCounts && hasTrees);
         }
 
         #region ISaveHandler members
-        public void HandleAppClosing(object sender, FormClosingEventArgs e)
+        public bool HasChangesToSave
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public void HandleAppClosing(ref bool cancel)
         {
             if (this.DataContext.HasUnsavedChanges)
             {
-                var result = this.WindowPresenter.AskYesNoCancel("You Have Unsaved Data, Would You Like To Save Before Closing?", "Save Changes", DialogResult.Yes);
-                switch (result)
+                var result = this.WindowPresenter.AskYesNoCancel("You Have Unsaved Data, Would You Like To Save Before Closing?", "Save Changes", true);
+                if(result == null)//cancel
                 {
-                    case DialogResult.Yes:
-                        {
-                            e.Cancel = !HandleSave();
-                            return;
-                        }
-                    case DialogResult.No:
-                        {
-                            return;
-                        }
-                    case DialogResult.Cancel:
-                        {
-                            e.Cancel = true;
-                            return;
-                        }
+                    cancel = true;
+                    return;
+                }
+                if (result == true)//yes
+                {
+                    cancel = !HandleSave();
+                    return;
+                }
+                else if(result == false)//no
+                {
+                    return;
                 }
             }
         }

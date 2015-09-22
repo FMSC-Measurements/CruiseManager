@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using CruiseDAL.DataObjects;
 using CruiseDAL;
-using CSM.Logic;
 using System.ComponentModel;
 using CruiseDAL.Enums;
-using CSM.Common;
+using CruiseManager.Core;
+using CruiseManager.Core.App;
 
 namespace CSM.Winforms.CruiseCustomize
 {
@@ -19,7 +19,7 @@ namespace CSM.Winforms.CruiseCustomize
         private bool _isTallySetupInitialized = false;
 
         public DAL Database { get { return this.WindowPresenter.Database; } }
-        public IWindowPresenter WindowPresenter { get; set; }
+        public WindowPresenter WindowPresenter { get; set; }
         public CruiseCustomizeView View { get; set; }
         //public List<StratumDO> Strata { get; set; }
         //public List<StratumCustomizeViewModel> StrataVM { get; set; }
@@ -39,7 +39,7 @@ namespace CSM.Winforms.CruiseCustomize
 
         public bool IsLogGradingEnabled { get; protected set; }
 
-        public CustomizeCruisePresenter(IWindowPresenter presenter)
+        public CustomizeCruisePresenter(WindowPresenter presenter)
         {
             WindowPresenter = presenter;
                         
@@ -677,6 +677,14 @@ namespace CSM.Winforms.CruiseCustomize
 
         #region ISaveHandler Members
 
+        public bool HasChangesToSave
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public bool HandleSave()
         {
             StringBuilder errorBuilder = new StringBuilder();
@@ -689,13 +697,13 @@ namespace CSM.Winforms.CruiseCustomize
 
         }
 
-        public void HandleAppClosing(object sender, System.Windows.Forms.FormClosingEventArgs e)
+        public void HandleAppClosing(ref bool cancel)
         {
             StringBuilder errorBuilder = new StringBuilder();
             if (!Save(ref errorBuilder))
             {
                 this.WindowPresenter.ShowSimpleErrorMessage(errorBuilder.ToString());
-                e.Cancel = true;
+                cancel = true;
             }
         }
 

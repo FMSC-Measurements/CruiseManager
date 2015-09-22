@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
-using CSM.Winforms;
+﻿using CSM.App;
 
 namespace CSM
 {
     public interface IView
     {
-        NavOption[] NavOptions { get; }
-        NavOption[] ViewActions { get; }
+        CommandBinding[] NavOptions { get; }
+        CommandBinding[] ViewActions { get; }
     }
 }

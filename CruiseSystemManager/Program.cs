@@ -4,6 +4,8 @@ using System.Linq;
 using System.Windows.Forms;
 using Logger;
 using System.Diagnostics;
+using CSM.App;
+using CruiseManager.Core.App;
 
 namespace CSM
 {
@@ -45,14 +47,14 @@ namespace CSM
             Application.ThreadException += FMSC.Utility.ErrorHandling.ErrorHandlers.ThreadException;
 
 
-            WindowPresenter windowPresenter = null;
+            WinFormsWindowPresenter windowPresenter = null;
             if(string.IsNullOrEmpty(dalPath) )
             {
-                windowPresenter = new WindowPresenter();
+                windowPresenter = new WinFormsWindowPresenter();
             }
             else
             {
-                windowPresenter = new WindowPresenter(dalPath);
+                windowPresenter = new WinFormsWindowPresenter(dalPath);
             }
             
             windowPresenter.Run();

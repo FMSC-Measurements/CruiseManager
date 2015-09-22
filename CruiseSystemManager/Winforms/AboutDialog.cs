@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CruiseManager.Core.App;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -6,7 +7,6 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using CSM.Logic;
 
 namespace CSM.Winforms
 {
@@ -15,7 +15,7 @@ namespace CSM.Winforms
         public AboutDialog()
         {
             InitializeComponent();
-            this._versionNumLBL.Text = WindowPresenter.Version;
+            this._versionNumLBL.Text = ApplicationController.Version;
         }
 
         private void _login_Click(object sender, EventArgs e)

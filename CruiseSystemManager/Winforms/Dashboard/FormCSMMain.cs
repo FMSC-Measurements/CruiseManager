@@ -6,25 +6,27 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using CSM.Logic;
 using System.IO;
+using CruiseManager.Core.ViewInterfaces;
+using CruiseManager.Core.App;
+using CSM.App;
 
 namespace CSM.Winforms.Dashboard
 {
-    public partial class FormCSMMain : Form
+    public partial class FormCSMMain : Form, MainWindow 
     {
         
-        public FormCSMMain(IWindowPresenter windowPresenter)
+        public FormCSMMain(WindowPresenter windowPresenter)
         {
             this.WindowPresenter = windowPresenter;
             InitializeComponent();
 
-            var _openClickDispatcher = new NavOption(this.WindowPresenter.ShowOpenCruiseDialog, this.openToolStripMenuItem);
-            var _newFileClickDispatcher = new NavOption(this.WindowPresenter.ShowCruiseWizardDialog, this.newToolStripMenuItem);
+            var _openClickDispatcher = new CommandBinding(this.WindowPresenter.ShowOpenCruiseDialog, this.openToolStripMenuItem);
+            var _newFileClickDispatcher = new CommandBinding(this.WindowPresenter.ShowCruiseWizardDialog, this.newToolStripMenuItem);
 
-            var _saveClickDispatcher = new NavOption(this.WindowPresenter.Save, this.saveToolStripMenuItem);
-            var _aboutClickDispatcher = new NavOption(this.WindowPresenter.ShowAboutDialog, this.aboutToolStripMenuItem);
-            var _saveAsClickDispatcher = new NavOption(this.WindowPresenter.SaveAs, this.saveAsToolStripMenuItem); 
+            var _saveClickDispatcher = new CommandBinding(ApplicationController.Instance.Save, this.saveToolStripMenuItem);
+            var _aboutClickDispatcher = new CommandBinding(this.WindowPresenter.ShowAboutDialog, this.aboutToolStripMenuItem);
+            var _saveAsClickDispatcher = new CommandBinding(this.WindowPresenter.SaveAs, this.saveAsToolStripMenuItem); 
 
 
             //this.openToolStripMenuItem.Click += new EventHandler(this.WindowPresenter.HandleOpenFileClick);
@@ -34,17 +36,17 @@ namespace CSM.Winforms.Dashboard
             //this.saveAsToolStripMenuItem.Click += new EventHandler(this.WindowPresenter.HandleSaveAsClick);
         }
 
-        public IWindowPresenter WindowPresenter { get; set; }
+        public WindowPresenter WindowPresenter { get; set; }
         public Panel ViewContentPanel { get { return this._viewContentPanel; } }
         public Panel ViewNavPanel { get { return this._viewNavPanel; } }
 
-        public void SetNavOptions(ICollection<NavOption> navOptions)
+        public void SetNavOptions(ICollection<CommandBinding> navOptions)
         {
             if (navOptions == null) { return; }
             this._viewNavPanel.Controls.Clear();
             using (Graphics g = CreateGraphics())
             {
-                foreach (NavOption clickDispatcher in navOptions.Reverse())
+                foreach (CommandBinding clickDispatcher in navOptions.Reverse())
                 {
                     Button newNavButton = new Button();
                     //newNavButton.AutoSize = true;
@@ -138,6 +140,16 @@ namespace CSM.Winforms.Dashboard
             {
                 this.saveAsToolStripMenuItem.Enabled = value;
             }
+        }
+
+        public void ShowWaitCursor()
+        {
+            this.Cursor = Cursors.WaitCursor;
+        }
+
+        public void ShowDefaultCursor()
+        {
+            this.Cursor = Cursors.Default;
         }
 
         public void DockView(UserControl view)

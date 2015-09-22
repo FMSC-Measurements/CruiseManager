@@ -6,9 +6,9 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using CSM.Logic;
+using CruiseManager.Core.Components;
 
-namespace CSM.Winforms.Components
+namespace CruiseManager.WinForms.Components
 {
     public partial class CreateComponentView : UserControl
     {

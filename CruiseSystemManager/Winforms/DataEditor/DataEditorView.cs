@@ -6,10 +6,9 @@ using System.Linq;
 using System.Windows.Forms;
 using CruiseDAL.DataObjects;
 using CruiseDAL;
-using CSM.Logic;
 using FMSC.Utility.Collections;
-using CSM.Logic.TypeComparers;
-using CSM.Models;
+using CruiseManager.Core.Models;
+using CruiseManager.Core.App;
 
 namespace CSM.Winforms.DataEditor
 {
@@ -53,19 +52,27 @@ namespace CSM.Winforms.DataEditor
             };
         #endregion
 
-        public DataEditorView(IWindowPresenter WindowPresenter)
+        public DataEditorView() : this(WindowPresenter.Instance, ApplicationController.Instance)
         {
+
+        }
+
+        public DataEditorView(WindowPresenter windowPresenter, ApplicationController applicationController)
+        {
+            this.WindowPresenter = windowPresenter;
+            this.ApplicationController = applicationController;
+
             InitializeComponent();
-            this.Text = "Field Data - " + System.IO.Path.GetFileName(WindowPresenter.Database.Path);
-            this.AppController = WindowPresenter;
+            this.Text = "Field Data - " + System.IO.Path.GetFileName(applicationController.Database.Path);
+            
 
             this.TreeDataGridView.RowEnter += this.HandleCurrentTreeChanged;
             this.TreeDataGridView.CellValueChanged += this.HandleTreeValueChanged;
             this.TreeDataGridView.EditingControlShowing += this.HandleTreeEditControlShowing;
        
-            this._BS_TreeSpecies.DataSource = AppController.Database.Read<TreeDefaultValueDO>("TreeDefaultValue", null);
+            this._BS_TreeSpecies.DataSource = applicationController.Database.Read<TreeDefaultValueDO>("TreeDefaultValue", null);
 
-            this._BS_TreeSampleGroups.DataSource = AppController.Database.Read<SampleGroupDO>("SampleGroup", null);
+            this._BS_TreeSampleGroups.DataSource = applicationController.Database.Read<SampleGroupDO>("SampleGroup", null);
             //ResetViewFilters();
         }
 
@@ -73,11 +80,12 @@ namespace CSM.Winforms.DataEditor
 
         public bool SuppressUpdates { get; set; }
 
-        public IWindowPresenter AppController { get; set; }
+        public WindowPresenter WindowPresenter { get; set; }
+        public ApplicationController ApplicationController { get; set; }
 
         public DAL DAL
         {
-            get { return AppController.Database; }
+            get { return ApplicationController.Database; }
         }
 
 
@@ -640,7 +648,8 @@ namespace CSM.Winforms.DataEditor
 
         private void exportToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            AppController.ShowDataExportDialog(Trees, Logs, Plots, Counts);
+            WindowPresenter.Instance.ShowDataExportDialog(Trees, Logs, Plots, Counts);
+            //AppController.ShowDataExportDialog(Trees, Logs, Plots, Counts);
         }
 
 
@@ -743,7 +752,7 @@ namespace CSM.Winforms.DataEditor
                 {
 
                     TreeDefaultValueDO tdv = this._BS_TreeSpecies.Current as TreeDefaultValueDO;
-                    WindowPresenter.SetTreeTDV(_currentTreeSelection, tdv);
+                    CruiseManager.Core.App.WindowPresenter.SetTreeTDV(_currentTreeSelection, tdv);
                 }
             }
             else if (e.ColumnIndex == this.sampleGroupDataGridViewTextBoxColumn.Index)
@@ -772,13 +781,14 @@ namespace CSM.Winforms.DataEditor
                 //{
                 //    this._BS_TreeSpecies.DataSource = AppController.GetTreeTDVList(_currentTreeSelection);
                 //}
-                control.DataSource = AppController.GetTreeTDVList(_currentTreeSelection);
+                //control.DataSource = AppController.GetTreeTDVList(_currentTreeSelection);
+                control.DataSource = ApplicationController.Instance.GetTreeTDVList(_currentTreeSelection);
             }
             if (this.TreeDataGridView.CurrentCell.ColumnIndex == this.sampleGroupDataGridViewTextBoxColumn.Index)
             {
                 String sgCode = _currentTreeSelection.SampleGroup.Code; 
                 DataGridViewComboBoxEditingControl control = e.Control as DataGridViewComboBoxEditingControl;
-                control.DataSource = AppController.GetSampleGroupsByStratum(_currentTreeSelection.Stratum_CN);
+                control.DataSource = WindowPresenter.GetSampleGroupsByStratum(_currentTreeSelection.Stratum_CN);
                 control.SelectedIndex = control.FindString(sgCode);
             }
         }
@@ -958,7 +968,7 @@ namespace CSM.Winforms.DataEditor
             if (dgv == null)
             {
                 //for some reason SourceControl is null or not a DataGridView so don't continue. 
-                WindowPresenter.HandleNonCriticalError(false, null);//error beep, just to let the user know their action wasn't compleated
+                CruiseManager.Core.App.WindowPresenter.HandleNonCriticalError(false, null);//error beep, just to let the user know their action wasn't compleated
                 return;
             }
 
