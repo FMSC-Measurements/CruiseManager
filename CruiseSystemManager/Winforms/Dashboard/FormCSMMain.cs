@@ -16,7 +16,7 @@ namespace CSM.Winforms.Dashboard
     public partial class FormCSMMain : Form, MainWindow 
     {
         
-        public FormCSMMain(WindowPresenter windowPresenter)
+        public FormCSMMain(WindowPresenter windowPresenter, ApplicationController applicationController)
         {
             this.WindowPresenter = windowPresenter;
             InitializeComponent();
@@ -36,7 +36,8 @@ namespace CSM.Winforms.Dashboard
             //this.saveAsToolStripMenuItem.Click += new EventHandler(this.WindowPresenter.HandleSaveAsClick);
         }
 
-        public WindowPresenter WindowPresenter { get; set; }
+        protected WindowPresenter WindowPresenter { get; set; }
+        protected ApplicationController ApplicationController { get; set; }
         public Panel ViewContentPanel { get { return this._viewContentPanel; } }
         public Panel ViewNavPanel { get { return this._viewNavPanel; } }
 
@@ -164,14 +165,14 @@ namespace CSM.Winforms.Dashboard
             string path = e.ClickedItem.ToolTipText as string; 
             if(!string.IsNullOrEmpty(path))
             {
-                WindowPresenter.OpenFile(path);
+                ApplicationController.OpenFile(path);
             }
         }
 
         private void fileToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
         {
             _recentFilesMenu.Items.Clear();
-            ToolStripMenuItem[] items = (from String path in WindowPresenter.RecentFiles
+            ToolStripMenuItem[] items = (from String path in ApplicationController.UserSettings.RecentFiles
                                          select new ToolStripMenuItem(Path.GetFileName(path)) { ToolTipText = path, }).ToArray();
 
             _recentFilesMenu.Items.AddRange(items);

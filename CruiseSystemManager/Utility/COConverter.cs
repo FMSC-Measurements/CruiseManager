@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Reflection;
 using CSM.Winforms;
 using System.Windows;
+using CruiseManager.Core.App;
 
 namespace CSM.Utility 
 {
@@ -38,7 +39,7 @@ namespace CSM.Utility
 
         public static readonly string COConvertEXE = String.Format(
             "{0}\\Utility\\COConverter.exe",
-            CSM.WindowPresenter.GetApplicationDirectory());
+            PlatformHelper.GetApplicationDirectory());
 
 
         public BindingList<String> Output { get; private set; }

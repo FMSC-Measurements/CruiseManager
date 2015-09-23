@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace CruiseManager.App
 {
-    public class WinFormsSetupService : SetupService
+    public class SetupServiceWinForms : SetupService
     {
 
 
-        public WinFormsSetupService() : base()
+        public SetupServiceWinForms() : base()
         { }
 
 

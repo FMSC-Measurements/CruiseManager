@@ -111,7 +111,7 @@
             // 
             // LoggingMethodBindingSource
             // 
-            this.LoggingMethodBindingSource.DataSource = typeof(CSM.Utility.Setup.LoggingMethod);
+            this.LoggingMethodBindingSource.DataSource = typeof(CruiseManager.Core.SetupModels.LoggingMethod);
             // 
             // AreaTextBox
             // 

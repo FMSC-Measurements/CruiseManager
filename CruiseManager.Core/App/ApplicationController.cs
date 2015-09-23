@@ -5,6 +5,9 @@ using System.Text;
 using CruiseDAL;
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.Models;
+using System.Xml.Serialization;
+using System.IO;
+using CruiseManager.Core.Constants;
 
 namespace CruiseManager.Core.App
 {
@@ -12,13 +15,16 @@ namespace CruiseManager.Core.App
     {
         public static ApplicationController Instance { get; set; }
 
-        public const string Version = "2015.05.01";
-        public const int RECENT_FILE_LIST_SIZE = 10;
+        internal static readonly TreeDefaultValueDO[] EMPTY_SPECIES_LIST = new TreeDefaultValueDO[] { };
+
 
         public WindowPresenter WindowPresenter { get; protected set; }
         public IExceptionHandler ExceptionHandler { get; protected set; }
         public ApplicationState AppState { get { return ApplicationState.GetHandle(); } }
         public DAL Database { get; set; }
+
+        public SetupService SetupService { get; set; }
+        public UserSettings UserSettings { get; set; }
 
         //the current save handler is the active locical component of the program that is 
         //responceable for saving the user's data 
@@ -53,14 +59,20 @@ namespace CruiseManager.Core.App
             }
         }
 
-        #region UserSettings
-        public abstract string CruiseSaveLocation { get; set; }
-        
-        public abstract string TemplateSaveLocation { get; set; }
-        
-        public abstract string[] RecentFiles { get; }
+        public bool InSupervisorMode { get; set; }
 
-        #endregion 
+
+
+        protected ApplicationController(UserSettings userSettings, SetupService setupService)
+        {
+            this.UserSettings = userSettings;
+            this.SetupService = setupService;
+#if DEBUG
+            InSupervisorMode = true;
+#endif
+        }
+
+        
 
         public abstract void OpenFile(String filePath);
 
@@ -121,8 +133,7 @@ namespace CruiseManager.Core.App
 
         public string GetTempCruisePath()
         {
-            return System.IO.Path.GetDirectoryName(System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)) + "\\~temp.cruise";
-
+            return System.IO.Path.GetDirectoryName(System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)) + "\\" + Strings.TEMP_FILENAME;
         }
 
         public DAL GetNewOrUnfinishedCruise()
@@ -192,7 +203,7 @@ namespace CruiseManager.Core.App
 
         public object GetTreeTDVList(TreeVM tree)
         {
-            if (tree == null) { return Constants.EMPTY_SPECIES_LIST; }
+            if (tree == null) { return EMPTY_SPECIES_LIST; }
             if (tree.Stratum == null)
             {
                 if (this.Database.GetRowCount("CuttingUnitStratum", "WHERE CuttingUnit_CN = ?", tree.CuttingUnit_CN) == 1)
@@ -201,7 +212,7 @@ namespace CruiseManager.Core.App
                 }
                 else
                 {
-                    return Constants.EMPTY_SPECIES_LIST;
+                    return EMPTY_SPECIES_LIST;
                 }
             }
 
@@ -213,7 +224,7 @@ namespace CruiseManager.Core.App
                 }
                 if (tree.SampleGroup == null)
                 {
-                    return Constants.EMPTY_SPECIES_LIST;
+                    return EMPTY_SPECIES_LIST;
                 }
             }
 
@@ -238,9 +249,13 @@ namespace CruiseManager.Core.App
         #endregion
 
         #region Static Methods
-        public static string GetApplicationDirectory()
+
+        public static List<FileInfo> GetTemplateFiles()
         {
-            return System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+            DirectoryInfo tDir = PlatformHelper.Instance.GetTemplateFolder();
+            //filter all files ending in .cut
+            List<FileInfo> files = new List<FileInfo>(tDir.GetFiles("*" + Constants.Strings.CRUISE_TEMPLATE_FILE_EXTENTION));
+            return files;
         }
         #endregion
 
@@ -262,9 +277,9 @@ namespace CruiseManager.Core.App
             }
             if (isDisposing)
             {
-                if (AppState.Database != null)
+                if (Database != null)
                 {
-                    AppState.Database.Dispose();
+                    Database.Dispose();
                 }
             }
 

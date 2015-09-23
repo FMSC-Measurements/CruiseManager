@@ -8,6 +8,8 @@ using System.ComponentModel;
 using CruiseDAL.Enums;
 using CruiseManager.Core;
 using CruiseManager.Core.App;
+using CruiseManager.Core.Models;
+using CruiseManager.Core.Constants;
 
 namespace CSM.Winforms.CruiseCustomize
 {
@@ -18,8 +20,9 @@ namespace CSM.Winforms.CruiseCustomize
         private bool _isTreeAuditsInitialized = false;
         private bool _isTallySetupInitialized = false;
 
-        public DAL Database { get { return this.WindowPresenter.Database; } }
-        public WindowPresenter WindowPresenter { get; set; }
+        public DAL Database { get { return _myApplicationController.Database; } }
+        protected WindowPresenter _myWindowPresenter;
+        protected ApplicationController _myApplicationController;
         public CruiseCustomizeView View { get; set; }
         //public List<StratumDO> Strata { get; set; }
         //public List<StratumCustomizeViewModel> StrataVM { get; set; }
@@ -39,11 +42,12 @@ namespace CSM.Winforms.CruiseCustomize
 
         public bool IsLogGradingEnabled { get; protected set; }
 
-        public CustomizeCruisePresenter(WindowPresenter presenter)
+        public CustomizeCruisePresenter(WindowPresenter presenter, ApplicationController applicationController)
         {
-            WindowPresenter = presenter;
+            _myApplicationController = applicationController;
+            _myWindowPresenter = presenter;
                         
-            this.IsLogGradingEnabled = this.Database.Read<SaleDO>("Sale", null)[0].LogGradingEnabled;
+            this.IsLogGradingEnabled = this.Database.ReadSingleRow<SaleDO>("Sale", (String)null).LogGradingEnabled;
 
         }
 
@@ -56,8 +60,8 @@ namespace CSM.Winforms.CruiseCustomize
             try
             {
                 //initialize list of all tree and log fields 
-                this.TreeFields = this.WindowPresenter.AppState.SetupServ.GetTreeFieldSetups();
-                this.LogFields = this.WindowPresenter.AppState.SetupServ.GetLogFieldSetups();
+                this.TreeFields = _myApplicationController.SetupService.GetTreeFieldSetups();
+                this.LogFields = _myApplicationController.SetupService.GetLogFieldSetups();
 
                 this.FieldSetupStrata = this.Database.Read<FieldSetupStratum>("Stratum", null);
                 foreach (FieldSetupStratum st in FieldSetupStrata)
@@ -73,10 +77,10 @@ namespace CSM.Winforms.CruiseCustomize
 
                     //compare selected tree/log fields to all tree.log fields to create a list of unselected tree/log fields
                     List<TreeFieldSetupDO> unselectedTreeFields =
-                        (from tfs in this.TreeFields.Except(st.SelectedTreeFields, CSM.Models.TreeFieldComparer.Instance)
+                        (from tfs in this.TreeFields.Except(st.SelectedTreeFields, TreeFieldComparer.Instance)
                          select new TreeFieldSetupDO(tfs)).ToList();
                     List<LogFieldSetupDO> unselectedLogFields = (
-                        from lfs in this.LogFields.Except(st.SelectedLogFields, CSM.Models.LogFieldComparer.Instance)
+                        from lfs in this.LogFields.Except(st.SelectedLogFields, LogFieldComparer.Instance)
                         select new LogFieldSetupDO(lfs)).ToList();
 
                     st.UnselectedLogFields = unselectedLogFields;
@@ -166,7 +170,7 @@ namespace CSM.Winforms.CruiseCustomize
         {
             if (stratum.SampleGroups != null) { return; }//if we have already created initialized this stratum, 
 
-            stratum.SampleGroups = WindowPresenter.Database.Read<TallySetupSampleGroup>("SampleGroup", "WHERE Stratum_CN = ?", stratum.Stratum_CN);
+            stratum.SampleGroups = Database.Read<TallySetupSampleGroup>("SampleGroup", "WHERE Stratum_CN = ?", stratum.Stratum_CN);
             foreach (TallySetupSampleGroup sg in stratum.SampleGroups)
             {
                 //TODO compare what we see as the tally mode vs. the stored mode on the sample group
@@ -256,7 +260,7 @@ namespace CSM.Winforms.CruiseCustomize
         {
             var useHotKeys = (from StratumDO stratum in this.TallySetupStrata
                               select stratum.Hotkey).Union(st.ListHotKeysInuse());
-            var avalibleHotHeys = CSM.Utility.R.Strings.HOTKEYS.Except(useHotKeys).ToArray();
+            var avalibleHotHeys = Strings.HOTKEYS.Except(useHotKeys).ToArray();
             return avalibleHotHeys;
             //return CSM.Utility.R.Strings.HOTKEYS;
         }        
@@ -270,7 +274,7 @@ namespace CSM.Winforms.CruiseCustomize
             {
                 usedHotKeys = usedHotKeys.Union(straum.ListHotKeysInuse());
             }
-            return CSM.Utility.R.Strings.HOTKEYS.Except(usedHotKeys).ToArray();
+            return Strings.HOTKEYS.Except(usedHotKeys).ToArray();
             //return CSM.Utility.R.Strings.HOTKEYS;
         }
 
@@ -690,7 +694,7 @@ namespace CSM.Winforms.CruiseCustomize
             StringBuilder errorBuilder = new StringBuilder();
             if (!Save(ref errorBuilder))
             {
-                this.WindowPresenter.ShowSimpleErrorMessage(errorBuilder.ToString());
+                this._myWindowPresenter.ShowSimpleErrorMessage(errorBuilder.ToString());
                 return false; 
             }
             return true; 
@@ -702,7 +706,7 @@ namespace CSM.Winforms.CruiseCustomize
             StringBuilder errorBuilder = new StringBuilder();
             if (!Save(ref errorBuilder))
             {
-                this.WindowPresenter.ShowSimpleErrorMessage(errorBuilder.ToString());
+                this._myWindowPresenter.ShowSimpleErrorMessage(errorBuilder.ToString());
                 cancel = true;
             }
         }

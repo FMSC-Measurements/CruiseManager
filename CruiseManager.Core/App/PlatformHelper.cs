@@ -11,6 +11,9 @@ namespace CruiseManager.Core.App
 
         public abstract DirectoryInfo GetTemplateFolder();
 
-
+        public static string GetApplicationDirectory()
+        {
+            return System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+        }
     }
 }

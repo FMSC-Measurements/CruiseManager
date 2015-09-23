@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using CruiseDAL.DataObjects;
 using System.IO;
+using CruiseManager.Core.App;
 
 namespace CSM.Winforms.CruiseWizard
 {
@@ -56,7 +57,7 @@ namespace CSM.Winforms.CruiseWizard
         private void InitializePurposeComboBox()
         {
             //PurposeComboBox.DataSource = CSM.Utility.Constants.SALE_PURPOSE;
-            PurposeComboBox.Items.AddRange(CSM.Utility.Constants.SALE_PURPOSE);
+            PurposeComboBox.Items.AddRange(CruiseManager.Core.Constants.Strings.SALE_PURPOSE);
         }
 
         #endregion
@@ -101,7 +102,8 @@ namespace CSM.Winforms.CruiseWizard
 
         private void _browseTemplateButton_Click(object sender, EventArgs e)
         {
-            string filePath = this.Presenter.AskTemplateLocation();
+            
+            string filePath = WindowPresenter.Instance.AskTemplateLocation();
             _templatePath = filePath;
             _templatePathTB.Text = filePath;
         }

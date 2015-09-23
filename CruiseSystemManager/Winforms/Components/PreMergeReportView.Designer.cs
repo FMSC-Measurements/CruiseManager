@@ -142,35 +142,35 @@
             // 
             // _BS_TreeConflicts
             // 
-            this._BS_TreeConflicts.DataSource = typeof(CSM.Logic.Components.MergeObject);
+            this._BS_TreeConflicts.DataSource = typeof(CruiseManager.Core.Components.MergeObject);
             // 
             // _BS_LogConflicts
             // 
-            this._BS_LogConflicts.DataSource = typeof(CSM.Logic.Components.MergeObject);
+            this._BS_LogConflicts.DataSource = typeof(CruiseManager.Core.Components.MergeObject);
             // 
             // _BS_StemConflicts
             // 
-            this._BS_StemConflicts.DataSource = typeof(CSM.Logic.Components.MergeObject);
+            this._BS_StemConflicts.DataSource = typeof(CruiseManager.Core.Components.MergeObject);
             // 
             // _BS_PlotConflicts
             // 
-            this._BS_PlotConflicts.DataSource = typeof(CSM.Logic.Components.MergeObject);
+            this._BS_PlotConflicts.DataSource = typeof(CruiseManager.Core.Components.MergeObject);
             // 
             // _BS_treeMatches
             // 
-            this._BS_treeMatches.DataSource = typeof(CSM.Logic.Components.MergeObject);
+            this._BS_treeMatches.DataSource = typeof(CruiseManager.Core.Components.MergeObject);
             // 
             // _BS_logMatches
             // 
-            this._BS_logMatches.DataSource = typeof(CSM.Logic.Components.MergeObject);
+            this._BS_logMatches.DataSource = typeof(CruiseManager.Core.Components.MergeObject);
             // 
             // _BS_stemMatches
             // 
-            this._BS_stemMatches.DataSource = typeof(CSM.Logic.Components.MergeObject);
+            this._BS_stemMatches.DataSource = typeof(CruiseManager.Core.Components.MergeObject);
             // 
             // _BS_plotMatches
             // 
-            this._BS_plotMatches.DataSource = typeof(CSM.Logic.Components.MergeObject);
+            this._BS_plotMatches.DataSource = typeof(CruiseManager.Core.Components.MergeObject);
             // 
             // PreMergeReportView
             // 

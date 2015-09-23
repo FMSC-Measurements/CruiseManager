@@ -8,11 +8,15 @@ using System.Text;
 using System.Windows.Forms;
 using CruiseDAL.DataObjects;
 using System.Collections;
+using CruiseManager.Core.App;
+using CruiseManager.Core.Models;
 
 namespace CSM.Winforms.CruiseCustomize
 {
     public partial class CruiseCustomizeView : UserControl
     {
+        protected ApplicationController _myApplicationController;
+
         /// <summary> 
         /// Required designer variable.
         /// </summary>
@@ -126,8 +130,9 @@ namespace CSM.Winforms.CruiseCustomize
         public CustomizeCruisePresenter Presenter { get; set; }
         //protected StratumDO FieldSetup_CurrentStratum { get; set; }
 
-        public CruiseCustomizeView(CustomizeCruisePresenter presenter)
+        public CruiseCustomizeView(CustomizeCruisePresenter presenter, ApplicationController applicationController)
         {
+            _myApplicationController = applicationController;
             this.Presenter = presenter;
             Presenter.View = this;
 
@@ -135,7 +140,7 @@ namespace CSM.Winforms.CruiseCustomize
 
 
 
-            if (this.Presenter.WindowPresenter.AppState.InSupervisorMode)
+            if (_myApplicationController.InSupervisorMode)
             {
                 InitializeLogMatrixComponent();
             }        
@@ -1499,13 +1504,13 @@ namespace CSM.Winforms.CruiseCustomize
             {
                 List<TreeFieldSetupDO> selectedTreeFields = stratum.SelectedTreeFields;
                 List<TreeFieldSetupDO> unselectedTreeFields = stratum.UnselectedTreeFields;
-                unselectedTreeFields.Sort(CSM.Models.TreeFieldComparer.Instance);
+                unselectedTreeFields.Sort(TreeFieldComparer.Instance);
                 this._treeFieldWidget.SelectedItemsDataSource = selectedTreeFields;
                 this._treeFieldWidget.DataSource = unselectedTreeFields;
 
                 List<LogFieldSetupDO> selectedLogFields = stratum.SelectedLogFields;
                 List<LogFieldSetupDO> unselectedLogFields = stratum.UnselectedLogFields;
-                unselectedLogFields.Sort(CSM.Models.LogFieldComparer.Instance);
+                unselectedLogFields.Sort(LogFieldComparer.Instance);
                 this._logFieldWidget.SelectedItemsDataSource = selectedLogFields;
                 this._logFieldWidget.DataSource = unselectedLogFields;
             }

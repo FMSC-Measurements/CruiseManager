@@ -47,14 +47,14 @@ namespace CSM
             Application.ThreadException += FMSC.Utility.ErrorHandling.ErrorHandlers.ThreadException;
 
 
-            WinFormsWindowPresenter windowPresenter = null;
+            WindowPresenterWinForms windowPresenter = null;
             if(string.IsNullOrEmpty(dalPath) )
             {
-                windowPresenter = new WinFormsWindowPresenter();
+                windowPresenter = new WindowPresenterWinForms();
             }
             else
             {
-                windowPresenter = new WinFormsWindowPresenter(dalPath);
+                windowPresenter = new WindowPresenterWinForms(dalPath);
             }
             
             windowPresenter.Run();

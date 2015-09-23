@@ -6,6 +6,7 @@ using System.IO;
 using CruiseManager.Core;
 using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core.App;
+using CruiseManager.Core.Constants;
 
 namespace CruiseManager.Core.Components
 {
@@ -113,7 +114,7 @@ namespace CruiseManager.Core.Components
             }
 
             //create count record copies in the master for each component
-            MasterDAL.Execute(App.SQL.MAKE_COUNTS_FOR_COMPONENTS);
+            MasterDAL.Execute(SQL.MAKE_COUNTS_FOR_COMPONENTS);
 
             View.StepProgressBar();/////////////////////////////////////////////////
 

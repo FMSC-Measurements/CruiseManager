@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 using CruiseDAL.DataObjects;
+using CruiseManager.Core.Constants;
 
 namespace CSM.Winforms.CruiseCustomize
 {
@@ -27,7 +28,7 @@ namespace CSM.Winforms.CruiseCustomize
             InitializeComponent();
 
             //this._hotKeyCB.Items.AddRange(CSM.Utility.R.Strings.HOTKEYS);
-            this._behaviorCB.Items.AddRange(CSM.Utility.R.Strings.INDICATOR_TYPES);
+            this._behaviorCB.Items.AddRange(Strings.INDICATOR_TYPES);
         }
 
         protected bool AllowTallyBySpecies 

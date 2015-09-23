@@ -39,6 +39,7 @@ namespace CSM.Winforms.TemplateEditor
         public ApplicationController ApplicationController { get; set; }
         public WindowPresenter WindowPresenter { get; set; }
         public TemplateEditViewControl View { get; set; }
+        public DAL Database { get { return ApplicationController.Database; } }
 
 
         public BindingList<CruiseMethodViewModel> CruiseMethods { get; set; }

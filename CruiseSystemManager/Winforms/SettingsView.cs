@@ -6,10 +6,11 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using CruiseManager.Core.App;
 
 namespace CSM.Winforms
 {
-    public partial class SettingsView : UserControl, IView
+    public partial class SettingsView : UserControl
     {
         public SettingsView()
         {
@@ -21,8 +22,6 @@ namespace CSM.Winforms
             using (FolderBrowserDialog dialog = new FolderBrowserDialog())
             {
                 dialog.ShowDialog(this);
-
-
             }
         }
 
@@ -45,22 +44,22 @@ namespace CSM.Winforms
         }
 
         #region IView Members
-        protected void InitializeView(IWindowPresenter windowPresenter)
+        protected void InitializeView(WindowPresenter windowPresenter)
         {
             this.WindowPresenter = windowPresenter;
         }
 
-        public IWindowPresenter WindowPresenter { get; set; }
+        public WindowPresenter WindowPresenter { get; set; }
 
-        public NavOption[] NavOptions
-        {
-            get { throw new NotImplementedException(); }
-        }
+        //public NavOption[] NavOptions
+        //{
+        //    get { throw new NotImplementedException(); }
+        //}
 
-        public NavOption[] ViewActions
-        {
-            get { throw new NotImplementedException(); }
-        }
+        //public NavOption[] ViewActions
+        //{
+        //    get { throw new NotImplementedException(); }
+        //}
 
         #endregion
     }

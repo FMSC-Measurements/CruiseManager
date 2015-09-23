@@ -111,17 +111,17 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EPPlus, Version=3.1.2.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>References\EPPlus.dll</HintPath>
+    <Reference Include="EPPlus, Version=4.0.4.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.0.4\lib\net20\EPPlus.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>References\Ionic.Zip.dll</HintPath>
+    <Reference Include="Ionic.Zip, Version=1.9.6.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.9.6\lib\net20\Ionic.Zip.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="itextsharp, Version=5.3.3.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>References\itextsharp.dll</HintPath>
+    <Reference Include="itextsharp, Version=5.5.7.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.7\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -134,10 +134,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App\ApplicationController.WinForms.cs" />
+    <Compile Include="App\ApplicationControllerWinForms.cs" />
     <Compile Include="App\PlatformHelperWinForms.cs" />
-    <Compile Include="App\WinFormsSetupService.cs" />
-    <Compile Include="App\WinFormsWindowPresenter.cs" />
+    <Compile Include="App\SetupServiceWinForms.cs" />
+    <Compile Include="App\UserSettingsWinforms.cs" />
+    <Compile Include="App\WindowPresenterWinForms.cs" />
     <Compile Include="Winforms\AboutDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -425,6 +426,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.CuttingUnitDO.datasource" />
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.SampleGroupDO.datasource" />
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.StratumDO.datasource" />
@@ -523,6 +525,7 @@
   <ItemGroup>
     <Folder Include="WPF\" />
   </ItemGroup>
+  <Import Project="..\CruiseManager.Core\CruiseManager.Core.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

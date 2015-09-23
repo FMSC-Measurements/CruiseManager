@@ -10,6 +10,7 @@ using CruiseManager.Core;
 using CruiseManager.Core.SetupModels;
 using CruiseManager.Core.App;
 using CruiseManager.Core.Models;
+using CruiseManager.Core.Constants;
 
 namespace CSM.Winforms.DesignEditor
 {
@@ -52,7 +53,7 @@ namespace CSM.Winforms.DesignEditor
         { 
             get { return ApplicationController.Database; }
         }
-        public bool IsSupervisor { get { return ApplicationState.GetHandle().InSupervisorMode; } }
+        public bool IsSupervisor { get { return ApplicationController.InSupervisorMode; } }
 
         public DesignEditorDataContext DataContext { get; set; }
 
@@ -544,7 +545,7 @@ namespace CSM.Winforms.DesignEditor
             if(unit.IsPersisted == false) { return true; }
             if (HasCruiseData(unit) == false) { return true; }
             if(IsSupervisor == true) { return true; }
-            if (R.Strings.EDITABLE_UNIT_FILEDS.Contains(fieldName)) { return true; }
+            if (Strings.EDITABLE_UNIT_FILEDS.Contains(fieldName)) { return true; }
             return false;
         }
 
@@ -558,7 +559,7 @@ namespace CSM.Winforms.DesignEditor
             if (HasCruiseData(stratum) == false) { return true; }
             if (IsSupervisor == true) { return true; }
             
-            if (R.Strings.EDITABLE_ST_FIELDS.Contains(fieldName))
+            if (Strings.EDITABLE_ST_FIELDS.Contains(fieldName))
             {
                 return true;
             }
@@ -572,7 +573,7 @@ namespace CSM.Winforms.DesignEditor
             if (sampleGroup.IsPersisted == false) { return true; }
             if (HasCruiseData(sampleGroup) == false) { return true; }
             if (IsSupervisor == true) { return true; }
-            if (R.Strings.EDITABLE_SG_FIELDS.Contains(fieldName))
+            if (Strings.EDITABLE_SG_FIELDS.Contains(fieldName))
             {
                 return true;
             }

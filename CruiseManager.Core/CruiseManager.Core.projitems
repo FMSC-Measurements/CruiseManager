@@ -10,11 +10,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)App\ApplicationState.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)App\Constants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\ExceptionHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\Exceptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\PlatformHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\SetupService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App\UserSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\WindowPresenter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CancelWorkerException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Components\ComponentFile.cs" />
@@ -25,6 +25,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Components\MergeTableCommandBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Components\PrepareMergeWorker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Components\UpdateMasterWorker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Constants\SQL.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Constants\Strings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Constants\Version.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IExceptionHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IPresentor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ISaveHandler.cs" />

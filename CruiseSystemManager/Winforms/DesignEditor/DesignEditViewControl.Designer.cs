@@ -346,7 +346,7 @@
             // 
             // RegionBindingSource
             // 
-            this.RegionBindingSource.DataSource = typeof(CSM.Utility.Setup.Region);
+            this.RegionBindingSource.DataSource = typeof(CruiseManager.Core.SetupModels.Region);
             // 
             // label3
             // 

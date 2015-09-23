@@ -243,7 +243,7 @@ namespace CSM.Winforms.CruiseWizard
             TreeDefaultValueDO temp = new TreeDefaultValueDO(tdv);
             ApplicationState appState = ApplicationState.GetHandle();
 
-            CSM.Winforms.CruiseWizard.FormAddTreeDefault dialog = new CSM.Winforms.CruiseWizard.FormAddTreeDefault(appState.SetupServ.GetProductCodes());
+            CSM.Winforms.CruiseWizard.FormAddTreeDefault dialog = new CSM.Winforms.CruiseWizard.FormAddTreeDefault(SetupService.GetHandle().GetProductCodes());
             if (dialog.ShowDialog(tdv) == DialogResult.OK)
             {
                 tdv.Save();

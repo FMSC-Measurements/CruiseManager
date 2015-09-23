@@ -2,11 +2,13 @@
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
 using CruiseManager.Core.Components;
+using CruiseManager.Core.Constants;
 using CruiseManager.Core.Models;
 using CruiseManager.WinForms.Components;
 using CSM.Winforms;
 using CSM.Winforms.Dashboard;
 using CSM.Winforms.DataEditor;
+using CSM.Winforms.TemplateEditor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,13 +18,10 @@ using System.Windows.Forms;
 
 namespace CSM.App
 {
-    public class WinFormsWindowPresenter : WindowPresenter
+    public class WindowPresenterWinForms : WindowPresenter
     {
-        public static string GetApplicationDirectory()
-        {
-            return System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
-        }
 
+        protected ApplicationController _myApplicationController;
 
 
         public const string Version = "2015.09.01";
@@ -31,18 +30,23 @@ namespace CSM.App
 
         #region Ctor
 
-        public WinFormsWindowPresenter()
+        public WindowPresenterWinForms(ApplicationController applicationController) : this()
         {
-            this.MainWindow = new FormCSMMain(this);
+            _myApplicationController = applicationController;
+        }
+
+        public WindowPresenterWinForms()
+        {
+            this.MainWindow = new FormCSMMain(this, this._myApplicationController);
             ShowHomeLayout();
         }
 
-        public WinFormsWindowPresenter(String dalPath)
-            : this()
-        {
-            ApplicationController.Instance.OpenFile(dalPath);
-            //this.OpenFile(dalPath);
-        }
+        //public WindowPresenterWinForms(String dalPath)
+        //    : this()
+        //{
+        //    ApplicationController.Instance.OpenFile(dalPath);
+        //    //this.OpenFile(dalPath);
+        //}
         #endregion 
 
         
@@ -59,7 +63,7 @@ namespace CSM.App
                 }
                 if (value != null)
                 {
-                    value.FormClosing += new FormClosingEventHandler(this.HandleAppClosing);
+                    value.FormClosing += new FormClosingEventHandler(this.AppClosingHandler);
                 }
                 _mainWindow = value;
             }
@@ -131,20 +135,11 @@ namespace CSM.App
 
 
 
-        public void HandleAppClosing(object sender, FormClosingEventArgs e)
+        public void AppClosingHandler(object sender, FormClosingEventArgs e)
         {
-            try
-            {
-                if (this.SaveHandler != null)
-                {
-
-                    SaveHandler.HandleAppClosing(e.Cancel);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ExceptionHandler.Handel(ex);
-            }
+            bool cancel = e.Cancel;
+            this._myApplicationController.HandleAppClosing(ref cancel);
+            e.Cancel = cancel;
         }
 
 
@@ -173,6 +168,34 @@ namespace CSM.App
 
         #region UI Methods
 
+        public override string AskTemplateLocation()
+        {
+            using (OpenFileDialog dialog = new OpenFileDialog())
+            {
+                dialog.AutoUpgradeEnabled = true;
+                dialog.CustomPlaces.Add(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\CruiseFiles");
+
+                dialog.InitialDirectory = _myApplicationController.UserSettings.TemplateSaveLocation;
+
+                dialog.Multiselect = false;
+                dialog.Filter = String.Format("Template Files ({0})|*{0}", Strings.CRUISE_TEMPLATE_FILE_EXTENTION);
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = dialog.FileName;
+                    string dir = System.IO.Path.GetDirectoryName(filePath);
+
+
+                    _myApplicationController.UserSettings.TemplateSaveLocation = dir;
+
+                    return filePath;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
         //public override void ShowUnimplementedFeatureDialog()
         //{
         //    MessageBox.Show("This Feature has not been implemented yet, check back later");
@@ -196,7 +219,7 @@ namespace CSM.App
             {
                 //this.MainWindow.ClearNavPanel();
                 this.MainWindow.ViewContentPanel.Controls.Clear();
-                this.MainWindow.Text = System.IO.Path.GetFileName(this.AppState.Database.Path);
+                this.MainWindow.Text = System.IO.Path.GetFileName(this._myApplicationController.Database.Path);
 
                 //bool enableManageComponents = this.Database.CruiseFileType == CruiseFileType.Master;
                 //bool enableEditDesign = true;//this.Database.CruiseFileType != CruiseFileType.Component;
@@ -247,7 +270,7 @@ namespace CSM.App
             view.Presenter = presenter;
             presenter.View = view;
 
-            this.ActivePresentor = presenter;
+            this._myApplicationController.ActivePresentor = presenter;
             SetActiveView(view);
         }
 
@@ -259,7 +282,7 @@ namespace CSM.App
 
             SetActiveView(view);
 
-            ActivePresentor = presenter;
+            this._myApplicationController = presenter;
         }
 
         
@@ -305,13 +328,13 @@ namespace CSM.App
 
         public override void ShowEditDesign()
         {
-            ActivePresentor = null;
+            this._myApplicationController = null;
             DesignEditViewControl view = new DesignEditViewControl(this);
             SetActiveView(view);
 
             DesignEditorPresentor presenter = new DesignEditorPresentor(this);
             presenter.View = view;
-            ActivePresentor = presenter;
+            this._myApplicationController = presenter;
         }
 
         public override void ShowEditWizard()
@@ -328,9 +351,9 @@ namespace CSM.App
                 this.ShowDefaultCursor();
 
                 view.ShowDialog(this.MainWindow);
-                if (this.ActivePresentor != null) //refresh page in main window after wizard closes 
+                if (this._myApplicationController.ActivePresentor != null) //refresh page in main window after wizard closes 
                 {
-                    this.ActivePresentor.UpdateView();
+                    this._myApplicationController.ActivePresentor.UpdateView();
                 }
             }
             else
@@ -352,7 +375,7 @@ namespace CSM.App
             var _createNewCruise = new NavOption("Open File", this.ShowOpenCruiseDialog);
             this.MainWindow.SetNavOptions(new NavOption[] { _createNewCruise, _openFileAction });
 
-            this.ActivePresentor = null;
+            this._myApplicationController.ActivePresentor = null;
         }
 
         public override void ShowImportTemplate()
@@ -369,7 +392,7 @@ namespace CSM.App
 
                 ImportFromCruiseView view = new ImportFromCruiseView(this, dialog.FileName);
                 view.Dock = DockStyle.Fill;
-                this.ActivePresentor = view;
+                this._myApplicationController.ActivePresentor = view;
                 this.MainWindow.ViewContentPanel.Controls.Add(view);
 
             }
@@ -388,7 +411,7 @@ namespace CSM.App
             MergeComponentView view = new MergeComponentView();
             MergeComponentsPresenter presenter = new MergeComponentsPresenter(this, view);
 
-            this.ActivePresentor = presenter;
+            this._myApplicationController.ActivePresentor = presenter;
             SetActiveView(view);
         }
 
@@ -399,20 +422,20 @@ namespace CSM.App
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.AutoUpgradeEnabled = true;
             dialog.CustomPlaces.Add(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\CruiseFiles");
-            dialog.InitialDirectory = this.CruiseSaveLocation;
-            dialog.Filter = R.Strings.OPEN_CRUISE_FILE_DIALOG_FILTER;
+            dialog.InitialDirectory = this._myApplicationController.UserSettings.CruiseSaveLocation;
+            dialog.Filter = Strings.OPEN_CRUISE_FILE_DIALOG_FILTER;
             if (COConverter.IsInstalled() == true)
             {
-                dialog.Filter += String.Format("| {0}(*{1})|*{1}", R.Strings.FRIENDLY_LEGACY_CRUISE_FILETYPE_NAME, R.Strings.LEGACY_CRUISE_FILE_EXTENTION);
+                dialog.Filter += String.Format("| {0}(*{1})|*{1}", Strings.FRIENDLY_LEGACY_CRUISE_FILETYPE_NAME, Strings.LEGACY_CRUISE_FILE_EXTENTION);
             }
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 String fileName = dialog.FileName;
                 String directroy = System.IO.Path.GetDirectoryName(fileName);
-                this.CruiseSaveLocation = directroy;
+                this._myApplicationController.UserSettings.CruiseSaveLocation = directroy;
 
-                OpenFile(dialog.FileName);
+                this._myApplicationController.OpenFile(dialog.FileName);
             }
         }
 
@@ -455,13 +478,13 @@ namespace CSM.App
         {
             //this.MainWindow.ClearNavPanel();
             //this.MainWindow.ViewContentPanel.Controls.Clear();
-            this.MainWindow.Text = System.IO.Path.GetFileName(this.AppState.Database.Path);
+            this.MainWindow.Text = System.IO.Path.GetFileName(this._myApplicationController.Database.Path);
             //this.MainWindow.AddNavButton("Back", this.HandleHomePageClick);
             //this.MainWindow.AddNavButton("Import From Cruise", this.HandleImportTemplateClick);
             TemplateEditViewControl view = new TemplateEditViewControl(this);
             TemplateEditViewPresenter presenter = new TemplateEditViewPresenter(this, view);
             view.Presenter = presenter;
-            ActivePresentor = presenter;
+            this._myApplicationController.ActivePresentor = presenter;
             this.SetActiveView(view);
             this.MainWindow.SetNavOptions(this.templateLandingNavOptions);
 

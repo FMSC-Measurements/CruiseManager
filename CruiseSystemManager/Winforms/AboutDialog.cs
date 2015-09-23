@@ -15,7 +15,7 @@ namespace CSM.Winforms
         public AboutDialog()
         {
             InitializeComponent();
-            this._versionNumLBL.Text = ApplicationController.Version;
+            this._versionNumLBL.Text = CruiseManager.Core.Constants.Version.VersionID;
         }
 
         private void _login_Click(object sender, EventArgs e)

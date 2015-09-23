@@ -1,4 +1,6 @@
-﻿namespace CSM.Winforms.CruiseWizard
+﻿using CruiseManager.Core.Models;
+
+namespace CSM.Winforms.CruiseWizard
 {
     partial class SampleGroupPage
     {
@@ -168,7 +170,7 @@
             // 
             // StratumBindingSource
             // 
-            this.StratumBindingSource.DataSource = typeof(CSM.Models.StratumVM);
+            this.StratumBindingSource.DataSource = typeof(StratumVM);
             this.StratumBindingSource.CurrentChanged += new System.EventHandler(this.StratumBindingSource_CurrentChanged);
             // 
             // toolStripLabel1
@@ -513,7 +515,7 @@
             // 
             // SecondaryProductBindingSource
             // 
-            this.SecondaryProductBindingSource.DataSource = typeof(CSM.Utility.Setup.ProductCode);
+            this.SecondaryProductBindingSource.DataSource = typeof(CruiseManager.Core.SetupModels.ProductCode);
             // 
             // label4
             // 
@@ -558,7 +560,7 @@
             // 
             // PrimaryProductBindingSource
             // 
-            this.PrimaryProductBindingSource.DataSource = typeof(CSM.Utility.Setup.ProductCode);
+            this.PrimaryProductBindingSource.DataSource = typeof(CruiseManager.Core.SetupModels.ProductCode);
             this.PrimaryProductBindingSource.CurrentChanged += new System.EventHandler(this.ProductCodeBindingSource_CurrentChanged);
             // 
             // panel4
@@ -596,7 +598,7 @@
             // 
             // UOMBindingSource
             // 
-            this.UOMBindingSource.DataSource = typeof(CSM.Utility.Setup.UOMCode);
+            this.UOMBindingSource.DataSource = typeof(CruiseManager.Core.SetupModels.UOMCode);
             // 
             // LDTextBox
             // 

@@ -7,11 +7,21 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using CruiseManager.Core.Components;
+using CruiseManager.Core.App;
 
 namespace CruiseManager.WinForms.Components
 {
     public partial class CreateComponentView : UserControl
     {
+        //protected WindowPresenter _myWindowPresenter;
+        //protected ApplicationController _myApplicationController;
+
+        //public CreateComponentView(WindowPresenter windowPresenter, ApplicationController applicationController) : this()
+        //{
+        //    _myWindowPresenter = windowPresenter;
+        //    _myApplicationController = applicationController;
+        //}
+
         public CreateComponentView()
         {
             InitializeComponent();

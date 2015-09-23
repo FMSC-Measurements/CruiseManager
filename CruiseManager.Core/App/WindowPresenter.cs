@@ -20,6 +20,8 @@ namespace CruiseManager.Core.App
 
         public MainWindow MainWindow { get; set; }
 
+        public abstract string AskTemplateLocation();
+
         public abstract void ShowAboutDialog();
         public abstract void ShowCruiseLandingLayout();
         public abstract void ShowCustomizeCruiseLayout();
@@ -36,6 +38,12 @@ namespace CruiseManager.Core.App
         public abstract void ShowTemplateLandingLayout();
 
         public abstract void ShowSimpleErrorMessage(string errorMessage);
+
+        public void ShowMessage(string message)
+        {
+            ShowMessage(message, null);
+        }
+
         public abstract void ShowMessage(string message, string caption);
 
         public abstract Nullable<bool> AskYesNoCancel(String message, String caption);

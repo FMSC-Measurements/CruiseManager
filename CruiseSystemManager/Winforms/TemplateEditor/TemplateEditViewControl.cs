@@ -10,13 +10,14 @@ namespace CSM.Winforms.TemplateEditor
     public partial class TemplateEditViewControl : UserControl, IView
     {
 
-        public TemplateEditViewControl(WindowPresenter windowPresenter)
+        public TemplateEditViewControl(WindowPresenter windowPresenter, ApplicationController applicationController)
         {
             
 
             InitializeComponent();
         }
 
+        protected ApplicationController _myApplicationController;
         
         public TemplateEditViewPresenter Presenter { get; set; }
         protected TreeDefaultValueDO TreeAudit_CurrentTDV { get; set; }
@@ -196,7 +197,7 @@ namespace CSM.Winforms.TemplateEditor
 
         private void _addTDVButton_Click(object sender, EventArgs e)
         {
-            TreeDefaultValueDO newTDV = new TreeDefaultValueDO(this.Presenter.WindowPresenter.Database);
+            TreeDefaultValueDO newTDV = new TreeDefaultValueDO(this.Presenter.Database);
             SetupService setupService = SetupService.GetHandle();
 
             CSM.Winforms.CruiseWizard.FormAddTreeDefault dialog = new CSM.Winforms.CruiseWizard.FormAddTreeDefault(setupService.GetProductCodes());
@@ -221,7 +222,7 @@ namespace CSM.Winforms.TemplateEditor
             ApplicationState appState = ApplicationState.GetHandle();
 
             TreeDefaultValueDO initialState = new TreeDefaultValueDO(tdv);
-            CSM.Winforms.CruiseWizard.FormAddTreeDefault dialog = new CSM.Winforms.CruiseWizard.FormAddTreeDefault(appState.SetupServ.GetProductCodes());
+            CSM.Winforms.CruiseWizard.FormAddTreeDefault dialog = new CSM.Winforms.CruiseWizard.FormAddTreeDefault(SetupService.GetHandle().GetProductCodes());
             if (dialog.ShowDialog(tdv) == DialogResult.OK)
             {
                 try
@@ -280,7 +281,7 @@ namespace CSM.Winforms.TemplateEditor
 
         private void _volEq_add_button_Click(object sender, EventArgs e)
         {
-            this._BS_VolEquations.Add(new VolumeEquationDO(this.Presenter.WindowPresenter.Database));
+            this._BS_VolEquations.Add(new VolumeEquationDO(this.Presenter.Database));
         }
 
         private void _volEq_delete_button_Click(object sender, EventArgs e)
@@ -295,7 +296,7 @@ namespace CSM.Winforms.TemplateEditor
 
         private void _BS_treeAudits_AddingNew(object sender, System.ComponentModel.AddingNewEventArgs e)
         {
-           e.NewObject = new TreeAuditValueDO(this.Presenter.WindowPresenter.Database);
+           e.NewObject = new TreeAuditValueDO(this.Presenter.Database);
         }
 
 

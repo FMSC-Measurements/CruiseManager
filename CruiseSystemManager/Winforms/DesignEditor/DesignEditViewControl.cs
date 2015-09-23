@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using CruiseDAL.DataObjects;
 using System.Collections;
 using CruiseManager.Core.App;
+using CruiseManager.Core.Constants;
 
 namespace CSM.Winforms.DesignEditor
 {
@@ -29,7 +30,7 @@ namespace CSM.Winforms.DesignEditor
             this.WindowPresenter = windowPresenter;
             this.ApplicationController = applicationController;
             InitializeComponent();
-            this.SalePurposeComboBox.DataSource = Constants.SALE_PURPOSE;
+            this.SalePurposeComboBox.DataSource = Strings.SALE_PURPOSE;
         }
 
         public DesignEditorPresentor Presentor
@@ -298,7 +299,7 @@ namespace CSM.Winforms.DesignEditor
             ApplicationState appState = ApplicationState.GetHandle();
             try
             {
-                CSM.Winforms.CruiseWizard.FormAddTreeDefault dialog = new CSM.Winforms.CruiseWizard.FormAddTreeDefault(appState.SetupServ.GetProductCodes());
+                CSM.Winforms.CruiseWizard.FormAddTreeDefault dialog = new CSM.Winforms.CruiseWizard.FormAddTreeDefault(SetupService.GetHandle().GetProductCodes());
                 if (dialog.ShowDialog(newTDV) == DialogResult.OK)
                 {
                     this.Presentor.DataContext.AllTreeDefaults.Add(newTDV);
@@ -321,7 +322,7 @@ namespace CSM.Winforms.DesignEditor
 
             try
             {
-                CSM.Winforms.CruiseWizard.FormAddTreeDefault dialog = new CSM.Winforms.CruiseWizard.FormAddTreeDefault(appState.SetupServ.GetProductCodes());
+                CSM.Winforms.CruiseWizard.FormAddTreeDefault dialog = new CSM.Winforms.CruiseWizard.FormAddTreeDefault(SetupService.GetHandle().GetProductCodes());
                 if (dialog.ShowDialog(tdv) == DialogResult.OK)
                 {
                     try

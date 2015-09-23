@@ -6,19 +6,18 @@ using CruiseDAL;
 using CruiseDAL.DataObjects;
 using System.IO;
 using System.Xml.Serialization;
-using CruiseManager.Core.SetupModels;
 
 namespace CruiseManager.Core.App
 {
-    public delegate void DatabaseChangedEventHandler(FileState state);
+    //public delegate void DatabaseChangedEventHandler(FileState state);
 
-    public delegate void TreeDefaultsChangedEventHandler(bool error);
+    //public delegate void TreeDefaultsChangedEventHandler(bool error);
 
-    public delegate void SupervisorModeChangedEventHandler();
+    //public delegate void SupervisorModeChangedEventHandler();
 
-    public enum AppStateChangedEventType { DatabaseChanged, SupervisorModeChanged, TreeDefaultsChanged }
+    //public enum AppStateChangedEventType { DatabaseChanged, SupervisorModeChanged, TreeDefaultsChanged }
 
-    public enum FileState { UnLoaded, CruiseLoaded, TemplateLoaded, Error }
+    //public enum FileState { UnLoaded, CruiseLoaded, TemplateLoaded, Error }
 
     [Serializable]
     public class ApplicationState
@@ -27,10 +26,7 @@ namespace CruiseManager.Core.App
         private static ApplicationState _instance; 
         private ApplicationState()
         {
-#if DEBUG
-            _inSupervisorMode = true;
-#endif
-            _setupService = SetupService.GetHandle();
+            //_setupService = SetupService.GetHandle();
         }
 
 
@@ -88,129 +84,86 @@ namespace CruiseManager.Core.App
             }
         }
 
+        
 
-        private SetupService _setupService;
-        private DAL _dataBase;
-        private bool _inSupervisorMode;
+
+        //private SetupService _setupService;
+        //private DAL _dataBase;
+
         //private List<TreeDefaultValueDO> _treeDefaults;
 
-        public event DatabaseChangedEventHandler DatabaseChanged;
+        //public event DatabaseChangedEventHandler DatabaseChanged;
 
-        public event TreeDefaultsChangedEventHandler TreeDefaultsChanged;
+        //public event TreeDefaultsChangedEventHandler TreeDefaultsChanged;
 
-        public event SupervisorModeChangedEventHandler SupervisorModeChanged;
+        //public event SupervisorModeChangedEventHandler SupervisorModeChanged;
 
-        [XmlElement]
-        public bool? CreateSaleFolder { get; set; }
 
-        [XmlIgnore]
-        public SetupService SetupServ { get { return _setupService; } }
 
-        [XmlIgnore]
-        public DAL Database
-        {
-            get { return _dataBase; }
-            set
-            {
-                if (value == _dataBase) { return; }
-                try
-                {
-                    _dataBase = value;
-                    if (value == null)
-                    {
-                        OnDatabaseChanged(FileState.UnLoaded);
-                        return;
-                    }
-                    if (value.Extension == R.Strings.CRUISE_FILE_EXTENTION)
-                    {
-                        OnDatabaseChanged(FileState.CruiseLoaded);
-                    }
-                    else if (value.Extension == R.Strings.CRUISE_TEMPLATE_FILE_EXTENTION)
-                    {
-                        OnDatabaseChanged(FileState.TemplateLoaded);
-                    }
-                }
-                catch( System.Exception e)
-                {
-                    System.Diagnostics.Trace.TraceError("{0} {1}", e.Message, e.StackTrace);
-                    throw e;
-                }
-            }
-        }
+        //[XmlIgnore]
+        //public SetupService SetupServ { get { return _setupService; } }
 
-        [XmlIgnore]
-        public bool InSupervisorMode
-        {
-            get 
-            {
-                return _inSupervisorMode;
-            }
-            set
-            {
-                if (_inSupervisorMode == value) { return; }
-                _inSupervisorMode = value;
-                OnSupervisorModeChanged();
-            }
-        }
-
-        //public List<TreeDefaultValueDO> TreeDefaults
+        //[XmlIgnore]
+        //public DAL Database
         //{
-        //    get { return _treeDefaults; }
+        //    get { return _dataBase; }
         //    set
         //    {
-        //        if (_treeDefaults == value) { return; }
-        //        _treeDefaults = value;
-        //        OnTreeDefaultsChanged(false);
+        //        if (value == _dataBase) { return; }
+        //        try
+        //        {
+        //            _dataBase = value;
+        //            if (value == null)
+        //            {
+        //                OnDatabaseChanged(FileState.UnLoaded);
+        //                return;
+        //            }
+        //            if (value.Extension == R.Strings.CRUISE_FILE_EXTENTION)
+        //            {
+        //                OnDatabaseChanged(FileState.CruiseLoaded);
+        //            }
+        //            else if (value.Extension == R.Strings.CRUISE_TEMPLATE_FILE_EXTENTION)
+        //            {
+        //                OnDatabaseChanged(FileState.TemplateLoaded);
+        //            }
+        //        }
+        //        catch( System.Exception e)
+        //        {
+        //            System.Diagnostics.Trace.TraceError("{0} {1}", e.Message, e.StackTrace);
+        //            throw e;
+        //        }
         //    }
         //}
 
-        //public static SetupService SetupService;
 
-        //public static DirectoryInfo GetTemplateFolder()
+
+
+
+
+
+        //public void OnDatabaseChanged(FileState state)
         //{
-        //    string commonAppDir = Application.CommonAppDataPath;
-        //    DirectoryInfo companyDir = System.IO.Directory.GetParent(commonAppDir);
-        //    while (companyDir.Name != Application.CompanyName && companyDir.Parent != null)
+        //    if (DatabaseChanged != null)
         //    {
-        //        companyDir = companyDir.Parent;
+        //        DatabaseChanged(state);
         //    }
-        //    DirectoryInfo templateFolder = new DirectoryInfo(companyDir.FullName + "\\TemplateFiles");
-        //    if (templateFolder.Exists == false) { templateFolder.Create(); }
-        //    return templateFolder;
         //}
 
-        public static List<FileInfo> GetTemplateFiles()
-        {
-            DirectoryInfo tDir = PlatformHelper.Instance.GetTemplateFolder();
-            //filter all files ending in .cut
-            List<FileInfo> files = new List<FileInfo>(tDir.GetFiles("*" + R.Strings.CRUISE_TEMPLATE_FILE_EXTENTION));
-            return files;
-        }
+        //public void OnTreeDefaultsChanged(bool error)
+        //{
+        //    if (TreeDefaultsChanged != null)
+        //    {
+        //        TreeDefaultsChanged(error);
+        //    }
+        //}
 
-
-        public void OnDatabaseChanged(FileState state)
-        {
-            if (DatabaseChanged != null)
-            {
-                DatabaseChanged(state);
-            }
-        }
-
-        public void OnTreeDefaultsChanged(bool error)
-        {
-            if (TreeDefaultsChanged != null)
-            {
-                TreeDefaultsChanged(error);
-            }
-        }
-
-        public void OnSupervisorModeChanged()
-        {
-            if (SupervisorModeChanged != null)
-            {
-                SupervisorModeChanged();
-            }
-        }
+        //public void OnSupervisorModeChanged()
+        //{
+        //    if (SupervisorModeChanged != null)
+        //    {
+        //        SupervisorModeChanged();
+        //    }
+        //}
 
     }
 }

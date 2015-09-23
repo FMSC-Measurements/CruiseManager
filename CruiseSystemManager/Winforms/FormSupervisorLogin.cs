@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CruiseManager.Core.App;
+using CruiseManager.Core.Constants;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -26,14 +28,14 @@ namespace CSM.Winforms
             }
             else if (DialogResult == DialogResult.OK && !String.IsNullOrEmpty(_pwTB.Text))
             {
-                if (_pwTB.Text == Utility.R.Strings.SUPERVISOR_LOGIN)
+                if (_pwTB.Text == Strings.SUPERVISOR_LOGIN)
                 {
-                    ApplicationState.GetHandle().InSupervisorMode = true;
+                    ApplicationController.Instance.InSupervisorMode = true;
                     MessageBox.Show("Success");
                 }
                 else
                 {
-                    ApplicationState.GetHandle().InSupervisorMode = false;
+                    ApplicationController.Instance.InSupervisorMode = false;
                     MessageBox.Show("Password invalid");
                 }
             }

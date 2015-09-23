@@ -168,7 +168,7 @@
             // 
             // _BS_ComponentFiles
             // 
-            this._BS_ComponentFiles.DataSource = typeof(CSM.Logic.Components.ComponentFileVM);
+            this._BS_ComponentFiles.DataSource = typeof(CruiseManager.Core.Components.ComponentFileVM);
             // 
             // panel1
             // 

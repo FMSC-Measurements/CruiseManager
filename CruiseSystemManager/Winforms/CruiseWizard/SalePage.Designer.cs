@@ -100,7 +100,7 @@
             // 
             // SaleDOBindingSource
             // 
-            this.SaleDOBindingSource.DataSource = typeof(CSM.Models.SaleVM);
+            this.SaleDOBindingSource.DataSource = typeof(CruiseManager.Core.Models.SaleVM);
             this.SaleDOBindingSource.CurrentItemChanged += new System.EventHandler(this.SaleDOBindingSource_CurrentItemChanged);
             // 
             // tableLayoutPanel1
@@ -173,7 +173,7 @@
             // 
             // UOMBindingSource
             // 
-            this.UOMBindingSource.DataSource = typeof(CSM.Utility.Setup.UOMCode);
+            this.UOMBindingSource.DataSource = typeof(CruiseManager.Core.SetupModels.UOMCode);
             this.UOMBindingSource.CurrentItemChanged += new System.EventHandler(this.UOMBindingSource_CurrentItemChanged);
             // 
             // PurposeComboBox
@@ -296,7 +296,7 @@
             // 
             // RegionForestBindingSource
             // 
-            this.RegionForestBindingSource.DataSource = typeof(CSM.Utility.Setup.Region);
+            this.RegionForestBindingSource.DataSource = typeof(CruiseManager.Core.SetupModels.Region);
             // 
             // label3
             // 

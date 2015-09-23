@@ -1,6 +1,8 @@
-﻿using System;
+﻿using CSM.App;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Forms;
 
 namespace CruiseManager.Core.ViewInterfaces
 {
@@ -11,7 +13,7 @@ namespace CruiseManager.Core.ViewInterfaces
         bool EnableSave { get; set; }
         bool EnableSaveAs { get; set; }
 
-        void SetNavOptions(ICollection<NavOption> navOptions);
+        void SetNavOptions(ICollection<CommandBinding> navOptions);
 
         void ShowWaitCursor();
 
