@@ -9,9 +9,9 @@ using System.Windows.Forms;
 using System.IO;
 using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core.App;
-using CSM.App;
+using CruiseManager.App;
 
-namespace CSM.Winforms.Dashboard
+namespace CruiseManager.Winforms.Dashboard
 {
     public partial class FormCSMMain : Form, MainWindow 
     {
@@ -19,15 +19,16 @@ namespace CSM.Winforms.Dashboard
         public FormCSMMain(WindowPresenter windowPresenter, ApplicationController applicationController)
         {
             this.WindowPresenter = windowPresenter;
+            this.ApplicationController = applicationController;
             InitializeComponent();
 
             var _openClickDispatcher = new CommandBinding(this.WindowPresenter.ShowOpenCruiseDialog, this.openToolStripMenuItem);
             var _newFileClickDispatcher = new CommandBinding(this.WindowPresenter.ShowCruiseWizardDialog, this.newToolStripMenuItem);
 
             var _saveClickDispatcher = new CommandBinding(ApplicationController.Instance.Save, this.saveToolStripMenuItem);
+            var _saveAsClickDispatcher = new CommandBinding(this.ApplicationController.SaveAs, this.saveAsToolStripMenuItem);
             var _aboutClickDispatcher = new CommandBinding(this.WindowPresenter.ShowAboutDialog, this.aboutToolStripMenuItem);
-            var _saveAsClickDispatcher = new CommandBinding(this.WindowPresenter.SaveAs, this.saveAsToolStripMenuItem); 
-
+            
 
             //this.openToolStripMenuItem.Click += new EventHandler(this.WindowPresenter.HandleOpenFileClick);
             //this.newToolStripMenuItem.Click += new EventHandler(this.WindowPresenter.HandleCreateCruiseClick);
@@ -38,8 +39,44 @@ namespace CSM.Winforms.Dashboard
 
         protected WindowPresenter WindowPresenter { get; set; }
         protected ApplicationController ApplicationController { get; set; }
-        public Panel ViewContentPanel { get { return this._viewContentPanel; } }
-        public Panel ViewNavPanel { get { return this._viewNavPanel; } }
+
+        protected Panel ViewContentPanel { get { return this._viewContentPanel; } }
+        protected Panel ViewNavPanel { get { return this._viewNavPanel; } }
+
+        public void ClearActiveView()
+        {
+            //clear previous content from main view content panel 
+            foreach (Control c in this.ViewContentPanel.Controls)
+            {
+                c.Dispose();
+            }
+            this.ViewContentPanel.Controls.Clear();
+        }
+
+        public void SetActiveView(object view)
+        {
+            Control cView = view as Control;
+            System.Diagnostics.Debug.Assert(cView != null);
+            SetActiveView(cView);
+        }
+
+        public void SetActiveView(Control cView)
+        {
+            ClearActiveView();
+
+            IView iView = cView as IView;
+            if (iView != null)
+            {
+                this.SetNavOptions(iView.NavOptions);
+                //iView.HandleLoad();
+                throw new NotImplementedException();
+            }
+
+
+            //dock new view 
+            cView.Dock = DockStyle.Fill;
+            cView.Parent = this.ViewContentPanel;
+        }
 
         public void SetNavOptions(ICollection<CommandBinding> navOptions)
         {
@@ -57,7 +94,7 @@ namespace CSM.Winforms.Dashboard
                     newNavButton.FlatAppearance.BorderSize = 0;
                     newNavButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.LightGreen;
                     newNavButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-                    newNavButton.Font = global::CSM.Properties.Settings.Default.App_NavFont;
+                    newNavButton.Font = global::CruiseManager.Properties.Settings.Default.App_NavFont;
                     newNavButton.ForeColor = System.Drawing.SystemColors.ControlText;
                     //newNavButton.Location = new System.Drawing.Point(0, 0);
                     //newNavButton.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);

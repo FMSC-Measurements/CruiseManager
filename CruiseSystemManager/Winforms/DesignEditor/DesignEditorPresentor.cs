@@ -12,7 +12,7 @@ using CruiseManager.Core.App;
 using CruiseManager.Core.Models;
 using CruiseManager.Core.Constants;
 
-namespace CSM.Winforms.DesignEditor
+namespace CruiseManager.Winforms.DesignEditor
 {
     public class DesignEditorPresentor : IPresentor, ISaveHandler
     {
@@ -253,7 +253,7 @@ namespace CSM.Winforms.DesignEditor
 
         public void LoadSetup()
         {
-            var setupServ = SetupService.GetHandle();
+            var setupServ = SetupService.Instance;
             Regions = setupServ.GetRegions();
             CruiseMethods = this.ApplicationController.GetCruiseMethods(this.DataContext.Sale.Purpose == "Recon");
             LoggingMethods = setupServ.GetLoggingMethods();

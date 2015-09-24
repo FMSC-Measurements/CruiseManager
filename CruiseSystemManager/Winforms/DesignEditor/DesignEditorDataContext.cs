@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using CruiseDAL.DataObjects;
 
-namespace CSM.Winforms.DesignEditor
+namespace CruiseManager.Winforms.DesignEditor
 {
     public class DesignEditorDataContext
     {

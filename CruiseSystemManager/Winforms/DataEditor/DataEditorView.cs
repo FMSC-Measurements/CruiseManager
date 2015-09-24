@@ -10,7 +10,7 @@ using FMSC.Utility.Collections;
 using CruiseManager.Core.Models;
 using CruiseManager.Core.App;
 
-namespace CSM.Winforms.DataEditor
+namespace CruiseManager.Winforms.DataEditor
 {
     public partial class DataEditorView : Form
     {
@@ -52,23 +52,21 @@ namespace CSM.Winforms.DataEditor
             };
         #endregion
 
-        public DataEditorView() : this(WindowPresenter.Instance, ApplicationController.Instance)
+        protected DataEditorView() 
         {
-
-        }
-
-        public DataEditorView(WindowPresenter windowPresenter, ApplicationController applicationController)
-        {
-            this.WindowPresenter = windowPresenter;
-            this.ApplicationController = applicationController;
-
             InitializeComponent();
-            this.Text = "Field Data - " + System.IO.Path.GetFileName(applicationController.Database.Path);
-            
 
             this.TreeDataGridView.RowEnter += this.HandleCurrentTreeChanged;
             this.TreeDataGridView.CellValueChanged += this.HandleTreeValueChanged;
             this.TreeDataGridView.EditingControlShowing += this.HandleTreeEditControlShowing;
+        }
+
+        public DataEditorView(WindowPresenter windowPresenter, ApplicationController applicationController) : this()
+        {
+            this.WindowPresenter = windowPresenter;
+            this.ApplicationController = applicationController;
+            
+            this.Text = "Field Data - " + System.IO.Path.GetFileName(applicationController.Database.Path);                        
        
             this._BS_TreeSpecies.DataSource = applicationController.Database.Read<TreeDefaultValueDO>("TreeDefaultValue", null);
 
@@ -752,7 +750,7 @@ namespace CSM.Winforms.DataEditor
                 {
 
                     TreeDefaultValueDO tdv = this._BS_TreeSpecies.Current as TreeDefaultValueDO;
-                    CruiseManager.Core.App.WindowPresenter.SetTreeTDV(_currentTreeSelection, tdv);
+                    ApplicationController.SetTreeTDV(_currentTreeSelection, tdv);
                 }
             }
             else if (e.ColumnIndex == this.sampleGroupDataGridViewTextBoxColumn.Index)
@@ -788,7 +786,7 @@ namespace CSM.Winforms.DataEditor
             {
                 String sgCode = _currentTreeSelection.SampleGroup.Code; 
                 DataGridViewComboBoxEditingControl control = e.Control as DataGridViewComboBoxEditingControl;
-                control.DataSource = WindowPresenter.GetSampleGroupsByStratum(_currentTreeSelection.Stratum_CN);
+                control.DataSource = this.ApplicationController.GetSampleGroupsByStratum(_currentTreeSelection.Stratum_CN);
                 control.SelectedIndex = control.FindString(sgCode);
             }
         }
@@ -965,10 +963,10 @@ namespace CSM.Winforms.DataEditor
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DataGridView dgv = _ContextMenu.SourceControl as DataGridView;//get the DataGridView control that the menu is being displayed for
+            System.Diagnostics.Debug.Assert(dgv != null);
             if (dgv == null)
             {
                 //for some reason SourceControl is null or not a DataGridView so don't continue. 
-                CruiseManager.Core.App.WindowPresenter.HandleNonCriticalError(false, null);//error beep, just to let the user know their action wasn't compleated
                 return;
             }
 

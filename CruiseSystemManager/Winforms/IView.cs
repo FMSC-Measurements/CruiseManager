@@ -1,6 +1,6 @@
-﻿using CSM.App;
+﻿using CruiseManager.App;
 
-namespace CSM
+namespace CruiseManager
 {
     public interface IView
     {

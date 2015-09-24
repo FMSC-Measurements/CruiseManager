@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSM.App
+namespace CruiseManager.App
 {
     public class UserSettingsWinforms : UserSettings
     {

@@ -6,7 +6,7 @@ using Logger;
 using System.ComponentModel;
 using System.Linq;
 
-namespace CSM.Winforms.CruiseWizard
+namespace CruiseManager.Winforms.CruiseWizard
 {
     public partial class StrataPage : UserControl, IPage
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using CruiseDAL.DataObjects;
 
-namespace CSM.Winforms.CruiseCustomize
+namespace CruiseManager.Winforms.CruiseCustomize
 {
     public class FieldSetupStratum : CruiseDAL.DataObjects.StratumDO
     {

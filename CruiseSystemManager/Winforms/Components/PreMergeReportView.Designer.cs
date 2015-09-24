@@ -1,4 +1,4 @@
-﻿namespace CSM.Winforms.Components
+﻿namespace CruiseManager.Winforms.Components
 {
     partial class PreMergeReportView
     {

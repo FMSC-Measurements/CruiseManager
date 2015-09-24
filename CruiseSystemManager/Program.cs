@@ -4,10 +4,10 @@ using System.Linq;
 using System.Windows.Forms;
 using Logger;
 using System.Diagnostics;
-using CSM.App;
+using CruiseManager.App;
 using CruiseManager.Core.App;
 
-namespace CSM
+namespace CruiseManager
 {
     static class Program
     {
@@ -46,19 +46,26 @@ namespace CSM
             //FMSC.Utility.ErrorHandling.ErrorHandlers.SendToAddress = "benjaminjcampbell@fs.fes.us";
             Application.ThreadException += FMSC.Utility.ErrorHandling.ErrorHandlers.ThreadException;
 
+            UserSettings.Instance = new UserSettingsWinforms();
+            ExceptionHandler.Instance = new ExceptionHandler();
+            WindowPresenter.Instance = new WindowPresenterWinForms();
+            SetupService.Instance = new SetupServiceWinForms();
 
-            WindowPresenterWinForms windowPresenter = null;
-            if(string.IsNullOrEmpty(dalPath) )
+            ApplicationController.Instance = new ApplicationControllerWinForms(
+                WindowPresenter.Instance,
+                ExceptionHandler.Instance,
+                UserSettings.Instance,
+                SetupService.Instance);
+
+
+            if(!string.IsNullOrEmpty(dalPath) )
             {
-                windowPresenter = new WindowPresenterWinForms();
+                ApplicationController.Instance.OpenFile(dalPath);
             }
-            else
-            {
-                windowPresenter = new WindowPresenterWinForms(dalPath);
-            }
-            
-            windowPresenter.Run();
-            windowPresenter.Dispose();
+
+
+            WindowPresenter.Instance.Run();
+            WindowPresenter.Instance.Dispose();
 
             Trace.TraceInformation("Application Ended @{0}", DateTime.Now);
             Trace.Close();

@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using CruiseManager.Core.Components;
 
-namespace CSM.Winforms.Components
+namespace CruiseManager.Winforms.Components
 {
     public partial class MergeInfoView : UserControl
     {

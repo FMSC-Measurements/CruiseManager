@@ -23,22 +23,23 @@ namespace CruiseManager.Core.App
         public static readonly string TREE_DEFAULT_FILE_NAME = "TreeDefaults.xml";
         public static readonly string REGION_FILE_NAME = "Regions.xml";
 
-        protected static SetupService _instance;
 
-        public static SetupService GetHandle()
-        {
-            if (_instance != null)
-            {
-                return _instance;
-            }
-            throw new InvalidOperationException();
-        }
+        public static SetupService Instance { get; set; }
 
-        public static void Initialize(SetupService instance)
-        {
-            System.Diagnostics.Debug.Assert(instance != null);
-            _instance = instance;
-        }
+        //public static SetupService GetHandle()
+        //{
+        //    if (_instance != null)
+        //    {
+        //        return _instance;
+        //    }
+        //    throw new InvalidOperationException();
+        //}
+
+        //public static void Initialize(SetupService instance)
+        //{
+        //    System.Diagnostics.Debug.Assert(instance != null);
+        //    _instance = instance;
+        //}
 
         protected SetupService()
             : this(DEFAULT_SETUP_PATH)

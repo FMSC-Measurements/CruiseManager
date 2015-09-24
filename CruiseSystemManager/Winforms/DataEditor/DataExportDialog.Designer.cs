@@ -1,4 +1,4 @@
-﻿namespace CSM.Winforms.DataEditor
+﻿namespace CruiseManager.Winforms.DataEditor
 {
     partial class DataExportDialog
     {

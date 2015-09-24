@@ -11,7 +11,7 @@ using System.Collections;
 using CruiseManager.Core.App;
 using CruiseManager.Core.Constants;
 
-namespace CSM.Winforms.DesignEditor
+namespace CruiseManager.Winforms.DesignEditor
 {
     public partial class DesignEditViewControl : UserControl
     {
@@ -299,7 +299,7 @@ namespace CSM.Winforms.DesignEditor
             ApplicationState appState = ApplicationState.GetHandle();
             try
             {
-                CSM.Winforms.CruiseWizard.FormAddTreeDefault dialog = new CSM.Winforms.CruiseWizard.FormAddTreeDefault(SetupService.GetHandle().GetProductCodes());
+                CruiseManager.Winforms.CruiseWizard.FormAddTreeDefault dialog = new CruiseManager.Winforms.CruiseWizard.FormAddTreeDefault(SetupService.Instance.GetProductCodes());
                 if (dialog.ShowDialog(newTDV) == DialogResult.OK)
                 {
                     this.Presentor.DataContext.AllTreeDefaults.Add(newTDV);
@@ -322,7 +322,7 @@ namespace CSM.Winforms.DesignEditor
 
             try
             {
-                CSM.Winforms.CruiseWizard.FormAddTreeDefault dialog = new CSM.Winforms.CruiseWizard.FormAddTreeDefault(SetupService.GetHandle().GetProductCodes());
+                CruiseManager.Winforms.CruiseWizard.FormAddTreeDefault dialog = new CruiseManager.Winforms.CruiseWizard.FormAddTreeDefault(SetupService.Instance.GetProductCodes());
                 if (dialog.ShowDialog(tdv) == DialogResult.OK)
                 {
                     try

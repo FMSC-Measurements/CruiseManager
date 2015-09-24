@@ -14,13 +14,14 @@ namespace CruiseManager.Core.App
     /// provide a common place to for all the forms to access data and other infomation about the application state.
     /// it is the glue that binds the application together
     /// </summary>
-    public abstract class WindowPresenter
+    public abstract class WindowPresenter : IDisposable
     {
         public static WindowPresenter Instance { get; set; }
 
         public MainWindow MainWindow { get; set; }
 
         public abstract string AskTemplateLocation();
+        public abstract String AskCruiseSaveLocation();
 
         public abstract void ShowAboutDialog();
         public abstract void ShowCruiseLandingLayout();
@@ -50,11 +51,44 @@ namespace CruiseManager.Core.App
         public abstract Nullable<bool> AskYesNoCancel(String message, String caption, Nullable<bool> defaultOption);
 
         public abstract void ShowWaitCursor();
-        //void HideWaitCursor();
         public abstract void ShowDefaultCursor();
 
         public abstract void Run();
 
-        //void OnActivePresentorChanged();
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    this.MainWindow.Dispose();
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~WindowPresenter() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
+
     }
 }

@@ -85,6 +85,14 @@ namespace CruiseManager.Core.Models
         #endregion
     }
 
+    public class TreeDefaultSpeciesComparer : Comparer<TreeDefaultValueDO>
+    {
+        public override int Compare(TreeDefaultValueDO x, TreeDefaultValueDO y)
+        {
+            return String.Compare(x.Species, y.Species, true);
+        }
+    }
+
     public class TreeDefaultComparer : IEqualityComparer<TreeDefaultValueDO>
     {
         #region IEqualityComparer<TreeDefaultValueDO> Members
@@ -112,6 +120,18 @@ namespace CruiseManager.Core.Models
         public int GetHashCode(TreeDefaultValueDO obj)
         {
             return obj.PrimaryProduct.GetHashCode() ^ 3 + obj.Species.GetHashCode() ^ 2 + obj.LiveDead.GetHashCode();
+        }
+
+        #endregion
+    }
+
+    public class ComponentComparer : Comparer<ComponentDO>
+    {
+        #region IComparer<ComponentDO> Members
+
+        public override int Compare(ComponentDO x, ComponentDO y)
+        {
+            return x.Component_CN.GetValueOrDefault(0).CompareTo(y.Component_CN.GetValueOrDefault(0));
         }
 
         #endregion

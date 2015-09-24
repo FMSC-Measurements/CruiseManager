@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.Constants;
 
-namespace CSM.Winforms.CruiseCustomize
+namespace CruiseManager.Winforms.CruiseCustomize
 {
     public delegate void TallyModeChangedEventHandler(object sender);
     public delegate TallyDO GetTallyEventHandler(SampleGroupDO sg, TreeDefaultValueDO tdv);

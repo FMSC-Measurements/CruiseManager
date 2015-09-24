@@ -145,11 +145,11 @@
     <Compile Include="Winforms\AboutDialog.Designer.cs">
       <DependentUpon>AboutDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\Components\CreateComponentView.cs">
+    <Compile Include="Winforms\Components\CreateComponentViewWinforms.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Winforms\Components\CreateComponentView.Designer.cs">
-      <DependentUpon>CreateComponentView.cs</DependentUpon>
+    <Compile Include="Winforms\Components\CreateComponentViewWinforms.Designer.cs">
+      <DependentUpon>CreateComponentViewWinforms.cs</DependentUpon>
     </Compile>
     <Compile Include="Winforms\Components\PreMergeReportView.cs">
       <SubType>UserControl</SubType>
@@ -163,7 +163,7 @@
     <Compile Include="Winforms\Components\MergeInfoView.Designer.cs">
       <DependentUpon>MergeInfoView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\CruiseCustomize\CruiseCustomizeView.cs">
+    <Compile Include="Winforms\CruiseCustomize\CruiseCustomizeViewWinforms.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Winforms\CruiseCustomize\CustomizeCruisePresenter.cs" />
@@ -235,11 +235,11 @@
     <Compile Include="Winforms\FormSupervisorLogin.Designer.cs">
       <DependentUpon>FormSupervisorLogin.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\Components\WinformsMergeComponentView.cs">
+    <Compile Include="Winforms\Components\MergeComponentViewWinforms.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Winforms\Components\WinformsMergeComponentView.Designer.cs">
-      <DependentUpon>WinformsMergeComponentView.cs</DependentUpon>
+    <Compile Include="Winforms\Components\MergeComponentViewWinforms.Designer.cs">
+      <DependentUpon>MergeComponentViewWinforms.cs</DependentUpon>
     </Compile>
     <Compile Include="Winforms\LicencesDialog.cs">
       <SubType>Form</SubType>
@@ -317,8 +317,8 @@
       <DependentUpon>AboutDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\Components\CreateComponentView.resx">
-      <DependentUpon>CreateComponentView.cs</DependentUpon>
+    <EmbeddedResource Include="Winforms\Components\CreateComponentViewWinforms.resx">
+      <DependentUpon>CreateComponentViewWinforms.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Winforms\Components\PreMergeReportView.resx">
@@ -327,8 +327,8 @@
     <EmbeddedResource Include="Winforms\Components\MergeInfoView.resx">
       <DependentUpon>MergeInfoView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\CruiseCustomize\CruiseCustomizeView.resx">
-      <DependentUpon>CruiseCustomizeView.cs</DependentUpon>
+    <EmbeddedResource Include="Winforms\CruiseCustomize\CruiseCustomizeViewWinforms.resx">
+      <DependentUpon>CruiseCustomizeViewWinforms.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Winforms\CruiseCustomize\LogMatrixSettingsView.resx">
@@ -391,8 +391,8 @@
       <DependentUpon>FormSupervisorLogin.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\Components\WinformsMergeComponentView.resx">
-      <DependentUpon>WinformsMergeComponentView.cs</DependentUpon>
+    <EmbeddedResource Include="Winforms\Components\MergeComponentViewWinforms.resx">
+      <DependentUpon>MergeComponentViewWinforms.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Winforms\LicencesDialog.resx">

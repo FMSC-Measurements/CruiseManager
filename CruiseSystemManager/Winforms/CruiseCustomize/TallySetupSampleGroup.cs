@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using CruiseDAL.DataObjects;
 using CruiseDAL;
+using CruiseManager.Core.App;
 
-namespace CSM.Winforms.CruiseCustomize
+namespace CruiseManager.Winforms.CruiseCustomize
 {
     public class TallySetupSampleGroup : SampleGroupDO
     {

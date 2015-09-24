@@ -9,7 +9,7 @@ using CruiseDAL;
 using CruiseManager.Core.App;
 using CruiseManager.Core;
 
-namespace CSM.Winforms.TemplateEditor
+namespace CruiseManager.Winforms.TemplateEditor
 {
 
     public class CruiseMethodViewModel
@@ -82,7 +82,7 @@ namespace CSM.Winforms.TemplateEditor
             //it may be posible to simplify this task by asking for the data in the form of a TreeFieldSetupDefault object
             //the xmlSerializer may beable to handle this conversion
             this.TreeFields = new List<TreeFieldSetupDefaultDO>();
-            foreach (TreeFieldSetupDO tf in SetupService.GetHandle().GetTreeFieldSetups())
+            foreach (TreeFieldSetupDO tf in SetupService.Instance.GetTreeFieldSetups())
             {
                 TreeFieldSetupDefaultDO newTF = new TreeFieldSetupDefaultDO();
                 newTF.Field = tf.Field;
@@ -94,7 +94,7 @@ namespace CSM.Winforms.TemplateEditor
                 this.TreeFields.Add(newTF);
             }
             this.LogFields = new List<LogFieldSetupDefaultDO>();
-            foreach(LogFieldSetupDO lf in SetupService.GetHandle().GetLogFieldSetups())
+            foreach(LogFieldSetupDO lf in SetupService.Instance.GetLogFieldSetups())
             {
                 LogFieldSetupDefaultDO newLF = new LogFieldSetupDefaultDO();
                 newLF.Field = lf.Field;

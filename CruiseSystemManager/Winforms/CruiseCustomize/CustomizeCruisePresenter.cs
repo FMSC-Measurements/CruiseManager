@@ -11,7 +11,7 @@ using CruiseManager.Core.App;
 using CruiseManager.Core.Models;
 using CruiseManager.Core.Constants;
 
-namespace CSM.Winforms.CruiseCustomize
+namespace CruiseManager.Winforms.CruiseCustomize
 {
     public class CustomizeCruisePresenter : IPresentor, ISaveHandler
     {
@@ -23,7 +23,7 @@ namespace CSM.Winforms.CruiseCustomize
         public DAL Database { get { return _myApplicationController.Database; } }
         protected WindowPresenter _myWindowPresenter;
         protected ApplicationController _myApplicationController;
-        public CruiseCustomizeView View { get; set; }
+        public CruiseCustomizeViewWinforms View { get; set; }
         //public List<StratumDO> Strata { get; set; }
         //public List<StratumCustomizeViewModel> StrataVM { get; set; }
 

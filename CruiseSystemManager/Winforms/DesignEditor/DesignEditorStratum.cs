@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using CruiseDAL;
 
-namespace CSM.Winforms.DesignEditor
+namespace CruiseManager.Winforms.DesignEditor
 {
     public class DesignEditorStratum : CruiseDAL.DataObjects.StratumDO
     {

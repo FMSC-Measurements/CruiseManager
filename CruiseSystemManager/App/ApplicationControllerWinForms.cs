@@ -1,28 +1,26 @@
 ﻿using CruiseDAL;
 using CruiseManager.Core.App;
 using CruiseManager.Core.Constants;
-using CSM.Utility;
+using CruiseManager.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSM.App
+namespace CruiseManager.App
 {
     public class ApplicationControllerWinForms : ApplicationController 
     {
         protected WindowPresenter _myWindowPresenter;
-        //protected UserSettings _myUserSettings;
-        private CSM.Utility.COConverter _converter;
+        private CruiseManager.Utility.COConverter _converter;
         private string _convertedFilePath;
 
-        public ApplicationControllerWinForms() : this(WindowPresenter.Instance, UserSettings.Instance, SetupService.GetHandle()) { }
+        //public ApplicationControllerWinForms() : this(WindowPresenter.Instance, UserSettings.Instance, SetupService.Instance) { }
 
-        public ApplicationControllerWinForms(WindowPresenter windowPresenter, UserSettings userSettings, SetupService setupService) : base(userSettings, setupService)
+        public ApplicationControllerWinForms(WindowPresenter windowPresenter, ExceptionHandler exceptionHandler, UserSettings userSettings, SetupService setupService) : base(windowPresenter, exceptionHandler, userSettings, setupService)
         {
-            _myWindowPresenter = windowPresenter;
-            //_myUserSettings = userSettings;
+
         } 
 
 
@@ -38,7 +36,7 @@ namespace CSM.App
             try
             {
                 //start wait cursor incase this takes a long time 
-                _myWindowPresenter.ShowWaitCursor();
+                WindowPresenter.ShowWaitCursor();
                 switch (System.IO.Path.GetExtension(filePath))
                 {
                     case Strings.CRUISE_FILE_EXTENTION:
@@ -48,16 +46,16 @@ namespace CSM.App
                             String[] errors;
                             if (this.Database.HasCruiseErrors(out errors))
                             {
-                                _myWindowPresenter.ShowMessage(String.Join("\r\n", errors), null);
+                                WindowPresenter.ShowMessage(String.Join("\r\n", errors), null);
                             }
-                            _myWindowPresenter.ShowCruiseLandingLayout();
+                            WindowPresenter.ShowCruiseLandingLayout();
                             break;
                         }
                     case Strings.CRUISE_TEMPLATE_FILE_EXTENTION:
                         {
                             this.Database = new DAL(filePath);
                             UserSettings.AddRecentFile(filePath);
-                            _myWindowPresenter.ShowTemplateLandingLayout();
+                            WindowPresenter.ShowTemplateLandingLayout();
                             break;
                         }
                     case Strings.LEGACY_CRUISE_FILE_EXTENTION:
@@ -70,50 +68,52 @@ namespace CSM.App
                             break;
                         }
                     default:
-                        _myWindowPresenter.ShowMessage("Invalid file name", null);
+                        WindowPresenter.ShowMessage("Invalid file name", null);
                         return;
                 }
             }
             catch (CruiseDAL.DatabaseShareException)
             {
                 hasError = true;
-                _myWindowPresenter.ShowMessage("File can not be opened in multiple applications");
+                WindowPresenter.ShowMessage("File can not be opened in multiple applications");
             }
             catch (CruiseDAL.ReadOnlyException)
             {
                 hasError = true;
-                _myWindowPresenter.ShowMessage("Unable to open file becaus it is read only");
+                WindowPresenter.ShowMessage("Unable to open file becaus it is read only");
             }
             catch (CruiseDAL.IncompatibleSchemaException ex)
             {
                 hasError = true;
-                _myWindowPresenter.ShowMessage("File is not compatible with this version of Cruise Manager: " + ex.Message);
+                WindowPresenter.ShowMessage("File is not compatible with this version of Cruise Manager: " + ex.Message);
             }
             catch (CruiseDAL.DatabaseExecutionException ex)
             {
                 hasError = true;
-                _myWindowPresenter.ShowMessage("Unable to open file : " + ex.GetType().Name);
+                WindowPresenter.ShowMessage("Unable to open file : " + ex.GetType().Name);
             }
             catch (System.IO.IOException ex)
             {
                 hasError = true;
-                _myWindowPresenter.ShowMessage("Unable to open file : " + ex.GetType().Name);
+                WindowPresenter.ShowMessage("Unable to open file : " + ex.GetType().Name);
             }
             catch (System.Exception e)
             {
-                System.Diagnostics.Trace.TraceError(e.ToString());
-                throw;
+                if (!ExceptionHandler.Handel(e))
+                {
+                    throw;
+                }
             }
             finally
             {
                 if (hasError)
                 {
-                    _myWindowPresenter.ShowHomeLayout();
+                    WindowPresenter.ShowHomeLayout();
                 }
 
-                _myWindowPresenter.MainWindow.EnableSaveAs = this.Database != null;
+                WindowPresenter.MainWindow.EnableSaveAs = this.Database != null;
 
-                _myWindowPresenter.ShowDefaultCursor();
+                WindowPresenter.ShowDefaultCursor();
             }
         }
 
@@ -124,11 +124,11 @@ namespace CSM.App
 
                 this.Database = new DAL(_convertedFilePath);
                 this.UserSettings.AddRecentFile(_convertedFilePath);
-                this._myWindowPresenter.ShowCruiseLandingLayout();
+                this.WindowPresenter.ShowCruiseLandingLayout();
             }
             else
             {
-                this._myWindowPresenter.ShowMessage("error unable to convert file");//TODO better error messages
+                this.WindowPresenter.ShowMessage("error unable to convert file");//TODO better error messages
             }
 
             _convertedFilePath = null;

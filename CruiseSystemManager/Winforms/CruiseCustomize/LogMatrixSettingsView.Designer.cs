@@ -1,4 +1,4 @@
-﻿namespace CSM.Winforms.CruiseCustomize
+﻿namespace CruiseManager.Winforms.CruiseCustomize
 {
     partial class LogMatrixSettingsView
     {

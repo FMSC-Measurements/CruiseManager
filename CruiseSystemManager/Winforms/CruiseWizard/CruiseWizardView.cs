@@ -13,7 +13,7 @@ using System.IO;
 using CruiseManager.Core.Models;
 using CruiseManager.Core.SetupModels;
 
-namespace CSM.Winforms.CruiseWizard
+namespace CruiseManager.Winforms.CruiseWizard
 {
     public partial class CruiseWizardView : Form, IPagingView
     {

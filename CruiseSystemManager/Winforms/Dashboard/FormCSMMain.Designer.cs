@@ -1,4 +1,4 @@
-﻿namespace CSM.Winforms.Dashboard
+﻿namespace CruiseManager.Winforms.Dashboard
 {
     partial class FormCSMMain
     {
@@ -173,9 +173,9 @@
             // 
             this._viewNavPanel.BackColor = System.Drawing.Color.Gray;
             this._viewNavPanel.Controls.Add(this.exampleBtn);
-            this._viewNavPanel.DataBindings.Add(new System.Windows.Forms.Binding("Font", global::CSM.Properties.Settings.Default, "App_NavFont", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this._viewNavPanel.DataBindings.Add(new System.Windows.Forms.Binding("Font", global::CruiseManager.Properties.Settings.Default, "App_NavFont", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this._viewNavPanel.Dock = System.Windows.Forms.DockStyle.Left;
-            this._viewNavPanel.Font = global::CSM.Properties.Settings.Default.App_NavFont;
+            this._viewNavPanel.Font = global::CruiseManager.Properties.Settings.Default.App_NavFont;
             this._viewNavPanel.Location = new System.Drawing.Point(0, 0);
             this._viewNavPanel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this._viewNavPanel.MinimumSize = new System.Drawing.Size(150, 4);

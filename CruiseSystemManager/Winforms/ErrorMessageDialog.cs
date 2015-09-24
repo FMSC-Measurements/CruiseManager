@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace CSM.Winforms
+namespace CruiseManager.Winforms
 {
     /// <summary>
     /// Error dialog that can display many lines 

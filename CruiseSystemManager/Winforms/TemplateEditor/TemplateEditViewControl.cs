@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
-using CSM.App;
+using CruiseManager.App;
 
-namespace CSM.Winforms.TemplateEditor
+namespace CruiseManager.Winforms.TemplateEditor
 {
     public partial class TemplateEditViewControl : UserControl, IView
     {
@@ -198,9 +198,9 @@ namespace CSM.Winforms.TemplateEditor
         private void _addTDVButton_Click(object sender, EventArgs e)
         {
             TreeDefaultValueDO newTDV = new TreeDefaultValueDO(this.Presenter.Database);
-            SetupService setupService = SetupService.GetHandle();
+            SetupService setupService = SetupService.Instance;
 
-            CSM.Winforms.CruiseWizard.FormAddTreeDefault dialog = new CSM.Winforms.CruiseWizard.FormAddTreeDefault(setupService.GetProductCodes());
+            CruiseManager.Winforms.CruiseWizard.FormAddTreeDefault dialog = new CruiseManager.Winforms.CruiseWizard.FormAddTreeDefault(setupService.GetProductCodes());
             if (dialog.ShowDialog(newTDV) == DialogResult.OK)
             {
                 try
@@ -222,7 +222,7 @@ namespace CSM.Winforms.TemplateEditor
             ApplicationState appState = ApplicationState.GetHandle();
 
             TreeDefaultValueDO initialState = new TreeDefaultValueDO(tdv);
-            CSM.Winforms.CruiseWizard.FormAddTreeDefault dialog = new CSM.Winforms.CruiseWizard.FormAddTreeDefault(SetupService.GetHandle().GetProductCodes());
+            CruiseManager.Winforms.CruiseWizard.FormAddTreeDefault dialog = new CruiseManager.Winforms.CruiseWizard.FormAddTreeDefault(SetupService.Instance.GetProductCodes());
             if (dialog.ShowDialog(tdv) == DialogResult.OK)
             {
                 try

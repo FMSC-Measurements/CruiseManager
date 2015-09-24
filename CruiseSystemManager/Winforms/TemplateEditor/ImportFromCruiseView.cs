@@ -10,9 +10,9 @@ using CruiseDAL;
 using CruiseDAL.DataObjects;
 using CruiseManager.Core;
 using CruiseManager.Core.App;
-using CSM.App;
+using CruiseManager.App;
 
-namespace CSM.Winforms.TemplateEditor
+namespace CruiseManager.Winforms.TemplateEditor
 {
     public partial class ImportFromCruiseView : UserControl, IPresentor , IView
     {

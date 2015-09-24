@@ -7,6 +7,6 @@ namespace CruiseManager.Core
 {
     public interface IExceptionHandler
     {
-        void Handel(Exception e);
+        bool Handel(Exception e);
     }
 }

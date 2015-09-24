@@ -50,10 +50,10 @@ namespace CruiseManager.Core.Components
         public CreateComponentView View { get; set; }
         public ApplicationController ApplicationController { get; set; }
 
-        public CreateComponentPresenter()
+        public CreateComponentPresenter(WindowPresenter windowPresenter, ApplicationController applicationController)
         {
-            this.ApplicationController = ApplicationController.Instance;
-            this.WindowPresenter = WindowPresenter.Instance;
+            this.WindowPresenter = windowPresenter;
+            this.ApplicationController = applicationController;
 
             InitializeState();
 
@@ -150,7 +150,8 @@ namespace CruiseManager.Core.Components
             {
                 compDB.BeginTransaction();
                 compDB.Execute("DELETE FROM CountTree WHERE Component_CN IS NOT NULL;");
-                string command = string.Format("UPDATE CountTree Set Component_CN = {0}, TreeCount = 0, SumKPI = 0;", compInfo.Component_CN);
+                compDB.Execute(SQL.CLEAR_FIELD_DATA);
+                string command = string.Format("UPDATE CountTree Set Component_CN = {0};", compInfo.Component_CN);
                 compDB.Execute(command);
 
 

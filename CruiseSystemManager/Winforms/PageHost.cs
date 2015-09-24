@@ -15,7 +15,7 @@ using System.ComponentModel;
 //using System.Windows.Forms.Design;
 //using System.ComponentModel.Design;
 
-namespace CSM.Winforms
+namespace CruiseManager.Winforms
 {
     //[Designer(typeof(PageHost.PageHostDesigner))]
     public class PageHost : UserControl , IPagingView

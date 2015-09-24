@@ -4,11 +4,17 @@ using CruiseManager.Core.App;
 using CruiseManager.Core.Components;
 using CruiseManager.Core.Constants;
 using CruiseManager.Core.Models;
+using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.WinForms.Components;
-using CSM.Winforms;
-using CSM.Winforms.Dashboard;
-using CSM.Winforms.DataEditor;
-using CSM.Winforms.TemplateEditor;
+using CruiseManager.Utility;
+using CruiseManager.Winforms;
+using CruiseManager.Winforms.Components;
+using CruiseManager.Winforms.CruiseCustomize;
+using CruiseManager.Winforms.CruiseWizard;
+using CruiseManager.Winforms.Dashboard;
+using CruiseManager.Winforms.DataEditor;
+using CruiseManager.Winforms.DesignEditor;
+using CruiseManager.Winforms.TemplateEditor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +22,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CSM.App
+namespace CruiseManager.App
 {
     public class WindowPresenterWinForms : WindowPresenter
     {
@@ -73,30 +79,9 @@ namespace CSM.App
 
         protected void SetActiveView(Control view)
         {
-            //clear previous content from main view content panel 
-            foreach (Control c in this.MainWindow.ViewContentPanel.Controls)
-            {
-                c.Dispose();
-            }
-            this.MainWindow.ViewContentPanel.Controls.Clear();
+            this.MainWindow.SetActiveView(view);
 
-            IView iView = view as IView;
-            if (iView != null)
-            {
-                this.MainWindow.SetNavOptions(iView.NavOptions);
-                throw new NotImplementedException();
-            }
-
-            //dock new view 
-            view.Dock = DockStyle.Fill;
-            view.Parent = this.MainWindow.ViewContentPanel;
-
-            //signal view to handle load
-            //IView iView = view as IView;
-            //if (iView != null)
-            //{
-            //    iView.HandleLoad();
-            //}
+            
         }
 
         /// <summary>
@@ -108,32 +93,27 @@ namespace CSM.App
         }
 
 
-        
-
-
-
-        
-
         #region click event handlers
 
-
-        public void SaveAs()
+        public override string AskCruiseSaveLocation()
         {
-            //show save file dialog
-            SaveFileDialog sfd = new SaveFileDialog()
+            using (SaveFileDialog sfd = new SaveFileDialog()
             {
                 AddExtension = true,
-                DefaultExt = ApplicationController.Instance.Database.Extension,
-            };
-            if (sfd.ShowDialog() == DialogResult.OK)
+                DefaultExt = Strings.CRUISE_FILE_EXTENTION,
+            })
             {
-                ApplicationController.Instance.SaveAs(sfd.FileName);
+                if(sfd.ShowDialog() == DialogResult.OK)
+                {
+                    return sfd.FileName;
+                }
+                else
+                {
+                    return null;
+                }
             }
+
         }
-
-
-
-
 
         public void AppClosingHandler(object sender, FormClosingEventArgs e)
         {
@@ -143,25 +123,20 @@ namespace CSM.App
         }
 
 
+        //public void HandleFinishImportTemplateClick(object sender, EventArgs e)
+        //{
+        //    ImportFromCruiseView view = this._myApplicationController.ActivePresentor as ImportFromCruiseView;
+        //    if (view != null)
+        //    {
+        //        view.Finish();
+        //    }
+        //    this.ShowTemplateLandingLayout();
+        //}
 
-        
-
-        
-
-        public void HandleFinishImportTemplateClick(object sender, EventArgs e)
-        {
-            ImportFromCruiseView view = ActivePresentor as ImportFromCruiseView;
-            if (view != null)
-            {
-                view.Finish();
-            }
-            this.ShowTemplateLandingLayout();
-        }
-
-        public void HandleCancelImportTemplateClick(object sender, EventArgs e)
-        {
-            this.ShowTemplateLandingLayout();
-        }
+        //public void HandleCancelImportTemplateClick(object sender, EventArgs e)
+        //{
+        //    this.ShowTemplateLandingLayout();
+        //}
         #endregion
 
 
@@ -218,7 +193,7 @@ namespace CSM.App
             else
             {
                 //this.MainWindow.ClearNavPanel();
-                this.MainWindow.ViewContentPanel.Controls.Clear();
+                this.MainWindow.ClearActiveView();
                 this.MainWindow.Text = System.IO.Path.GetFileName(this._myApplicationController.Database.Path);
 
                 //bool enableManageComponents = this.Database.CruiseFileType == CruiseFileType.Master;
@@ -264,8 +239,8 @@ namespace CSM.App
 
         public override void ShowCreateComponentsLayout()
         {
-            CreateComponentView view = new CreateComponentView();
-            CreateComponentPresenter presenter = new CreateComponentPresenter(this);
+            CreateComponentViewWinforms view = new CreateComponentViewWinforms(this);
+            CreateComponentPresenter presenter = new CreateComponentPresenter(this, this._myApplicationController);
 
             view.Presenter = presenter;
             presenter.View = view;
@@ -276,13 +251,13 @@ namespace CSM.App
 
         public override void ShowCustomizeCruiseLayout()
         {
-            ActivePresentor = null;
-            CustomizeCruisePresenter presenter = new CustomizeCruisePresenter(this);
-            CruiseCustomizeView view = new CruiseCustomizeView(presenter);
+            this._myApplicationController.ActivePresentor = null;
+            CustomizeCruisePresenter presenter = new CustomizeCruisePresenter(this, this._myApplicationController);
+            CruiseCustomizeViewWinforms view = new CruiseCustomizeViewWinforms(presenter, this._myApplicationController);
 
             SetActiveView(view);
 
-            this._myApplicationController = presenter;
+            this._myApplicationController.ActivePresentor = presenter;
         }
 
         
@@ -295,7 +270,7 @@ namespace CSM.App
                 this.ShowWaitCursor();
 
                 CruiseWizardView view = new CruiseWizardView();
-                CruiseWizardPresenter p = new CruiseWizardPresenter(view, this, tempfile);
+                CruiseWizardPresenter p = new CruiseWizardPresenter(view, this, this._myApplicationController, tempfile);
                 p.View = view;
                 view.Owner = MainWindow;
 
@@ -313,7 +288,7 @@ namespace CSM.App
         public override void ShowDataEditor()
         {
             ApplicationController.Instance.Save();
-            using (DataEditorView view = new DataEditorView(this))
+            using (DataEditorView view = new DataEditorView(this, this._myApplicationController))
             {
                 view.ShowDialog(this.MainWindow);
             }
@@ -321,7 +296,7 @@ namespace CSM.App
 
         public override void ShowDataExportDialog(IList<TreeVM> Trees, IList<LogVM> Logs, IList<PlotDO> Plots, IList<CountTreeDO> Counts)
         {
-            DataExportDialog dialog = new DataExportDialog(this, Trees, Logs, Plots, Counts);
+            DataExportDialog dialog = new DataExportDialog(this._myApplicationController, Trees, Logs, Plots, Counts);
             //dialog.Owner = DataEditorView; //TODO make data export dialog ownen by data editor
             dialog.ShowDialog();
         }
@@ -329,12 +304,12 @@ namespace CSM.App
         public override void ShowEditDesign()
         {
             this._myApplicationController = null;
-            DesignEditViewControl view = new DesignEditViewControl(this);
+            DesignEditViewControl view = new DesignEditViewControl(this, this._myApplicationController, this._myApplicationController.ExceptionHandler);
             SetActiveView(view);
 
             DesignEditorPresentor presenter = new DesignEditorPresentor(this);
             presenter.View = view;
-            this._myApplicationController = presenter;
+            this._myApplicationController.ActivePresentor = presenter;
         }
 
         public override void ShowEditWizard()
@@ -344,7 +319,7 @@ namespace CSM.App
                 this.ShowWaitCursor();
 
                 CruiseWizardView view = new CruiseWizardView();
-                CruiseWizardPresenter p = new CruiseWizardPresenter(view, this, this.Database);
+                CruiseWizardPresenter p = new CruiseWizardPresenter(view, this, this._myApplicationController, this._myApplicationController.Database);
                 p.View = view;
                 view.Owner = MainWindow;
 
@@ -371,9 +346,9 @@ namespace CSM.App
             //this.MainWindow.AddNavButton("Open File", this.HandleOpenFileClick);
             //this.MainWindow.AddNavButton("Create New Cruise", this.HandleCreateCruiseClick);
 
-            var _openFileAction = new NavOption("Create New Cruise", this.ShowCruiseWizardDialog);
-            var _createNewCruise = new NavOption("Open File", this.ShowOpenCruiseDialog);
-            this.MainWindow.SetNavOptions(new NavOption[] { _createNewCruise, _openFileAction });
+            var _openFileAction = new CommandBinding("Create New Cruise", this.ShowCruiseWizardDialog);
+            var _createNewCruise = new CommandBinding("Open File", this.ShowOpenCruiseDialog);
+            this.MainWindow.SetNavOptions(new CommandBinding[] { _createNewCruise, _openFileAction });
 
             this._myApplicationController.ActivePresentor = null;
         }
@@ -381,19 +356,19 @@ namespace CSM.App
         public override void ShowImportTemplate()
         {
             OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Filter = R.Strings.OPEN_CRUISE_FILE_DIALOG_FILTER;
+            dialog.Filter = Strings.OPEN_CRUISE_FILE_DIALOG_FILTER;
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 //this.MainWindow.ClearNavPanel();
-                this.MainWindow.ViewContentPanel.Controls.Clear();
+                this.MainWindow.ClearActiveView();
                 //this.MainWindow.AddNavButton("Finish", this.HandleFinishImportTemplateClick);
                 //this.MainWindow.AddNavButton("Cancel", this.HandleCancelImportTemplateClick);
 
                 ImportFromCruiseView view = new ImportFromCruiseView(this, dialog.FileName);
                 view.Dock = DockStyle.Fill;
                 this._myApplicationController.ActivePresentor = view;
-                this.MainWindow.ViewContentPanel.Controls.Add(view);
+                this.SetActiveView(view);
 
             }
             // find table to import
@@ -408,8 +383,8 @@ namespace CSM.App
 
         public override void ShowManageComponentsLayout()
         {
-            MergeComponentView view = new MergeComponentView();
-            MergeComponentsPresenter presenter = new MergeComponentsPresenter(this, view);
+            MergeComponentViewWinforms view = new MergeComponentViewWinforms();
+            MergeComponentsPresenter presenter = new MergeComponentsPresenter(view, this, this._myApplicationController);
 
             this._myApplicationController.ActivePresentor = presenter;
             SetActiveView(view);
@@ -481,13 +456,12 @@ namespace CSM.App
             this.MainWindow.Text = System.IO.Path.GetFileName(this._myApplicationController.Database.Path);
             //this.MainWindow.AddNavButton("Back", this.HandleHomePageClick);
             //this.MainWindow.AddNavButton("Import From Cruise", this.HandleImportTemplateClick);
-            TemplateEditViewControl view = new TemplateEditViewControl(this);
-            TemplateEditViewPresenter presenter = new TemplateEditViewPresenter(this, view);
+            TemplateEditViewControl view = new TemplateEditViewControl(this, this._myApplicationController);
+            TemplateEditViewPresenter presenter = new TemplateEditViewPresenter(this, this._myApplicationController, view);
             view.Presenter = presenter;
             this._myApplicationController.ActivePresentor = presenter;
             this.SetActiveView(view);
             this.MainWindow.SetNavOptions(this.templateLandingNavOptions);
-
 
         }
 

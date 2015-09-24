@@ -11,9 +11,9 @@ using System.Collections;
 using CruiseManager.Core.App;
 using CruiseManager.Core.Models;
 
-namespace CSM.Winforms.CruiseCustomize
+namespace CruiseManager.Winforms.CruiseCustomize
 {
-    public partial class CruiseCustomizeView : UserControl
+    public partial class CruiseCustomizeViewWinforms : UserControl
     {
         protected ApplicationController _myApplicationController;
 
@@ -130,7 +130,7 @@ namespace CSM.Winforms.CruiseCustomize
         public CustomizeCruisePresenter Presenter { get; set; }
         //protected StratumDO FieldSetup_CurrentStratum { get; set; }
 
-        public CruiseCustomizeView(CustomizeCruisePresenter presenter, ApplicationController applicationController)
+        public CruiseCustomizeViewWinforms(CustomizeCruisePresenter presenter, ApplicationController applicationController)
         {
             _myApplicationController = applicationController;
             this.Presenter = presenter;
@@ -190,7 +190,7 @@ namespace CSM.Winforms.CruiseCustomize
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.Label label8;
             System.Windows.Forms.Label label7;
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CruiseCustomizeView));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CruiseCustomizeViewWinforms));
             System.Windows.Forms.Label label13;
             System.Windows.Forms.Label label20;
             this._tdvDGV = new FMSC.Controls.SelectedItemsGridView();
@@ -252,7 +252,7 @@ namespace CSM.Winforms.CruiseCustomize
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this._strataCB = new System.Windows.Forms.ComboBox();
-            this._tallyEditPanel = new CSM.Winforms.CruiseCustomize.TallyEditPanel();
+            this._tallyEditPanel = new CruiseManager.Winforms.CruiseCustomize.TallyEditPanel();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this._treeAuditTabPage = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();

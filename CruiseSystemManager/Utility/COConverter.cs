@@ -6,11 +6,11 @@ using System.Diagnostics;
 using System.IO;
 using System.ComponentModel;
 using System.Reflection;
-using CSM.Winforms;
+using CruiseManager.Winforms;
 using System.Windows;
 using CruiseManager.Core.App;
 
-namespace CSM.Utility 
+namespace CruiseManager.Utility 
 {
     public class ProcessUpdateEventArgs
     {

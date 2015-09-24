@@ -2,9 +2,9 @@
 using System.IO;
 using System.Windows.Forms;
 
-namespace CSM.App
+namespace CruiseManager.App
 {
-    class PlatformHelperWinForms : PlatformHelper
+    public class PlatformHelperWinForms : PlatformHelper
     {
         public override DirectoryInfo GetTemplateFolder()
         {

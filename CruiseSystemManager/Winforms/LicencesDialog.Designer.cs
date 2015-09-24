@@ -1,4 +1,4 @@
-﻿namespace CSM.Winforms
+﻿namespace CruiseManager.Winforms
 {
     partial class LicencesDialog
     {

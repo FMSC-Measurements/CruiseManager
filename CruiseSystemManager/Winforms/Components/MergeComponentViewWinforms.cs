@@ -10,13 +10,13 @@ using CruiseManager.Core;
 using CruiseManager.Core.Components;
 using CruiseManager.Core.ViewInterfaces;
 
-namespace CSM.Winforms.Components
+namespace CruiseManager.Winforms.Components
 {
-    public partial class WinformsMergeComponentView : UserControl, MergeComponentView
+    public partial class MergeComponentViewWinforms : UserControl, MergeComponentView
     {
         MergeInfoView mergeInfoView;
 
-        public WinformsMergeComponentView()
+        public MergeComponentViewWinforms()
         {
             InitializeComponent();
             mergeInfoView = new MergeInfoView();

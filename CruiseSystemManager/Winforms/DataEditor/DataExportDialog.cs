@@ -11,7 +11,7 @@ using System.Reflection;
 using CruiseManager.Core.Models;
 using CruiseManager.Core.App;
 
-namespace CSM.Winforms.DataEditor
+namespace CruiseManager.Winforms.DataEditor
 {
     public partial class DataExportDialog : Form
     {
@@ -21,7 +21,7 @@ namespace CSM.Winforms.DataEditor
             InitializeComponent();
         }
 
-        public DataExportDialog(WindowPresenter windowPresenter, IList<TreeVM> Trees, IList<LogVM> Logs, IList<PlotDO> Plots, IList<CountTreeDO> Counts)
+        public DataExportDialog(ApplicationController applicationController, IList<TreeVM> Trees, IList<LogVM> Logs, IList<PlotDO> Plots, IList<CountTreeDO> Counts)
         {
             this.InitializeComponent();
             this.Trees = Trees;
@@ -29,13 +29,13 @@ namespace CSM.Winforms.DataEditor
             this.Plots = Plots;
             this.Counts = Counts;
 
-            SetUpFieldWidgets(windowPresenter);
+            SetUpFieldWidgets(applicationController);
         }
 
 
-        public void SetUpFieldWidgets(WindowPresenter windowPresenter)
+        public void SetUpFieldWidgets(ApplicationController applicationController)
         {
-            var setupServ = SetupService.GetHandle();
+            var setupServ = SetupService.Instance;
 
             //set up tree field widget
             //get list of tree fields from the setup file
@@ -51,7 +51,7 @@ namespace CSM.Winforms.DataEditor
             this.AllTreeFields.Add(new FieldDiscriptor { Field = "Plot", Header = "Plot Number", Format = "[PlotNumber]", DataType = typeof(TreeVM) });
             this.AllTreeFields.Sort((x, y) => x.Header.CompareTo(y.Header));
 
-            List<TreeFieldSetupDO> tf = windowPresenter.Database.Read<TreeFieldSetupDO>("TreeFieldSetup", "GROUP BY Field ORDER BY FieldOrder");
+            List<TreeFieldSetupDO> tf = applicationController.Database.Read<TreeFieldSetupDO>("TreeFieldSetup", "GROUP BY Field ORDER BY FieldOrder");
             TreeFields = (from field in tf
                           select new FieldDiscriptor(field)).ToList();
 
@@ -332,9 +332,10 @@ namespace CSM.Winforms.DataEditor
             {
                 stream = file.Open(FileMode.Create, FileAccess.ReadWrite);
             }
-            catch
+            catch (System.IO.IOException ex)
             {
-                WindowPresenter.HandleNonCriticalError(true, "Unable To Open File");
+                ApplicationController.Instance.ExceptionHandler.Handel(ex);
+                //WindowPresenter.HandleNonCriticalError(true, "Unable To Open File");
             }
             return stream;
         }

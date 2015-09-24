@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CSM.Properties {
+namespace CruiseManager.Properties {
     using System;
     
     

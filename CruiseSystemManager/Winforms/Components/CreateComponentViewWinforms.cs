@@ -8,12 +8,13 @@ using System.Text;
 using System.Windows.Forms;
 using CruiseManager.Core.Components;
 using CruiseManager.Core.App;
+using CruiseManager.Core.ViewInterfaces;
 
 namespace CruiseManager.WinForms.Components
 {
-    public partial class CreateComponentView : UserControl
+    public partial class CreateComponentViewWinforms : UserControl, CreateComponentView
     {
-        //protected WindowPresenter _myWindowPresenter;
+        protected WindowPresenter _myWindowPresenter;
         //protected ApplicationController _myApplicationController;
 
         //public CreateComponentView(WindowPresenter windowPresenter, ApplicationController applicationController) : this()
@@ -22,8 +23,9 @@ namespace CruiseManager.WinForms.Components
         //    _myApplicationController = applicationController;
         //}
 
-        public CreateComponentView()
+        public CreateComponentViewWinforms(WindowPresenter windowPresenter)
         {
+            this._myWindowPresenter = windowPresenter;
             InitializeComponent();
         }
 
@@ -44,7 +46,8 @@ namespace CruiseManager.WinForms.Components
         private void __makeBtn_Click(object sender, EventArgs e)
         {
             Presenter.MakeComponents((int)this.__numCompTB.Value);
-            MessageBox.Show("Done");
+            this._myWindowPresenter.ShowMessage("Done");
+            //MessageBox.Show("Done");
         }
 
         public void InitializeAndShowProgress(int numSteps)

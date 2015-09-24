@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace CSM.App
+namespace CruiseManager.App
 {
     public class CommandBinding
     {

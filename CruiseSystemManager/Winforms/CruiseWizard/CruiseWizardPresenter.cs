@@ -7,7 +7,7 @@ using CruiseDAL.DataObjects;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
-using CSM.Utility;
+using CruiseManager.Utility;
 using FMSC.Utility.Collections;
 using System.Threading;
 using CruiseManager.Core.Models;
@@ -15,7 +15,7 @@ using CruiseManager.Core.SetupModels;
 using CruiseManager.Core.App;
 using CruiseManager.Core.Constants;
 
-namespace CSM.Winforms.CruiseWizard
+namespace CruiseManager.Winforms.CruiseWizard
 {
     public class CruiseWizardPresenter 
     {
@@ -197,25 +197,27 @@ namespace CSM.Winforms.CruiseWizard
             _database = database;
 
             LoadSetupData();//load tree defaults, product codes, etc.
-            if (_database != null)
-            {
-                LoadCruiseData();//read data from existing file
+            //if (_database != null)
+            //{
 
-                //See if the file contains a template file record 
-                GlobalsDO record = this._database.ReadSingleRow<GlobalsDO>("Globals", "WHERE Block = 'CSM' AND KEY = 'TemplatePath'");
+            LoadCruiseData();//read data from existing file
 
-                if (record != null && !String.IsNullOrEmpty(record.Value))
-                {
-                    this._fileHasTemplate = true; 
-                    this._templateFile = new FileInfo(record.Value);
-                    View.SetTemplatePathTextBox(record.Value, false);
-                }
-            }
-            else
+            //See if the file contains a template file record 
+            GlobalsDO record = this._database.ReadSingleRow<GlobalsDO>("Globals", "WHERE Block = 'CSM' AND KEY = 'TemplatePath'");
+
+            if (record != null && !String.IsNullOrEmpty(record.Value))
             {
-                _database = new DAL(GetTempPath(), true);
-                //this.Sale = new SaleVM(this._database);
+                this._fileHasTemplate = true; 
+                this._templateFile = new FileInfo(record.Value);
+                View.SetTemplatePathTextBox(record.Value, false);
             }
+
+            //}
+            //else
+            //{
+            //    _database = new DAL(GetTempPath(), true);
+            //    //this.Sale = new SaleVM(this._database);
+            //}
 
             if (this.CuttingUnits.Count == 0)
             {

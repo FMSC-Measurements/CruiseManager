@@ -8,7 +8,7 @@ using CruiseManager.Core.Models;
 using CruiseManager.Core.SetupModels;
 using CruiseManager.Core.App;
 
-namespace CSM.Winforms.CruiseWizard
+namespace CruiseManager.Winforms.CruiseWizard
 {
     public partial class SampleGroupPage : UserControl, IPage
     {
@@ -243,7 +243,7 @@ namespace CSM.Winforms.CruiseWizard
             TreeDefaultValueDO temp = new TreeDefaultValueDO(tdv);
             ApplicationState appState = ApplicationState.GetHandle();
 
-            CSM.Winforms.CruiseWizard.FormAddTreeDefault dialog = new CSM.Winforms.CruiseWizard.FormAddTreeDefault(SetupService.GetHandle().GetProductCodes());
+            CruiseManager.Winforms.CruiseWizard.FormAddTreeDefault dialog = new FormAddTreeDefault(SetupService.Instance.GetProductCodes());
             if (dialog.ShowDialog(tdv) == DialogResult.OK)
             {
                 tdv.Save();

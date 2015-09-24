@@ -1,4 +1,4 @@
-﻿namespace CSM.Winforms.DesignEditor
+﻿namespace CruiseManager.Winforms.DesignEditor
 {
     partial class DesignEditViewControl
     {
@@ -233,7 +233,7 @@
             // 
             // SaleBindingSource
             // 
-            this.SaleBindingSource.DataSource = typeof(CSM.Models.SaleVM);
+            this.SaleBindingSource.DataSource = typeof(Core.Models.SaleVM);
             // 
             // label6
             // 
@@ -597,7 +597,7 @@
             // 
             // LoggingMethodBindingSource
             // 
-            this.LoggingMethodBindingSource.DataSource = typeof(CSM.Utility.Setup.LoggingMethod);
+            this.LoggingMethodBindingSource.DataSource = typeof(Core.SetupModels.LoggingMethod);
             // 
             // paymentUnitDataGridViewTextBoxColumn
             // 
@@ -1173,7 +1173,7 @@
             // 
             // _BS_ProductTypes
             // 
-            this._BS_ProductTypes.DataSource = typeof(CSM.Utility.Setup.ProductCode);
+            this._BS_ProductTypes.DataSource = typeof(Core.SetupModels.ProductCode);
             // 
             // secondaryProductDataGridViewTextBoxColumn
             // 

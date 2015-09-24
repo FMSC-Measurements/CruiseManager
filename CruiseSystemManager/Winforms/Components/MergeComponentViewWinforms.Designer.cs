@@ -1,6 +1,6 @@
-﻿namespace CSM.Winforms.Components
+﻿namespace CruiseManager.Winforms.Components
 {
-    partial class WinformsMergeComponentView
+    partial class MergeComponentViewWinforms
     {
         /// <summary> 
         /// Required designer variable.

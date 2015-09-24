@@ -1,4 +1,4 @@
-﻿namespace CSM.Winforms.TemplateEditor
+﻿namespace CruiseManager.Winforms.TemplateEditor
 {
     partial class TemplateEditViewControl
     {
@@ -279,7 +279,7 @@
             // 
             // _BS_CruiseMethods
             // 
-            this._BS_CruiseMethods.DataSource = typeof(CSM.Winforms.TemplateEditor.CruiseMethodViewModel);
+            this._BS_CruiseMethods.DataSource = typeof(CruiseManager.Winforms.TemplateEditor.CruiseMethodViewModel);
             this._BS_CruiseMethods.CurrentChanged += new System.EventHandler(this._BS_CruiseMethods_CurrentChanged);
             // 
             // label6

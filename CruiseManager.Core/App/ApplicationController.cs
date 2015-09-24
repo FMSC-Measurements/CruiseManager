@@ -13,18 +13,20 @@ namespace CruiseManager.Core.App
 {
     public abstract class ApplicationController : IDisposable
     {
-        public static ApplicationController Instance { get; set; }
-
         internal static readonly TreeDefaultValueDO[] EMPTY_SPECIES_LIST = new TreeDefaultValueDO[] { };
 
-
+        #region DI Properties
+        public static ApplicationController Instance { get; set; }
         public WindowPresenter WindowPresenter { get; protected set; }
-        public IExceptionHandler ExceptionHandler { get; protected set; }
-        public ApplicationState AppState { get { return ApplicationState.GetHandle(); } }
-        public DAL Database { get; set; }
-
+        public ExceptionHandler ExceptionHandler { get; protected set; }
         public SetupService SetupService { get; set; }
         public UserSettings UserSettings { get; set; }
+        public ApplicationState AppState { get; protected set; }
+        #endregion
+
+
+        public DAL Database { get; set; }
+        public bool InSupervisorMode { get; set; }
 
         //the current save handler is the active locical component of the program that is 
         //responceable for saving the user's data 
@@ -59,14 +61,14 @@ namespace CruiseManager.Core.App
             }
         }
 
-        public bool InSupervisorMode { get; set; }
 
-
-
-        protected ApplicationController(UserSettings userSettings, SetupService setupService)
+        protected ApplicationController(WindowPresenter windowPresenter, ExceptionHandler exceptionHandler, UserSettings userSettings, SetupService setupService)
         {
+            this.WindowPresenter = windowPresenter;
+            this.ExceptionHandler = exceptionHandler;
             this.UserSettings = userSettings;
             this.SetupService = setupService;
+            this.AppState = ApplicationState.GetHandle();
 #if DEBUG
             InSupervisorMode = true;
 #endif
@@ -91,6 +93,15 @@ namespace CruiseManager.Core.App
             }
         }
 
+        public void SaveAs()
+        {
+            var path = WindowPresenter.AskCruiseSaveLocation();
+            if(path != null)
+            {
+                this.SaveAs(path);
+            }
+        }
+
         public void SaveAs(String fileName)
         {
             try
@@ -104,7 +115,10 @@ namespace CruiseManager.Core.App
             }
             catch (Exception ex)
             {
-                this.ExceptionHandler.Handel(ex);
+                if(!this.ExceptionHandler.Handel(ex))
+                {
+                    throw;
+                }
             }
         }
 
@@ -114,39 +128,30 @@ namespace CruiseManager.Core.App
             {
                 if (this.SaveHandler != null)
                 {
-
                     SaveHandler.HandleAppClosing(ref cancel);
                 }
             }
             catch (Exception ex)
             {
-                this.ExceptionHandler.Handel(ex);
+                if(!this.ExceptionHandler.Handel(ex))
+                {
+                    throw;
+                }
             }
         }
-
-        public bool HasUnfinishedCruiseFile()
-        {
-
-            string tempPath = GetTempCruisePath();
-            return System.IO.File.Exists(tempPath);
-        }
-
-        public string GetTempCruisePath()
-        {
-            return System.IO.Path.GetDirectoryName(System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)) + "\\" + Strings.TEMP_FILENAME;
-        }
+        
 
         public DAL GetNewOrUnfinishedCruise()
         {
             if(HasUnfinishedCruiseFile())
             {
                 Nullable<bool> dialogResult = WindowPresenter.AskYesNoCancel("Partially created cruise file found, would you like to resume?\r\nSelecting No will discard existing partial cruise.", "?");
-                if(dialogResult.HasValue && dialogResult.Value == true) { return new DAL(GetTempCruisePath()); }
+                if(dialogResult.HasValue && dialogResult.Value == true) { return new DAL(GetTempCruiseLocation()); }
                 else if (dialogResult.HasValue == false)
                 { return null; }
                 //fall through if false
             }
-            return new DAL(GetTempCruisePath(), true);
+            return new DAL(GetTempCruiseLocation(), true);
         }
 
 
@@ -249,6 +254,17 @@ namespace CruiseManager.Core.App
         #endregion
 
         #region Static Methods
+
+        public static bool HasUnfinishedCruiseFile()
+        {
+            string tempPath = GetTempCruiseLocation();
+            return System.IO.File.Exists(tempPath);
+        }
+
+        public static string GetTempCruiseLocation()
+        {
+            return System.IO.Path.GetDirectoryName(System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)) + "\\" + Strings.TEMP_FILENAME;
+        }
 
         public static List<FileInfo> GetTemplateFiles()
         {

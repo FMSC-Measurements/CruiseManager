@@ -1,4 +1,4 @@
-﻿namespace CSM.Winforms.DataEditor
+﻿namespace CruiseManager.Winforms.DataEditor
 {
     partial class DataEditorView
     {
@@ -566,7 +566,7 @@
             // 
             // TreeBindingSource
             // 
-            this.TreeBindingSource.DataSource = typeof(CSM.Models.TreeVM);
+            this.TreeBindingSource.DataSource = typeof(Core.Models.TreeVM);
             // 
             // tabPage2
             // 

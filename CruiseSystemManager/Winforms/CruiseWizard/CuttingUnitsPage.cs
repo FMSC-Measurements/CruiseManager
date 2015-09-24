@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using CruiseDAL;
 using CruiseDAL.DataObjects;
 
-namespace CSM.Winforms.CruiseWizard
+namespace CruiseManager.Winforms.CruiseWizard
 {
     public partial class CuttingUnitsPage : UserControl, IPage
     {

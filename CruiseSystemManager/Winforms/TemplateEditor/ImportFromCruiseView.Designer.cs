@@ -1,4 +1,4 @@
-﻿namespace CSM.Winforms.TemplateEditor
+﻿namespace CruiseManager.Winforms.TemplateEditor
 {
     partial class ImportFromCruiseView
     {

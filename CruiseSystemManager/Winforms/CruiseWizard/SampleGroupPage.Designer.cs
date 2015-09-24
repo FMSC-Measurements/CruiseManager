@@ -1,6 +1,6 @@
 ﻿using CruiseManager.Core.Models;
 
-namespace CSM.Winforms.CruiseWizard
+namespace CruiseManager.Winforms.CruiseWizard
 {
     partial class SampleGroupPage
     {
