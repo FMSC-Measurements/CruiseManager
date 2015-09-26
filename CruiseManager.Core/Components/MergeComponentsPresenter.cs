@@ -32,7 +32,6 @@ namespace CruiseManager.Core.Components
             this.CurrentWorker.ProgressChanged += this.HandelPrepareProgressChanged;
         }
 
-        private PrepareMergeWorker _prepareMergeWorker;
         protected ApplicationController _appController; 
 
         public Dictionary<String, MergeTableCommandBuilder> CommandBuilders = new Dictionary<string, MergeTableCommandBuilder>();

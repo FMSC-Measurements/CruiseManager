@@ -30,9 +30,12 @@
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.Panel panel1;
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormCSMMain));
+            CruiseManager.Properties.Settings settings1 = new CruiseManager.Properties.Settings();
             System.Windows.Forms.Button ExampleButton;
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormCSMMain));
             this._viewContentPanel = new System.Windows.Forms.Panel();
+            this._viewNavPanel = new System.Windows.Forms.Panel();
+            this.exampleBtn = new System.Windows.Forms.Button();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -42,14 +45,11 @@
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this._viewNavPanel = new System.Windows.Forms.Panel();
-            this.exampleBtn = new System.Windows.Forms.Button();
             panel1 = new System.Windows.Forms.Panel();
             ExampleButton = new System.Windows.Forms.Button();
             panel1.SuspendLayout();
-            this._viewContentPanel.SuspendLayout();
-            this.menuStrip.SuspendLayout();
             this._viewNavPanel.SuspendLayout();
+            this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -60,20 +60,57 @@
             panel1.Location = new System.Drawing.Point(0, 25);
             panel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             panel1.Name = "panel1";
-            panel1.Size = new System.Drawing.Size(734, 387);
+            panel1.Size = new System.Drawing.Size(824, 477);
             panel1.TabIndex = 1;
             // 
             // _viewContentPanel
             // 
-            this._viewContentPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("_viewContentPanel.BackgroundImage")));
-            this._viewContentPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this._viewContentPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this._viewContentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._viewContentPanel.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._viewContentPanel.Location = new System.Drawing.Point(0, 0);
+            this._viewContentPanel.Location = new System.Drawing.Point(151, 0);
             this._viewContentPanel.Margin = new System.Windows.Forms.Padding(0);
             this._viewContentPanel.Name = "_viewContentPanel";
-            this._viewContentPanel.Size = new System.Drawing.Size(734, 387);
+            this._viewContentPanel.Size = new System.Drawing.Size(673, 477);
             this._viewContentPanel.TabIndex = 2;
+            // 
+            // _viewNavPanel
+            // 
+            this._viewNavPanel.BackColor = System.Drawing.Color.Gray;
+            this._viewNavPanel.Controls.Add(this.exampleBtn);
+            settings1.App_NavFont = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            settings1.CreateSaleFolder = "";
+            settings1.DefaultCruiseSaveLocation = "";
+            settings1.DefaultTemplateSaveLocation = "";
+            settings1.FileNameFormat = "";
+            settings1.RecentFiles = "";
+            settings1.SettingsKey = "";
+            this._viewNavPanel.DataBindings.Add(new System.Windows.Forms.Binding("Font", settings1, "App_NavFont", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this._viewNavPanel.Dock = System.Windows.Forms.DockStyle.Left;
+            this._viewNavPanel.Font = settings1.App_NavFont;
+            this._viewNavPanel.Location = new System.Drawing.Point(0, 0);
+            this._viewNavPanel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this._viewNavPanel.MinimumSize = new System.Drawing.Size(150, 4);
+            this._viewNavPanel.Name = "_viewNavPanel";
+            this._viewNavPanel.Size = new System.Drawing.Size(151, 477);
+            this._viewNavPanel.TabIndex = 3;
+            // 
+            // exampleBtn
+            // 
+            this.exampleBtn.AutoSize = true;
+            this.exampleBtn.BackColor = System.Drawing.Color.ForestGreen;
+            this.exampleBtn.Dock = System.Windows.Forms.DockStyle.Top;
+            this.exampleBtn.FlatAppearance.BorderColor = System.Drawing.Color.DimGray;
+            this.exampleBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.exampleBtn.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.exampleBtn.Location = new System.Drawing.Point(0, 0);
+            this.exampleBtn.Margin = new System.Windows.Forms.Padding(0, 0, 0, 2);
+            this.exampleBtn.Name = "exampleBtn";
+            this.exampleBtn.Size = new System.Drawing.Size(151, 52);
+            this.exampleBtn.TabIndex = 0;
+            this.exampleBtn.Text = "<Example Button>";
+            this.exampleBtn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.exampleBtn.UseVisualStyleBackColor = false;
             // 
             // ExampleButton
             // 
@@ -103,7 +140,7 @@
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
-            this.menuStrip.Size = new System.Drawing.Size(734, 25);
+            this.menuStrip.Size = new System.Drawing.Size(824, 25);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -169,42 +206,11 @@
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
-            // _viewNavPanel
-            // 
-            this._viewNavPanel.BackColor = System.Drawing.Color.Gray;
-            this._viewNavPanel.Controls.Add(this.exampleBtn);
-            this._viewNavPanel.DataBindings.Add(new System.Windows.Forms.Binding("Font", global::CruiseManager.Properties.Settings.Default, "App_NavFont", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this._viewNavPanel.Dock = System.Windows.Forms.DockStyle.Left;
-            this._viewNavPanel.Font = global::CruiseManager.Properties.Settings.Default.App_NavFont;
-            this._viewNavPanel.Location = new System.Drawing.Point(0, 0);
-            this._viewNavPanel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this._viewNavPanel.MinimumSize = new System.Drawing.Size(150, 4);
-            this._viewNavPanel.Name = "_viewNavPanel";
-            this._viewNavPanel.Size = new System.Drawing.Size(151, 387);
-            this._viewNavPanel.TabIndex = 3;
-            // 
-            // exampleBtn
-            // 
-            this.exampleBtn.AutoSize = true;
-            this.exampleBtn.BackColor = System.Drawing.Color.ForestGreen;
-            this.exampleBtn.Dock = System.Windows.Forms.DockStyle.Top;
-            this.exampleBtn.FlatAppearance.BorderColor = System.Drawing.Color.DimGray;
-            this.exampleBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.exampleBtn.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.exampleBtn.Location = new System.Drawing.Point(0, 0);
-            this.exampleBtn.Margin = new System.Windows.Forms.Padding(0, 0, 0, 2);
-            this.exampleBtn.Name = "exampleBtn";
-            this.exampleBtn.Size = new System.Drawing.Size(151, 52);
-            this.exampleBtn.TabIndex = 0;
-            this.exampleBtn.Text = "<Example Button>";
-            this.exampleBtn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.exampleBtn.UseVisualStyleBackColor = false;
-            // 
             // FormCSMMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(734, 412);
+            this.ClientSize = new System.Drawing.Size(824, 502);
             this.Controls.Add(panel1);
             this.Controls.Add(this.menuStrip);
             this.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
@@ -214,11 +220,10 @@
             this.Name = "FormCSMMain";
             this.Text = "FormCSMMain";
             panel1.ResumeLayout(false);
-            this._viewContentPanel.ResumeLayout(false);
-            this.menuStrip.ResumeLayout(false);
-            this.menuStrip.PerformLayout();
             this._viewNavPanel.ResumeLayout(false);
             this._viewNavPanel.PerformLayout();
+            this.menuStrip.ResumeLayout(false);
+            this.menuStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

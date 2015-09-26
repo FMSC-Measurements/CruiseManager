@@ -15,6 +15,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)App\PlatformHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\SetupService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\UserSettings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App\ViewCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App\ViewCommandBinding.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\WindowPresenter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CancelWorkerException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Components\ComponentFile.cs" />
@@ -31,6 +33,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)IExceptionHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IPresentor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ISaveHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IWorker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\LogVM.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\SaleVM.cs" />

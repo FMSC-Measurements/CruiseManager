@@ -18,10 +18,17 @@ namespace CruiseManager.Core.App
     {
         public static WindowPresenter Instance { get; set; }
 
+        public ApplicationController ApplicationController
+        {
+            get;
+            set;
+        }
+
         public MainWindow MainWindow { get; set; }
 
         public abstract string AskTemplateLocation();
         public abstract String AskCruiseSaveLocation();
+        public abstract string AskOpenFileLocation();
 
         public abstract void ShowAboutDialog();
         public abstract void ShowCruiseLandingLayout();
@@ -35,7 +42,7 @@ namespace CruiseManager.Core.App
         public abstract void ShowEditWizard();
         public abstract void ShowCruiseWizardDialog();
         public abstract void ShowManageComponentsLayout();
-        public abstract void ShowOpenCruiseDialog();
+        //public abstract void ShowOpenCruiseDialog();
         public abstract void ShowTemplateLandingLayout();
 
         public abstract void ShowSimpleErrorMessage(string errorMessage);

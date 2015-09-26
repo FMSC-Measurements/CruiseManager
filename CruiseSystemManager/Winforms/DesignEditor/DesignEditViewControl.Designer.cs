@@ -149,7 +149,7 @@
             this.fixedPlotSizeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.KZ3PPNT = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fBSCodeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Month = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.monthStrDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.yearDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.YieldComponent = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.createdByDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -816,7 +816,7 @@
             this.fixedPlotSizeDataGridViewTextBoxColumn,
             this.KZ3PPNT,
             this.fBSCodeDataGridViewTextBoxColumn,
-            this.Month,
+            this.monthStrDataGridViewTextBoxColumn,
             this.yearDataGridViewTextBoxColumn,
             this.YieldComponent,
             this.createdByDataGridViewTextBoxColumn1,
@@ -1501,9 +1501,9 @@
             // 
             // Month
             // 
-            this.Month.DataPropertyName = "MonthStr";
-            this.Month.HeaderText = "Month";
-            this.Month.Items.AddRange(new object[] {
+            this.monthStrDataGridViewTextBoxColumn.DataPropertyName = "MonthStr";
+            this.monthStrDataGridViewTextBoxColumn.HeaderText = "Month";
+            this.monthStrDataGridViewTextBoxColumn.Items.AddRange(new object[] {
             "1",
             "2",
             "3",
@@ -1516,9 +1516,9 @@
             "10",
             "11",
             "12"});
-            this.Month.Name = "Month";
-            this.Month.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Month.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.monthStrDataGridViewTextBoxColumn.Name = "Month";
+            this.monthStrDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.monthStrDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // yearDataGridViewTextBoxColumn
             // 
@@ -1726,7 +1726,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn modifiedByDataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn modifiedDateDataGridViewTextBoxColumn2;
         private System.Windows.Forms.Button _deleteSubPopBTN;
-        private System.Windows.Forms.DataGridViewComboBoxColumn monthDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn codeDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewComboBoxColumn Method;
@@ -1734,7 +1733,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn fixedPlotSizeDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn KZ3PPNT;
         private System.Windows.Forms.DataGridViewTextBoxColumn fBSCodeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewComboBoxColumn Month;
+        private System.Windows.Forms.DataGridViewComboBoxColumn monthStrDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn yearDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn YieldComponent;
         private System.Windows.Forms.DataGridViewTextBoxColumn createdByDataGridViewTextBoxColumn1;

@@ -23,11 +23,11 @@ namespace CruiseManager.Winforms.Components
             public DataGridView ConflictsDGV;
             public DataGridView MatchDGV; 
             public DataGridView NewDGV; 
-            public DataGridView DeletedDGV; 
+            //public DataGridView DeletedDGV; 
             public BindingSource ConflictsDataSource;
             public BindingSource MatchDataSource; 
             public BindingSource NewDataSource; 
-            public BindingSource DeletedDataSource; 
+            //public BindingSource DeletedDataSource; 
         }
 
 
@@ -219,18 +219,18 @@ namespace CruiseManager.Winforms.Components
             }
         }
 
-        private bool _deletedLoaded = false;
-        private void _TP_deletions_Enter(object sender, EventArgs e)
-        {
-            if (!_deletedLoaded)
-            {
-                foreach (ViewDataLink link in _viewDataLinks)
-                {
-                    link.DeletedDataSource.DataSource = this.Presenter.ListDeleted(link.CmdBldr);
-                }
-                _deletedLoaded = true;
-            }
-        }
+        //private bool _deletedLoaded = false;
+        //private void _TP_deletions_Enter(object sender, EventArgs e)
+        //{
+        //    if (!_deletedLoaded)
+        //    {
+        //        foreach (ViewDataLink link in _viewDataLinks)
+        //        {
+        //            link.DeletedDataSource.DataSource = this.Presenter.ListDeleted(link.CmdBldr);
+        //        }
+        //        _deletedLoaded = true;
+        //    }
+        //}
 
     }
 }

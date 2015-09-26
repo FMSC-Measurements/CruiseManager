@@ -21,8 +21,12 @@ namespace CruiseManager.App
         public ApplicationControllerWinForms(WindowPresenter windowPresenter, ExceptionHandler exceptionHandler, UserSettings userSettings, SetupService setupService) : base(windowPresenter, exceptionHandler, userSettings, setupService)
         {
 
-        } 
+        }
 
+        public override ViewCommand MakeViewCommand(string name, Action action)
+        {
+            return new ViewCommandWinForms(name, action, this.ExceptionHandler);
+        }
 
 
         /// <summary>

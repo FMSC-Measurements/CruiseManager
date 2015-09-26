@@ -10,6 +10,7 @@ using System.IO;
 using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core.App;
 using CruiseManager.App;
+using CruiseManager.Core;
 
 namespace CruiseManager.Winforms.Dashboard
 {
@@ -22,13 +23,23 @@ namespace CruiseManager.Winforms.Dashboard
             this.ApplicationController = applicationController;
             InitializeComponent();
 
-            var _openClickDispatcher = new CommandBinding(this.WindowPresenter.ShowOpenCruiseDialog, this.openToolStripMenuItem);
-            var _newFileClickDispatcher = new CommandBinding(this.WindowPresenter.ShowCruiseWizardDialog, this.newToolStripMenuItem);
-
-            var _saveClickDispatcher = new CommandBinding(ApplicationController.Instance.Save, this.saveToolStripMenuItem);
-            var _saveAsClickDispatcher = new CommandBinding(this.ApplicationController.SaveAs, this.saveAsToolStripMenuItem);
-            var _aboutClickDispatcher = new CommandBinding(this.WindowPresenter.ShowAboutDialog, this.aboutToolStripMenuItem);
             
+
+            this.ApplicationController.OpenFileCommand.BindTo(this.openToolStripMenuItem);
+            this.ApplicationController.CreateNewCruiseCommand.BindTo(this.newToolStripMenuItem);
+
+            var _aboutClickCommand = this.ApplicationController.MakeViewCommand("About", this.WindowPresenter.ShowAboutDialog);
+
+            this.ApplicationController.SaveCommand.BindTo(this.saveToolStripMenuItem);
+            this.ApplicationController.SaveAsCommand.BindTo(this.saveAsToolStripMenuItem);
+
+            //var _openClickDispatcher = new CommandBinding(this.WindowPresenter.ShowOpenCruiseDialog, this.openToolStripMenuItem);
+            //var _newFileClickDispatcher = new CommandBinding(this.WindowPresenter.ShowCruiseWizardDialog, this.newToolStripMenuItem);
+
+            //var _saveClickDispatcher = new CommandBinding(ApplicationController.Instance.Save, this.saveToolStripMenuItem);
+            //var _saveAsClickDispatcher = new CommandBinding(this.ApplicationController.SaveAs, this.saveAsToolStripMenuItem);
+            //var _aboutClickDispatcher = new CommandBinding(this.WindowPresenter.ShowAboutDialog, this.aboutToolStripMenuItem);
+
 
             //this.openToolStripMenuItem.Click += new EventHandler(this.WindowPresenter.HandleOpenFileClick);
             //this.newToolStripMenuItem.Click += new EventHandler(this.WindowPresenter.HandleCreateCruiseClick);
@@ -57,6 +68,17 @@ namespace CruiseManager.Winforms.Dashboard
         {
             Control cView = view as Control;
             System.Diagnostics.Debug.Assert(cView != null);
+
+
+            SetActiveView(cView);
+        }
+
+        public void SetActiveView(IView view)
+        {
+            Control cView = view as Control;
+            System.Diagnostics.Debug.Assert(cView != null);
+
+
             SetActiveView(cView);
         }
 
@@ -64,63 +86,109 @@ namespace CruiseManager.Winforms.Dashboard
         {
             ClearActiveView();
 
-            IView iView = cView as IView;
-            if (iView != null)
-            {
-                this.SetNavOptions(iView.NavOptions);
-                //iView.HandleLoad();
-                throw new NotImplementedException();
-            }
 
+            if (cView is IView)
+            {
+                this.SetNavCommands(((IView)cView).NavCommands);
+            }
 
             //dock new view 
             cView.Dock = DockStyle.Fill;
             cView.Parent = this.ViewContentPanel;
         }
 
-        public void SetNavOptions(ICollection<CommandBinding> navOptions)
+        public void SetNavCommands(IEnumerable<ViewCommand> navCommands)
         {
-            if (navOptions == null) { return; }
             this._viewNavPanel.Controls.Clear();
+            if(navCommands == null) { return; }
             using (Graphics g = CreateGraphics())
             {
-                foreach (CommandBinding clickDispatcher in navOptions.Reverse())
+                foreach (ViewCommand command in navCommands)
                 {
-                    Button newNavButton = new Button();
-                    //newNavButton.AutoSize = true;
-                    newNavButton.BackColor = System.Drawing.Color.ForestGreen;
-
-                    newNavButton.FlatAppearance.BorderColor = System.Drawing.Color.DimGray;
-                    newNavButton.FlatAppearance.BorderSize = 0;
-                    newNavButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.LightGreen;
-                    newNavButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-                    newNavButton.Font = global::CruiseManager.Properties.Settings.Default.App_NavFont;
-                    newNavButton.ForeColor = System.Drawing.SystemColors.ControlText;
-                    //newNavButton.Location = new System.Drawing.Point(0, 0);
-                    //newNavButton.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
-                    newNavButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-                    //newNavButton.Size = new System.Drawing.Size(0, 50);
-                    newNavButton.UseVisualStyleBackColor = false;
-                    newNavButton.Dock = System.Windows.Forms.DockStyle.Top;
-                    
-                    clickDispatcher.Bind(newNavButton);
-                    Size s = g.MeasureString(newNavButton.Text, newNavButton.Font, this._viewNavPanel.Width - 10).ToSize();
-                    newNavButton.Height = s.Height + 6;
-                    
-                    
+                    Button newNavButton = MakeNavButton(g, command);
 
                     this._viewNavPanel.Controls.Add(newNavButton);
                     Panel spacer = new Panel()
                     {
                         Height = 1,
                         Dock = DockStyle.Top,
-                        BackColor = System.Drawing.Color.DimGray
+                        BackColor = this.BackColor
                     };
 
                     this._viewNavPanel.Controls.Add(spacer);
                 }
             }
         }
+
+        private Button MakeNavButton(Graphics g, ViewCommand command)
+        {
+            Button newNavButton = new Button();
+            //newNavButton.AutoSize = true;
+            newNavButton.BackColor = System.Drawing.Color.ForestGreen;
+
+            newNavButton.FlatAppearance.BorderColor = System.Drawing.Color.DimGray;
+            newNavButton.FlatAppearance.BorderSize = 0;
+            newNavButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.LightGreen;
+            newNavButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            newNavButton.Font = global::CruiseManager.Properties.Settings.Default.App_NavFont;
+            newNavButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            //newNavButton.Location = new System.Drawing.Point(0, 0);
+            //newNavButton.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
+            newNavButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            //newNavButton.Size = new System.Drawing.Size(0, 50);
+            newNavButton.UseVisualStyleBackColor = false;
+            newNavButton.Dock = System.Windows.Forms.DockStyle.Top;
+
+            command.BindTo(newNavButton);
+            Size s = g.MeasureString(newNavButton.Text, newNavButton.Font, this._viewNavPanel.Width - 10).ToSize();
+            newNavButton.Height = s.Height + 6;
+
+            return newNavButton;
+        }
+
+        //public void SetNavOptions(IEnumerable<ViewCommand> navOptions)
+        //{
+        //    if (navOptions == null) { return; }
+        //    this._viewNavPanel.Controls.Clear();
+        //    using (Graphics g = CreateGraphics())
+        //    {
+        //        foreach (CommandBinding clickDispatcher in navOptions.Reverse())
+        //        {
+        //            Button newNavButton = new Button();
+        //            //newNavButton.AutoSize = true;
+        //            newNavButton.BackColor = System.Drawing.Color.ForestGreen;
+
+        //            newNavButton.FlatAppearance.BorderColor = System.Drawing.Color.DimGray;
+        //            newNavButton.FlatAppearance.BorderSize = 0;
+        //            newNavButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.LightGreen;
+        //            newNavButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+        //            newNavButton.Font = global::CruiseManager.Properties.Settings.Default.App_NavFont;
+        //            newNavButton.ForeColor = System.Drawing.SystemColors.ControlText;
+        //            //newNavButton.Location = new System.Drawing.Point(0, 0);
+        //            //newNavButton.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
+        //            newNavButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+        //            //newNavButton.Size = new System.Drawing.Size(0, 50);
+        //            newNavButton.UseVisualStyleBackColor = false;
+        //            newNavButton.Dock = System.Windows.Forms.DockStyle.Top;
+
+        //            clickDispatcher.Bind(newNavButton);
+        //            Size s = g.MeasureString(newNavButton.Text, newNavButton.Font, this._viewNavPanel.Width - 10).ToSize();
+        //            newNavButton.Height = s.Height + 6;
+
+
+
+        //            this._viewNavPanel.Controls.Add(newNavButton);
+        //            Panel spacer = new Panel()
+        //            {
+        //                Height = 1,
+        //                Dock = DockStyle.Top,
+        //                BackColor = System.Drawing.Color.DimGray
+        //            };
+
+        //            this._viewNavPanel.Controls.Add(spacer);
+        //        }
+        //    }
+        //}
 
         //public void AddNavButton(String text, EventHandler eventHandler)
         //{

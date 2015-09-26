@@ -1,4 +1,5 @@
 ﻿using CruiseManager.App;
+using CruiseManager.Core.App;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,7 +18,7 @@ namespace CruiseManager.Core.ViewInterfaces
 
         void SetActiveView(object view);
 
-        void SetNavOptions(ICollection<CommandBinding> navOptions);
+        void SetNavCommands(IEnumerable<ViewCommand> navCommands);
 
         void ShowWaitCursor();
 

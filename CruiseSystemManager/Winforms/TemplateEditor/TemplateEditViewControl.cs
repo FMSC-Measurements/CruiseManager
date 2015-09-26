@@ -4,20 +4,28 @@ using System.Windows.Forms;
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
 using CruiseManager.App;
+using CruiseManager.Core;
 
 namespace CruiseManager.Winforms.TemplateEditor
 {
-    public partial class TemplateEditViewControl : UserControl, IView
+    public partial class TemplateEditViewControl : UserControl, IPresentor, IView
     {
 
         public TemplateEditViewControl(WindowPresenter windowPresenter, ApplicationController applicationController)
         {
-            
+            this.ApplicationController = applicationController;
+            this.WindowPresenter = windowPresenter;
+
+            this.NavCommands = new ViewCommand[]{
+                this.ApplicationController.MakeViewCommand("Close File", this.WindowPresenter.ShowCruiseLandingLayout),
+                this.ApplicationController.MakeViewCommand("Import From File", this.WindowPresenter.ShowImportTemplate)
+            };
 
             InitializeComponent();
         }
 
-        protected ApplicationController _myApplicationController;
+        protected ApplicationController ApplicationController;
+        protected WindowPresenter WindowPresenter { get; set; }
         
         public TemplateEditViewPresenter Presenter { get; set; }
         protected TreeDefaultValueDO TreeAudit_CurrentTDV { get; set; }
@@ -302,22 +310,25 @@ namespace CruiseManager.Winforms.TemplateEditor
 
 
         #region IView Members
-        protected void InitializeView(WindowPresenter windowPresenter)
-        {
-            this.WindowPresenter = windowPresenter;
-            this.NavOptions = new CommandBinding[]{
-                new CommandBinding("Close File", this.WindowPresenter.ShowCruiseLandingLayout),
-                new CommandBinding("Import From File", this.WindowPresenter.ShowImportTemplate)
-            };
 
-            this.ViewActions = null;
+        public IPresentor ViewPresenter
+        {
+            get
+            {
+                return this;
+            }
         }
 
-        public WindowPresenter WindowPresenter { get; set; }
+        public IEnumerable<ViewCommand> NavCommands
+        {
+            get; set;
+        }
 
-        public CommandBinding[] NavOptions { get; set; }
-
-        public CommandBinding[] ViewActions { get; set; }
+        public IEnumerable<ViewCommand> UserCommands
+        {
+            get; set;
+          
+        }
 
         #endregion
     }

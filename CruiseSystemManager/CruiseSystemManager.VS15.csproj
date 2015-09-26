@@ -7,7 +7,7 @@
     <ProjectGuid>{5F44AC1F-055D-41BA-826F-DBAD8E14062A}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CSM</RootNamespace>
+    <RootNamespace>CruiseManager</RootNamespace>
     <AssemblyName>CruiseManager</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -138,6 +138,7 @@
     <Compile Include="App\PlatformHelperWinForms.cs" />
     <Compile Include="App\SetupServiceWinForms.cs" />
     <Compile Include="App\UserSettingsWinforms.cs" />
+    <Compile Include="App\ViewCommandWinForms.cs" />
     <Compile Include="App\WindowPresenterWinForms.cs" />
     <Compile Include="Winforms\AboutDialog.cs">
       <SubType>Form</SubType>
@@ -201,6 +202,12 @@
     <Compile Include="Winforms\Dashboard\FormCSMMain.Designer.cs">
       <DependentUpon>FormCSMMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Winforms\Dashboard\HomeView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Winforms\Dashboard\HomeView.Designer.cs">
+      <DependentUpon>HomeView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Winforms\DataEditor\DataEditorPresentor.cs" />
     <Compile Include="Winforms\DataEditor\DataEditorView.cs">
       <SubType>Form</SubType>
@@ -247,7 +254,6 @@
     <Compile Include="Winforms\LicencesDialog.Designer.cs">
       <DependentUpon>LicencesDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="App\CommandBinding.cs" />
     <Compile Include="Winforms\PageHost.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -310,7 +316,6 @@
     <Compile Include="Winforms\CruiseWizard\CruiseWizardPresenter.cs" />
     <Compile Include="Winforms\IPage.cs" />
     <Compile Include="Winforms\IPagingView.cs" />
-    <Compile Include="Winforms\IView.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Winforms\AboutDialog.resx">
@@ -370,6 +375,9 @@
     <EmbeddedResource Include="Winforms\Dashboard\FormCSMMain.resx">
       <DependentUpon>FormCSMMain.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Winforms\Dashboard\HomeView.resx">
+      <DependentUpon>HomeView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Winforms\DataEditor\DataEditorView.resx">
       <DependentUpon>DataEditorView.cs</DependentUpon>

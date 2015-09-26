@@ -8,6 +8,5 @@ namespace CruiseManager.Core
     public interface IPresentor : IDisposable
     {
 
-        void UpdateView();
     }
 }

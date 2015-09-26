@@ -20,9 +20,10 @@ namespace CruiseManager.Winforms.DesignEditor
         private DesignEditorStratum _anyStratumOption;
         private DesignEditViewControl _view;
         
-        public DesignEditorPresentor(WindowPresenter windowPresenter)
+        public DesignEditorPresentor(WindowPresenter windowPresenter, ApplicationController applicationController)
         {
             this.WindowPresenter = windowPresenter;
+            this.ApplicationController = applicationController;
             this.DataContext = new DesignEditorDataContext();
             if (Database != null)
             {

@@ -16,23 +16,24 @@ namespace CruiseManager.Winforms.TemplateEditor
 {
     public partial class ImportFromCruiseView : UserControl, IPresentor , IView
     {
-        public ImportFromCruiseView(WindowPresenter windowPresenter)
+        public ImportFromCruiseView(WindowPresenter windowPresenter, ApplicationController applicationController)
         {
             
             InitializeComponent();
             this.WindowPresenter = windowPresenter;
+            this.ApplicationController = applicationController;
 
-            this.NavOptions = null;
-            this.ViewActions = new CommandBinding[]{
-                new CommandBinding("Import", this.Finish),
-                new CommandBinding("Cancel", this.WindowPresenter.ShowTemplateLandingLayout)
+
+            this.UserCommands = new ViewCommand[]{
+                ApplicationController.MakeViewCommand("Import", this.Finish ),
+                ApplicationController.MakeViewCommand("Cancel", this.WindowPresenter.ShowTemplateLandingLayout)
             };
 
             this.TreeDefaultsToCopy = new List<TreeDefaultValueDO>();
             this.selectedItemsGridView1.SelectedItems = this.TreeDefaultsToCopy;
         }
 
-        public ImportFromCruiseView(WindowPresenter windowPresenter, string fileName) : this(windowPresenter)
+        public ImportFromCruiseView(string fileName, WindowPresenter windowPresenter, ApplicationController applicationController) : this(windowPresenter, applicationController)
         {
             this._copyFromDB = new DAL(fileName);
         }
@@ -53,6 +54,8 @@ namespace CruiseManager.Winforms.TemplateEditor
         {
             get { return _replaceVolEqRB.Checked; }
         }
+
+        
 
         private void _importVolEqCB_CheckedChanged(object sender, EventArgs e)
         {
@@ -110,10 +113,26 @@ namespace CruiseManager.Winforms.TemplateEditor
 
         #region IView Members
 
-        public CommandBinding[] NavOptions { get; protected set; }
+        public IPresentor ViewPresenter
+        {
+            get
+            {
+                return this;
+            }
+        }
 
+        public IEnumerable<ViewCommand> NavCommands
+        {
+            get
+            {
+                return null;
+            }
+        }
 
-        public CommandBinding[] ViewActions { get; protected set; }
+        public IEnumerable<ViewCommand> UserCommands
+        {
+            get; set;
+        }
 
 
         #endregion

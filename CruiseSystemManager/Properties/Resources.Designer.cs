@@ -39,7 +39,7 @@ namespace CruiseManager.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CSM.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CruiseManager.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -67,6 +67,16 @@ namespace CruiseManager.Properties {
             get {
                 object obj = ResourceManager.GetObject("cruisetree_setup", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap HomeViewBackgroundImage {
+            get {
+                object obj = ResourceManager.GetObject("HomeViewBackgroundImage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

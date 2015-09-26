@@ -24,6 +24,13 @@ namespace CruiseManager.Core.App
         public ApplicationState AppState { get; protected set; }
         #endregion
 
+        #region ViewCommands
+        public ViewCommand CreateNewCruiseCommand { get; protected set; }
+        public ViewCommand SaveCommand { get; protected set; }
+        public ViewCommand SaveAsCommand { get; set; }
+        public ViewCommand OpenFileCommand { get; protected set; }
+        #endregion
+
 
         public DAL Database { get; set; }
         public bool InSupervisorMode { get; set; }
@@ -52,11 +59,13 @@ namespace CruiseManager.Core.App
                 _activePresentor = value;
                 if (SaveHandler == null)
                 {
-                    this.WindowPresenter.MainWindow.EnableSave = false;
+                    this.SaveAsCommand.Enabled = this.SaveCommand.Enabled = false;
+                    //this.WindowPresenter.MainWindow.EnableSave = false;
                 }
                 else
                 {
-                    this.WindowPresenter.MainWindow.EnableSave = SaveHandler.CanHandleSave;
+                    this.SaveAsCommand.Enabled = this.SaveCommand.Enabled = SaveHandler.CanHandleSave;
+                    //this.WindowPresenter.MainWindow.EnableSave = SaveHandler.CanHandleSave;
                 }
             }
         }
@@ -65,16 +74,37 @@ namespace CruiseManager.Core.App
         protected ApplicationController(WindowPresenter windowPresenter, ExceptionHandler exceptionHandler, UserSettings userSettings, SetupService setupService)
         {
             this.WindowPresenter = windowPresenter;
+            this.WindowPresenter.ApplicationController = this;
             this.ExceptionHandler = exceptionHandler;
             this.UserSettings = userSettings;
             this.SetupService = setupService;
             this.AppState = ApplicationState.GetHandle();
+
+            this.SaveCommand = MakeViewCommand("Save", this.Save);
+            this.SaveAsCommand = MakeViewCommand("SaveAs", this.SaveAs);
+            this.OpenFileCommand = MakeViewCommand("Open File", this.OpenFile);
+            this.CreateNewCruiseCommand = MakeViewCommand("New Cruise", this.CreateNewCruise);
 #if DEBUG
             InSupervisorMode = true;
 #endif
         }
 
-        
+        public abstract ViewCommand MakeViewCommand(String name, Action action);
+
+
+        public void CreateNewCruise()
+        {
+            this.WindowPresenter.ShowCruiseWizardDialog();
+        }
+
+        public void OpenFile()
+        {
+            string location = this.WindowPresenter.AskOpenFileLocation();
+            if (location != null)
+            {
+                this.OpenFile(location);
+            }
+        }
 
         public abstract void OpenFile(String filePath);
 
@@ -89,7 +119,11 @@ namespace CruiseManager.Core.App
             }
             catch (Exception ex)
             {
-                this.ExceptionHandler.Handel(ex);
+                if(!this.ExceptionHandler.Handel(ex))
+                {
+                    throw;
+                }
+                
             }
         }
 
