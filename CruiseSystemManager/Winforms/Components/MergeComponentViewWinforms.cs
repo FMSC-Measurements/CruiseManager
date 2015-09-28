@@ -9,15 +9,20 @@ using System.Windows.Forms;
 using CruiseManager.Core;
 using CruiseManager.Core.Components;
 using CruiseManager.Core.ViewInterfaces;
+using CruiseManager.Core.App;
 
 namespace CruiseManager.Winforms.Components
 {
-    public partial class MergeComponentViewWinforms : MergeComponentView<UserControl>
+    public partial class MergeComponentViewWinforms : UserControl, MergeComponentView
     {
         MergeInfoViewWinforms mergeInfoView;
 
-        public MergeComponentViewWinforms(MergeComponentsPresenter viewPresenter) : base(viewPresenter)
-        {            
+        public MergeComponentsPresenter ViewPresenter { get; set; }
+
+        public MergeComponentViewWinforms(MergeComponentsPresenter viewPresenter) 
+        {
+            this.ViewPresenter = viewPresenter;
+
             InitializeComponent();
             mergeInfoView = new MergeInfoViewWinforms(this.ViewPresenter);
             mergeInfoView.Dock = DockStyle.Fill; 
@@ -25,14 +30,8 @@ namespace CruiseManager.Winforms.Components
         }
 
 
-        public void HandleLoad()
-        {
- 
-        }
-
         public void UpdateMergeInfoView()
-        {
-            mergeInfoView.ViewPresenter = this.ViewPresenter;
+        {            
             mergeInfoView.UpdateMasterInfo();
             mergeInfoView.UpdateComponentInfo(); 
         }
@@ -103,6 +102,26 @@ namespace CruiseManager.Winforms.Components
         {
             this.ViewPresenter.CurrentWorker.Cancel();
         }
+
+        #region IView Members
+        IPresentor IView.ViewPresenter
+        {
+            get
+            {
+                return this.ViewPresenter;
+            }
+        }
+
+        public IEnumerable<ViewCommand> NavCommands
+        {
+            get; protected set;
+        }
+
+        public IEnumerable<ViewCommand> UserCommands
+        {
+            get; protected set;
+        }
+        #endregion
 
     }
 }

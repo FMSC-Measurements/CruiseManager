@@ -6,8 +6,11 @@ using System.Text;
 
 namespace CruiseManager.Core
 {
-    public interface IPresentor : IDisposable
+    public interface IPresentor //: IDisposable
     {
         WindowPresenter WindowPresenter { get; }
+        ApplicationController ApplicationController { get; }
+
+        IView View { get; set; }
     }
 }

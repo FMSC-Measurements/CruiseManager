@@ -15,12 +15,10 @@ namespace CruiseManager.Core.Components
     {
 
      
-        public MergeComponentsPresenter(MergeComponentView view, ApplicationController applicationController)
+        public MergeComponentsPresenter(WindowPresenter windowPresenter, ApplicationController applicationController)
         {
-            this.View = view;
-            view.ViewPresenter = this;
             this.WindowPresenter = windowPresenter;
-            this._appController = applicationController; 
+            this.ApplicationController = applicationController; 
 
             this.FindComponents();
 
@@ -32,12 +30,12 @@ namespace CruiseManager.Core.Components
             this.CurrentWorker.ProgressChanged += this.HandelPrepareProgressChanged;
         }
 
-        protected ApplicationController _appController; 
+        
 
         public Dictionary<String, MergeTableCommandBuilder> CommandBuilders = new Dictionary<string, MergeTableCommandBuilder>();
 
         public MergeComponentView View { get; set; }
-        public DAL MasterDB { get { return _appController.Database; } }
+        public DAL MasterDB { get { return ApplicationController.Database; } }
         public List<ComponentFileVM> ActiveComponents { get; set; }
         public List<ComponentFileVM> MissingComponents { get; set; }
         public List<ComponentFileVM> AllComponents { get; set; }
@@ -329,16 +327,18 @@ namespace CruiseManager.Core.Components
 
         #region IPresentor Members
 
-        protected WindowPresenter WindowPresenter
+        IView IPresentor.View { get { return this.View; } set { this.View = (MergeComponentView)value; } }
+
+        public WindowPresenter WindowPresenter
         {
-            get;
-            set; 
+            get; protected set;
         }
 
-        public void UpdateView()
+        public ApplicationController ApplicationController
         {
-            //do nothing
+            get; protected set;
         }
+
 
         #endregion
 

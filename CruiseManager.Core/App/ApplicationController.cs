@@ -46,7 +46,7 @@ namespace CruiseManager.Core.App
                 }
                 if (_activePresentor != null)
                 {
-                    _activePresentor.Dispose();
+                    //_activePresentor.Dispose();
                 }
 
                 _activePresentor = value;

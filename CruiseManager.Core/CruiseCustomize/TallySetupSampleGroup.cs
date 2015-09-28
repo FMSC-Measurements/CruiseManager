@@ -6,7 +6,7 @@ using CruiseDAL.DataObjects;
 using CruiseDAL;
 using CruiseManager.Core.App;
 
-namespace CruiseManager.Winforms.CruiseCustomize
+namespace CruiseManager.Core.CruiseCustomize
 {
     public class TallySetupSampleGroup : SampleGroupDO
     {

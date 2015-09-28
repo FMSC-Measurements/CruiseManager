@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using CruiseManager.Core.Components;
 using CruiseManager.Core.App;
 using CruiseManager.Core.ViewInterfaces;
+using CruiseManager.Core;
 
 namespace CruiseManager.WinForms.Components
 {
@@ -30,7 +31,7 @@ namespace CruiseManager.WinForms.Components
         }
 
         private CreateComponentPresenter _presenter; 
-        public CreateComponentPresenter Presenter 
+        public CreateComponentPresenter ViewPresenter 
         {
             get { return _presenter; }
             set
@@ -43,9 +44,11 @@ namespace CruiseManager.WinForms.Components
             }
         }
 
+        
+
         private void __makeBtn_Click(object sender, EventArgs e)
         {
-            Presenter.MakeComponents((int)this.__numCompTB.Value);
+            ViewPresenter.MakeComponents((int)this.__numCompTB.Value);
             this._myWindowPresenter.ShowMessage("Done");
             //MessageBox.Show("Done");
         }
@@ -67,5 +70,25 @@ namespace CruiseManager.WinForms.Components
         {
             this.__progressBar.PerformStep();
         }
+
+        #region IView Members
+        IPresentor IView.ViewPresenter
+        {
+            get
+            {
+                return this.ViewPresenter;
+            }
+        }
+
+        public IEnumerable<ViewCommand> NavCommands
+        {
+            get; protected set;
+        }
+
+        public IEnumerable<ViewCommand> UserCommands
+        {
+            get; protected set;
+        }
+        #endregion
     }
 }

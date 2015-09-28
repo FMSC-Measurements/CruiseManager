@@ -11,17 +11,18 @@ using CruiseDAL.DataObjects;
 using CruiseManager.Core;
 using CruiseManager.Core.App;
 using CruiseManager.App;
+using CruiseManager.Core.EditTemplate;
 
 namespace CruiseManager.Winforms.TemplateEditor
 {
-    public partial class ImportFromCruiseView : UserControl, IPresentor , IView
+    public partial class ImportFromCruiseView : UserControl, IView
     {
-        public ImportFromCruiseView(WindowPresenter windowPresenter, ApplicationController applicationController)
+        public ImportFromCruiseView(TemplateEditViewPresenter viewPresenter)
         {
             
             InitializeComponent();
-            this.WindowPresenter = windowPresenter;
-            this.ApplicationController = applicationController;
+            this.WindowPresenter = viewPresenter.WindowPresenter;
+            this.ApplicationController = viewPresenter.ApplicationController;
 
 
             this.UserCommands = new ViewCommand[]{
@@ -33,13 +34,14 @@ namespace CruiseManager.Winforms.TemplateEditor
             this.selectedItemsGridView1.SelectedItems = this.TreeDefaultsToCopy;
         }
 
-        public ImportFromCruiseView(string fileName, WindowPresenter windowPresenter, ApplicationController applicationController) : this(windowPresenter, applicationController)
+        public ImportFromCruiseView(string fileName, TemplateEditViewPresenter viewPresenter) : this(viewPresenter)
         {
             this._copyFromDB = new DAL(fileName);
         }
 
-        public WindowPresenter WindowPresenter { get; set; }
-        public ApplicationController ApplicationController { get; set; }
+        public TemplateEditViewPresenter ViewPresenter { get; set; }
+        protected WindowPresenter WindowPresenter { get; set; }
+        protected ApplicationController ApplicationController { get; set; }
         public List<TreeDefaultValueDO> TreeDefaults { get; set; }
         public List<TreeDefaultValueDO> TreeDefaultsToCopy { get; set; }
 
@@ -100,24 +102,13 @@ namespace CruiseManager.Winforms.TemplateEditor
 
 
 
-
-        #region IPresentor Members
-
-
-        public void UpdateView()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
         #region IView Members
 
-        public IPresentor ViewPresenter
+        IPresentor IView.ViewPresenter
         {
             get
             {
-                return this;
+                return this.ViewPresenter;
             }
         }
 

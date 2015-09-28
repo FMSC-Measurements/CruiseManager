@@ -8,26 +8,10 @@ using System.Windows.Forms;
 using CruiseDAL;
 using CruiseManager.Core.App;
 using CruiseManager.Core;
+using CruiseManager.Core.ViewInterfaces;
 
-namespace CruiseManager.Winforms.TemplateEditor
+namespace CruiseManager.Core.EditTemplate
 {
-
-    public class CruiseMethodViewModel
-    {
-        public CruiseMethodViewModel(CruiseMethodsDO method)
-        {
-            this.CruiseMethod = method;
-        }
-
-        public CruiseMethodsDO CruiseMethod { get; set; }
-        public BindingList<TreeFieldSetupDefaultDO> TreeFields { get; set; }
-        public BindingList<TreeFieldSetupDefaultDO> UnselectedTreeFields { get; set; }
-
-        public override string ToString()
-        {
-            return CruiseMethod.Code;
-        }
-    }
 
 
 
@@ -36,13 +20,11 @@ namespace CruiseManager.Winforms.TemplateEditor
         private FMSC.Utility.Collections.BindingListRedux<TreeDefaultValueDO> _treeDefaultValues;
         //private List<TreeDefaultValueDO> _toBeDeletedTreeDefaults = new List<TreeDefaultValueDO>();
 
-        public ApplicationController ApplicationController { get; set; }
-        public WindowPresenter WindowPresenter { get; set; }
-        public TemplateEditViewControl View { get; set; }
+        public EditTemplateView View { get; set; }
         public DAL Database { get { return ApplicationController.Database; } }
 
 
-        public BindingList<CruiseMethodViewModel> CruiseMethods { get; set; }
+        public BindingList<EditTemplateCruiseMethod> CruiseMethods { get; set; }
         public FMSC.Utility.Collections.BindingListRedux<TreeDefaultValueDO> TreeDefaultValues 
         {
             get { return _treeDefaultValues; }
@@ -72,11 +54,11 @@ namespace CruiseManager.Winforms.TemplateEditor
         public BindingList<LogFieldSetupDefaultDO> UnselectedLogFields { get; set; }
 
 
-        public TemplateEditViewPresenter(WindowPresenter controller, ApplicationController applicationController, TemplateEditViewControl view)
+        public TemplateEditViewPresenter(WindowPresenter controller, ApplicationController applicationController)
         {
             this.ApplicationController = applicationController;
             this.WindowPresenter = controller;
-            this.View = view;
+
 
             //read TreeFiedleSetup info from .setup file and convert the data to TreeFieldSetupDefault
             //it may be posible to simplify this task by asking for the data in the form of a TreeFieldSetupDefault object
@@ -117,11 +99,11 @@ namespace CruiseManager.Winforms.TemplateEditor
             {
                 try
                 {
-                    CruiseMethods = new BindingList<CruiseMethodViewModel>();
+                    CruiseMethods = new BindingList<EditTemplateCruiseMethod>();
                     List<CruiseMethodsDO> methods = this.ApplicationController.Database.Read<CruiseMethodsDO>("CruiseMethods", null);
                     foreach (CruiseMethodsDO method in methods)
                     {
-                        CruiseMethodViewModel vm = new CruiseMethodViewModel(method);
+                        EditTemplateCruiseMethod vm = new EditTemplateCruiseMethod(method);
                         List<TreeFieldSetupDefaultDO> treeFields = this.ApplicationController.Database.Read<TreeFieldSetupDefaultDO>("TreeFieldSetupDefault", "WHERE Method = ? ORDER BY FieldOrder", method.Code);
 
                         vm.TreeFields = new BindingList<TreeFieldSetupDefaultDO>(treeFields);
@@ -250,7 +232,7 @@ namespace CruiseManager.Winforms.TemplateEditor
 
             if (CruiseMethods != null)
             {
-                foreach (CruiseMethodViewModel method in CruiseMethods)
+                foreach (EditTemplateCruiseMethod method in CruiseMethods)
                 {
                     foreach( TreeFieldSetupDefaultDO tfs in method.UnselectedTreeFields)
                     {
@@ -418,12 +400,18 @@ namespace CruiseManager.Winforms.TemplateEditor
 
         #region IPresentor Members
 
+        IView IPresentor.View { get { return this.View; } set { this.View = (EditTemplateView)value; } }
 
-        public void UpdateView()
+        public WindowPresenter WindowPresenter
         {
-            //do nothing
-            //TODO move applicable code here 
+            get; protected set;
         }
+
+        public ApplicationController ApplicationController
+        {
+            get; protected set;
+        }
+
 
         #endregion
     }

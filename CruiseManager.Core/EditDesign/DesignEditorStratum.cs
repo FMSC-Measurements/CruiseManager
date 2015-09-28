@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CruiseDAL;
+using CruiseDAL.DataObjects;
 
-namespace CruiseManager.Winforms.DesignEditor
+namespace CruiseManager.Core.EditDesign
 {
     public class DesignEditorStratum : CruiseDAL.DataObjects.StratumDO
     {
@@ -24,5 +25,7 @@ namespace CruiseManager.Winforms.DesignEditor
                 catch { }
             }
         }
+
+        public List<SampleGroupDO> SampleGroups { get; set; }
     }
 }

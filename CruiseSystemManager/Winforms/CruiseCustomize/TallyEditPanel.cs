@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.Constants;
+using CruiseManager.Core.CruiseCustomize;
 
 namespace CruiseManager.Winforms.CruiseCustomize
 {

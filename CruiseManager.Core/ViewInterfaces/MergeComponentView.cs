@@ -2,27 +2,19 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using CruiseManager.Core.App;
 
 namespace CruiseManager.Core.ViewInterfaces
 {
-    public abstract class MergeComponentView<T> : IView<T>
+    public interface MergeComponentView : IView
     {
-        public MergeComponentView(MergeComponentsPresenter viewPresenter)
-        {
-            this.ViewPresenter = ViewPresenter;
-        }
+        new MergeComponentsPresenter ViewPresenter { get; set; }
 
-        public new MergeComponentsPresenter ViewPresenter
-        {
-            get { return base.ViewPresenter as MergeComponentsPresenter; }
-            set { base.ViewPresenter = value; }
-        }
+        void UpdateMergeInfoView();
+        void ShowPremergeReport();
 
-        public abstract void UpdateMergeInfoView();
+        void HandleWorkerStatusChanged();
+        void HandleProgressChanged(Object sender, WorkerProgressChangedEventArgs e);
 
-        public abstract void ShowPremergeReport();
-
-        public abstract void HandleWorkerStatusChanged();
-        public abstract void HandleProgressChanged(Object sender, WorkerProgressChangedEventArgs e);
     }
 }

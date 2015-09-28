@@ -1,6 +1,6 @@
-﻿namespace CruiseManager.Winforms.DesignEditor
+﻿namespace CruiseManager.Winforms.EditDesign
 {
-    partial class DesignEditViewControl
+    partial class EditDesignViewWinForms
     {
         /// <summary> 
         /// Required designer variable.
@@ -1543,13 +1543,13 @@
             this.CuttingUnitErrorProvider.ContainerControl = this;
             this.CuttingUnitErrorProvider.DataSource = this.CuttingUnitsBindingSource;
             // 
-            // DesignEditViewControl
+            // EditDesignViewWinForms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.TabControl1);
             this.Margin = new System.Windows.Forms.Padding(0);
-            this.Name = "DesignEditViewControl";
+            this.Name = "EditDesignViewWinForms";
             this.Size = new System.Drawing.Size(665, 415);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();

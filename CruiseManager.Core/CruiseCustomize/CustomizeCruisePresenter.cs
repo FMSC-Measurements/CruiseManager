@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CruiseDAL.DataObjects;
-using CruiseDAL;
-using System.ComponentModel;
-using CruiseDAL.Enums;
-using CruiseManager.Core;
-using CruiseManager.Core.App;
-using CruiseManager.Core.Models;
-using CruiseManager.Core.Constants;
 
-namespace CruiseManager.Winforms.CruiseCustomize
+using CruiseDAL;
+using CruiseDAL.DataObjects;
+using CruiseDAL.Enums;
+
+using CruiseManager.Core.App;
+using CruiseManager.Core.Constants;
+using CruiseManager.Core.Models;
+using CruiseManager.Core.ViewInterfaces;
+
+namespace CruiseManager.Core.CruiseCustomize
 {
     public class CustomizeCruisePresenter : IPresentor, ISaveHandler
     {
@@ -20,16 +21,15 @@ namespace CruiseManager.Winforms.CruiseCustomize
         private bool _isTreeAuditsInitialized = false;
         private bool _isTallySetupInitialized = false;
 
-        public DAL Database { get { return _myApplicationController.Database; } }
-        protected WindowPresenter _myWindowPresenter;
-        protected ApplicationController _myApplicationController;
-        public CruiseCustomizeViewWinforms View { get; set; }
+
+        public CruiseCustomizeView View { get; set; }
+        public DAL Database { get { return ApplicationController.Database; } }
         //public List<StratumDO> Strata { get; set; }
         //public List<StratumCustomizeViewModel> StrataVM { get; set; }
 
         public List<FieldSetupStratum> FieldSetupStrata { get; set; }
         public List<TallySetupStratum> TallySetupStrata { get; set; }
-        
+
 
         public List<TreeDefaultValueDO> TreeDefaults { get; set; }
         public List<TreeAuditValueDO> TreeAudits { get; set; }
@@ -44,14 +44,14 @@ namespace CruiseManager.Winforms.CruiseCustomize
 
         public CustomizeCruisePresenter(WindowPresenter presenter, ApplicationController applicationController)
         {
-            _myApplicationController = applicationController;
-            _myWindowPresenter = presenter;
-                        
+            ApplicationController = applicationController;
+            WindowPresenter = presenter;
+
             this.IsLogGradingEnabled = this.Database.ReadSingleRow<SaleDO>("Sale", (String)null).LogGradingEnabled;
 
         }
 
-        
+
         public void InitializeFieldSetup()
         {
             if (_isFieldSetupInitialized) { return; }
@@ -60,8 +60,8 @@ namespace CruiseManager.Winforms.CruiseCustomize
             try
             {
                 //initialize list of all tree and log fields 
-                this.TreeFields = _myApplicationController.SetupService.GetTreeFieldSetups();
-                this.LogFields = _myApplicationController.SetupService.GetLogFieldSetups();
+                this.TreeFields = ApplicationController.SetupService.GetTreeFieldSetups();
+                this.LogFields = ApplicationController.SetupService.GetLogFieldSetups();
 
                 this.FieldSetupStrata = this.Database.Read<FieldSetupStratum>("Stratum", null);
                 foreach (FieldSetupStratum st in FieldSetupStrata)
@@ -69,7 +69,7 @@ namespace CruiseManager.Winforms.CruiseCustomize
                     //initialize each stratum object  
                     st.SelectedLogFields = GetSelectedLogFields(st);
                     st.SelectedTreeFields = GetSelectedTreeFields(st);
-                    if (st.SelectedTreeFields.Count() <= 0)
+                    if (st.SelectedTreeFields.Count <= 0)
                     {
                         // if blank, use default values for cruise method
                         st.SelectedTreeFields = GetSelectedTreeFieldsDefault(st);
@@ -98,16 +98,16 @@ namespace CruiseManager.Winforms.CruiseCustomize
                 //dal.ExitConnectionHold();
             }
 
-            this.View.UpdateFieldSetupViews();            
+            this.View.UpdateFieldSetupViews();
         }
-        
+
         public void InitializeLogMatrix()
         {
             if (_isLogMatrixInitialized) { return; }
             try
             {
                 this.LogMatrix = this.Database.Read<LogMatrixDO>("LogMatrix", null);
-                _isLogMatrixInitialized = true; 
+                _isLogMatrixInitialized = true;
             }
             catch (Exception e)
             {
@@ -115,7 +115,7 @@ namespace CruiseManager.Winforms.CruiseCustomize
             }
             this.View.UpdateLogMatrix();
         }
-        
+
         public void InitializeTreeAudits()
         {
             if (_isTreeAuditsInitialized) { return; }
@@ -124,7 +124,7 @@ namespace CruiseManager.Winforms.CruiseCustomize
                 TreeDefaults = this.Database.Read<TreeDefaultValueDO>("TreeDefaultValue", null);
                 TreeAudits = this.Database.Read<TreeAuditValueDO>("TreeAuditValue", "Order By Field");
                 _isTreeAuditsInitialized = true;
-                
+
             }
             catch (Exception e)
             {
@@ -134,7 +134,7 @@ namespace CruiseManager.Winforms.CruiseCustomize
             this.View.UpdateTreeDefaults();
 
         }
-        
+
         public void InitializeTallySetup()
         {
             if (_isTallySetupInitialized) { return; }
@@ -148,11 +148,11 @@ namespace CruiseManager.Winforms.CruiseCustomize
                 }
                 TallyPresets = this.Database.Read<TallyVM>("Tally", null);
                 _isTallySetupInitialized = true;
-                
+
             }
             catch (Exception e)
             {
-                throw new NotImplementedException(null,e);
+                throw new NotImplementedException(null, e);
             }
             this.View.UpdateTallySetupView();
         }
@@ -211,7 +211,7 @@ namespace CruiseManager.Winforms.CruiseCustomize
         //    {
         //        sg.SgTallie = sgTally;
         //    }
-            
+
 
         //    //initialize a list of tallys for use with tally by species 
         //    sg.Tallies = new Dictionary<TreeDefaultValueDO, TallyDO>();
@@ -254,7 +254,7 @@ namespace CruiseManager.Winforms.CruiseCustomize
 
         }
 
-        
+
 
         public string[] GetAvalibleHotKeysInStratum(TallySetupStratum st)
         {
@@ -263,12 +263,12 @@ namespace CruiseManager.Winforms.CruiseCustomize
             var avalibleHotHeys = Strings.HOTKEYS.Except(useHotKeys).ToArray();
             return avalibleHotHeys;
             //return CSM.Utility.R.Strings.HOTKEYS;
-        }        
+        }
 
         public string[] GetAvalibleStratumHotKeys(TallySetupStratum stratum)
         {
             var usedHotKeys = (from StratumDO st in this.TallySetupStrata
-                               where st != stratum 
+                               where st != stratum
                                select st.Hotkey);
             foreach (TallySetupStratum straum in this.TallySetupStrata)
             {
@@ -280,7 +280,7 @@ namespace CruiseManager.Winforms.CruiseCustomize
 
         public static char HotKeyToChar(string str)//TODO move method somewhere more useful
         {
-            if(String.IsNullOrEmpty(str))
+            if (String.IsNullOrEmpty(str))
             {
                 return char.MinValue;
             }
@@ -291,7 +291,7 @@ namespace CruiseManager.Winforms.CruiseCustomize
 
         private bool ValidateHotKeys(TallySetupStratum st, ref StringBuilder errorBuilder)
         {
-            bool success = true; 
+            bool success = true;
             List<char> usedHotKeys = new List<char>();
             //StringBuilder errorBuilder = new StringBuilder();
 
@@ -323,7 +323,7 @@ namespace CruiseManager.Winforms.CruiseCustomize
                         {
                             //ERROR stratum already has hotkey
                             errorBuilder.AppendFormat("Hot Key '{0}' in SG:{1} Stratum:{2} already in use\r\n", t.Hotkey, sgVM.ToString(), st.Code);
-                            success = false; 
+                            success = false;
                         }
                         else
                         {
@@ -347,26 +347,26 @@ namespace CruiseManager.Winforms.CruiseCustomize
 
         public List<TreeFieldSetupDO> GetSelectedTreeFieldsDefault(StratumDO stratum)
         {
-           //select from TreeFieldSetupDefault where method = stratum.method
-           List<TreeFieldSetupDefaultDO> treeFieldDefaults = this.Database.Read<TreeFieldSetupDefaultDO>("TreeFieldSetupDefault", "WHERE Method = ? ORDER BY FieldOrder", stratum.Method);
-           
-           List<TreeFieldSetupDO> treeFields = new List<TreeFieldSetupDO>();
-           
-           foreach (TreeFieldSetupDefaultDO tfd in treeFieldDefaults)
-           {
-              TreeFieldSetupDO tfs = new TreeFieldSetupDO();
-              tfs.Stratum_CN = stratum.Stratum_CN;
-              tfs.Field = tfd.Field;
-              tfs.FieldOrder = tfd.FieldOrder;
-              tfs.ColumnType = tfd.ColumnType;
-              tfs.Heading = tfd.Heading;
-              tfs.Width = tfd.Width;
-              tfs.Format = tfd.Format;
-              tfs.Behavior = tfd.Behavior;
-              
-              treeFields.Add(tfs);
-           }
-           return treeFields;
+            //select from TreeFieldSetupDefault where method = stratum.method
+            List<TreeFieldSetupDefaultDO> treeFieldDefaults = this.Database.Read<TreeFieldSetupDefaultDO>("TreeFieldSetupDefault", "WHERE Method = ? ORDER BY FieldOrder", stratum.Method);
+
+            List<TreeFieldSetupDO> treeFields = new List<TreeFieldSetupDO>();
+
+            foreach (TreeFieldSetupDefaultDO tfd in treeFieldDefaults)
+            {
+                TreeFieldSetupDO tfs = new TreeFieldSetupDO();
+                tfs.Stratum_CN = stratum.Stratum_CN;
+                tfs.Field = tfd.Field;
+                tfs.FieldOrder = tfd.FieldOrder;
+                tfs.ColumnType = tfd.ColumnType;
+                tfs.Heading = tfd.Heading;
+                tfs.Width = tfd.Width;
+                tfs.Format = tfd.Format;
+                tfs.Behavior = tfd.Behavior;
+
+                treeFields.Add(tfs);
+            }
+            return treeFields;
         }
 
         public List<LogFieldSetupDO> GetSelectedLogFields(StratumDO stratum)
@@ -385,7 +385,7 @@ namespace CruiseManager.Winforms.CruiseCustomize
             foreach (TallySetupStratum st in this.TallySetupStrata)
             {
                 isValid = this.ValidateHotKeys(st, ref errorBuilder) && isValid;
-                
+
                 if (CruiseDAL.Schema.Constants.CruiseMethods.MANDITORY_TALLY_METHODS.Contains(st.Method))
                 {
                     foreach (TallySetupSampleGroup sg in st.SampleGroups)
@@ -400,15 +400,15 @@ namespace CruiseManager.Winforms.CruiseCustomize
             }
             return isValid;
         }
-        
+
         private bool Save(ref StringBuilder errorBuilder)
         {
             bool success = true;
             View.EndEdits();
 
             success = this.SaveFieldSetup(ref errorBuilder);
-            
-            success =  SaveLogMatrix(ref errorBuilder) && success;
+
+            success = SaveLogMatrix(ref errorBuilder) && success;
 
             success = SaveTreeAudits(ref errorBuilder) && success;
 
@@ -634,7 +634,7 @@ namespace CruiseManager.Winforms.CruiseCustomize
 
             String setTallyCommand = String.Format("UPDATE CountTree Set Tally_CN = {0} WHERE SampleGroup_CN = {1};",
                 tally.Tally_CN, sgVM.SampleGroup_CN);
-            
+
             this.Database.Execute(setTallyCommand);
         }
 
@@ -694,10 +694,10 @@ namespace CruiseManager.Winforms.CruiseCustomize
             StringBuilder errorBuilder = new StringBuilder();
             if (!Save(ref errorBuilder))
             {
-                this._myWindowPresenter.ShowSimpleErrorMessage(errorBuilder.ToString());
-                return false; 
+                this.WindowPresenter.ShowSimpleErrorMessage(errorBuilder.ToString());
+                return false;
             }
-            return true; 
+            return true;
 
         }
 
@@ -706,7 +706,7 @@ namespace CruiseManager.Winforms.CruiseCustomize
             StringBuilder errorBuilder = new StringBuilder();
             if (!Save(ref errorBuilder))
             {
-                this._myWindowPresenter.ShowSimpleErrorMessage(errorBuilder.ToString());
+                this.WindowPresenter.ShowSimpleErrorMessage(errorBuilder.ToString());
                 cancel = true;
             }
         }
@@ -734,11 +734,21 @@ namespace CruiseManager.Winforms.CruiseCustomize
 
         #endregion
 
-        #region IPresenter Members
-        public void UpdateView()
-        {
+        #region IPresentor Members
 
+        IView IPresentor.View { get { return this.View; } set { this.View = (CruiseCustomizeView)value; } }
+
+        public WindowPresenter WindowPresenter
+        {
+            get; protected set;
         }
+
+        public ApplicationController ApplicationController
+        {
+            get; protected set;
+        }
+
+
         #endregion
     }
 }

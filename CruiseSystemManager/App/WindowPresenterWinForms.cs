@@ -13,7 +13,6 @@ using CruiseManager.Winforms.CruiseCustomize;
 using CruiseManager.Winforms.CruiseWizard;
 using CruiseManager.Winforms.Dashboard;
 using CruiseManager.Winforms.DataEditor;
-using CruiseManager.Winforms.DesignEditor;
 using CruiseManager.Winforms.TemplateEditor;
 using System;
 using System.Collections.Generic;
@@ -23,6 +22,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using CruiseManager.Core;
 using CSM.Winforms.Dashboard;
+using CruiseManager.Core.CruiseCustomize;
+using CruiseManager.Core.EditDesign;
+using CruiseManager.Winforms.EditDesign;
+using CruiseManager.Core.EditTemplate;
 
 namespace CruiseManager.App
 {
@@ -341,7 +344,7 @@ namespace CruiseManager.App
             CreateComponentViewWinforms view = new CreateComponentViewWinforms(this);
             CreateComponentPresenter presenter = new CreateComponentPresenter(this, this.ApplicationController);
 
-            view.Presenter = presenter;
+            view.ViewPresenter = presenter;
             presenter.View = view;
 
             this.ApplicationController.ActivePresentor = presenter;
@@ -352,7 +355,7 @@ namespace CruiseManager.App
         {
             this.ApplicationController.ActivePresentor = null;
             CustomizeCruisePresenter presenter = new CustomizeCruisePresenter(this, this.ApplicationController);
-            CruiseCustomizeViewWinforms view = new CruiseCustomizeViewWinforms(presenter, this.ApplicationController);
+            CruiseCustomizeViewWinforms view = new CruiseCustomizeViewWinforms(presenter);
 
             SetActiveView(view);
 
@@ -403,11 +406,11 @@ namespace CruiseManager.App
         public override void ShowEditDesign()
         {
             this.ApplicationController.ActivePresentor = null;
-            DesignEditViewControl view = new DesignEditViewControl(this, this.ApplicationController, this.ApplicationController.ExceptionHandler);
-            SetActiveView(view);
-
+            
             DesignEditorPresentor presenter = new DesignEditorPresentor(this, this.ApplicationController);
-            presenter.View = view;
+            EditDesignViewWinForms view = new EditDesignViewWinForms(presenter);
+
+            SetActiveView(view);
             this.ApplicationController.ActivePresentor = presenter;
         }
 
@@ -463,10 +466,10 @@ namespace CruiseManager.App
                 this.MainWindow.ClearActiveView();
                 //this.MainWindow.AddNavButton("Finish", this.HandleFinishImportTemplateClick);
                 //this.MainWindow.AddNavButton("Cancel", this.HandleCancelImportTemplateClick);
-
-                ImportFromCruiseView view = new ImportFromCruiseView(dialog.FileName, this, this.ApplicationController);
+                TemplateEditViewPresenter presenter = new TemplateEditViewPresenter(this, this.ApplicationController);
+                ImportFromCruiseView view = new ImportFromCruiseView(dialog.FileName, presenter);
                 view.Dock = DockStyle.Fill;
-                this.ApplicationController.ActivePresentor = view;
+                //this.ApplicationController.ActivePresentor = view;
                 this.SetActiveView(view);
 
             }
@@ -482,8 +485,9 @@ namespace CruiseManager.App
 
         public override void ShowManageComponentsLayout()
         {
-            MergeComponentViewWinforms view = new MergeComponentViewWinforms();
-            MergeComponentsPresenter presenter = new MergeComponentsPresenter(view, this, this.ApplicationController);
+            
+            MergeComponentsPresenter presenter = new MergeComponentsPresenter(this, this.ApplicationController);
+            MergeComponentViewWinforms view = new MergeComponentViewWinforms(presenter);
 
             this.ApplicationController.ActivePresentor = presenter;
             SetActiveView(view);
@@ -555,9 +559,10 @@ namespace CruiseManager.App
             this.MainWindow.Text = System.IO.Path.GetFileName(this.ApplicationController.Database.Path);
             //this.MainWindow.AddNavButton("Back", this.HandleHomePageClick);
             //this.MainWindow.AddNavButton("Import From Cruise", this.HandleImportTemplateClick);
-            TemplateEditViewControl view = new TemplateEditViewControl(this, this.ApplicationController);
-            TemplateEditViewPresenter presenter = new TemplateEditViewPresenter(this, this.ApplicationController, view);
-            view.Presenter = presenter;
+            
+            TemplateEditViewPresenter presenter = new TemplateEditViewPresenter(this, this.ApplicationController);
+            EditTemplateViewWinForms view = new EditTemplateViewWinForms(presenter);
+            view.ViewPresenter = presenter;
             this.ApplicationController.ActivePresentor = presenter;
             this.SetActiveView(view);
             this.MainWindow.SetNavCommands(this.templateLandingNavOptions);

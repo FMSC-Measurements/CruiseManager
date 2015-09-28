@@ -10,12 +10,14 @@ using CruiseDAL.DataObjects;
 using System.Collections;
 using CruiseManager.Core.App;
 using CruiseManager.Core.Models;
+using CruiseManager.Core.CruiseCustomize;
+using CruiseManager.Core.ViewInterfaces;
+using CruiseManager.Core;
 
 namespace CruiseManager.Winforms.CruiseCustomize
 {
-    public partial class CruiseCustomizeViewWinforms : UserControl
+    public partial class CruiseCustomizeViewWinforms : UserControl, CruiseCustomizeView
     {
-        protected ApplicationController _myApplicationController;
 
         /// <summary> 
         /// Required designer variable.
@@ -127,20 +129,17 @@ namespace CruiseManager.Winforms.CruiseCustomize
 
         private LogMatrixSettingsView _logMatrixPage;
 
-        public CustomizeCruisePresenter Presenter { get; set; }
+        public CustomizeCruisePresenter ViewPresenter { get; set; }
         //protected StratumDO FieldSetup_CurrentStratum { get; set; }
 
-        public CruiseCustomizeViewWinforms(CustomizeCruisePresenter presenter, ApplicationController applicationController)
+        public CruiseCustomizeViewWinforms(CustomizeCruisePresenter presenter)
         {
-            _myApplicationController = applicationController;
-            this.Presenter = presenter;
-            Presenter.View = this;
+            this.ViewPresenter = presenter;
+            ViewPresenter.View = this;
 
             InitializeComponent();
 
-
-
-            if (_myApplicationController.InSupervisorMode)
+            if (this.ViewPresenter.ApplicationController.InSupervisorMode)
             {
                 InitializeLogMatrixComponent();
             }        
@@ -148,7 +147,7 @@ namespace CruiseManager.Winforms.CruiseCustomize
 
         private void InitializeLogMatrixComponent()
         {
-            this._logMatrixPage = new LogMatrixSettingsView(this.Presenter);
+            this._logMatrixPage = new LogMatrixSettingsView(this.ViewPresenter);
             this._logMatrixPage.SuspendLayout();
             this._logMatrixPage.Dock = DockStyle.Fill;
 
@@ -1361,20 +1360,17 @@ namespace CruiseManager.Winforms.CruiseCustomize
 
         #endregion
 
-        public void UpdateView()
-        {
-            
-        }
+
 
         public void UpdateTallySetupView()
         {
-            _strataCB.DataSource = Presenter.TallySetupStrata;
+            _strataCB.DataSource = ViewPresenter.TallySetupStrata;
             //_tallyEditPanel.TallyPresets = Presenter.TallyPresets;
         }
 
         public void UpdateFieldSetupViews()
         {
-            if (this.Presenter.IsLogGradingEnabled)
+            if (this.ViewPresenter.IsLogGradingEnabled)
             {
                 if (!this._fieldSetup_Child_TabControl.TabPages.Contains(this._logField_TabPage))
                 {
@@ -1385,17 +1381,17 @@ namespace CruiseManager.Winforms.CruiseCustomize
             {
                 this._fieldSetup_Child_TabControl.TabPages.Remove(this._logField_TabPage);
             }
-            _strataLB.DataSource = Presenter.FieldSetupStrata;
+            _strataLB.DataSource = ViewPresenter.FieldSetupStrata;
         }
 
         public void UpdateTreeDefaults()
         {
-            _BS_treeDefaults.DataSource = Presenter.TreeDefaults;
+            _BS_treeDefaults.DataSource = ViewPresenter.TreeDefaults;
         }
 
         public void UpdateTreeAudits()
         {
-            _BS_treeAudits.DataSource = Presenter.TreeAudits;
+            _BS_treeAudits.DataSource = ViewPresenter.TreeAudits;
         }
 
         public void UpdateLogMatrix()
@@ -1403,7 +1399,7 @@ namespace CruiseManager.Winforms.CruiseCustomize
             //_BS_LogMatrix.DataSource = Presenter.LogMatrix;
             if(this._logMatrixPage != null)
             {
-                this._logMatrixPage.DataSource = Presenter.LogMatrix;
+                this._logMatrixPage.DataSource = ViewPresenter.LogMatrix;
             }
         }
 
@@ -1430,13 +1426,13 @@ namespace CruiseManager.Winforms.CruiseCustomize
         {
             base.OnLoad(e);
 
-            this.Presenter.InitializeFieldSetup();
+            this.ViewPresenter.InitializeFieldSetup();
  
-            this.Presenter.InitializeTallySetup();
+            this.ViewPresenter.InitializeTallySetup();
 
-            this.Presenter.InitializeTreeAudits();
+            this.ViewPresenter.InitializeTreeAudits();
    
-            this.Presenter.InitializeLogMatrix();
+            this.ViewPresenter.InitializeLogMatrix();
      
         }
 
@@ -1455,10 +1451,10 @@ namespace CruiseManager.Winforms.CruiseCustomize
             
             if(_currentTallySetupStratum == null) { return; }
 
-            _stratumHKCB.DataSource = this.Presenter.GetAvalibleStratumHotKeys(_currentTallySetupStratum);
+            _stratumHKCB.DataSource = this.ViewPresenter.GetAvalibleStratumHotKeys(_currentTallySetupStratum);
             _stratumHKCB.Text = _currentTallySetupStratum.Hotkey;
 
-            this._tallyEditPanel.Enabled = Presenter.CanDefintTallys(_currentTallySetupStratum);
+            this._tallyEditPanel.Enabled = ViewPresenter.CanDefintTallys(_currentTallySetupStratum);
             
             _sampleGroupCB.DataSource = _currentTallySetupStratum.SampleGroups;                
         }
@@ -1484,7 +1480,7 @@ namespace CruiseManager.Winforms.CruiseCustomize
             }
 
             _tallyEditPanel.SampleGroup = _currentSG;
-            _tallyEditPanel.SetHotKeys(this.Presenter.GetAvalibleHotKeysInStratum(_currentTallySetupStratum));
+            _tallyEditPanel.SetHotKeys(this.ViewPresenter.GetAvalibleHotKeysInStratum(_currentTallySetupStratum));
         }
 
         //TODO move these methods to presenter class
@@ -1643,310 +1639,25 @@ namespace CruiseManager.Winforms.CruiseCustomize
         }
         #endregion 
 
-        #region Log Matrix Stuff
-        //private string GradeCodeSeperator
-        //{
-        //    get
-        //    {
-        //        if (_descriptorAndRB.Checked == true)
-        //        { return "&"; }
-        //        if (_descriptorOrRB.Checked == true)
-        //        { return "or"; }
-        //        if (_descriptorCamprunRB.Checked == true)
-        //        { return "(camprun)"; }
-        //        return string.Empty;
-        //    }
-        //}
 
-        //private bool _currentLogMatrixChanging = false;
+        #region IView Members
+        IPresentor IView.ViewPresenter
+        {
+            get
+            {
+                return this.ViewPresenter;
+            }
+        }
 
-        //private void UpdateLogGradeCode()
-        //{
-        //    LogMatrixDO lm = this._BS_LogMatrix.Current as LogMatrixDO;
-        //    if (lm == null) 
-        //    { 
-        //        this._logGradeCodeTB.Text = string.Empty; 
-        //        return; 
-        //    }
+        public IEnumerable<ViewCommand> NavCommands
+        {
+            get; protected set;
+        }
 
-        //    List<String> list = new List<string>();
-
-        //    if (!string.IsNullOrEmpty(lm.LogGrade1)) { list.Add(lm.LogGrade1); }
-        //    if (!string.IsNullOrEmpty(lm.LogGrade2)) { list.Add(lm.LogGrade2); }
-        //    if (!string.IsNullOrEmpty(lm.LogGrade3)) { list.Add(lm.LogGrade3); }
-        //    if (!string.IsNullOrEmpty(lm.LogGrade4)) { list.Add(lm.LogGrade4); }
-        //    if (!string.IsNullOrEmpty(lm.LogGrade5)) { list.Add(lm.LogGrade5); }
-        //    if (!string.IsNullOrEmpty(lm.LogGrade6)) { list.Add(lm.LogGrade6); }
-
-        //    lm.GradeDescription = string.Join(" " + GradeCodeSeperator + " ",
-        //        list.ToArray());
-        //}
-
-        //private void OnCurrentLogMatrixChanged(LogMatrixDO lm)
-        //{
-        //    _currentLogMatrixChanging = true;
-
-        //    foreach (CheckBox cb in grades)
-        //    {
-        //        cb.Checked = false;
-        //    }
-
-        //    if (string.IsNullOrEmpty(lm.Species))
-        //    {
-        //        _logMatrixSpeciesCB.SelectedIndex = -1;
-        //    }
-
-        //    if (!String.IsNullOrEmpty(lm.LogGrade1))
-        //    {
-        //        SetLogMatrixGradeView(lm.LogGrade1, true);
-        //    }
-        //    if (!String.IsNullOrEmpty(lm.LogGrade2))
-        //    {
-        //        SetLogMatrixGradeView(lm.LogGrade2, true);
-        //    }
-        //    if (!String.IsNullOrEmpty(lm.LogGrade3))
-        //    {
-        //        SetLogMatrixGradeView(lm.LogGrade3, true);
-        //    }
-        //    if (!String.IsNullOrEmpty(lm.LogGrade4))
-        //    {
-        //        SetLogMatrixGradeView(lm.LogGrade4, true);
-        //    }
-        //    if (!String.IsNullOrEmpty(lm.LogGrade5))
-        //    {
-        //        SetLogMatrixGradeView(lm.LogGrade5, true);
-        //    }
-        //    if (!String.IsNullOrEmpty(lm.LogGrade6))
-        //    {
-        //        SetLogMatrixGradeView(lm.LogGrade6, true);
-        //    }
-
-        //    if(!string.IsNullOrEmpty(lm.GradeDescription))
-        //    {
-        //        if (lm.GradeDescription.Contains('&'))
-        //        {
-        //            this._descriptorAndRB.Checked = true;
-        //        }
-        //        else if (lm.GradeDescription.Contains("or"))
-        //        {
-        //            this._descriptorOrRB.Checked = true;
-        //        }
-        //        else if (lm.GradeDescription.Contains("(camprun)"))
-        //        {
-        //            this._descriptorCamprunRB.Checked = true;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        this._descriptorAndRB.Checked = false;
-        //        this._descriptorOrRB.Checked = false;
-        //        this._descriptorCamprunRB.Checked = false;
-        //    }
-
-        //    if (lm.ReportNumber == "R008")
-        //    {
-        //        _r008RB.Checked = true;
-        //    }
-        //    else if (lm.ReportNumber == "R009")
-        //    {
-        //        _r009RB.Checked = true;
-        //    }
-        //    else
-        //    {
-        //        _r008RB.Checked = true;
-        //        //HACK editing property while current logMatrix is changind causes exception to be thrown when property changed event is thrown
-        //        lm.StartWrite();//prevent property changed events from fireing
-        //        lm.ReportNumber = "R008";
-        //        lm.EndWrite();
-        //    }
-
-        //    //UpdateLogGradeCode();
-        //    _currentLogMatrixChanging = false;
-        //}
-
-        //private void SetLogMatrixGradeView(string grade, bool value)
-        //{
-        //    try
-        //    {
-        //        int i = Convert.ToInt32(grade);
-        //        grades[i].Checked = value;
-        //    }
-        //    catch
-        //    {
-        //        //do nothing
-        //    }
-        //}
-
-        //private bool SetLogMatrixGrade(string grade, bool value)
-        //{
-        //    LogMatrixDO lm = this._BS_LogMatrix.Current as LogMatrixDO;
-        //    if (lm == null) { return false; }
-
-        //    if (value == false)
-        //    {
-        //        if (lm.LogGrade1 == grade)
-        //        {
-        //            lm.LogGrade1 = string.Empty;
-        //            return true;
-        //        }
-        //        if (lm.LogGrade2 == grade)
-        //        {
-        //            lm.LogGrade2 = string.Empty;
-        //            return true;
-        //        }
-        //        if (lm.LogGrade3 == grade)
-        //        {
-        //            lm.LogGrade3 = string.Empty;
-        //            return true;
-        //        }
-        //        if (lm.LogGrade4 == grade)
-        //        {
-        //            lm.LogGrade4 = string.Empty;
-        //            return true;
-        //        }
-        //        if (lm.LogGrade5 == grade)
-        //        {
-        //            lm.LogGrade5 = string.Empty;
-        //            return true;
-        //        }
-        //        if (lm.LogGrade6 == grade)
-        //        {
-        //            lm.LogGrade6 = string.Empty;
-        //            return true;
-        //        }
-        //        return false;
-        //    }
-        //    else
-        //    {
-        //        if (string.IsNullOrEmpty(lm.LogGrade1))
-        //        {
-        //            lm.LogGrade1 = grade;
-        //            return true;
-        //        }
-        //        if (string.IsNullOrEmpty(lm.LogGrade2))
-        //        {
-        //            lm.LogGrade2 = grade;
-        //            return true;
-        //        }
-        //        if (string.IsNullOrEmpty(lm.LogGrade3))
-        //        {
-        //            lm.LogGrade3 = grade;
-        //            return true;
-        //        }
-        //        if (string.IsNullOrEmpty(lm.LogGrade4))
-        //        {
-        //            lm.LogGrade4 = grade;
-        //            return true;
-        //        }
-        //        if (string.IsNullOrEmpty(lm.LogGrade5))
-        //        {
-        //            lm.LogGrade5 = grade;
-        //            return true;
-        //        }
-        //        if (string.IsNullOrEmpty(lm.LogGrade6))
-        //        {
-        //            lm.LogGrade6 = grade;
-        //            return true;
-        //        }
-        //        return false;
-        //    }
-        //}
-
-        //private void grade_CheckedChanged(object sender, EventArgs e)
-        //{
-        //    if (_currentLogMatrixChanging == true) { return; }
-
-        //    for (int i = 0; i < grades.Length; i++)
-        //    {
-        //        if (object.ReferenceEquals(grades[i], sender))
-        //        {
-        //            if (this.SetLogMatrixGrade(i.ToString(), this.grades[i].Checked) == false)
-        //            {
-        //                this.grades[i].Checked = false;
-        //            }
-        //            UpdateLogGradeCode();
-        //        }
-        //    }
-        //}
-
-        //private void descriptor_CheckedChanged(object sender, EventArgs e)
-        //{
-        //    if (_currentLogMatrixChanging == true) { return; }
-        //    this.UpdateLogGradeCode();
-        //}
-
-        //private void _addLogMatrixBTN_Click(object sender, EventArgs e)
-        //{
-
-        //    this._BS_LogMatrix.Add(new LogMatrixDO());
-        //}
-
-        //private void _deleteLogMatrixBTN_Click(object sender, EventArgs e)
-        //{
-        //    LogMatrixDO lm = this._BS_LogMatrix.Current as LogMatrixDO;
-        //    if (lm == null) { return; }
-        //    lm.Delete();
-        //    this._BS_LogMatrix.Remove(lm);
-        //}
-
-        //private void _clearLogMatrixBTN_Click(object sender, EventArgs e)
-        //{
-        //    foreach (LogMatrixDO lm in Presenter.LogMatrix)
-        //    {
-        //        if (lm.IsPersisted)
-        //        {
-        //            lm.Delete();
-        //        }
-        //    }
-        //    _BS_LogMatrix.Clear();
-        //}
-
-        //private void _BS_LogMatrix_CurrentChanged(object sender, EventArgs e)
-        //{
-        //    LogMatrixDO lm = _BS_LogMatrix.Current as LogMatrixDO;
-        //    if (lm == null) 
-        //    {
-        //        this.newParameters.Enabled = false;
-        //        return; 
-        //    }
-        //    this.newParameters.Enabled = true;
-        //    this.OnCurrentLogMatrixChanged(lm);
-        //}
-
-        //private void UpdateSEDLimmit()
-        //{
-        //    LogMatrixDO lm = _BS_LogMatrix.Current as LogMatrixDO;
-        //    if (lm == null) { return; }
-
-        //    lm.SEDlimit = string.Format("{0} {1} {2} {3}",
-        //        this._descriptor1.Text,
-        //        (lm.SEDminimum > 0) ? lm.SEDminimum.ToString() : string.Empty,
-        //        this._descriptor2.Text,
-        //        (lm.SEDmaximum > 0) ? lm.SEDmaximum.ToString() : string.Empty);
-
-        //}
-
-
-        //private void sedLimmitSettingsChanged(object sender, EventArgs e)
-        //{
-        //    UpdateSEDLimmit();
-        //}
-
-        //private void ReportID_CheckedChanged(object sender, EventArgs e)
-        //{
-        //    if (_currentLogMatrixChanging == true) { return; }
-        //    LogMatrixDO lm = _BS_LogMatrix.Current as LogMatrixDO;
-        //    if (lm == null) { return; }
-        //    if (_r008RB.Checked == true)
-        //    {
-        //        lm.ReportNumber = "R008";
-        //    }
-        //    else if (_r009RB.Checked == true)
-        //    {
-        //        lm.ReportNumber = "R009";
-        //    }
-        //}
-
+        public IEnumerable<ViewCommand> UserCommands
+        {
+            get; protected set;
+        }
         #endregion
 
         /// <summary> 

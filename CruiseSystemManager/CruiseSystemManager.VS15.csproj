@@ -164,15 +164,15 @@
     <Compile Include="Winforms\Components\PreMergeReportView.Designer.cs">
       <DependentUpon>PreMergeReportView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\Components\MergeInfoViewWinforms.cs" />
+    <Compile Include="Winforms\Components\MergeInfoViewWinforms.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Winforms\Components\MergeInfoViewWinforms.Designer.cs">
       <DependentUpon>MergeInfoViewWinforms.cs</DependentUpon>
     </Compile>
     <Compile Include="Winforms\CruiseCustomize\CruiseCustomizeViewWinforms.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Winforms\CruiseCustomize\CustomizeCruisePresenter.cs" />
-    <Compile Include="Winforms\CruiseCustomize\FieldSetupStratum.cs" />
     <Compile Include="Winforms\CruiseCustomize\LogMatrixSettingsView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -185,9 +185,6 @@
     <Compile Include="Winforms\CruiseCustomize\TallyEditPanel.Designer.cs">
       <DependentUpon>TallyEditPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\CruiseCustomize\TallyPopulation.cs" />
-    <Compile Include="Winforms\CruiseCustomize\TallySetupSampleGroup.cs" />
-    <Compile Include="Winforms\CruiseCustomize\TallySetupStratum.cs" />
     <Compile Include="Winforms\CruiseWizard\CreateSaleFolerDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -225,15 +222,12 @@
     <Compile Include="Winforms\DataEditor\DataExportDialog.Designer.cs">
       <DependentUpon>DataExportDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\DesignEditor\DesignEditorDataContext.cs" />
-    <Compile Include="Winforms\DesignEditor\DesignEditorStratum.cs" />
     <Compile Include="Winforms\DesignEditor\DesignEditViewControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Winforms\DesignEditor\DesignEditViewControl.Designer.cs">
       <DependentUpon>DesignEditViewControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\DesignEditor\DesignEditorPresentor.cs" />
     <Compile Include="Winforms\ErrorMessageDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -246,7 +240,9 @@
     <Compile Include="Winforms\FormSupervisorLogin.Designer.cs">
       <DependentUpon>FormSupervisorLogin.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\Components\MergeComponentViewWinforms.cs" />
+    <Compile Include="Winforms\Components\MergeComponentViewWinforms.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Winforms\Components\MergeComponentViewWinforms.Designer.cs">
       <DependentUpon>MergeComponentViewWinforms.cs</DependentUpon>
     </Compile>
@@ -277,13 +273,12 @@
     <Compile Include="Winforms\TemplateEditor\ImportFromCruiseView.Designer.cs">
       <DependentUpon>ImportFromCruiseView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\TemplateEditor\TemplateEditViewControl.cs">
+    <Compile Include="Winforms\TemplateEditor\EditTemplateViewWinForms.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Winforms\TemplateEditor\TemplateEditViewControl.Designer.cs">
-      <DependentUpon>TemplateEditViewControl.cs</DependentUpon>
+    <Compile Include="Winforms\TemplateEditor\EditTemplateViewWinForms.Designer.cs">
+      <DependentUpon>EditTemplateViewWinForms.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\TemplateEditor\TemplateEditViewPresenter.cs" />
     <Compile Include="Utility\COConverter.cs" />
     <Compile Include="Winforms\CruiseWizard\CruiseWizardView.cs">
       <SubType>Form</SubType>
@@ -427,8 +422,8 @@
       <DependentUpon>ImportFromCruiseView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\TemplateEditor\TemplateEditViewControl.resx">
-      <DependentUpon>TemplateEditViewControl.cs</DependentUpon>
+    <EmbeddedResource Include="Winforms\TemplateEditor\EditTemplateViewWinForms.resx">
+      <DependentUpon>EditTemplateViewWinForms.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">

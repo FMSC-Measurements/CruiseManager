@@ -1,6 +1,6 @@
 ﻿namespace CruiseManager.Winforms.TemplateEditor
 {
-    partial class TemplateEditViewControl
+    partial class EditTemplateViewWinForms
     {
         /// <summary> 
         /// Required designer variable.
@@ -279,7 +279,7 @@
             // 
             // _BS_CruiseMethods
             // 
-            this._BS_CruiseMethods.DataSource = typeof(CruiseManager.Winforms.TemplateEditor.CruiseMethodViewModel);
+            this._BS_CruiseMethods.DataSource = typeof(CruiseManager.Core.EditTemplate.EditTemplateCruiseMethod);
             this._BS_CruiseMethods.CurrentChanged += new System.EventHandler(this._BS_CruiseMethods_CurrentChanged);
             // 
             // label6

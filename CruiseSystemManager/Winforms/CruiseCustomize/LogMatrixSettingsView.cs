@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using CruiseDAL.DataObjects;
+using CruiseManager.Core.CruiseCustomize;
 
 namespace CruiseManager.Winforms.CruiseCustomize
 {

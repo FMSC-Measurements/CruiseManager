@@ -9,10 +9,11 @@ using System.Windows.Forms;
 using CruiseManager.Core.Components;
 using CruiseManager.Core;
 using CruiseManager.Core.ViewInterfaces;
+using CruiseManager.Core.App;
 
 namespace CruiseManager.Winforms.Components
 {
-    public partial class MergeInfoViewWinforms : IView<UserControl>
+    public partial class MergeInfoViewWinforms : UserControl
     {
         public MergeInfoViewWinforms(MergeComponentsPresenter viewPresenter)
         {
@@ -20,10 +21,9 @@ namespace CruiseManager.Winforms.Components
             InitializeComponent();
         }
 
-        protected new MergeComponentsPresenter ViewPresenter
+        public MergeComponentsPresenter ViewPresenter
         {
-            get { return base.ViewPresenter as MergeComponentsPresenter; }
-            set { base.ViewPresenter = value; }
+            get; set;
         }
 
 

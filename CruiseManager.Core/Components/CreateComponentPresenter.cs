@@ -48,7 +48,7 @@ namespace CruiseManager.Core.Components
 
         public DAL ParentDB { get { return ApplicationController.Database; } }
         public CreateComponentView View { get; set; }
-        public ApplicationController ApplicationController { get; set; }
+
 
         public CreateComponentPresenter(WindowPresenter windowPresenter, ApplicationController applicationController)
         {
@@ -59,7 +59,6 @@ namespace CruiseManager.Core.Components
 
         }
 
-        
         private void InitializeState()
         {
             _masterPath = GetMasterPath(ParentDB.Path);
@@ -238,31 +237,21 @@ namespace CruiseManager.Core.Components
 
         #region IPresentor Members
 
-        public WindowPresenter WindowPresenter { get; set; }
+        IView IPresentor.View { get { return this.View; } set { this.View = (CreateComponentView)value; } }
 
-        public void UpdateView()
+        public WindowPresenter WindowPresenter
         {
-            //if (View.InvokeRequired)
-            //{
-            //    View.Invoke(new Action(this.UpdateView));
-            //}
-            //else
-            //{
-            //    View.Update(this._showProgress, this._progressPercentage, this._lastOpperationSuccess, this._lastError);
-            //}
-            //do nothing 
+            get; protected set;
         }
+
+        public ApplicationController ApplicationController
+        {
+            get; protected set;
+        }
+
 
         #endregion
 
-        #region IDisposable Members
-
-        public void Dispose()
-        {
-            
-        }
-
-        #endregion
 
     }
 }

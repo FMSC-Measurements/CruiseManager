@@ -6,6 +6,7 @@ using CruiseDAL.DataObjects;
 using System.Diagnostics;
 using CruiseManager.Core.Models;
 using CruiseManager.Core.ViewInterfaces;
+using CruiseManager.Core.EditTemplate;
 
 namespace CruiseManager.Core.App
 {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using CruiseDAL.DataObjects;
 
-namespace CruiseManager.Winforms.CruiseCustomize
+namespace CruiseManager.Core.CruiseCustomize
 {
     public class TallySetupStratum : CruiseDAL.DataObjects.StratumDO
     {

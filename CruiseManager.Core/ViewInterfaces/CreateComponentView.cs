@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using CruiseManager.Core.App;
 
 namespace CruiseManager.Core.ViewInterfaces
 {
-    public interface CreateComponentView
+    public interface CreateComponentView : IView
     {
-        CreateComponentPresenter Presenter { get; set; }
+        new CreateComponentPresenter ViewPresenter { get; set; }
 
         void HideProgressBar();
         void InitializeAndShowProgress(int totalSteps);

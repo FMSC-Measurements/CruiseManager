@@ -5,7 +5,7 @@ using System.Text;
 using CruiseDAL.DataObjects;
 using CruiseDAL;
 
-namespace CruiseManager.Winforms.CruiseCustomize
+namespace CruiseManager.Core.CruiseCustomize
 {
     [CruiseDAL.SQLEntity(TableName = "Tally", IsCached = false)]
     public class TallyVM : TallyDO

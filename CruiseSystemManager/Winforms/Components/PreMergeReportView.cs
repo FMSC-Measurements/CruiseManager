@@ -31,9 +31,9 @@ namespace CruiseManager.Winforms.Components
         }
 
 
-        public PreMergeReportView(MergeComponentsPresenter presenter)
+        public PreMergeReportView(MergeComponentsPresenter viewPresenter)
         {
-            this.Presenter = presenter; 
+            this.ViewPresenter = viewPresenter; 
             InitializeComponent();
 
 
@@ -43,7 +43,7 @@ namespace CruiseManager.Winforms.Components
 
         List<ViewDataLink> _viewDataLinks; 
 
-        MergeComponentsPresenter Presenter { get; set; }
+        MergeComponentsPresenter ViewPresenter { get; set; }
 
         public DataGridViewColumn[] BuildDGVColumns()
         {
@@ -70,7 +70,7 @@ namespace CruiseManager.Winforms.Components
 
         public void InitializeTableByTableViews()
         {
-            _viewDataLinks = (from MergeTableCommandBuilder bldr in Presenter.CommandBuilders.Values
+            _viewDataLinks = (from MergeTableCommandBuilder bldr in ViewPresenter.CommandBuilders.Values
                                                       select new ViewDataLink(bldr)).ToList();
 
 
@@ -185,7 +185,7 @@ namespace CruiseManager.Winforms.Components
         {
             foreach (ViewDataLink link in _viewDataLinks)
             {
-                link.ConflictsDataSource.DataSource = this.Presenter.ListConflicts(link.CmdBldr);
+                link.ConflictsDataSource.DataSource = this.ViewPresenter.ListConflicts(link.CmdBldr);
             }
         }
 
@@ -199,7 +199,7 @@ namespace CruiseManager.Winforms.Components
             {
                 foreach (ViewDataLink link in _viewDataLinks)
                 {
-                    link.MatchDataSource.DataSource = this.Presenter.ListMatches(link.CmdBldr);
+                    link.MatchDataSource.DataSource = this.ViewPresenter.ListMatches(link.CmdBldr);
                 }
                 _matchesLoaded = true;
             }
@@ -213,7 +213,7 @@ namespace CruiseManager.Winforms.Components
             {
                 foreach (ViewDataLink link in _viewDataLinks)
                 {
-                    link.NewDataSource.DataSource = this.Presenter.ListNew(link.CmdBldr);
+                    link.NewDataSource.DataSource = this.ViewPresenter.ListNew(link.CmdBldr);
                 }
                 _newLoaded = true;
             }
