@@ -6,6 +6,7 @@ using Logger;
 using System.Diagnostics;
 using CruiseManager.App;
 using CruiseManager.Core.App;
+using Ninject;
 
 namespace CruiseManager
 {
@@ -46,26 +47,33 @@ namespace CruiseManager
             //FMSC.Utility.ErrorHandling.ErrorHandlers.SendToAddress = "benjaminjcampbell@fs.fes.us";
             Application.ThreadException += FMSC.Utility.ErrorHandling.ErrorHandlers.ThreadException;
 
-            UserSettings.Instance = new UserSettingsWinforms();
-            ExceptionHandler.Instance = new ExceptionHandler();
-            WindowPresenter.Instance = new WindowPresenterWinForms();
-            SetupService.Instance = new SetupServiceWinForms();
+            //UserSettings.Instance = new UserSettingsWinforms();
+            //ExceptionHandler.Instance = new ExceptionHandler();
+            //WindowPresenter.Instance = new WindowPresenterWinForms();
+            //SetupService.Instance = new SetupServiceWinForms();
 
-            ApplicationController.Instance = new ApplicationControllerWinForms(
-                WindowPresenter.Instance,
-                ExceptionHandler.Instance,
-                UserSettings.Instance,
-                SetupService.Instance);
-
-
-            if(!string.IsNullOrEmpty(dalPath) )
-            {
-                ApplicationController.Instance.OpenFile(dalPath);
-            }
+            //ApplicationController.Instance = new ApplicationControllerWinForms(
+            //    WindowPresenter.Instance,
+            //    ExceptionHandler.Instance,
+            //    UserSettings.Instance,
+            //    SetupService.Instance);
 
 
-            WindowPresenter.Instance.Run();
-            WindowPresenter.Instance.Dispose();
+
+            //if(!string.IsNullOrEmpty(dalPath) )
+            //{
+            //    ApplicationController.Instance.OpenFile(dalPath);
+            //}
+
+            var containter = new Ninject.StandardKernel(new CruiseManagerWinformsModule());
+
+
+            ApplicationController applicationController = containter.Get<ApplicationController>();
+            applicationController.WindowPresenter.Run();
+            applicationController.WindowPresenter.Dispose();
+
+            //WindowPresenter.Instance.Run();
+            //WindowPresenter.Instance.Dispose();
 
             Trace.TraceInformation("Application Ended @{0}", DateTime.Now);
             Trace.Close();

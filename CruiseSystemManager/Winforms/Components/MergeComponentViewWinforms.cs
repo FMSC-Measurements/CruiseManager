@@ -12,23 +12,18 @@ using CruiseManager.Core.ViewInterfaces;
 
 namespace CruiseManager.Winforms.Components
 {
-    public partial class MergeComponentViewWinforms : UserControl, MergeComponentView
+    public partial class MergeComponentViewWinforms : MergeComponentView<UserControl>
     {
-        MergeInfoView mergeInfoView;
+        MergeInfoViewWinforms mergeInfoView;
 
-        public MergeComponentViewWinforms()
-        {
+        public MergeComponentViewWinforms(MergeComponentsPresenter viewPresenter) : base(viewPresenter)
+        {            
             InitializeComponent();
-            mergeInfoView = new MergeInfoView();
+            mergeInfoView = new MergeInfoViewWinforms(this.ViewPresenter);
             mergeInfoView.Dock = DockStyle.Fill; 
             this._contentPanel.Controls.Add(mergeInfoView);
         }
 
-        public MergeComponentsPresenter Presenter
-        {
-            get;
-            set;
-        }
 
         public void HandleLoad()
         {
@@ -37,7 +32,7 @@ namespace CruiseManager.Winforms.Components
 
         public void UpdateMergeInfoView()
         {
-            mergeInfoView.MergePresenter = this.Presenter;
+            mergeInfoView.ViewPresenter = this.ViewPresenter;
             mergeInfoView.UpdateMasterInfo();
             mergeInfoView.UpdateComponentInfo(); 
         }
@@ -51,7 +46,7 @@ namespace CruiseManager.Winforms.Components
             else
             {
                 this._contentPanel.Controls.Clear();
-                PreMergeReportView view = new PreMergeReportView(this.Presenter);
+                PreMergeReportView view = new PreMergeReportView(this.ViewPresenter);
                 view.Dock = DockStyle.Fill;
                 this._contentPanel.Controls.Add(view);
                 view.UpdateView();
@@ -66,16 +61,16 @@ namespace CruiseManager.Winforms.Components
             }
             else
             {
-                _goButton.Enabled = this.Presenter.IsWorkerReady;
-                if (this.Presenter.CurrentWorker == null)
+                _goButton.Enabled = this.ViewPresenter.IsWorkerReady;
+                if (this.ViewPresenter.CurrentWorker == null)
                 {
                     _cancelButton.Enabled = false;
                     _goButton.Text = String.Empty;
                 }
                 else
                 {
-                    _cancelButton.Enabled = this.Presenter.CurrentWorker.IsWorking;
-                    _goButton.Text = this.Presenter.CurrentWorker.ActionName;
+                    _cancelButton.Enabled = this.ViewPresenter.CurrentWorker.IsWorking;
+                    _goButton.Text = this.ViewPresenter.CurrentWorker.ActionName;
                 }
             }
         }
@@ -98,15 +93,15 @@ namespace CruiseManager.Winforms.Components
 
         private void _goButton_Click(object sender, EventArgs e)
         {
-            if (this.Presenter.IsWorkerReady)
+            if (this.ViewPresenter.IsWorkerReady)
             {
-                this.Presenter.CurrentWorker.BeginWork();
+                this.ViewPresenter.CurrentWorker.BeginWork();
             }
         }
 
         private void _cancelButton_Click(object sender, EventArgs e)
         {
-            this.Presenter.CurrentWorker.Cancel();
+            this.ViewPresenter.CurrentWorker.Cancel();
         }
 
     }

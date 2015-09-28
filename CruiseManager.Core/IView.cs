@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CruiseManager.Core
 {
-    public interface IView 
+    public interface IView
     {
         IPresentor ViewPresenter { get; }
 
@@ -14,3 +14,4 @@ namespace CruiseManager.Core
 
     }
 }
+

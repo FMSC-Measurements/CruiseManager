@@ -23,25 +23,25 @@ namespace CruiseManager.Core.App
     public class ApplicationState
     {
         
-        private static ApplicationState _instance; 
-        private ApplicationState()
+        //private static ApplicationState _instance; 
+        public ApplicationState()
         {
             //_setupService = SetupService.GetHandle();
         }
 
 
-        public static ApplicationState GetHandle()
-        {
-            if (_instance == null)
-            {
-                _instance = Deserialize();
-                if (_instance == null)
-                {
-                    _instance = new ApplicationState();
-                }
-            }
-            return _instance;
-        }
+        //public static ApplicationState GetHandle()
+        //{
+        //    if (_instance == null)
+        //    {
+        //        _instance = Deserialize();
+        //        if (_instance == null)
+        //        {
+        //            _instance = new ApplicationState();
+        //        }
+        //    }
+        //    return _instance;
+        //}
 
         private static ApplicationState Deserialize()
         {

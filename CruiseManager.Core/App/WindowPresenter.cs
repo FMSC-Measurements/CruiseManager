@@ -16,7 +16,7 @@ namespace CruiseManager.Core.App
     /// </summary>
     public abstract class WindowPresenter : IDisposable
     {
-        public static WindowPresenter Instance { get; set; }
+        //public static WindowPresenter Instance { get; set; }
 
         public ApplicationController ApplicationController
         {
@@ -31,6 +31,8 @@ namespace CruiseManager.Core.App
         public abstract string AskOpenFileLocation();
 
         public abstract void ShowAboutDialog();
+        public abstract TreeDefaultValueDO ShowAddTreeDefult();
+        public abstract void ShowEditTreeDefault(TreeDefaultValueDO tdv);
         public abstract void ShowCruiseLandingLayout();
         public abstract void ShowCustomizeCruiseLayout();
         public abstract void ShowCreateComponentsLayout();

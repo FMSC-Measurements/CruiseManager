@@ -295,21 +295,10 @@ namespace CruiseManager.Winforms.DesignEditor
 
         private void _addSubPopBTN_Click(object sender, EventArgs e)
         {
-            TreeDefaultValueDO newTDV = new TreeDefaultValueDO(Presentor.Database);
-            ApplicationState appState = ApplicationState.GetHandle();
-            try
+            TreeDefaultValueDO newTDV = WindowPresenter.ShowAddTreeDefult();
+            if (newTDV != null)
             {
-                CruiseManager.Winforms.CruiseWizard.FormAddTreeDefault dialog = new CruiseManager.Winforms.CruiseWizard.FormAddTreeDefault(SetupService.Instance.GetProductCodes());
-                if (dialog.ShowDialog(newTDV) == DialogResult.OK)
-                {
-                    this.Presentor.DataContext.AllTreeDefaults.Add(newTDV);
-
-                    newTDV.Save();
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ExceptionHandler.Handel(ex);
+                this.Presentor.DataContext.AllTreeDefaults.Add(newTDV);
             }
         }
 
@@ -317,36 +306,39 @@ namespace CruiseManager.Winforms.DesignEditor
         {
             TreeDefaultValueDO tdv = this.SampleGroup_TDVBindingSource.Current as TreeDefaultValueDO;
             if (tdv == null) { return; }
-            TreeDefaultValueDO temp = new TreeDefaultValueDO(tdv);
-            ApplicationState appState = ApplicationState.GetHandle();
+            {
+                this.WindowPresenter.ShowEditTreeDefault(tdv);
+            }
+            //TreeDefaultValueDO temp = new TreeDefaultValueDO(tdv);
+            //ApplicationState appState = ApplicationState.GetHandle();
 
-            try
-            {
-                CruiseManager.Winforms.CruiseWizard.FormAddTreeDefault dialog = new CruiseManager.Winforms.CruiseWizard.FormAddTreeDefault(SetupService.Instance.GetProductCodes());
-                if (dialog.ShowDialog(tdv) == DialogResult.OK)
-                {
-                    try
-                    {
-                        tdv.Save();
-                    }
-                    catch (CruiseDAL.UniqueConstraintException ex)
-                    {
-                        throw new UserFacingException("Values Conflict With Existing Tree Default", ex);
-                    }
-                    catch (CruiseDAL.ConstraintException ex)
-                    {
-                        throw new UserFacingException("Invalid Values", ex);
-                    }
-                }
-                else
-                {
-                    tdv.SetValues(temp);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ExceptionHandler.Handel(ex);
-            }
+            //try
+            //{
+            //    CruiseManager.Winforms.CruiseWizard.FormAddTreeDefault dialog = new CruiseManager.Winforms.CruiseWizard.FormAddTreeDefault(SetupService.Instance.GetProductCodes());
+            //    if (dialog.ShowDialog(tdv) == DialogResult.OK)
+            //    {
+            //        try
+            //        {
+            //            tdv.Save();
+            //        }
+            //        catch (CruiseDAL.UniqueConstraintException ex)
+            //        {
+            //            throw new UserFacingException("Values Conflict With Existing Tree Default", ex);
+            //        }
+            //        catch (CruiseDAL.ConstraintException ex)
+            //        {
+            //            throw new UserFacingException("Invalid Values", ex);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        tdv.SetValues(temp);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    this.ExceptionHandler.Handel(ex);
+            //}
         }
 
         private void _deleteSubPopBTN_Click(object sender, EventArgs e)

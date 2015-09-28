@@ -34,6 +34,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)IPresentor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ISaveHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IViewGeneric.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IWorker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\LogVM.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\SaleVM.cs" />

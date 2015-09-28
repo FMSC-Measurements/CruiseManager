@@ -24,7 +24,7 @@ namespace CruiseManager.Core.App
         public static readonly string REGION_FILE_NAME = "Regions.xml";
 
 
-        public static SetupService Instance { get; set; }
+        //public static SetupService Instance { get; set; }
 
         //public static SetupService GetHandle()
         //{

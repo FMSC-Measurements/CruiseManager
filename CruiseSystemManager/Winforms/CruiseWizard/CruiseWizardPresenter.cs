@@ -193,7 +193,7 @@ namespace CruiseManager.Winforms.CruiseWizard
             this.WindowPresenter = windowPresenter;
             this.ApplicationController = applicationController;
             View.Presenter = this;
-            _appStateHandle = ApplicationState.GetHandle();
+            _appStateHandle = ApplicationController.AppState;
             _database = database;
 
             LoadSetupData();//load tree defaults, product codes, etc.
@@ -332,7 +332,7 @@ namespace CruiseManager.Winforms.CruiseWizard
 
 
                 //only load FIX and PNT Cruise methods for Recon cruises 
-                CruiseMethods = ApplicationController.Instance.GetCruiseMethods(_templateDatabase, this.Sale.Purpose == "Recon");
+                CruiseMethods = ApplicationController.GetCruiseMethods(_templateDatabase, this.Sale.Purpose == "Recon");
 
                 this.StartAsynCopyTemplate(_templateDatabase);
             }
@@ -525,7 +525,7 @@ namespace CruiseManager.Winforms.CruiseWizard
 
             if (CruiseMethods.Count == 0)
             {
-                CruiseMethods = ApplicationController.Instance.GetCruiseMethods(null, this.Sale.Purpose == "Recon");
+                CruiseMethods = ApplicationController.GetCruiseMethods(null, this.Sale.Purpose == "Recon");
             }
 
             this.ShowCuttingUnits();

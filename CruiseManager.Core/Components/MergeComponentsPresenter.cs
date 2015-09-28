@@ -15,10 +15,10 @@ namespace CruiseManager.Core.Components
     {
 
      
-        public MergeComponentsPresenter(MergeComponentView view, WindowPresenter windowPresenter, ApplicationController applicationController)
+        public MergeComponentsPresenter(MergeComponentView view, ApplicationController applicationController)
         {
             this.View = view;
-            view.Presenter = this;
+            view.ViewPresenter = this;
             this.WindowPresenter = windowPresenter;
             this._appController = applicationController; 
 

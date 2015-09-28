@@ -16,9 +16,17 @@ namespace CruiseManager.App
         private CruiseManager.Utility.COConverter _converter;
         private string _convertedFilePath;
 
+
         //public ApplicationControllerWinForms() : this(WindowPresenter.Instance, UserSettings.Instance, SetupService.Instance) { }
 
-        public ApplicationControllerWinForms(WindowPresenter windowPresenter, ExceptionHandler exceptionHandler, UserSettings userSettings, SetupService setupService) : base(windowPresenter, exceptionHandler, userSettings, setupService)
+        public ApplicationControllerWinForms(
+            WindowPresenter windowPresenter, 
+            ExceptionHandler exceptionHandler, 
+            UserSettings userSettings, 
+            SetupService setupService, 
+            ApplicationState applicationState, 
+            PlatformHelper platformHelper) 
+            : base(windowPresenter, exceptionHandler, userSettings, setupService, applicationState, platformHelper)
         {
 
         }

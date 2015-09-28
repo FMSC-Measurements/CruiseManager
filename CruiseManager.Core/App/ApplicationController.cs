@@ -15,14 +15,7 @@ namespace CruiseManager.Core.App
     {
         internal static readonly TreeDefaultValueDO[] EMPTY_SPECIES_LIST = new TreeDefaultValueDO[] { };
 
-        #region DI Properties
-        public static ApplicationController Instance { get; set; }
-        public WindowPresenter WindowPresenter { get; protected set; }
-        public ExceptionHandler ExceptionHandler { get; protected set; }
-        public SetupService SetupService { get; set; }
-        public UserSettings UserSettings { get; set; }
-        public ApplicationState AppState { get; protected set; }
-        #endregion
+        
 
         #region ViewCommands
         public ViewCommand CreateNewCruiseCommand { get; protected set; }
@@ -70,15 +63,32 @@ namespace CruiseManager.Core.App
             }
         }
 
+        //public static ApplicationController Instance { get; set; }
 
-        protected ApplicationController(WindowPresenter windowPresenter, ExceptionHandler exceptionHandler, UserSettings userSettings, SetupService setupService)
+        #region Constructor Properties
+
+        public WindowPresenter WindowPresenter { get; protected set; }
+        public ExceptionHandler ExceptionHandler { get; protected set; }
+        public SetupService SetupService { get; set; }
+        public UserSettings UserSettings { get; set; }
+        public ApplicationState AppState { get; protected set; }
+        public PlatformHelper PlatformHelper { get; protected set; }
+        #endregion
+
+        protected ApplicationController(WindowPresenter windowPresenter, 
+            ExceptionHandler exceptionHandler, 
+            UserSettings userSettings, 
+            SetupService setupService, 
+            ApplicationState applicationState,
+            PlatformHelper platformHelper)
         {
             this.WindowPresenter = windowPresenter;
             this.WindowPresenter.ApplicationController = this;
             this.ExceptionHandler = exceptionHandler;
             this.UserSettings = userSettings;
             this.SetupService = setupService;
-            this.AppState = ApplicationState.GetHandle();
+            this.AppState = applicationState;
+            this.PlatformHelper = platformHelper;
 
             this.SaveCommand = MakeViewCommand("Save", this.Save);
             this.SaveAsCommand = MakeViewCommand("SaveAs", this.SaveAs);
@@ -88,6 +98,8 @@ namespace CruiseManager.Core.App
             InSupervisorMode = true;
 #endif
         }
+
+        
 
         public abstract ViewCommand MakeViewCommand(String name, Action action);
 
@@ -300,9 +312,9 @@ namespace CruiseManager.Core.App
             return System.IO.Path.GetDirectoryName(System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)) + "\\" + Strings.TEMP_FILENAME;
         }
 
-        public static List<FileInfo> GetTemplateFiles()
+        public List<FileInfo> GetTemplateFiles()
         {
-            DirectoryInfo tDir = PlatformHelper.Instance.GetTemplateFolder();
+            DirectoryInfo tDir = PlatformHelper.GetTemplateFolder();
             //filter all files ending in .cut
             List<FileInfo> files = new List<FileInfo>(tDir.GetFiles("*" + Constants.Strings.CRUISE_TEMPLATE_FILE_EXTENTION));
             return files;

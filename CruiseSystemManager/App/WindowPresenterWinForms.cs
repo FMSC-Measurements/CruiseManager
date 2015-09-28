@@ -209,9 +209,77 @@ namespace CruiseManager.App
 
         public override void ShowAboutDialog()
         {
-            using (AboutDialog dialog = new AboutDialog())
+            using (AboutDialog dialog = new AboutDialog(this.ApplicationController))
             {
                 dialog.ShowDialog(this.MainWindow);
+            }
+        }
+
+        public override TreeDefaultValueDO ShowAddTreeDefult()
+        {
+            TreeDefaultValueDO newTDV = new TreeDefaultValueDO(this.ApplicationController.Database);
+
+            try
+            {
+                FormAddTreeDefault dialog = new FormAddTreeDefault(ApplicationController.SetupService.GetProductCodes());
+                if (dialog.ShowDialog(newTDV) == DialogResult.OK)
+                {
+                    newTDV.Save();
+                    return newTDV;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                if(!this.ApplicationController.ExceptionHandler.Handel(ex))
+                {
+                    throw;
+                }
+                else
+                {
+                    return null;
+                }
+
+                
+            }
+        }
+
+        public override void ShowEditTreeDefault(TreeDefaultValueDO tdv)
+        {
+            TreeDefaultValueDO temp = new TreeDefaultValueDO(tdv);
+
+            try
+            {
+                using (FormAddTreeDefault dialog = new FormAddTreeDefault(this.ApplicationController.SetupService.GetProductCodes()))
+                {
+                    if (dialog.ShowDialog(temp) == DialogResult.OK)
+                    {
+                        try
+                        {
+                            tdv.SetValues(temp);
+                            tdv.Save();
+                        }
+                        catch (CruiseDAL.UniqueConstraintException ex)
+                        {
+                            throw new UserFacingException("Values Conflict With Existing Tree Default", ex);
+                        }
+                        catch (CruiseDAL.ConstraintException ex)
+                        {
+                            throw new UserFacingException("Invalid Values", ex);
+                        }
+                    }
+                }           
+
+            }
+            catch (Exception ex)
+            {
+                if(!this.ApplicationController.ExceptionHandler.Handel(ex))
+                {
+                    throw;
+                }
             }
         }
 
@@ -295,7 +363,7 @@ namespace CruiseManager.App
 
         public override void ShowCruiseWizardDialog()
         {
-            DAL tempfile = ApplicationController.Instance.GetNewOrUnfinishedCruise();
+            DAL tempfile = ApplicationController.GetNewOrUnfinishedCruise();
             if (tempfile != null)
             {
                 this.ShowWaitCursor();
@@ -309,7 +377,7 @@ namespace CruiseManager.App
 
                 if (view.ShowDialog() == DialogResult.OK)
                 {
-                    ApplicationController.Instance.Database = p.Database;
+                    ApplicationController.Database = p.Database;
                     this.ShowCruiseLandingLayout();
                     this.ShowCustomizeCruiseLayout();
                 }
@@ -318,7 +386,7 @@ namespace CruiseManager.App
 
         public override void ShowDataEditor()
         {
-            ApplicationController.Instance.Save();
+            ApplicationController.Save();
             using (DataEditorView view = new DataEditorView(this, this.ApplicationController))
             {
                 view.ShowDialog(this.MainWindow);
@@ -345,7 +413,7 @@ namespace CruiseManager.App
 
         public override void ShowEditWizard()
         {
-            if (ApplicationController.Instance.Database.GetRowCount("Tree", null) == 0)
+            if (ApplicationController.Database.GetRowCount("Tree", null) == 0)
             {
                 this.ShowWaitCursor();
 
@@ -560,6 +628,8 @@ namespace CruiseManager.App
             MainWindow.Close();
             return true;
         }
+
+        
 
         #region IDisposable Members
         //bool _disposed = false;

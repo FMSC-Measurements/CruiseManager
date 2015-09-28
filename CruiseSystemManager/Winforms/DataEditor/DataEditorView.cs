@@ -646,7 +646,7 @@ namespace CruiseManager.Winforms.DataEditor
 
         private void exportToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            WindowPresenter.Instance.ShowDataExportDialog(Trees, Logs, Plots, Counts);
+            WindowPresenter.ShowDataExportDialog(Trees, Logs, Plots, Counts);
             //AppController.ShowDataExportDialog(Trees, Logs, Plots, Counts);
         }
 
@@ -780,7 +780,7 @@ namespace CruiseManager.Winforms.DataEditor
                 //    this._BS_TreeSpecies.DataSource = AppController.GetTreeTDVList(_currentTreeSelection);
                 //}
                 //control.DataSource = AppController.GetTreeTDVList(_currentTreeSelection);
-                control.DataSource = ApplicationController.Instance.GetTreeTDVList(_currentTreeSelection);
+                control.DataSource = ApplicationController.GetTreeTDVList(_currentTreeSelection);
             }
             if (this.TreeDataGridView.CurrentCell.ColumnIndex == this.sampleGroupDataGridViewTextBoxColumn.Index)
             {

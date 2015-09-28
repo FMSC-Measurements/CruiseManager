@@ -5,15 +5,24 @@ using System.Text;
 
 namespace CruiseManager.Core.ViewInterfaces
 {
-    public interface MergeComponentView
+    public abstract class MergeComponentView<T> : IView<T>
     {
-        MergeComponentsPresenter Presenter { get; set; }
+        public MergeComponentView(MergeComponentsPresenter viewPresenter)
+        {
+            this.ViewPresenter = ViewPresenter;
+        }
 
-        void UpdateMergeInfoView();
+        public new MergeComponentsPresenter ViewPresenter
+        {
+            get { return base.ViewPresenter as MergeComponentsPresenter; }
+            set { base.ViewPresenter = value; }
+        }
 
-        void ShowPremergeReport();
+        public abstract void UpdateMergeInfoView();
 
-        void HandleWorkerStatusChanged();
-        void HandleProgressChanged(Object sender, WorkerProgressChangedEventArgs e);
+        public abstract void ShowPremergeReport();
+
+        public abstract void HandleWorkerStatusChanged();
+        public abstract void HandleProgressChanged(Object sender, WorkerProgressChangedEventArgs e);
     }
 }

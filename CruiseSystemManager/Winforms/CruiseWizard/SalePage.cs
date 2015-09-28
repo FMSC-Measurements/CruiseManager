@@ -103,7 +103,7 @@ namespace CruiseManager.Winforms.CruiseWizard
         private void _browseTemplateButton_Click(object sender, EventArgs e)
         {
             
-            string filePath = WindowPresenter.Instance.AskTemplateLocation();
+            string filePath = Presenter.WindowPresenter.AskTemplateLocation();
             _templatePath = filePath;
             _templatePathTB.Text = filePath;
         }

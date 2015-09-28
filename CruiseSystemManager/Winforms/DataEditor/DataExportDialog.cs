@@ -21,21 +21,25 @@ namespace CruiseManager.Winforms.DataEditor
             InitializeComponent();
         }
 
+        protected ApplicationController ApplicationController { get; set; }
+
         public DataExportDialog(ApplicationController applicationController, IList<TreeVM> Trees, IList<LogVM> Logs, IList<PlotDO> Plots, IList<CountTreeDO> Counts)
         {
+            ApplicationController = applicationController;
+
             this.InitializeComponent();
             this.Trees = Trees;
             this.Logs = Logs;
             this.Plots = Plots;
             this.Counts = Counts;
 
-            SetUpFieldWidgets(applicationController);
+            SetUpFieldWidgets();
         }
 
 
-        public void SetUpFieldWidgets(ApplicationController applicationController)
+        public void SetUpFieldWidgets()
         {
-            var setupServ = SetupService.Instance;
+            var setupServ = ApplicationController.SetupService;
 
             //set up tree field widget
             //get list of tree fields from the setup file
@@ -51,7 +55,7 @@ namespace CruiseManager.Winforms.DataEditor
             this.AllTreeFields.Add(new FieldDiscriptor { Field = "Plot", Header = "Plot Number", Format = "[PlotNumber]", DataType = typeof(TreeVM) });
             this.AllTreeFields.Sort((x, y) => x.Header.CompareTo(y.Header));
 
-            List<TreeFieldSetupDO> tf = applicationController.Database.Read<TreeFieldSetupDO>("TreeFieldSetup", "GROUP BY Field ORDER BY FieldOrder");
+            List<TreeFieldSetupDO> tf = ApplicationController.Database.Read<TreeFieldSetupDO>("TreeFieldSetup", "GROUP BY Field ORDER BY FieldOrder");
             TreeFields = (from field in tf
                           select new FieldDiscriptor(field)).ToList();
 
@@ -334,7 +338,7 @@ namespace CruiseManager.Winforms.DataEditor
             }
             catch (System.IO.IOException ex)
             {
-                ApplicationController.Instance.ExceptionHandler.Handel(ex);
+                ApplicationController.ExceptionHandler.Handel(ex);
                 //WindowPresenter.HandleNonCriticalError(true, "Unable To Open File");
             }
             return stream;

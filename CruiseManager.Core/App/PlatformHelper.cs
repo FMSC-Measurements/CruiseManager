@@ -7,7 +7,7 @@ namespace CruiseManager.Core.App
 {
     public abstract class PlatformHelper
     {
-        public static PlatformHelper Instance { get; set; } 
+        //public static PlatformHelper Instance { get; set; } 
 
         public abstract DirectoryInfo GetTemplateFolder();
 

@@ -220,37 +220,58 @@ namespace CruiseManager.Winforms.CruiseWizard
 
         private void _newSubPopBTN_Click(object sender, EventArgs e)
         {
-            TreeDefaultValueDO newTDV = Presenter.GetNewTreeDefaultValue();
-            FormAddTreeDefault dialog = new FormAddTreeDefault(Presenter.ProductCodes);
-            if (dialog.ShowDialog(newTDV) == DialogResult.OK)
+            //TreeDefaultValueDO newTDV = Presenter.GetNewTreeDefaultValue();
+            //FormAddTreeDefault dialog = new FormAddTreeDefault(Presenter.ProductCodes);
+            //if (dialog.ShowDialog(newTDV) == DialogResult.OK)
+            //{
+            //    newTDV.Save();
+            //    this.Presenter.TreeDefaults.Add(newTDV);
+            //    UpdateTDVList();
+
+            //    int i = this.TreeDefaultBindingSource.IndexOf(newTDV);
+            //    if (i >= 0)
+            //    {
+            //        this.TreeDefaultBindingSource.Position = i;
+            //    }
+            //}
+
+            TreeDefaultValueDO newTDV = this.Presenter.WindowPresenter.ShowAddTreeDefult();
+            if(newTDV != null)
             {
-                newTDV.Save();
                 this.Presenter.TreeDefaults.Add(newTDV);
-                UpdateTDVList();
+                this.UpdateTDVList();
 
                 int i = this.TreeDefaultBindingSource.IndexOf(newTDV);
                 if (i >= 0)
                 {
                     this.TreeDefaultBindingSource.Position = i;
                 }
+
             }
         }
 
         private void _editSubPopBtn_Click(object sender, EventArgs e)
         {
-            TreeDefaultValueDO tdv = this.TreeDefaultBindingSource.Current as TreeDefaultValueDO;
-            if (tdv == null) { return; }
-            TreeDefaultValueDO temp = new TreeDefaultValueDO(tdv);
-            ApplicationState appState = ApplicationState.GetHandle();
+            //TreeDefaultValueDO tdv = this.TreeDefaultBindingSource.Current as TreeDefaultValueDO;
+            //if (tdv == null) { return; }
+            //TreeDefaultValueDO temp = new TreeDefaultValueDO(tdv);
+            //ApplicationState appState =  ApplicationState.GetHandle();
+            //this.Presenter.WindowPresenter.ShowAddTreeDefult();
 
-            CruiseManager.Winforms.CruiseWizard.FormAddTreeDefault dialog = new FormAddTreeDefault(SetupService.Instance.GetProductCodes());
-            if (dialog.ShowDialog(tdv) == DialogResult.OK)
+            //CruiseManager.Winforms.CruiseWizard.FormAddTreeDefault dialog = new FormAddTreeDefault(SetupService.Instance.GetProductCodes());
+            //if (dialog.ShowDialog(tdv) == DialogResult.OK)
+            //{
+            //    tdv.Save();
+            //}
+            //else
+            //{
+            //    tdv.SetValues(temp);
+            //}
+
+            var tdv = this.TreeDefaultBindingSource.Current as TreeDefaultValueDO;
+            if(tdv != null)
             {
-                tdv.Save();
-            }
-            else
-            {
-                tdv.SetValues(temp);
+                this.Presenter.WindowPresenter.ShowEditTreeDefault(tdv);
             }
         }
 

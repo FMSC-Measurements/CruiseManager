@@ -13,10 +13,13 @@ namespace CruiseManager.Winforms
 {
     public partial class FormSupervisorLogin : Form
     {
-        public FormSupervisorLogin()
+        public FormSupervisorLogin(ApplicationController applicationController)
         {
+            this.ApplicationController = applicationController;
             InitializeComponent();
         }
+
+        protected ApplicationController ApplicationController { get; set; }
 
 
         protected override void OnClosing(CancelEventArgs e)
@@ -30,12 +33,12 @@ namespace CruiseManager.Winforms
             {
                 if (_pwTB.Text == Strings.SUPERVISOR_LOGIN)
                 {
-                    ApplicationController.Instance.InSupervisorMode = true;
+                    ApplicationController.InSupervisorMode = true;
                     MessageBox.Show("Success");
                 }
                 else
                 {
-                    ApplicationController.Instance.InSupervisorMode = false;
+                    ApplicationController.InSupervisorMode = false;
                     MessageBox.Show("Password invalid");
                 }
             }

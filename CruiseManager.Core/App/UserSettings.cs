@@ -10,7 +10,7 @@ namespace CruiseManager.Core.App
 
         public bool? CreateSaleFolder { get; set; }
 
-        public static UserSettings Instance { get; set; }
+        //public static UserSettings Instance { get; set; }
 
         public abstract string CruiseSaveLocation { get; set; }
 

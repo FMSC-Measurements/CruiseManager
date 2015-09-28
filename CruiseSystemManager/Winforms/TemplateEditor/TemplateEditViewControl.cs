@@ -205,43 +205,51 @@ namespace CruiseManager.Winforms.TemplateEditor
 
         private void _addTDVButton_Click(object sender, EventArgs e)
         {
-            TreeDefaultValueDO newTDV = new TreeDefaultValueDO(this.Presenter.Database);
-            SetupService setupService = SetupService.Instance;
-
-            CruiseManager.Winforms.CruiseWizard.FormAddTreeDefault dialog = new CruiseManager.Winforms.CruiseWizard.FormAddTreeDefault(setupService.GetProductCodes());
-            if (dialog.ShowDialog(newTDV) == DialogResult.OK)
+            TreeDefaultValueDO newTDV = this.WindowPresenter.ShowAddTreeDefult();
+            if(newTDV != null)
             {
-                try
-                {
-                    newTDV.Save();
-                    this._BS_TreeDefaults.Add(newTDV);
-                }
-                catch(CruiseDAL.DatabaseExecutionException)
-                {
-                    MessageBox.Show("Error: Tree Default not saved");
-                }
+                this._BS_TreeDefaults.Add(newTDV);
             }
+            //TreeDefaultValueDO newTDV = new TreeDefaultValueDO(this.Presenter.Database);
+            //SetupService setupService = this.ApplicationController.SetupService;
+
+            //CruiseManager.Winforms.CruiseWizard.FormAddTreeDefault dialog = new CruiseManager.Winforms.CruiseWizard.FormAddTreeDefault(setupService.GetProductCodes());
+            //if (dialog.ShowDialog(newTDV) == DialogResult.OK)
+            //{
+            //    try
+            //    {
+            //        newTDV.Save();
+            //        this._BS_TreeDefaults.Add(newTDV);
+            //    }
+            //    catch(CruiseDAL.DatabaseExecutionException)
+            //    {
+            //        MessageBox.Show("Error: Tree Default not saved");
+            //    }
+            //}
         }
 
         private void _editTDVButton_Click(object sender, EventArgs e)
         {
             TreeDefaultValueDO tdv = this._BS_TreeDefaults.Current as TreeDefaultValueDO;
             if (tdv == null) { return; }
-            ApplicationState appState = ApplicationState.GetHandle();
-
-            TreeDefaultValueDO initialState = new TreeDefaultValueDO(tdv);
-            CruiseManager.Winforms.CruiseWizard.FormAddTreeDefault dialog = new CruiseManager.Winforms.CruiseWizard.FormAddTreeDefault(SetupService.Instance.GetProductCodes());
-            if (dialog.ShowDialog(tdv) == DialogResult.OK)
             {
-                try
-                {
-                    tdv.Save();
-                }
-                catch (Exception)
-                {
-                    tdv.SetValues(tdv);
-                }
+                this.WindowPresenter.ShowEditTreeDefault(tdv);
             }
+            //ApplicationState appState = ApplicationState.GetHandle();
+
+            //TreeDefaultValueDO initialState = new TreeDefaultValueDO(tdv);
+            //CruiseManager.Winforms.CruiseWizard.FormAddTreeDefault dialog = new CruiseManager.Winforms.CruiseWizard.FormAddTreeDefault(SetupService.Instance.GetProductCodes());
+            //if (dialog.ShowDialog(tdv) == DialogResult.OK)
+            //{
+            //    try
+            //    {
+            //        tdv.Save();
+            //    }
+            //    catch (Exception)
+            //    {
+            //        tdv.SetValues(tdv);
+            //    }
+            //}
         }
 
         private void _deleteTDVBTN_Click(object sender, EventArgs e)

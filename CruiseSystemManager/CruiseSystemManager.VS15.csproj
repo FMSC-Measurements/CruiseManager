@@ -123,6 +123,10 @@
       <HintPath>..\packages\iTextSharp.5.5.7\lib\itextsharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -135,6 +139,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App\ApplicationControllerWinForms.cs" />
+    <Compile Include="App\CruiseManagerWinformsModule.cs" />
+    <Compile Include="App\ExceptionHandlerWinforms.cs" />
     <Compile Include="App\PlatformHelperWinForms.cs" />
     <Compile Include="App\SetupServiceWinForms.cs" />
     <Compile Include="App\UserSettingsWinforms.cs" />
@@ -158,11 +164,9 @@
     <Compile Include="Winforms\Components\PreMergeReportView.Designer.cs">
       <DependentUpon>PreMergeReportView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\Components\MergeInfoView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Winforms\Components\MergeInfoView.Designer.cs">
-      <DependentUpon>MergeInfoView.cs</DependentUpon>
+    <Compile Include="Winforms\Components\MergeInfoViewWinforms.cs" />
+    <Compile Include="Winforms\Components\MergeInfoViewWinforms.Designer.cs">
+      <DependentUpon>MergeInfoViewWinforms.cs</DependentUpon>
     </Compile>
     <Compile Include="Winforms\CruiseCustomize\CruiseCustomizeViewWinforms.cs">
       <SubType>UserControl</SubType>
@@ -242,9 +246,7 @@
     <Compile Include="Winforms\FormSupervisorLogin.Designer.cs">
       <DependentUpon>FormSupervisorLogin.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\Components\MergeComponentViewWinforms.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Winforms\Components\MergeComponentViewWinforms.cs" />
     <Compile Include="Winforms\Components\MergeComponentViewWinforms.Designer.cs">
       <DependentUpon>MergeComponentViewWinforms.cs</DependentUpon>
     </Compile>
@@ -329,8 +331,8 @@
     <EmbeddedResource Include="Winforms\Components\PreMergeReportView.resx">
       <DependentUpon>PreMergeReportView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\Components\MergeInfoView.resx">
-      <DependentUpon>MergeInfoView.cs</DependentUpon>
+    <EmbeddedResource Include="Winforms\Components\MergeInfoViewWinforms.resx">
+      <DependentUpon>MergeInfoViewWinforms.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Winforms\CruiseCustomize\CruiseCustomizeViewWinforms.resx">
       <DependentUpon>CruiseCustomizeViewWinforms.cs</DependentUpon>

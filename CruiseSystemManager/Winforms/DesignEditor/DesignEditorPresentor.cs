@@ -254,7 +254,7 @@ namespace CruiseManager.Winforms.DesignEditor
 
         public void LoadSetup()
         {
-            var setupServ = SetupService.Instance;
+            var setupServ = ApplicationController.SetupService;
             Regions = setupServ.GetRegions();
             CruiseMethods = this.ApplicationController.GetCruiseMethods(this.DataContext.Sale.Purpose == "Recon");
             LoggingMethods = setupServ.GetLoggingMethods();
