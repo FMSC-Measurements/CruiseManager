@@ -89,12 +89,31 @@ namespace CruiseManager.Winforms.Dashboard
 
             if (cView is IView)
             {
-                this.SetNavCommands(((IView)cView).NavCommands);
+                //this.SetNavCommands(((IView)cView).NavCommands);
+                //this.SetUserCommands(((IView)cView).UserCommands);
             }
 
             //dock new view 
             cView.Dock = DockStyle.Fill;
             cView.Parent = this.ViewContentPanel;
+        }
+
+        public void SetUserCommands(IEnumerable<ViewCommand> userCommands)
+        {
+            this._userCommandPanel.Controls.Clear();
+            if(userCommands == null || userCommands.Count() == 0) { return;  }
+            using (Graphics g = CreateGraphics())
+            {
+                foreach (ViewCommand command in userCommands)
+                {
+                    Button newButton = new UserCommandButton();
+
+                    newButton.Dock = System.Windows.Forms.DockStyle.Bottom;
+                    this._userCommandPanel.Controls.Add(newButton);
+
+                    command.BindTo(newButton);
+                }
+            }
         }
 
         public void SetNavCommands(IEnumerable<ViewCommand> navCommands)
@@ -103,11 +122,14 @@ namespace CruiseManager.Winforms.Dashboard
             if(navCommands == null) { return; }
             using (Graphics g = CreateGraphics())
             {
-                foreach (ViewCommand command in navCommands)
+                foreach (ViewCommand command in navCommands.Reverse())
                 {
-                    Button newNavButton = MakeNavButton(g, command);
+                    Button newButton = new NavigationButton();
+                    newButton.Dock = System.Windows.Forms.DockStyle.Top;
+                    this._viewNavPanel.Controls.Add(newButton);
 
-                    this._viewNavPanel.Controls.Add(newNavButton);
+                    command.BindTo(newButton);
+
                     Panel spacer = new Panel()
                     {
                         Height = 1,
@@ -120,31 +142,6 @@ namespace CruiseManager.Winforms.Dashboard
             }
         }
 
-        private Button MakeNavButton(Graphics g, ViewCommand command)
-        {
-            Button newNavButton = new Button();
-            //newNavButton.AutoSize = true;
-            newNavButton.BackColor = System.Drawing.Color.ForestGreen;
-
-            newNavButton.FlatAppearance.BorderColor = System.Drawing.Color.DimGray;
-            newNavButton.FlatAppearance.BorderSize = 0;
-            newNavButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.LightGreen;
-            newNavButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            newNavButton.Font = global::CruiseManager.Properties.Settings.Default.App_NavFont;
-            newNavButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            //newNavButton.Location = new System.Drawing.Point(0, 0);
-            //newNavButton.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
-            newNavButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            //newNavButton.Size = new System.Drawing.Size(0, 50);
-            newNavButton.UseVisualStyleBackColor = false;
-            newNavButton.Dock = System.Windows.Forms.DockStyle.Top;
-
-            command.BindTo(newNavButton);
-            Size s = g.MeasureString(newNavButton.Text, newNavButton.Font, this._viewNavPanel.Width - 10).ToSize();
-            newNavButton.Height = s.Height + 6;
-
-            return newNavButton;
-        }
 
         //public void SetNavOptions(IEnumerable<ViewCommand> navOptions)
         //{

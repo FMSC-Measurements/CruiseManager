@@ -209,6 +209,12 @@
     <Compile Include="Winforms\Dashboard\HomeView.Designer.cs">
       <DependentUpon>HomeView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Winforms\Dashboard\NavigationButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Winforms\Dashboard\UserCommandButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Winforms\DataEditor\DataEditorPresentor.cs" />
     <Compile Include="Winforms\DataEditor\DataEditorView.cs">
       <SubType>Form</SubType>

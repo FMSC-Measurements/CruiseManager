@@ -10,7 +10,7 @@ using CruiseManager.Core.Constants;
 
 namespace CruiseManager.Core.Components
 {
-    public class CreateComponentPresenter : IPresentor
+    public class CreateComponentPresenter : Presentor
     {
         static int ROWID_SPACING = 200000;
         static int PLOT_ROW_SPACING = 1000;
@@ -47,7 +47,9 @@ namespace CruiseManager.Core.Components
         }
 
         public DAL ParentDB { get { return ApplicationController.Database; } }
-        public CreateComponentView View { get; set; }
+        public new CreateComponentView View {
+            get { return (CreateComponentView)base.View; }
+            set { base.View = value; } }
 
 
         public CreateComponentPresenter(WindowPresenter windowPresenter, ApplicationController applicationController)
@@ -235,18 +237,11 @@ namespace CruiseManager.Core.Components
             return parentPath.Replace(".cruise", ".M.cruise");
         }
 
-        #region IPresentor Members
+        #region Presentor Members
 
-        IView IPresentor.View { get { return this.View; } set { this.View = (CreateComponentView)value; } }
-
-        public WindowPresenter WindowPresenter
+        protected override void OnViewLoad(EventArgs e)
         {
-            get; protected set;
-        }
-
-        public ApplicationController ApplicationController
-        {
-            get; protected set;
+            
         }
 
 

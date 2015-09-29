@@ -9,9 +9,10 @@ namespace CruiseManager.Core
     {
         IPresentor ViewPresenter { get; }
 
-        IEnumerable<ViewCommand> NavCommands { get; }
-        IEnumerable<ViewCommand> UserCommands { get; }
+        //IEnumerable<ViewCommand> NavCommands { get; }
+        //IEnumerable<ViewCommand> UserCommands { get; }
 
+        event EventHandler Load; 
     }
 }
 

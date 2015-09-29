@@ -14,7 +14,7 @@ using CruiseManager.Core.ViewInterfaces;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    public class CustomizeCruisePresenter : IPresentor, ISaveHandler
+    public class CustomizeCruisePresenter : Presentor, ISaveHandler
     {
         private bool _isFieldSetupInitialized = false;
         private bool _isLogMatrixInitialized = false;
@@ -22,7 +22,11 @@ namespace CruiseManager.Core.CruiseCustomize
         private bool _isTallySetupInitialized = false;
 
 
-        public CruiseCustomizeView View { get; set; }
+        public new CruiseCustomizeView View
+        {
+            get { return (CruiseCustomizeView)base.View; }
+            set{ base.View = value; }
+        }
         public DAL Database { get { return ApplicationController.Database; } }
         //public List<StratumDO> Strata { get; set; }
         //public List<StratumCustomizeViewModel> StrataVM { get; set; }
@@ -685,7 +689,7 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             get
             {
-                throw new NotImplementedException();
+                return true;
             }
         }
 
@@ -701,51 +705,37 @@ namespace CruiseManager.Core.CruiseCustomize
 
         }
 
-        public void HandleAppClosing(ref bool cancel)
-        {
-            StringBuilder errorBuilder = new StringBuilder();
-            if (!Save(ref errorBuilder))
-            {
-                this.WindowPresenter.ShowSimpleErrorMessage(errorBuilder.ToString());
-                cancel = true;
-            }
-        }
+        //public void HandleAppClosing(ref bool cancel)
+        //{
+        //    StringBuilder errorBuilder = new StringBuilder();
+        //    if (!Save(ref errorBuilder))
+        //    {
+        //        this.WindowPresenter.ShowSimpleErrorMessage(errorBuilder.ToString());
+        //        cancel = true;
+        //    }
+        //}
 
-        public bool CanHandleSave
-        {
-            get
-            {
-                return true;
-            }
-        }
 
         #endregion
 
         #region IDisposable Members
 
-        public void Dispose()
-        {
-            //Dispose(true);
-            //GC.SuppressFinalize(this);
-        }
+        //public void Dispose()
+        //{
+        //    //Dispose(true);
+        //    //GC.SuppressFinalize(this);
+        //}
 
 
 
 
         #endregion
 
-        #region IPresentor Members
+        #region Presentor Members
 
-        IView IPresentor.View { get { return this.View; } set { this.View = (CruiseCustomizeView)value; } }
-
-        public WindowPresenter WindowPresenter
+        protected override void OnViewLoad(EventArgs e)
         {
-            get; protected set;
-        }
-
-        public ApplicationController ApplicationController
-        {
-            get; protected set;
+            
         }
 
 

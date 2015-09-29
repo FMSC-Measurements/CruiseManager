@@ -32,27 +32,36 @@ namespace CruiseManager.App
     public class WindowPresenterWinForms : WindowPresenter
     {
 
-        #region Ctor
-
-        //public WindowPresenterWinForms(ApplicationController applicationController) : this()
-        //{
-        //    ApplicationController = applicationController;
-        //}
-
         public WindowPresenterWinForms()
         {
             
         }
 
-        //public WindowPresenterWinForms(String dalPath)
-        //    : this()
-        //{
-        //    ApplicationController.Instance.OpenFile(dalPath);
-        //    //this.OpenFile(dalPath);
-        //}
-        #endregion 
+        public override void Load()
+        {
+            Bind<MainWindow>().To<FormCSMMain>().InSingletonScope();
 
-        
+            Bind<CreateComponentView>().To<CreateComponentViewWinforms>();
+            Bind<CruiseCustomizeView>().To<CruiseCustomizeViewWinforms>();
+            Bind<EditDesignView>().To<EditDesignViewWinForms>();
+            Bind<EditTemplateView>().To<EditTemplateViewWinForms>();
+            Bind<MergeComponentView>().To<MergeComponentViewWinforms>();
+
+            Bind<HomeView>().ToSelf();
+
+            Bind<CreateComponentPresenter>().ToSelf();
+            Bind<CustomizeCruisePresenter>().ToSelf();
+            Bind<DesignEditorPresentor>().ToSelf();
+            Bind<TemplateEditViewPresenter>().ToSelf();
+            Bind<MergeComponentsPresenter>().ToSelf();
+
+            
+
+        }
+
+
+
+
 
 
         public new FormCSMMain MainWindow
@@ -74,14 +83,7 @@ namespace CruiseManager.App
 
 
 
-        protected void SetActiveView(Control view)
-        {
-            //if (view is IView) //when view changed have it tell it's presenter to update the view
-            //{
-            //  ((IView)view).ViewPresenter.UpdateView();
-            //}
-            this.MainWindow.SetActiveView(view);
-        }
+
 
         /// <summary>
         /// Called from Program.cs, launches the main window
@@ -341,25 +343,19 @@ namespace CruiseManager.App
 
         public override void ShowCreateComponentsLayout()
         {
-            CreateComponentViewWinforms view = new CreateComponentViewWinforms(this);
             CreateComponentPresenter presenter = new CreateComponentPresenter(this, this.ApplicationController);
+            CreateComponentViewWinforms view = new CreateComponentViewWinforms(presenter);
 
-            view.ViewPresenter = presenter;
-            presenter.View = view;
+            this.ApplicationController.ChangeView(view);
 
-            this.ApplicationController.ActivePresentor = presenter;
-            SetActiveView(view);
         }
 
         public override void ShowCustomizeCruiseLayout()
         {
-            this.ApplicationController.ActivePresentor = null;
             CustomizeCruisePresenter presenter = new CustomizeCruisePresenter(this, this.ApplicationController);
             CruiseCustomizeViewWinforms view = new CruiseCustomizeViewWinforms(presenter);
+            this.ApplicationController.ChangeView(view);
 
-            SetActiveView(view);
-
-            this.ApplicationController.ActivePresentor = presenter;
         }
 
         
@@ -398,20 +394,20 @@ namespace CruiseManager.App
 
         public override void ShowDataExportDialog(IList<TreeVM> Trees, IList<LogVM> Logs, IList<PlotDO> Plots, IList<CountTreeDO> Counts)
         {
-            DataExportDialog dialog = new DataExportDialog(this.ApplicationController, Trees, Logs, Plots, Counts);
-            //dialog.Owner = DataEditorView; //TODO make data export dialog ownen by data editor
-            dialog.ShowDialog();
+            using (DataExportDialog dialog = new DataExportDialog(this.ApplicationController, Trees, Logs, Plots, Counts))
+            {
+                //dialog.Owner = DataEditorView; //TODO make data export dialog owned by data editor
+                dialog.ShowDialog();
+            }
         }
 
         public override void ShowEditDesign()
         {
-            this.ApplicationController.ActivePresentor = null;
             
             DesignEditorPresentor presenter = new DesignEditorPresentor(this, this.ApplicationController);
             EditDesignViewWinForms view = new EditDesignViewWinForms(presenter);
 
-            SetActiveView(view);
-            this.ApplicationController.ActivePresentor = presenter;
+            this.ApplicationController.ChangeView(view);
         }
 
         public override void ShowEditWizard()
@@ -439,7 +435,12 @@ namespace CruiseManager.App
         public override void ShowHomeLayout()
         {
             var homeView = new HomeView(this.ApplicationController);
-            this.SetActiveView(homeView);
+            this.ApplicationController.ChangeView(homeView);
+            this.MainWindow.SetNavCommands(new ViewCommand[]
+            {
+                this.ApplicationController.MakeViewCommand("Open File", this.ApplicationController.OpenFile),
+                this.ApplicationController.MakeViewCommand("Create New Cruise", this.ApplicationController.CreateNewCruise)
+            });
 
             //this.MainWindow.ClearNavPanel();
             //this.MainWindow.ViewContentPanel.Controls.Clear();
@@ -468,9 +469,8 @@ namespace CruiseManager.App
                 //this.MainWindow.AddNavButton("Cancel", this.HandleCancelImportTemplateClick);
                 TemplateEditViewPresenter presenter = new TemplateEditViewPresenter(this, this.ApplicationController);
                 ImportFromCruiseView view = new ImportFromCruiseView(dialog.FileName, presenter);
-                view.Dock = DockStyle.Fill;
-                //this.ApplicationController.ActivePresentor = view;
-                this.SetActiveView(view);
+
+                this.ApplicationController.ChangeView(view);
 
             }
             // find table to import
@@ -489,8 +489,7 @@ namespace CruiseManager.App
             MergeComponentsPresenter presenter = new MergeComponentsPresenter(this, this.ApplicationController);
             MergeComponentViewWinforms view = new MergeComponentViewWinforms(presenter);
 
-            this.ApplicationController.ActivePresentor = presenter;
-            SetActiveView(view);
+            this.ApplicationController.ChangeView(view);
         }
 
         //public override void ShowOpenCruiseDialog()
@@ -554,17 +553,18 @@ namespace CruiseManager.App
 
         public override void ShowTemplateLandingLayout()
         {
-            //this.MainWindow.ClearNavPanel();
-            //this.MainWindow.ViewContentPanel.Controls.Clear();
             this.MainWindow.Text = System.IO.Path.GetFileName(this.ApplicationController.Database.Path);
-            //this.MainWindow.AddNavButton("Back", this.HandleHomePageClick);
-            //this.MainWindow.AddNavButton("Import From Cruise", this.HandleImportTemplateClick);
+
             
             TemplateEditViewPresenter presenter = new TemplateEditViewPresenter(this, this.ApplicationController);
             EditTemplateViewWinForms view = new EditTemplateViewWinForms(presenter);
-            view.ViewPresenter = presenter;
-            this.ApplicationController.ActivePresentor = presenter;
-            this.SetActiveView(view);
+
+            this.ApplicationController.ChangeView(view);
+
+            if(templateLandingNavOptions == null)
+            {
+                this.InitializeTemplateNavOptions();
+            }
             this.MainWindow.SetNavCommands(this.templateLandingNavOptions);
 
         }
@@ -574,7 +574,7 @@ namespace CruiseManager.App
         {
             this.templateLandingNavOptions = new ViewCommand[]{
                 this.ApplicationController.MakeViewCommand("Import From Cruise", this.ShowImportTemplate),
-                this.ApplicationController.MakeViewCommand("Close File", null )
+                this.ApplicationController.MakeViewCommand("Close File", this.ShowHomeLayout )
             };
         }
         
@@ -634,7 +634,9 @@ namespace CruiseManager.App
             return true;
         }
 
-        
+       
+
+
 
         #region IDisposable Members
         //bool _disposed = false;

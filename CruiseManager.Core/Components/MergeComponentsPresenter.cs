@@ -11,7 +11,7 @@ using CruiseManager.Core.App;
 namespace CruiseManager.Core.Components
 {
 
-    public class MergeComponentsPresenter : IPresentor
+    public class MergeComponentsPresenter : Presentor
     {
 
      
@@ -34,7 +34,10 @@ namespace CruiseManager.Core.Components
 
         public Dictionary<String, MergeTableCommandBuilder> CommandBuilders = new Dictionary<string, MergeTableCommandBuilder>();
 
-        public MergeComponentView View { get; set; }
+        public new MergeComponentView View {
+            get { return (MergeComponentView)base.View; }
+            set { base.View = value; } }
+
         public DAL MasterDB { get { return ApplicationController.Database; } }
         public List<ComponentFileVM> ActiveComponents { get; set; }
         public List<ComponentFileVM> MissingComponents { get; set; }
@@ -325,37 +328,36 @@ namespace CruiseManager.Core.Components
             return error; 
         }
 
-        #region IPresentor Members
+        #region Presentor Members
 
-        IView IPresentor.View { get { return this.View; } set { this.View = (MergeComponentView)value; } }
-
-        public WindowPresenter WindowPresenter
+        protected override void OnViewLoad(EventArgs e)
         {
-            get; protected set;
-        }
-
-        public ApplicationController ApplicationController
-        {
-            get; protected set;
+            
         }
 
 
         #endregion
 
         #region IDisposable Members
+        private bool _disposed;
 
-        public void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            if (this.ActiveComponents != null)
+            base.Dispose(disposing);
+            if(disposing && !_disposed)
             {
-                foreach (ComponentFileVM comp in this.ActiveComponents)
+                if (this.ActiveComponents != null)
                 {
-                    if (comp.Database != null)
+                    foreach (ComponentFileVM comp in this.ActiveComponents)
                     {
-                        comp.Database.Dispose();
-                        comp.Database = null;
+                        if (comp.Database != null)
+                        {
+                            comp.Database.Dispose();
+                            comp.Database = null;
+                        }
                     }
                 }
+                _disposed = true;
             }
         }
 

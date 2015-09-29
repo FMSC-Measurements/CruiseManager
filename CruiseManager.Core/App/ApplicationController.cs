@@ -32,7 +32,7 @@ namespace CruiseManager.Core.App
         //responceable for saving the user's data 
         public ISaveHandler SaveHandler { get { return ActivePresentor as ISaveHandler; } }
         private IPresentor _activePresentor;
-        public IPresentor ActivePresentor
+        protected IPresentor ActivePresentor
         {
             get
             {
@@ -40,15 +40,6 @@ namespace CruiseManager.Core.App
             }
             set
             {
-                if (SaveHandler != null)
-                {
-                    SaveHandler.HandleSave();
-                }
-                if (_activePresentor != null)
-                {
-                    //_activePresentor.Dispose();
-                }
-
                 _activePresentor = value;
                 if (SaveHandler == null)
                 {
@@ -57,10 +48,34 @@ namespace CruiseManager.Core.App
                 }
                 else
                 {
-                    this.SaveAsCommand.Enabled = this.SaveCommand.Enabled = SaveHandler.CanHandleSave;
+                    this.SaveAsCommand.Enabled = this.SaveCommand.Enabled = true;
                     //this.WindowPresenter.MainWindow.EnableSave = SaveHandler.CanHandleSave;
                 }
             }
+        }
+
+        public bool ChangeView(IView view)
+        {
+            if(SaveHandler != null)
+            {
+                if (SaveHandler.HasChangesToSave)
+                {
+                    var doSave = this.WindowPresenter.AskYesNoCancel("You Have Unsaved Changes, Would You Like To Save Before Closing?", "Save Changes?", null);
+                    if (doSave == null)//user selects cancel
+                    {
+                        return false;//don't change views
+                    }
+                    else if (doSave == true)
+                    {
+                        SaveHandler.HandleSave();
+                    }
+                    else//continue without saving
+                    { }
+                }
+            }
+            this.ActivePresentor = view.ViewPresenter;
+            this.WindowPresenter.MainWindow.SetActiveView(view);
+            return true;
         }
 
         //public static ApplicationController Instance { get; set; }
@@ -174,7 +189,19 @@ namespace CruiseManager.Core.App
             {
                 if (this.SaveHandler != null)
                 {
-                    SaveHandler.HandleAppClosing(ref cancel);
+                    var doSave = this.WindowPresenter.AskYesNoCancel("You Have Unsaved Changes, Would You Like To Save Before Closing?", "Save Changes?", null);
+                    if (doSave == true)
+                    {
+                        SaveHandler.HandleSave();
+                    }
+                    else if (doSave.HasValue == false)
+                    {
+                        cancel = true;
+                    }
+                    else if (doSave == false)
+                    {
+                        return;
+                    }
                 }
             }
             catch (Exception ex)

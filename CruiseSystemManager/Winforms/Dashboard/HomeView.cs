@@ -20,11 +20,11 @@ namespace CSM.Winforms.Dashboard
             this.ApplicationController = applicationController;
             InitializeComponent();
 
-            this.NavCommands = new ViewCommand[]
-            {
-                this.ApplicationController.MakeViewCommand("Open File", this.ApplicationController.OpenFile),
-                this.ApplicationController.MakeViewCommand("Create New Cruise", this.ApplicationController.CreateNewCruise)
-            };
+            //this.UserCommands = new ViewCommand[]
+            //{
+            //    this.ApplicationController.MakeViewCommand("Open File", this.ApplicationController.OpenFile),
+            //    this.ApplicationController.MakeViewCommand("Create New Cruise", this.ApplicationController.CreateNewCruise)
+            //};
 
         }
 

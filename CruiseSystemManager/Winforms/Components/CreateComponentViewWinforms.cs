@@ -24,27 +24,30 @@ namespace CruiseManager.WinForms.Components
         //    _myApplicationController = applicationController;
         //}
 
-        public CreateComponentViewWinforms(WindowPresenter windowPresenter)
+        public CreateComponentViewWinforms(CreateComponentPresenter viewPresenter)
         {
-            this._myWindowPresenter = windowPresenter;
             InitializeComponent();
+
+            this.ViewPresenter = viewPresenter;
+            this.ViewPresenter.View = this;
+            this._myWindowPresenter = this.ViewPresenter.WindowPresenter;
+
+            
         }
 
-        private CreateComponentPresenter _presenter; 
         public CreateComponentPresenter ViewPresenter 
         {
-            get { return _presenter; }
-            set
-            {
-                _presenter = value;
-                if (value != null)
-                {
-                    this.__numCompTB.Value = (Decimal)value.NumComponents;
-                }
-            }
+            get; set;
         }
 
-        
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            System.Diagnostics.Debug.Assert(ViewPresenter != null);
+            this.__numCompTB.Value = (Decimal)ViewPresenter.NumComponents;
+        }
+
+
 
         private void __makeBtn_Click(object sender, EventArgs e)
         {

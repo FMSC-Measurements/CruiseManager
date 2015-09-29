@@ -18,7 +18,7 @@ namespace CruiseManager.Winforms.TemplateEditor
             viewPresenter.View = this;
             this.ViewPresenter = viewPresenter;
 
-            this.NavCommands = new ViewCommand[]{
+            this.UserCommands = new ViewCommand[]{
                 this.ViewPresenter.ApplicationController.MakeViewCommand("Close File", this.ViewPresenter.WindowPresenter.ShowCruiseLandingLayout),
                 this.ViewPresenter.ApplicationController.MakeViewCommand("Import From File", this.ViewPresenter.WindowPresenter.ShowImportTemplate)
             };

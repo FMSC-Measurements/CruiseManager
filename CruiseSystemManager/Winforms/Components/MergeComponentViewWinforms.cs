@@ -22,6 +22,7 @@ namespace CruiseManager.Winforms.Components
         public MergeComponentViewWinforms(MergeComponentsPresenter viewPresenter) 
         {
             this.ViewPresenter = viewPresenter;
+            this.ViewPresenter.View = this;
 
             InitializeComponent();
             mergeInfoView = new MergeInfoViewWinforms(this.ViewPresenter);

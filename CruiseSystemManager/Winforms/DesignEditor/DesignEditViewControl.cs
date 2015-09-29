@@ -25,7 +25,8 @@ namespace CruiseManager.Winforms.EditDesign
 
         public EditDesignViewWinForms(DesignEditorPresentor viewPresenter)
         {
-            viewPresenter.View = this;
+            this.ViewPresenter = viewPresenter;
+            this.ViewPresenter.View = this;
 
             this.ExceptionHandler = viewPresenter.ApplicationController.ExceptionHandler;
             this.WindowPresenter = viewPresenter.WindowPresenter;
@@ -36,6 +37,15 @@ namespace CruiseManager.Winforms.EditDesign
         public DesignEditorPresentor ViewPresenter
         {
             get; set;
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            System.Diagnostics.Debug.Assert(ViewPresenter != null);
+            this.BindData();
+            this.BindSetup();
+
         }
 
         public void BindSetup()

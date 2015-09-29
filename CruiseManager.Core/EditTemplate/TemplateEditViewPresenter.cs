@@ -351,7 +351,8 @@ namespace CruiseManager.Core.EditTemplate
         {
             get
             {
-                throw new NotImplementedException();
+                return true;
+                //TODO
             }
         }
 
@@ -371,14 +372,6 @@ namespace CruiseManager.Core.EditTemplate
         public void HandleAppClosing(ref bool cancel)
         {
             this.Save();
-        }
-
-        public bool CanHandleSave
-        {
-            get
-            {
-                return true;
-            }
         }
 
         #endregion
