@@ -24,61 +24,69 @@ namespace CruiseManager.Core.App
         public ViewCommand OpenFileCommand { get; protected set; }
         #endregion
 
-
+        #region properties
         public DAL Database { get; set; }
         public bool InSupervisorMode { get; set; }
 
         //the current save handler is the active locical component of the program that is 
         //responceable for saving the user's data 
         public ISaveHandler SaveHandler { get { return ActivePresentor as ISaveHandler; } }
-        private IPresentor _activePresentor;
+        //private IPresentor _activePresentor;
+
+        private IView _activeView;
+        public IView ActiveView
+        {
+            get { return _activeView;  }
+            set
+            {
+                //if(SaveHandler != null)
+                if (_activeView != null && _activeView.ViewPresenter is ISaveHandler)
+                {
+                    if (SaveHandler.HasChangesToSave)
+                    {
+                        var doSave = _activeView.AskYesNoCancel("You Have Unsaved Changes, Would You Like To Save Before Closing?", "Save Changes?", null);
+                        if (doSave == null)//user selects cancel
+                        {
+                            return;
+                            //return false;//don't change views
+                        }
+                        else if (doSave == true)
+                        {
+                            SaveHandler.HandleSave();
+                        }
+                        else//continue without saving
+                        { }
+                    }
+                }
+                //this.ActivePresentor = view.ViewPresenter;
+                _activeView = value;
+                this.WindowPresenter.MainWindow.SetActiveView(_activeView);
+            }
+
+        }
+
         protected IPresentor ActivePresentor
         {
             get
             {
-                return _activePresentor;
+                return _activeView?.ViewPresenter;
             }
-            set
-            {
-                _activePresentor = value;
-                if (SaveHandler == null)
-                {
-                    this.SaveAsCommand.Enabled = this.SaveCommand.Enabled = false;
-                    //this.WindowPresenter.MainWindow.EnableSave = false;
-                }
-                else
-                {
-                    this.SaveAsCommand.Enabled = this.SaveCommand.Enabled = true;
-                    //this.WindowPresenter.MainWindow.EnableSave = SaveHandler.CanHandleSave;
-                }
-            }
+            //set
+            //{
+            //    _activePresentor = value;
+            //    if (SaveHandler == null)
+            //    {
+            //        this.SaveAsCommand.Enabled = this.SaveCommand.Enabled = false;
+            //        //this.WindowPresenter.MainWindow.EnableSave = false;
+            //    }
+            //    else
+            //    {
+            //        this.SaveAsCommand.Enabled = this.SaveCommand.Enabled = true;
+            //        //this.WindowPresenter.MainWindow.EnableSave = SaveHandler.CanHandleSave;
+            //    }
+            //}
         }
-
-        public bool ChangeView(IView view)
-        {
-            if(SaveHandler != null)
-            {
-                if (SaveHandler.HasChangesToSave)
-                {
-                    var doSave = this.WindowPresenter.AskYesNoCancel("You Have Unsaved Changes, Would You Like To Save Before Closing?", "Save Changes?", null);
-                    if (doSave == null)//user selects cancel
-                    {
-                        return false;//don't change views
-                    }
-                    else if (doSave == true)
-                    {
-                        SaveHandler.HandleSave();
-                    }
-                    else//continue without saving
-                    { }
-                }
-            }
-            this.ActivePresentor = view.ViewPresenter;
-            this.WindowPresenter.MainWindow.SetActiveView(view);
-            return true;
-        }
-
-        //public static ApplicationController Instance { get; set; }
+        #endregion
 
         #region Constructor Properties
 
@@ -117,6 +125,30 @@ namespace CruiseManager.Core.App
         
 
         public abstract ViewCommand MakeViewCommand(String name, Action action);
+
+        //public bool ChangeView(IView view)
+        //{
+        //    if (SaveHandler != null)
+        //    {
+        //        if (SaveHandler.HasChangesToSave)
+        //        {
+        //            var doSave = this.WindowPresenter.AskYesNoCancel("You Have Unsaved Changes, Would You Like To Save Before Closing?", "Save Changes?", null);
+        //            if (doSave == null)//user selects cancel
+        //            {
+        //                return false;//don't change views
+        //            }
+        //            else if (doSave == true)
+        //            {
+        //                SaveHandler.HandleSave();
+        //            }
+        //            else//continue without saving
+        //            { }
+        //        }
+        //    }
+        //    this.ActivePresentor = view.ViewPresenter;
+        //    this.WindowPresenter.MainWindow.SetActiveView(view);
+        //    return true;
+        //}
 
 
         public void CreateNewCruise()
@@ -189,7 +221,7 @@ namespace CruiseManager.Core.App
             {
                 if (this.SaveHandler != null)
                 {
-                    var doSave = this.WindowPresenter.AskYesNoCancel("You Have Unsaved Changes, Would You Like To Save Before Closing?", "Save Changes?", null);
+                    var doSave = this.ActiveView.AskYesNoCancel("You Have Unsaved Changes, Would You Like To Save Before Closing?", "Save Changes?", null);
                     if (doSave == true)
                     {
                         SaveHandler.HandleSave();
@@ -211,20 +243,42 @@ namespace CruiseManager.Core.App
                     throw;
                 }
             }
-        }
-        
+        }        
 
         public DAL GetNewOrUnfinishedCruise()
         {
-            if(HasUnfinishedCruiseFile())
+            DAL db = null;
+            try
             {
-                Nullable<bool> dialogResult = WindowPresenter.AskYesNoCancel("Partially created cruise file found, would you like to resume?\r\nSelecting No will discard existing partial cruise.", "?");
-                if(dialogResult.HasValue && dialogResult.Value == true) { return new DAL(GetTempCruiseLocation()); }
-                else if (dialogResult.HasValue == false)
-                { return null; }
-                //fall through if false
+                if (HasUnfinishedCruiseFile())
+                {
+                    Nullable<bool> dialogResult = this.ActiveView.AskYesNoCancel(
+                        "Partially created cruise file found, would you like to resume?\r\n" +
+                        "Selecting No will discard existing partial cruise.", "?", true);
+                    if (dialogResult.HasValue && dialogResult.Value == true)
+                    {
+                        this.ActiveView.ShowWaitCursor();
+                        db = new DAL(GetTempCruiseLocation());
+                    }
+                    else if (dialogResult.HasValue == false)
+                    {
+                        return db = null;
+                    }
+                    //fall through if false
+                }
+                else
+                {
+                    this.ActiveView.ShowWaitCursor();
+                    db = new DAL(GetTempCruiseLocation(), true);
+                }
+
+                return db;
             }
-            return new DAL(GetTempCruiseLocation(), true);
+            finally
+            {
+                this.ActiveView.ShowDefaultCursor();
+            }
+             
         }
 
 

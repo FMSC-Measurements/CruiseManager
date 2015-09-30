@@ -55,8 +55,6 @@ namespace CruiseManager.App
             Bind<TemplateEditViewPresenter>().ToSelf();
             Bind<MergeComponentsPresenter>().ToSelf();
 
-            
-
         }
 
 
@@ -343,18 +341,18 @@ namespace CruiseManager.App
 
         public override void ShowCreateComponentsLayout()
         {
-            CreateComponentPresenter presenter = new CreateComponentPresenter(this, this.ApplicationController);
+            CreateComponentPresenter presenter = new CreateComponentPresenter(this.ApplicationController);
             CreateComponentViewWinforms view = new CreateComponentViewWinforms(presenter);
 
-            this.ApplicationController.ChangeView(view);
+            this.ApplicationController.ActiveView = view;
 
         }
 
         public override void ShowCustomizeCruiseLayout()
         {
-            CustomizeCruisePresenter presenter = new CustomizeCruisePresenter(this, this.ApplicationController);
+            CustomizeCruisePresenter presenter = new CustomizeCruisePresenter(this.ApplicationController);
             CruiseCustomizeViewWinforms view = new CruiseCustomizeViewWinforms(presenter);
-            this.ApplicationController.ChangeView(view);
+            this.ApplicationController.ActiveView = view;
 
         }
 
@@ -365,14 +363,11 @@ namespace CruiseManager.App
             DAL tempfile = ApplicationController.GetNewOrUnfinishedCruise();
             if (tempfile != null)
             {
-                this.ShowWaitCursor();
-
                 CruiseWizardView view = new CruiseWizardView();
                 CruiseWizardPresenter p = new CruiseWizardPresenter(view, this, this.ApplicationController, tempfile);
                 p.View = view;
                 view.Owner = MainWindow;
 
-                this.ShowDefaultCursor();
 
                 if (view.ShowDialog() == DialogResult.OK)
                 {
@@ -404,38 +399,36 @@ namespace CruiseManager.App
         public override void ShowEditDesign()
         {
             
-            DesignEditorPresentor presenter = new DesignEditorPresentor(this, this.ApplicationController);
-            EditDesignViewWinForms view = new EditDesignViewWinForms(presenter);
+            DesignEditorPresentor presenter = new DesignEditorPresentor(this.ApplicationController);
+            EditDesignViewWinForms view = new EditDesignViewWinForms(this, presenter);
 
-            this.ApplicationController.ChangeView(view);
+            this.ApplicationController.ActiveView = view;
         }
 
         public override void ShowEditWizard()
         {
             if (ApplicationController.Database.GetRowCount("Tree", null) == 0)
             {
-                this.ShowWaitCursor();
 
                 CruiseWizardView view = new CruiseWizardView();
                 CruiseWizardPresenter p = new CruiseWizardPresenter(view, this, this.ApplicationController, this.ApplicationController.Database);
                 p.View = view;
                 view.Owner = MainWindow;
 
-                this.ShowDefaultCursor();
-
                 view.ShowDialog(this.MainWindow);
                 
             }
             else
             {
-                MessageBox.Show("Can't edit file with tree data in wizard");
+                this.ApplicationController.ActiveView.ShowMessage("Can't edit file with tree data in wizard");
+                //MessageBox.Show("Can't edit file with tree data in wizard");
             }
         }
 
         public override void ShowHomeLayout()
         {
             var homeView = new HomeView(this.ApplicationController);
-            this.ApplicationController.ChangeView(homeView);
+            this.ApplicationController.ActiveView = homeView;
             this.MainWindow.SetNavCommands(new ViewCommand[]
             {
                 this.ApplicationController.MakeViewCommand("Open File", this.ApplicationController.OpenFile),
@@ -467,11 +460,10 @@ namespace CruiseManager.App
                 this.MainWindow.ClearActiveView();
                 //this.MainWindow.AddNavButton("Finish", this.HandleFinishImportTemplateClick);
                 //this.MainWindow.AddNavButton("Cancel", this.HandleCancelImportTemplateClick);
-                TemplateEditViewPresenter presenter = new TemplateEditViewPresenter(this, this.ApplicationController);
-                ImportFromCruiseView view = new ImportFromCruiseView(dialog.FileName, presenter);
+                TemplateEditViewPresenter presenter = new TemplateEditViewPresenter(this.ApplicationController);
+                ImportFromCruiseView view = new ImportFromCruiseView( dialog.FileName, this, presenter);
 
-                this.ApplicationController.ChangeView(view);
-
+                this.ApplicationController.ActiveView = view;
             }
             // find table to import
             // open dialog box
@@ -486,10 +478,10 @@ namespace CruiseManager.App
         public override void ShowManageComponentsLayout()
         {
             
-            MergeComponentsPresenter presenter = new MergeComponentsPresenter(this, this.ApplicationController);
+            MergeComponentsPresenter presenter = new MergeComponentsPresenter(this.ApplicationController);
             MergeComponentViewWinforms view = new MergeComponentViewWinforms(presenter);
 
-            this.ApplicationController.ChangeView(view);
+            this.ApplicationController.ActiveView = view;
         }
 
         //public override void ShowOpenCruiseDialog()
@@ -556,10 +548,10 @@ namespace CruiseManager.App
             this.MainWindow.Text = System.IO.Path.GetFileName(this.ApplicationController.Database.Path);
 
             
-            TemplateEditViewPresenter presenter = new TemplateEditViewPresenter(this, this.ApplicationController);
-            EditTemplateViewWinForms view = new EditTemplateViewWinForms(presenter);
+            TemplateEditViewPresenter presenter = new TemplateEditViewPresenter(this.ApplicationController);
+            EditTemplateViewWinForms view = new EditTemplateViewWinForms(this, presenter);
 
-            this.ApplicationController.ChangeView(view);
+            this.ApplicationController.ActiveView = view;
 
             if(templateLandingNavOptions == null)
             {
@@ -578,51 +570,51 @@ namespace CruiseManager.App
             };
         }
         
-        public override Nullable<bool> AskYesNoCancel(String message, String caption)
-        {
-            return AskYesNoCancel(message, caption, true);
-        }
+        //public override Nullable<bool> AskYesNoCancel(String message, String caption)
+        //{
+        //    return AskYesNoCancel(message, caption, true);
+        //}
 
-        public override Nullable<bool> AskYesNoCancel(String message, String caption, Nullable<bool> defaultOption)
-        {
-            MessageBoxDefaultButton defaultButton;
-            switch (defaultOption)
-            {
-                case true:
-                    { defaultButton = MessageBoxDefaultButton.Button1; break; }
-                case false:
-                    { defaultButton = MessageBoxDefaultButton.Button2; break; }
-                case null:
-                    { defaultButton = MessageBoxDefaultButton.Button3; break; }
-                default:
-                    { defaultButton = MessageBoxDefaultButton.Button1; break; }
-            }
-            DialogResult result = MessageBox.Show(message, caption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, defaultButton);
-            return (result == DialogResult.Cancel) ? (Nullable < bool >)null : (result == DialogResult.Yes) ? true : false;
-        }
+        //public override Nullable<bool> AskYesNoCancel(String message, String caption, Nullable<bool> defaultOption)
+        //{
+        //    MessageBoxDefaultButton defaultButton;
+        //    switch (defaultOption)
+        //    {
+        //        case true:
+        //            { defaultButton = MessageBoxDefaultButton.Button1; break; }
+        //        case false:
+        //            { defaultButton = MessageBoxDefaultButton.Button2; break; }
+        //        case null:
+        //            { defaultButton = MessageBoxDefaultButton.Button3; break; }
+        //        default:
+        //            { defaultButton = MessageBoxDefaultButton.Button1; break; }
+        //    }
+        //    DialogResult result = MessageBox.Show(message, caption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, defaultButton);
+        //    return (result == DialogResult.Cancel) ? (Nullable < bool >)null : (result == DialogResult.Yes) ? true : false;
+        //}
 
-        public override void ShowMessage(String message, String caption)
-        {
-            MessageBox.Show(message, caption);
-        }
+        //public override void ShowMessage(String message, String caption)
+        //{
+        //    MessageBox.Show(message, caption);
+        //}
 
-        public override void ShowSimpleErrorMessage(string errorMessage)
-        {
-            using (ErrorMessageDialog dialog = new ErrorMessageDialog())
-            {
-                dialog.ShowDialog(errorMessage, string.Empty);
-            }
-        }
+        //public override void ShowSimpleErrorMessage(string errorMessage)
+        //{
+        //    using (ErrorMessageDialog dialog = new ErrorMessageDialog())
+        //    {
+        //        dialog.ShowDialog(errorMessage, string.Empty);
+        //    }
+        //}
 
-        public override void ShowWaitCursor()
-        {
-            this.MainWindow.Cursor = Cursors.WaitCursor;
+        //public override void ShowWaitCursor()
+        //{
+        //    this.MainWindow.Cursor = Cursors.WaitCursor;
 
-        }
-        public override void ShowDefaultCursor()
-        {
-            this.MainWindow.Cursor = Cursors.Default;
-        }
+        //}
+        //public override void ShowDefaultCursor()
+        //{
+        //    this.MainWindow.Cursor = Cursors.Default;
+        //}
 
         #endregion
 

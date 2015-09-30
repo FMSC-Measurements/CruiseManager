@@ -15,7 +15,7 @@ namespace CruiseManager.Core.EditTemplate
 
 
 
-    public class TemplateEditViewPresenter : IPresentor, ISaveHandler
+    public class TemplateEditViewPresenter : Presentor, ISaveHandler
     {
         private FMSC.Utility.Collections.BindingListRedux<TreeDefaultValueDO> _treeDefaultValues;
         //private List<TreeDefaultValueDO> _toBeDeletedTreeDefaults = new List<TreeDefaultValueDO>();
@@ -54,10 +54,9 @@ namespace CruiseManager.Core.EditTemplate
         public BindingList<LogFieldSetupDefaultDO> UnselectedLogFields { get; set; }
 
 
-        public TemplateEditViewPresenter(WindowPresenter controller, ApplicationController applicationController)
+        public TemplateEditViewPresenter(ApplicationController applicationController)
         {
             this.ApplicationController = applicationController;
-            this.WindowPresenter = controller;
 
 
             //read TreeFiedleSetup info from .setup file and convert the data to TreeFieldSetupDefault
@@ -376,37 +375,6 @@ namespace CruiseManager.Core.EditTemplate
 
         #endregion
 
-        #region IDisposable Members
-
-        public void Dispose()
-        {
-            //Dispose(true);
-            //GC.SuppressFinalize(this);
-        }
-
-        //protected virtual void Dispose(bool isDisposing)
-        //{
-        //    UnwireTreeAuditChangedEvents();
-        //}
-
-        #endregion
-
-        #region IPresentor Members
-
-        IView IPresentor.View { get { return this.View; } set { this.View = (EditTemplateView)value; } }
-
-        public WindowPresenter WindowPresenter
-        {
-            get; protected set;
-        }
-
-        public ApplicationController ApplicationController
-        {
-            get; protected set;
-        }
-
-
-        #endregion
     }
 
     //a worker class for comparing TreeFieldSetupDO 

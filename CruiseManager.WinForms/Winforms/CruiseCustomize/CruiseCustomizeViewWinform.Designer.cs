@@ -1,176 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using CruiseDAL.DataObjects;
-using System.Collections;
-using CruiseManager.Core.App;
-using CruiseManager.Core.Models;
-using CruiseManager.Core.CruiseCustomize;
-using CruiseManager.Core.ViewInterfaces;
-using CruiseManager.Core;
-
 namespace CruiseManager.Winforms.CruiseCustomize
 {
-    public partial class CruiseCustomizeViewWinforms : UserControl, CruiseCustomizeView
+    public partial class CruiseCustomizeViewWinforms
     {
-
         /// <summary> 
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        private TabPage _logMatrixTabPage;
-
-        #region controls
-        private System.Windows.Forms.TabControl _tabControl;
-        private System.Windows.Forms.TabPage _fieldSetupPage;
-        private System.Windows.Forms.TabPage _tallySetupPage;
-        private System.Windows.Forms.TabPage _treeAuditTabPage;
-        private System.Windows.Forms.DataGridView _treeAuditDGV;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.RichTextBox _treeAuditErrorTB;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.RichTextBox _treeAuditValueSetTB;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox _treeAuditMaxTB;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox _treeAuditMinTB;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.ListBox _treeAuditFieldList;
-        private System.Windows.Forms.DataGridView _treeAuditTDVSelectDGV;
-        private System.Windows.Forms.DataGridViewTextBoxColumn primaryProductDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn speciesDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn liveDeadDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn fIAcodeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn cullPrimaryDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn hiddenPrimaryDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn cullSecondaryDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn hiddenSecondaryDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn recoverableDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn chargeableDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn contractSpeciesDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn treeGradeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn merchHeightLogLengthDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn merchHeightTypeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn formClassDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn barkThicknessRatioDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn averageZDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn referenceHeightPercentDataGridViewTextBoxColumn;
-        private System.Windows.Forms.TabControl _fieldSetup_Child_TabControl;
-        private System.Windows.Forms.TabPage _treeField_TabPage;
-        private FMSC.Controls.OrderableAddRemoveWidget _treeFieldWidget;
-        private System.Windows.Forms.TabPage _logField_TabPage;
-        private FMSC.Controls.OrderableAddRemoveWidget _logFieldWidget;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.ListBox _strataLB;
-        private System.Windows.Forms.BindingSource _BS_treeDefaults;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private System.Windows.Forms.BindingSource _BS_treeAudits;
-        private FMSC.Controls.SelectedItemsGridView _tdvDGV;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.TextBox _TreeFieldHeadingTB;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.BindingSource _BS_TreeField;
-        private System.Windows.Forms.BindingSource _BS_LogField;
-        private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.TextBox _logFieldHeadingTB;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox _treeFieldWidthTB;
-        private System.Windows.Forms.TextBox _logFieldWidthTB;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.DataGridViewTextBoxColumn speciesDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn primaryProductDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn liveDeadDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn fIAcodeDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn cullPrimaryDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn hiddenPrimaryDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn cullSecondaryDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn hiddenSecondaryDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn recoverableDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn contractSpeciesDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn treeGradeDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn merchHeightLogLengthDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn merchHeightTypeDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn formClassDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn barkThicknessRatioDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn averageZDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn referenceHeightPercentDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.Button _treeAuditClearSelectionBtn;
-        private System.Windows.Forms.Panel panel6;
-        private System.Windows.Forms.Button _tavDeleteBTN;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.Panel _tallyNavPanel;
-        private System.Windows.Forms.CheckBox _systematicOptCB;
-        private System.Windows.Forms.ComboBox _stratumHKCB;
-        private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.ComboBox _sampleGroupCB;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.ComboBox _strataCB;
-        private TallyEditPanel _tallyEditPanel;
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.Button _auditRulesHelp_BTN;
-        private System.Windows.Forms.ToolTip toolTip1;
-        #endregion
-
-
-        private TallySetupStratum _currentTallySetupStratum;
-        private TallySetupSampleGroup _currentSG;
-        private DataGridViewComboBoxColumn fieldDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn minDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn maxDataGridViewTextBoxColumn;
-
-        private LogMatrixSettingsView _logMatrixPage;
-
-        public CustomizeCruisePresenter ViewPresenter { get; set; }
-        //protected StratumDO FieldSetup_CurrentStratum { get; set; }
-
-        public CruiseCustomizeViewWinforms(CustomizeCruisePresenter presenter)
+        /// <summary> 
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
         {
-            this.ViewPresenter = presenter;
-            ViewPresenter.View = this;
-
-            InitializeComponent();
-
-            if (this.ViewPresenter.ApplicationController.InSupervisorMode)
+            if (disposing && (components != null))
             {
-                InitializeLogMatrixComponent();
-            }        
-        }
-
-        private void InitializeLogMatrixComponent()
-        {
-            this._logMatrixPage = new LogMatrixSettingsView(this.ViewPresenter);
-            this._logMatrixPage.SuspendLayout();
-            this._logMatrixPage.Dock = DockStyle.Fill;
-
-            this._logMatrixTabPage = new System.Windows.Forms.TabPage();
-            this._logMatrixTabPage.SuspendLayout();
-
-
-            // 
-            // _logMatrixTabPage
-            // 
-            this._logMatrixTabPage.Controls.Add(this._logMatrixPage);
-            this._logMatrixTabPage.Location = new System.Drawing.Point(4, 22);
-            this._logMatrixTabPage.Name = "_logMatrixTabPage";
-            this._logMatrixTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this._logMatrixTabPage.Size = new System.Drawing.Size(632, 391);
-            this._logMatrixTabPage.TabIndex = 7;
-            this._logMatrixTabPage.Text = "Log Matrix";
-            this._logMatrixTabPage.UseVisualStyleBackColor = true;
-
-            this._logMatrixTabPage.ResumeLayout(false);
-            this._logMatrixPage.ResumeLayout(false);
-
-            this._tabControl.Controls.Add(this._logMatrixTabPage);
+                components.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
         #region Component Designer generated code
@@ -1360,330 +1207,98 @@ namespace CruiseManager.Winforms.CruiseCustomize
 
         #endregion
 
-
-
-        public void UpdateTallySetupView()
-        {
-            _strataCB.DataSource = ViewPresenter.TallySetupStrata;
-            //_tallyEditPanel.TallyPresets = Presenter.TallyPresets;
-        }
-
-        public void UpdateFieldSetupViews()
-        {
-            if (this.ViewPresenter.IsLogGradingEnabled)
-            {
-                if (!this._fieldSetup_Child_TabControl.TabPages.Contains(this._logField_TabPage))
-                {
-                    this._fieldSetup_Child_TabControl.TabPages.Add(this._logField_TabPage);
-                }
-            }
-            else
-            {
-                this._fieldSetup_Child_TabControl.TabPages.Remove(this._logField_TabPage);
-            }
-            _strataLB.DataSource = ViewPresenter.FieldSetupStrata;
-        }
-
-        public void UpdateTreeDefaults()
-        {
-            _BS_treeDefaults.DataSource = ViewPresenter.TreeDefaults;
-        }
-
-        public void UpdateTreeAudits()
-        {
-            _BS_treeAudits.DataSource = ViewPresenter.TreeAudits;
-        }
-
-        public void UpdateLogMatrix()
-        {
-            //_BS_LogMatrix.DataSource = Presenter.LogMatrix;
-            if(this._logMatrixPage != null)
-            {
-                this._logMatrixPage.DataSource = ViewPresenter.LogMatrix;
-            }
-        }
-
-        //public void UpdateTallySampleGroups(IList<SampleGroupDO> sampleGroups)
-        //{
-        //    _sampleGroupCB.DataSource = sampleGroups;
-        //}
-
-        public void EndEdits()
-        {
-            if (_currentSG != null && this._systematicOptCB.Enabled)
-            {
-                _currentSG.UseSystematicSampling = this._systematicOptCB.Checked;
-            }
-            if (_currentTallySetupStratum != null)
-            {
-                _currentTallySetupStratum.Hotkey = _stratumHKCB.Text;
-            }
-
-            this._tallyEditPanel.EndEdits();
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            this.ViewPresenter.InitializeFieldSetup();
- 
-            this.ViewPresenter.InitializeTallySetup();
-
-            this.ViewPresenter.InitializeTreeAudits();
-   
-            this.ViewPresenter.InitializeLogMatrix();
-     
-        }
-
-
-
-        #region Tally setup
-        private void _strataCB_SelectedValueChanged(object sender, EventArgs e)
-        {
-            if (_currentTallySetupStratum != null)
-            {
-                _currentTallySetupStratum.Hotkey = _stratumHKCB.Text;
-                _currentTallySetupStratum.Save();
-            }
-            _currentTallySetupStratum = _strataCB.SelectedValue as TallySetupStratum;
-
-            
-            if(_currentTallySetupStratum == null) { return; }
-
-            _stratumHKCB.DataSource = this.ViewPresenter.GetAvalibleStratumHotKeys(_currentTallySetupStratum);
-            _stratumHKCB.Text = _currentTallySetupStratum.Hotkey;
-
-            this._tallyEditPanel.Enabled = ViewPresenter.CanDefintTallys(_currentTallySetupStratum);
-            
-            _sampleGroupCB.DataSource = _currentTallySetupStratum.SampleGroups;                
-        }
-
-        private void _sampleGroupCB_SelectedValueChanged(object sender, EventArgs e)
-        {
-            //store use systematic sampleing option for previously selected sample group, if there was one
-            if (_currentSG != null && this._systematicOptCB.Enabled)
-            {
-                _currentSG.UseSystematicSampling = this._systematicOptCB.Checked;
-            }
-
-            _currentSG = _sampleGroupCB.SelectedValue as TallySetupSampleGroup;
-            if (_currentSG == null || _tallyEditPanel.Enabled == false)
-            {
-                this._systematicOptCB.Enabled = false;
-                return;
-            }
-            else
-            {
-                this._systematicOptCB.Enabled = _currentSG.IsSTR && _currentSG.CanChangeSamplerType;
-                this._systematicOptCB.Checked = _currentSG.UseSystematicSampling;
-            }
-
-            _tallyEditPanel.SampleGroup = _currentSG;
-            _tallyEditPanel.SetHotKeys(this.ViewPresenter.GetAvalibleHotKeysInStratum(_currentTallySetupStratum));
-        }
-
-        //TODO move these methods to presenter class
-        
+        #region controls
+        private System.Windows.Forms.TabControl _tabControl;
+        private System.Windows.Forms.TabPage _fieldSetupPage;
+        private System.Windows.Forms.TabPage _tallySetupPage;
+        private System.Windows.Forms.TabPage _treeAuditTabPage;
+        private System.Windows.Forms.DataGridView _treeAuditDGV;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.RichTextBox _treeAuditErrorTB;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.RichTextBox _treeAuditValueSetTB;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox _treeAuditMaxTB;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox _treeAuditMinTB;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.ListBox _treeAuditFieldList;
+        private System.Windows.Forms.DataGridView _treeAuditTDVSelectDGV;
+        private System.Windows.Forms.DataGridViewTextBoxColumn primaryProductDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn speciesDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn liveDeadDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn fIAcodeDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cullPrimaryDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn hiddenPrimaryDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cullSecondaryDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn hiddenSecondaryDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn recoverableDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn chargeableDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn contractSpeciesDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn treeGradeDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn merchHeightLogLengthDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn merchHeightTypeDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn formClassDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn barkThicknessRatioDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn averageZDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn referenceHeightPercentDataGridViewTextBoxColumn;
+        private System.Windows.Forms.TabControl _fieldSetup_Child_TabControl;
+        private System.Windows.Forms.TabPage _treeField_TabPage;
+        private FMSC.Controls.OrderableAddRemoveWidget _treeFieldWidget;
+        private System.Windows.Forms.TabPage _logField_TabPage;
+        private FMSC.Controls.OrderableAddRemoveWidget _logFieldWidget;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.ListBox _strataLB;
+        private System.Windows.Forms.BindingSource _BS_treeDefaults;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.BindingSource _BS_treeAudits;
+        private FMSC.Controls.SelectedItemsGridView _tdvDGV;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.TextBox _TreeFieldHeadingTB;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.BindingSource _BS_TreeField;
+        private System.Windows.Forms.BindingSource _BS_LogField;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.TextBox _logFieldHeadingTB;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox _treeFieldWidthTB;
+        private System.Windows.Forms.TextBox _logFieldWidthTB;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.DataGridViewTextBoxColumn speciesDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn primaryProductDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn liveDeadDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn fIAcodeDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cullPrimaryDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn hiddenPrimaryDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cullSecondaryDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn hiddenSecondaryDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn recoverableDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn contractSpeciesDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn treeGradeDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn merchHeightLogLengthDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn merchHeightTypeDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn formClassDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn barkThicknessRatioDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn averageZDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn referenceHeightPercentDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Button _treeAuditClearSelectionBtn;
+        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.Button _tavDeleteBTN;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.Panel _tallyNavPanel;
+        private System.Windows.Forms.CheckBox _systematicOptCB;
+        private System.Windows.Forms.ComboBox _stratumHKCB;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.ComboBox _sampleGroupCB;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ComboBox _strataCB;
+        private TallyEditPanel _tallyEditPanel;
+        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.Button _auditRulesHelp_BTN;
+        private System.Windows.Forms.ToolTip toolTip1;
         #endregion
-
-        #region Tree/Log Field methods
-        private void _strataLB_SelectedValueChanged(object sender, EventArgs e)
-        {
-            FieldSetupStratum stratum = _strataLB.SelectedValue as FieldSetupStratum;
-            if (stratum == null) { return; }
-            HandleFieldSetupSelectedStratumChanged(stratum);
-        }
-
-        private void HandleFieldSetupSelectedStratumChanged(FieldSetupStratum stratum)
-        {
-            if (stratum != null)
-            {
-                List<TreeFieldSetupDO> selectedTreeFields = stratum.SelectedTreeFields;
-                List<TreeFieldSetupDO> unselectedTreeFields = stratum.UnselectedTreeFields;
-                unselectedTreeFields.Sort(TreeFieldComparer.Instance);
-                this._treeFieldWidget.SelectedItemsDataSource = selectedTreeFields;
-                this._treeFieldWidget.DataSource = unselectedTreeFields;
-
-                List<LogFieldSetupDO> selectedLogFields = stratum.SelectedLogFields;
-                List<LogFieldSetupDO> unselectedLogFields = stratum.UnselectedLogFields;
-                unselectedLogFields.Sort(LogFieldComparer.Instance);
-                this._logFieldWidget.SelectedItemsDataSource = selectedLogFields;
-                this._logFieldWidget.DataSource = unselectedLogFields;
-            }
-        }
-
-
-        private void _treeFieldWidget_SelectionMoved(object sender, FMSC.Controls.ItemMovedEventArgs e)
-        {
-            UpdateTreeFieldOrder();
-            //TreeFieldSetupDO tf = e.Item as TreeFieldSetupDO;
-            //IList<TreeFieldSetupDO> list = (IList<TreeFieldSetupDO>)_treeFieldWidget.SelectedItemsDataSource;
-            //TreeFieldSetupDO othertf = list[e.PreviousIndex];
-            //tf.FieldOrder = e.NewIndex;
-            //othertf.FieldOrder = e.PreviousIndex;
-        }
-
-        private void _treeFieldWidget_SelectionAdded(object sender, object item, int index)
-        {
-            UpdateTreeFieldOrder();
-            //TreeFieldSetupDO tf = item as TreeFieldSetupDO;
-            //if (tf == null) { return; }
-            ////tf.Stratum = FieldSetup_CurrentStratum;
-            //tf.FieldOrder = index;
-            ////tf.DAL = Presenter.Controller.Database;
-            ////tf.Save();
-        }
-
-        private void _logFieldWidget_SelectionAdded(object sender, object item, int index)
-        {
-            UpdateLogFieldOrder();
-            //LogFieldSetupDO lf = item as LogFieldSetupDO;
-            //if (lf == null) { return; }
-            ////lf.Stratum = FieldSetup_CurrentStratum;
-            //lf.FieldOrder = index;
-            ////lf.DAL = Presenter.Controller.Database;
-            ////lf.Save();
-        }
-
-        private void _logFieldWidget_SelectionMoved(object sender, FMSC.Controls.ItemMovedEventArgs e)
-        {
-            UpdateLogFieldOrder();
-            //LogFieldSetupDO lf = e.Item as LogFieldSetupDO;
-            //IList<LogFieldSetupDO> list = (IList<LogFieldSetupDO>)_logFieldWidget.SelectedItemsDataSource;
-            //LogFieldSetupDO otherlf = list[e.PreviousIndex];
-            //lf.FieldOrder = e.NewIndex;
-            //otherlf.FieldOrder = e.PreviousIndex;
-            ////lf.Save();
-            ////otherlf.Save();
-        }
-
-
-
-        //refreshes the field order on all items
-        //item's fieldOrder = item's list position + 1
-        private void UpdateLogFieldOrder()
-        {
-            IList<LogFieldSetupDO> list = (IList<LogFieldSetupDO>)_logFieldWidget.SelectedItemsDataSource;
-            for (int i = 0; i < list.Count; i++)
-            {
-                list[i].FieldOrder = i + 1;
-            }
-        }
-
-        //refreshes the field order on all items
-        //item's fieldOrder = item's list position + 1
-        private void UpdateTreeFieldOrder()
-        {
-            IList<TreeFieldSetupDO> list = (IList<TreeFieldSetupDO>)_treeFieldWidget.SelectedItemsDataSource;
-            for (int i = 0; i < list.Count; i++)
-            {
-                list[i].FieldOrder = i + 1;
-            }
-        }
-
-        private void _logFieldWidget_SelectedValueChanged(object sender, EventArgs e, object selectedValue)
-        {
-            if (selectedValue == null) { return; }
-            this._BS_LogField.DataSource = selectedValue;
-        }
-
-        private void _treeFieldWidget_SelectedValueChanged(object sender, EventArgs e, object selectedValue)
-        {
-            if (selectedValue == null) { return; }
-            this._BS_TreeField.DataSource = selectedValue;
-        }
-#endregion 
-
-        #region Tree Audits
-        private void _BS_treeAudits_CurrentItemChanged(object sender, EventArgs e)
-        {
-            TreeAuditValueDO tav = _BS_treeAudits.Current as TreeAuditValueDO;
-            if (tav == null) { return; }
-            if (!tav.TreeDefaultValues.IsPopulated)
-            {
-                tav.TreeDefaultValues.Populate();
-            }
-            _tdvDGV.SelectedItems = tav.TreeDefaultValues;
-        }
-
-        private void _treeAuditClearSelectionBtn_Click(object sender, EventArgs e)
-        {
-            TreeAuditValueDO tav = _BS_treeAudits.Current as TreeAuditValueDO;
-            if (tav == null) { return; }
-            if (!tav.TreeDefaultValues.IsPopulated)
-            {
-                tav.TreeDefaultValues.Populate();
-            }
-            tav.TreeDefaultValues.Clear();
-            _tdvDGV.Invalidate();
-        }
-
-        private void _tavDeleteBTN_Click(object sender, EventArgs e)
-        {
-            TreeAuditValueDO tav = _BS_treeAudits.Current as TreeAuditValueDO;
-            if (tav == null) { return; }
-            if (tav.IsPersisted)
-            {
-                tav.Delete();
-            }
-            _BS_treeAudits.Remove(tav);
-        }
-
-       
-        //TODO keep method? Under what situations do DG throw Data Errror?
-        private void _treeAuditDGV_DataError(object sender,
-            DataGridViewDataErrorEventArgs e)
-        {
-
-        }
-        #endregion 
-
-
-        #region IView Members
-        IPresentor IView.ViewPresenter
-        {
-            get
-            {
-                return this.ViewPresenter;
-            }
-        }
-
-        public IEnumerable<ViewCommand> NavCommands
-        {
-            get; protected set;
-        }
-
-        public IEnumerable<ViewCommand> UserCommands
-        {
-            get; protected set;
-        }
-        #endregion
-
-        /// <summary> 
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if(components != null)
-                { 
-                components.Dispose();
-                }
-                if(_logMatrixTabPage != null)
-                {
-                    _logMatrixTabPage.Dispose();
-                }
-            }
-            
-
-            base.Dispose(disposing);
-
-
-        }
-
-        
     }
 }

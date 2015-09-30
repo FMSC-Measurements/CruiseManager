@@ -1,6 +1,6 @@
 ﻿namespace CruiseManager.Winforms.CruiseCustomize
 {
-    partial class LogMatrixSettingsView
+    partial class LogMatrixSettingsPage
     {
         /// <summary> 
         /// Required designer variable.

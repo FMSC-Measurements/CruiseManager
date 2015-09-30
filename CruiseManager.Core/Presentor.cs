@@ -8,18 +8,39 @@ namespace CruiseManager.Core
     public abstract class Presentor : IPresentor, IDisposable
     {
         private IView _view;
-        public WindowPresenter WindowPresenter { get; protected set; }
+        //public WindowPresenter WindowPresenter { get; protected set; }
         public ApplicationController ApplicationController { get; protected set; }
+
+        public event EventHandler<PresenterStatusChangedEventArgs> StatusChanged; 
 
         public IView View
         {
             get { return _view; }
             set
             {
-                if(_view == value) { return; }
-                if(_view != null) { UnWireView(_view); }
-                if(value != null) { WireupView(value); }
+                if (_view == value) { return; }
+                if (_view != null) { UnWireView(_view); }
+                if (value != null) { WireupView(value); }
                 _view = value;
+            }
+        }
+
+        protected virtual void OnViewLoad(EventArgs e)
+        {
+
+        }
+
+        protected void OnStatusChanged(PresenterStatus status)
+        {
+            this.OnStatusChanged(new PresenterStatusChangedEventArgs()
+            { Status = status });
+        }
+
+        protected void OnStatusChanged(PresenterStatusChangedEventArgs e)
+        {
+            if(this.StatusChanged != null)
+            {
+                this.StatusChanged(this, e);
             }
         }
 
@@ -32,9 +53,6 @@ namespace CruiseManager.Core
         {
             view.Load -= this.View_Load;
         }
-
-        protected abstract void OnViewLoad(EventArgs e);
-
 
         private void View_Load(object sender, EventArgs e)
         {

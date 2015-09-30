@@ -13,11 +13,15 @@ using CruiseManager.Core.App;
 
 namespace CruiseManager.Winforms.Components
 {
-    public partial class MergeComponentViewWinforms : UserControl, MergeComponentView
+    public partial class MergeComponentViewWinforms : UserControlView, MergeComponentView
     {
         MergeInfoViewWinforms mergeInfoView;
 
-        public MergeComponentsPresenter ViewPresenter { get; set; }
+        public new MergeComponentsPresenter ViewPresenter
+        {
+            get { return (MergeComponentsPresenter)base.ViewPresenter; }
+            set { base.ViewPresenter = value; }
+        }
 
         public MergeComponentViewWinforms(MergeComponentsPresenter viewPresenter) 
         {
@@ -103,26 +107,6 @@ namespace CruiseManager.Winforms.Components
         {
             this.ViewPresenter.CurrentWorker.Cancel();
         }
-
-        #region IView Members
-        IPresentor IView.ViewPresenter
-        {
-            get
-            {
-                return this.ViewPresenter;
-            }
-        }
-
-        public IEnumerable<ViewCommand> NavCommands
-        {
-            get; protected set;
-        }
-
-        public IEnumerable<ViewCommand> UserCommands
-        {
-            get; protected set;
-        }
-        #endregion
 
     }
 }

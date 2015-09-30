@@ -170,14 +170,15 @@
     <Compile Include="Winforms\Components\MergeInfoViewWinforms.Designer.cs">
       <DependentUpon>MergeInfoViewWinforms.cs</DependentUpon>
     </Compile>
+    <Compile Include="Winforms\CruiseCustomize\CruiseCustomizeViewWinform.Designer.cs" />
     <Compile Include="Winforms\CruiseCustomize\CruiseCustomizeViewWinforms.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Winforms\CruiseCustomize\LogMatrixSettingsView.cs">
+    <Compile Include="Winforms\CruiseCustomize\LogMatrixSettingsPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Winforms\CruiseCustomize\LogMatrixSettingsView.designer.cs">
-      <DependentUpon>LogMatrixSettingsView.cs</DependentUpon>
+    <Compile Include="Winforms\CruiseCustomize\LogMatrixSettingsPage.designer.cs">
+      <DependentUpon>LogMatrixSettingsPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Winforms\CruiseCustomize\TallyEditPanel.cs">
       <SubType>UserControl</SubType>
@@ -228,11 +229,11 @@
     <Compile Include="Winforms\DataEditor\DataExportDialog.Designer.cs">
       <DependentUpon>DataExportDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\DesignEditor\DesignEditViewControl.cs">
+    <Compile Include="Winforms\DesignEditor\EditDesignViewWinForms.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Winforms\DesignEditor\DesignEditViewControl.Designer.cs">
-      <DependentUpon>DesignEditViewControl.cs</DependentUpon>
+    <Compile Include="Winforms\DesignEditor\EditDesignViewWinForms.Designer.cs">
+      <DependentUpon>EditDesignViewWinForms.cs</DependentUpon>
     </Compile>
     <Compile Include="Winforms\ErrorMessageDialog.cs">
       <SubType>Form</SubType>
@@ -321,6 +322,9 @@
     <Compile Include="Winforms\IPagingView.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Winforms\UserControlView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <EmbeddedResource Include="Winforms\AboutDialog.resx">
       <DependentUpon>AboutDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -339,8 +343,8 @@
       <DependentUpon>CruiseCustomizeViewWinforms.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\CruiseCustomize\LogMatrixSettingsView.resx">
-      <DependentUpon>LogMatrixSettingsView.cs</DependentUpon>
+    <EmbeddedResource Include="Winforms\CruiseCustomize\LogMatrixSettingsPage.resx">
+      <DependentUpon>LogMatrixSettingsPage.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Winforms\CruiseCustomize\TallyEditPanel.resx">
@@ -390,8 +394,8 @@
       <DependentUpon>DataExportDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\DesignEditor\DesignEditViewControl.resx">
-      <DependentUpon>DesignEditViewControl.cs</DependentUpon>
+    <EmbeddedResource Include="Winforms\DesignEditor\EditDesignViewWinForms.resx">
+      <DependentUpon>EditDesignViewWinForms.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Winforms\ErrorMessageDialog.resx">

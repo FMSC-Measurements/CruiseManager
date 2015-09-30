@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace CruiseManager.Core.ViewInterfaces
 {
-    public interface EditDesignView : IView    
+    public interface EditDesignView : IView
     {
         new DesignEditorPresentor ViewPresenter { get; set; }
 
@@ -24,8 +24,5 @@ namespace CruiseManager.Core.ViewInterfaces
         void BindSetup();
         void BindData();
         void EndEdits();
-
-
-
     }
 }

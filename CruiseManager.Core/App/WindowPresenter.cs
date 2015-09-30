@@ -50,20 +50,20 @@ namespace CruiseManager.Core.App
         //public abstract void ShowOpenCruiseDialog();
         public abstract void ShowTemplateLandingLayout();
 
-        public abstract void ShowSimpleErrorMessage(string errorMessage);
+        //public abstract void ShowSimpleErrorMessage(string errorMessage);
 
-        public void ShowMessage(string message)
-        {
-            ShowMessage(message, null);
-        }
+        //public void ShowMessage(string message)
+        //{
+        //    ShowMessage(message, null);
+        //}
 
-        public abstract void ShowMessage(string message, string caption);
+        //public abstract void ShowMessage(string message, string caption);
 
-        public abstract Nullable<bool> AskYesNoCancel(String message, String caption);
-        public abstract Nullable<bool> AskYesNoCancel(String message, String caption, Nullable<bool> defaultOption);
+        //public abstract Nullable<bool> AskYesNoCancel(String message, String caption);
+        //public abstract Nullable<bool> AskYesNoCancel(String message, String caption, Nullable<bool> defaultOption);
 
-        public abstract void ShowWaitCursor();
-        public abstract void ShowDefaultCursor();
+        //public abstract void ShowWaitCursor();
+        //public abstract void ShowDefaultCursor();
 
         public abstract void Run();
 

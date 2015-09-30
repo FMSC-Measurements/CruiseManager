@@ -8,8 +8,10 @@ namespace CruiseManager.Core
 {
     public interface IPresentor //: IDisposable
     {
-        WindowPresenter WindowPresenter { get; }
+        //WindowPresenter WindowPresenter { get; }
         ApplicationController ApplicationController { get; }
+
+        event EventHandler<PresenterStatusChangedEventArgs> StatusChanged;
 
         IView View { get; set; }
     }

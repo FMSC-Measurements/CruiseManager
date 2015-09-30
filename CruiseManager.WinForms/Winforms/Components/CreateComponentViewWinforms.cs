@@ -10,34 +10,24 @@ using CruiseManager.Core.Components;
 using CruiseManager.Core.App;
 using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core;
+using CruiseManager.Winforms;
 
 namespace CruiseManager.WinForms.Components
 {
-    public partial class CreateComponentViewWinforms : UserControl, CreateComponentView
+    public partial class CreateComponentViewWinforms : UserControlView, CreateComponentView
     {
-        protected WindowPresenter _myWindowPresenter;
-        //protected ApplicationController _myApplicationController;
-
-        //public CreateComponentView(WindowPresenter windowPresenter, ApplicationController applicationController) : this()
-        //{
-        //    _myWindowPresenter = windowPresenter;
-        //    _myApplicationController = applicationController;
-        //}
-
         public CreateComponentViewWinforms(CreateComponentPresenter viewPresenter)
         {
             InitializeComponent();
 
             this.ViewPresenter = viewPresenter;
             this.ViewPresenter.View = this;
-            this._myWindowPresenter = this.ViewPresenter.WindowPresenter;
-
-            
         }
 
-        public CreateComponentPresenter ViewPresenter 
+        public new CreateComponentPresenter ViewPresenter 
         {
-            get; set;
+            get { return (CreateComponentPresenter)base.ViewPresenter; }
+            set { base.ViewPresenter = value; }
         }
 
         protected override void OnLoad(EventArgs e)
@@ -52,7 +42,7 @@ namespace CruiseManager.WinForms.Components
         private void __makeBtn_Click(object sender, EventArgs e)
         {
             ViewPresenter.MakeComponents((int)this.__numCompTB.Value);
-            this._myWindowPresenter.ShowMessage("Done");
+            this.ShowMessage("Done");
             //MessageBox.Show("Done");
         }
 
@@ -74,24 +64,10 @@ namespace CruiseManager.WinForms.Components
             this.__progressBar.PerformStep();
         }
 
-        #region IView Members
-        IPresentor IView.ViewPresenter
-        {
-            get
-            {
-                return this.ViewPresenter;
-            }
-        }
 
-        public IEnumerable<ViewCommand> NavCommands
+        public void EndEdits()
         {
-            get; protected set;
+            //nothing to do
         }
-
-        public IEnumerable<ViewCommand> UserCommands
-        {
-            get; protected set;
-        }
-        #endregion
     }
 }

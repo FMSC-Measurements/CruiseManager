@@ -10,24 +10,30 @@ using CruiseManager.Core.EditTemplate;
 
 namespace CruiseManager.Winforms.TemplateEditor
 {
-    public partial class EditTemplateViewWinForms : UserControl, EditTemplateView
+    public partial class EditTemplateViewWinForms : UserControlView, EditTemplateView
     {
 
-        public EditTemplateViewWinForms(TemplateEditViewPresenter viewPresenter )
+        public EditTemplateViewWinForms(WindowPresenter windowPresenter, TemplateEditViewPresenter viewPresenter )
         {
-            viewPresenter.View = this;
             this.ViewPresenter = viewPresenter;
+            ViewPresenter.View = this;
+            
 
-            this.UserCommands = new ViewCommand[]{
-                this.ViewPresenter.ApplicationController.MakeViewCommand("Close File", this.ViewPresenter.WindowPresenter.ShowCruiseLandingLayout),
-                this.ViewPresenter.ApplicationController.MakeViewCommand("Import From File", this.ViewPresenter.WindowPresenter.ShowImportTemplate)
-            };
+            //this.UserCommands = new ViewCommand[]{
+            //    this.ViewPresenter.ApplicationController.MakeViewCommand("Close File", this.ViewPresenter.WindowPresenter.ShowCruiseLandingLayout),
+            //    this.ViewPresenter.ApplicationController.MakeViewCommand("Import From File", this.ViewPresenter.WindowPresenter.ShowImportTemplate)
+            //};
 
             InitializeComponent();
         }
 
+        protected WindowPresenter WindowPresenter { get; set; }
         
-        public TemplateEditViewPresenter ViewPresenter { get; set; }
+        public new TemplateEditViewPresenter ViewPresenter
+        {
+            get { return (TemplateEditViewPresenter)base.ViewPresenter; }
+            set { base.ViewPresenter = value; }
+        }
         protected TreeDefaultValueDO TreeAudit_CurrentTDV { get; set; }
         protected CruiseMethodsDO FieldSetup_CurrentMethod { get; set; }
 
@@ -238,7 +244,7 @@ namespace CruiseManager.Winforms.TemplateEditor
 
         private void _addTDVButton_Click(object sender, EventArgs e)
         {
-            TreeDefaultValueDO newTDV = this.ViewPresenter.WindowPresenter.ShowAddTreeDefult();
+            TreeDefaultValueDO newTDV = this.WindowPresenter.ShowAddTreeDefult();
             if(newTDV != null)
             {
                 this._BS_TreeDefaults.Add(newTDV);
@@ -266,7 +272,7 @@ namespace CruiseManager.Winforms.TemplateEditor
             TreeDefaultValueDO tdv = this._BS_TreeDefaults.Current as TreeDefaultValueDO;
             if (tdv == null) { return; }
             {
-                this.ViewPresenter.WindowPresenter.ShowEditTreeDefault(tdv);
+                this.WindowPresenter.ShowEditTreeDefault(tdv);
             }
             //ApplicationState appState = ApplicationState.GetHandle();
 
@@ -326,25 +332,5 @@ namespace CruiseManager.Winforms.TemplateEditor
         #endregion
 
 
-
-        #region IView Members
-        IPresentor IView.ViewPresenter
-        {
-            get
-            {
-                return this.ViewPresenter;
-            }
-        }
-
-        public IEnumerable<ViewCommand> NavCommands
-        {
-            get; protected set;
-        }
-
-        public IEnumerable<ViewCommand> UserCommands
-        {
-            get; protected set;
-        }
-        #endregion
     }
 }

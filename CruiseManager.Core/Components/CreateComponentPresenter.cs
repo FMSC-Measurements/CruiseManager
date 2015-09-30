@@ -52,9 +52,8 @@ namespace CruiseManager.Core.Components
             set { base.View = value; } }
 
 
-        public CreateComponentPresenter(WindowPresenter windowPresenter, ApplicationController applicationController)
+        public CreateComponentPresenter(ApplicationController applicationController)
         {
-            this.WindowPresenter = windowPresenter;
             this.ApplicationController = applicationController;
 
             InitializeState();
@@ -239,10 +238,10 @@ namespace CruiseManager.Core.Components
 
         #region Presentor Members
 
-        protected override void OnViewLoad(EventArgs e)
-        {
+        //protected override void OnViewLoad(EventArgs e)
+        //{
             
-        }
+        //}
 
 
         #endregion

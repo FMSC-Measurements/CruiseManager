@@ -20,9 +20,8 @@ namespace CruiseManager.Core.EditDesign
         private CuttingUnitDO _anyUnitOption;
         private DesignEditorStratum _anyStratumOption;
         
-        public DesignEditorPresentor(WindowPresenter windowPresenter, ApplicationController applicationController)
+        public DesignEditorPresentor(ApplicationController applicationController)
         {
-            this.WindowPresenter = windowPresenter;
             this.ApplicationController = applicationController;
 
             //if (Database != null)
@@ -94,10 +93,10 @@ namespace CruiseManager.Core.EditDesign
         {
             this.DataContext = new DesignEditorDataContext();
 
-            this.WindowPresenter.ShowWaitCursor();
+            //this.View.ShowWaitCursor();
 
-            try
-            {
+            //try
+            //{
                 //initialize sale
                 DataContext.Sale = Database.ReadSingleRow<SaleVM>("Sale", null, null) ?? new SaleVM(Database);
 
@@ -149,11 +148,11 @@ namespace CruiseManager.Core.EditDesign
 
 
                 DataContext.HasUnsavedChanges = false;
-            }
-            finally
-            {
-                this.WindowPresenter.ShowDefaultCursor();
-            }
+            //}
+            //finally
+            //{
+            //    this.View.ShowDefaultCursor();
+            //}
 
 
         }
@@ -613,27 +612,27 @@ namespace CruiseManager.Core.EditDesign
             }
         }
 
-        public void HandleAppClosing(ref bool cancel)
-        {
-            if (this.DataContext.HasUnsavedChanges)
-            {
-                var result = this.WindowPresenter.AskYesNoCancel("You Have Unsaved Data, Would You Like To Save Before Closing?", "Save Changes", true);
-                if(result == null)//cancel
-                {
-                    cancel = true;
-                    return;
-                }
-                if (result == true)//yes
-                {
-                    cancel = !HandleSave();
-                    return;
-                }
-                else if(result == false)//no
-                {
-                    return;
-                }
-            }
-        }
+        //public void HandleAppClosing(ref bool cancel)
+        //{
+        //    if (this.DataContext.HasUnsavedChanges)
+        //    {
+        //        var result = this.WindowPresenter.AskYesNoCancel("You Have Unsaved Data, Would You Like To Save Before Closing?", "Save Changes", true);
+        //        if(result == null)//cancel
+        //        {
+        //            cancel = true;
+        //            return;
+        //        }
+        //        if (result == true)//yes
+        //        {
+        //            cancel = !HandleSave();
+        //            return;
+        //        }
+        //        else if(result == false)//no
+        //        {
+        //            return;
+        //        }
+        //    }
+        //}
 
         public bool HandleSave()
         {
@@ -648,7 +647,8 @@ namespace CruiseManager.Core.EditDesign
             bool rtnVal = true; 
             if (!this.ValidateData(ref validationErrorBuilder))
             {
-                this.WindowPresenter.ShowSimpleErrorMessage("Validation Errors Found:\r\n" + validationErrorBuilder.ToString());
+                this.View.ShowErrorMessage("Validation Errors Found",
+                    validationErrorBuilder.ToString());
                 rtnVal = false;
             }
 
@@ -688,11 +688,11 @@ namespace CruiseManager.Core.EditDesign
 
         #region Presentor Members
 
-        protected override void OnViewLoad(EventArgs e)
-        {
-            this.View.BindData();
-            this.View.BindSetup();
-        }
+        //protected override void OnViewLoad(EventArgs e)
+        //{
+        //    this.View.BindData();
+        //    this.View.BindSetup();
+        //}
 
 
         #endregion

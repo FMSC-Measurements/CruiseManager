@@ -10,5 +10,7 @@ namespace CruiseManager.Core
         bool HandleSave();
 
         bool HasChangesToSave { get; }
+
+
     }
 }

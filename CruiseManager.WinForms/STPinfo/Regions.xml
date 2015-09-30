@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<ArrayOfRegion xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Region RegionNumber="01" Name="Northern">
+    <Forests>
+      <Forest State="MT" Name="Beaverhead-Deerlodge" ForestNumber="02" />
+      <Forest State="MT" Name="Bitterroot" ForestNumber="03" />
+      <Forest State="ID" Name="Idaho Panhandle" ForestNumber="04" />
+      <Forest State="ID" Name="Clearwater" ForestNumber="05" />
+      <Forest State="MT" Name="Custer" ForestNumber="08" />
+      <Forest State="MT" Name="Flathead" ForestNumber="10" />
+      <Forest State="MT" Name="Gallatin" ForestNumber="11" />
+      <Forest State="MT" Name="Helena" ForestNumber="12" />
+      <Forest State="MT" Name="Kootenai" ForestNumber="14" />
+      <Forest State="MT" Name="Lewis &amp; Clark" ForestNumber="15" />
+      <Forest State="MT" Name="Lolo" ForestNumber="16" />
+      <Forest State="ID" Name="Nezperce" ForestNumber="17" />
+    </Forests>
+  </Region>
+  <Region RegionNumber="02" Name="Rocky Mountain">
+    <Forests>
+      <Forest State="WY" Name="Bighorn" ForestNumber="02" />
+      <Forest State="SD" Name="BlackHills" ForestNumber="03" />
+      <Forest State="CO" Name="GMUG" ForestNumber="04" />
+      <Forest State="WY" Name="Medicine Bow-Routt" ForestNumber="06" />
+      <Forest State="CO" Name="Nebraska" ForestNumber="07" />
+      <Forest State="CO" Name="Rio Grande" ForestNumber="09" />
+      <Forest State="CO" Name="Arapaho-Roosevelt" ForestNumber="10" />
+      <Forest State="CO" Name="Pike-San Isabel" ForestNumber="12" />
+      <Forest State="CO" Name="San Juan" ForestNumber="13" />
+      <Forest State="WY" Name="Shoshone" ForestNumber="14" />
+      <Forest State="CO" Name="White River" ForestNumber="15" />
+    </Forests>
+  </Region>
+  <Region RegionNumber="03" Name="Southwestern">
+    <Forests>
+      <Forest State="AZ" Name="Apache-Sitgreaves" ForestNumber="01" />
+      <Forest State="NM" Name="Carson" ForestNumber="02" />
+      <Forest State="NM" Name="Cibola" ForestNumber="03" />
+      <Forest State="AZ" Name="Coconino" ForestNumber="04" />
+      <Forest State="AZ" Name="Coronado" ForestNumber="05" />
+      <Forest State="NM" Name="Gila" ForestNumber="06" />
+      <Forest State="AZ" Name="Kaibab" ForestNumber="07" />
+      <Forest State="NM" Name="Lincoln" ForestNumber="08" />
+      <Forest State="AZ" Name="Prescott" ForestNumber="09" />
+      <Forest State="NM" Name="Santa Fe " ForestNumber="10" />
+      <Forest State="AZ" Name="Tonto" ForestNumber="12" />
+    </Forests>
+  </Region>
+  <Region RegionNumber="04" Name="Intermountain">
+    <Forests>
+      <Forest State="UT" Name="Ashley" ForestNumber="01" />
+      <Forest State="ID" Name="Boise" ForestNumber="02" />
+      <Forest State="WY" Name="Bridger-Teton" ForestNumber="03" />
+      <Forest State="UT" Name="Dixie" ForestNumber="07" />
+      <Forest State="UT" Name="Fishlake" ForestNumber="08" />
+      <Forest State="UT" Name="Manti-LaSal" ForestNumber="10" />
+      <Forest State="ID" Name="Payette" ForestNumber="12" />
+      <Forest State="ID" Name="Challis" ForestNumber="13" />
+      <Forest State="ID" Name="Salmon" ForestNumber="13" />
+      <Forest State="ID" Name="Sawtooth" ForestNumber="14" />
+      <Forest State="ID" Name="Caribou-Targhee" ForestNumber="15" />
+      <Forest State="NV" Name="Humboldt-Toiyabe" ForestNumber="17" />
+      <Forest State="UT" Name="Wasatch-Cache-Uinta" ForestNumber="19" />
+    </Forests>
+  </Region>
+  <Region RegionNumber="05" Name="Pacfic Southwest">
+    <Forests>
+      <Forest State="CA" Name="Angeles" ForestNumber="01" />
+      <Forest State="CA" Name="Cleveland" ForestNumber="02" />
+      <Forest State="CA" Name="Eldorado" ForestNumber="03" />
+      <Forest State="CA" Name="Inyo" ForestNumber="04" />
+      <Forest State="CA" Name="Klamath" ForestNumber="05" />
+      <Forest State="CA" Name="Lassen" ForestNumber="06" />
+      <Forest State="CA" Name="Los Padres" ForestNumber="07" />
+      <Forest State="CA" Name="Mendocino" ForestNumber="08" />
+      <Forest State="CA" Name="Modoc" ForestNumber="09" />
+      <Forest State="CA" Name="Six Rivers" ForestNumber="10" />
+      <Forest State="CA" Name="Plumas" ForestNumber="11" />
+      <Forest State="CA" Name="San Bernardino" ForestNumber="12" />
+      <Forest State="CA" Name="Sequoia" ForestNumber="13" />
+      <Forest State="CA" Name="Shasta-Trinity" ForestNumber="14" />
+      <Forest State="CA" Name="Sierra" ForestNumber="15" />
+      <Forest State="CA" Name="Stanislaus" ForestNumber="16" />
+      <Forest State="CA" Name="Tahoe" ForestNumber="17" />
+	  <Forest State="CA" Name="Lake Tahoe Basin" ForestNumber="19" />
+    </Forests>
+  </Region>
+  <Region RegionNumber="06" Name="Pacfic Northwest">
+    <Forests>
+      <Forest State="OR" Name="Deschutes" ForestNumber="01" />
+      <Forest State="OR" Name="Fremont-Winema" ForestNumber="02" />
+      <Forest State="WA" Name="Gifford Pinchot" ForestNumber="03" />
+      <Forest State="OR" Name="Malheur" ForestNumber="04" />
+      <Forest State="WA" Name="Mt. Baker-Snoqualmie" ForestNumber="05" />
+      <Forest State="OR" Name="Mt. Hood" ForestNumber="06" />
+      <Forest State="OR" Name="Ochoco" ForestNumber="07" />
+      <Forest State="WA" Name="Olympic" ForestNumber="09" />
+      <Forest State="OR" Name="Rogue River-Siskiyou" ForestNumber="10" />
+      <Forest State="OR" Name="Siuslaw" ForestNumber="12" />
+      <Forest State="OR" Name="Umatilla" ForestNumber="14" />
+      <Forest State="OR" Name="Umpqua" ForestNumber="15" />
+      <Forest State="OR" Name="Wallowa-Whitman" ForestNumber="16" />
+      <Forest State="WA" Name="Okanogan-Wenatchee" ForestNumber="17" />
+      <Forest State="OR" Name="Willamette" ForestNumber="18" />
+      <Forest State="WA" Name="Colville" ForestNumber="21" />
+    </Forests>
+  </Region>
+  <Region RegionNumber="08" Name="Southern">
+    <Forests>
+      <Forest State="AL" Name="National Forests Alabama" ForestNumber="01" />
+      <Forest State="KY" Name="Daniel Boone" ForestNumber="02" />
+      <Forest State="GA" Name="Chattahoochee-Oconee" ForestNumber="03" />
+      <Forest State="TN" Name="Cherokee" ForestNumber="04" />
+      <Forest State="FL" Name="National Forests Florida" ForestNumber="05" />
+      <Forest State="LA" Name="Kisatchie" ForestNumber="06" />
+      <Forest State="MS" Name="National Forests Mississippi" ForestNumber="07" />
+      <Forest State="NA" Name="George Washington-Jefferson" ForestNumber="08" />
+      <Forest State="AR" Name="Ouachita" ForestNumber="09" />
+      <Forest State="AR" Name="Ozark-St. Francis" ForestNumber="10" />
+      <Forest State="NC" Name="National Forests N.Carolina" ForestNumber="11" />
+      <Forest State="SC" Name="Francis Marion-Sumter" ForestNumber="12" />
+      <Forest State="TX" Name="National Forests Texas" ForestNumber="13" />
+      <Forest State="PR" Name="El Yunque" ForestNumber="16" />
+    </Forests>
+  </Region>
+  <Region RegionNumber="09" Name="Eastern">
+    <Forests>
+      <Forest State="MN" Name="Chippewa" ForestNumber="03" />
+      <Forest State="MI" Name="Huron-Manistee" ForestNumber="04" />
+      <Forest State="MO" Name="Mark Twain" ForestNumber="05" />
+      <Forest State="MI" Name="Ottawa" ForestNumber="07" />
+      <Forest State="IL" Name="Shawnee" ForestNumber="08" />
+      <Forest State="MN" Name="Superior" ForestNumber="09" />
+      <Forest State="MI" Name="Hiawatha" ForestNumber="10" />
+      <Forest State="IN" Name="Hoosier" ForestNumber="12" />
+      <Forest State="WI" Name="Chequamegon/Nicolet" ForestNumber="13" />
+      <Forest State="OH" Name="Wayne" ForestNumber="14" />
+      <Forest State="PA" Name="Allegheny" ForestNumber="19" />
+      <Forest State="VT" Name="Green Mountain-Finger Lakes" ForestNumber="20" />
+      <Forest State="WV" Name="Monongahela" ForestNumber="21" />
+      <Forest State="NH" Name="White Mountain" ForestNumber="22" />
+    </Forests>
+  </Region>
+  <Region RegionNumber="10" Name="Alaska">
+    <Forests>
+      <Forest State="AK" Name="Chugach" ForestNumber="04" />
+      <Forest State="AK" Name="Tongrass" ForestNumber="05" />
+    </Forests>
+  </Region>
+  <Region RegionNumber="07" Name="BLM">
+    <Forests>
+      <Forest State="??" Name="Unknown BLM Forest" ForestNumber="00" />
+    </Forests>
+  </Region>
+    <Region RegionNumber="11" Name="DOD">
+    <Forests>
+      <Forest State="??" Name="Unknown DOD Forest" ForestNumber="00" />
+	  <Forest State="WA" Name="JBLM" ForestNumber="JBLM" />
+    </Forests>
+  </Region>
+</ArrayOfRegion>  

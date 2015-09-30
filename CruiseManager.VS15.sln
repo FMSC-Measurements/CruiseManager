@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CruiseSystemManager.VS15", "CruiseSystemManager\CruiseSystemManager.VS15.csproj", "{5F44AC1F-055D-41BA-826F-DBAD8E14062A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CruiseManager.VS15", "CruiseManager.WinForms\CruiseManager.WinForms.VS15.csproj", "{5F44AC1F-055D-41BA-826F-DBAD8E14062A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSMTest.VS15", "CSMTest\CSMTest.VS15.csproj", "{9147D46C-4F97-436E-840B-2754371B8D26}"
 EndProject

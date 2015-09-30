@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<ArrayOfUOMCode xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <UOMCode Code="01" FriendlyValue="Board feet" />
+  <UOMCode Code="02" FriendlyValue="Cords" />
+  <UOMCode Code="03" FriendlyValue="Cubic feet" />
+  <UOMCode Code="04" FriendlyValue="Piece count" />
+  <UOMCode Code="05" FriendlyValue="Weight" />
+</ArrayOfUOMCode>

@@ -46,10 +46,9 @@ namespace CruiseManager.Core.CruiseCustomize
 
         public bool IsLogGradingEnabled { get; protected set; }
 
-        public CustomizeCruisePresenter(WindowPresenter presenter, ApplicationController applicationController)
+        public CustomizeCruisePresenter(ApplicationController applicationController)
         {
             ApplicationController = applicationController;
-            WindowPresenter = presenter;
 
             this.IsLogGradingEnabled = this.Database.ReadSingleRow<SaleDO>("Sale", (String)null).LogGradingEnabled;
 
@@ -698,7 +697,8 @@ namespace CruiseManager.Core.CruiseCustomize
             StringBuilder errorBuilder = new StringBuilder();
             if (!Save(ref errorBuilder))
             {
-                this.WindowPresenter.ShowSimpleErrorMessage(errorBuilder.ToString());
+                this.View.ShowErrorMessage("Not all data was able to be saved",
+                    errorBuilder.ToString());
                 return false;
             }
             return true;
@@ -733,10 +733,10 @@ namespace CruiseManager.Core.CruiseCustomize
 
         #region Presentor Members
 
-        protected override void OnViewLoad(EventArgs e)
-        {
+        //protected override void OnViewLoad(EventArgs e)
+        //{
             
-        }
+        //}
 
 
         #endregion

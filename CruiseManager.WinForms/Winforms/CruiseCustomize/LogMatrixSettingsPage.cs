@@ -11,14 +11,14 @@ using CruiseManager.Core.CruiseCustomize;
 
 namespace CruiseManager.Winforms.CruiseCustomize
 {
-    public partial class LogMatrixSettingsView : UserControl
+    public partial class LogMatrixSettingsPage : UserControl
     {
         private CheckBox[] grades;
         private bool _currentLogMatrixChanging = false;
 
         public CustomizeCruisePresenter Presenter { get; set; }
 
-        public LogMatrixSettingsView(CustomizeCruisePresenter presenter)
+        public LogMatrixSettingsPage(CustomizeCruisePresenter presenter)
         {
             this.Presenter = presenter;
             InitializeComponent();

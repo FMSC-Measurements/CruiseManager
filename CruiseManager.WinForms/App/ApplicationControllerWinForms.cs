@@ -48,7 +48,7 @@ namespace CruiseManager.App
             try
             {
                 //start wait cursor incase this takes a long time 
-                WindowPresenter.ShowWaitCursor();
+                this.ActiveView.ShowWaitCursor();
                 switch (System.IO.Path.GetExtension(filePath))
                 {
                     case Strings.CRUISE_FILE_EXTENTION:
@@ -58,7 +58,7 @@ namespace CruiseManager.App
                             String[] errors;
                             if (this.Database.HasCruiseErrors(out errors))
                             {
-                                WindowPresenter.ShowMessage(String.Join("\r\n", errors), null);
+                                this.ActiveView.ShowMessage(String.Join("\r\n", errors), null);
                             }
                             WindowPresenter.ShowCruiseLandingLayout();
                             break;
@@ -80,34 +80,34 @@ namespace CruiseManager.App
                             break;
                         }
                     default:
-                        WindowPresenter.ShowMessage("Invalid file name", null);
+                        this.ActiveView.ShowMessage("Invalid file name", null);
                         return;
                 }
             }
             catch (CruiseDAL.DatabaseShareException)
             {
                 hasError = true;
-                WindowPresenter.ShowMessage("File can not be opened in multiple applications");
+                this.ActiveView.ShowMessage("File can not be opened in multiple applications");
             }
             catch (CruiseDAL.ReadOnlyException)
             {
                 hasError = true;
-                WindowPresenter.ShowMessage("Unable to open file becaus it is read only");
+                this.ActiveView.ShowMessage("Unable to open file becaus it is read only");
             }
             catch (CruiseDAL.IncompatibleSchemaException ex)
             {
                 hasError = true;
-                WindowPresenter.ShowMessage("File is not compatible with this version of Cruise Manager: " + ex.Message);
+                this.ActiveView.ShowMessage("File is not compatible with this version of Cruise Manager: " + ex.Message);
             }
             catch (CruiseDAL.DatabaseExecutionException ex)
             {
                 hasError = true;
-                WindowPresenter.ShowMessage("Unable to open file : " + ex.GetType().Name);
+                this.ActiveView.ShowMessage("Unable to open file : " + ex.GetType().Name);
             }
             catch (System.IO.IOException ex)
             {
                 hasError = true;
-                WindowPresenter.ShowMessage("Unable to open file : " + ex.GetType().Name);
+                this.ActiveView.ShowMessage("Unable to open file : " + ex.GetType().Name);
             }
             catch (System.Exception e)
             {
@@ -118,6 +118,7 @@ namespace CruiseManager.App
             }
             finally
             {
+                this.ActiveView.ShowDefaultCursor();
                 if (hasError)
                 {
                     WindowPresenter.ShowHomeLayout();
@@ -125,7 +126,7 @@ namespace CruiseManager.App
 
                 WindowPresenter.MainWindow.EnableSaveAs = this.Database != null;
 
-                WindowPresenter.ShowDefaultCursor();
+                
             }
         }
 
@@ -140,7 +141,7 @@ namespace CruiseManager.App
             }
             else
             {
-                this.WindowPresenter.ShowMessage("error unable to convert file");//TODO better error messages
+                this.ActiveView.ShowMessage("error unable to convert file");//TODO better error messages
             }
 
             _convertedFilePath = null;

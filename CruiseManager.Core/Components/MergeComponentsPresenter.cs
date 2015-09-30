@@ -15,9 +15,8 @@ namespace CruiseManager.Core.Components
     {
 
      
-        public MergeComponentsPresenter(WindowPresenter windowPresenter, ApplicationController applicationController)
+        public MergeComponentsPresenter(ApplicationController applicationController)
         {
-            this.WindowPresenter = windowPresenter;
             this.ApplicationController = applicationController; 
 
             this.FindComponents();
@@ -292,7 +291,7 @@ namespace CruiseManager.Core.Components
                 }
                 else
                 {
-                    WindowPresenter.ShowMessage("Conflicts/Errors found\r\n Please Resolve Before Continuing", null);
+                    this.View.ShowMessage("Conflicts/Errors found\r\n Please Resolve Before Continuing", null);
                     //System.Windows.Forms.MessageBox.Show("Conflicts/Errors found\r\n Please Resolve Before Continuing");
                 }
             }
@@ -330,10 +329,10 @@ namespace CruiseManager.Core.Components
 
         #region Presentor Members
 
-        protected override void OnViewLoad(EventArgs e)
-        {
+        //protected override void OnViewLoad(EventArgs e)
+        //{
             
-        }
+        //}
 
 
         #endregion

@@ -15,31 +15,35 @@ using CruiseManager.Core.EditTemplate;
 
 namespace CruiseManager.Winforms.TemplateEditor
 {
-    public partial class ImportFromCruiseView : UserControl, IView
+    public partial class ImportFromCruiseView : UserControlView
     {
-        public ImportFromCruiseView(TemplateEditViewPresenter viewPresenter)
+        public ImportFromCruiseView(WindowPresenter windowPresenter, TemplateEditViewPresenter viewPresenter)
         {
             
             InitializeComponent();
-            this.WindowPresenter = viewPresenter.WindowPresenter;
+            this.WindowPresenter = windowPresenter;
             this.ApplicationController = viewPresenter.ApplicationController;
 
 
-            this.UserCommands = new ViewCommand[]{
-                ApplicationController.MakeViewCommand("Import", this.Finish ),
-                ApplicationController.MakeViewCommand("Cancel", this.WindowPresenter.ShowTemplateLandingLayout)
-            };
+            //this.UserCommands = new ViewCommand[]{
+            //    ApplicationController.MakeViewCommand("Import", this.Finish ),
+            //    ApplicationController.MakeViewCommand("Cancel", this.WindowPresenter.ShowTemplateLandingLayout)
+            //};
 
             this.TreeDefaultsToCopy = new List<TreeDefaultValueDO>();
             this.selectedItemsGridView1.SelectedItems = this.TreeDefaultsToCopy;
         }
 
-        public ImportFromCruiseView(string fileName, TemplateEditViewPresenter viewPresenter) : this(viewPresenter)
+        public ImportFromCruiseView(string fileName, WindowPresenter windowPresenter, TemplateEditViewPresenter viewPresenter) : this(windowPresenter, viewPresenter)
         {
             this._copyFromDB = new DAL(fileName);
         }
 
-        public TemplateEditViewPresenter ViewPresenter { get; set; }
+        public new TemplateEditViewPresenter ViewPresenter
+        {
+            get { return (TemplateEditViewPresenter)base.ViewPresenter; }
+            set { base.ViewPresenter = value; }
+        }
         protected WindowPresenter WindowPresenter { get; set; }
         protected ApplicationController ApplicationController { get; set; }
         public List<TreeDefaultValueDO> TreeDefaults { get; set; }
@@ -99,33 +103,5 @@ namespace CruiseManager.Winforms.TemplateEditor
             this.selectedItemsGridView1.Refresh();
         }
 
-
-
-
-        #region IView Members
-
-        IPresentor IView.ViewPresenter
-        {
-            get
-            {
-                return this.ViewPresenter;
-            }
-        }
-
-        public IEnumerable<ViewCommand> NavCommands
-        {
-            get
-            {
-                return null;
-            }
-        }
-
-        public IEnumerable<ViewCommand> UserCommands
-        {
-            get; set;
-        }
-
-
-        #endregion
     }
 }

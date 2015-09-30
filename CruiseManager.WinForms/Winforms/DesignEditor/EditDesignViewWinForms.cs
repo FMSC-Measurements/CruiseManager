@@ -16,27 +16,28 @@ using CruiseManager.Core.ViewInterfaces;
 
 namespace CruiseManager.Winforms.EditDesign
 {
-    public partial class EditDesignViewWinForms : UserControl, EditDesignView
+    public partial class EditDesignViewWinForms : UserControlView, EditDesignView
     {
 
         protected ExceptionHandler ExceptionHandler { get; set; } 
         protected WindowPresenter WindowPresenter { get; set; }
 
 
-        public EditDesignViewWinForms(DesignEditorPresentor viewPresenter)
+        public EditDesignViewWinForms(WindowPresenter windowPresenter, DesignEditorPresentor viewPresenter)
         {
             this.ViewPresenter = viewPresenter;
             this.ViewPresenter.View = this;
 
             this.ExceptionHandler = viewPresenter.ApplicationController.ExceptionHandler;
-            this.WindowPresenter = viewPresenter.WindowPresenter;
+            this.WindowPresenter = windowPresenter;
             InitializeComponent();
             this.SalePurposeComboBox.DataSource = Strings.SALE_PURPOSE;
         }
 
-        public DesignEditorPresentor ViewPresenter
+        public new DesignEditorPresentor ViewPresenter
         {
-            get; set;
+            get { return (DesignEditorPresentor)base.ViewPresenter; }
+            set { base.ViewPresenter = value; }
         }
 
         protected override void OnLoad(EventArgs e)
@@ -415,24 +416,5 @@ namespace CruiseManager.Winforms.EditDesign
         }
         #endregion
 
-        #region IView Members
-        IPresentor IView.ViewPresenter
-        {
-            get
-            {
-                return this.ViewPresenter;
-            }
-        }
-
-        public IEnumerable<ViewCommand> NavCommands
-        {
-            get; protected set;
-        }
-
-        public IEnumerable<ViewCommand> UserCommands
-        {
-            get; protected set;
-        }
-        #endregion
     }
 }
