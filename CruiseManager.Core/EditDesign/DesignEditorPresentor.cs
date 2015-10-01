@@ -24,15 +24,6 @@ namespace CruiseManager.Core.EditDesign
         {
             this.ApplicationController = applicationController;
 
-            //if (Database != null)
-            //{
-            //    UpdateView();
-            //}
-            
-            
-            LoadDesignData();
-            LoadSetup();
-
         }
 
         public new EditDesignView View 
@@ -41,13 +32,6 @@ namespace CruiseManager.Core.EditDesign
             set
             {
                 base.View = value;
-
-                //if (value != null)
-                //{
-
-                //    _view.BindSetup();
-                //    _view.BindData();
-                //}
             }
         }
 
@@ -89,14 +73,22 @@ namespace CruiseManager.Core.EditDesign
         }
 
 
+        protected override void OnViewLoad(EventArgs e)
+        {
+            base.OnViewLoad(e);
+            this.LoadDesignData();
+            this.LoadSetup();
+
+        }
+
         protected void LoadDesignData()
         {
             this.DataContext = new DesignEditorDataContext();
 
-            //this.View.ShowWaitCursor();
+            this.View.ShowWaitCursor();
 
-            //try
-            //{
+            try
+            {
                 //initialize sale
                 DataContext.Sale = Database.ReadSingleRow<SaleVM>("Sale", null, null) ?? new SaleVM(Database);
 
@@ -148,11 +140,11 @@ namespace CruiseManager.Core.EditDesign
 
 
                 DataContext.HasUnsavedChanges = false;
-            //}
-            //finally
-            //{
-            //    this.View.ShowDefaultCursor();
-            //}
+            }
+            finally
+            {
+                this.View.ShowDefaultCursor();
+            }
 
 
         }

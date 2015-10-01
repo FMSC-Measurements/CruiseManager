@@ -93,16 +93,16 @@ namespace CruiseManager.Core.App
         public WindowPresenter WindowPresenter { get; protected set; }
         public ExceptionHandler ExceptionHandler { get; protected set; }
         public SetupService SetupService { get; set; }
-        public UserSettings UserSettings { get; set; }
-        public ApplicationState AppState { get; protected set; }
+        public IUserSettings UserSettings { get; set; }
+        public IApplicationState AppState { get; protected set; }
         public PlatformHelper PlatformHelper { get; protected set; }
         #endregion
 
         protected ApplicationController(WindowPresenter windowPresenter, 
             ExceptionHandler exceptionHandler, 
-            UserSettings userSettings, 
+            IUserSettings userSettings, 
             SetupService setupService, 
-            ApplicationState applicationState,
+            IApplicationState applicationState,
             PlatformHelper platformHelper)
         {
             this.WindowPresenter = windowPresenter;

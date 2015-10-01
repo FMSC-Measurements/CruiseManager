@@ -274,7 +274,7 @@ namespace CruiseManager.Winforms.Dashboard
         private void fileToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
         {
             _recentFilesMenu.Items.Clear();
-            ToolStripMenuItem[] items = (from String path in ApplicationController.UserSettings.RecentFiles
+            ToolStripMenuItem[] items = (from String path in ApplicationController.AppState.RecentFiles
                                          select new ToolStripMenuItem(Path.GetFileName(path)) { ToolTipText = path, }).ToArray();
 
             _recentFilesMenu.Items.AddRange(items);

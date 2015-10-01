@@ -139,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App\ApplicationControllerWinForms.cs" />
+    <Compile Include="App\ApplicationStateWinForms.cs" />
     <Compile Include="App\CruiseManagerWinformsModule.cs" />
     <Compile Include="App\ExceptionHandlerWinforms.cs" />
     <Compile Include="App\PlatformHelperWinForms.cs" />
@@ -537,9 +538,7 @@
       <Name>FMSC.Utility.VS15</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="WPF\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="..\CruiseManager.Core\CruiseManager.Core.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

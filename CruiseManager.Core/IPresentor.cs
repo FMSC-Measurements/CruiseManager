@@ -11,7 +11,7 @@ namespace CruiseManager.Core
         //WindowPresenter WindowPresenter { get; }
         ApplicationController ApplicationController { get; }
 
-        event EventHandler<PresenterStatusChangedEventArgs> StatusChanged;
+        //event EventHandler<PresenterStatusChangedEventArgs> StatusChanged;
 
         IView View { get; set; }
     }

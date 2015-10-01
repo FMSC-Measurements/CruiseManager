@@ -62,18 +62,6 @@ namespace CruiseManager.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string RecentFiles {
-            get {
-                return ((string)(this["RecentFiles"]));
-            }
-            set {
-                this["RecentFiles"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string FileNameFormat {
             get {
                 return ((string)(this["FileNameFormat"]));
@@ -92,6 +80,18 @@ namespace CruiseManager.Properties {
             }
             set {
                 this["App_NavFont"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string UserRegion {
+            get {
+                return ((string)(this["UserRegion"]));
+            }
+            set {
+                this["UserRegion"] = value;
             }
         }
     }

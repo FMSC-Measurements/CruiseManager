@@ -30,8 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.Panel panel1;
-            System.Windows.Forms.Button ExampleButton;
-            CruiseManager.Properties.Settings settings1 = new CruiseManager.Properties.Settings();
+            //CruiseManager.Properties.Settings settings1 = new CruiseManager.Properties.Settings();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormCSMMain));
             this._viewContentPanel = new System.Windows.Forms.Panel();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
@@ -47,7 +46,6 @@
             this._userCommandPanel = new System.Windows.Forms.Panel();
             this._viewNavPanel = new System.Windows.Forms.Panel();
             panel1 = new System.Windows.Forms.Panel();
-            ExampleButton = new System.Windows.Forms.Button();
             panel1.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this._leftCommandPanel.SuspendLayout();
@@ -74,27 +72,6 @@
             this._viewContentPanel.Name = "_viewContentPanel";
             this._viewContentPanel.Size = new System.Drawing.Size(673, 477);
             this._viewContentPanel.TabIndex = 2;
-            // 
-            // ExampleButton
-            // 
-            ExampleButton.AutoSize = true;
-            ExampleButton.BackColor = System.Drawing.Color.ForestGreen;
-            ExampleButton.FlatAppearance.BorderColor = System.Drawing.Color.DimGray;
-            ExampleButton.FlatAppearance.BorderSize = 0;
-            ExampleButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.LightGreen;
-            ExampleButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            ExampleButton.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            ExampleButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            ExampleButton.Location = new System.Drawing.Point(0, 0);
-            ExampleButton.Margin = new System.Windows.Forms.Padding(0);
-            ExampleButton.MinimumSize = new System.Drawing.Size(150, 0);
-            ExampleButton.Name = "ExampleButton";
-            ExampleButton.Padding = new System.Windows.Forms.Padding(0, 0, 0, 2);
-            ExampleButton.Size = new System.Drawing.Size(150, 53);
-            ExampleButton.TabIndex = 1;
-            ExampleButton.Text = "<Example Button>";
-            ExampleButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            ExampleButton.UseVisualStyleBackColor = false;
             // 
             // menuStrip
             // 
@@ -196,16 +173,9 @@
             // _viewNavPanel
             // 
             this._viewNavPanel.BackColor = System.Drawing.Color.Transparent;
-            settings1.App_NavFont = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            settings1.CreateSaleFolder = "";
-            settings1.DefaultCruiseSaveLocation = "";
-            settings1.DefaultTemplateSaveLocation = "";
-            settings1.FileNameFormat = "";
-            settings1.RecentFiles = "";
-            settings1.SettingsKey = "";
-            this._viewNavPanel.DataBindings.Add(new System.Windows.Forms.Binding("Font", settings1, "App_NavFont", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this._viewNavPanel.DataBindings.Add(new System.Windows.Forms.Binding("Font", Properties.Settings.Default.App_NavFont, "App_NavFont", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this._viewNavPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._viewNavPanel.Font = settings1.App_NavFont;
+            //this._viewNavPanel.Font = settings1.App_NavFont;
             this._viewNavPanel.Location = new System.Drawing.Point(0, 0);
             this._viewNavPanel.Margin = new System.Windows.Forms.Padding(0);
             this._viewNavPanel.MinimumSize = new System.Drawing.Size(150, 4);

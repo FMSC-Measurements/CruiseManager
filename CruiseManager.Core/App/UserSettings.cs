@@ -4,20 +4,23 @@ using System.Text;
 
 namespace CruiseManager.Core.App
 {
-    public abstract class UserSettings
+    public interface IUserSettings
     {
-        public const int RECENT_FILE_LIST_SIZE = 10;
+        bool? CreateSaleFolder { get; set; }
 
-        public bool? CreateSaleFolder { get; set; }
+        string CruiseSaveLocation { get; set; }
 
-        //public static UserSettings Instance { get; set; }
+        string TemplateSaveLocation { get; set; }
 
-        public abstract string CruiseSaveLocation { get; set; }
+        string FileNameFormat { get; set; }
 
-        public abstract string TemplateSaveLocation { get; set; }
+        string Region { get; set; }
 
-        public abstract string[] RecentFiles { get; }
+        void Save();
 
-        public abstract void AddRecentFile(String path);
+        void Revert();
+
+        void Reset();
+
     }
 }

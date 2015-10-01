@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CSM.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CruiseManager.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="DefaultCruiseSaveLocation" Type="System.String" Scope="User">
@@ -11,14 +11,14 @@
     <Setting Name="CreateSaleFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="RecentFiles" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="FileNameFormat" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="App_NavFont" Type="System.Drawing.Font" Scope="User">
       <Value Profile="(Default)">Segoe UI Semibold, 12pt, style=Bold</Value>
+    </Setting>
+    <Setting Name="UserRegion" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

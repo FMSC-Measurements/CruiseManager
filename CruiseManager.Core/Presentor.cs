@@ -5,14 +5,14 @@ using System.Text;
 
 namespace CruiseManager.Core
 {
+    //public enum PresenterStatus { Ready, Initializing, Working }
+
     public abstract class Presentor : IPresentor, IDisposable
     {
         private IView _view;
+        //private PresenterStatus _status = PresenterStatus.Ready; 
         //public WindowPresenter WindowPresenter { get; protected set; }
         public ApplicationController ApplicationController { get; protected set; }
-
-        public event EventHandler<PresenterStatusChangedEventArgs> StatusChanged; 
-
         public IView View
         {
             get { return _view; }
@@ -25,24 +25,36 @@ namespace CruiseManager.Core
             }
         }
 
+        //public PresenterStatus Status
+        //{
+        //    get { return _status; }
+        //    protected set
+        //    {
+        //        _status = value;
+        //        OnStatusChanged(value);
+        //    }
+        //}
+
+        //public event EventHandler<PresenterStatusChangedEventArgs> StatusChanged; 
+
         protected virtual void OnViewLoad(EventArgs e)
         {
 
         }
 
-        protected void OnStatusChanged(PresenterStatus status)
-        {
-            this.OnStatusChanged(new PresenterStatusChangedEventArgs()
-            { Status = status });
-        }
+        //protected void OnStatusChanged(PresenterStatus status)
+        //{
+        //    this.OnStatusChanged(new PresenterStatusChangedEventArgs()
+        //    { Status = status });
+        //}
 
-        protected void OnStatusChanged(PresenterStatusChangedEventArgs e)
-        {
-            if(this.StatusChanged != null)
-            {
-                this.StatusChanged(this, e);
-            }
-        }
+        //protected void OnStatusChanged(PresenterStatusChangedEventArgs e)
+        //{
+        //    if(this.StatusChanged != null)
+        //    {
+        //        this.StatusChanged(this, e);
+        //    }
+        //}
 
         protected virtual void WireupView(IView view)
         {

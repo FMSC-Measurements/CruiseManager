@@ -9,7 +9,7 @@
     <Import_RootNamespace>CruiseManager.Core</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)App\ApplicationState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App\IApplicationState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\ExceptionHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\Exceptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\PlatformHelper.cs" />

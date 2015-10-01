@@ -11,12 +11,12 @@ namespace CruiseManager.App
     {
         public override void Load()
         {
-            Bind<UserSettings>().To<UserSettingsWinforms>().InSingletonScope();
+            Bind<IUserSettings>().To<UserSettingsWinforms>().InSingletonScope();
             Bind<SetupService>().To<SetupServiceWinForms>().InSingletonScope();
             Bind<PlatformHelper>().To<PlatformHelperWinForms>().InSingletonScope();
             Bind<ExceptionHandler>().To<ExceptionHandlerWinforms>().InSingletonScope();
             Bind<WindowPresenter>().To<WindowPresenterWinForms>().InSingletonScope();
-            Bind<ApplicationState>().To<ApplicationState>().InSingletonScope();
+            Bind<IApplicationState>().To<IApplicationState>().InSingletonScope();
 
             Bind<ApplicationController>().To<ApplicationControllerWinForms>().InSingletonScope();
             

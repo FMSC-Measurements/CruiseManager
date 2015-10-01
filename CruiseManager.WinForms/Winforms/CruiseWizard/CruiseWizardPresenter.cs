@@ -37,7 +37,6 @@ namespace CruiseManager.Winforms.CruiseWizard
 
 
         private bool _isFinished = false;//flag for indicating if the view is closing from the user cliking finish, or canceling
-        protected ApplicationState _appStateHandle;//TODO cleanup; of little use anymore
         protected DAL _database;
 
 
@@ -193,7 +192,6 @@ namespace CruiseManager.Winforms.CruiseWizard
             this.WindowPresenter = windowPresenter;
             this.ApplicationController = applicationController;
             View.Presenter = this;
-            _appStateHandle = ApplicationController.AppState;
             _database = database;
 
             LoadSetupData();//load tree defaults, product codes, etc.

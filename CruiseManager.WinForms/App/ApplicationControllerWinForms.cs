@@ -22,9 +22,9 @@ namespace CruiseManager.App
         public ApplicationControllerWinForms(
             WindowPresenter windowPresenter, 
             ExceptionHandler exceptionHandler, 
-            UserSettings userSettings, 
+            IUserSettings userSettings, 
             SetupService setupService, 
-            ApplicationState applicationState, 
+            IApplicationState applicationState, 
             PlatformHelper platformHelper) 
             : base(windowPresenter, exceptionHandler, userSettings, setupService, applicationState, platformHelper)
         {
@@ -54,7 +54,7 @@ namespace CruiseManager.App
                     case Strings.CRUISE_FILE_EXTENTION:
                         {
                             Database = new DAL(filePath);
-                            UserSettings.AddRecentFile(filePath);
+                            AppState.AddRecentFile(filePath);
                             String[] errors;
                             if (this.Database.HasCruiseErrors(out errors))
                             {
@@ -66,7 +66,7 @@ namespace CruiseManager.App
                     case Strings.CRUISE_TEMPLATE_FILE_EXTENTION:
                         {
                             this.Database = new DAL(filePath);
-                            UserSettings.AddRecentFile(filePath);
+                            AppState.AddRecentFile(filePath);
                             WindowPresenter.ShowTemplateLandingLayout();
                             break;
                         }
@@ -136,7 +136,7 @@ namespace CruiseManager.App
             {
 
                 this.Database = new DAL(_convertedFilePath);
-                this.UserSettings.AddRecentFile(_convertedFilePath);
+                this.AppState.AddRecentFile(_convertedFilePath);
                 this.WindowPresenter.ShowCruiseLandingLayout();
             }
             else
