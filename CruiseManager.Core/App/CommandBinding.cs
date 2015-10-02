@@ -4,17 +4,17 @@ using System.Text;
 
 namespace CruiseManager.Core.App
 {
-    public abstract class ViewCommandBinding
+    public abstract class CommandBinding
     {
-        protected ViewCommandBinding(ViewCommand command)
+        protected CommandBinding(BoundCommand command)
         {
             this.Command = command;
         }
 
         public Object Control;
-        protected ViewCommand Command;
+        protected BoundCommand Command;
 
-        public event Action<ViewCommandBinding> ControlDisposed; 
+        public event Action<CommandBinding> ControlDisposed; 
 
         public abstract void OnNameChanged(String name);
         public abstract void OnEnabledChanged(bool Enabled);

@@ -15,7 +15,7 @@ namespace CruiseManager.Core.App
     /// provide a common place to for all the forms to access data and other infomation about the application state.
     /// it is the glue that binds the application together
     /// </summary>
-    public abstract class WindowPresenter : Ninject.Modules.NinjectModule, IDisposable
+    public abstract class WindowPresenter :  IDisposable
     {
         //public static WindowPresenter Instance { get; set; }
 
@@ -27,7 +27,6 @@ namespace CruiseManager.Core.App
 
         public MainWindow MainWindow { get; set; }
 
-        public Ninject.StandardKernel Context { get; set; }
 
         public abstract string AskTemplateLocation();
         public abstract String AskCruiseSaveLocation();
@@ -50,20 +49,6 @@ namespace CruiseManager.Core.App
         //public abstract void ShowOpenCruiseDialog();
         public abstract void ShowTemplateLandingLayout();
 
-        //public abstract void ShowSimpleErrorMessage(string errorMessage);
-
-        //public void ShowMessage(string message)
-        //{
-        //    ShowMessage(message, null);
-        //}
-
-        //public abstract void ShowMessage(string message, string caption);
-
-        //public abstract Nullable<bool> AskYesNoCancel(String message, String caption);
-        //public abstract Nullable<bool> AskYesNoCancel(String message, String caption, Nullable<bool> defaultOption);
-
-        //public abstract void ShowWaitCursor();
-        //public abstract void ShowDefaultCursor();
 
         public abstract void Run();
 

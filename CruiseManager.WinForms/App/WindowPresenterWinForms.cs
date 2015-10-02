@@ -37,25 +37,25 @@ namespace CruiseManager.App
             
         }
 
-        public override void Load()
-        {
-            Bind<MainWindow>().To<FormCSMMain>().InSingletonScope();
+        //public override void Load()
+        //{
+        //    Bind<MainWindow>().To<FormCSMMain>().InSingletonScope();
 
-            Bind<CreateComponentView>().To<CreateComponentViewWinforms>();
-            Bind<CruiseCustomizeView>().To<CruiseCustomizeViewWinforms>();
-            Bind<EditDesignView>().To<EditDesignViewWinForms>();
-            Bind<EditTemplateView>().To<EditTemplateViewWinForms>();
-            Bind<MergeComponentView>().To<MergeComponentViewWinforms>();
+        //    Bind<CreateComponentView>().To<CreateComponentViewWinforms>();
+        //    Bind<CruiseCustomizeView>().To<CruiseCustomizeViewWinforms>();
+        //    Bind<EditDesignView>().To<EditDesignViewWinForms>();
+        //    Bind<EditTemplateView>().To<EditTemplateViewWinForms>();
+        //    Bind<MergeComponentView>().To<MergeComponentViewWinforms>();
 
-            Bind<HomeView>().ToSelf();
+        //    Bind<HomeView>().ToSelf();
 
-            Bind<CreateComponentPresenter>().ToSelf();
-            Bind<CustomizeCruisePresenter>().ToSelf();
-            Bind<DesignEditorPresentor>().ToSelf();
-            Bind<TemplateEditViewPresenter>().ToSelf();
-            Bind<MergeComponentsPresenter>().ToSelf();
+        //    Bind<CreateComponentPresenter>().ToSelf();
+        //    Bind<CustomizeCruisePresenter>().ToSelf();
+        //    Bind<DesignEditorPresentor>().ToSelf();
+        //    Bind<TemplateEditViewPresenter>().ToSelf();
+        //    Bind<MergeComponentsPresenter>().ToSelf();
 
-        }
+        //}
 
 
 

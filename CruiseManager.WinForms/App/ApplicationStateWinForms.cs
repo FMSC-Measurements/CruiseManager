@@ -17,10 +17,16 @@ namespace CruiseManager.WinForms.App
         const int RECENT_FILE_LIST_SIZE = 10;
 
         [Serializable]
-        protected class ApplicationStateData
+        public class ApplicationStateData
         {
+            private string[] _recentFiles = new string[0];
+
             [XmlArray]
-            public String[] RecentFiles { get; set; }
+            public String[] RecentFiles
+            {
+                get { return _recentFiles; }
+                set { _recentFiles = value; }
+            }
         }
 
 

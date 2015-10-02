@@ -1,4 +1,5 @@
-﻿using CruiseManager.Core.App;
+﻿using CruiseManager.Core;
+using CruiseManager.Core.App;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace CruiseManager.App
 {
     public class ViewCommandWinForms : ViewCommand
     {
-        protected class ControlCommandBinging : ViewCommandBinding
+        protected class ControlCommandBinging : CommandBinding
         {
             public ControlCommandBinging(ViewCommand command, Control control) : base(command)
             {
@@ -43,7 +44,7 @@ namespace CruiseManager.App
             }
         }
 
-        protected class ToolStripItemCommandBinding : ViewCommandBinding
+        protected class ToolStripItemCommandBinding : CommandBinding
         {
             public ToolStripItemCommandBinding(ViewCommand command, ToolStripItem control) : base(command)
             {
@@ -78,11 +79,11 @@ namespace CruiseManager.App
             }
         }
 
-        public ViewCommandWinForms(String name, Action clickAction, ExceptionHandler exceptionHandler) 
-            : base(name, clickAction, exceptionHandler)
+        public ViewCommandWinForms(String name, Action clickAction, bool enabled = true, IExceptionHandler exceptionHandler = null) 
+            : base(name, clickAction, enabled, exceptionHandler)
         { }
 
-        protected override ViewCommandBinding GetNewBinding(object control)
+        protected override CommandBinding GetNewBinding(object control)
         {
             if(control is Control)
             {
@@ -98,16 +99,21 @@ namespace CruiseManager.App
             }
         }
 
-        protected ViewCommandBinding GetNewBinding(Control control)
+        protected CommandBinding GetNewBinding(Control control)
         {
 
             return new ControlCommandBinging(this, control);
         }
 
-        protected ViewCommandBinding GetNewBinding(ToolStripItem control)
+        protected CommandBinding GetNewBinding(ToolStripItem control)
         {
 
             return new ToolStripItemCommandBinding(this, control);
+        }
+
+        protected override void OnExceptionHandlerChanged()
+        {
+            throw new NotImplementedException();
         }
     }
 }

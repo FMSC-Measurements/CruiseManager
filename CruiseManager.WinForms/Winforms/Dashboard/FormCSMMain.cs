@@ -100,6 +100,7 @@ namespace CruiseManager.Winforms.Dashboard
 
         public void SetUserCommands(IEnumerable<ViewCommand> userCommands)
         {
+            this._userCommandPanel.SuspendLayout();
             this._userCommandPanel.Controls.Clear();
             if(userCommands == null || userCommands.Count() == 0) { return;  }
             using (Graphics g = CreateGraphics())
@@ -114,10 +115,12 @@ namespace CruiseManager.Winforms.Dashboard
                     command.BindTo(newButton);
                 }
             }
+            this._userCommandPanel.ResumeLayout();
         }
 
         public void SetNavCommands(IEnumerable<ViewCommand> navCommands)
         {
+            this._viewNavPanel.SuspendLayout();
             this._viewNavPanel.Controls.Clear();
             if(navCommands == null) { return; }
             using (Graphics g = CreateGraphics())
@@ -140,6 +143,7 @@ namespace CruiseManager.Winforms.Dashboard
                     this._viewNavPanel.Controls.Add(spacer);
                 }
             }
+            this._viewNavPanel.ResumeLayout();
         }
 
 
