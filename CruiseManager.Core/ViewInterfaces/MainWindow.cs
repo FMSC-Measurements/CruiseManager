@@ -1,5 +1,6 @@
 ﻿using CruiseManager.App;
 using CruiseManager.Core.App;
+using CruiseManager.Core.CommandModel;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,15 +15,14 @@ namespace CruiseManager.Core.ViewInterfaces
         bool EnableSave { get; set; }
         bool EnableSaveAs { get; set; }
 
-        void ClearActiveView();
 
-        void SetActiveView(object view);
+        void SetActiveView(IView view);
 
-        void SetNavCommands(IEnumerable<ViewCommand> navCommands);
+        //void SetNavCommands(IEnumerable<ViewCommand> navCommands);
 
-        void ShowWaitCursor();
+        //void ShowWaitCursor();
 
-        void ShowDefaultCursor();
+        //void ShowDefaultCursor();
 
     }
 }

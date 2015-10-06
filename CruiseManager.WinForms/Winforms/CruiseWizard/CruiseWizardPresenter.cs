@@ -122,13 +122,13 @@ namespace CruiseManager.Winforms.CruiseWizard
         #endregion
 
         #region Setup properties
-        public List<FileInfo> LocalTemplateFiles
-        {
-            get
-            {
-                return ApplicationController.GetTemplateFiles();
-            }
-        }
+        //public List<FileInfo> LocalTemplateFiles
+        //{
+        //    get
+        //    {
+        //        return ApplicationController.GetTemplateFiles();
+        //    }
+        //}
 
         public List<string> CruiseMethods 
         {

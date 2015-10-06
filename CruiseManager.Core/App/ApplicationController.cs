@@ -8,6 +8,7 @@ using CruiseManager.Core.Models;
 using System.Xml.Serialization;
 using System.IO;
 using CruiseManager.Core.Constants;
+using System.ComponentModel;
 
 namespace CruiseManager.Core.App
 {
@@ -258,7 +259,7 @@ namespace CruiseManager.Core.App
                     if (dialogResult.HasValue && dialogResult.Value == true)
                     {
                         this.ActiveView.ShowWaitCursor();
-                        db = new DAL(GetTempCruiseLocation());
+                        db = new DAL(PlatformHelper.GetTempCruiseLocation());
                     }
                     else if (dialogResult.HasValue == false)
                     {
@@ -269,7 +270,7 @@ namespace CruiseManager.Core.App
                 else
                 {
                     this.ActiveView.ShowWaitCursor();
-                    db = new DAL(GetTempCruiseLocation(), true);
+                    db = new DAL(PlatformHelper.GetTempCruiseLocation(), true);
                 }
 
                 return db;
@@ -382,9 +383,9 @@ namespace CruiseManager.Core.App
 
         #region Static Methods
 
-        public static bool HasUnfinishedCruiseFile()
+        public bool HasUnfinishedCruiseFile()
         {
-            string tempPath = GetTempCruiseLocation();
+            string tempPath = PlatformHelper.GetTempCruiseLocation();
             return System.IO.File.Exists(tempPath);
         }
 
@@ -393,13 +394,13 @@ namespace CruiseManager.Core.App
             return System.IO.Path.GetDirectoryName(System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)) + "\\" + Strings.TEMP_FILENAME;
         }
 
-        public List<FileInfo> GetTemplateFiles()
-        {
-            DirectoryInfo tDir = PlatformHelper.GetTemplateFolder();
-            //filter all files ending in .cut
-            List<FileInfo> files = new List<FileInfo>(tDir.GetFiles("*" + Constants.Strings.CRUISE_TEMPLATE_FILE_EXTENTION));
-            return files;
-        }
+        //public List<FileInfo> GetTemplateFiles()
+        //{
+        //    DirectoryInfo tDir = PlatformHelper.GetTemplateFolder();
+        //    //filter all files ending in .cut
+        //    List<FileInfo> files = new List<FileInfo>(tDir.GetFiles("*" + Constants.Strings.CRUISE_TEMPLATE_FILE_EXTENTION));
+        //    return files;
+        //}
         #endregion
 
         #region IDisposable Members
