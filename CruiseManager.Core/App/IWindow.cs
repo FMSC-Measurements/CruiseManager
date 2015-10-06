@@ -11,5 +11,7 @@ namespace CruiseManager.Core.App
         ViewContext ActiveViewContext { get; set; }
 
         void ViewContext_ActiveViewChanged();
+
+
     }
 }

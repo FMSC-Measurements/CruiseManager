@@ -1,17 +1,18 @@
-﻿using System;
+﻿using CruiseManager.Core.App;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace CruiseManager.Core.CommandModel
 {
-    public abstract class ViewDispatchCommand : BoundCommand
+    public abstract class ViewNavigateCommand : BoundCommand
     {
-        public ViewDispatcher Dispatcher { get; set; }
+        public ViewProvider Dispatcher { get; set; }
 
 
         public Type ViewType { get; set; }
         
-        public ViewDispatchCommand(String text, Type viewType, bool enabled = true) : base(text)
+        public ViewNavigateCommand(String text, Type viewType, bool enabled = true) : base(text)
         {
             this.Name = text;
             this.ViewType = viewType;

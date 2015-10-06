@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace CruiseManager.Core.App
+namespace CruiseManager.Core.CommandModel
 {
     public abstract class ViewCommand : BoundCommand
     {

@@ -9,7 +9,9 @@
     <Import_RootNamespace>CruiseManager.Core</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)App\Command.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App\ApplicationBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App\CruiseManagerApplication.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App\DatabaseExtentions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\IApplicationState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\ExceptionHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\Exceptions.cs" />
@@ -17,16 +19,16 @@
     <Compile Include="$(MSBuildThisFileDirectory)App\PlatformHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\SetupService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\UserSettings.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)App\ViewCommand.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)App\CommandBinding.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\ViewContext.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)App\ViewDispatchCommand.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)App\ViewDispatcher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\ViewProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\WindowPresenter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)BoundCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CancelWorkerException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\DataObjectCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CommandModel\BoundCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CommandModel\Command.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CommandModel\CommandBinding.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CommandModel\ViewCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CommandModel\ViewNavigateCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Components\ComponentFile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Components\CreateComponentPresenter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Components\MergeComponentsPresenter.cs" />
@@ -50,6 +52,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)EditTemplate\EditTemplateCruiseMethod.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditTemplate\TemplateEditViewPresenter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IExceptionHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IHostView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)INavigationView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IPresentor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ISaveHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IView.cs" />

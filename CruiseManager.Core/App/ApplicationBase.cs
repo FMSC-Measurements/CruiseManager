@@ -59,8 +59,12 @@ namespace CruiseManager.Core.App
         }
 
         protected abstract void OnActiveViewChanging(System.ComponentModel.CancelEventArgs e);
+        protected abstract void OnApplicationClosing(System.ComponentModel.CancelEventArgs e);
 
-        protected abstract void MainWindow_Closing(System.ComponentModel.CancelEventArgs e);
+        protected void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            this.OnApplicationClosing(e);
+        }
 
     }
 }

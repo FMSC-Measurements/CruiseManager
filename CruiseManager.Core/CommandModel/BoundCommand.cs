@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CruiseManager.Core
+namespace CruiseManager.Core.CommandModel
 {
     public abstract class BoundCommand : Command
     {

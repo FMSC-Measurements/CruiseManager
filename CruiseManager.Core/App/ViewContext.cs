@@ -1,4 +1,5 @@
 ﻿using CruiseDAL;
+using CruiseManager.Core.CommandModel;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,7 +17,7 @@ namespace CruiseManager.Core.App
 
         public IView ActiveView { get; set; }
 
-        public IEnumerable<ViewDispatchCommand> NavigationCommands { get; set; }
+        public IEnumerable<ViewNavigateCommand> NavigationCommands { get; set; }
 
         public IEnumerable<ViewCommand> Commands { get; set; }
 

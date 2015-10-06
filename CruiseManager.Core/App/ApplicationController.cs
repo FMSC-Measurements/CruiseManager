@@ -9,6 +9,7 @@ using System.Xml.Serialization;
 using System.IO;
 using CruiseManager.Core.Constants;
 using System.ComponentModel;
+using CruiseManager.Core.CommandModel;
 
 namespace CruiseManager.Core.App
 {
@@ -285,100 +286,100 @@ namespace CruiseManager.Core.App
 
         #region Common Database methods
 
-        public static void SetTreeTDV(TreeVM tree, TreeDefaultValueDO tdv)
-        {
-            tree.TreeDefaultValue = tdv;
-            if (tdv != null)
-            {
-                tree.Species = tdv.Species;
+        //public static void SetTreeTDV(TreeVM tree, TreeDefaultValueDO tdv)
+        //{
+        //    tree.TreeDefaultValue = tdv;
+        //    if (tdv != null)
+        //    {
+        //        tree.Species = tdv.Species;
 
-                tree.LiveDead = tdv.LiveDead;
-                tree.Grade = tdv.TreeGrade;
-                tree.FormClass = tdv.FormClass;
-                tree.RecoverablePrimary = tdv.Recoverable;
-                //tree.HiddenPrimary = tdv.HiddenPrimary; //#367
-            }
-            else
-            {
-                //tree.Species = string.Empty;
-                //tree.LiveDead = string.Empty;
-                //tree.Grade = string.Empty;
-                //tree.FormClass = 0;
-                //tree.RecoverablePrimary = 0;
-                //tree.HiddenPrimary = 0;
-            }
-        }
+        //        tree.LiveDead = tdv.LiveDead;
+        //        tree.Grade = tdv.TreeGrade;
+        //        tree.FormClass = tdv.FormClass;
+        //        tree.RecoverablePrimary = tdv.Recoverable;
+        //        //tree.HiddenPrimary = tdv.HiddenPrimary; //#367
+        //    }
+        //    else
+        //    {
+        //        //tree.Species = string.Empty;
+        //        //tree.LiveDead = string.Empty;
+        //        //tree.Grade = string.Empty;
+        //        //tree.FormClass = 0;
+        //        //tree.RecoverablePrimary = 0;
+        //        //tree.HiddenPrimary = 0;
+        //    }
+        //}
 
-        public List<string> GetCruiseMethods(bool reconMethodsOnly)
-        {
-            return this.GetCruiseMethods(this.Database, reconMethodsOnly);
-        }
+        //public List<string> GetCruiseMethods(bool reconMethodsOnly)
+        //{
+        //    return this.GetCruiseMethods(this.Database, reconMethodsOnly);
+        //}
 
-        public List<String> GetCruiseMethods(DAL database, bool reconMethodsOnly)
-        {
-            if (reconMethodsOnly)
-            {
-                return new List<string>(CruiseDAL.Schema.Constants.CruiseMethods.RECON_METHODS);
-            }
-            List<string> cruiseMethods = null;
-            try
-            {
-                cruiseMethods = new List<string>(CruiseMethodsDO.ReadCruiseMethodStr(database, reconMethodsOnly));
-            }
-            catch { }
-            if (cruiseMethods == null || cruiseMethods.Count == 0)
-            {
-                cruiseMethods = new List<string>(CruiseDAL.Schema.Constants.CruiseMethods.SUPPORTED_METHODS);
-            }
+        //public List<String> GetCruiseMethods(DAL database, bool reconMethodsOnly)
+        //{
+        //    if (reconMethodsOnly)
+        //    {
+        //        return new List<string>(CruiseDAL.Schema.Constants.CruiseMethods.RECON_METHODS);
+        //    }
+        //    List<string> cruiseMethods = null;
+        //    try
+        //    {
+        //        cruiseMethods = new List<string>(CruiseMethodsDO.ReadCruiseMethodStr(database, reconMethodsOnly));
+        //    }
+        //    catch { }
+        //    if (cruiseMethods == null || cruiseMethods.Count == 0)
+        //    {
+        //        cruiseMethods = new List<string>(CruiseDAL.Schema.Constants.CruiseMethods.SUPPORTED_METHODS);
+        //    }
 
-            return cruiseMethods;
-        }
+        //    return cruiseMethods;
+        //}
 
-        public object GetTreeTDVList(TreeVM tree)
-        {
-            if (tree == null) { return EMPTY_SPECIES_LIST; }
-            if (tree.Stratum == null)
-            {
-                if (this.Database.GetRowCount("CuttingUnitStratum", "WHERE CuttingUnit_CN = ?", tree.CuttingUnit_CN) == 1)
-                {
-                    tree.Stratum = this.Database.ReadSingleRow<StratumVM>("Stratum", "JOIN CuttingUnitStratum USING (Stratum_CN) WHERE CuttingUnit_CN = ?", tree.CuttingUnit_CN);
-                }
-                else
-                {
-                    return EMPTY_SPECIES_LIST;
-                }
-            }
+        //public object GetTreeTDVList(TreeVM tree)
+        //{
+        //    if (tree == null) { return EMPTY_SPECIES_LIST; }
+        //    if (tree.Stratum == null)
+        //    {
+        //        if (this.Database.GetRowCount("CuttingUnitStratum", "WHERE CuttingUnit_CN = ?", tree.CuttingUnit_CN) == 1)
+        //        {
+        //            tree.Stratum = this.Database.ReadSingleRow<StratumVM>("Stratum", "JOIN CuttingUnitStratum USING (Stratum_CN) WHERE CuttingUnit_CN = ?", tree.CuttingUnit_CN);
+        //        }
+        //        else
+        //        {
+        //            return EMPTY_SPECIES_LIST;
+        //        }
+        //    }
 
-            if (tree.SampleGroup == null)
-            {
-                if (this.Database.GetRowCount("SampleGroup", "WHERE Stratum_CN = ?", tree.Stratum_CN) == 1)
-                {
-                    tree.SampleGroup = this.Database.ReadSingleRow<SampleGroupDO>("SampleGroup", "WHERE Stratum_CN = ?", tree.Stratum_CN);
-                }
-                if (tree.SampleGroup == null)
-                {
-                    return EMPTY_SPECIES_LIST;
-                }
-            }
+        //    if (tree.SampleGroup == null)
+        //    {
+        //        if (this.Database.GetRowCount("SampleGroup", "WHERE Stratum_CN = ?", tree.Stratum_CN) == 1)
+        //        {
+        //            tree.SampleGroup = this.Database.ReadSingleRow<SampleGroupDO>("SampleGroup", "WHERE Stratum_CN = ?", tree.Stratum_CN);
+        //        }
+        //        if (tree.SampleGroup == null)
+        //        {
+        //            return EMPTY_SPECIES_LIST;
+        //        }
+        //    }
 
 
 
-            if (tree.SampleGroup.TreeDefaultValues.IsPopulated == false)
-            {
-                tree.SampleGroup.TreeDefaultValues.Populate();
-            }
-            return tree.SampleGroup.TreeDefaultValues;
+        //    if (tree.SampleGroup.TreeDefaultValues.IsPopulated == false)
+        //    {
+        //        tree.SampleGroup.TreeDefaultValues.Populate();
+        //    }
+        //    return tree.SampleGroup.TreeDefaultValues;
 
-        }
+        //}
 
-        public object GetSampleGroupsByStratum(long? st_cn)
-        {
-            if (st_cn == null)
-            {
-                return new SampleGroupDO[0];
-            }
-            return this.Database.Read<SampleGroupDO>("SampleGroup", "WHERE Stratum_CN = ?", st_cn);
-        }
+        //public object GetSampleGroupsByStratum(long? st_cn)
+        //{
+        //    if (st_cn == null)
+        //    {
+        //        return new SampleGroupDO[0];
+        //    }
+        //    return this.Database.Read<SampleGroupDO>("SampleGroup", "WHERE Stratum_CN = ?", st_cn);
+        //}
         #endregion
 
         #region Static Methods

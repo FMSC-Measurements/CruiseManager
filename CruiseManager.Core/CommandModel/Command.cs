@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CruiseManager.Core.App
+namespace CruiseManager.Core.CommandModel
 {
     public abstract class Command
     {

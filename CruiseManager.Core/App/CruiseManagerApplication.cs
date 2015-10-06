@@ -246,5 +246,7 @@ namespace CruiseManager.Core.App
             string tempPath = PlatformHelper.GetTempCruiseLocation();
             return System.IO.File.Exists(tempPath);
         }
+
+        public abstract void Start();
     }
 }
