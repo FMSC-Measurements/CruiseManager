@@ -93,12 +93,22 @@ namespace CruiseManager.Core.Components
             }
             private set
             {
-                _currentWorker = value;
+                
                 if (_currentWorker != null)
                 {
-                    _currentWorker.ProgressChanged += this.View.HandleProgressChanged;                    
+                    _currentWorker.ProgressChanged -= this.CurrentWorker_ProgressChanged;                    
                 }
-                this.View.HandleWorkerStatusChanged();
+                if(value != null) { value.ProgressChanged += this.CurrentWorker_ProgressChanged; }
+                _currentWorker = value;
+                this.CurrentWorker_ProgressChanged(null, null);
+            }
+        }
+
+        private void CurrentWorker_ProgressChanged(Object sender, WorkerProgressChangedEventArgs e)
+        {
+            if(View!= null)
+            {
+                View.HandleProgressChanged(sender, e);
             }
         }
 

@@ -26,6 +26,7 @@ using CruiseManager.Core.CruiseCustomize;
 using CruiseManager.Core.EditDesign;
 using CruiseManager.Winforms.EditDesign;
 using CruiseManager.Core.EditTemplate;
+using CruiseManager.Core.CommandModel;
 
 namespace CruiseManager.App
 {
@@ -324,18 +325,18 @@ namespace CruiseManager.App
             }
         }
 
-        private ViewCommand[] cruiseLandingNavCommands;
+        private BindableCommand[] cruiseLandingNavCommands;
 
         private void InitializeCruiseNavOptions()
         {
-            this.cruiseLandingNavCommands = new ViewCommand[]
+            this.cruiseLandingNavCommands = new BindableCommand[]
             {
-                this.ApplicationController.MakeViewCommand("Design Wizard", this.ShowEditWizard),
-                this.ApplicationController.MakeViewCommand("Edit Design", this.ShowEditDesign),
-                this.ApplicationController.MakeViewCommand("Customize", this.ShowCustomizeCruiseLayout),
-                this.ApplicationController.MakeViewCommand("Field Data", this.ShowDataEditor),
-                this.ApplicationController.MakeViewCommand("Create Component Files", this.ShowCreateComponentsLayout),
-                this.ApplicationController.MakeViewCommand("Merge Component Files", this.ShowManageComponentsLayout)
+                new BindableActionCommand("Design Wizard", this.ShowEditWizard),
+                new BindableActionCommand("Edit Design", this.ShowEditDesign),
+                new BindableActionCommand("Customize", this.ShowCustomizeCruiseLayout),
+                new BindableActionCommand("Field Data", this.ShowDataEditor),
+                new BindableActionCommand("Create Component Files", this.ShowCreateComponentsLayout),
+                new BindableActionCommand("Merge Component Files", this.ShowManageComponentsLayout)
             };
         }
 
@@ -429,10 +430,10 @@ namespace CruiseManager.App
         {
             var homeView = new HomeView(this.ApplicationController);
             this.ApplicationController.ActiveView = homeView;
-            this.MainWindow.SetNavCommands(new ViewCommand[]
+            this.MainWindow.SetNavCommands(new BindableCommand[]
             {
-                this.ApplicationController.MakeViewCommand("Open File", this.ApplicationController.OpenFile),
-                this.ApplicationController.MakeViewCommand("Create New Cruise", this.ApplicationController.CreateNewCruise)
+                this.ApplicationController.OpenFileCommand,
+                this.ApplicationController.CreateNewCruiseCommand
             });
 
             //this.MainWindow.ClearNavPanel();
@@ -561,12 +562,12 @@ namespace CruiseManager.App
 
         }
 
-        private ViewCommand[] templateLandingNavOptions;
+        private BindableCommand[] templateLandingNavOptions;
         private void InitializeTemplateNavOptions()
         {
-            this.templateLandingNavOptions = new ViewCommand[]{
-                this.ApplicationController.MakeViewCommand("Import From Cruise", this.ShowImportTemplate),
-                this.ApplicationController.MakeViewCommand("Close File", this.ShowHomeLayout )
+            this.templateLandingNavOptions = new BindableCommand[]{
+                new BindableActionCommand("Import From Cruise", this.ShowImportTemplate),
+                new BindableActionCommand("Close File", this.ShowHomeLayout )
             };
         }
         

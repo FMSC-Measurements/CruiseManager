@@ -8,7 +8,6 @@ using CruiseManager.Core.Models;
 using System.Xml.Serialization;
 using System.IO;
 using CruiseManager.Core.Constants;
-using System.ComponentModel;
 using CruiseManager.Core.CommandModel;
 
 namespace CruiseManager.Core.App
@@ -20,10 +19,10 @@ namespace CruiseManager.Core.App
         
 
         #region ViewCommands
-        public ViewCommand CreateNewCruiseCommand { get; protected set; }
-        public ViewCommand SaveCommand { get; protected set; }
-        public ViewCommand SaveAsCommand { get; set; }
-        public ViewCommand OpenFileCommand { get; protected set; }
+        public BindableCommand CreateNewCruiseCommand { get; protected set; }
+        public BindableCommand SaveCommand { get; protected set; }
+        public BindableCommand SaveAsCommand { get; set; }
+        public BindableCommand OpenFileCommand { get; protected set; }
         #endregion
 
         #region properties
@@ -115,18 +114,15 @@ namespace CruiseManager.Core.App
             this.AppState = applicationState;
             this.PlatformHelper = platformHelper;
 
-            this.SaveCommand = MakeViewCommand("Save", this.Save);
-            this.SaveAsCommand = MakeViewCommand("SaveAs", this.SaveAs);
-            this.OpenFileCommand = MakeViewCommand("Open File", this.OpenFile);
-            this.CreateNewCruiseCommand = MakeViewCommand("New Cruise", this.CreateNewCruise);
+            this.SaveCommand = new BindableActionCommand("Save", this.Save);
+            this.SaveAsCommand = new BindableActionCommand("SaveAs", this.SaveAs);
+            this.OpenFileCommand = new BindableActionCommand("Open File", this.OpenFile);
+            this.CreateNewCruiseCommand = new BindableActionCommand("New Cruise", this.CreateNewCruise);
 #if DEBUG
             InSupervisorMode = true;
 #endif
         }
 
-        
-
-        public abstract ViewCommand MakeViewCommand(String name, Action action);
 
         //public bool ChangeView(IView view)
         //{
@@ -260,7 +256,7 @@ namespace CruiseManager.Core.App
                     if (dialogResult.HasValue && dialogResult.Value == true)
                     {
                         this.ActiveView.ShowWaitCursor();
-                        db = new DAL(PlatformHelper.GetTempCruiseLocation());
+                        db = new DAL(GetTempCruiseLocation());
                     }
                     else if (dialogResult.HasValue == false)
                     {
@@ -271,7 +267,7 @@ namespace CruiseManager.Core.App
                 else
                 {
                     this.ActiveView.ShowWaitCursor();
-                    db = new DAL(PlatformHelper.GetTempCruiseLocation(), true);
+                    db = new DAL(GetTempCruiseLocation(), true);
                 }
 
                 return db;
@@ -286,107 +282,107 @@ namespace CruiseManager.Core.App
 
         #region Common Database methods
 
-        //public static void SetTreeTDV(TreeVM tree, TreeDefaultValueDO tdv)
-        //{
-        //    tree.TreeDefaultValue = tdv;
-        //    if (tdv != null)
-        //    {
-        //        tree.Species = tdv.Species;
+        public static void SetTreeTDV(TreeVM tree, TreeDefaultValueDO tdv)
+        {
+            tree.TreeDefaultValue = tdv;
+            if (tdv != null)
+            {
+                tree.Species = tdv.Species;
 
-        //        tree.LiveDead = tdv.LiveDead;
-        //        tree.Grade = tdv.TreeGrade;
-        //        tree.FormClass = tdv.FormClass;
-        //        tree.RecoverablePrimary = tdv.Recoverable;
-        //        //tree.HiddenPrimary = tdv.HiddenPrimary; //#367
-        //    }
-        //    else
-        //    {
-        //        //tree.Species = string.Empty;
-        //        //tree.LiveDead = string.Empty;
-        //        //tree.Grade = string.Empty;
-        //        //tree.FormClass = 0;
-        //        //tree.RecoverablePrimary = 0;
-        //        //tree.HiddenPrimary = 0;
-        //    }
-        //}
+                tree.LiveDead = tdv.LiveDead;
+                tree.Grade = tdv.TreeGrade;
+                tree.FormClass = tdv.FormClass;
+                tree.RecoverablePrimary = tdv.Recoverable;
+                //tree.HiddenPrimary = tdv.HiddenPrimary; //#367
+            }
+            else
+            {
+                //tree.Species = string.Empty;
+                //tree.LiveDead = string.Empty;
+                //tree.Grade = string.Empty;
+                //tree.FormClass = 0;
+                //tree.RecoverablePrimary = 0;
+                //tree.HiddenPrimary = 0;
+            }
+        }
 
-        //public List<string> GetCruiseMethods(bool reconMethodsOnly)
-        //{
-        //    return this.GetCruiseMethods(this.Database, reconMethodsOnly);
-        //}
+        public List<string> GetCruiseMethods(bool reconMethodsOnly)
+        {
+            return this.GetCruiseMethods(this.Database, reconMethodsOnly);
+        }
 
-        //public List<String> GetCruiseMethods(DAL database, bool reconMethodsOnly)
-        //{
-        //    if (reconMethodsOnly)
-        //    {
-        //        return new List<string>(CruiseDAL.Schema.Constants.CruiseMethods.RECON_METHODS);
-        //    }
-        //    List<string> cruiseMethods = null;
-        //    try
-        //    {
-        //        cruiseMethods = new List<string>(CruiseMethodsDO.ReadCruiseMethodStr(database, reconMethodsOnly));
-        //    }
-        //    catch { }
-        //    if (cruiseMethods == null || cruiseMethods.Count == 0)
-        //    {
-        //        cruiseMethods = new List<string>(CruiseDAL.Schema.Constants.CruiseMethods.SUPPORTED_METHODS);
-        //    }
+        public List<String> GetCruiseMethods(DAL database, bool reconMethodsOnly)
+        {
+            if (reconMethodsOnly)
+            {
+                return new List<string>(CruiseDAL.Schema.Constants.CruiseMethods.RECON_METHODS);
+            }
+            List<string> cruiseMethods = null;
+            try
+            {
+                cruiseMethods = new List<string>(CruiseMethodsDO.ReadCruiseMethodStr(database, reconMethodsOnly));
+            }
+            catch { }
+            if (cruiseMethods == null || cruiseMethods.Count == 0)
+            {
+                cruiseMethods = new List<string>(CruiseDAL.Schema.Constants.CruiseMethods.SUPPORTED_METHODS);
+            }
 
-        //    return cruiseMethods;
-        //}
+            return cruiseMethods;
+        }
 
-        //public object GetTreeTDVList(TreeVM tree)
-        //{
-        //    if (tree == null) { return EMPTY_SPECIES_LIST; }
-        //    if (tree.Stratum == null)
-        //    {
-        //        if (this.Database.GetRowCount("CuttingUnitStratum", "WHERE CuttingUnit_CN = ?", tree.CuttingUnit_CN) == 1)
-        //        {
-        //            tree.Stratum = this.Database.ReadSingleRow<StratumVM>("Stratum", "JOIN CuttingUnitStratum USING (Stratum_CN) WHERE CuttingUnit_CN = ?", tree.CuttingUnit_CN);
-        //        }
-        //        else
-        //        {
-        //            return EMPTY_SPECIES_LIST;
-        //        }
-        //    }
+        public object GetTreeTDVList(TreeVM tree)
+        {
+            if (tree == null) { return EMPTY_SPECIES_LIST; }
+            if (tree.Stratum == null)
+            {
+                if (this.Database.GetRowCount("CuttingUnitStratum", "WHERE CuttingUnit_CN = ?", tree.CuttingUnit_CN) == 1)
+                {
+                    tree.Stratum = this.Database.ReadSingleRow<StratumVM>("Stratum", "JOIN CuttingUnitStratum USING (Stratum_CN) WHERE CuttingUnit_CN = ?", tree.CuttingUnit_CN);
+                }
+                else
+                {
+                    return EMPTY_SPECIES_LIST;
+                }
+            }
 
-        //    if (tree.SampleGroup == null)
-        //    {
-        //        if (this.Database.GetRowCount("SampleGroup", "WHERE Stratum_CN = ?", tree.Stratum_CN) == 1)
-        //        {
-        //            tree.SampleGroup = this.Database.ReadSingleRow<SampleGroupDO>("SampleGroup", "WHERE Stratum_CN = ?", tree.Stratum_CN);
-        //        }
-        //        if (tree.SampleGroup == null)
-        //        {
-        //            return EMPTY_SPECIES_LIST;
-        //        }
-        //    }
+            if (tree.SampleGroup == null)
+            {
+                if (this.Database.GetRowCount("SampleGroup", "WHERE Stratum_CN = ?", tree.Stratum_CN) == 1)
+                {
+                    tree.SampleGroup = this.Database.ReadSingleRow<SampleGroupDO>("SampleGroup", "WHERE Stratum_CN = ?", tree.Stratum_CN);
+                }
+                if (tree.SampleGroup == null)
+                {
+                    return EMPTY_SPECIES_LIST;
+                }
+            }
 
 
 
-        //    if (tree.SampleGroup.TreeDefaultValues.IsPopulated == false)
-        //    {
-        //        tree.SampleGroup.TreeDefaultValues.Populate();
-        //    }
-        //    return tree.SampleGroup.TreeDefaultValues;
+            if (tree.SampleGroup.TreeDefaultValues.IsPopulated == false)
+            {
+                tree.SampleGroup.TreeDefaultValues.Populate();
+            }
+            return tree.SampleGroup.TreeDefaultValues;
 
-        //}
+        }
 
-        //public object GetSampleGroupsByStratum(long? st_cn)
-        //{
-        //    if (st_cn == null)
-        //    {
-        //        return new SampleGroupDO[0];
-        //    }
-        //    return this.Database.Read<SampleGroupDO>("SampleGroup", "WHERE Stratum_CN = ?", st_cn);
-        //}
+        public object GetSampleGroupsByStratum(long? st_cn)
+        {
+            if (st_cn == null)
+            {
+                return new SampleGroupDO[0];
+            }
+            return this.Database.Read<SampleGroupDO>("SampleGroup", "WHERE Stratum_CN = ?", st_cn);
+        }
         #endregion
 
         #region Static Methods
 
-        public bool HasUnfinishedCruiseFile()
+        public static bool HasUnfinishedCruiseFile()
         {
-            string tempPath = PlatformHelper.GetTempCruiseLocation();
+            string tempPath = GetTempCruiseLocation();
             return System.IO.File.Exists(tempPath);
         }
 
@@ -395,13 +391,13 @@ namespace CruiseManager.Core.App
             return System.IO.Path.GetDirectoryName(System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)) + "\\" + Strings.TEMP_FILENAME;
         }
 
-        //public List<FileInfo> GetTemplateFiles()
-        //{
-        //    DirectoryInfo tDir = PlatformHelper.GetTemplateFolder();
-        //    //filter all files ending in .cut
-        //    List<FileInfo> files = new List<FileInfo>(tDir.GetFiles("*" + Constants.Strings.CRUISE_TEMPLATE_FILE_EXTENTION));
-        //    return files;
-        //}
+        public List<FileInfo> GetTemplateFiles()
+        {
+            DirectoryInfo tDir = PlatformHelper.GetTemplateFolder();
+            //filter all files ending in .cut
+            List<FileInfo> files = new List<FileInfo>(tDir.GetFiles("*" + Constants.Strings.CRUISE_TEMPLATE_FILE_EXTENTION));
+            return files;
+        }
         #endregion
 
         #region IDisposable Members

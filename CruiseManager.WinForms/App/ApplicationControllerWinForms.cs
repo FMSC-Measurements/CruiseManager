@@ -31,10 +31,6 @@ namespace CruiseManager.App
 
         }
 
-        public override ViewCommand MakeViewCommand(string name, Action action)
-        {
-            return new ViewCommandWinForms(name, action, exceptionHandler: this.ExceptionHandler);
-        }
 
 
         /// <summary>

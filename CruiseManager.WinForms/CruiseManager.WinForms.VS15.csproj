@@ -140,14 +140,15 @@
   <ItemGroup>
     <Compile Include="App\ApplicationControllerWinForms.cs" />
     <Compile Include="App\ApplicationStateWinForms.cs" />
-    <Compile Include="App\CruiseManagerApplicationWinforms.cs" />
     <Compile Include="App\CruiseManagerWinformsModule.cs" />
     <Compile Include="App\ExceptionHandlerWinforms.cs" />
     <Compile Include="App\PlatformHelperWinForms.cs" />
     <Compile Include="App\SetupServiceWinForms.cs" />
     <Compile Include="App\UserSettingsWinforms.cs" />
-    <Compile Include="App\ViewCommandWinForms.cs" />
     <Compile Include="App\WindowPresenterWinForms.cs" />
+    <Compile Include="CommandModel\BindableCommandExtentions.cs" />
+    <Compile Include="CommandModel\ControlCommandBinding.cs" />
+    <Compile Include="CommandModel\ToolStripItemCommandBinding.cs" />
     <Compile Include="Winforms\AboutDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -260,9 +261,6 @@
     </Compile>
     <Compile Include="Winforms\LicencesDialog.Designer.cs">
       <DependentUpon>LicencesDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Winforms\NavigationView.cs">
-      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Winforms\PageHost.cs">
       <SubType>UserControl</SubType>
@@ -417,9 +415,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Winforms\LicencesDialog.resx">
       <DependentUpon>LicencesDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\NavigationView.resx">
-      <DependentUpon>NavigationView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Winforms\PageHost.resx">
       <DependentUpon>PageHost.cs</DependentUpon>

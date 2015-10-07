@@ -381,7 +381,7 @@ namespace CruiseManager.Core.Components
                 if (match != null)
                 {
                     match.TreeCount = count.TreeCount;
-                    match.SumKPI = count.TreeCount;
+                    match.SumKPI = count.SumKPI;
                     match.Save();
                 }
                 else

@@ -11,6 +11,8 @@ using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core.App;
 using CruiseManager.App;
 using CruiseManager.Core;
+using CruiseManager.Core.CommandModel;
+using CruiseManager.WinForms.CommandModel;
 
 namespace CruiseManager.Winforms.Dashboard
 {
@@ -28,7 +30,7 @@ namespace CruiseManager.Winforms.Dashboard
             this.ApplicationController.OpenFileCommand.BindTo(this.openToolStripMenuItem);
             this.ApplicationController.CreateNewCruiseCommand.BindTo(this.newToolStripMenuItem);
 
-            var _aboutClickCommand = this.ApplicationController.MakeViewCommand("About", this.WindowPresenter.ShowAboutDialog);
+            var _aboutClickCommand = new BindableActionCommand("About", this.WindowPresenter.ShowAboutDialog);
 
             this.ApplicationController.SaveCommand.BindTo(this.saveToolStripMenuItem);
             this.ApplicationController.SaveAsCommand.BindTo(this.saveAsToolStripMenuItem);
@@ -54,7 +56,7 @@ namespace CruiseManager.Winforms.Dashboard
         protected Panel ViewContentPanel { get { return this._viewContentPanel; } }
         protected Panel ViewNavPanel { get { return this._viewNavPanel; } }
 
-        protected void ClearActiveView()
+        public void ClearActiveView()
         {
             //clear previous content from main view content panel 
             foreach (Control c in this.ViewContentPanel.Controls)
@@ -64,14 +66,14 @@ namespace CruiseManager.Winforms.Dashboard
             this.ViewContentPanel.Controls.Clear();
         }
 
-        //public void SetActiveView(object view)
-        //{
-        //    Control cView = view as Control;
-        //    System.Diagnostics.Debug.Assert(cView != null);
+        public void SetActiveView(object view)
+        {
+            Control cView = view as Control;
+            System.Diagnostics.Debug.Assert(cView != null);
 
 
-        //    SetActiveView(cView);
-        //}
+            SetActiveView(cView);
+        }
 
         public void SetActiveView(IView view)
         {
@@ -82,7 +84,7 @@ namespace CruiseManager.Winforms.Dashboard
             SetActiveView(cView);
         }
 
-        protected void SetActiveView(Control cView)
+        public void SetActiveView(Control cView)
         {
             ClearActiveView();
 
@@ -98,53 +100,53 @@ namespace CruiseManager.Winforms.Dashboard
             cView.Parent = this.ViewContentPanel;
         }
 
-        //public void SetUserCommands(IEnumerable<ViewCommand> userCommands)
-        //{
-        //    this._userCommandPanel.SuspendLayout();
-        //    this._userCommandPanel.Controls.Clear();
-        //    if(userCommands == null || userCommands.Count() == 0) { return;  }
-        //    using (Graphics g = CreateGraphics())
-        //    {
-        //        foreach (ViewCommand command in userCommands)
-        //        {
-        //            Button newButton = new UserCommandButton();
+        public void SetUserCommands(IEnumerable<BindableCommand> userCommands)
+        {
+            this._userCommandPanel.SuspendLayout();
+            this._userCommandPanel.Controls.Clear();
+            if(userCommands == null || userCommands.Count() == 0) { return;  }
+            using (Graphics g = CreateGraphics())
+            {
+                foreach (BindableCommand command in userCommands)
+                {
+                    Button newButton = new UserCommandButton();
 
-        //            newButton.Dock = System.Windows.Forms.DockStyle.Bottom;
-        //            this._userCommandPanel.Controls.Add(newButton);
+                    newButton.Dock = System.Windows.Forms.DockStyle.Bottom;
+                    this._userCommandPanel.Controls.Add(newButton);
 
-        //            command.BindTo(newButton);
-        //        }
-        //    }
-        //    this._userCommandPanel.ResumeLayout();
-        //}
+                    command.BindTo(newButton);
+                }
+            }
+            this._userCommandPanel.ResumeLayout();
+        }
 
-        //public void SetNavCommands(IEnumerable<ViewCommand> navCommands)
-        //{
-        //    this._viewNavPanel.SuspendLayout();
-        //    this._viewNavPanel.Controls.Clear();
-        //    if(navCommands == null) { return; }
-        //    using (Graphics g = CreateGraphics())
-        //    {
-        //        foreach (ViewCommand command in navCommands.Reverse())
-        //        {
-        //            Button newButton = new NavigationButton();
-        //            newButton.Dock = System.Windows.Forms.DockStyle.Top;
-        //            this._viewNavPanel.Controls.Add(newButton);
+        public void SetNavCommands(IEnumerable<BindableCommand> navCommands)
+        {
+            this._viewNavPanel.SuspendLayout();
+            this._viewNavPanel.Controls.Clear();
+            if(navCommands == null) { return; }
+            using (Graphics g = CreateGraphics())
+            {
+                foreach (BindableCommand command in navCommands.Reverse())
+                {
+                    Button newButton = new NavigationButton();
+                    newButton.Dock = System.Windows.Forms.DockStyle.Top;
+                    this._viewNavPanel.Controls.Add(newButton);
 
-        //            command.BindTo(newButton);
+                    command.BindTo(newButton);
 
-        //            Panel spacer = new Panel()
-        //            {
-        //                Height = 1,
-        //                Dock = DockStyle.Top,
-        //                BackColor = this.BackColor
-        //            };
+                    Panel spacer = new Panel()
+                    {
+                        Height = 1,
+                        Dock = DockStyle.Top,
+                        BackColor = this.BackColor
+                    };
 
-        //            this._viewNavPanel.Controls.Add(spacer);
-        //        }
-        //    }
-        //    this._viewNavPanel.ResumeLayout();
-        //}
+                    this._viewNavPanel.Controls.Add(spacer);
+                }
+            }
+            this._viewNavPanel.ResumeLayout();
+        }
 
 
         //public void SetNavOptions(IEnumerable<ViewCommand> navOptions)
@@ -249,15 +251,15 @@ namespace CruiseManager.Winforms.Dashboard
             }
         }
 
-        //public void ShowWaitCursor()
-        //{
-        //    this.Cursor = Cursors.WaitCursor;
-        //}
+        public void ShowWaitCursor()
+        {
+            this.Cursor = Cursors.WaitCursor;
+        }
 
-        //public void ShowDefaultCursor()
-        //{
-        //    this.Cursor = Cursors.Default;
-        //}
+        public void ShowDefaultCursor()
+        {
+            this.Cursor = Cursors.Default;
+        }
 
         public void DockView(UserControl view)
         {

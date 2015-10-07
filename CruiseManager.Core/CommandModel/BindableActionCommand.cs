@@ -5,13 +5,15 @@ using System.Text;
 
 namespace CruiseManager.Core.CommandModel
 {
-    public abstract class ViewCommand : BoundCommand
+    public class BindableActionCommand : BindableCommand
     {
         public Action Action { get; protected set; }
 
-        public ViewCommand(String name, Action action, bool enabled = true, IExceptionHandler exceptionHandler = null)
+        public BindableActionCommand(String name, Action action, bool enabled = true, IExceptionHandler exceptionHandler = null)
             : base(name, enabled, exceptionHandler)
         {
+            Debug.Assert(action != null);
+            Action = action;
         }
 
         public override void Execute()

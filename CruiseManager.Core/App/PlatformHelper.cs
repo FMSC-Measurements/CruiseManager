@@ -1,5 +1,4 @@
-﻿using CruiseManager.Core.Constants;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -15,11 +14,6 @@ namespace CruiseManager.Core.App
         public static string GetApplicationDirectory()
         {
             return System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
-        }
-
-        public string GetTempCruiseLocation()
-        {
-            return System.IO.Path.GetDirectoryName(System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)) + "\\" + Strings.TEMP_FILENAME;
         }
     }
 }

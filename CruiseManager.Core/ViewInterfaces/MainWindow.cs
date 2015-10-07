@@ -15,14 +15,15 @@ namespace CruiseManager.Core.ViewInterfaces
         bool EnableSave { get; set; }
         bool EnableSaveAs { get; set; }
 
+        void ClearActiveView();
 
-        void SetActiveView(IView view);
+        void SetActiveView(object view);
 
-        //void SetNavCommands(IEnumerable<ViewCommand> navCommands);
+        void SetNavCommands(IEnumerable<BindableCommand> navCommands);
 
-        //void ShowWaitCursor();
+        void ShowWaitCursor();
 
-        //void ShowDefaultCursor();
+        void ShowDefaultCursor();
 
     }
 }

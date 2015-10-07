@@ -72,7 +72,7 @@ namespace CruiseManager.Core.CommandModel
 
         protected abstract void OnEnabledChanged();
 
-        protected abstract void OnExceptionHandlerChanged(); 
+        protected virtual void OnExceptionHandlerChanged() { }
 
     }
 }
