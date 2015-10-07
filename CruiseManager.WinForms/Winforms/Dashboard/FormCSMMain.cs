@@ -56,6 +56,8 @@ namespace CruiseManager.WinForms.Dashboard
         protected Panel ViewContentPanel { get { return this._viewContentPanel; } }
         protected Panel ViewNavPanel { get { return this._viewNavPanel; } }
 
+
+
         public void ClearActiveView()
         {
             //clear previous content from main view content panel 

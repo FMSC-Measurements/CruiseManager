@@ -149,274 +149,274 @@
     <Compile Include="CommandModel\BindableCommandExtentions.cs" />
     <Compile Include="CommandModel\ControlCommandBinding.cs" />
     <Compile Include="CommandModel\ToolStripItemCommandBinding.cs" />
-    <Compile Include="Winforms\AboutDialog.cs">
+    <Compile Include="WinForms\AboutDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Winforms\AboutDialog.Designer.cs">
+    <Compile Include="WinForms\AboutDialog.Designer.cs">
       <DependentUpon>AboutDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\Components\CreateComponentViewWinforms.cs">
+    <Compile Include="WinForms\Components\CreateComponentViewWinforms.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Winforms\Components\CreateComponentViewWinforms.Designer.cs">
+    <Compile Include="WinForms\Components\CreateComponentViewWinforms.Designer.cs">
       <DependentUpon>CreateComponentViewWinforms.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\Components\PreMergeReportView.cs">
+    <Compile Include="WinForms\Components\PreMergeReportView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Winforms\Components\PreMergeReportView.Designer.cs">
+    <Compile Include="WinForms\Components\PreMergeReportView.Designer.cs">
       <DependentUpon>PreMergeReportView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\Components\MergeInfoViewWinforms.cs">
+    <Compile Include="WinForms\Components\MergeInfoViewWinforms.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Winforms\Components\MergeInfoViewWinforms.Designer.cs">
+    <Compile Include="WinForms\Components\MergeInfoViewWinforms.Designer.cs">
       <DependentUpon>MergeInfoViewWinforms.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\CruiseCustomize\CruiseCustomizeViewWinform.Designer.cs" />
-    <Compile Include="Winforms\CruiseCustomize\CruiseCustomizeViewWinforms.cs">
+    <Compile Include="WinForms\CruiseCustomize\CruiseCustomizeViewWinform.Designer.cs" />
+    <Compile Include="WinForms\CruiseCustomize\CruiseCustomizeViewWinforms.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Winforms\CruiseCustomize\LogMatrixSettingsPage.cs">
+    <Compile Include="WinForms\CruiseCustomize\LogMatrixSettingsPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Winforms\CruiseCustomize\LogMatrixSettingsPage.designer.cs">
+    <Compile Include="WinForms\CruiseCustomize\LogMatrixSettingsPage.designer.cs">
       <DependentUpon>LogMatrixSettingsPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\CruiseCustomize\TallyEditPanel.cs">
+    <Compile Include="WinForms\CruiseCustomize\TallyEditPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Winforms\CruiseCustomize\TallyEditPanel.Designer.cs">
+    <Compile Include="WinForms\CruiseCustomize\TallyEditPanel.Designer.cs">
       <DependentUpon>TallyEditPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\CruiseWizard\CreateSaleFolerDialog.cs">
+    <Compile Include="WinForms\CruiseWizard\CreateSaleFolerDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Winforms\CruiseWizard\CreateSaleFolerDialog.Designer.cs">
+    <Compile Include="WinForms\CruiseWizard\CreateSaleFolerDialog.Designer.cs">
       <DependentUpon>CreateSaleFolerDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\CruiseWizard\FormAddTreeDefault.cs">
+    <Compile Include="WinForms\CruiseWizard\FormAddTreeDefault.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Winforms\CruiseWizard\FormAddTreeDefault.Designer.cs">
+    <Compile Include="WinForms\CruiseWizard\FormAddTreeDefault.Designer.cs">
       <DependentUpon>FormAddTreeDefault.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\Dashboard\FormCSMMain.cs">
+    <Compile Include="WinForms\Dashboard\FormCSMMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Winforms\Dashboard\FormCSMMain.Designer.cs">
+    <Compile Include="WinForms\Dashboard\FormCSMMain.Designer.cs">
       <DependentUpon>FormCSMMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\Dashboard\HomeView.cs">
+    <Compile Include="WinForms\Dashboard\HomeView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Winforms\Dashboard\HomeView.Designer.cs">
+    <Compile Include="WinForms\Dashboard\HomeView.Designer.cs">
       <DependentUpon>HomeView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\Dashboard\NavigationButton.cs">
+    <Compile Include="WinForms\Dashboard\NavigationButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Winforms\Dashboard\UserCommandButton.cs">
+    <Compile Include="WinForms\Dashboard\UserCommandButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Winforms\DataEditor\DataEditorPresentor.cs" />
-    <Compile Include="Winforms\DataEditor\DataEditorView.cs">
+    <Compile Include="WinForms\DataEditor\DataEditorPresentor.cs" />
+    <Compile Include="WinForms\DataEditor\DataEditorView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Winforms\DataEditor\DataEditorView.Designer.cs">
+    <Compile Include="WinForms\DataEditor\DataEditorView.Designer.cs">
       <DependentUpon>DataEditorView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\DataEditor\DataExportDialog.cs">
+    <Compile Include="WinForms\DataEditor\DataExportDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Winforms\DataEditor\DataExportDialog.Designer.cs">
+    <Compile Include="WinForms\DataEditor\DataExportDialog.Designer.cs">
       <DependentUpon>DataExportDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\DesignEditor\EditDesignViewWinForms.cs">
+    <Compile Include="WinForms\DesignEditor\EditDesignViewWinForms.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Winforms\DesignEditor\EditDesignViewWinForms.Designer.cs">
+    <Compile Include="WinForms\DesignEditor\EditDesignViewWinForms.Designer.cs">
       <DependentUpon>EditDesignViewWinForms.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\ErrorMessageDialog.cs">
+    <Compile Include="WinForms\ErrorMessageDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Winforms\ErrorMessageDialog.Designer.cs">
+    <Compile Include="WinForms\ErrorMessageDialog.Designer.cs">
       <DependentUpon>ErrorMessageDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\FormSupervisorLogin.cs">
+    <Compile Include="WinForms\FormSupervisorLogin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Winforms\FormSupervisorLogin.Designer.cs">
+    <Compile Include="WinForms\FormSupervisorLogin.Designer.cs">
       <DependentUpon>FormSupervisorLogin.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\Components\MergeComponentViewWinforms.cs">
+    <Compile Include="WinForms\Components\MergeComponentViewWinforms.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Winforms\Components\MergeComponentViewWinforms.Designer.cs">
+    <Compile Include="WinForms\Components\MergeComponentViewWinforms.Designer.cs">
       <DependentUpon>MergeComponentViewWinforms.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\LicencesDialog.cs">
+    <Compile Include="WinForms\LicencesDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Winforms\LicencesDialog.Designer.cs">
+    <Compile Include="WinForms\LicencesDialog.Designer.cs">
       <DependentUpon>LicencesDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\PageHost.cs">
+    <Compile Include="WinForms\PageHost.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Winforms\RecordEditDialogs\TreeEditDialog.cs">
+    <Compile Include="WinForms\RecordEditDialogs\TreeEditDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Winforms\RecordEditDialogs\TreeEditDialog.Designer.cs">
+    <Compile Include="WinForms\RecordEditDialogs\TreeEditDialog.Designer.cs">
       <DependentUpon>TreeEditDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\SettingsView.cs">
+    <Compile Include="WinForms\SettingsView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Winforms\SettingsView.Designer.cs">
+    <Compile Include="WinForms\SettingsView.Designer.cs">
       <DependentUpon>SettingsView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\TemplateEditor\ImportFromCruiseView.cs">
+    <Compile Include="WinForms\TemplateEditor\ImportFromCruiseView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Winforms\TemplateEditor\ImportFromCruiseView.Designer.cs">
+    <Compile Include="WinForms\TemplateEditor\ImportFromCruiseView.Designer.cs">
       <DependentUpon>ImportFromCruiseView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\TemplateEditor\EditTemplateViewWinForms.cs">
+    <Compile Include="WinForms\TemplateEditor\EditTemplateViewWinForms.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Winforms\TemplateEditor\EditTemplateViewWinForms.Designer.cs">
+    <Compile Include="WinForms\TemplateEditor\EditTemplateViewWinForms.Designer.cs">
       <DependentUpon>EditTemplateViewWinForms.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility\COConverter.cs" />
-    <Compile Include="Winforms\CruiseWizard\CruiseWizardView.cs">
+    <Compile Include="WinForms\CruiseWizard\CruiseWizardView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Winforms\CruiseWizard\CruiseWizardView.Designer.cs">
+    <Compile Include="WinForms\CruiseWizard\CruiseWizardView.Designer.cs">
       <DependentUpon>CruiseWizardView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\CruiseWizard\CuttingUnitsPage.cs">
+    <Compile Include="WinForms\CruiseWizard\CuttingUnitsPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Winforms\CruiseWizard\CuttingUnitsPage.Designer.cs">
+    <Compile Include="WinForms\CruiseWizard\CuttingUnitsPage.Designer.cs">
       <DependentUpon>CuttingUnitsPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\CruiseWizard\SalePage.cs">
+    <Compile Include="WinForms\CruiseWizard\SalePage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Winforms\CruiseWizard\SalePage.Designer.cs">
+    <Compile Include="WinForms\CruiseWizard\SalePage.Designer.cs">
       <DependentUpon>SalePage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\CruiseWizard\SampleGroupPage.cs">
+    <Compile Include="WinForms\CruiseWizard\SampleGroupPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Winforms\CruiseWizard\SampleGroupPage.Designer.cs">
+    <Compile Include="WinForms\CruiseWizard\SampleGroupPage.Designer.cs">
       <DependentUpon>SampleGroupPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\CruiseWizard\StrataPage.cs">
+    <Compile Include="WinForms\CruiseWizard\StrataPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Winforms\CruiseWizard\StrataPage.Designer.cs">
+    <Compile Include="WinForms\CruiseWizard\StrataPage.Designer.cs">
       <DependentUpon>StrataPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Winforms\CruiseWizard\CruiseWizardPresenter.cs" />
-    <Compile Include="Winforms\IPage.cs" />
-    <Compile Include="Winforms\IPagingView.cs" />
+    <Compile Include="WinForms\CruiseWizard\CruiseWizardPresenter.cs" />
+    <Compile Include="WinForms\IPage.cs" />
+    <Compile Include="WinForms\IPagingView.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Winforms\UserControlView.cs">
+    <Compile Include="WinForms\UserControlView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <EmbeddedResource Include="Winforms\AboutDialog.resx">
+    <EmbeddedResource Include="WinForms\AboutDialog.resx">
       <DependentUpon>AboutDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\Components\CreateComponentViewWinforms.resx">
+    <EmbeddedResource Include="WinForms\Components\CreateComponentViewWinforms.resx">
       <DependentUpon>CreateComponentViewWinforms.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\Components\PreMergeReportView.resx">
+    <EmbeddedResource Include="WinForms\Components\PreMergeReportView.resx">
       <DependentUpon>PreMergeReportView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\Components\MergeInfoViewWinforms.resx">
+    <EmbeddedResource Include="WinForms\Components\MergeInfoViewWinforms.resx">
       <DependentUpon>MergeInfoViewWinforms.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\CruiseCustomize\CruiseCustomizeViewWinforms.resx">
+    <EmbeddedResource Include="WinForms\CruiseCustomize\CruiseCustomizeViewWinforms.resx">
       <DependentUpon>CruiseCustomizeViewWinforms.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\CruiseCustomize\LogMatrixSettingsPage.resx">
+    <EmbeddedResource Include="WinForms\CruiseCustomize\LogMatrixSettingsPage.resx">
       <DependentUpon>LogMatrixSettingsPage.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\CruiseCustomize\TallyEditPanel.resx">
+    <EmbeddedResource Include="WinForms\CruiseCustomize\TallyEditPanel.resx">
       <DependentUpon>TallyEditPanel.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\CruiseWizard\CreateSaleFolerDialog.resx">
+    <EmbeddedResource Include="WinForms\CruiseWizard\CreateSaleFolerDialog.resx">
       <DependentUpon>CreateSaleFolerDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\CruiseWizard\CruiseWizardView.resx">
+    <EmbeddedResource Include="WinForms\CruiseWizard\CruiseWizardView.resx">
       <DependentUpon>CruiseWizardView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\CruiseWizard\CuttingUnitsPage.resx">
+    <EmbeddedResource Include="WinForms\CruiseWizard\CuttingUnitsPage.resx">
       <DependentUpon>CuttingUnitsPage.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\CruiseWizard\FormAddTreeDefault.resx">
+    <EmbeddedResource Include="WinForms\CruiseWizard\FormAddTreeDefault.resx">
       <DependentUpon>FormAddTreeDefault.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\CruiseWizard\SalePage.resx">
+    <EmbeddedResource Include="WinForms\CruiseWizard\SalePage.resx">
       <DependentUpon>SalePage.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\CruiseWizard\SampleGroupPage.resx">
+    <EmbeddedResource Include="WinForms\CruiseWizard\SampleGroupPage.resx">
       <DependentUpon>SampleGroupPage.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\CruiseWizard\StrataPage.resx">
+    <EmbeddedResource Include="WinForms\CruiseWizard\StrataPage.resx">
       <DependentUpon>StrataPage.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\Dashboard\FormCSMMain.resx">
+    <EmbeddedResource Include="WinForms\Dashboard\FormCSMMain.resx">
       <DependentUpon>FormCSMMain.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\Dashboard\HomeView.resx">
+    <EmbeddedResource Include="WinForms\Dashboard\HomeView.resx">
       <DependentUpon>HomeView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\DataEditor\DataEditorView.resx">
+    <EmbeddedResource Include="WinForms\DataEditor\DataEditorView.resx">
       <DependentUpon>DataEditorView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\DataEditor\DataExportDialog.resx">
+    <EmbeddedResource Include="WinForms\DataEditor\DataExportDialog.resx">
       <DependentUpon>DataExportDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\DesignEditor\EditDesignViewWinForms.resx">
+    <EmbeddedResource Include="WinForms\DesignEditor\EditDesignViewWinForms.resx">
       <DependentUpon>EditDesignViewWinForms.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\ErrorMessageDialog.resx">
+    <EmbeddedResource Include="WinForms\ErrorMessageDialog.resx">
       <DependentUpon>ErrorMessageDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\FormSupervisorLogin.resx">
+    <EmbeddedResource Include="WinForms\FormSupervisorLogin.resx">
       <DependentUpon>FormSupervisorLogin.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\Components\MergeComponentViewWinforms.resx">
+    <EmbeddedResource Include="WinForms\Components\MergeComponentViewWinforms.resx">
       <DependentUpon>MergeComponentViewWinforms.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\LicencesDialog.resx">
+    <EmbeddedResource Include="WinForms\LicencesDialog.resx">
       <DependentUpon>LicencesDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\PageHost.resx">
+    <EmbeddedResource Include="WinForms\PageHost.resx">
       <DependentUpon>PageHost.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -425,17 +425,17 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\RecordEditDialogs\TreeEditDialog.resx">
+    <EmbeddedResource Include="WinForms\RecordEditDialogs\TreeEditDialog.resx">
       <DependentUpon>TreeEditDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\SettingsView.resx">
+    <EmbeddedResource Include="WinForms\SettingsView.resx">
       <DependentUpon>SettingsView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\TemplateEditor\ImportFromCruiseView.resx">
+    <EmbeddedResource Include="WinForms\TemplateEditor\ImportFromCruiseView.resx">
       <DependentUpon>ImportFromCruiseView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Winforms\TemplateEditor\EditTemplateViewWinForms.resx">
+    <EmbeddedResource Include="WinForms\TemplateEditor\EditTemplateViewWinForms.resx">
       <DependentUpon>EditTemplateViewWinForms.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>

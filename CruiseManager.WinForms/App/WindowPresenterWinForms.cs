@@ -8,7 +8,6 @@ using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.WinForms.Components;
 using CruiseManager.Utility;
 using CruiseManager.WinForms;
-using CruiseManager.WinForms.Components;
 using CruiseManager.WinForms.CruiseCustomize;
 using CruiseManager.WinForms.CruiseWizard;
 using CruiseManager.WinForms.Dashboard;
@@ -21,12 +20,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CruiseManager.Core;
-using CSM.Winforms.Dashboard;
 using CruiseManager.Core.CruiseCustomize;
 using CruiseManager.Core.EditDesign;
 using CruiseManager.WinForms.EditDesign;
 using CruiseManager.Core.EditTemplate;
 using CruiseManager.Core.CommandModel;
+using CruiseManager.Winforms.Dashboard;
 
 namespace CruiseManager.App
 {
@@ -63,22 +62,7 @@ namespace CruiseManager.App
 
 
 
-        public new FormCSMMain MainWindow
-        {
-            get { return base.MainWindow as FormCSMMain; }
-            set
-            {
-                if (base.MainWindow != null)
-                {
-                    base.MainWindow.Dispose();
-                }
-                if (value != null)
-                {
-                    value.FormClosing += new FormClosingEventHandler(this.AppClosingHandler);
-                }
-                base.MainWindow = value;
-            }
-        }
+
 
 
 
@@ -87,24 +71,14 @@ namespace CruiseManager.App
         /// <summary>
         /// Called from Program.cs, launches the main window
         /// </summary>
-        public override void Run()
-        {
-            this.MainWindow = new FormCSMMain(this, this.ApplicationController);
-            ShowHomeLayout();
-            Application.Run(MainWindow);
-        }
+        
 
 
         #region click event handlers
 
         
 
-        public void AppClosingHandler(object sender, FormClosingEventArgs e)
-        {
-            bool cancel = e.Cancel;
-            this.ApplicationController.HandleAppClosing(ref cancel);
-            e.Cancel = cancel;
-        }
+
 
 
         //public void HandleFinishImportTemplateClick(object sender, EventArgs e)
@@ -135,7 +109,7 @@ namespace CruiseManager.App
                 DefaultExt = Strings.CRUISE_FILE_EXTENTION,
             })
             {
-                if (sfd.ShowDialog(this.MainWindow) == DialogResult.OK)
+                if (sfd.ShowDialog((Form)this.ApplicationController.MainWindow) == DialogResult.OK)
                 {
                     return sfd.FileName;
                 }
@@ -163,7 +137,7 @@ namespace CruiseManager.App
                     dialog.Filter += String.Format("| {0}(*{1})|*{1}", Strings.FRIENDLY_LEGACY_CRUISE_FILETYPE_NAME, Strings.LEGACY_CRUISE_FILE_EXTENTION);
                 }
 
-                if (dialog.ShowDialog(this.MainWindow) == DialogResult.OK)
+                if (dialog.ShowDialog((Form)this.ApplicationController.MainWindow) == DialogResult.OK)
                 {
                     return dialog.FileName;
                     //String fileName = dialog.FileName;
@@ -215,7 +189,7 @@ namespace CruiseManager.App
         {
             using (AboutDialog dialog = new AboutDialog(this.ApplicationController))
             {
-                dialog.ShowDialog(this.MainWindow);
+                dialog.ShowDialog((IWin32Window)this.ApplicationController.MainWindow);
             }
         }
 
@@ -289,15 +263,15 @@ namespace CruiseManager.App
 
         public override void ShowCruiseLandingLayout()
         {
-            if (this.MainWindow.InvokeRequired)
+            if (((Form)this.ApplicationController.MainWindow).InvokeRequired)
             {
-                this.MainWindow.Invoke((Action)this.ShowCruiseLandingLayout);
+                ((Form)this.ApplicationController.MainWindow).Invoke((Action)this.ShowCruiseLandingLayout);
             }
             else
             {
                 //this.MainWindow.ClearNavPanel();
-                this.MainWindow.ClearActiveView();
-                this.MainWindow.Text = System.IO.Path.GetFileName(this.ApplicationController.Database.Path);
+                this.ApplicationController.MainWindow.ClearActiveView();
+                this.ApplicationController.MainWindow.Text = System.IO.Path.GetFileName(this.ApplicationController.Database.Path);
 
                 //bool enableManageComponents = this.Database.CruiseFileType == CruiseFileType.Master;
                 //bool enableEditDesign = true;//this.Database.CruiseFileType != CruiseFileType.Component;
@@ -320,7 +294,7 @@ namespace CruiseManager.App
                     this.InitializeCruiseNavOptions();
                 }
 
-                this.MainWindow.SetNavCommands(this.cruiseLandingNavCommands);
+                this.ApplicationController.MainWindow.SetNavCommands(this.cruiseLandingNavCommands);
                 this.ShowCustomizeCruiseLayout();
             }
         }
@@ -367,10 +341,9 @@ namespace CruiseManager.App
                 CruiseWizardView view = new CruiseWizardView();
                 CruiseWizardPresenter p = new CruiseWizardPresenter(view, this, this.ApplicationController, tempfile);
                 p.View = view;
-                view.Owner = MainWindow;
 
 
-                if (view.ShowDialog() == DialogResult.OK)
+                if (view.ShowDialog((IWin32Window)this.ApplicationController.MainWindow) == DialogResult.OK)
                 {
                     ApplicationController.Database = p.Database;
                     this.ShowCruiseLandingLayout();
@@ -384,7 +357,7 @@ namespace CruiseManager.App
             ApplicationController.Save();
             using (DataEditorView view = new DataEditorView(this, this.ApplicationController))
             {
-                view.ShowDialog(this.MainWindow);
+                view.ShowDialog((IWin32Window)this.ApplicationController.MainWindow);
             }
         }
 
@@ -414,9 +387,8 @@ namespace CruiseManager.App
                 CruiseWizardView view = new CruiseWizardView();
                 CruiseWizardPresenter p = new CruiseWizardPresenter(view, this, this.ApplicationController, this.ApplicationController.Database);
                 p.View = view;
-                view.Owner = MainWindow;
 
-                view.ShowDialog(this.MainWindow);
+                view.ShowDialog((IWin32Window)this.ApplicationController.MainWindow);
                 
             }
             else
@@ -430,7 +402,7 @@ namespace CruiseManager.App
         {
             var homeView = new HomeView(this.ApplicationController);
             this.ApplicationController.ActiveView = homeView;
-            this.MainWindow.SetNavCommands(new BindableCommand[]
+            this.ApplicationController.MainWindow.SetNavCommands(new BindableCommand[]
             {
                 this.ApplicationController.OpenFileCommand,
                 this.ApplicationController.CreateNewCruiseCommand
@@ -458,7 +430,7 @@ namespace CruiseManager.App
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 //this.MainWindow.ClearNavPanel();
-                this.MainWindow.ClearActiveView();
+                this.ApplicationController.MainWindow.ClearActiveView();
                 //this.MainWindow.AddNavButton("Finish", this.HandleFinishImportTemplateClick);
                 //this.MainWindow.AddNavButton("Cancel", this.HandleCancelImportTemplateClick);
                 TemplateEditViewPresenter presenter = new TemplateEditViewPresenter(this.ApplicationController);
@@ -546,7 +518,7 @@ namespace CruiseManager.App
 
         public override void ShowTemplateLandingLayout()
         {
-            this.MainWindow.Text = System.IO.Path.GetFileName(this.ApplicationController.Database.Path);
+            this.ApplicationController.MainWindow.Text = System.IO.Path.GetFileName(this.ApplicationController.Database.Path);
 
             
             TemplateEditViewPresenter presenter = new TemplateEditViewPresenter(this.ApplicationController);
@@ -558,7 +530,7 @@ namespace CruiseManager.App
             {
                 this.InitializeTemplateNavOptions();
             }
-            this.MainWindow.SetNavCommands(this.templateLandingNavOptions);
+            this.ApplicationController.MainWindow.SetNavCommands(this.templateLandingNavOptions);
 
         }
 
@@ -617,38 +589,6 @@ namespace CruiseManager.App
         //    this.MainWindow.Cursor = Cursors.Default;
         //}
 
-        #endregion
-
-        
-
-        public bool Shutdown()
-        {
-            MainWindow.Close();
-            return true;
-        }
-
-       
-
-
-
-        #region IDisposable Members
-        //bool _disposed = false;
-
-
-        //protected override void Dispose(bool isDisposing)
-        //{
-        //    base.Dispose();
-        //    if (_disposed)
-        //    {
-        //        return;
-        //    }
-        //    if (isDisposing)
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-
-        //    _disposed = true;
-        //}
         #endregion
     }
 }

@@ -69,8 +69,8 @@ namespace CruiseManager
 
 
             ApplicationController applicationController = containter.Get<ApplicationController>();
-            applicationController.WindowPresenter.Run();
-            applicationController.WindowPresenter.Dispose();
+            applicationController.Start();
+            applicationController.Dispose();
 
             //WindowPresenter.Instance.Run();
             //WindowPresenter.Instance.Dispose();

@@ -2,11 +2,13 @@
 using CruiseManager.Core.App;
 using CruiseManager.Core.Constants;
 using CruiseManager.Utility;
+using CruiseManager.WinForms.Dashboard;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CruiseManager.App
 {
@@ -31,6 +33,12 @@ namespace CruiseManager.App
 
         }
 
+        public override void Start()
+        {
+            this.MainWindow = new FormCSMMain(this.WindowPresenter, this);
+            this.WindowPresenter.ShowHomeLayout();
+            Application.Run((Form)MainWindow);
+        }
 
 
         /// <summary>
@@ -120,7 +128,7 @@ namespace CruiseManager.App
                     WindowPresenter.ShowHomeLayout();
                 }
 
-                WindowPresenter.MainWindow.EnableSaveAs = this.Database != null;
+                this.MainWindow.EnableSaveAs = this.Database != null;
 
                 
             }

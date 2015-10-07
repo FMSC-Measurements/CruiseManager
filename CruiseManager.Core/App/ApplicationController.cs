@@ -9,6 +9,8 @@ using System.Xml.Serialization;
 using System.IO;
 using CruiseManager.Core.Constants;
 using CruiseManager.Core.CommandModel;
+using CruiseManager.Core.ViewInterfaces;
+using System.ComponentModel;
 
 namespace CruiseManager.Core.App
 {
@@ -61,7 +63,7 @@ namespace CruiseManager.Core.App
                 }
                 //this.ActivePresentor = view.ViewPresenter;
                 _activeView = value;
-                this.WindowPresenter.MainWindow.SetActiveView(_activeView);
+                this.MainWindow.SetActiveView(_activeView);
             }
 
         }
@@ -86,6 +88,21 @@ namespace CruiseManager.Core.App
             //        //this.WindowPresenter.MainWindow.EnableSave = SaveHandler.CanHandleSave;
             //    }
             //}
+        }
+
+        private MainWindow _mainWindow; 
+        public MainWindow MainWindow
+        {
+            get { return _mainWindow; }
+            set
+            {
+                if (_mainWindow != null) { _mainWindow.Dispose(); }
+                if (value != null)
+                {
+                    value.Closing += this.MainWindow_Closing;
+                }
+                _mainWindow = value;
+            }
         }
         #endregion
 
@@ -148,6 +165,7 @@ namespace CruiseManager.Core.App
         //    return true;
         //}
 
+        public abstract void Start();
 
         public void CreateNewCruise()
         {
@@ -201,7 +219,7 @@ namespace CruiseManager.Core.App
                 {
                     //save after copying 
                     this.Save();
-                    WindowPresenter.MainWindow.Text = System.IO.Path.GetFileName(this.Database.Path);
+                    this.MainWindow.Text = System.IO.Path.GetFileName(this.Database.Path);
                 }
             }
             catch (Exception ex)
@@ -213,7 +231,7 @@ namespace CruiseManager.Core.App
             }
         }
 
-        public void HandleAppClosing(ref bool cancel)
+        protected void MainWindow_Closing(object sender, CancelEventArgs e)
         {
             try
             {
@@ -226,7 +244,7 @@ namespace CruiseManager.Core.App
                     }
                     else if (doSave.HasValue == false)
                     {
-                        cancel = true;
+                        e.Cancel = true;
                     }
                     else if (doSave == false)
                     {
@@ -236,12 +254,13 @@ namespace CruiseManager.Core.App
             }
             catch (Exception ex)
             {
-                if(!this.ExceptionHandler.Handel(ex))
+                if (!this.ExceptionHandler.Handel(ex))
                 {
                     throw;
                 }
             }
-        }        
+        }
+  
 
         public DAL GetNewOrUnfinishedCruise()
         {
