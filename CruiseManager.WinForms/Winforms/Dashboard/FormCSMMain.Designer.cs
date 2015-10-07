@@ -1,4 +1,4 @@
-﻿namespace CruiseManager.Winforms.Dashboard
+﻿namespace CruiseManager.WinForms.Dashboard
 {
     partial class FormCSMMain
     {

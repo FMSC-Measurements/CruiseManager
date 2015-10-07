@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace CruiseManager.Winforms.CruiseWizard
+namespace CruiseManager.WinForms.CruiseWizard
 {
     public partial class CreateSaleFolerDialog : Form
     {

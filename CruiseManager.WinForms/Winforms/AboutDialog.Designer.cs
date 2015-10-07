@@ -1,4 +1,4 @@
-﻿namespace CruiseManager.Winforms
+﻿namespace CruiseManager.WinForms
 {
     partial class AboutDialog
     {

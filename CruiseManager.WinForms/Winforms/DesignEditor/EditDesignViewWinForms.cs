@@ -14,7 +14,7 @@ using CruiseManager.Core;
 using CruiseManager.Core.EditDesign;
 using CruiseManager.Core.ViewInterfaces;
 
-namespace CruiseManager.Winforms.EditDesign
+namespace CruiseManager.WinForms.EditDesign
 {
     public partial class EditDesignViewWinForms : UserControlView, EditDesignView
     {

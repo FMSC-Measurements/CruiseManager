@@ -10,7 +10,7 @@ using CruiseManager.Core.Components;
 using CruiseManager.Core.App;
 using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core;
-using CruiseManager.Winforms;
+using CruiseManager.WinForms;
 
 namespace CruiseManager.WinForms.Components
 {

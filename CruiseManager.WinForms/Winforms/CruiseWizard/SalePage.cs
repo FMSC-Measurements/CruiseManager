@@ -9,7 +9,7 @@ using CruiseDAL.DataObjects;
 using System.IO;
 using CruiseManager.Core.App;
 
-namespace CruiseManager.Winforms.CruiseWizard
+namespace CruiseManager.WinForms.CruiseWizard
 {
     public partial class SalePage : UserControl, IPage
     {

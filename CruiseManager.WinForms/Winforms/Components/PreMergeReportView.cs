@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using CruiseManager.Core.Components;
 
-namespace CruiseManager.Winforms.Components
+namespace CruiseManager.WinForms.Components
 {
     public partial class PreMergeReportView : UserControl
     {

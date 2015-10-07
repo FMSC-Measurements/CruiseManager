@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CruiseManager.Winforms
+namespace CruiseManager.WinForms
 {
     public abstract class UserControlView : UserControl, IView
     {

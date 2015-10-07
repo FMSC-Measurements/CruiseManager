@@ -10,7 +10,7 @@ using FMSC.Utility.Collections;
 using CruiseManager.Core.Models;
 using CruiseManager.Core.App;
 
-namespace CruiseManager.Winforms.DataEditor
+namespace CruiseManager.WinForms.DataEditor
 {
     public partial class DataEditorView : Form
     {

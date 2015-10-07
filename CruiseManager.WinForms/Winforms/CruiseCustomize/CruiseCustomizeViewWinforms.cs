@@ -14,7 +14,7 @@ using CruiseManager.Core.CruiseCustomize;
 using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core;
 
-namespace CruiseManager.Winforms.CruiseCustomize
+namespace CruiseManager.WinForms.CruiseCustomize
 {
     public partial class CruiseCustomizeViewWinforms : UserControlView, CruiseCustomizeView
     {

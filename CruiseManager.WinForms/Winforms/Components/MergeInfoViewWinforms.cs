@@ -11,7 +11,7 @@ using CruiseManager.Core;
 using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core.App;
 
-namespace CruiseManager.Winforms.Components
+namespace CruiseManager.WinForms.Components
 {
     public partial class MergeInfoViewWinforms : UserControl
     {

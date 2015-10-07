@@ -1,4 +1,4 @@
-﻿namespace CruiseManager.Winforms.Components
+﻿namespace CruiseManager.WinForms.Components
 {
     partial class MergeComponentViewWinforms
     {

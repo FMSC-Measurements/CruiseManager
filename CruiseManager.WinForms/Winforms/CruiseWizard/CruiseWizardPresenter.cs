@@ -15,7 +15,7 @@ using CruiseManager.Core.SetupModels;
 using CruiseManager.Core.App;
 using CruiseManager.Core.Constants;
 
-namespace CruiseManager.Winforms.CruiseWizard
+namespace CruiseManager.WinForms.CruiseWizard
 {
     public class CruiseWizardPresenter 
     {

@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.SetupModels;
 
-namespace CruiseManager.Winforms.CruiseWizard
+namespace CruiseManager.WinForms.CruiseWizard
 {
     public partial class FormAddTreeDefault : Form
     {

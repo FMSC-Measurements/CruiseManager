@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.CruiseCustomize;
 
-namespace CruiseManager.Winforms.CruiseCustomize
+namespace CruiseManager.WinForms.CruiseCustomize
 {
     public partial class LogMatrixSettingsPage : UserControl
     {

@@ -1,4 +1,4 @@
-﻿namespace CruiseManager.Winforms.RecordEditDialogs
+﻿namespace CruiseManager.WinForms.RecordEditDialogs
 {
     partial class TreeEditDialog
     {

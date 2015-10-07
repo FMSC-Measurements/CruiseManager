@@ -1,4 +1,4 @@
-﻿namespace CruiseManager.Winforms.DataEditor
+﻿namespace CruiseManager.WinForms.DataEditor
 {
     partial class DataEditorView
     {

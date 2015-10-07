@@ -1,4 +1,4 @@
-﻿namespace CruiseManager.Winforms.EditDesign
+﻿namespace CruiseManager.WinForms.EditDesign
 {
     partial class EditDesignViewWinForms
     {

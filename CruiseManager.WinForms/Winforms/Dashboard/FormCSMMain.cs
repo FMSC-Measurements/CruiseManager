@@ -14,7 +14,7 @@ using CruiseManager.Core;
 using CruiseManager.Core.CommandModel;
 using CruiseManager.WinForms.CommandModel;
 
-namespace CruiseManager.Winforms.Dashboard
+namespace CruiseManager.WinForms.Dashboard
 {
     public partial class FormCSMMain : Form, MainWindow 
     {

@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.ComponentModel;
 using System.Reflection;
-using CruiseManager.Winforms;
+using CruiseManager.WinForms;
 using System.Windows;
 using CruiseManager.Core.App;
 

@@ -1,4 +1,4 @@
-﻿namespace CruiseManager.Winforms.CruiseCustomize
+﻿namespace CruiseManager.WinForms.CruiseCustomize
 {
     partial class TallyEditPanel
     {

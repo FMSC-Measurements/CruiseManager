@@ -8,7 +8,7 @@ using CruiseManager.Core.Models;
 using CruiseManager.Core.SetupModels;
 using CruiseManager.Core.App;
 
-namespace CruiseManager.Winforms.CruiseWizard
+namespace CruiseManager.WinForms.CruiseWizard
 {
     public partial class SampleGroupPage : UserControl, IPage
     {

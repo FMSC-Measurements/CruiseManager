@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace CruiseManager.Winforms.RecordEditDialogs
+namespace CruiseManager.WinForms.RecordEditDialogs
 {
     public partial class TreeEditDialog : Form
     {

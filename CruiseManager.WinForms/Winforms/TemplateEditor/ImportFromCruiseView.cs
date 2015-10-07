@@ -13,7 +13,7 @@ using CruiseManager.Core.App;
 using CruiseManager.App;
 using CruiseManager.Core.EditTemplate;
 
-namespace CruiseManager.Winforms.TemplateEditor
+namespace CruiseManager.WinForms.TemplateEditor
 {
     public partial class ImportFromCruiseView : UserControlView
     {

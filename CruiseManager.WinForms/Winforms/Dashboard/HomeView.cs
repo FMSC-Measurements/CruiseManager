@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using CruiseManager.Core.App;
 using CruiseManager.Core;
 using CruiseManager.App;
-using CruiseManager.Winforms;
+using CruiseManager.WinForms;
 
 namespace CSM.Winforms.Dashboard
 {

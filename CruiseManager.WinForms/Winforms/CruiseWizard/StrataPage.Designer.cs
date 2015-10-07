@@ -1,4 +1,4 @@
-﻿namespace CruiseManager.Winforms.CruiseWizard
+﻿namespace CruiseManager.WinForms.CruiseWizard
 {
     partial class StrataPage
     {

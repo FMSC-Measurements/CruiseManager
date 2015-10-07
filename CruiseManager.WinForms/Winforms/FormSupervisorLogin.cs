@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace CruiseManager.Winforms
+namespace CruiseManager.WinForms
 {
     public partial class FormSupervisorLogin : Form
     {

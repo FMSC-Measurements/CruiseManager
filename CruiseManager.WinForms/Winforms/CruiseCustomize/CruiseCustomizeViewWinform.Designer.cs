@@ -1,4 +1,4 @@
-namespace CruiseManager.Winforms.CruiseCustomize
+namespace CruiseManager.WinForms.CruiseCustomize
 {
     public partial class CruiseCustomizeViewWinforms
     {
@@ -98,7 +98,7 @@ namespace CruiseManager.Winforms.CruiseCustomize
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this._strataCB = new System.Windows.Forms.ComboBox();
-            this._tallyEditPanel = new CruiseManager.Winforms.CruiseCustomize.TallyEditPanel();
+            this._tallyEditPanel = new CruiseManager.WinForms.CruiseCustomize.TallyEditPanel();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this._treeAuditTabPage = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();

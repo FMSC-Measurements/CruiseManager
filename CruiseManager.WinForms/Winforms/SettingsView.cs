@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using CruiseManager.Core.App;
 
-namespace CruiseManager.Winforms
+namespace CruiseManager.WinForms
 {
     public partial class SettingsView : UserControl
     {

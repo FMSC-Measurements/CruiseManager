@@ -11,7 +11,7 @@ using System.Reflection;
 using CruiseManager.Core.Models;
 using CruiseManager.Core.App;
 
-namespace CruiseManager.Winforms.DataEditor
+namespace CruiseManager.WinForms.DataEditor
 {
     public partial class DataExportDialog : Form
     {

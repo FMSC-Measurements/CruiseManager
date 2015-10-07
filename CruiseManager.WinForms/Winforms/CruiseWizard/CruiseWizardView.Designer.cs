@@ -1,4 +1,4 @@
-﻿namespace CruiseManager.Winforms.CruiseWizard
+﻿namespace CruiseManager.WinForms.CruiseWizard
 {
     partial class CruiseWizardView
     {
@@ -31,7 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CruiseWizardView));
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.pageHost = new CruiseManager.Winforms.PageHost();
+            this.pageHost = new CruiseManager.WinForms.PageHost();
             this.SuspendLayout();
             // 
             // openFileDialog1
@@ -68,7 +68,7 @@
         #endregion
 
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
-        private CruiseManager.Winforms.PageHost pageHost;
+        private CruiseManager.WinForms.PageHost pageHost;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
 
 

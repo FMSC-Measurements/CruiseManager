@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CruiseManager.Winforms.Dashboard
+namespace CruiseManager.WinForms.Dashboard
 {
     public class NavigationButton : Button
     {

@@ -8,7 +8,7 @@ using CruiseManager.Core;
 using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core.EditTemplate;
 
-namespace CruiseManager.Winforms.TemplateEditor
+namespace CruiseManager.WinForms.TemplateEditor
 {
     public partial class EditTemplateViewWinForms : UserControlView, EditTemplateView
     {
