@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using CruiseDAL;
 using CruiseDAL.DataObjects;
-using CruiseManager.Core.Models;
-using System.Xml.Serialization;
 using System.IO;
 using CruiseManager.Core.Constants;
 using CruiseManager.Core.CommandModel;
@@ -108,7 +106,6 @@ namespace CruiseManager.Core.App
         }
         #endregion
 
-        #region Constructor Properties
 
         public WindowPresenter WindowPresenter { get { return this.Kernel.Get<WindowPresenter>(); } }
         public IExceptionHandler ExceptionHandler { get { return this.Kernel.Get<IExceptionHandler>(); } }
@@ -116,7 +113,6 @@ namespace CruiseManager.Core.App
         public IUserSettings UserSettings { get { return this.Kernel.Get<IUserSettings>(); } }
         public IApplicationState AppState { get { return this.Kernel.Get<IApplicationState>(); } }
         public PlatformHelper PlatformHelper { get { return this.Kernel.Get<PlatformHelper>(); } }
-        #endregion
 
 
         protected ApplicationController(NinjectModule viewModule, NinjectModule coreModule)
@@ -210,7 +206,95 @@ namespace CruiseManager.Core.App
             }
         }
 
-        public abstract void OpenFile(String filePath);
+        protected void InitializeDAL(string path)
+        {
+            this.ActiveView.ShowWaitCursor();
+            try
+            {
+                Database = new DAL(path);
+            }
+            finally
+            {
+                this.ActiveView.ShowDefaultCursor();
+            }
+        }
+
+        public virtual void OpenFile(String filePath)
+        {
+            bool hasError = false;
+            try
+            {
+                //start wait cursor incase this takes a long time 
+                this.ActiveView.ShowWaitCursor();
+                switch (System.IO.Path.GetExtension(filePath))
+                {
+                    case Strings.CRUISE_FILE_EXTENTION:
+                        {
+                            this.InitializeDAL(filePath);
+                            AppState.AddRecentFile(filePath);
+                            String[] errors;
+                            if (this.Database.HasCruiseErrors(out errors))
+                            {
+                                this.ActiveView.ShowMessage(String.Join("\r\n", errors), null);
+                            }
+                            WindowPresenter.ShowCruiseLandingLayout();
+                            break;
+                        }
+                    case Strings.CRUISE_TEMPLATE_FILE_EXTENTION:
+                        {
+                            this.InitializeDAL(filePath);
+                            AppState.AddRecentFile(filePath);
+                            WindowPresenter.ShowTemplateLandingLayout();
+                            break;
+                        }                    
+                    default:
+                        this.ActiveView.ShowMessage("Invalid file name", null);
+                        return;
+                }
+            }
+            catch (CruiseDAL.DatabaseShareException)
+            {
+                hasError = true;
+                this.ActiveView.ShowMessage("File can not be opened in multiple applications");
+            }
+            catch (CruiseDAL.ReadOnlyException)
+            {
+                hasError = true;
+                this.ActiveView.ShowMessage("Unable to open file becaus it is read only");
+            }
+            catch (CruiseDAL.IncompatibleSchemaException ex)
+            {
+                hasError = true;
+                this.ActiveView.ShowMessage("File is not compatible with this version of Cruise Manager: " + ex.Message);
+            }
+            catch (CruiseDAL.DatabaseExecutionException ex)
+            {
+                hasError = true;
+                this.ActiveView.ShowMessage("Unable to open file : " + ex.GetType().Name);
+            }
+            catch (System.IO.IOException ex)
+            {
+                hasError = true;
+                this.ActiveView.ShowMessage("Unable to open file : " + ex.GetType().Name);
+            }
+            catch (System.Exception e)
+            {
+                if (!ExceptionHandler.Handel(e))
+                {
+                    throw;
+                }
+            }
+            finally
+            {
+                if (hasError)
+                {
+                    WindowPresenter.ShowHomeLayout();
+                }
+
+                this.MainWindow.EnableSaveAs = this.Database != null;
+
+            }
+        }
 
         public void Save()
         {
@@ -327,104 +411,6 @@ namespace CruiseManager.Core.App
              
         }
 
-
-        #region Common Database methods
-
-        public static void SetTreeTDV(TreeVM tree, TreeDefaultValueDO tdv)
-        {
-            tree.TreeDefaultValue = tdv;
-            if (tdv != null)
-            {
-                tree.Species = tdv.Species;
-
-                tree.LiveDead = tdv.LiveDead;
-                tree.Grade = tdv.TreeGrade;
-                tree.FormClass = tdv.FormClass;
-                tree.RecoverablePrimary = tdv.Recoverable;
-                //tree.HiddenPrimary = tdv.HiddenPrimary; //#367
-            }
-            else
-            {
-                //tree.Species = string.Empty;
-                //tree.LiveDead = string.Empty;
-                //tree.Grade = string.Empty;
-                //tree.FormClass = 0;
-                //tree.RecoverablePrimary = 0;
-                //tree.HiddenPrimary = 0;
-            }
-        }
-
-        public List<string> GetCruiseMethods(bool reconMethodsOnly)
-        {
-            return this.GetCruiseMethods(this.Database, reconMethodsOnly);
-        }
-
-        public List<String> GetCruiseMethods(DAL database, bool reconMethodsOnly)
-        {
-            if (reconMethodsOnly)
-            {
-                return new List<string>(CruiseDAL.Schema.Constants.CruiseMethods.RECON_METHODS);
-            }
-            List<string> cruiseMethods = null;
-            try
-            {
-                cruiseMethods = new List<string>(CruiseMethodsDO.ReadCruiseMethodStr(database, reconMethodsOnly));
-            }
-            catch { }
-            if (cruiseMethods == null || cruiseMethods.Count == 0)
-            {
-                cruiseMethods = new List<string>(CruiseDAL.Schema.Constants.CruiseMethods.SUPPORTED_METHODS);
-            }
-
-            return cruiseMethods;
-        }
-
-        public object GetTreeTDVList(TreeVM tree)
-        {
-            if (tree == null) { return EMPTY_SPECIES_LIST; }
-            if (tree.Stratum == null)
-            {
-                if (this.Database.GetRowCount("CuttingUnitStratum", "WHERE CuttingUnit_CN = ?", tree.CuttingUnit_CN) == 1)
-                {
-                    tree.Stratum = this.Database.ReadSingleRow<StratumVM>("Stratum", "JOIN CuttingUnitStratum USING (Stratum_CN) WHERE CuttingUnit_CN = ?", tree.CuttingUnit_CN);
-                }
-                else
-                {
-                    return EMPTY_SPECIES_LIST;
-                }
-            }
-
-            if (tree.SampleGroup == null)
-            {
-                if (this.Database.GetRowCount("SampleGroup", "WHERE Stratum_CN = ?", tree.Stratum_CN) == 1)
-                {
-                    tree.SampleGroup = this.Database.ReadSingleRow<SampleGroupDO>("SampleGroup", "WHERE Stratum_CN = ?", tree.Stratum_CN);
-                }
-                if (tree.SampleGroup == null)
-                {
-                    return EMPTY_SPECIES_LIST;
-                }
-            }
-
-
-
-            if (tree.SampleGroup.TreeDefaultValues.IsPopulated == false)
-            {
-                tree.SampleGroup.TreeDefaultValues.Populate();
-            }
-            return tree.SampleGroup.TreeDefaultValues;
-
-        }
-
-        public object GetSampleGroupsByStratum(long? st_cn)
-        {
-            if (st_cn == null)
-            {
-                return new SampleGroupDO[0];
-            }
-            return this.Database.Read<SampleGroupDO>("SampleGroup", "WHERE Stratum_CN = ?", st_cn);
-        }
-        #endregion
 
         #region Static Methods
 

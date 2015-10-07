@@ -750,7 +750,7 @@ namespace CruiseManager.WinForms.DataEditor
                 {
 
                     TreeDefaultValueDO tdv = this._BS_TreeSpecies.Current as TreeDefaultValueDO;
-                    ApplicationController.SetTreeTDV(_currentTreeSelection, tdv);
+                    DatabaseExtentions.SetTreeTDV(_currentTreeSelection, tdv);
                 }
             }
             else if (e.ColumnIndex == this.sampleGroupDataGridViewTextBoxColumn.Index)
@@ -780,13 +780,13 @@ namespace CruiseManager.WinForms.DataEditor
                 //    this._BS_TreeSpecies.DataSource = AppController.GetTreeTDVList(_currentTreeSelection);
                 //}
                 //control.DataSource = AppController.GetTreeTDVList(_currentTreeSelection);
-                control.DataSource = ApplicationController.GetTreeTDVList(_currentTreeSelection);
+                control.DataSource = ApplicationController.Database.GetTreeTDVList(_currentTreeSelection);
             }
             if (this.TreeDataGridView.CurrentCell.ColumnIndex == this.sampleGroupDataGridViewTextBoxColumn.Index)
             {
                 String sgCode = _currentTreeSelection.SampleGroup.Code; 
                 DataGridViewComboBoxEditingControl control = e.Control as DataGridViewComboBoxEditingControl;
-                control.DataSource = this.ApplicationController.GetSampleGroupsByStratum(_currentTreeSelection.Stratum_CN);
+                control.DataSource = this.ApplicationController.Database.GetSampleGroupsByStratum(_currentTreeSelection.Stratum_CN);
                 control.SelectedIndex = control.FindString(sgCode);
             }
         }

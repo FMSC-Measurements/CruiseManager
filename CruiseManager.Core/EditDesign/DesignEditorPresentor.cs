@@ -321,7 +321,7 @@ namespace CruiseManager.Core.EditDesign
         {
             var setupServ = ApplicationController.SetupService;
             Regions = setupServ.GetRegions();
-            CruiseMethods = this.ApplicationController.GetCruiseMethods(this.DataContext.Sale.Purpose == "Recon");
+            CruiseMethods = this.ApplicationController.Database.GetCruiseMethods(this.DataContext.Sale.Purpose == "Recon");
             LoggingMethods = setupServ.GetLoggingMethods();
             UOMCodes = setupServ.GetUOMCodes();
             ProductCodes = setupServ.GetProductCodes();

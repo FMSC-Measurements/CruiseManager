@@ -330,7 +330,7 @@ namespace CruiseManager.WinForms.CruiseWizard
 
 
                 //only load FIX and PNT Cruise methods for Recon cruises 
-                CruiseMethods = ApplicationController.GetCruiseMethods(_templateDatabase, this.Sale.Purpose == "Recon");
+                CruiseMethods = _templateDatabase.GetCruiseMethods(this.Sale.Purpose == "Recon");
 
                 this.StartAsynCopyTemplate(_templateDatabase);
             }
@@ -523,7 +523,7 @@ namespace CruiseManager.WinForms.CruiseWizard
 
             if (CruiseMethods.Count == 0)
             {
-                CruiseMethods = ApplicationController.GetCruiseMethods(null, this.Sale.Purpose == "Recon");
+                CruiseMethods = DatabaseExtentions.GetCruiseMethods(null, this.Sale.Purpose == "Recon");
             }
 
             this.ShowCuttingUnits();

@@ -54,89 +54,15 @@ namespace CruiseManager.App
         /// <param name="filePath"></param>
         public override void OpenFile(String filePath)
         {
-            bool hasError = false;
-            try
+            base.OpenFile(filePath);
+            var extention = System.IO.Path.GetExtension(filePath);
+            if (extention == Strings.LEGACY_CRUISE_FILE_EXTENTION)
             {
-                //start wait cursor incase this takes a long time 
-                this.ActiveView.ShowWaitCursor();
-                switch (System.IO.Path.GetExtension(filePath))
-                {
-                    case Strings.CRUISE_FILE_EXTENTION:
-                        {
-                            Database = new DAL(filePath);
-                            AppState.AddRecentFile(filePath);
-                            String[] errors;
-                            if (this.Database.HasCruiseErrors(out errors))
-                            {
-                                this.ActiveView.ShowMessage(String.Join("\r\n", errors), null);
-                            }
-                            WindowPresenter.ShowCruiseLandingLayout();
-                            break;
-                        }
-                    case Strings.CRUISE_TEMPLATE_FILE_EXTENTION:
-                        {
-                            this.Database = new DAL(filePath);
-                            AppState.AddRecentFile(filePath);
-                            WindowPresenter.ShowTemplateLandingLayout();
-                            break;
-                        }
-                    case Strings.LEGACY_CRUISE_FILE_EXTENTION:
-                        {
-                            _converter = new COConverter();
-                            _convertedFilePath = System.IO.Path.ChangeExtension(filePath, Strings.CRUISE_FILE_EXTENTION);
+                _converter = new COConverter();
+                _convertedFilePath = System.IO.Path.ChangeExtension(filePath, Strings.CRUISE_FILE_EXTENTION);
 
-                            _converter.BenginConvert(filePath, _convertedFilePath, null, HandleConvertDone);
-
-                            break;
-                        }
-                    default:
-                        this.ActiveView.ShowMessage("Invalid file name", null);
-                        return;
-                }
-            }
-            catch (CruiseDAL.DatabaseShareException)
-            {
-                hasError = true;
-                this.ActiveView.ShowMessage("File can not be opened in multiple applications");
-            }
-            catch (CruiseDAL.ReadOnlyException)
-            {
-                hasError = true;
-                this.ActiveView.ShowMessage("Unable to open file becaus it is read only");
-            }
-            catch (CruiseDAL.IncompatibleSchemaException ex)
-            {
-                hasError = true;
-                this.ActiveView.ShowMessage("File is not compatible with this version of Cruise Manager: " + ex.Message);
-            }
-            catch (CruiseDAL.DatabaseExecutionException ex)
-            {
-                hasError = true;
-                this.ActiveView.ShowMessage("Unable to open file : " + ex.GetType().Name);
-            }
-            catch (System.IO.IOException ex)
-            {
-                hasError = true;
-                this.ActiveView.ShowMessage("Unable to open file : " + ex.GetType().Name);
-            }
-            catch (System.Exception e)
-            {
-                if (!ExceptionHandler.Handel(e))
-                {
-                    throw;
-                }
-            }
-            finally
-            {
-                this.ActiveView.ShowDefaultCursor();
-                if (hasError)
-                {
-                    WindowPresenter.ShowHomeLayout();
-                }
-
-                this.MainWindow.EnableSaveAs = this.Database != null;
-
-                
+                _converter.BenginConvert(filePath, _convertedFilePath, null, HandleConvertDone);
+                return;
             }
         }
 
@@ -145,7 +71,7 @@ namespace CruiseManager.App
             if (_converter.EndConvert(result))
             {
 
-                this.Database = new DAL(_convertedFilePath);
+                base.InitializeDAL(_convertedFilePath);
                 this.AppState.AddRecentFile(_convertedFilePath);
                 this.WindowPresenter.ShowCruiseLandingLayout();
             }
