@@ -11,10 +11,11 @@ using CruiseManager.Core.App;
 using CruiseManager.Core;
 using CruiseManager.App;
 using CruiseManager.WinForms;
+using CruiseManager.Core.ViewInterfaces;
 
 namespace CruiseManager.Winforms.Dashboard
 {
-    public partial class HomeView : UserControlView
+    public partial class HomeView : UserControlView, IHomeView
     {
         public HomeView(ApplicationController applicationController )
         {

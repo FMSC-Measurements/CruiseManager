@@ -71,6 +71,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\CruiseCustomizeView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\EditDesignView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\EditTemplateView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\IHomeView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\MainWindow.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\MergeComponentView.cs" />
   </ItemGroup>

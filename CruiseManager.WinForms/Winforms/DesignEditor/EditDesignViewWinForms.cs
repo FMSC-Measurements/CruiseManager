@@ -19,7 +19,7 @@ namespace CruiseManager.WinForms.EditDesign
     public partial class EditDesignViewWinForms : UserControlView, EditDesignView
     {
 
-        protected ExceptionHandler ExceptionHandler { get; set; } 
+        protected IExceptionHandler ExceptionHandler { get; set; } 
         protected WindowPresenter WindowPresenter { get; set; }
 
 

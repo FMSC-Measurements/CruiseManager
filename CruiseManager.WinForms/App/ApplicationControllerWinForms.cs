@@ -3,6 +3,7 @@ using CruiseManager.Core.App;
 using CruiseManager.Core.Constants;
 using CruiseManager.Utility;
 using CruiseManager.WinForms.Dashboard;
+using Ninject.Modules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,24 +15,29 @@ namespace CruiseManager.App
 {
     public class ApplicationControllerWinForms : ApplicationController 
     {
-        protected WindowPresenter _myWindowPresenter;
         private CruiseManager.Utility.COConverter _converter;
         private string _convertedFilePath;
 
 
+        public ApplicationControllerWinForms(NinjectModule viewModule, NinjectModule coreModule)
+            :base(viewModule, coreModule)
+        {
+            Kernel.Bind<ApplicationController>().ToConstant<ApplicationControllerWinForms>(this);
+        }
+
         //public ApplicationControllerWinForms() : this(WindowPresenter.Instance, UserSettings.Instance, SetupService.Instance) { }
 
-        public ApplicationControllerWinForms(
-            WindowPresenter windowPresenter, 
-            ExceptionHandler exceptionHandler, 
-            IUserSettings userSettings, 
-            SetupService setupService, 
-            IApplicationState applicationState, 
-            PlatformHelper platformHelper) 
-            : base(windowPresenter, exceptionHandler, userSettings, setupService, applicationState, platformHelper)
-        {
+        //public ApplicationControllerWinForms(
+        //    WindowPresenter windowPresenter, 
+        //    ExceptionHandler exceptionHandler, 
+        //    IUserSettings userSettings, 
+        //    SetupService setupService, 
+        //    IApplicationState applicationState, 
+        //    PlatformHelper platformHelper) 
+        //    : base(windowPresenter, exceptionHandler, userSettings, setupService, applicationState, platformHelper)
+        //{
 
-        }
+        //}
 
         public override void Start()
         {
@@ -151,6 +157,52 @@ namespace CruiseManager.App
             _convertedFilePath = null;
             //_convertDialog = null;
             _converter = null;
+        }
+
+        [STAThread]
+        static void Main()
+        {
+            //just trying out an alternative to the default trace listener
+            //System.Diagnostics.Trace.Listeners.Add(
+            //        new System.Diagnostics.XmlWriterTraceListener("CSMLog.xml")
+            //    );
+
+            /*side note about Trace Listeners:
+             * Tracing is a feature built into .net applications to allow 
+             * applications to make logs and can be configured using the app.config 
+             * file. 
+             */
+
+            System.Diagnostics.Trace.TraceInformation("Application Started @{0}", DateTime.Now);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+
+            //read command line arguments 
+            var args = Environment.GetCommandLineArgs();
+            string dalPath = null;
+            if (args.Length > 1)
+            {
+                dalPath = args[1];
+            }
+
+            //Provide event handlers to catch any uncaught exceptions
+            //AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+            //FMSC.Utility.ErrorHandling.ErrorHandlers.SendToAddress = "benjaminjcampbell@fs.fes.us";
+            Application.ThreadException += FMSC.Utility.ErrorHandling.ErrorHandlers.ThreadException;
+
+
+            ApplicationController applicationController = new ApplicationControllerWinForms(
+                new ViewModule(),
+                new CruiseManagerWinformsModule());
+            applicationController.Start();
+            applicationController.Dispose();
+
+            //WindowPresenter.Instance.Run();
+            //WindowPresenter.Instance.Dispose();
+
+            System.Diagnostics.Trace.TraceInformation("Application Ended @{0}", DateTime.Now);
+            System.Diagnostics.Trace.Close();
         }
     }
 }

@@ -11,6 +11,8 @@ using CruiseManager.Core.Constants;
 using CruiseManager.Core.CommandModel;
 using CruiseManager.Core.ViewInterfaces;
 using System.ComponentModel;
+using Ninject;
+using Ninject.Modules;
 
 namespace CruiseManager.Core.App
 {
@@ -18,7 +20,7 @@ namespace CruiseManager.Core.App
     {
         internal static readonly TreeDefaultValueDO[] EMPTY_SPECIES_LIST = new TreeDefaultValueDO[] { };
 
-        
+        public Ninject.StandardKernel Kernel { get; set; }
 
         #region ViewCommands
         public BindableCommand CreateNewCruiseCommand { get; protected set; }
@@ -108,37 +110,52 @@ namespace CruiseManager.Core.App
 
         #region Constructor Properties
 
-        public WindowPresenter WindowPresenter { get; protected set; }
-        public ExceptionHandler ExceptionHandler { get; protected set; }
-        public SetupService SetupService { get; set; }
-        public IUserSettings UserSettings { get; set; }
-        public IApplicationState AppState { get; protected set; }
-        public PlatformHelper PlatformHelper { get; protected set; }
+        public WindowPresenter WindowPresenter { get { return this.Kernel.Get<WindowPresenter>(); } }
+        public IExceptionHandler ExceptionHandler { get { return this.Kernel.Get<IExceptionHandler>(); } }
+        public SetupService SetupService { get { return this.Kernel.Get<SetupService>(); } }
+        public IUserSettings UserSettings { get { return this.Kernel.Get<IUserSettings>(); } }
+        public IApplicationState AppState { get { return this.Kernel.Get<IApplicationState>(); } }
+        public PlatformHelper PlatformHelper { get { return this.Kernel.Get<PlatformHelper>(); } }
         #endregion
 
-        protected ApplicationController(WindowPresenter windowPresenter, 
-            ExceptionHandler exceptionHandler, 
-            IUserSettings userSettings, 
-            SetupService setupService, 
-            IApplicationState applicationState,
-            PlatformHelper platformHelper)
+
+        protected ApplicationController(NinjectModule viewModule, NinjectModule coreModule)
         {
-            this.WindowPresenter = windowPresenter;
-            this.WindowPresenter.ApplicationController = this;
-            this.ExceptionHandler = exceptionHandler;
-            this.UserSettings = userSettings;
-            this.SetupService = setupService;
-            this.AppState = applicationState;
-            this.PlatformHelper = platformHelper;
+            this.Kernel = new StandardKernel(viewModule, coreModule);
 
             this.SaveCommand = new BindableActionCommand("Save", this.Save);
             this.SaveAsCommand = new BindableActionCommand("SaveAs", this.SaveAs);
             this.OpenFileCommand = new BindableActionCommand("Open File", this.OpenFile);
             this.CreateNewCruiseCommand = new BindableActionCommand("New Cruise", this.CreateNewCruise);
+
 #if DEBUG
             InSupervisorMode = true;
 #endif
         }
+
+//        protected ApplicationController(WindowPresenter windowPresenter, 
+//            ExceptionHandler exceptionHandler, 
+//            IUserSettings userSettings, 
+//            SetupService setupService, 
+//            IApplicationState applicationState,
+//            PlatformHelper platformHelper)
+//        {
+//            this.WindowPresenter = windowPresenter;
+//            this.WindowPresenter.ApplicationController = this;
+//            this.ExceptionHandler = exceptionHandler;
+//            this.UserSettings = userSettings;
+//            this.SetupService = setupService;
+//            this.AppState = applicationState;
+//            this.PlatformHelper = platformHelper;
+
+//            this.SaveCommand = new BindableActionCommand("Save", this.Save);
+//            this.SaveAsCommand = new BindableActionCommand("SaveAs", this.SaveAs);
+//            this.OpenFileCommand = new BindableActionCommand("Open File", this.OpenFile);
+//            this.CreateNewCruiseCommand = new BindableActionCommand("New Cruise", this.CreateNewCruise);
+//#if DEBUG
+//            InSupervisorMode = true;
+//#endif
+//        }
 
 
         //public bool ChangeView(IView view)
@@ -165,7 +182,19 @@ namespace CruiseManager.Core.App
         //    return true;
         //}
 
+        public IView GetView<T>() where T : IView
+        {
+            return this.Kernel.Get<T>();
+        }
+
+        public void NavigateTo<T>() where T :IView
+        {
+            var view = this.GetView<T>();
+            this.ActiveView = view;
+        }
+
         public abstract void Start();
+
 
         public void CreateNewCruise()
         {

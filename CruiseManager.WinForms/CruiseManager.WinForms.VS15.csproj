@@ -110,6 +110,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>CruiseManager.App.ApplicationControllerWinForms</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EPPlus, Version=4.0.4.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <HintPath>..\packages\EPPlus.4.0.4\lib\net20\EPPlus.dll</HintPath>
@@ -143,8 +146,10 @@
     <Compile Include="App\CruiseManagerWinformsModule.cs" />
     <Compile Include="App\ExceptionHandlerWinforms.cs" />
     <Compile Include="App\PlatformHelperWinForms.cs" />
+    <Compile Include="App\PresenterModule.cs" />
     <Compile Include="App\SetupServiceWinForms.cs" />
     <Compile Include="App\UserSettingsWinforms.cs" />
+    <Compile Include="App\ViewModule.cs" />
     <Compile Include="App\WindowPresenterWinForms.cs" />
     <Compile Include="CommandModel\BindableCommandExtentions.cs" />
     <Compile Include="CommandModel\ControlCommandBinding.cs" />

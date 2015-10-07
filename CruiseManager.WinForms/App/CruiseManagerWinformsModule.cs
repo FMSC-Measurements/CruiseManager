@@ -18,9 +18,6 @@ namespace CruiseManager.App
             Bind<ExceptionHandler>().To<ExceptionHandlerWinforms>().InSingletonScope();
             Bind<WindowPresenter>().To<WindowPresenterWinForms>().InSingletonScope();
             Bind<IApplicationState>().To<ApplicationStateWinForms>().InSingletonScope();
-
-            Bind<ApplicationController>().To<ApplicationControllerWinForms>().InSingletonScope();
-            
         }
     }
 }

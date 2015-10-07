@@ -25,9 +25,6 @@ namespace CruiseManager.Core.App
             set;
         }
 
-        
-
-
         public abstract string AskTemplateLocation();
         public abstract String AskCruiseSaveLocation();
         public abstract string AskOpenFileLocation();

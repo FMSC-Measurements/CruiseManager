@@ -32,74 +32,11 @@ namespace CruiseManager.App
     public class WindowPresenterWinForms : WindowPresenter
     {
 
-        public WindowPresenterWinForms()
+        public WindowPresenterWinForms(ApplicationController appController)
         {
-            
+            this.ApplicationController = appController;
         }
 
-        //public override void Load()
-        //{
-        //    Bind<MainWindow>().To<FormCSMMain>().InSingletonScope();
-
-        //    Bind<CreateComponentView>().To<CreateComponentViewWinforms>();
-        //    Bind<CruiseCustomizeView>().To<CruiseCustomizeViewWinforms>();
-        //    Bind<EditDesignView>().To<EditDesignViewWinForms>();
-        //    Bind<EditTemplateView>().To<EditTemplateViewWinForms>();
-        //    Bind<MergeComponentView>().To<MergeComponentViewWinforms>();
-
-        //    Bind<HomeView>().ToSelf();
-
-        //    Bind<CreateComponentPresenter>().ToSelf();
-        //    Bind<CustomizeCruisePresenter>().ToSelf();
-        //    Bind<DesignEditorPresentor>().ToSelf();
-        //    Bind<TemplateEditViewPresenter>().ToSelf();
-        //    Bind<MergeComponentsPresenter>().ToSelf();
-
-        //}
-
-
-
-
-
-
-
-
-
-
-
-
-        /// <summary>
-        /// Called from Program.cs, launches the main window
-        /// </summary>
-        
-
-
-        #region click event handlers
-
-        
-
-
-
-
-        //public void HandleFinishImportTemplateClick(object sender, EventArgs e)
-        //{
-        //    ImportFromCruiseView view = this._myApplicationController.ActivePresentor as ImportFromCruiseView;
-        //    if (view != null)
-        //    {
-        //        view.Finish();
-        //    }
-        //    this.ShowTemplateLandingLayout();
-        //}
-
-        //public void HandleCancelImportTemplateClick(object sender, EventArgs e)
-        //{
-        //    this.ShowTemplateLandingLayout();
-        //}
-        #endregion
-
-
-
-        #region UI Methods
 
         public override string AskCruiseSaveLocation()
         {
@@ -118,7 +55,6 @@ namespace CruiseManager.App
                     return null;
                 }
             }
-
         }
 
         public override string AskOpenFileLocation()
@@ -180,11 +116,6 @@ namespace CruiseManager.App
             }
         }
 
-        //public override void ShowUnimplementedFeatureDialog()
-        //{
-        //    MessageBox.Show("This Feature has not been implemented yet, check back later");
-        //}
-
         public override void ShowAboutDialog()
         {
             using (AboutDialog dialog = new AboutDialog(this.ApplicationController))
@@ -220,8 +151,6 @@ namespace CruiseManager.App
                 {
                     return null;
                 }
-
-                
             }
         }
 
@@ -400,8 +329,10 @@ namespace CruiseManager.App
 
         public override void ShowHomeLayout()
         {
-            var homeView = new HomeView(this.ApplicationController);
-            this.ApplicationController.ActiveView = homeView;
+            this.ApplicationController.NavigateTo<IHomeView>();
+
+            //var homeView = new HomeView(this.ApplicationController);
+            //this.ApplicationController.ActiveView = homeView;
             this.ApplicationController.MainWindow.SetNavCommands(new BindableCommand[]
             {
                 this.ApplicationController.OpenFileCommand,
@@ -456,30 +387,6 @@ namespace CruiseManager.App
 
             this.ApplicationController.ActiveView = view;
         }
-
-        //public override void ShowOpenCruiseDialog()
-        //{
-
-
-        //    OpenFileDialog dialog = new OpenFileDialog();
-        //    dialog.AutoUpgradeEnabled = true;
-        //    dialog.CustomPlaces.Add(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\CruiseFiles");
-        //    dialog.InitialDirectory = this.ApplicationController.UserSettings.CruiseSaveLocation;
-        //    dialog.Filter = Strings.OPEN_CRUISE_FILE_DIALOG_FILTER;
-        //    if (COConverter.IsInstalled() == true)
-        //    {
-        //        dialog.Filter += String.Format("| {0}(*{1})|*{1}", Strings.FRIENDLY_LEGACY_CRUISE_FILETYPE_NAME, Strings.LEGACY_CRUISE_FILE_EXTENTION);
-        //    }
-
-        //    if (dialog.ShowDialog() == DialogResult.OK)
-        //    {
-        //        String fileName = dialog.FileName;
-        //        String directroy = System.IO.Path.GetDirectoryName(fileName);
-        //        this.ApplicationController.UserSettings.CruiseSaveLocation = directroy;
-
-        //        this.ApplicationController.OpenFile(dialog.FileName);
-        //    }
-        //}
 
         //public void ShowCombineSaleLayout()
         //{
@@ -543,52 +450,5 @@ namespace CruiseManager.App
             };
         }
         
-        //public override Nullable<bool> AskYesNoCancel(String message, String caption)
-        //{
-        //    return AskYesNoCancel(message, caption, true);
-        //}
-
-        //public override Nullable<bool> AskYesNoCancel(String message, String caption, Nullable<bool> defaultOption)
-        //{
-        //    MessageBoxDefaultButton defaultButton;
-        //    switch (defaultOption)
-        //    {
-        //        case true:
-        //            { defaultButton = MessageBoxDefaultButton.Button1; break; }
-        //        case false:
-        //            { defaultButton = MessageBoxDefaultButton.Button2; break; }
-        //        case null:
-        //            { defaultButton = MessageBoxDefaultButton.Button3; break; }
-        //        default:
-        //            { defaultButton = MessageBoxDefaultButton.Button1; break; }
-        //    }
-        //    DialogResult result = MessageBox.Show(message, caption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, defaultButton);
-        //    return (result == DialogResult.Cancel) ? (Nullable < bool >)null : (result == DialogResult.Yes) ? true : false;
-        //}
-
-        //public override void ShowMessage(String message, String caption)
-        //{
-        //    MessageBox.Show(message, caption);
-        //}
-
-        //public override void ShowSimpleErrorMessage(string errorMessage)
-        //{
-        //    using (ErrorMessageDialog dialog = new ErrorMessageDialog())
-        //    {
-        //        dialog.ShowDialog(errorMessage, string.Empty);
-        //    }
-        //}
-
-        //public override void ShowWaitCursor()
-        //{
-        //    this.MainWindow.Cursor = Cursors.WaitCursor;
-
-        //}
-        //public override void ShowDefaultCursor()
-        //{
-        //    this.MainWindow.Cursor = Cursors.Default;
-        //}
-
-        #endregion
     }
 }
