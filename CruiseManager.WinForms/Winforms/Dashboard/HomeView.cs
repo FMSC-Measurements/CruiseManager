@@ -12,7 +12,7 @@ using CruiseManager.Core;
 using CruiseManager.App;
 using CruiseManager.WinForms;
 
-namespace CSM.Winforms.Dashboard
+namespace CruiseManager.Winforms.Dashboard
 {
     public partial class HomeView : UserControlView
     {

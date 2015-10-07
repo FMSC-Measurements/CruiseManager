@@ -1,4 +1,4 @@
-﻿namespace CSM.Winforms.Dashboard
+﻿namespace CruiseManager.Winforms.Dashboard
 {
     partial class HomeView
     {
