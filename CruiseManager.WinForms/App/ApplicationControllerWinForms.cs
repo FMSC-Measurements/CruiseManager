@@ -41,7 +41,7 @@ namespace CruiseManager.App
 
         public override void Start()
         {
-            this.MainWindow = new FormCSMMain(this.WindowPresenter, this);
+            this.MainWindow = new FormCSMMain(this);
             this.WindowPresenter.ShowHomeLayout();
             Application.Run((Form)MainWindow);
         }

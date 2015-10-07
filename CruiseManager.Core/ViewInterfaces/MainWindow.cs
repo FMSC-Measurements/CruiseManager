@@ -15,8 +15,8 @@ namespace CruiseManager.Core.ViewInterfaces
 
         event CancelEventHandler Closing;
 
-        bool EnableSave { get; set; }
-        bool EnableSaveAs { get; set; }
+        //bool EnableSave { get; set; }
+        //bool EnableSaveAs { get; set; }
 
         void ClearActiveView();
 
@@ -24,9 +24,9 @@ namespace CruiseManager.Core.ViewInterfaces
 
         void SetNavCommands(IEnumerable<BindableCommand> navCommands);
 
-        void ShowWaitCursor();
+        //void ShowWaitCursor();
 
-        void ShowDefaultCursor();
+        //void ShowDefaultCursor();
 
         
 

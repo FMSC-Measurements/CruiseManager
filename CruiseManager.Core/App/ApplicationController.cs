@@ -119,8 +119,8 @@ namespace CruiseManager.Core.App
         {
             this.Kernel = new StandardKernel(viewModule, coreModule);
 
-            this.SaveCommand = new BindableActionCommand("Save", this.Save);
-            this.SaveAsCommand = new BindableActionCommand("SaveAs", this.SaveAs);
+            this.SaveCommand = new BindableActionCommand("Save", this.Save, enabled:false);
+            this.SaveAsCommand = new BindableActionCommand("SaveAs", this.SaveAs, enabled: false);
             this.OpenFileCommand = new BindableActionCommand("Open File", this.OpenFile);
             this.CreateNewCruiseCommand = new BindableActionCommand("New Cruise", this.CreateNewCruise);
 
@@ -291,7 +291,7 @@ namespace CruiseManager.Core.App
                     WindowPresenter.ShowHomeLayout();
                 }
 
-                this.MainWindow.EnableSaveAs = this.Database != null;
+                this.SaveCommand.Enabled = this.SaveAsCommand.Enabled = (this.Database != null);
 
             }
         }

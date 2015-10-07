@@ -19,38 +19,23 @@ namespace CruiseManager.WinForms.Dashboard
     public partial class FormCSMMain : Form, MainWindow 
     {
         
-        public FormCSMMain(WindowPresenter windowPresenter, ApplicationController applicationController)
+        public FormCSMMain(ApplicationController applicationController)
         {
-            this.WindowPresenter = windowPresenter;
             this.ApplicationController = applicationController;
             InitializeComponent();
 
-            
-
             this.ApplicationController.OpenFileCommand.BindTo(this.openToolStripMenuItem);
             this.ApplicationController.CreateNewCruiseCommand.BindTo(this.newToolStripMenuItem);
-
-            var _aboutClickCommand = new BindableActionCommand("About", this.WindowPresenter.ShowAboutDialog);
-
             this.ApplicationController.SaveCommand.BindTo(this.saveToolStripMenuItem);
             this.ApplicationController.SaveAsCommand.BindTo(this.saveAsToolStripMenuItem);
 
-            //var _openClickDispatcher = new CommandBinding(this.WindowPresenter.ShowOpenCruiseDialog, this.openToolStripMenuItem);
-            //var _newFileClickDispatcher = new CommandBinding(this.WindowPresenter.ShowCruiseWizardDialog, this.newToolStripMenuItem);
-
-            //var _saveClickDispatcher = new CommandBinding(ApplicationController.Instance.Save, this.saveToolStripMenuItem);
-            //var _saveAsClickDispatcher = new CommandBinding(this.ApplicationController.SaveAs, this.saveAsToolStripMenuItem);
-            //var _aboutClickDispatcher = new CommandBinding(this.WindowPresenter.ShowAboutDialog, this.aboutToolStripMenuItem);
+            var _aboutClickCommand = new BindableActionCommand("About", this.ApplicationController.WindowPresenter.ShowAboutDialog);
+            _aboutClickCommand.BindTo(this.aboutToolStripMenuItem);
+            
 
 
-            //this.openToolStripMenuItem.Click += new EventHandler(this.WindowPresenter.HandleOpenFileClick);
-            //this.newToolStripMenuItem.Click += new EventHandler(this.WindowPresenter.HandleCreateCruiseClick);
-            //this.saveToolStripMenuItem.Click += new EventHandler(this.WindowPresenter.HandleSaveClick);
-            //this.aboutToolStripMenuItem.Click += new EventHandler(this.WindowPresenter.HandleAboutClick);
-            //this.saveAsToolStripMenuItem.Click += new EventHandler(this.WindowPresenter.HandleSaveAsClick);
         }
 
-        protected WindowPresenter WindowPresenter { get; set; }
         protected ApplicationController ApplicationController { get; set; }
 
         protected Panel ViewContentPanel { get { return this._viewContentPanel; } }
@@ -150,118 +135,39 @@ namespace CruiseManager.WinForms.Dashboard
             this._viewNavPanel.ResumeLayout();
         }
 
-
-        //public void SetNavOptions(IEnumerable<ViewCommand> navOptions)
+        //public bool EnableSave
         //{
-        //    if (navOptions == null) { return; }
-        //    this._viewNavPanel.Controls.Clear();
-        //    using (Graphics g = CreateGraphics())
+        //    get
         //    {
-        //        foreach (CommandBinding clickDispatcher in navOptions.Reverse())
-        //        {
-        //            Button newNavButton = new Button();
-        //            //newNavButton.AutoSize = true;
-        //            newNavButton.BackColor = System.Drawing.Color.ForestGreen;
-
-        //            newNavButton.FlatAppearance.BorderColor = System.Drawing.Color.DimGray;
-        //            newNavButton.FlatAppearance.BorderSize = 0;
-        //            newNavButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.LightGreen;
-        //            newNavButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-        //            newNavButton.Font = global::CruiseManager.Properties.Settings.Default.App_NavFont;
-        //            newNavButton.ForeColor = System.Drawing.SystemColors.ControlText;
-        //            //newNavButton.Location = new System.Drawing.Point(0, 0);
-        //            //newNavButton.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
-        //            newNavButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-        //            //newNavButton.Size = new System.Drawing.Size(0, 50);
-        //            newNavButton.UseVisualStyleBackColor = false;
-        //            newNavButton.Dock = System.Windows.Forms.DockStyle.Top;
-
-        //            clickDispatcher.Bind(newNavButton);
-        //            Size s = g.MeasureString(newNavButton.Text, newNavButton.Font, this._viewNavPanel.Width - 10).ToSize();
-        //            newNavButton.Height = s.Height + 6;
-
-
-
-        //            this._viewNavPanel.Controls.Add(newNavButton);
-        //            Panel spacer = new Panel()
-        //            {
-        //                Height = 1,
-        //                Dock = DockStyle.Top,
-        //                BackColor = System.Drawing.Color.DimGray
-        //            };
-
-        //            this._viewNavPanel.Controls.Add(spacer);
-        //        }
+        //        return this.saveToolStripMenuItem.Enabled;
+        //    }
+        //    set
+        //    {
+        //        this.saveToolStripMenuItem.Enabled = value;
         //    }
         //}
 
-        //public void AddNavButton(String text, EventHandler eventHandler)
+        //public bool EnableSaveAs
         //{
-        //    this.AddNavButton(text, eventHandler, true);
+        //    get
+        //    {
+        //        return this.saveAsToolStripMenuItem.Enabled;
+        //    }
+        //    set
+        //    {
+        //        this.saveAsToolStripMenuItem.Enabled = value;
+        //    }
         //}
 
-        //public void AddNavButton(String text, EventHandler eventHandler, bool enabled)
+        //public void ShowWaitCursor()
         //{
-
-        //    Button newNavButton = new Button();
-        //    newNavButton.AutoSize = true;
-        //    newNavButton.BackColor = System.Drawing.Color.Green;
-        //    newNavButton.Dock = System.Windows.Forms.DockStyle.Top;
-        //    newNavButton.FlatAppearance.BorderColor = System.Drawing.Color.Gold;
-        //    newNavButton.FlatAppearance.BorderSize = 2;
-        //    newNavButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-        //    //newNavButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-        //    newNavButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-        //    newNavButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-        //    newNavButton.Location = new System.Drawing.Point(0, 0);
-        //    newNavButton.Size = new System.Drawing.Size(200, 35);
-        //    newNavButton.Text = text;
-        //    newNavButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-        //    newNavButton.UseVisualStyleBackColor = false;
-        //    newNavButton.Click += eventHandler;
-        //    newNavButton.Enabled = enabled;
-
-        //    newNavButton.Parent = this._viewNavPanel;
+        //    this.Cursor = Cursors.WaitCursor;
         //}
 
-        //public void ClearNavPanel()
+        //public void ShowDefaultCursor()
         //{
-        //    this.ViewNavPanel.Controls.Clear();
+        //    this.Cursor = Cursors.Default;
         //}
-
-        public bool EnableSave
-        {
-            get
-            {
-                return this.saveToolStripMenuItem.Enabled;
-            }
-            set
-            {
-                this.saveToolStripMenuItem.Enabled = value;
-            }
-        }
-
-        public bool EnableSaveAs
-        {
-            get
-            {
-                return this.saveAsToolStripMenuItem.Enabled;
-            }
-            set
-            {
-                this.saveAsToolStripMenuItem.Enabled = value;
-            }
-        }
-
-        public void ShowWaitCursor()
-        {
-            this.Cursor = Cursors.WaitCursor;
-        }
-
-        public void ShowDefaultCursor()
-        {
-            this.Cursor = Cursors.Default;
-        }
 
         public void DockView(UserControl view)
         {

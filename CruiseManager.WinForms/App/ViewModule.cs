@@ -1,5 +1,6 @@
 ﻿using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Winforms.Dashboard;
+using CruiseManager.WinForms.Dashboard;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace CruiseManager.App
         public override void Load()
         {
             Bind<IHomeView>().To<HomeView>();
-
+            //Bind<MainWindow>().To<FormCSMMain>();
         }
     }
 }
