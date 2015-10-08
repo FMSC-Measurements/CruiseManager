@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace CruiseManager.WinForms
 {
-    public abstract class UserControlView : UserControl, IView
+    public class UserControlView : UserControl, IView
     {
         public IPresentor ViewPresenter
         {
