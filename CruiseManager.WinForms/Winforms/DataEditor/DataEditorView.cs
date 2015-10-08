@@ -379,7 +379,8 @@ namespace CruiseManager.WinForms.DataEditor
                 foreach (TreeVM tree in Trees)
                 {
                     tree.PurgeErrorList();
-                    if (!tree.Validate(tree.Stratum.FieldsArray))
+                    if (tree.Stratum.FieldsArray != null 
+                    && !tree.Validate(tree.Stratum.FieldsArray))
                     {
                         tree.SaveErrors();
                     }
