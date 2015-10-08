@@ -70,12 +70,12 @@ namespace CruiseManager.WinForms
 
         public void ShowWaitCursor()
         {
-            this.Cursor = Cursors.WaitCursor;
+            this.TopLevelControl.Cursor = Cursors.WaitCursor;
         }
 
         public void ShowDefaultCursor()
         {
-            this.Cursor = Cursors.Default;
+            this.TopLevelControl.Cursor = Cursors.Default;
         }
 
         //public IEnumerable<ViewCommand> NavCommands
