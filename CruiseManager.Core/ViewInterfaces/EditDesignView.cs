@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace CruiseManager.Core.ViewInterfaces
 {
-    public interface EditDesignView : IView
+    public interface IEditDesignView : IView
     {
         new DesignEditorPresentor ViewPresenter { get; set; }
 

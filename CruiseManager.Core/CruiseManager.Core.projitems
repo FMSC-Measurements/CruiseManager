@@ -11,8 +11,8 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)App\DatabaseExtentions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\IApplicationState.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)App\ExceptionHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\Exceptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App\IExceptionHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\PlatformHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\SetupService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\UserSettings.cs" />
@@ -40,12 +40,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\TallyPopulation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\TallySetupSampleGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\TallySetupStratum.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DialogModel\IDialog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DialogModel\IDialogDataContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditDesign\DesignEditorDataContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditDesign\DesignEditorPresentor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditDesign\DesignEditorStratum.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditTemplate\EditTemplateCruiseMethod.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditTemplate\TemplateEditViewPresenter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)IExceptionHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IPresentor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ISaveHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IView.cs" />

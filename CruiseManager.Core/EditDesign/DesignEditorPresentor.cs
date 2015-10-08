@@ -26,9 +26,9 @@ namespace CruiseManager.Core.EditDesign
 
         }
 
-        public new EditDesignView View 
+        public new IEditDesignView View 
         {
-            get { return (EditDesignView)base.View; }
+            get { return (IEditDesignView)base.View; }
             set
             {
                 base.View = value;

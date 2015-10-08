@@ -1,4 +1,5 @@
-﻿using CruiseManager.Core.App;
+﻿using CruiseManager.Core;
+using CruiseManager.Core.App;
 using CruiseManager.WinForms.App;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace CruiseManager.App
             Bind<IUserSettings>().To<UserSettingsWinforms>().InSingletonScope();
             Bind<SetupService>().To<SetupServiceWinForms>().InSingletonScope();
             Bind<PlatformHelper>().To<PlatformHelperWinForms>().InSingletonScope();
-            Bind<ExceptionHandler>().To<ExceptionHandlerWinforms>().InSingletonScope();
+            Bind<IExceptionHandler>().To<ExceptionHandlerWinforms>().InSingletonScope();
             Bind<WindowPresenter>().To<WindowPresenterWinForms>().InSingletonScope();
             Bind<IApplicationState>().To<ApplicationStateWinForms>().InSingletonScope();
         }

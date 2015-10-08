@@ -190,75 +190,11 @@ namespace CruiseManager.App
             }
         }
 
-        public override void ShowCruiseLandingLayout()
-        {
-            if (((Form)this.ApplicationController.MainWindow).InvokeRequired)
-            {
-                ((Form)this.ApplicationController.MainWindow).Invoke((Action)this.ShowCruiseLandingLayout);
-            }
-            else
-            {
-                //this.MainWindow.ClearNavPanel();
-                this.ApplicationController.MainWindow.ClearActiveView();
-                this.ApplicationController.MainWindow.Text = System.IO.Path.GetFileName(this.ApplicationController.Database.Path);
+        
 
-                //bool enableManageComponents = this.Database.CruiseFileType == CruiseFileType.Master;
-                //bool enableEditDesign = true;//this.Database.CruiseFileType != CruiseFileType.Component;
-                //bool enableCreateComponents = this.Database.CruiseFileType != CruiseFileType.Component;
-                //bool enableCostomize = true;//this.Database.CruiseFileType != CruiseFileType.Component;
+        
 
-                ////populate navigation buttons, last first
-                //this.MainWindow.AddNavButton("Back", this.HandleHomePageClick, true);
-                ////this.MainWindow.AddNavButton("Combine Sale Data", this.HandleCombineSaleClick);
-
-
-                //this.MainWindow.AddNavButton("Merge Component Files", this.HandleManageComponensClick, enableManageComponents);
-                //this.MainWindow.AddNavButton("Create Component Files", this.HandleCreateComponentsClick, enableCreateComponents);
-                //this.MainWindow.AddNavButton("Field Data", this.HandleExportCruiseClick, true);
-                //this.MainWindow.AddNavButton("Customize", this.HandleCruiseCustomizeClick, enableCostomize);
-                //this.MainWindow.AddNavButton("Edit Design", this.HandleEditViewCruiseClick, enableEditDesign);
-                //this.MainWindow.AddNavButton("Design Wizard", this.HandleEditWizardClick, enableEditDesign);
-                if (this.cruiseLandingNavCommands == null)
-                {
-                    this.InitializeCruiseNavOptions();
-                }
-
-                this.ApplicationController.MainWindow.SetNavCommands(this.cruiseLandingNavCommands);
-                this.ShowCustomizeCruiseLayout();
-            }
-        }
-
-        private BindableCommand[] cruiseLandingNavCommands;
-
-        private void InitializeCruiseNavOptions()
-        {
-            this.cruiseLandingNavCommands = new BindableCommand[]
-            {
-                new BindableActionCommand("Design Wizard", this.ShowEditWizard),
-                new BindableActionCommand("Edit Design", this.ShowEditDesign),
-                new BindableActionCommand("Customize", this.ShowCustomizeCruiseLayout),
-                new BindableActionCommand("Field Data", this.ShowDataEditor),
-                new BindableActionCommand("Create Component Files", this.ShowCreateComponentsLayout),
-                new BindableActionCommand("Merge Component Files", this.ShowManageComponentsLayout)
-            };
-        }
-
-        public override void ShowCreateComponentsLayout()
-        {
-            CreateComponentPresenter presenter = new CreateComponentPresenter(this.ApplicationController);
-            CreateComponentViewWinforms view = new CreateComponentViewWinforms(presenter);
-
-            this.ApplicationController.ActiveView = view;
-
-        }
-
-        public override void ShowCustomizeCruiseLayout()
-        {
-            CustomizeCruisePresenter presenter = new CustomizeCruisePresenter(this.ApplicationController);
-            CruiseCustomizeViewWinforms view = new CruiseCustomizeViewWinforms(presenter);
-            this.ApplicationController.ActiveView = view;
-
-        }
+       
 
         
 
@@ -299,20 +235,13 @@ namespace CruiseManager.App
             }
         }
 
-        public override void ShowEditDesign()
-        {
-            
-            DesignEditorPresentor presenter = new DesignEditorPresentor(this.ApplicationController);
-            EditDesignViewWinForms view = new EditDesignViewWinForms(this, presenter);
 
-            this.ApplicationController.ActiveView = view;
-        }
 
         public override void ShowEditWizard()
         {
             if (ApplicationController.Database.GetRowCount("Tree", null) == 0)
             {
-
+                
                 CruiseWizardView view = new CruiseWizardView();
                 CruiseWizardPresenter p = new CruiseWizardPresenter(view, this, this.ApplicationController, this.ApplicationController.Database);
                 p.View = view;
@@ -327,31 +256,7 @@ namespace CruiseManager.App
             }
         }
 
-        public override void ShowHomeLayout()
-        {
-            this.ApplicationController.NavigateTo<IHomeView>();
-
-            //var homeView = new HomeView(this.ApplicationController);
-            //this.ApplicationController.ActiveView = homeView;
-            this.ApplicationController.MainWindow.SetNavCommands(new BindableCommand[]
-            {
-                this.ApplicationController.OpenFileCommand,
-                this.ApplicationController.CreateNewCruiseCommand
-            });
-
-            //this.MainWindow.ClearNavPanel();
-            //this.MainWindow.ViewContentPanel.Controls.Clear();
-
-            //this.MainWindow.Text = R.Strings.HOME_LAYOUT_TITLE_BAR;
-            //this.MainWindow.AddNavButton("Open File", this.HandleOpenFileClick);
-            //this.MainWindow.AddNavButton("Create New Cruise", this.HandleCreateCruiseClick);
-
-            //var _openFileAction = new CommandBinding("Create New Cruise", this.ShowCruiseWizardDialog);
-            //var _createNewCruise = new CommandBinding("Open File", this.ShowOpenCruiseDialog);
-            //this.MainWindow.SetNavOptions(new CommandBinding[] { _createNewCruise, _openFileAction });
-
-            //this.ApplicationController.ActivePresentor = null;
-        }
+        
 
         public override void ShowImportTemplate()
         {
@@ -379,76 +284,10 @@ namespace CruiseManager.App
             //form.ShowDialog();
         }
 
-        public override void ShowManageComponentsLayout()
-        {
-            
-            MergeComponentsPresenter presenter = new MergeComponentsPresenter(this.ApplicationController);
-            MergeComponentViewWinforms view = new MergeComponentViewWinforms(presenter);
+        
 
-            this.ApplicationController.ActiveView = view;
-        }
 
-        //public void ShowCombineSaleLayout()
-        //{
-        //    OpenFileDialog ofd = new OpenFileDialog();
-        //    if (ofd.ShowDialog() == DialogResult.OK)
-        //    {
-        //        try
-        //        {
-        //            DAL mergeFromDAL = new DAL(ofd.FileName);
-
-        //            this.MainWindow.ClearNavPanel();
-        //            this.MainWindow.ViewContentPanel.Controls.Clear();
-        //            this.MainWindow.Text = System.IO.Path.GetFileName(this.AppState.Database.Path) + " - Combine Sale";
-        //            this.MainWindow.AddNavButton("Back", this.HandleReturnCruiseLandingClick);
-        //            CombineCruisePresenter presenter = new CombineCruisePresenter(this, mergeFromDAL);
-        //            ComponentSelectPage view = new ComponentSelectPage(presenter);
-        //            this.ActivePresentor = presenter;
-        //            this.SetActiveView(view);
-        //        }
-        //        catch
-        //        {
-        //            return;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        return;
-        //    }
-
-        //}
-
-        //public void ShowCombineSaleSubComponentSelectPage()
-        //{
-
-        //}
-
-        public override void ShowTemplateLandingLayout()
-        {
-            this.ApplicationController.MainWindow.Text = System.IO.Path.GetFileName(this.ApplicationController.Database.Path);
-
-            
-            TemplateEditViewPresenter presenter = new TemplateEditViewPresenter(this.ApplicationController);
-            EditTemplateViewWinForms view = new EditTemplateViewWinForms(this, presenter);
-
-            this.ApplicationController.ActiveView = view;
-
-            if(templateLandingNavOptions == null)
-            {
-                this.InitializeTemplateNavOptions();
-            }
-            this.ApplicationController.MainWindow.SetNavCommands(this.templateLandingNavOptions);
-
-        }
-
-        private BindableCommand[] templateLandingNavOptions;
-        private void InitializeTemplateNavOptions()
-        {
-            this.templateLandingNavOptions = new BindableCommand[]{
-                new BindableActionCommand("Import From Cruise", this.ShowImportTemplate),
-                new BindableActionCommand("Close File", this.ShowHomeLayout )
-            };
-        }
+        
         
     }
 }

@@ -16,7 +16,7 @@ using CruiseManager.Core.ViewInterfaces;
 
 namespace CruiseManager.WinForms.EditDesign
 {
-    public partial class EditDesignViewWinForms : UserControlView, EditDesignView
+    public partial class EditDesignViewWinForms : UserControlView, IEditDesignView
     {
 
         protected IExceptionHandler ExceptionHandler { get; set; } 

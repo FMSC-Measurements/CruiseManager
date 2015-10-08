@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 namespace CruiseManager.App
 {
-    public class ExceptionHandlerWinforms : ExceptionHandler
+    public class ExceptionHandlerWinforms : IExceptionHandler
     {
-        public override bool Handel(Exception e)
+        public bool Handel(Exception e)
         {
             if (e is UserFacingException)
             {

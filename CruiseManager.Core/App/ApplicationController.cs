@@ -180,12 +180,39 @@ namespace CruiseManager.Core.App
 
         public IView GetView<T>() where T : IView
         {
-            return this.Kernel.Get<T>();
+            try
+            {
+                return this.Kernel.Get<T>();
+            }
+            catch (Exception e)
+            {
+                //TODO throw spacific exception indication view could not be created
+                throw new NotImplementedException(null, e);
+            }
+        }
+
+        public IView GetView(Type viewType)
+        {
+            try
+            {
+                return (IView)this.Kernel.Get(viewType);
+            }
+            catch (Exception e)
+            {
+                //TODO throw spacific exception indication view could not be created
+                throw new NotImplementedException(null, e);
+            }
         }
 
         public void NavigateTo<T>() where T :IView
         {
             var view = this.GetView<T>();
+            this.ActiveView = view;
+        }
+
+        public void NavigateTo(Type viewType)
+        {
+            var view = this.GetView(viewType);
             this.ActiveView = view;
         }
 
