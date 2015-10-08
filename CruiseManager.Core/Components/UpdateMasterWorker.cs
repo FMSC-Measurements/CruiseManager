@@ -143,13 +143,13 @@ namespace CruiseManager.Core.Components
                     db.EndTransaction();
                 }
             }
-            catch(Exception e)
+            catch
             {
                 foreach (DAL db in allFiles)
                 {
                     db.CancelTransaction();
                 }
-                throw e;
+                throw;
             }
         }
 
@@ -184,10 +184,10 @@ namespace CruiseManager.Core.Components
 
                 db.EndTransaction();
             }
-            catch (Exception e)
+            catch
             {
                 db.CancelTransaction();
-                throw e;
+                throw;
             }
         }
 

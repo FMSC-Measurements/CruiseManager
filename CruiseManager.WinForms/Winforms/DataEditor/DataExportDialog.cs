@@ -488,8 +488,6 @@ namespace CruiseManager.WinForms.DataEditor
                     chapter.Add(table);
                     document.Add(chapter);
                 }
-
-                document.Close();
             }
         }
 

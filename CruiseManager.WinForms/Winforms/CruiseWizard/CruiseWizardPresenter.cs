@@ -771,14 +771,14 @@ namespace CruiseManager.WinForms.CruiseWizard
                 _copyTemplateThread = new System.Threading.Thread((ParameterizedThreadStart)this.CopyTemplateData);
                 _copyTemplateThread.Start(templateDB);
             }
-            catch(Exception e)
+            catch
             {
                 if (_copyTemplateThread != null)
                 {
                     _copyTemplateThread.Abort();
                     _copyTemplateThread = null;
                 }
-                throw e;
+                throw;
             }
         }
 
@@ -962,11 +962,11 @@ DELETE FROM TreeDefaultValueTreeAuditValue;");//ensure that these tables are cle
                 {
                     c.Save();
                 }
-                catch (Exception ex)
+                catch
                 {
                     if (!tryToSaveAll)
                     {
-                        throw ex;
+                        throw;
                     }
                 }
 
@@ -989,11 +989,11 @@ DELETE FROM TreeDefaultValueTreeAuditValue;");//ensure that these tables are cle
 
                     s.CuttingUnits.Save();
                 }
-                catch (Exception ex)
+                catch
                 {
                     if (!tryToSaveAll)
                     {
-                        throw ex;
+                        throw;
                     }
                 }
             }
@@ -1039,11 +1039,11 @@ DELETE FROM TreeDefaultValueTreeAuditValue;");//ensure that these tables are cle
 
                         sg.TreeDefaultValues.Save();
                     }
-                    catch (Exception ex)
+                    catch
                     {
                         if (!tryToSaveAll)
                         {
-                            throw ex;
+                            throw;
                         }
                     }
 

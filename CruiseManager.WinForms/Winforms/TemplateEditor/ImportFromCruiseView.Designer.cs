@@ -17,6 +17,10 @@
             {
                 components.Dispose();
             }
+            if(disposing)
+            {
+                this._copyFromDB.Dispose();
+            }
             base.Dispose(disposing);
         }
 

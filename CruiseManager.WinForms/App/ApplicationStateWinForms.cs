@@ -74,7 +74,6 @@ namespace CruiseManager.WinForms.App
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(ApplicationStateData));
                 serializer.Serialize(writer, this._data);
-                writer.Close();
             }
         }
 

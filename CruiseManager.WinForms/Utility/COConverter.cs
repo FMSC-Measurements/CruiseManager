@@ -191,7 +191,7 @@ namespace CruiseManager.Utility
                 }
                 else
                 {
-                    throw e;
+                    throw;
                 }
             }
         }
