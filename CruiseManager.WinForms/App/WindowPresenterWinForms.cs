@@ -116,6 +116,55 @@ namespace CruiseManager.App
             }
         }
 
+        protected String AskSavePath(SaleDO sale)
+        {
+            bool createSaleFolder = false;
+            if (ApplicationController.UserSettings.CreateSaleFolder == null)
+            {
+                using (var dialog = new CreateSaleFolerDialog())
+                {
+                    createSaleFolder = (dialog.ShowDialog() == DialogResult.Yes);
+                    if (dialog.RememberSelection)
+                    {
+                        ApplicationController.UserSettings.CreateSaleFolder = createSaleFolder;
+                        //ApplicationState.GetHandle().Save();
+                    }
+                }
+            }
+            else
+            {
+                createSaleFolder = ApplicationController.UserSettings.CreateSaleFolder.Value;
+            }
+
+            using (var saveFileDialog = new System.Windows.Forms.SaveFileDialog())
+            {
+                saveFileDialog.AutoUpgradeEnabled = true;
+                saveFileDialog.CustomPlaces.Add(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\CruiseFiles");
+                saveFileDialog.InitialDirectory = ApplicationController.UserSettings.CruiseSaveLocation;
+                saveFileDialog.DefaultExt = "cruise";
+                saveFileDialog.Filter = "Cruise files(*.cruise)|*.cruise";
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string fileName = saveFileDialog.FileName;
+                    string dir = System.IO.Path.GetDirectoryName(fileName);
+                    ApplicationController.UserSettings.CruiseSaveLocation = dir;
+
+                    if (createSaleFolder)
+                    {
+
+                        dir += sale.ToString("\\[SaleNumber] [Name]\\", null);
+                        if (!System.IO.Directory.Exists(dir))
+                        {
+                            System.IO.Directory.CreateDirectory(dir);
+                        }
+                        return dir + System.IO.Path.GetFileName(saveFileDialog.FileName);
+                    }
+                    return saveFileDialog.FileName;
+                }
+                return null;
+            }
+        }
+
         public override void ShowAboutDialog()
         {
             using (AboutDialog dialog = new AboutDialog(this.ApplicationController))
@@ -194,7 +243,21 @@ namespace CruiseManager.App
 
         
 
-       
+       private bool ShowWizardDialog(DAL database, out SaleDO sale)
+        {
+            CruiseWizardView view = new CruiseWizardView();
+            CruiseWizardPresenter p = new CruiseWizardPresenter(view, this, this.ApplicationController, database);
+            DialogResult result = view.ShowDialog((IWin32Window)this.ApplicationController.MainWindow);
+            sale = p.Sale;
+            if (result == DialogResult.OK)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         
 
@@ -203,17 +266,48 @@ namespace CruiseManager.App
             DAL tempfile = ApplicationController.GetNewOrUnfinishedCruise();
             if (tempfile != null)
             {
-                CruiseWizardView view = new CruiseWizardView();
-                CruiseWizardPresenter p = new CruiseWizardPresenter(view, this, this.ApplicationController, tempfile);
-                p.View = view;
-
-
-                if (view.ShowDialog((IWin32Window)this.ApplicationController.MainWindow) == DialogResult.OK)
+                SaleDO sale;
+                if (this.ShowWizardDialog(tempfile, out sale ))
                 {
-                    ApplicationController.Database = p.Database;
+                    var destPath = AskSavePath(sale);
+                    if (destPath == null)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        tempfile.Dispose();
+                        if (System.IO.File.Exists(destPath))
+                        {
+                            System.IO.File.Replace(tempfile.Path, destPath, null);
+                        }
+                        else
+                        {
+                            System.IO.File.Move(tempfile.Path, destPath);
+                        }
+                        this.ApplicationController.Database = new DAL(destPath);
+                    }
+
                     this.ShowCruiseLandingLayout();
-                    this.ShowCustomizeCruiseLayout();
                 }
+                else
+                {
+                    tempfile.Dispose();
+                }
+            }
+        }
+
+        public override void ShowEditWizard()
+        {
+            if (ApplicationController.Database.GetRowCount("Tree", null) == 0)
+            {
+                SaleDO sale;
+                this.ShowWizardDialog(this.ApplicationController.Database, out sale);
+            }
+            else
+            {
+                this.ApplicationController.ActiveView.ShowMessage("Can't edit file with tree data in wizard");
+                //MessageBox.Show("Can't edit file with tree data in wizard");
             }
         }
 
@@ -237,24 +331,7 @@ namespace CruiseManager.App
 
 
 
-        public override void ShowEditWizard()
-        {
-            if (ApplicationController.Database.GetRowCount("Tree", null) == 0)
-            {
-                
-                CruiseWizardView view = new CruiseWizardView();
-                CruiseWizardPresenter p = new CruiseWizardPresenter(view, this, this.ApplicationController, this.ApplicationController.Database);
-                p.View = view;
-
-                view.ShowDialog((IWin32Window)this.ApplicationController.MainWindow);
-                
-            }
-            else
-            {
-                this.ApplicationController.ActiveView.ShowMessage("Can't edit file with tree data in wizard");
-                //MessageBox.Show("Can't edit file with tree data in wizard");
-            }
-        }
+        
 
         
 

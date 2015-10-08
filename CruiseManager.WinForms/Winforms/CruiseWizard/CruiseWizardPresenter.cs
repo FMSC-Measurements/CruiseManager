@@ -195,8 +195,6 @@ namespace CruiseManager.WinForms.CruiseWizard
             _database = database;
 
             LoadSetupData();//load tree defaults, product codes, etc.
-            //if (_database != null)
-            //{
 
             LoadCruiseData();//read data from existing file
 
@@ -210,18 +208,13 @@ namespace CruiseManager.WinForms.CruiseWizard
                 View.SetTemplatePathTextBox(record.Value, false);
             }
 
-            //}
-            //else
-            //{
-            //    _database = new DAL(GetTempPath(), true);
-            //    //this.Sale = new SaleVM(this._database);
-            //}
-
             if (this.CuttingUnits.Count == 0)
             {
                 this.CuttingUnits.Add(GetNewCuttingUnit());
             }
         }
+
+
         #endregion// end ctor       
 
         //private static string GetTempPath()
@@ -710,54 +703,7 @@ namespace CruiseManager.WinForms.CruiseWizard
         }
         #endregion
 
-        protected String AskSavePath()
-        {
-            bool createSaleFolder = false;
-            if (ApplicationController.UserSettings.CreateSaleFolder == null)
-            {
-                using (var dialog = new CreateSaleFolerDialog())
-                {
-                    createSaleFolder = (dialog.ShowDialog() == DialogResult.Yes);
-                    if (dialog.RememberSelection)
-                    {
-                        ApplicationController.UserSettings.CreateSaleFolder = createSaleFolder;
-                        //ApplicationState.GetHandle().Save();
-                    }
-                }
-            }
-            else
-            {
-                createSaleFolder = ApplicationController.UserSettings.CreateSaleFolder.Value;
-            }
-
-            using (var saveFileDialog = new System.Windows.Forms.SaveFileDialog())
-            {
-                saveFileDialog.AutoUpgradeEnabled = true;
-                saveFileDialog.CustomPlaces.Add(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\CruiseFiles");
-                saveFileDialog.InitialDirectory = ApplicationController.UserSettings.CruiseSaveLocation;
-                saveFileDialog.DefaultExt = "cruise";
-                saveFileDialog.Filter = "Cruise files(*.cruise)|*.cruise";
-                if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    string fileName = saveFileDialog.FileName;
-                    string dir = System.IO.Path.GetDirectoryName(fileName);
-                    ApplicationController.UserSettings.CruiseSaveLocation = dir;
-
-                    if (createSaleFolder)
-                    {
-
-                        dir += Sale.ToString("\\[SaleNumber] [Name]\\", null);
-                        if (!Directory.Exists(dir))
-                        {
-                            Directory.CreateDirectory(dir);
-                        }
-                        return dir + Path.GetFileName(saveFileDialog.FileName);
-                    } 
-                    return saveFileDialog.FileName;
-                }
-                return null;
-            }
-        }
+        
 
 
         /// <summary>
@@ -895,10 +841,10 @@ DELETE FROM TreeDefaultValueTreeAuditValue;");//ensure that these tables are cle
             database.Execute(setLogFieldCommand);
         }
 
-        private bool IsNewCruise()
-        {
-            return Path.GetFileName(_database.Path) == Strings.TEMP_FILENAME;
-        }
+        //private bool IsNewCruise()
+        //{
+        //    return Path.GetFileName(_database.Path) == Strings.TEMP_FILENAME;
+        //}
 
         public void Finish()
         {
@@ -923,30 +869,7 @@ DELETE FROM TreeDefaultValueTreeAuditValue;");//ensure that these tables are cle
             {
                 View.Cursor = Cursors.Default;
             }
-
-            //if file not temp dont ask where to save it
-            string destPath = null;
-            if (IsNewCruise())
-            {
-                destPath = AskSavePath();
-                if (destPath == null)
-                {
-                    return;
-                }
-                else
-                {
-                    this._database.Dispose();
-                    if(File.Exists(destPath))
-                    {
-                        File.Replace(this._database.Path, destPath, null);
-                    }
-                    else
-                    {
-                        File.Move(this._database.Path, destPath);
-                    }
-                    _database = new DAL(destPath);
-                }
-            }           
+   
             
             View.DialogResult = DialogResult.OK;
             _isFinished = true;
