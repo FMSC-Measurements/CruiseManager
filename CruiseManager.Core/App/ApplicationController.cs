@@ -412,14 +412,19 @@ namespace CruiseManager.Core.App
                     Nullable<bool> dialogResult = this.ActiveView.AskYesNoCancel(
                         "Partially created cruise file found, would you like to resume?\r\n" +
                         "Selecting No will discard existing partial cruise.", "?", true);
-                    if (dialogResult.HasValue && dialogResult.Value == true)
+                    if (dialogResult.HasValue == false)
+                    {
+                        db = null;
+                    }
+                    else if (dialogResult.Value == true)
                     {
                         this.ActiveView.ShowWaitCursor();
                         db = new DAL(GetTempCruiseLocation());
                     }
-                    else if (dialogResult.HasValue == false)
+                    else
                     {
-                        return db = null;
+                        this.ActiveView.ShowWaitCursor();
+                        db = new DAL(GetTempCruiseLocation(), true);
                     }
                     //fall through if false
                 }
