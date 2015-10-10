@@ -115,54 +115,6 @@ namespace CruiseManager.Core.App
 #endif
         }
 
-//        protected ApplicationController(WindowPresenter windowPresenter, 
-//            ExceptionHandler exceptionHandler, 
-//            IUserSettings userSettings, 
-//            SetupService setupService, 
-//            IApplicationState applicationState,
-//            PlatformHelper platformHelper)
-//        {
-//            this.WindowPresenter = windowPresenter;
-//            this.WindowPresenter.ApplicationController = this;
-//            this.ExceptionHandler = exceptionHandler;
-//            this.UserSettings = userSettings;
-//            this.SetupService = setupService;
-//            this.AppState = applicationState;
-//            this.PlatformHelper = platformHelper;
-
-//            this.SaveCommand = new BindableActionCommand("Save", this.Save);
-//            this.SaveAsCommand = new BindableActionCommand("SaveAs", this.SaveAs);
-//            this.OpenFileCommand = new BindableActionCommand("Open File", this.OpenFile);
-//            this.CreateNewCruiseCommand = new BindableActionCommand("New Cruise", this.CreateNewCruise);
-//#if DEBUG
-//            InSupervisorMode = true;
-//#endif
-//        }
-
-
-        //public bool ChangeView(IView view)
-        //{
-        //    if (SaveHandler != null)
-        //    {
-        //        if (SaveHandler.HasChangesToSave)
-        //        {
-        //            var doSave = this.WindowPresenter.AskYesNoCancel("You Have Unsaved Changes, Would You Like To Save Before Closing?", "Save Changes?", null);
-        //            if (doSave == null)//user selects cancel
-        //            {
-        //                return false;//don't change views
-        //            }
-        //            else if (doSave == true)
-        //            {
-        //                SaveHandler.HandleSave();
-        //            }
-        //            else//continue without saving
-        //            { }
-        //        }
-        //    }
-        //    this.ActivePresentor = view.ViewPresenter;
-        //    this.WindowPresenter.MainWindow.SetActiveView(view);
-        //    return true;
-        //}
 
         public IView GetView<T>() where T : IView
         {
