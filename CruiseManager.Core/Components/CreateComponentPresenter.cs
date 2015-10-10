@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using CruiseDAL;
 using CruiseDAL.DataObjects;
 using System.IO;
-using CruiseManager.Core;
 using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core.App;
 using CruiseManager.Core.Constants;
+using CruiseManager.Core.ViewModel;
 
 namespace CruiseManager.Core.Components
 {

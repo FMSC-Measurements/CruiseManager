@@ -1,5 +1,6 @@
 ﻿using CruiseManager.Core;
 using CruiseManager.Core.App;
+using CruiseManager.Core.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using CruiseManager.Core.App;
+using CruiseManager.Core.ViewModel;
 
 namespace CruiseManager.Core.ViewInterfaces
 {

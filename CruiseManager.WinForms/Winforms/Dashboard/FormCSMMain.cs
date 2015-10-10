@@ -13,6 +13,7 @@ using CruiseManager.App;
 using CruiseManager.Core;
 using CruiseManager.Core.CommandModel;
 using CruiseManager.WinForms.CommandModel;
+using CruiseManager.Core.ViewModel;
 
 namespace CruiseManager.WinForms.Dashboard
 {

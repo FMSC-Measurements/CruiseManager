@@ -40,16 +40,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\TallyPopulation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\TallySetupSampleGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\TallySetupStratum.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DialogModel\IDialog.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DialogModel\IDialogDataContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditDesign\DesignEditorDataContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditDesign\DesignEditorPresentor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditDesign\DesignEditorStratum.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditTemplate\EditTemplateCruiseMethod.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditTemplate\TemplateEditViewPresenter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)IPresentor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ISaveHandler.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)IView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IWorker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\LogVM.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\SaleVM.cs" />
@@ -57,7 +53,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\TreeVM.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\TypeComparers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresenterStatusChangedEventArgs.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Presentor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProgressChangedEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SetupModels\CruiseMethod.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SetupModels\Forest.cs" />
@@ -75,6 +70,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\IHomeView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\MainWindow.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\MergeComponentView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\IDialog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\IDialogDataContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\IPresentor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\IView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\IWindow.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Presentor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)App\ApplicationController.cs" />

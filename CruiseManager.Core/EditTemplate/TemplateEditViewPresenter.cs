@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using CruiseDAL.DataObjects;
 using System.ComponentModel;
-using System.Windows.Forms;
 using CruiseDAL;
 using CruiseManager.Core.App;
-using CruiseManager.Core;
 using CruiseManager.Core.ViewInterfaces;
+using CruiseManager.Core.ViewModel;
 
 namespace CruiseManager.Core.EditTemplate
 {

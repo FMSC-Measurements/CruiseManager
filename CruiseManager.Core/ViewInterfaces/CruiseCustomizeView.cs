@@ -1,4 +1,5 @@
 ﻿using CruiseManager.Core.CruiseCustomize;
+using CruiseManager.Core.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Text;

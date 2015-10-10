@@ -11,6 +11,7 @@ using CruiseManager.Core.ViewInterfaces;
 using System.ComponentModel;
 using Ninject;
 using Ninject.Modules;
+using CruiseManager.Core.ViewModel;
 
 namespace CruiseManager.Core.App
 {
@@ -65,7 +66,6 @@ namespace CruiseManager.Core.App
                 _activeView = value;
                 this.MainWindow.SetActiveView(_activeView);
             }
-
         }
 
         protected IPresentor ActivePresentor
@@ -74,20 +74,6 @@ namespace CruiseManager.Core.App
             {
                 return _activeView?.ViewPresenter;
             }
-            //set
-            //{
-            //    _activePresentor = value;
-            //    if (SaveHandler == null)
-            //    {
-            //        this.SaveAsCommand.Enabled = this.SaveCommand.Enabled = false;
-            //        //this.WindowPresenter.MainWindow.EnableSave = false;
-            //    }
-            //    else
-            //    {
-            //        this.SaveAsCommand.Enabled = this.SaveCommand.Enabled = true;
-            //        //this.WindowPresenter.MainWindow.EnableSave = SaveHandler.CanHandleSave;
-            //    }
-            //}
         }
 
         private MainWindow _mainWindow; 

@@ -12,6 +12,7 @@ using CruiseManager.Core.App;
 using CruiseManager.Core.Models;
 using CruiseManager.Core.Constants;
 using CruiseManager.Core.ViewInterfaces;
+using CruiseManager.Core.ViewModel;
 
 namespace CruiseManager.Core.EditDesign
 {
