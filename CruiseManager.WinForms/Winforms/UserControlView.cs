@@ -31,20 +31,28 @@ namespace CruiseManager.WinForms
 
         public bool? AskYesNoCancel(string message, string caption, bool? defaultOption)
         {
-            MessageBoxDefaultButton defaultButton;
-            switch (defaultOption)
+            if (this.InvokeRequired)
             {
-                case true:
-                    { defaultButton = MessageBoxDefaultButton.Button1; break; }
-                case false:
-                    { defaultButton = MessageBoxDefaultButton.Button2; break; }
-                case null:
-                    { defaultButton = MessageBoxDefaultButton.Button3; break; }
-                default:
-                    { defaultButton = MessageBoxDefaultButton.Button1; break; }
+                return (bool?)this.Invoke(new Func<string, string, bool?, bool?>(this.AskYesNoCancel),
+                    message, caption, defaultOption);
             }
-            DialogResult result = MessageBox.Show(message, caption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, defaultButton);
-            return (result == DialogResult.Cancel) ? (Nullable<bool>)null : (result == DialogResult.Yes) ? true : false;
+            else
+            {
+                MessageBoxDefaultButton defaultButton;
+                switch (defaultOption)
+                {
+                    case true:
+                        { defaultButton = MessageBoxDefaultButton.Button1; break; }
+                    case false:
+                        { defaultButton = MessageBoxDefaultButton.Button2; break; }
+                    case null:
+                        { defaultButton = MessageBoxDefaultButton.Button3; break; }
+                    default:
+                        { defaultButton = MessageBoxDefaultButton.Button1; break; }
+                }
+                DialogResult result = MessageBox.Show(message, caption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, defaultButton);
+                return (result == DialogResult.Cancel) ? (Nullable<bool>)null : (result == DialogResult.Yes) ? true : false;
+            }
         }
 
         public void ShowMessage(string message)
@@ -54,14 +62,28 @@ namespace CruiseManager.WinForms
 
         public void ShowMessage(string message, string caption)
         {
-            MessageBox.Show(this, message, caption);
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action<string, string>(this.ShowMessage), message, caption);
+            }
+            else
+            {
+                MessageBox.Show(this, message, caption);
+            }
         }
 
         public void ShowErrorMessage(String shortDiscription, String longDiscription)
         {
-            using (ErrorMessageDialog dialog = new ErrorMessageDialog())
+            if (this.InvokeRequired)
             {
-                dialog.ShowDialog(this, shortDiscription, longDiscription);
+                this.Invoke(new Action<string, string>(this.ShowErrorMessage), shortDiscription, longDiscription);
+            }
+            else
+            {
+                using (ErrorMessageDialog dialog = new ErrorMessageDialog())
+                {
+                    dialog.ShowDialog(this, shortDiscription, longDiscription);
+                }
             }
         }
 
@@ -71,12 +93,26 @@ namespace CruiseManager.WinForms
 
         public void ShowWaitCursor()
         {
-            this.TopLevelControl.Cursor = Cursors.WaitCursor;
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(this.ShowWaitCursor));
+            }
+            else
+            {
+                this.TopLevelControl.Cursor = Cursors.WaitCursor;
+            }
         }
 
         public void ShowDefaultCursor()
         {
-            this.TopLevelControl.Cursor = Cursors.Default;
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(this.ShowDefaultCursor));
+            }
+            else
+            {
+                this.TopLevelControl.Cursor = Cursors.Default;
+            }
         }
 
         //public IEnumerable<ViewCommand> NavCommands
