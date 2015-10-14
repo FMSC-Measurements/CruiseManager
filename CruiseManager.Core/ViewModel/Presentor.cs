@@ -25,6 +25,13 @@ namespace CruiseManager.Core.ViewModel
             }
         }
 
+        public Presentor() { }
+
+        public Presentor(ApplicationController appController)
+        {
+            this.ApplicationController = appController;
+        }
+
         //public PresenterStatus Status
         //{
         //    get { return _status; }
