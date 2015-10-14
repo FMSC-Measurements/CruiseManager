@@ -19,6 +19,9 @@ namespace CruiseManager.WinForms.Components
         {
             this.ViewPresenter = viewPresenter;
             InitializeComponent();
+
+            UpdateMasterInfo();
+            UpdateComponentInfo();
         }
 
         public MergeComponentsPresenter ViewPresenter

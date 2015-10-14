@@ -25,13 +25,16 @@ namespace CruiseManager.WinForms.Components
 
         public MergeComponentViewWinforms(MergeComponentsPresenter viewPresenter) 
         {
+            InitializeComponent();
+
+            mergeInfoView = new MergeInfoViewWinforms(viewPresenter);
+            mergeInfoView.Dock = DockStyle.Fill; 
+            this._contentPanel.Controls.Add(mergeInfoView);
+
             this.ViewPresenter = viewPresenter;
             this.ViewPresenter.View = this;
 
-            InitializeComponent();
-            mergeInfoView = new MergeInfoViewWinforms(this.ViewPresenter);
-            mergeInfoView.Dock = DockStyle.Fill; 
-            this._contentPanel.Controls.Add(mergeInfoView);
+            this.HandleWorkerStatusChanged();
         }
 
 
@@ -83,6 +86,7 @@ namespace CruiseManager.WinForms.Components
 
         public void HandleProgressChanged(Object sender, WorkerProgressChangedEventArgs e) 
         {
+            System.Diagnostics.Debug.Assert(e != null);
             if (this.__progressBar.InvokeRequired)
             {
                 this.__progressBar.Invoke(new EventHandler<WorkerProgressChangedEventArgs>(this.HandleProgressChanged), sender, e);

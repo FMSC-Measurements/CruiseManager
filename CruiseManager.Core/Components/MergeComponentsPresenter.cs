@@ -101,7 +101,7 @@ namespace CruiseManager.Core.Components
                 }
                 if(value != null) { value.ProgressChanged += this.CurrentWorker_ProgressChanged; }
                 _currentWorker = value;
-                this.CurrentWorker_ProgressChanged(null, null);
+                this.CurrentWorker_ProgressChanged(null, new WorkerProgressChangedEventArgs());
             }
         }
 

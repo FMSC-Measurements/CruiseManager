@@ -7,6 +7,9 @@ namespace CruiseManager.Core
 {
     public class WorkerProgressChangedEventArgs : System.ComponentModel.ProgressChangedEventArgs
     {
+        public WorkerProgressChangedEventArgs() : base(0, null)
+        { }
+
         public WorkerProgressChangedEventArgs(int progress)
             : base(progress, null)
         { }
