@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CruiseManager.VS15", "CruiseManager.WinForms\CruiseManager.WinForms.VS15.csproj", "{5F44AC1F-055D-41BA-826F-DBAD8E14062A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CruiseManager.WinForms.VS15", "CruiseManager.WinForms\CruiseManager.WinForms.VS15.csproj", "{5F44AC1F-055D-41BA-826F-DBAD8E14062A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSMTest.VS15", "CSMTest\CSMTest.VS15.csproj", "{9147D46C-4F97-436E-840B-2754371B8D26}"
 EndProject
@@ -22,6 +22,10 @@ EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CruiseManager.Core", "CruiseManager.Core\CruiseManager.Core.shproj", "{F02B1A95-C7A4-40E2-8648-E858714EEDBB}"
 EndProject
 Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		CruiseManager.Core\CruiseManager.Core.projitems*{5f44ac1f-055d-41ba-826f-dbad8e14062a}*SharedItemsImports = 4
 		CruiseManager.Core\CruiseManager.Core.projitems*{f02b1a95-c7a4-40e2-8648-e858714eedbb}*SharedItemsImports = 13
@@ -48,6 +52,7 @@ Global
 		{5F44AC1F-055D-41BA-826F-DBAD8E14062A}.Debug with args|x86.ActiveCfg = Debug with args|x86
 		{5F44AC1F-055D-41BA-826F-DBAD8E14062A}.Debug with args|x86.Build.0 = Debug with args|x86
 		{5F44AC1F-055D-41BA-826F-DBAD8E14062A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F44AC1F-055D-41BA-826F-DBAD8E14062A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F44AC1F-055D-41BA-826F-DBAD8E14062A}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{5F44AC1F-055D-41BA-826F-DBAD8E14062A}.Debug|Mixed Platforms.Build.0 = Debug|x86
 		{5F44AC1F-055D-41BA-826F-DBAD8E14062A}.Debug|x86.ActiveCfg = Debug|x86
@@ -83,21 +88,24 @@ Global
 		{9147D46C-4F97-436E-840B-2754371B8D26}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{9147D46C-4F97-436E-840B-2754371B8D26}.Release|Mixed Platforms.Build.0 = Release|x86
 		{9147D46C-4F97-436E-840B-2754371B8D26}.Release|x86.ActiveCfg = Release|x86
-		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Debug with args|Any CPU.ActiveCfg = Debug with args|x86
-		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Debug with args|Mixed Platforms.ActiveCfg = Debug with args|x86
-		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Debug with args|Mixed Platforms.Build.0 = Debug with args|x86
-		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Debug with args|x86.ActiveCfg = Debug with args|x86
-		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Debug with args|x86.Build.0 = Debug with args|x86
-		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Debug with args|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Debug with args|Any CPU.Build.0 = Debug|Any CPU
+		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Debug with args|Mixed Platforms.ActiveCfg = Debug|x86
+		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Debug with args|Mixed Platforms.Build.0 = Debug|x86
+		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Debug with args|x86.ActiveCfg = Debug|x86
+		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Debug with args|x86.Build.0 = Debug|x86
+		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Debug|Mixed Platforms.Build.0 = Debug|x86
 		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Debug|x86.ActiveCfg = Debug|x86
 		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Debug|x86.Build.0 = Debug|x86
-		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Release with args|Any CPU.ActiveCfg = Release with args|x86
-		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Release with args|Mixed Platforms.ActiveCfg = Release with args|x86
-		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Release with args|Mixed Platforms.Build.0 = Release with args|x86
-		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Release with args|x86.ActiveCfg = Release with args|x86
-		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Release with args|x86.Build.0 = Release with args|x86
+		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Release with args|Any CPU.ActiveCfg = Release|Any CPU
+		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Release with args|Any CPU.Build.0 = Release|Any CPU
+		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Release with args|Mixed Platforms.ActiveCfg = Release|x86
+		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Release with args|Mixed Platforms.Build.0 = Release|x86
+		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Release with args|x86.ActiveCfg = Release|x86
+		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Release with args|x86.Build.0 = Release|x86
 		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Release|Any CPU.ActiveCfg = Release|x86
 		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}.Release|Mixed Platforms.Build.0 = Release|x86
@@ -150,10 +158,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(SubversionScc) = preSolution
-		Svn-Managed = True
-		Manager = AnkhSVN - Subversion Support for Visual Studio
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = CruiseSystemManager1.vsmdi
