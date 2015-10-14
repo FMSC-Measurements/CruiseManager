@@ -12,6 +12,7 @@ using CruiseManager.Core.Constants;
 using CruiseManager.Core.Models;
 using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core.ViewModel;
+using System.Collections.ObjectModel;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
@@ -71,12 +72,12 @@ namespace CruiseManager.Core.CruiseCustomize
                 foreach (FieldSetupStratum st in FieldSetupStrata)
                 {
                     //initialize each stratum object  
-                    st.SelectedLogFields = GetSelectedLogFields(st);
-                    st.SelectedTreeFields = GetSelectedTreeFields(st);
+                    st.SelectedLogFields = new ObservableCollection<LogFieldSetupDO>(GetSelectedLogFields(st));
+                    st.SelectedTreeFields = new ObservableCollection<TreeFieldSetupDO>( GetSelectedTreeFields(st));
                     if (st.SelectedTreeFields.Count <= 0)
                     {
                         // if blank, use default values for cruise method
-                        st.SelectedTreeFields = GetSelectedTreeFieldsDefault(st);
+                        st.SelectedTreeFields = new ObservableCollection<TreeFieldSetupDO>(GetSelectedTreeFieldsDefault(st));
                     }
 
                     //compare selected tree/log fields to all tree.log fields to create a list of unselected tree/log fields
@@ -89,8 +90,9 @@ namespace CruiseManager.Core.CruiseCustomize
 
                     st.UnselectedLogFields = unselectedLogFields;
                     st.UnselectedTreeFields = unselectedTreeFields;
-                    this._isFieldSetupInitialized = true;
+                    
                 }
+                this._isFieldSetupInitialized = true;
 
             }
             catch (Exception e)
@@ -150,7 +152,7 @@ namespace CruiseManager.Core.CruiseCustomize
                 {
                     this.LoadSampleGroups(stratum);
                 }
-                TallyPresets = this.Database.Read<TallyVM>("Tally", null);
+                //TallyPresets = this.Database.Read<TallyVM>("Tally", null);
                 _isTallySetupInitialized = true;
 
             }
@@ -232,31 +234,7 @@ namespace CruiseManager.Core.CruiseCustomize
         //    }
         //}
 
-        protected void CopyTreeFields(FieldSetupStratum from, FieldSetupStratum to)
-        {
-            //TODO comeback
-            //foreach (TreeFieldSetupDO tf in from.SelectedTreeFields)
-            //{
-            //    if (!to.SelectedTreeFields.Contains(tf, TreeFieldComparer.GetInstance()))
-            //    {
-            //        TreeFieldSetupDO match = to.UnselectedTreeFields.Find((TreeFieldSetupDO t) => t.Field = tf.Field);
-            //        if (match == null) continue;
-            //        to.SelectedTreeFields.Add(match);
-            //        to.UnselectedTreeFields.Remove(match);
-            //    }
-            //}
-            //foreach (TreeFieldSetupDO tf in from.UnselectedTreeFields)
-            //{
-            //    if (!to.UnselectedTreeFields.Contains(tf, TreeFieldComparer.GetInstance()))
-            //    {
-            //        TreeFieldSetupDO match = to.SelectedTreeFields.Find((TreeFieldSetupDO t) => t.Field = tf.Field);
-            //        if (match == null) continue;
-            //        to.UnselectedTreeFields.Add(match);
-            //        to.SelectedTreeFields.Remove(match);
-            //    }
-            //}
-
-        }
+        
 
 
 
@@ -341,9 +319,59 @@ namespace CruiseManager.Core.CruiseCustomize
             return success;
         }
 
+        public bool ValidateTallySettup(ref StringBuilder errorBuilder)
+        {
+            if (!_isTallySetupInitialized) { return true; }
+            bool isValid = true;
+            foreach (TallySetupStratum st in this.TallySetupStrata)
+            {
+                isValid = this.ValidateHotKeys(st, ref errorBuilder) && isValid;
+
+                if (CruiseDAL.Schema.Constants.CruiseMethods.MANDITORY_TALLY_METHODS.Contains(st.Method))
+                {
+                    foreach (TallySetupSampleGroup sg in st.SampleGroups)
+                    {
+                        if (sg.TallyMethod == TallyMode.Unknown || (sg.TallyMethod & TallyMode.None) == TallyMode.None)
+                        {
+                            errorBuilder.AppendFormat("Sample Group {0} in Stratum {1} needs tally configuration\r\n", sg.Code, st.Code);
+                            isValid = false;
+                        }
+                    }
+                }
+            }
+            return isValid;
+        }
+
         #endregion
 
         #region Tree / Log Field Setup
+
+        protected void CopyTreeFields(FieldSetupStratum from, FieldSetupStratum to)
+        {
+            //TODO comeback
+            //foreach (TreeFieldSetupDO tf in from.SelectedTreeFields)
+            //{
+            //    if (!to.SelectedTreeFields.Contains(tf, TreeFieldComparer.GetInstance()))
+            //    {
+            //        TreeFieldSetupDO match = to.UnselectedTreeFields.Find((TreeFieldSetupDO t) => t.Field = tf.Field);
+            //        if (match == null) continue;
+            //        to.SelectedTreeFields.Add(match);
+            //        to.UnselectedTreeFields.Remove(match);
+            //    }
+            //}
+            //foreach (TreeFieldSetupDO tf in from.UnselectedTreeFields)
+            //{
+            //    if (!to.UnselectedTreeFields.Contains(tf, TreeFieldComparer.GetInstance()))
+            //    {
+            //        TreeFieldSetupDO match = to.SelectedTreeFields.Find((TreeFieldSetupDO t) => t.Field = tf.Field);
+            //        if (match == null) continue;
+            //        to.UnselectedTreeFields.Add(match);
+            //        to.SelectedTreeFields.Remove(match);
+            //    }
+            //}
+
+        }
+
         public List<TreeFieldSetupDO> GetSelectedTreeFields(StratumDO stratum)
         {
             return this.Database.Read<TreeFieldSetupDO>("TreeFieldSetup", "WHERE Stratum_CN = ? ORDER BY FieldOrder", stratum.Stratum_CN);
@@ -382,28 +410,7 @@ namespace CruiseManager.Core.CruiseCustomize
 
 
 
-        public bool ValidateTallySettup(ref StringBuilder errorBuilder)
-        {
-            if (!_isTallySetupInitialized) { return true; }
-            bool isValid = true;
-            foreach (TallySetupStratum st in this.TallySetupStrata)
-            {
-                isValid = this.ValidateHotKeys(st, ref errorBuilder) && isValid;
-
-                if (CruiseDAL.Schema.Constants.CruiseMethods.MANDITORY_TALLY_METHODS.Contains(st.Method))
-                {
-                    foreach (TallySetupSampleGroup sg in st.SampleGroups)
-                    {
-                        if (sg.TallyMethod == TallyMode.Unknown || (sg.TallyMethod & TallyMode.None) == TallyMode.None)
-                        {
-                            errorBuilder.AppendFormat("Sample Group {0} in Stratum {1} needs tally configuration\r\n", sg.Code, st.Code);
-                            isValid = false;
-                        }
-                    }
-                }
-            }
-            return isValid;
-        }
+        
 
         private bool Save(ref StringBuilder errorBuilder)
         {
