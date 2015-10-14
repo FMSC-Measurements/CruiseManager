@@ -10,6 +10,7 @@ namespace CruiseManager.Core.ViewInterfaces
     {
         new CustomizeCruisePresenter ViewPresenter { get; set; }
 
+
         void UpdateTallySetupView();
         void UpdateFieldSetupViews();
         void UpdateTreeDefaults();

@@ -217,15 +217,14 @@ namespace CruiseManager.WinForms.CruiseCustomize
         {
             if (stratum != null)
             {
-                List<TreeFieldSetupDO> selectedTreeFields = stratum.SelectedTreeFields;
-                List<TreeFieldSetupDO> unselectedTreeFields = stratum.UnselectedTreeFields;
-                unselectedTreeFields.Sort(TreeFieldComparer.Instance);
+                var selectedTreeFields = stratum.SelectedTreeFields;
+                var unselectedTreeFields = stratum.UnselectedTreeFields.OrderBy(x => x.Heading).ToList();
                 this._treeFieldWidget.SelectedItemsDataSource = selectedTreeFields;
                 this._treeFieldWidget.DataSource = unselectedTreeFields;
 
-                List<LogFieldSetupDO> selectedLogFields = stratum.SelectedLogFields;
-                List<LogFieldSetupDO> unselectedLogFields = stratum.UnselectedLogFields;
-                unselectedLogFields.Sort(LogFieldComparer.Instance);
+                var selectedLogFields = stratum.SelectedLogFields;
+                var unselectedLogFields = stratum.UnselectedLogFields.OrderBy(x=> x.Heading).ToList();
+
                 this._logFieldWidget.SelectedItemsDataSource = selectedLogFields;
                 this._logFieldWidget.DataSource = unselectedLogFields;
             }

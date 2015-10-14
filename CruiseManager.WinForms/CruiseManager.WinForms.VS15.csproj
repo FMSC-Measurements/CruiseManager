@@ -179,9 +179,17 @@
     <Compile Include="WinForms\Components\MergeInfoViewWinforms.Designer.cs">
       <DependentUpon>MergeInfoViewWinforms.cs</DependentUpon>
     </Compile>
-    <Compile Include="WinForms\CruiseCustomize\CruiseCustomizeViewWinform.Designer.cs" />
     <Compile Include="WinForms\CruiseCustomize\CruiseCustomizeViewWinforms.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\CruiseCustomize\CruiseCustomizeViewWinform.Designer.cs">
+      <DependentUpon>CruiseCustomizeViewWinforms.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\CruiseCustomize\FieldSetupView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\CruiseCustomize\FieldSetupView.Designer.cs">
+      <DependentUpon>FieldSetupView.cs</DependentUpon>
     </Compile>
     <Compile Include="WinForms\CruiseCustomize\LogMatrixSettingsPage.cs">
       <SubType>UserControl</SubType>
@@ -194,6 +202,12 @@
     </Compile>
     <Compile Include="WinForms\CruiseCustomize\TallyEditPanel.Designer.cs">
       <DependentUpon>TallyEditPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\CruiseCustomize\TreeAuditRulesView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\CruiseCustomize\TreeAuditRulesView.Designer.cs">
+      <DependentUpon>TreeAuditRulesView.cs</DependentUpon>
     </Compile>
     <Compile Include="WinForms\CruiseWizard\CreateSaleFolerDialog.cs">
       <SubType>Form</SubType>
@@ -283,6 +297,12 @@
     <Compile Include="WinForms\SettingsView.Designer.cs">
       <DependentUpon>SettingsView.cs</DependentUpon>
     </Compile>
+    <Compile Include="WinForms\CruiseCustomize\TallySetupView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\CruiseCustomize\TallySetupView.Designer.cs">
+      <DependentUpon>TallySetupView.cs</DependentUpon>
+    </Compile>
     <Compile Include="WinForms\TemplateEditor\ImportFromCruiseView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -352,6 +372,9 @@
       <DependentUpon>CruiseCustomizeViewWinforms.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\CruiseCustomize\FieldSetupView.resx">
+      <DependentUpon>FieldSetupView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="WinForms\CruiseCustomize\LogMatrixSettingsPage.resx">
       <DependentUpon>LogMatrixSettingsPage.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -359,6 +382,12 @@
     <EmbeddedResource Include="WinForms\CruiseCustomize\TallyEditPanel.resx">
       <DependentUpon>TallyEditPanel.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\CruiseCustomize\TallySetupView.resx">
+      <DependentUpon>TallySetupView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\CruiseCustomize\TreeAuditRulesView.resx">
+      <DependentUpon>TreeAuditRulesView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WinForms\CruiseWizard\CreateSaleFolerDialog.resx">
       <DependentUpon>CreateSaleFolerDialog.cs</DependentUpon>
