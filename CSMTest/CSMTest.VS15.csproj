@@ -128,7 +128,7 @@
       <Project>{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}</Project>
       <Name>CruiseDAL_FF35</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CruiseSystemManager\CruiseSystemManager.csproj">
+    <ProjectReference Include="..\CruiseManager.WinForms\CruiseManager.WinForms.VS15.csproj">
       <Project>{5F44AC1F-055D-41BA-826F-DBAD8E14062A}</Project>
       <Name>CruiseSystemManager</Name>
     </ProjectReference>

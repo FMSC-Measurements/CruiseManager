@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<ArrayOfLogFieldSetupDO xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <LogFieldSetupDO>
+    <Field>LogNumber</Field>
+    <FieldOrder>0</FieldOrder>
+    <Heading>Log Number</Heading>
+    <Width>0.0</Width>
+  </LogFieldSetupDO>
+  <LogFieldSetupDO>
+    <Field>Grade</Field>
+    <FieldOrder>0</FieldOrder>
+    <Heading>Grade</Heading>
+    <Width>0.0</Width>
+  </LogFieldSetupDO>
+  <LogFieldSetupDO>
+    <Field>SeenDefect</Field>
+    <FieldOrder>0</FieldOrder>
+    <Heading>Seen Defect</Heading>
+    <Width>0.0</Width>
+  </LogFieldSetupDO>
+  <LogFieldSetupDO>
+    <Field>PercentRecoverable</Field>
+    <FieldOrder>0</FieldOrder>
+    <Heading>Percent Recoverable</Heading>
+    <Width>0.0</Width>
+  </LogFieldSetupDO>
+  <LogFieldSetupDO>
+    <Field>Length</Field>
+    <FieldOrder>0</FieldOrder>
+    <Heading>Length</Heading>
+    <Width>0.0</Width>
+  </LogFieldSetupDO>
+  <LogFieldSetupDO>
+    <Field>ExportGrade</Field>
+    <FieldOrder>0</FieldOrder>
+    <Heading>Export Grade</Heading>
+    <Width>0.0</Width>
+  </LogFieldSetupDO>
+  <LogFieldSetupDO>
+    <Field>SmallEndDiameter</Field>
+    <FieldOrder>0</FieldOrder>
+    <Heading>Small End Diameter</Heading>
+    <Width>0.0</Width>
+  </LogFieldSetupDO>
+  <LogFieldSetupDO>
+    <Field>LargeEndDiameter</Field>
+    <FieldOrder>0</FieldOrder>
+    <Heading>Large End Diameter</Heading>
+    <Width>0.0</Width>
+  </LogFieldSetupDO>
+  <LogFieldSetupDO>
+    <Field>GrossBoardFoot</Field>
+    <FieldOrder>0</FieldOrder>
+    <Heading>Gross Board Foot</Heading>
+    <Width>0.0</Width>
+  </LogFieldSetupDO>
+  <LogFieldSetupDO>
+    <Field>NetBoardFoot</Field>
+    <FieldOrder>0</FieldOrder>
+    <Heading>Net Board Foot</Heading>
+    <Width>0.0</Width>
+  </LogFieldSetupDO>
+  <LogFieldSetupDO>
+    <Field>GrossCubicFoot</Field>
+    <FieldOrder>0</FieldOrder>
+    <Heading>Gross Cubic Foot</Heading>
+    <Width>0.0</Width>
+  </LogFieldSetupDO>
+  <LogFieldSetupDO>
+    <Field>NetCubicFoot</Field>
+    <FieldOrder>0</FieldOrder>
+    <Heading>Net Cubic Foot</Heading>
+    <Width>0.0</Width>
+  </LogFieldSetupDO>
+  <LogFieldSetupDO>
+    <Field>BoardFootRemoved</Field>
+    <FieldOrder>0</FieldOrder>
+    <Heading>Board Foot Removed</Heading>
+    <Width>0.0</Width>
+  </LogFieldSetupDO>
+  <LogFieldSetupDO>
+    <Field>CubicFootRemoved</Field>
+    <FieldOrder>0</FieldOrder>
+    <Heading>Cubic Foot Removed</Heading>
+    <Width>0.0</Width>
+  </LogFieldSetupDO>
+  <LogFieldSetupDO>
+    <Field>DIBClass</Field>
+    <FieldOrder>0</FieldOrder>
+    <Heading>DIB Class</Heading>
+    <Width>0.0</Width>
+  </LogFieldSetupDO>
+  <LogFieldSetupDO>
+    <Field>BarkThickness</Field>
+    <FieldOrder>0</FieldOrder>
+    <Heading>Bark Thickness</Heading>
+    <Width>0.0</Width>
+  </LogFieldSetupDO>
+</ArrayOfLogFieldSetupDO>

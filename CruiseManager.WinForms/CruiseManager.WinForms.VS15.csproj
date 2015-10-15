@@ -1,0 +1,588 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5F44AC1F-055D-41BA-826F-DBAD8E14062A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CruiseManager</RootNamespace>
+    <AssemblyName>CruiseManager</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ApplicationIcon>Resources\cruisetree_setup.ico</ApplicationIcon>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release with args|x86' ">
+    <OutputPath>bin\x86\Release with args\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug with args|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug with args\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release with args|AnyCPU'">
+    <OutputPath>bin\Release with args\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug with args|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug with args\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>CruiseManager.App.ApplicationControllerWinForms</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EPPlus, Version=4.0.4.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.0.4\lib\net20\EPPlus.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ionic.Zip, Version=1.9.6.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.9.6\lib\net20\Ionic.Zip.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.7.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.7\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App\ApplicationControllerWinForms.cs" />
+    <Compile Include="App\ApplicationStateWinForms.cs" />
+    <Compile Include="App\CruiseManagerWinformsModule.cs" />
+    <Compile Include="App\ExceptionHandlerWinforms.cs" />
+    <Compile Include="App\PlatformHelperWinForms.cs" />
+    <Compile Include="App\PresenterModule.cs" />
+    <Compile Include="App\SetupServiceWinForms.cs" />
+    <Compile Include="App\UserSettingsWinforms.cs" />
+    <Compile Include="App\ViewModule.cs" />
+    <Compile Include="App\WindowPresenterWinForms.cs" />
+    <Compile Include="CommandModel\BindableCommandExtentions.cs" />
+    <Compile Include="CommandModel\ControlCommandBinding.cs" />
+    <Compile Include="CommandModel\ToolStripItemCommandBinding.cs" />
+    <Compile Include="WinForms\AboutDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\AboutDialog.Designer.cs">
+      <DependentUpon>AboutDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\Components\CreateComponentViewWinforms.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\Components\CreateComponentViewWinforms.Designer.cs">
+      <DependentUpon>CreateComponentViewWinforms.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\Components\PreMergeReportView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\Components\PreMergeReportView.Designer.cs">
+      <DependentUpon>PreMergeReportView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\Components\MergeInfoViewWinforms.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\Components\MergeInfoViewWinforms.Designer.cs">
+      <DependentUpon>MergeInfoViewWinforms.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\CruiseCustomize\CruiseCustomizeViewWinforms.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\CruiseCustomize\CruiseCustomizeViewWinform.Designer.cs">
+      <DependentUpon>CruiseCustomizeViewWinforms.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\CruiseCustomize\FieldSetupView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\CruiseCustomize\FieldSetupView.Designer.cs">
+      <DependentUpon>FieldSetupView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\CruiseCustomize\LogMatrixSettingsPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\CruiseCustomize\LogMatrixSettingsPage.designer.cs">
+      <DependentUpon>LogMatrixSettingsPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\CruiseCustomize\TallyEditPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\CruiseCustomize\TallyEditPanel.Designer.cs">
+      <DependentUpon>TallyEditPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\CruiseCustomize\TreeAuditRulesView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\CruiseCustomize\TreeAuditRulesView.Designer.cs">
+      <DependentUpon>TreeAuditRulesView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\CruiseWizard\CreateSaleFolerDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\CruiseWizard\CreateSaleFolerDialog.Designer.cs">
+      <DependentUpon>CreateSaleFolerDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\CruiseWizard\FormAddTreeDefault.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\CruiseWizard\FormAddTreeDefault.Designer.cs">
+      <DependentUpon>FormAddTreeDefault.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\Dashboard\FormCSMMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\Dashboard\FormCSMMain.Designer.cs">
+      <DependentUpon>FormCSMMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\Dashboard\HomeView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\Dashboard\HomeView.Designer.cs">
+      <DependentUpon>HomeView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\Dashboard\NavigationButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WinForms\Dashboard\UserCommandButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WinForms\DataEditor\DataEditorPresentor.cs" />
+    <Compile Include="WinForms\DataEditor\DataEditorView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\DataEditor\DataEditorView.Designer.cs">
+      <DependentUpon>DataEditorView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\DataEditor\DataExportDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\DataEditor\DataExportDialog.Designer.cs">
+      <DependentUpon>DataExportDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\DesignEditor\EditDesignViewWinForms.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\DesignEditor\EditDesignViewWinForms.Designer.cs">
+      <DependentUpon>EditDesignViewWinForms.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\ErrorMessageDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\ErrorMessageDialog.Designer.cs">
+      <DependentUpon>ErrorMessageDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\FormSupervisorLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\FormSupervisorLogin.Designer.cs">
+      <DependentUpon>FormSupervisorLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\Components\MergeComponentViewWinforms.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\Components\MergeComponentViewWinforms.Designer.cs">
+      <DependentUpon>MergeComponentViewWinforms.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\LicencesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\LicencesDialog.Designer.cs">
+      <DependentUpon>LicencesDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\PageHost.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\RecordEditDialogs\TreeEditDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\RecordEditDialogs\TreeEditDialog.Designer.cs">
+      <DependentUpon>TreeEditDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\SettingsView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\SettingsView.Designer.cs">
+      <DependentUpon>SettingsView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\CruiseCustomize\TallySetupView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\CruiseCustomize\TallySetupView.Designer.cs">
+      <DependentUpon>TallySetupView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\TemplateEditor\ImportFromCruiseView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\TemplateEditor\ImportFromCruiseView.Designer.cs">
+      <DependentUpon>ImportFromCruiseView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\TemplateEditor\EditTemplateViewWinForms.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\TemplateEditor\EditTemplateViewWinForms.Designer.cs">
+      <DependentUpon>EditTemplateViewWinForms.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\COConverter.cs" />
+    <Compile Include="WinForms\CruiseWizard\CruiseWizardView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\CruiseWizard\CruiseWizardView.Designer.cs">
+      <DependentUpon>CruiseWizardView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\CruiseWizard\CuttingUnitsPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\CruiseWizard\CuttingUnitsPage.Designer.cs">
+      <DependentUpon>CuttingUnitsPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\CruiseWizard\SalePage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\CruiseWizard\SalePage.Designer.cs">
+      <DependentUpon>SalePage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\CruiseWizard\SampleGroupPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\CruiseWizard\SampleGroupPage.Designer.cs">
+      <DependentUpon>SampleGroupPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\CruiseWizard\StrataPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\CruiseWizard\StrataPage.Designer.cs">
+      <DependentUpon>StrataPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\CruiseWizard\CruiseWizardPresenter.cs" />
+    <Compile Include="WinForms\IPage.cs" />
+    <Compile Include="WinForms\IPagingView.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WinForms\UserControlView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <EmbeddedResource Include="WinForms\AboutDialog.resx">
+      <DependentUpon>AboutDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\Components\CreateComponentViewWinforms.resx">
+      <DependentUpon>CreateComponentViewWinforms.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\Components\PreMergeReportView.resx">
+      <DependentUpon>PreMergeReportView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\Components\MergeInfoViewWinforms.resx">
+      <DependentUpon>MergeInfoViewWinforms.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\CruiseCustomize\CruiseCustomizeViewWinforms.resx">
+      <DependentUpon>CruiseCustomizeViewWinforms.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\CruiseCustomize\FieldSetupView.resx">
+      <DependentUpon>FieldSetupView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\CruiseCustomize\LogMatrixSettingsPage.resx">
+      <DependentUpon>LogMatrixSettingsPage.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\CruiseCustomize\TallyEditPanel.resx">
+      <DependentUpon>TallyEditPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\CruiseCustomize\TallySetupView.resx">
+      <DependentUpon>TallySetupView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\CruiseCustomize\TreeAuditRulesView.resx">
+      <DependentUpon>TreeAuditRulesView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\CruiseWizard\CreateSaleFolerDialog.resx">
+      <DependentUpon>CreateSaleFolerDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\CruiseWizard\CruiseWizardView.resx">
+      <DependentUpon>CruiseWizardView.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\CruiseWizard\CuttingUnitsPage.resx">
+      <DependentUpon>CuttingUnitsPage.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\CruiseWizard\FormAddTreeDefault.resx">
+      <DependentUpon>FormAddTreeDefault.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\CruiseWizard\SalePage.resx">
+      <DependentUpon>SalePage.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\CruiseWizard\SampleGroupPage.resx">
+      <DependentUpon>SampleGroupPage.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\CruiseWizard\StrataPage.resx">
+      <DependentUpon>StrataPage.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\Dashboard\FormCSMMain.resx">
+      <DependentUpon>FormCSMMain.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\Dashboard\HomeView.resx">
+      <DependentUpon>HomeView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\DataEditor\DataEditorView.resx">
+      <DependentUpon>DataEditorView.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\DataEditor\DataExportDialog.resx">
+      <DependentUpon>DataExportDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\DesignEditor\EditDesignViewWinForms.resx">
+      <DependentUpon>EditDesignViewWinForms.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\ErrorMessageDialog.resx">
+      <DependentUpon>ErrorMessageDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\FormSupervisorLogin.resx">
+      <DependentUpon>FormSupervisorLogin.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\Components\MergeComponentViewWinforms.resx">
+      <DependentUpon>MergeComponentViewWinforms.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\LicencesDialog.resx">
+      <DependentUpon>LicencesDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\PageHost.resx">
+      <DependentUpon>PageHost.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\RecordEditDialogs\TreeEditDialog.resx">
+      <DependentUpon>TreeEditDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\SettingsView.resx">
+      <DependentUpon>SettingsView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\TemplateEditor\ImportFromCruiseView.resx">
+      <DependentUpon>ImportFromCruiseView.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\TemplateEditor\EditTemplateViewWinForms.resx">
+      <DependentUpon>EditTemplateViewWinForms.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="packages.config" />
+    <None Include="Properties\DataSources\CruiseDAL.DataObjects.CuttingUnitDO.datasource" />
+    <None Include="Properties\DataSources\CruiseDAL.DataObjects.SampleGroupDO.datasource" />
+    <None Include="Properties\DataSources\CruiseDAL.DataObjects.StratumDO.datasource" />
+    <None Include="Properties\DataSources\CruiseDAL.DataObjects.TreeDefaultValueDO.datasource" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\DataSources\CruiseDAL.DataObjects.CruiseMethodsDO.datasource" />
+    <None Include="Properties\DataSources\CruiseDAL.DataObjects.ErrorLogDO.datasource" />
+    <None Include="Properties\DataSources\CruiseDAL.DataObjects.LogFieldSetupDefaultDO.datasource" />
+    <None Include="Properties\DataSources\CruiseDAL.DataObjects.LogMatrixDO.datasource" />
+    <None Include="Properties\DataSources\CruiseDAL.DataObjects.ReportsDO.datasource" />
+    <None Include="Properties\DataSources\CruiseDAL.DataObjects.TallyDO.datasource" />
+    <None Include="Properties\DataSources\CruiseDAL.DataObjects.TreeAuditValueDO.datasource" />
+    <None Include="Properties\DataSources\CruiseDAL.DataObjects.TreeFieldSetupDefaultDO.datasource" />
+    <None Include="Properties\DataSources\CruiseDAL.DataObjects.TreeFieldSetupDO.datasource" />
+    <None Include="Properties\DataSources\CruiseDAL.DataObjects.VolumeEquationDO.datasource" />
+    <None Include="Properties\DataSources\CSM.Logic.Components.ComponentFileVM.datasource" />
+    <None Include="Properties\DataSources\CSM.Logic.Components.MergeLog.datasource" />
+    <None Include="Properties\DataSources\CSM.Logic.Components.MergeObject.datasource" />
+    <None Include="Properties\DataSources\CSM.Logic.Components.MergePlot.datasource" />
+    <None Include="Properties\DataSources\CSM.Logic.Components.MergeStem.datasource" />
+    <None Include="Properties\DataSources\CSM.Logic.Components.MergeTree.datasource" />
+    <None Include="Properties\DataSources\CSM.Logic.MergeComponentsPresenter+ComponentFileVM.datasource" />
+    <None Include="Properties\DataSources\CSM.Logic.TreeVM.datasource" />
+    <None Include="Properties\DataSources\CSM.UI.CruiseCustomize.TallyViewModel.datasource" />
+    <None Include="Properties\DataSources\CSM.UI.SetupEditor.CruiseMethodViewModel.datasource" />
+    <None Include="Properties\DataSources\CSM.Utility.Setup.CruiseMethod.datasource" />
+    <None Include="Properties\DataSources\CSM.Utility.Setup.LoggingMethod.datasource" />
+    <None Include="Properties\DataSources\CSM.Utility.Setup.ProductCode.datasource" />
+    <None Include="Properties\DataSources\CSM.Utility.Setup.Region.datasource" />
+    <None Include="Properties\DataSources\CSM.Utility.Setup.UOMCode.datasource" />
+    <None Include="STPinfo.setup">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\cruisetree_setup.ico" />
+    <None Include="Resources\Icon.bmp" />
+    <None Include="Properties\DataSources\CruiseDAL.DataObjects.CountTreeDO.datasource" />
+    <None Include="Properties\DataSources\CruiseDAL.DataObjects.LogDO.datasource" />
+    <None Include="Properties\DataSources\CruiseDAL.DataObjects.PlotDO.datasource" />
+    <None Include="Properties\DataSources\CruiseDAL.DataObjects.SaleDO.datasource" />
+    <None Include="Properties\DataSources\CruiseDAL.DataObjects.TreeDO.datasource" />
+    <None Include="Properties\DataSources\CSM.UI.CruiseWizard.CruiseWizardPresenter.datasource" />
+    <None Include="Properties\DataSources\CSM.UI.SetupEditor.SetupPresenter.datasource" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CruiseDAL\CruiseDAL\CruiseDAL_FF35.VS15.csproj">
+      <Project>{baf1842e-f8c5-47a5-94c6-adaba8a4b3af}</Project>
+      <Name>CruiseDAL_FF35.VS15</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMSC.Controls\FMSC.Controls\FMSC.Controls.VS15.csproj">
+      <Project>{83ccfc7f-d667-4550-b335-b48c2f67a207}</Project>
+      <Name>FMSC.Controls.VS15</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMSC.Util\FMSC.Utility\FMSC.Utility.VS15.csproj">
+      <Project>{f882e97d-a121-41f6-916f-8fa956f84bcc}</Project>
+      <Name>FMSC.Utility.VS15</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="..\CruiseManager.Core\CruiseManager.Core.projitems" Label="Shared" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

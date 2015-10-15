@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<ArrayOfTreeDefaultValueDO xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TreeDefaultValueDO PrimaryProduct="01" Species="098" LiveDead="" ContractSpecies="" TreeGrade="" MerchHeightType="">
+    <IsPersisted>true</IsPersisted>
+    <CullPrimary>3</CullPrimary>
+    <HiddenPrimary>15</HiddenPrimary>
+    <CullSecondary xsi:nil="true" />
+    <HiddenSecondary xsi:nil="true" />
+    <Recoverable>11</Recoverable>
+    <Chargeable xsi:nil="true" />
+    <MerchHeightLogLength>0</MerchHeightLogLength>
+    <FormClass>0</FormClass>
+    <BarkThicknessRatio>0</BarkThicknessRatio>
+    <AverageZ>0</AverageZ>
+    <ReferenceHeightPercent xsi:nil="true" />
+  </TreeDefaultValueDO>
+  <TreeDefaultValueDO PrimaryProduct="01" Species="263" LiveDead="" ContractSpecies="" TreeGrade="" MerchHeightType="">
+    <IsPersisted>true</IsPersisted>
+    <CullPrimary>3</CullPrimary>
+    <HiddenPrimary>29</HiddenPrimary>
+    <CullSecondary xsi:nil="true" />
+    <HiddenSecondary xsi:nil="true" />
+    <Recoverable>25</Recoverable>
+    <Chargeable xsi:nil="true" />
+    <MerchHeightLogLength>0</MerchHeightLogLength>
+    <FormClass>0</FormClass>
+    <BarkThicknessRatio>0</BarkThicknessRatio>
+    <AverageZ>0</AverageZ>
+    <ReferenceHeightPercent xsi:nil="true" />
+  </TreeDefaultValueDO>
+  <TreeDefaultValueDO PrimaryProduct="01" Species="042" LiveDead="" ContractSpecies="" TreeGrade="" MerchHeightType="">
+    <IsPersisted>true</IsPersisted>
+    <CullPrimary>3</CullPrimary>
+    <HiddenPrimary>30</HiddenPrimary>
+    <CullSecondary xsi:nil="true" />
+    <HiddenSecondary xsi:nil="true" />
+    <Recoverable xsi:nil="true" />
+    <Chargeable xsi:nil="true" />
+    <MerchHeightLogLength>0</MerchHeightLogLength>
+    <FormClass>0</FormClass>
+    <BarkThicknessRatio>0</BarkThicknessRatio>
+    <AverageZ>0</AverageZ>
+    <ReferenceHeightPercent xsi:nil="true" />
+  </TreeDefaultValueDO>
+</ArrayOfTreeDefaultValueDO>
