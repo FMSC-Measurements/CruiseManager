@@ -103,6 +103,7 @@
             this._sampleGroupCB.Name = "_sampleGroupCB";
             this._sampleGroupCB.Size = new System.Drawing.Size(121, 21);
             this._sampleGroupCB.TabIndex = 11;
+            this._sampleGroupCB.SelectedValueChanged += new System.EventHandler(this._sampleGroupCB_SelectedValueChanged);
             // 
             // label10
             // 
@@ -129,6 +130,7 @@
             this._strataCB.Name = "_strataCB";
             this._strataCB.Size = new System.Drawing.Size(121, 21);
             this._strataCB.TabIndex = 8;
+            this._strataCB.SelectedValueChanged += new System.EventHandler(this._strataCB_SelectedValueChanged);
             // 
             // _tallyEditPanel
             // 

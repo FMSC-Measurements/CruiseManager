@@ -61,6 +61,25 @@
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
+            // label20
+            // 
+            label20.AutoSize = true;
+            label20.Location = new System.Drawing.Point(240, 27);
+            label20.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
+            label20.Name = "label20";
+            label20.Size = new System.Drawing.Size(84, 13);
+            label20.TabIndex = 4;
+            label20.Text = "(0 = Auto Width)";
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Location = new System.Drawing.Point(134, 7);
+            label13.Name = "label13";
+            label13.Size = new System.Drawing.Size(106, 13);
+            label13.TabIndex = 2;
+            label13.Text = "Width (in Characters)";
+            // 
             // _fieldSetup_Child_TabControl
             // 
             this._fieldSetup_Child_TabControl.Controls.Add(this._treeField_TabPage);
@@ -99,6 +118,9 @@
             this._treeFieldWidget.Size = new System.Drawing.Size(563, 365);
             this._treeFieldWidget.TabIndex = 0;
             this._treeFieldWidget.ValueMember = null;
+            this._treeFieldWidget.SelectionMoved += new FMSC.Controls.ItemMovedEventHandler(this._treeFieldWidget_SelectionMoved);
+            this._treeFieldWidget.SelectionAdded += new FMSC.Controls.SelectionAddedEventHandler(this._treeFieldWidget_SelectionAdded);
+            this._treeFieldWidget.SelectedValueChanged += new FMSC.Controls.SelectedValueChangedEventHandler(this._treeFieldWidget_SelectedValueChanged);
             // 
             // panel3
             // 
@@ -113,16 +135,6 @@
             this.panel3.Size = new System.Drawing.Size(563, 49);
             this.panel3.TabIndex = 2;
             // 
-            // label20
-            // 
-            label20.AutoSize = true;
-            label20.Location = new System.Drawing.Point(240, 27);
-            label20.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
-            label20.Name = "label20";
-            label20.Size = new System.Drawing.Size(84, 13);
-            label20.TabIndex = 4;
-            label20.Text = "(0 = Auto Width)";
-            // 
             // _treeFieldWidthTB
             // 
             this._treeFieldWidthTB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this._BS_TreeField, "Width", true));
@@ -134,15 +146,6 @@
             // _BS_TreeField
             // 
             this._BS_TreeField.DataSource = typeof(CruiseDAL.DataObjects.TreeFieldSetupDefaultDO);
-            // 
-            // label13
-            // 
-            label13.AutoSize = true;
-            label13.Location = new System.Drawing.Point(134, 7);
-            label13.Name = "label13";
-            label13.Size = new System.Drawing.Size(106, 13);
-            label13.TabIndex = 2;
-            label13.Text = "Width (in Characters)";
             // 
             // _TreeFieldHeadingTB
             // 
@@ -168,7 +171,7 @@
             this._logField_TabPage.Location = new System.Drawing.Point(4, 22);
             this._logField_TabPage.Name = "_logField_TabPage";
             this._logField_TabPage.Padding = new System.Windows.Forms.Padding(3);
-            this._logField_TabPage.Size = new System.Drawing.Size(192, 74);
+            this._logField_TabPage.Size = new System.Drawing.Size(569, 420);
             this._logField_TabPage.TabIndex = 1;
             this._logField_TabPage.Text = "Log Field Setup";
             this._logField_TabPage.UseVisualStyleBackColor = true;
@@ -183,9 +186,12 @@
             this._logFieldWidget.Name = "_logFieldWidget";
             this._logFieldWidget.SelectedItemsDataSource = null;
             this._logFieldWidget.SelectedValue = null;
-            this._logFieldWidget.Size = new System.Drawing.Size(186, 183);
+            this._logFieldWidget.Size = new System.Drawing.Size(563, 365);
             this._logFieldWidget.TabIndex = 0;
             this._logFieldWidget.ValueMember = null;
+            this._logFieldWidget.SelectionMoved += new FMSC.Controls.ItemMovedEventHandler(this._logFieldWidget_SelectionMoved);
+            this._logFieldWidget.SelectionAdded += new FMSC.Controls.SelectionAddedEventHandler(this._logFieldWidget_SelectionAdded);
+            this._logFieldWidget.SelectedValueChanged += new FMSC.Controls.SelectedValueChangedEventHandler(this._logFieldWidget_SelectedValueChanged);
             // 
             // panel4
             // 
@@ -194,9 +200,9 @@
             this.panel4.Controls.Add(this._logFieldHeadingTB);
             this.panel4.Controls.Add(this.label6);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel4.Location = new System.Drawing.Point(3, 22);
+            this.panel4.Location = new System.Drawing.Point(3, 368);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(186, 49);
+            this.panel4.Size = new System.Drawing.Size(563, 49);
             this.panel4.TabIndex = 3;
             // 
             // _logFieldWidthTB
@@ -257,6 +263,7 @@
             this._strataLB.Name = "_strataLB";
             this._strataLB.Size = new System.Drawing.Size(128, 427);
             this._strataLB.TabIndex = 0;
+            this._strataLB.SelectedValueChanged += new System.EventHandler(this._strataLB_SelectedValueChanged);
             // 
             // FieldSetupView
             // 

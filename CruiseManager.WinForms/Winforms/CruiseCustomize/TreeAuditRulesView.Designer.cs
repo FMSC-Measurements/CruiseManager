@@ -346,6 +346,7 @@
             this._treeAuditDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this._treeAuditDGV.Size = new System.Drawing.Size(675, 196);
             this._treeAuditDGV.TabIndex = 0;
+            this._treeAuditDGV.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this._treeAuditDGV_DataError);
             // 
             // fieldDataGridViewTextBoxColumn
             // 
@@ -384,6 +385,7 @@
             // _BS_treeAudits
             // 
             this._BS_treeAudits.DataSource = typeof(CruiseDAL.DataObjects.TreeAuditValueDO);
+            this._BS_treeAudits.CurrentItemChanged += new System.EventHandler(this._BS_treeAudits_CurrentItemChanged);
             // 
             // panel5
             // 
@@ -406,6 +408,7 @@
             this._treeAuditClearSelectionBtn.TabIndex = 5;
             this._treeAuditClearSelectionBtn.Text = "Clear Selection";
             this._treeAuditClearSelectionBtn.UseVisualStyleBackColor = true;
+            this._treeAuditClearSelectionBtn.Click += new System.EventHandler(this._treeAuditClearSelectionBtn_Click);
             // 
             // label8
             // 
@@ -471,6 +474,7 @@
             this._tavDeleteBTN.TabIndex = 4;
             this._tavDeleteBTN.Text = "Delete";
             this._tavDeleteBTN.UseVisualStyleBackColor = true;
+            this._tavDeleteBTN.Click += new System.EventHandler(this._tavDeleteBTN_Click);
             // 
             // TreeAuditRulesView
             // 
