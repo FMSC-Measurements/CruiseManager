@@ -9,7 +9,7 @@ using CruiseManager.Core.SetupModels;
 namespace CruiseManager.Core.App
 {
 
-    public abstract class SetupService
+    public abstract class SetupServiceBase
     {
         public static readonly string DEFAULT_SETUP_PATH = "\\STPinfo.setup";
         public static readonly string THREEP_FILE_NAME = @"ThreePCodes.xml";
@@ -41,11 +41,11 @@ namespace CruiseManager.Core.App
         //    _instance = instance;
         //}
 
-        protected SetupService()
+        protected SetupServiceBase()
             : this(DEFAULT_SETUP_PATH)
         { }
 
-        protected SetupService(String path)
+        protected SetupServiceBase(String path)
         {
             string directory = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             this.Path = directory + path;

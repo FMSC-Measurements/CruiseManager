@@ -1,6 +1,6 @@
 ﻿namespace CruiseManager.WinForms.Components
 {
-    partial class CreateComponentViewWinforms 
+    partial class CreateComponentView 
     {
         /// <summary> 
         /// Required designer variable.

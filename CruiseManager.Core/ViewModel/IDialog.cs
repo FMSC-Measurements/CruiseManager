@@ -7,6 +7,6 @@ namespace CruiseManager.Core.ViewModel
 {
     public interface IDialog
     {
-        void Show(ApplicationController applicationController, ref IDialogDataContext dataContext);
+        void Show(ApplicationControllerBase applicationController, ref IDialogDataContext dataContext);
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace CruiseManager.WinForms.TemplateEditor
 {
-    partial class EditTemplateViewWinForms
+    partial class EditTemplateView
     {
         /// <summary> 
         /// Required designer variable.

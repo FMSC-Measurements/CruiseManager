@@ -34,7 +34,7 @@ namespace CruiseManager.Core.CruiseCustomize
             }
         }
 
-        public TallySetupPresenter(ApplicationController appController) 
+        public TallySetupPresenter(ApplicationControllerBase appController) 
             :base(appController)
         {
 

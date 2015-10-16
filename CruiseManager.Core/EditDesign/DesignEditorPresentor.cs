@@ -6,13 +6,13 @@ using CruiseDAL.DataObjects;
 using System.ComponentModel;
 using CruiseDAL;
 using System.Windows.Forms;
-using CruiseManager.Core;
+
 using CruiseManager.Core.SetupModels;
 using CruiseManager.Core.App;
 using CruiseManager.Core.Models;
 using CruiseManager.Core.Constants;
-using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core.ViewModel;
+using CruiseManager.Core.EditDesign.ViewInterfaces;
 
 namespace CruiseManager.Core.EditDesign
 {
@@ -21,7 +21,7 @@ namespace CruiseManager.Core.EditDesign
         private CuttingUnitDO _anyUnitOption;
         private DesignEditorStratum _anyStratumOption;
         
-        public DesignEditorPresentor(ApplicationController applicationController)
+        public DesignEditorPresentor(ApplicationControllerBase applicationController)
         {
             this.ApplicationController = applicationController;
 

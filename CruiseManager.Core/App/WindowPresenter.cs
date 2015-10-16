@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+
+using System.Diagnostics;
+
 using CruiseDAL;
 using CruiseDAL.DataObjects;
-using System.Diagnostics;
+
 using CruiseManager.Core.Models;
 using CruiseManager.Core.ViewInterfaces;
-using CruiseManager.Core.EditTemplate;
 using CruiseManager.Core.CommandModel;
+
 
 namespace CruiseManager.Core.App
 {
@@ -20,7 +23,7 @@ namespace CruiseManager.Core.App
     {
         //public static WindowPresenter Instance { get; set; }
 
-        public ApplicationController ApplicationController
+        public ApplicationControllerBase ApplicationController
         {
             get;
             set;
@@ -68,17 +71,17 @@ namespace CruiseManager.Core.App
             this.cruiseLandingNavCommands = new BindableCommand[]
             {
                 new BindableActionCommand( "Design Wizard", this.ShowEditWizard),
-                new ViewNavigateCommand(this.ApplicationController, "Edit Design", typeof(IEditDesignView)),
+                new ViewNavigateCommand(this.ApplicationController, "Edit Design", typeof(EditDesign.ViewInterfaces.IEditDesignView)),
                 new ViewNavigateCommand(this.ApplicationController,"Customize", typeof(CruiseCustomizeView)),
                 new BindableActionCommand("Field Data", this.ShowDataEditor),
-                new ViewNavigateCommand(this.ApplicationController,"Create Component Files", typeof(CreateComponentView)),
-                new ViewNavigateCommand(this.ApplicationController,"Merge Component Files", typeof(MergeComponentView))
+                new ViewNavigateCommand(this.ApplicationController,"Create Component Files", typeof(Components.ViewInterfaces.ICreateComponentView)),
+                new ViewNavigateCommand(this.ApplicationController,"Merge Component Files", typeof(Components.ViewInterfaces.IMergeComponentView))
             };
         }
 
         public void ShowCreateComponentsLayout()
         {
-            this.ApplicationController.NavigateTo<CreateComponentView>();
+            this.ApplicationController.NavigateTo<Components.ViewInterfaces.ICreateComponentView>();
         }
 
         public void ShowCustomizeCruiseLayout()
@@ -88,7 +91,7 @@ namespace CruiseManager.Core.App
 
         public void ShowEditDesign()
         {
-            this.ApplicationController.NavigateTo(typeof(IEditDesignView));
+            this.ApplicationController.NavigateTo(typeof(EditDesign.ViewInterfaces.IEditDesignView));
         }
 
         public void ShowHomeLayout()
@@ -104,7 +107,7 @@ namespace CruiseManager.Core.App
 
         public void ShowManageComponentsLayout()
         {
-            this.ApplicationController.NavigateTo<MergeComponentView>();
+            this.ApplicationController.NavigateTo<Components.ViewInterfaces.IMergeComponentView>();
         }
 
         public void ShowTemplateLandingLayout()

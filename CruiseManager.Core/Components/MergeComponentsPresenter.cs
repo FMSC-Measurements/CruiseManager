@@ -8,6 +8,7 @@ using CruiseDAL.DataObjects;
 using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core.App;
 using CruiseManager.Core.ViewModel;
+using CruiseManager.Core.Components.ViewInterfaces;
 
 namespace CruiseManager.Core.Components
 {
@@ -16,7 +17,7 @@ namespace CruiseManager.Core.Components
     {
 
      
-        public MergeComponentsPresenter(ApplicationController applicationController)
+        public MergeComponentsPresenter(ApplicationControllerBase applicationController)
         {
             this.ApplicationController = applicationController; 
 
@@ -34,8 +35,8 @@ namespace CruiseManager.Core.Components
 
         public Dictionary<String, MergeTableCommandBuilder> CommandBuilders = new Dictionary<string, MergeTableCommandBuilder>();
 
-        public new MergeComponentView View {
-            get { return (MergeComponentView)base.View; }
+        public new IMergeComponentView View {
+            get { return (IMergeComponentView)base.View; }
             set { base.View = value; } }
 
         public DAL MasterDB { get { return ApplicationController.Database; } }

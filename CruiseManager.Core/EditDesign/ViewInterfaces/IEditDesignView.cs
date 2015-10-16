@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 
-namespace CruiseManager.Core.ViewInterfaces
+namespace CruiseManager.Core.EditDesign.ViewInterfaces
 {
     public interface IEditDesignView : IView
     {

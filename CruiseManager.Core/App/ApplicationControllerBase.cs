@@ -15,7 +15,7 @@ using CruiseManager.Core.ViewModel;
 
 namespace CruiseManager.Core.App
 {
-    public abstract class ApplicationController : IDisposable
+    public abstract class ApplicationControllerBase : IDisposable
     {
         internal static readonly TreeDefaultValueDO[] EMPTY_SPECIES_LIST = new TreeDefaultValueDO[] { };
 
@@ -95,13 +95,13 @@ namespace CruiseManager.Core.App
 
         public WindowPresenter WindowPresenter { get { return this.Kernel.Get<WindowPresenter>(); } }
         public IExceptionHandler ExceptionHandler { get { return this.Kernel.Get<IExceptionHandler>(); } }
-        public SetupService SetupService { get { return this.Kernel.Get<SetupService>(); } }
+        public SetupServiceBase SetupService { get { return this.Kernel.Get<SetupServiceBase>(); } }
         public IUserSettings UserSettings { get { return this.Kernel.Get<IUserSettings>(); } }
         public IApplicationState AppState { get { return this.Kernel.Get<IApplicationState>(); } }
-        public PlatformHelper PlatformHelper { get { return this.Kernel.Get<PlatformHelper>(); } }
+        public IPlatformHelper PlatformHelper { get { return this.Kernel.Get<IPlatformHelper>(); } }
 
 
-        protected ApplicationController(NinjectModule viewModule, NinjectModule coreModule)
+        protected ApplicationControllerBase(NinjectModule viewModule, NinjectModule coreModule)
         {
             this.Kernel = new StandardKernel(viewModule, coreModule);
 

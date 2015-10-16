@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CruiseManager.App
+namespace CruiseManager.WinForms.App
 {
     public class PresenterModule : Ninject.Modules.NinjectModule
     {

@@ -5,9 +5,9 @@ using System.Text;
 using CruiseManager.Core.App;
 using CruiseManager.Core.ViewModel;
 
-namespace CruiseManager.Core.ViewInterfaces
+namespace CruiseManager.Core.Components.ViewInterfaces
 {
-    public interface MergeComponentView : IView
+    public interface IMergeComponentView : IView
     {
         new MergeComponentsPresenter ViewPresenter { get; set; }
 

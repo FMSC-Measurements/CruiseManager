@@ -61,7 +61,7 @@ namespace CruiseManager.WinForms.DataEditor
             this.TreeDataGridView.EditingControlShowing += this.HandleTreeEditControlShowing;
         }
 
-        public DataEditorView(WindowPresenter windowPresenter, ApplicationController applicationController) : this()
+        public DataEditorView(WindowPresenter windowPresenter, ApplicationControllerBase applicationController) : this()
         {
             this.WindowPresenter = windowPresenter;
             this.ApplicationController = applicationController;
@@ -79,7 +79,7 @@ namespace CruiseManager.WinForms.DataEditor
         public bool SuppressUpdates { get; set; }
 
         public WindowPresenter WindowPresenter { get; set; }
-        public ApplicationController ApplicationController { get; set; }
+        public ApplicationControllerBase ApplicationController { get; set; }
 
         public DAL DAL
         {

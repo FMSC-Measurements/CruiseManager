@@ -1,6 +1,6 @@
 namespace CruiseManager.WinForms.CruiseCustomize
 {
-    public partial class CruiseCustomizeViewWinforms
+    public partial class CruiseCustomizeView
     {
         /// <summary> 
         /// Required designer variable.
@@ -36,7 +36,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.Label label8;
             System.Windows.Forms.Label label7;
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CruiseCustomizeViewWinforms));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CruiseCustomizeView));
             System.Windows.Forms.Label label13;
             System.Windows.Forms.Label label20;
             this._tdvDGV = new FMSC.Controls.SelectedItemsGridView();

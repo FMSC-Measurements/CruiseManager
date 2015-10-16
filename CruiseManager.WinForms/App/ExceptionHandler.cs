@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CruiseManager.App
+namespace CruiseManager.WinForms.App
 {
-    public class ExceptionHandlerWinforms : IExceptionHandler
+    public class ExceptionHandler : IExceptionHandler
     {
         public bool Handel(Exception e)
         {

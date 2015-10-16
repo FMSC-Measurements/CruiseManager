@@ -13,9 +13,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)App\IApplicationState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\Exceptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\IExceptionHandler.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)App\PlatformHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)App\SetupService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)App\UserSettings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App\IPlatformHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App\SetupServiceBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App\IUserSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\WindowPresenter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CancelWorkerException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\DataObjectCollection.cs" />
@@ -32,6 +32,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Components\MergeTableCommandBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Components\PrepareMergeWorker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Components\UpdateMasterWorker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Components\ViewInterfaces\ICreateComponentView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Components\ViewInterfaces\IMergeComponentView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants\SQL.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants\Strings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants\Version.cs" />
@@ -51,6 +53,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)EditDesign\DesignEditorDataContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditDesign\DesignEditorPresentor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditDesign\DesignEditorStratum.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EditDesign\ViewInterfaces\IEditDesignView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditTemplate\EditTemplateCruiseMethod.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditTemplate\TemplateEditViewPresenter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FileMaintenance\ConsolidateCountTreeScript.cs" />
@@ -71,13 +74,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)SetupModels\TreeAudit.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SetupModels\TreeFieldValidator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SetupModels\UOMCode.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\CreateComponentView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\CruiseCustomizeView.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\EditDesignView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\EditTemplateView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\IHomeView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\MainWindow.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\MergeComponentView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\IDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\IDialogDataContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\IPresentor.cs" />
@@ -87,6 +87,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Presentor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)App\ApplicationController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App\ApplicationControllerBase.cs" />
   </ItemGroup>
 </Project>

@@ -9,7 +9,7 @@ namespace CruiseManager.Core.ViewModel
     public interface IPresentor //: IDisposable
     {
         //WindowPresenter WindowPresenter { get; }
-        ApplicationController ApplicationController { get; }
+        ApplicationControllerBase ApplicationController { get; }
 
         //event EventHandler<PresenterStatusChangedEventArgs> StatusChanged;
 

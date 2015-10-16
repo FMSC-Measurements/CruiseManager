@@ -48,7 +48,7 @@ namespace CruiseManager.Core.CruiseCustomize
 
         public bool IsLogGradingEnabled { get; protected set; }
 
-        public CustomizeCruisePresenter(ApplicationController applicationController)
+        public CustomizeCruisePresenter(ApplicationControllerBase applicationController)
         {
             ApplicationController = applicationController;
 

@@ -39,7 +39,7 @@ namespace CruiseManager.Utility
 
         public static readonly string COConvertEXE = String.Format(
             "{0}\\Utility\\COConverter.exe",
-            PlatformHelper.GetApplicationDirectory());
+            WinForms.App.PlatformHelper.GetApplicationDirectory());
 
 
         public BindingList<String> Output { get; private set; }

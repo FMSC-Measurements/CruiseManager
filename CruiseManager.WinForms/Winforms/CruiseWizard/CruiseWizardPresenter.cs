@@ -42,7 +42,7 @@ namespace CruiseManager.WinForms.CruiseWizard
 
         #region Properties
         public WindowPresenter WindowPresenter { get; set; }
-        protected ApplicationController ApplicationController { get; set; }
+        protected ApplicationControllerBase ApplicationController { get; set; }
         public CruiseWizardView View { get; set; }
 
         public DAL Database 
@@ -186,7 +186,7 @@ namespace CruiseManager.WinForms.CruiseWizard
         #region CTor 
         //TODO make testable constructor 
 
-        public CruiseWizardPresenter(CruiseWizardView View, WindowPresenter windowPresenter, ApplicationController applicationController, DAL database)
+        public CruiseWizardPresenter(CruiseWizardView View, WindowPresenter windowPresenter, ApplicationControllerBase applicationController, DAL database)
         {
             this.View = View;
             this.WindowPresenter = windowPresenter;

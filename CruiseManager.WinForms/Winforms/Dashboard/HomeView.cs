@@ -8,16 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CruiseManager.Core.App;
-using CruiseManager.Core;
-using CruiseManager.App;
-using CruiseManager.WinForms;
 using CruiseManager.Core.ViewInterfaces;
 
-namespace CruiseManager.Winforms.Dashboard
+namespace CruiseManager.WinForms.Dashboard
 {
     public partial class HomeView : UserControlView, IHomeView
     {
-        public HomeView(ApplicationController applicationController )
+        public HomeView(ApplicationControllerBase applicationController )
         {
             InitializeComponent();
 

@@ -9,7 +9,6 @@ using System.Windows.Forms;
 using System.IO;
 using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core.App;
-using CruiseManager.App;
 using CruiseManager.Core;
 using CruiseManager.Core.CommandModel;
 using CruiseManager.WinForms.CommandModel;
@@ -20,7 +19,7 @@ namespace CruiseManager.WinForms.Dashboard
     public partial class FormCSMMain : Form, MainWindow 
     {
         
-        public FormCSMMain(ApplicationController applicationController)
+        public FormCSMMain(ApplicationControllerBase applicationController)
         {
             this.ApplicationController = applicationController;
             InitializeComponent();
@@ -37,7 +36,7 @@ namespace CruiseManager.WinForms.Dashboard
 
         }
 
-        protected ApplicationController ApplicationController { get; set; }
+        protected ApplicationControllerBase ApplicationController { get; set; }
 
         protected Panel ViewContentPanel { get { return this._viewContentPanel; } }
         protected Panel ViewNavPanel { get { return this._viewNavPanel; } }

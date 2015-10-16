@@ -3,17 +3,15 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
-using CruiseManager.App;
-using CruiseManager.Core;
 using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core.EditTemplate;
 
 namespace CruiseManager.WinForms.TemplateEditor
 {
-    public partial class EditTemplateViewWinForms : UserControlView, EditTemplateView
+    public partial class EditTemplateView : UserControlView, Core.ViewInterfaces.EditTemplateView
     {
 
-        public EditTemplateViewWinForms(WindowPresenter windowPresenter, TemplateEditViewPresenter viewPresenter )
+        public EditTemplateView(WindowPresenter windowPresenter, TemplateEditViewPresenter viewPresenter )
         {
             this.ViewPresenter = viewPresenter;
             ViewPresenter.View = this;

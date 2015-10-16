@@ -16,7 +16,7 @@ using CruiseManager.Core;
 
 namespace CruiseManager.WinForms.CruiseCustomize
 {
-    public partial class CruiseCustomizeViewWinforms : UserControlView, CruiseCustomizeView
+    public partial class CruiseCustomizeView : UserControlView, Core.ViewInterfaces.CruiseCustomizeView
     {
         private TabPage _logMatrixTabPage;
         
@@ -35,7 +35,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
         }
         //protected StratumDO FieldSetup_CurrentStratum { get; set; }
 
-        public CruiseCustomizeViewWinforms(CustomizeCruisePresenter presenter)
+        public CruiseCustomizeView(CustomizeCruisePresenter presenter)
         {
             this.ViewPresenter = presenter;
             ViewPresenter.View = this;

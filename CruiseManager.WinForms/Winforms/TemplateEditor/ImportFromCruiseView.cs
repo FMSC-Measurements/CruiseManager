@@ -8,9 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using CruiseDAL;
 using CruiseDAL.DataObjects;
-using CruiseManager.Core;
 using CruiseManager.Core.App;
-using CruiseManager.App;
 using CruiseManager.Core.EditTemplate;
 
 namespace CruiseManager.WinForms.TemplateEditor
@@ -45,7 +43,7 @@ namespace CruiseManager.WinForms.TemplateEditor
             set { base.ViewPresenter = value; }
         }
         protected WindowPresenter WindowPresenter { get; set; }
-        protected ApplicationController ApplicationController { get; set; }
+        protected ApplicationControllerBase ApplicationController { get; set; }
         public List<TreeDefaultValueDO> TreeDefaults { get; set; }
         public List<TreeDefaultValueDO> TreeDefaultsToCopy { get; set; }
 

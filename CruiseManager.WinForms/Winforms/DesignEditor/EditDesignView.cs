@@ -5,25 +5,27 @@ using System.Drawing;
 using System.Data;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
-using CruiseDAL.DataObjects;
 using System.Collections;
+
+using System.Windows.Forms;
+
+using CruiseDAL.DataObjects;
+
 using CruiseManager.Core.App;
 using CruiseManager.Core.Constants;
-using CruiseManager.Core;
 using CruiseManager.Core.EditDesign;
-using CruiseManager.Core.ViewInterfaces;
+using CruiseManager.Core.EditDesign.ViewInterfaces;
 
 namespace CruiseManager.WinForms.EditDesign
 {
-    public partial class EditDesignViewWinForms : UserControlView, IEditDesignView
+    public partial class EditDesignView : UserControlView, IEditDesignView
     {
 
         protected IExceptionHandler ExceptionHandler { get; set; } 
         protected WindowPresenter WindowPresenter { get; set; }
 
 
-        public EditDesignViewWinForms(WindowPresenter windowPresenter, DesignEditorPresentor viewPresenter)
+        public EditDesignView(WindowPresenter windowPresenter, DesignEditorPresentor viewPresenter)
         {
             this.ViewPresenter = viewPresenter;
             this.ViewPresenter.View = this;

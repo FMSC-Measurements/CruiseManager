@@ -11,18 +11,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CruiseManager.App
+namespace CruiseManager.WinForms.App
 {
-    public class ApplicationControllerWinForms : ApplicationController 
+    public class ApplicationController : ApplicationControllerBase 
     {
         private CruiseManager.Utility.COConverter _converter;
         private string _convertedFilePath;
 
 
-        public ApplicationControllerWinForms(NinjectModule viewModule, NinjectModule coreModule)
+        public ApplicationController(NinjectModule viewModule, NinjectModule coreModule)
             :base(viewModule, coreModule)
         {
-            Kernel.Bind<ApplicationController>().ToConstant<ApplicationControllerWinForms>(this);
+            Kernel.Bind<ApplicationControllerBase>().ToConstant<ApplicationController>(this);
         }
 
         //public ApplicationControllerWinForms() : this(WindowPresenter.Instance, UserSettings.Instance, SetupService.Instance) { }
@@ -118,7 +118,7 @@ namespace CruiseManager.App
             Application.ThreadException += FMSC.Utility.ErrorHandling.ErrorHandlers.ThreadException;
 
 
-            ApplicationController applicationController = new ApplicationControllerWinForms(
+            ApplicationControllerBase applicationController = new ApplicationController(
                 new ViewModule(),
                 new CruiseManagerWinformsModule());
             applicationController.Start();

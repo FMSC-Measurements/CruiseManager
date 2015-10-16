@@ -1,16 +1,11 @@
 ﻿using CruiseDAL;
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
-using CruiseManager.Core.Components;
 using CruiseManager.Core.Constants;
 using CruiseManager.Core.Models;
 using CruiseManager.Core.ViewInterfaces;
-using CruiseManager.WinForms.Components;
 using CruiseManager.Utility;
-using CruiseManager.WinForms;
-using CruiseManager.WinForms.CruiseCustomize;
 using CruiseManager.WinForms.CruiseWizard;
-using CruiseManager.WinForms.Dashboard;
 using CruiseManager.WinForms.DataEditor;
 using CruiseManager.WinForms.TemplateEditor;
 using System;
@@ -19,20 +14,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using CruiseManager.Core;
-using CruiseManager.Core.CruiseCustomize;
-using CruiseManager.Core.EditDesign;
-using CruiseManager.WinForms.EditDesign;
 using CruiseManager.Core.EditTemplate;
-using CruiseManager.Core.CommandModel;
-using CruiseManager.Winforms.Dashboard;
 
-namespace CruiseManager.App
+
+namespace CruiseManager.WinForms.App
 {
     public class WindowPresenterWinForms : WindowPresenter
     {
 
-        public WindowPresenterWinForms(ApplicationController appController)
+        public WindowPresenterWinForms(ApplicationControllerBase appController)
         {
             this.ApplicationController = appController;
         }

@@ -7,16 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using CruiseManager.Core.Components;
-using CruiseManager.Core.App;
-using CruiseManager.Core.ViewInterfaces;
-using CruiseManager.Core;
-using CruiseManager.WinForms;
+using CruiseManager.Core.Components.ViewInterfaces;
 
 namespace CruiseManager.WinForms.Components
 {
-    public partial class CreateComponentViewWinforms : UserControlView, CreateComponentView
+    public partial class CreateComponentView : UserControlView, ICreateComponentView
     {
-        public CreateComponentViewWinforms(CreateComponentPresenter viewPresenter)
+        public CreateComponentView(CreateComponentPresenter viewPresenter)
         {
             InitializeComponent();
 

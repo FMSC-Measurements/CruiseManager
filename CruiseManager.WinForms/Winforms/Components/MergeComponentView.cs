@@ -8,14 +8,13 @@ using System.Text;
 using System.Windows.Forms;
 using CruiseManager.Core;
 using CruiseManager.Core.Components;
-using CruiseManager.Core.ViewInterfaces;
-using CruiseManager.Core.App;
+using CruiseManager.Core.Components.ViewInterfaces;
 
 namespace CruiseManager.WinForms.Components
 {
-    public partial class MergeComponentViewWinforms : UserControlView, MergeComponentView
+    public partial class MergeComponentView : UserControlView, IMergeComponentView
     {
-        MergeInfoViewWinforms mergeInfoView;
+        MergeInfoView mergeInfoView;
 
         public new MergeComponentsPresenter ViewPresenter
         {
@@ -23,11 +22,11 @@ namespace CruiseManager.WinForms.Components
             set { base.ViewPresenter = value; }
         }
 
-        public MergeComponentViewWinforms(MergeComponentsPresenter viewPresenter) 
+        public MergeComponentView(MergeComponentsPresenter viewPresenter) 
         {
             InitializeComponent();
 
-            mergeInfoView = new MergeInfoViewWinforms(viewPresenter);
+            mergeInfoView = new MergeInfoView(viewPresenter);
             mergeInfoView.Dock = DockStyle.Fill; 
             this._contentPanel.Controls.Add(mergeInfoView);
 

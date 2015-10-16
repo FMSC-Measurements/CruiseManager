@@ -12,7 +12,7 @@ namespace CruiseManager.Core.ViewModel
         private IView _view;
         //private PresenterStatus _status = PresenterStatus.Ready; 
         //public WindowPresenter WindowPresenter { get; protected set; }
-        public ApplicationController ApplicationController { get; protected set; }
+        public ApplicationControllerBase ApplicationController { get; protected set; }
         public IView View
         {
             get { return _view; }
@@ -27,7 +27,7 @@ namespace CruiseManager.Core.ViewModel
 
         public Presentor() { }
 
-        public Presentor(ApplicationController appController)
+        public Presentor(ApplicationControllerBase appController)
         {
             this.ApplicationController = appController;
         }

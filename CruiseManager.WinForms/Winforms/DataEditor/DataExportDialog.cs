@@ -21,9 +21,9 @@ namespace CruiseManager.WinForms.DataEditor
             InitializeComponent();
         }
 
-        protected ApplicationController ApplicationController { get; set; }
+        protected ApplicationControllerBase ApplicationController { get; set; }
 
-        public DataExportDialog(ApplicationController applicationController, IList<TreeVM> Trees, IList<LogVM> Logs, IList<PlotDO> Plots, IList<CountTreeDO> Counts)
+        public DataExportDialog(ApplicationControllerBase applicationController, IList<TreeVM> Trees, IList<LogVM> Logs, IList<PlotDO> Plots, IList<CountTreeDO> Counts)
         {
             ApplicationController = applicationController;
 

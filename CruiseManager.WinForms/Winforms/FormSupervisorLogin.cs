@@ -13,13 +13,13 @@ namespace CruiseManager.WinForms
 {
     public partial class FormSupervisorLogin : Form
     {
-        public FormSupervisorLogin(ApplicationController applicationController)
+        public FormSupervisorLogin(ApplicationControllerBase applicationController)
         {
             this.ApplicationController = applicationController;
             InitializeComponent();
         }
 
-        protected ApplicationController ApplicationController { get; set; }
+        protected ApplicationControllerBase ApplicationController { get; set; }
 
 
         protected override void OnClosing(CancelEventArgs e)

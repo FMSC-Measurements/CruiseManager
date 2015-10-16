@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using CruiseDAL;
 using CruiseDAL.DataObjects;
 using System.IO;
-using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core.App;
 using CruiseManager.Core.Constants;
 using CruiseManager.Core.ViewModel;
+using CruiseManager.Core.Components.ViewInterfaces;
 
 namespace CruiseManager.Core.Components
 {
@@ -47,12 +47,12 @@ namespace CruiseManager.Core.Components
         }
 
         public DAL ParentDB { get { return ApplicationController.Database; } }
-        public new CreateComponentView View {
-            get { return (CreateComponentView)base.View; }
+        public new ICreateComponentView View {
+            get { return (ICreateComponentView)base.View; }
             set { base.View = value; } }
 
 
-        public CreateComponentPresenter(ApplicationController applicationController)
+        public CreateComponentPresenter(ApplicationControllerBase applicationController)
         {
             this.ApplicationController = applicationController;
 

@@ -13,9 +13,9 @@ using CruiseManager.Core.App;
 
 namespace CruiseManager.WinForms.Components
 {
-    public partial class MergeInfoViewWinforms : UserControl
+    public partial class MergeInfoView : UserControl
     {
-        public MergeInfoViewWinforms(MergeComponentsPresenter viewPresenter)
+        public MergeInfoView(MergeComponentsPresenter viewPresenter)
         {
             this.ViewPresenter = viewPresenter;
             InitializeComponent();

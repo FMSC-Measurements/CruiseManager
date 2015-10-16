@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows.Forms;
 using Logger;
 using System.Diagnostics;
-using CruiseManager.App;
 using CruiseManager.Core.App;
 using Ninject;
 

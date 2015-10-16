@@ -1,5 +1,4 @@
 ﻿using CruiseDAL.DataObjects;
-using CruiseManager.App;
 using CruiseManager.Core.App;
 using CruiseManager.Core.CommandModel;
 using CruiseManager.Core.ViewModel;

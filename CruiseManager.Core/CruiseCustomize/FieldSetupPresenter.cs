@@ -16,7 +16,7 @@ namespace CruiseManager.Core.CruiseCustomize
     {
         bool _isInitialized; 
 
-        public FieldSetupPresenter(ApplicationController appController)
+        public FieldSetupPresenter(ApplicationControllerBase appController)
             : base(appController)
         {
             this.IsLogGradingEnabled = this.Database.ReadSingleRow<SaleDO>("Sale", (String)null).LogGradingEnabled;

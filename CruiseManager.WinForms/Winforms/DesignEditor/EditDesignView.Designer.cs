@@ -1,6 +1,6 @@
 ﻿namespace CruiseManager.WinForms.EditDesign
 {
-    partial class EditDesignViewWinForms
+    partial class EditDesignView
     {
         /// <summary> 
         /// Required designer variable.

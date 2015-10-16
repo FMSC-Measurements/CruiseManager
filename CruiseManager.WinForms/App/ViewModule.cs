@@ -1,5 +1,4 @@
 ﻿using CruiseManager.Core.ViewInterfaces;
-using CruiseManager.Winforms.Dashboard;
 using CruiseManager.WinForms.Dashboard;
 using CruiseManager.WinForms.EditDesign;
 using System;
@@ -8,18 +7,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CruiseManager.App
+namespace CruiseManager.WinForms.App
 {
     public class ViewModule : Ninject.Modules.NinjectModule
     {
         public override void Load()
         {
             Bind<IHomeView>().To<HomeView>();
-            Bind<IEditDesignView>().To<EditDesignViewWinForms>();
-            Bind<CreateComponentView>().To<WinForms.Components.CreateComponentViewWinforms>();
-            Bind<CruiseCustomizeView>().To<WinForms.CruiseCustomize.CruiseCustomizeViewWinforms>();
-            Bind<EditTemplateView>().To<WinForms.TemplateEditor.EditTemplateViewWinForms>();
-            Bind<MergeComponentView>().To<WinForms.Components.MergeComponentViewWinforms>();
+            Bind<Core.EditDesign.ViewInterfaces.IEditDesignView>().To<EditDesignView>();
+            Bind<Core.Components.ViewInterfaces.ICreateComponentView>().To<WinForms.Components.CreateComponentView>();            
+            Bind<Core.Components.ViewInterfaces.IMergeComponentView>().To<WinForms.Components.MergeComponentView>();
+
+            Bind<CruiseCustomizeView>().To<WinForms.CruiseCustomize.CruiseCustomizeView>();
+            Bind<EditTemplateView>().To<WinForms.TemplateEditor.EditTemplateView>();
+
             //Bind<MainWindow>().To<FormCSMMain>();
         }
     }

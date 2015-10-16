@@ -12,7 +12,7 @@ namespace CruiseManager.WinForms.App
 {
 
     
-    public class ApplicationStateWinForms : IApplicationState
+    public class ApplicationState : IApplicationState
     {
         const int RECENT_FILE_LIST_SIZE = 10;
 
@@ -31,7 +31,7 @@ namespace CruiseManager.WinForms.App
 
 
         private ApplicationStateData _data;
-        public ApplicationStateWinForms()
+        public ApplicationState()
         {
             _data = Deserialize() ?? new ApplicationStateData();
 

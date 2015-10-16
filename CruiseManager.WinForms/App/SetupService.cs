@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CruiseManager.App
+namespace CruiseManager.WinForms.App
 {
-    public class SetupServiceWinForms : SetupService
+    public class SetupService : SetupServiceBase
     {
 
 
-        public SetupServiceWinForms() : base()
+        public SetupService() : base()
         { }
 
 

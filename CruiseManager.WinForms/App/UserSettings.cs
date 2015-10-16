@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CruiseManager.App
+namespace CruiseManager.WinForms.App
 {
-    public class UserSettingsWinforms : IUserSettings
+    public class UserSettings : IUserSettings
     {
         const int RECENT_FILE_LIST_SIZE = 10;
 
-        public UserSettingsWinforms()
+        public UserSettings()
         {
             if(string.IsNullOrEmpty( Properties.Settings.Default.DefaultCruiseSaveLocation))
             {
