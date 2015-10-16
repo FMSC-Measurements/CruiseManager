@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using CruiseDAL;
 using System.Threading;
+using CruiseManager.Core.FileMaintenance;
 
 namespace CruiseManager.Core.Components
 {
@@ -51,6 +52,10 @@ namespace CruiseManager.Core.Components
             this.IsDone = false;
             this.IsCanceled = false;
 
+            ConsolidateCountTreeScript maintenanceScript = new FileMaintenance.ConsolidateCountTreeScript();
+
+            this.PatchFiles(maintenanceScript);
+            
             this.MakeMergeTables();
             this.PopulateMergeTables();
             this.ProcessMergeTables();
@@ -59,7 +64,34 @@ namespace CruiseManager.Core.Components
             this.NotifyProgressChanged(this._workInCurrentJob, true, "Done", null);
         }
 
-        
+        //private bool CheckFiles(ConsolidateCountTreeScript maintenanceScript)
+        //{
+        //    bool masterOK = !maintenanceScript.CheckCanExecute(this.MasterDB);
+        //    bool componentsOK = true;
+        //    foreach(ComponentFileVM comp in this.Components)
+        //    {
+        //        bool compOK = !maintenanceScript.CheckCanExecute(comp.Database);
+        //        componentsOK = compOK && componentsOK;
+        //    }
+        //    return masterOK && componentsOK;
+        //}
+
+        private void PatchFiles(ConsolidateCountTreeScript maintenanceScript)
+        {
+            if (maintenanceScript.CheckCanExecute(this.MasterDB))
+            {
+                PostStatus("Applying CountTree Fix To Master");
+                maintenanceScript.Execute(this.MasterDB);
+            }
+            foreach(ComponentFileVM comp in this.Components)
+            {
+                if (maintenanceScript.CheckCanExecute(comp.Database))
+                {
+                    PostStatus("Applying CountTree Fix To " + comp.FileName);
+                    maintenanceScript.Execute(comp.Database);
+                }
+            }
+        }
 
         protected void NotifyProgressChanged(int workDone, bool isDone, String message, Exception error)
         {

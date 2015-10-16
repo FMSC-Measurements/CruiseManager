@@ -17,13 +17,9 @@ namespace CruiseManager.Core.Components
     {
 
      
-        public MergeComponentsPresenter(ApplicationControllerBase applicationController)
+        public MergeComponentsPresenter(ApplicationControllerBase applicationController) 
+            :base(applicationController)
         {
-            this.ApplicationController = applicationController; 
-
-            this.FindComponents();
-
-
             InitializeMergeTableCommandBuilders();
 
 
@@ -104,6 +100,14 @@ namespace CruiseManager.Core.Components
                 _currentWorker = value;
                 this.CurrentWorker_ProgressChanged(null, new WorkerProgressChangedEventArgs());
             }
+        }
+
+        protected override void OnViewLoad(EventArgs e)
+        {
+            base.OnViewLoad(e);
+
+            this.FindComponents();
+
         }
 
         private void CurrentWorker_ProgressChanged(Object sender, WorkerProgressChangedEventArgs e)
