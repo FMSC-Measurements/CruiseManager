@@ -24,6 +24,33 @@ namespace CruiseManager.WinForms
         //#endregion
 
         #region message box methods
+
+        public bool AskOKOrCancel(string message, string caption, bool defaultOption)
+        {
+            if (this.InvokeRequired)
+            {
+                return (bool)this.Invoke(new Func<string, string, bool, bool>(this.AskOKOrCancel),
+                    message, caption, defaultOption);
+            }
+            else
+            {
+                MessageBoxDefaultButton defaultBtn = (defaultOption == true) ? MessageBoxDefaultButton.Button1 : MessageBoxDefaultButton.Button2;
+
+
+                DialogResult result = MessageBox.Show(this.TopLevelControl, 
+                    message, caption, 
+                    MessageBoxButtons.OKCancel, 
+                    MessageBoxIcon.Question, 
+                    defaultBtn);
+                switch(result)
+                {
+                    case DialogResult.OK: { return true; }
+                    case DialogResult.Cancel: { return false; }
+                    default: { return defaultOption; }
+                }
+            }
+        }
+
         public bool? AskYesNoCancel(string message, string caption)
         {
             return AskYesNoCancel(message, caption, true);
