@@ -19,7 +19,7 @@ namespace CruiseManager.Core.CruiseCustomize
             set
             {
                 if(_selectedTreeFields != null) { _selectedTreeFields.CollectionChanged -= this.FieldCollectionChanged; }
-                if(value != null) { _selectedTreeFields.CollectionChanged += this.FieldCollectionChanged; }
+                if(value != null) { value.CollectionChanged += this.FieldCollectionChanged; }
                 _selectedTreeFields = value;
             }
         }
