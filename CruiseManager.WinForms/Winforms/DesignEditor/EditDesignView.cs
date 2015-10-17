@@ -303,7 +303,7 @@ namespace CruiseManager.WinForms.EditDesign
 
         private void _addSubPopBTN_Click(object sender, EventArgs e)
         {
-            TreeDefaultValueDO newTDV = WindowPresenter.ShowAddTreeDefult();
+            TreeDefaultValueDO newTDV = WindowPresenter.ShowAddTreeDefault();
             if (newTDV != null)
             {
                 this.ViewPresenter.DataContext.AllTreeDefaults.Add(newTDV);

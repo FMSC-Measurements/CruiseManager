@@ -163,10 +163,8 @@ namespace CruiseManager.WinForms.App
             }
         }
 
-        public override TreeDefaultValueDO ShowAddTreeDefult()
+        public override TreeDefaultValueDO  ShowAddTreeDefault(TreeDefaultValueDO newTDV)
         {
-            TreeDefaultValueDO newTDV = new TreeDefaultValueDO(this.ApplicationController.Database);
-
             try
             {
                 FormAddTreeDefault dialog = new FormAddTreeDefault(ApplicationController.SetupService.GetProductCodes());
@@ -182,7 +180,7 @@ namespace CruiseManager.WinForms.App
             }
             catch (Exception ex)
             {
-                if(!this.ApplicationController.ExceptionHandler.Handel(ex))
+                if (!this.ApplicationController.ExceptionHandler.Handel(ex))
                 {
                     throw;
                 }
@@ -191,6 +189,13 @@ namespace CruiseManager.WinForms.App
                     return null;
                 }
             }
+        }
+
+        public override TreeDefaultValueDO ShowAddTreeDefault()
+        {
+            TreeDefaultValueDO newTDV = new TreeDefaultValueDO(this.ApplicationController.Database);
+
+            return this.ShowAddTreeDefault(newTDV);
         }
 
         public override void ShowEditTreeDefault(TreeDefaultValueDO tdv)

@@ -235,7 +235,8 @@ namespace CruiseManager.WinForms.CruiseWizard
             //    }
             //}
 
-            TreeDefaultValueDO newTDV = this.Presenter.WindowPresenter.ShowAddTreeDefult();
+            TreeDefaultValueDO newTDV = new TreeDefaultValueDO(this.Presenter.Database);
+            newTDV = this.Presenter.WindowPresenter.ShowAddTreeDefault(newTDV);
             if(newTDV != null)
             {
                 this.Presenter.TreeDefaults.Add(newTDV);

@@ -242,7 +242,7 @@ namespace CruiseManager.WinForms.TemplateEditor
 
         private void _addTDVButton_Click(object sender, EventArgs e)
         {
-            TreeDefaultValueDO newTDV = this.WindowPresenter.ShowAddTreeDefult();
+            TreeDefaultValueDO newTDV = this.WindowPresenter.ShowAddTreeDefault();
             if(newTDV != null)
             {
                 this._BS_TreeDefaults.Add(newTDV);

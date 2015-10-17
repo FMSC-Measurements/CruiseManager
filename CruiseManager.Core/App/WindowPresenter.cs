@@ -34,7 +34,8 @@ namespace CruiseManager.Core.App
         public abstract string AskOpenFileLocation();
 
         public abstract void ShowAboutDialog();
-        public abstract TreeDefaultValueDO ShowAddTreeDefult();
+        public abstract TreeDefaultValueDO ShowAddTreeDefault();
+        public abstract TreeDefaultValueDO ShowAddTreeDefault(TreeDefaultValueDO newTDV);
         public abstract void ShowEditTreeDefault(TreeDefaultValueDO tdv);
         public abstract void ShowImportTemplate();
         public abstract void ShowDataEditor();
