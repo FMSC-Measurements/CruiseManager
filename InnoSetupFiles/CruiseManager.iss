@@ -3,10 +3,10 @@
 ; #defines require the ISPP add-on: http://sourceforge.net/projects/ispp/
 #define APP "Cruise Manager"
 ;
-#define VERSION "2015.09.01"
+#define VERSION "2015.10.16"
 ;version format for setup file name
-#define SETUPVERSION "20150901" ;  
-#define SPECIALTAG "alpha"
+#define SETUPVERSION "20151016" ;  
+#define SPECIALTAG "beta"
 #define BASEURL "http://www.fs.fed.us/fmsc/measure"
 #define ORGANIZATION "U.S. Forest Service, Forest Management Service Center"
 #define EXEName "CruiseManager.exe"
@@ -54,9 +54,12 @@ Name: associateCutFileTypes; Description: "Associate Cruise Template (.cut) File
 
 [Files]
 ; need to update the paths below after the solution files and folders are updated.
-Source: "..\CruiseSystemManager\bin\x86\Release\CruiseManager.exe"; DestDir: {app}; Flags: ignoreversion;
-Source: "..\CruiseSystemManager\bin\x86\Release\*.dll"; DestDir: {app}; Flags: ignoreversion;
-Source: "..\CruiseSystemManager\bin\x86\Release\*.setup"; DestDir: {app}; Flags: ignoreversion;
+Source: "..\CruiseManager.WinForms\bin\Release\CruiseManager.exe"; DestDir: {app}; Flags: ignoreversion;
+Source: "..\CruiseManager.WinForms\bin\Release\CruiseManager.exe.config"; DestDir: {app}; Flags: ignoreversion;
+Source: "..\CruiseManager.WinForms\bin\Release\*.dll"; DestDir: {app}; Flags: ignoreversion;
+Source: "..\CruiseManager.WinForms\bin\Release\STPinfo.setup"; DestDir: {app}; Flags: ignoreversion;
+Source: "..\CruiseManager.WinForms\bin\Release\x64\*.dll"; DestDir: {app}\x64; Flags: ignoreversion;
+Source: "..\CruiseManager.WinForms\bin\Release\x86\*.dll"; DestDir: {app}\x86; Flags: ignoreversion;
 Source: "..\Documentation\CruiseManagerUserGuide.docx";DestName: CruiseManagerUserGuide_{#SETUPVERSION}.docx; DestDir: {app}; Flags: ignoreversion
 Source: "..\Template Files\*.cut"; DestDir: {userdocs}\CruiseFiles\Templates; Flags: ignoreversion; Tasks: overwriteTemplates;
 Source: "..\Template Files\*.cut"; DestDir: {userdocs}\CruiseFiles\Templates; Flags: onlyifdoesntexist; Tasks: not overwriteTemplates;
