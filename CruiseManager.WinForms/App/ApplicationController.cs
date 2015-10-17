@@ -23,6 +23,10 @@ namespace CruiseManager.WinForms.App
             :base(viewModule, coreModule)
         {
             Kernel.Bind<ApplicationControllerBase>().ToConstant<ApplicationController>(this);
+
+            this.MainWindow = new FormCSMMain(this);
+            this.WindowPresenter.ShowHomeLayout();
+
         }
 
         //public ApplicationControllerWinForms() : this(WindowPresenter.Instance, UserSettings.Instance, SetupService.Instance) { }
@@ -41,8 +45,7 @@ namespace CruiseManager.WinForms.App
 
         public override void Start()
         {
-            this.MainWindow = new FormCSMMain(this);
-            this.WindowPresenter.ShowHomeLayout();
+            
             Application.Run((Form)MainWindow);
         }
 
@@ -121,6 +124,11 @@ namespace CruiseManager.WinForms.App
             ApplicationControllerBase applicationController = new ApplicationController(
                 new ViewModule(),
                 new CruiseManagerWinformsModule());
+
+            if(dalPath != null)
+            {
+                applicationController.OpenFile(dalPath);
+            }
             applicationController.Start();
             applicationController.Dispose();
 
