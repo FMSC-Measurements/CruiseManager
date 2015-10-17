@@ -30,7 +30,7 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             get
             {
-                throw new NotImplementedException();
+                return TallySetupStrata.Any(x => x.SampleGroups.Any(y => y.HasTallyEdits));
             }
         }
 

@@ -27,8 +27,8 @@ namespace CruiseManager.Core.CruiseCustomize
             get
             {
                 return TreeAudits.Any(x => x.HasChanges
-                || x.IsPersisted
-                || true);//x.TreeDefaultValues.)//TODO add HasChanges property to mapping collection
+                || !x.IsPersisted
+                || x.TreeDefaultValues.HasChanges);//TODO add HasChanges property to mapping collection
             }
         }
 

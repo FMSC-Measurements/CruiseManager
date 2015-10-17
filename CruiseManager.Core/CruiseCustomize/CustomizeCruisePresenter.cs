@@ -696,7 +696,45 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             get
             {
-                return true;
+                return TreeAuditsHasChangesToSave ||
+                    TallySetupHasChangesToSave ||
+                    FieldSetupHasChangesToSave ||
+                    LogMatrixHasChangesToSave;
+            }
+        }
+
+        protected bool TreeAuditsHasChangesToSave
+        {
+            get
+            {
+                return TreeAudits.Any(x => x.HasChanges
+                || !x.IsPersisted
+                || x.TreeDefaultValues.HasChanges);//TODO add HasChanges property to mapping collection
+            }
+        }
+
+        public bool TallySetupHasChangesToSave
+        {
+            get
+            {
+                return TallySetupStrata.Any(x => x.SampleGroups.Any(y => y.HasTallyEdits));
+            }
+        }
+
+        public bool FieldSetupHasChangesToSave
+        {
+            get
+            {
+                return FieldSetupStrata.Any(x => x.HasEdits);
+            }
+        }
+
+        public bool LogMatrixHasChangesToSave
+        {
+            get
+            {
+                if(LogMatrix == null) { return false; }
+                return LogMatrix.Any(x => !x.IsPersisted || x.HasChanges);
             }
         }
 
