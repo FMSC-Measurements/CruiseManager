@@ -307,7 +307,7 @@ namespace CruiseManager.Core.CruiseCustomize
                         {
                             errorBuilder.AppendFormat("Missing Hot Key in SG:{0} Stratum:{1}\r\n", sgVM.ToString(), st.Code);
                         } 
-                        if (usedHotKeys.IndexOf(hk) >= 0)//see if usedHotKeys already CONTAINS value
+                        else if (usedHotKeys.IndexOf(hk) >= 0)//see if usedHotKeys already CONTAINS value
                         {
                             //ERROR stratum already has hot-key
                             errorBuilder.AppendFormat("Hot Key '{0}' in SG:{1} Stratum:{2} already in use\r\n", t.Hotkey, sgVM.ToString(), st.Code);
