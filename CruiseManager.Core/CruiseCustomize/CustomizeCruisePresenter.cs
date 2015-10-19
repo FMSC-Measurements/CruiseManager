@@ -282,16 +282,19 @@ namespace CruiseManager.Core.CruiseCustomize
                 if ((sgVM.TallyMethod & TallyMode.BySampleGroup) == TallyMode.BySampleGroup)
                 {
                     char hk = HotKeyToChar(sgVM.SgTallie.Hotkey);
-                    if (hk == char.MinValue) { continue; } //no hot key set, SKIP
-                    if (usedHotKeys.IndexOf(hk) >= 0)//see if usedHotKeys already CONTAINS value
+                    if (hk == char.MinValue)
                     {
-                        //ERROR stratum already has hotkey
+                        errorBuilder.AppendFormat("Missing Hot Key in SG:{0} Stratum:{1}\r\n", sgVM.ToString(), st.Code);
+                    } 
+                    else if (usedHotKeys.IndexOf(hk) >= 0)//see if usedHotKeys already CONTAINS value
+                    {
+                        //ERROR stratum already has hot-key
                         errorBuilder.AppendFormat("Hot Key '{0}' in SG:{1} Stratum:{2} already in use\r\n", sgVM.SgTallie.Hotkey, sgVM.ToString(), st.Code);
                         success = false;
                     }
                     else
                     {
-                        //SUCCESS add hot key to list of in ues hot keys
+                        //SUCCESS add hot key to list of in use hot keys
                         usedHotKeys.Add(hk);
                     }
                 }
@@ -300,16 +303,19 @@ namespace CruiseManager.Core.CruiseCustomize
                     foreach (TallyVM t in sgVM.Tallies.Values)
                     {
                         char hk = HotKeyToChar(t.Hotkey);
-                        if (hk == char.MinValue) { continue; } //not hot key set, SKIP
+                        if (hk == char.MinValue)
+                        {
+                            errorBuilder.AppendFormat("Missing Hot Key in SG:{0} Stratum:{1}\r\n", sgVM.ToString(), st.Code);
+                        } 
                         if (usedHotKeys.IndexOf(hk) >= 0)//see if usedHotKeys already CONTAINS value
                         {
-                            //ERROR stratum already has hotkey
+                            //ERROR stratum already has hot-key
                             errorBuilder.AppendFormat("Hot Key '{0}' in SG:{1} Stratum:{2} already in use\r\n", t.Hotkey, sgVM.ToString(), st.Code);
                             success = false;
                         }
                         else
                         {
-                            //SUCCESS add hot key to list of in ues hot keys
+                            //SUCCESS add hot key to list of in use hot keys
                             usedHotKeys.Add(hk);
                         }
                     }
