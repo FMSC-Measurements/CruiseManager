@@ -197,6 +197,8 @@ namespace CruiseManager.Core.App
                         {
                             this.InitializeDAL(filePath);
                             AppState.AddRecentFile(filePath);
+                            String directroy = System.IO.Path.GetDirectoryName(filePath);
+                            this.UserSettings.CruiseSaveLocation = directroy;
                             String[] errors;
                             if (this.Database.HasCruiseErrors(out errors))
                             {
@@ -209,6 +211,8 @@ namespace CruiseManager.Core.App
                         {
                             this.InitializeDAL(filePath);
                             AppState.AddRecentFile(filePath);
+                            String directroy = System.IO.Path.GetDirectoryName(filePath);
+                            this.UserSettings.TemplateSaveLocation = directroy;
                             WindowPresenter.ShowTemplateLandingLayout();
                             break;
                         }                    
@@ -225,7 +229,7 @@ namespace CruiseManager.Core.App
             catch (CruiseDAL.ReadOnlyException)
             {
                 hasError = true;
-                this.ActiveView.ShowMessage("Unable to open file becaus it is read only");
+                this.ActiveView.ShowMessage("Unable to open file because it is read only");
             }
             catch (CruiseDAL.IncompatibleSchemaException ex)
             {

@@ -56,6 +56,7 @@ namespace CruiseManager.WinForms.App
             set
             {
                 Properties.Settings.Default.DefaultCruiseSaveLocation = value;
+                Properties.Settings.Default.Save();
             }
         }
 
@@ -99,6 +100,7 @@ namespace CruiseManager.WinForms.App
             set
             {
                 Properties.Settings.Default.DefaultTemplateSaveLocation = value;
+                Properties.Settings.Default.Save();
             }
         }
 
