@@ -73,7 +73,7 @@ namespace CruiseManager.Core.App
             {
                 new BindableActionCommand( "Design Wizard", this.ShowEditWizard),
                 new ViewNavigateCommand(this.ApplicationController, "Edit Design", typeof(EditDesign.ViewInterfaces.IEditDesignView)),
-                new ViewNavigateCommand(this.ApplicationController,"Customize", typeof(CruiseCustomizeView)),
+                new ViewNavigateCommand(this.ApplicationController,"Customize", typeof(Core.CruiseCustomize.ViewInterfaces.ICruiseCustomizeContainerView)),
                 new BindableActionCommand("Field Data", this.ShowDataEditor),
                 new ViewNavigateCommand(this.ApplicationController,"Create Component Files", typeof(Components.ViewInterfaces.ICreateComponentView)),
                 new ViewNavigateCommand(this.ApplicationController,"Merge Component Files", typeof(Components.ViewInterfaces.IMergeComponentView))
@@ -87,7 +87,7 @@ namespace CruiseManager.Core.App
 
         public void ShowCustomizeCruiseLayout()
         {
-            this.ApplicationController.NavigateTo<CruiseCustomizeView>();
+            this.ApplicationController.NavigateTo<Core.CruiseCustomize.ViewInterfaces.ICruiseCustomizeContainerView>();
         }
 
         public void ShowEditDesign()
