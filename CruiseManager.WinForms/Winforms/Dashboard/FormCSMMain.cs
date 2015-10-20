@@ -116,12 +116,6 @@ namespace CruiseManager.WinForms.Dashboard
             {
                 foreach (BindableCommand command in navCommands.Reverse())
                 {
-                    Button newButton = new NavigationButton();
-                    newButton.Dock = System.Windows.Forms.DockStyle.Top;
-                    this._viewNavPanel.Controls.Add(newButton);
-
-                    command.BindTo(newButton);
-
                     Panel spacer = new Panel()
                     {
                         Height = 1,
@@ -130,6 +124,15 @@ namespace CruiseManager.WinForms.Dashboard
                     };
 
                     this._viewNavPanel.Controls.Add(spacer);
+
+
+                    Button newButton = new NavigationButton();
+                    newButton.Dock = System.Windows.Forms.DockStyle.Top;
+                    this._viewNavPanel.Controls.Add(newButton);
+
+                    command.BindTo(newButton);
+
+                    
                 }
             }
             this._viewNavPanel.ResumeLayout();
