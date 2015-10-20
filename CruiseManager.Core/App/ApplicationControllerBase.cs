@@ -15,7 +15,7 @@ using CruiseManager.Core.ViewModel;
 
 namespace CruiseManager.Core.App
 {
-    public abstract class ApplicationControllerBase : IDisposable
+    public abstract class ApplicationControllerBase : IDisposable, INavigationService
     {
         internal static readonly TreeDefaultValueDO[] EMPTY_SPECIES_LIST = new TreeDefaultValueDO[] { };
 

@@ -12,7 +12,7 @@ namespace CruiseManager.WinForms
 {
     public class UserControlView : UserControl, IView
     {
-        public IPresentor ViewPresenter
+        public virtual IPresentor ViewPresenter
         {
             get; protected set; 
         }

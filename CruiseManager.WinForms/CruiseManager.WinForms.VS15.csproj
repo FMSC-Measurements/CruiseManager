@@ -155,6 +155,18 @@
     <Compile Include="CommandModel\BindableCommandExtentions.cs" />
     <Compile Include="CommandModel\ControlCommandBinding.cs" />
     <Compile Include="CommandModel\ToolStripItemCommandBinding.cs" />
+    <Compile Include="WinForms\CruiseCustomize\CustomizeCruiseContainerView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\CruiseCustomize\CustomizeCruiseContainerView.Designer.cs">
+      <DependentUpon>CustomizeCruiseContainerView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\UserControlContainerView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\UserControlContainerView.Designer.cs">
+      <DependentUpon>UserControlContainerView.cs</DependentUpon>
+    </Compile>
     <Compile Include="WinForms\AboutDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -479,6 +491,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="WinForms\UserControlContainerView.resx">
+      <DependentUpon>UserControlContainerView.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.CuttingUnitDO.datasource" />
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.SampleGroupDO.datasource" />

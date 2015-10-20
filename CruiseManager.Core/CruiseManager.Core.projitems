@@ -46,6 +46,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\TallySetupSampleGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\TallySetupStratum.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\TreeAuditRulePresenter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\ViewInterfaces\ICruiseCustomizeContainerView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\ViewInterfaces\IFieldSetupView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\ViewInterfaces\ILogMatrixView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\ViewInterfaces\ITallySetupView.cs" />
@@ -78,8 +79,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\EditTemplateView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\IHomeView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\MainWindow.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\IContainerView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\IDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\IDialogDataContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\INavigationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\IPresentor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\ISaveHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\IView.cs" />
