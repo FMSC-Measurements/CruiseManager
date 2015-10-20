@@ -54,16 +54,11 @@ namespace CruiseManager.WinForms.CruiseCustomize
         {
             if (stratum != null)
             {
-                var selectedTreeFields = stratum.SelectedTreeFields;
-                var unselectedTreeFields = stratum.UnselectedTreeFields.OrderBy(x => x.Heading).ToList();
-                this._treeFieldWidget.SelectedItemsDataSource = selectedTreeFields;
-                this._treeFieldWidget.DataSource = unselectedTreeFields;
+                this._treeFieldWidget.SelectedItemsDataSource = stratum.SelectedTreeFields;
+                this._treeFieldWidget.DataSource = stratum.UnselectedTreeFields;
 
-                var selectedLogFields = stratum.SelectedLogFields;
-                var unselectedLogFields = stratum.UnselectedLogFields.OrderBy(x => x.Heading).ToList();
-
-                this._logFieldWidget.SelectedItemsDataSource = selectedLogFields;
-                this._logFieldWidget.DataSource = unselectedLogFields;
+                this._logFieldWidget.SelectedItemsDataSource = stratum.SelectedLogFields;
+                this._logFieldWidget.DataSource = stratum.UnselectedLogFields;
             }
         }
 

@@ -68,10 +68,10 @@ namespace CruiseManager.Core.CruiseCustomize
                     //compare selected tree/log fields to all tree.log fields to create a list of unselected tree/log fields
                     List<TreeFieldSetupDO> unselectedTreeFields =
                         (from tfs in this.TreeFields.Except(st.SelectedTreeFields, TreeFieldComparer.Instance)
-                         select new TreeFieldSetupDO(tfs)).ToList();
+                         select new TreeFieldSetupDO(tfs)).OrderBy(x => x.Heading).ToList();
                     List<LogFieldSetupDO> unselectedLogFields = (
                         from lfs in this.LogFields.Except(st.SelectedLogFields, LogFieldComparer.Instance)
-                        select new LogFieldSetupDO(lfs)).ToList();
+                        select new LogFieldSetupDO(lfs)).OrderBy(x => x.Heading).ToList();
 
                     st.UnselectedLogFields = unselectedLogFields;
                     st.UnselectedTreeFields = unselectedTreeFields;

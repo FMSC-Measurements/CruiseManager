@@ -83,15 +83,22 @@ namespace CruiseManager.WinForms
 
         protected Button MakeLinkButton(ViewNavigateCommand cmd)
         {
-            Button newButton = new Button();
-            newButton.SuspendLayout();
-            newButton.FlatStyle = FlatStyle.Flat;
-            newButton.TabStop = false;
+            Button newButton = new LinkButton();
             cmd.BindTo(newButton);
-            newButton.ResumeLayout();
             return newButton;
         }
 
+
+        class LinkButton : Button
+        {
+            public LinkButton()
+            {
+                this.SetStyle(ControlStyles.Selectable, false);
+                this.FlatStyle = FlatStyle.Flat;
+            }
+
+            
+        }
 
         public void NavigateTo(Type viewType)
         {

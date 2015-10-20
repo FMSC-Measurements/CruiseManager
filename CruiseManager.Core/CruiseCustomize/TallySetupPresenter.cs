@@ -200,60 +200,80 @@ namespace CruiseManager.Core.CruiseCustomize
 
         public bool HandleSave()
         {
-            this.Save();
-            return true;
+            return this.Save();
         }
 
-        private void Save()
+        private bool Save()
         {
             var errorBuilder = new StringBuilder();
-            this.SaveTallies(ref errorBuilder);
-
+            if(!ValidateTallySettup(ref errorBuilder))
+            {
+                this.View.ShowErrorMessage("Validation Errors", errorBuilder.ToString());
+                return false;
+            }
+            else if(!SaveTallies(ref errorBuilder))
+            {
+                this.View.ShowErrorMessage("Save Errors", errorBuilder.ToString());
+                return false;
+            }
+            else
+            { return true; }
         }
 
         private bool SaveTallies(ref StringBuilder errorBuilder)
         {
             if (!_isInitialized) { return true; }
             bool success = true;
-            foreach (TallySetupStratum stratum in TallySetupStrata)
+
+            this.Database.BeginTransaction();
+            try
             {
-                if (stratum.SampleGroups != null)
+
+                this.Database.Execute(
+@"CREATE TEMP TRIGGER IF NOT EXISTS IgnoreConflictsOnCountTree 
+BEFORE INSERT
+ON CountTree
+WHEN Exists
+(
+    SELECT 1 FROM CountTree WHERE CountTree.CuttingUnit_CN = new.CuttingUnit_CN
+    AND CountTree.SampleGroup_CN = new.SampleGroup_CN
+    AND ifnull(CountTree.TreeDefaultValue_CN, 0) = ifnull(new.TreeDefaultValue_CN, 0)
+    AND ifnull(CountTree.Component_CN, 0) = ifnull(new.Component_CN, 0)
+)
+BEGIN
+SELECT RAISE(IGNORE);
+END;"
+                    );
+
+                foreach (TallySetupStratum stratum in TallySetupStrata)
                 {
-                    foreach (TallySetupSampleGroup sgVM in stratum.SampleGroups)
+                    if (stratum.SampleGroups != null)
                     {
-                        sgVM.Save();
-                        if (sgVM.HasTallyEdits == true)
+                        foreach (TallySetupSampleGroup sgVM in stratum.SampleGroups)
                         {
-                            success = SaveTallies(sgVM, ref errorBuilder) && success;
+                            sgVM.Save();
+                            if (sgVM.HasTallyEdits == true)
+                            {
+                                success = SaveTallies(sgVM, ref errorBuilder) && success;
+                            }
                         }
                     }
                 }
+
+                this.Database.EndTransaction();
+                return success;
             }
-            return success;
+            catch (Exception e)
+            {
+                this.Database.CancelTransaction();
+                throw e;
+            }
         }
 
         private bool SaveTallies(TallySetupSampleGroup sgVM, ref StringBuilder errorBuilder)
         {
             try
-            {
-                this.Database.BeginTransaction();
-
-                this.Database.Execute(
-                    @"CREATE temp TRIGGER IgnoreConflictsOnCountTree
-                    BEFORE INSERT
-                    ON CountTree
-                    WHEN Exists
-                    (
-                        SELECT 1 FROM CountTree WHERE CountTree.CuttingUnit_CN = new.CuttingUnit_CN
-                        AND CountTree.SampleGroup_CN = new.SampleGroup_CN
-                        AND ifnull(CountTree.TreeDefaultValue_CN, 0) = ifnull(new.TreeDefaultValue_CN, 0)
-                        AND ifnull(CountTree.Component_CN, 0) = ifnull(new.Component_CN, 0)
-                    )
-                    BEGIN
-                    SELECT RAISE(IGNORE);
-                    END;"
-                    );
-
+            { 
                 //if ((sgVM.TallyMethod & TallyMode.Locked) != TallyMode.Locked)
                 //{
                 //    string delCommand = String.Format("DELETE FROM CountTree WHERE SampleGroup_CN = {0}", sgVM.SampleGroup_CN);
@@ -268,60 +288,71 @@ namespace CruiseManager.Core.CruiseCustomize
                 {
                     SaveTallyBySpecies(sgVM);
                 }
-                this.Database.EndTransaction();
                 sgVM.HasTallyEdits = false;
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                this.Database.CancelTransaction();
-                errorBuilder.AppendFormat("Error: failed to setup tallies for SampleGroup({0} ) in Stratum ({1})", sgVM.Code, sgVM.Stratum.Code);
+                errorBuilder.AppendFormat("{2}: failed to setup tallies for SampleGroup({0} ) in Stratum ({1})", sgVM.Code, sgVM.Stratum.Code, e.GetType().Name);
                 return false;
             }
         }
 
         private void SaveTallyBySampleGroup(TallySetupSampleGroup sgVM)
         {
-            if ((sgVM.TallyMethod & TallyMode.Locked) != TallyMode.Locked)
+            this.Database.BeginTransaction();
+            try
             {
-                //remove any possible tally by species records
-                string command = "DELETE FROM CountTree WHERE SampleGroup_CN = ? AND ifnull(TreeDefaultValue_CN, 0) != 0;";
-                this.Database.Execute(command, sgVM.SampleGroup_CN);
+                if ((sgVM.TallyMethod & TallyMode.Locked) != TallyMode.Locked)
+                {
+                    //remove any possible tally by species records
+                    string command = "DELETE FROM CountTree WHERE SampleGroup_CN = ? AND ifnull(TreeDefaultValue_CN, 0) != 0;";
+                    this.Database.Execute(command, sgVM.SampleGroup_CN);
 
-                string user = this.Database.User;
-                String makeCountsCommand = String.Format(@"INSERT  OR Ignore INTO CountTree (CuttingUnit_CN, SampleGroup_CN,  CreatedBy)
+                    string user = this.Database.User;
+                    String makeCountsCommand = String.Format(@"INSERT  OR Ignore INTO CountTree (CuttingUnit_CN, SampleGroup_CN,  CreatedBy)
                             Select CuttingUnitStratum.CuttingUnit_CN, SampleGroup.SampleGroup_CN,  '{0}' AS CreatedBy
                             From SampleGroup 
                             INNER JOIN CuttingUnitStratum 
                             ON SampleGroup.Stratum_CN = CuttingUnitStratum.Stratum_CN 
                             WHERE SampleGroup.SampleGroup_CN = {1};", user, sgVM.SampleGroup_CN);
 
-                this.Database.Execute(makeCountsCommand);
+                    this.Database.Execute(makeCountsCommand);
+                }
+                TallyVM tally = this.Database.ReadSingleRow<TallyVM>("Tally", "WHERE Description = ? AND HotKey = ?", sgVM.SgTallie.Description, sgVM.SgTallie.Hotkey);
+                if (tally == null)
+                {
+                    tally = new TallyVM(this.Database) { Description = sgVM.SgTallie.Description, Hotkey = sgVM.SgTallie.Hotkey };
+                    //tally = sgVM.SgTallie;
+                    tally.Save();
+                }
+
+                String setTallyCommand = String.Format("UPDATE CountTree Set Tally_CN = {0} WHERE SampleGroup_CN = {1};",
+                    tally.Tally_CN, sgVM.SampleGroup_CN);
+
+                this.Database.Execute(setTallyCommand);
+                this.Database.EndTransaction();
             }
-            TallyVM tally = this.Database.ReadSingleRow<TallyVM>("Tally", "WHERE Description = ? AND HotKey = ?", sgVM.SgTallie.Description, sgVM.SgTallie.Hotkey);
-            if (tally == null)
+            catch(Exception)
             {
-                tally = new TallyVM(this.Database) { Description = sgVM.SgTallie.Description, Hotkey = sgVM.SgTallie.Hotkey };
-                //tally = sgVM.SgTallie;
-                tally.Save();
+                this.Database.CancelTransaction();
+                throw;
             }
-
-            String setTallyCommand = String.Format("UPDATE CountTree Set Tally_CN = {0} WHERE SampleGroup_CN = {1};",
-                tally.Tally_CN, sgVM.SampleGroup_CN);
-
-            this.Database.Execute(setTallyCommand);
         }
 
         private void SaveTallyBySpecies(TallySetupSampleGroup sgVM)
         {
-            if ((sgVM.TallyMethod & TallyMode.Locked) != TallyMode.Locked)
+            this.Database.BeginTransaction();
+            try
             {
-                //remove any preexisting tally by sg entries
-                string command = "DELETE FROM CountTree WHERE SampleGroup_CN = ? AND ifnull(TreeDefaultValue_CN, 0) = 0;";
-                this.Database.Execute(command, sgVM.SampleGroup_CN);
+                if ((sgVM.TallyMethod & TallyMode.Locked) != TallyMode.Locked)
+                {
+                    //remove any preexisting tally by sg entries
+                    string command = "DELETE FROM CountTree WHERE SampleGroup_CN = ? AND ifnull(TreeDefaultValue_CN, 0) = 0;";
+                    this.Database.Execute(command, sgVM.SampleGroup_CN);
 
-                string user = this.Database.User;
-                String makeCountsCommand = String.Format(@"INSERT  OR IGNORE INTO CountTree (CuttingUnit_CN, SampleGroup_CN, TreeDefaultValue_CN, CreatedBy)
+                    string user = this.Database.User;
+                    String makeCountsCommand = String.Format(@"INSERT  OR IGNORE INTO CountTree (CuttingUnit_CN, SampleGroup_CN, TreeDefaultValue_CN, CreatedBy)
                         Select CuttingUnitStratum.CuttingUnit_CN, SampleGroup.SampleGroup_CN, SampleGroupTreeDefaultValue.TreeDefaultValue_CN, '{0}' AS CreatedBy 
                         From SampleGroup 
                         INNER JOIN CuttingUnitStratum 
@@ -329,28 +360,37 @@ namespace CruiseManager.Core.CruiseCustomize
                         INNER JOIN SampleGroupTreeDefaultValue 
                         ON SampleGroupTreeDefaultValue.SampleGroup_CN = SampleGroup.SampleGroup_CN 
                         WHERE SampleGroup.SampleGroup_CN = {1};",
-                        user, sgVM.SampleGroup_CN);
+                            user, sgVM.SampleGroup_CN);
 
 
 
-                this.Database.Execute(makeCountsCommand);
-            }
-            foreach (KeyValuePair<TreeDefaultValueDO, TallyVM> pair in sgVM.Tallies)
-            {
-                TallyVM tally = this.Database.ReadSingleRow<TallyVM>("Tally", "WHERE Description = ? AND HotKey = ?", pair.Value.Description, pair.Value.Hotkey);
-                if (tally == null)
+                    this.Database.Execute(makeCountsCommand);
+                }
+                foreach (KeyValuePair<TreeDefaultValueDO, TallyVM> pair in sgVM.Tallies)
                 {
-                    tally = new TallyVM(this.Database) { Description = pair.Value.Description, Hotkey = pair.Value.Hotkey };
-                    //tally = pair.Value;
-                    //tally.DAL = Controller.Database;
-                    tally.Save();
+                    TallyVM tally = this.Database.ReadSingleRow<TallyVM>("Tally", "WHERE Description = ? AND HotKey = ?", pair.Value.Description, pair.Value.Hotkey);
+                    if (tally == null)
+                    {
+                        tally = new TallyVM(this.Database) { Description = pair.Value.Description, Hotkey = pair.Value.Hotkey };
+                        //tally = pair.Value;
+                        //tally.DAL = Controller.Database;
+                        tally.Save();
+                    }
+
+                    string setTallyCommand = String.Format("UPDATE CountTree Set Tally_CN = {0} WHERE SampleGroup_CN = {1} AND TreeDefaultValue_CN = {2}",
+                        tally.Tally_CN, sgVM.SampleGroup_CN, pair.Key.TreeDefaultValue_CN);
+
+                    this.Database.Execute(setTallyCommand);
                 }
 
-                string setTallyCommand = String.Format("UPDATE CountTree Set Tally_CN = {0} WHERE SampleGroup_CN = {1} AND TreeDefaultValue_CN = {2}",
-                    tally.Tally_CN, sgVM.SampleGroup_CN, pair.Key.TreeDefaultValue_CN);
-
-                this.Database.Execute(setTallyCommand);
+                this.Database.EndTransaction();
             }
+            catch(Exception)
+            {
+                this.Database.CancelTransaction();
+                throw;
+            }
+
         }
 
 

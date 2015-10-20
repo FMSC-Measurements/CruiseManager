@@ -47,6 +47,7 @@ namespace CruiseManager.WinForms.CruiseWizard
         {
             base.OnLoad(e);
             InitializeBindings();
+            StratumBindingSource_CurrentChanged(null, null);
         }
         
 
