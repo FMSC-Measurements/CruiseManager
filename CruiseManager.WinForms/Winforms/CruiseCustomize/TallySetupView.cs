@@ -21,8 +21,10 @@ namespace CruiseManager.WinForms.CruiseCustomize
             set { base.ViewPresenter = value; }
         }
 
-        public TallySetupView()
+        public TallySetupView(TallySetupPresenter presenter)
         {
+            this.ViewPresenter = presenter;
+            presenter.View = this;
             InitializeComponent();
         }
 

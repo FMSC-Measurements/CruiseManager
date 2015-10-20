@@ -13,8 +13,10 @@ namespace CruiseManager.WinForms.CruiseCustomize
 {
     public partial class TreeAuditRulesView : CruiseManager.WinForms.UserControlView, ITreeAuditView
     {
-        public TreeAuditRulesView()
+        public TreeAuditRulesView(TreeAuditRulePresenter presenter)
         {
+            this.ViewPresenter = presenter;
+            presenter.View = this;
             InitializeComponent();
         }
 

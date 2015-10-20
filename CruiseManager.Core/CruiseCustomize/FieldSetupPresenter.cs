@@ -22,9 +22,9 @@ namespace CruiseManager.Core.CruiseCustomize
             this.IsLogGradingEnabled = this.Database.ReadSingleRow<SaleDO>("Sale", (String)null).LogGradingEnabled;
         }
 
-        public new CruiseCustomizeView View
+        public new ViewInterfaces.IFieldSetupView View
         {
-            get { return (CruiseCustomizeView)base.View; }
+            get { return (ViewInterfaces.IFieldSetupView)base.View; }
             set { base.View = value; }
         }
 

@@ -16,9 +16,9 @@ namespace CruiseManager.Core.CruiseCustomize
     {
         bool _isInitialized;
 
-        public new CruiseCustomizeView View
+        public new ViewInterfaces.ITallySetupView View
         {
-            get { return (CruiseCustomizeView)base.View; }
+            get { return (ViewInterfaces.ITallySetupView)base.View; }
             set { base.View = value; }
         }
 

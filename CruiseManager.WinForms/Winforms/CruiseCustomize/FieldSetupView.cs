@@ -14,8 +14,10 @@ namespace CruiseManager.WinForms.CruiseCustomize
 {
     public partial class FieldSetupView : CruiseManager.WinForms.UserControlView, IFieldSetupView
     {
-        public FieldSetupView()
+        public FieldSetupView(FieldSetupPresenter presenter)
         {
+            this.ViewPresenter = presenter;
+            presenter.View = this;
             InitializeComponent();
         }
 
