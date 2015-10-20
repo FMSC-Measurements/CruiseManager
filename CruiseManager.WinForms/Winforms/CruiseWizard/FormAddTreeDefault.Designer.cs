@@ -454,6 +454,7 @@
             this._contractSpTB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this._BS_TDV, "ContractSpecies", true));
             this._contractSpTB.Dock = System.Windows.Forms.DockStyle.Fill;
             this._contractSpTB.Location = new System.Drawing.Point(104, 3);
+            this._contractSpTB.MaxLength = 4;
             this._contractSpTB.Name = "_contractSpTB";
             this._contractSpTB.Size = new System.Drawing.Size(60, 20);
             this._contractSpTB.TabIndex = 0;
