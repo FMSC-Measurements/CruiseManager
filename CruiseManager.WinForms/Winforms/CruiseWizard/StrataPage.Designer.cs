@@ -93,8 +93,8 @@
             // 
             // panel1
             // 
-            panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             panel1.BackColor = System.Drawing.Color.DarkSeaGreen;
             panel1.Controls.Add(this.SampleGroupButton);
             panel1.Controls.Add(this.CuttingUnitButton);
@@ -146,8 +146,8 @@
             // StrataBindingSource
             // 
             this.StrataBindingSource.DataSource = typeof(CruiseDAL.DataObjects.StratumDO);
-            this.StrataBindingSource.CurrentChanged += new System.EventHandler(this.StrataBindingSource_CurrentChanged);
             this.StrataBindingSource.AddingNew += new System.ComponentModel.AddingNewEventHandler(this.StrataBindingSource_AddingNew);
+            this.StrataBindingSource.CurrentChanged += new System.EventHandler(this.StrataBindingSource_CurrentChanged);
             // 
             // CruiseMethodBindingSource
             // 
@@ -362,9 +362,9 @@
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -524,6 +524,7 @@
             this._SLTB_YealdComponent.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this._SLTB_YealdComponent.TextBox.Location = new System.Drawing.Point(100, 5);
             this._SLTB_YealdComponent.TextBox.Margin = new System.Windows.Forms.Padding(0);
+            this._SLTB_YealdComponent.TextBox.MaxLength = 2;
             this._SLTB_YealdComponent.TextBox.Name = ".TextBox";
             this._SLTB_YealdComponent.TextBox.Size = new System.Drawing.Size(50, 20);
             this._SLTB_YealdComponent.TextBox.TabIndex = 1;
