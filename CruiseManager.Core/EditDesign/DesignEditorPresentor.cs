@@ -501,10 +501,10 @@ namespace CruiseManager.Core.EditDesign
             "FROM TreeFieldSetupDefault " +
             "WHERE Method = '{1}';", stratum.Stratum_CN, stratum.Method);
 
-            string setLogFieldCommand = String.Format("INSERT INTO LogFieldSetup (Stratum_CN, Field, FieldOrder, ColumnType, Heading, Width, Format, Behavior) " +
-            "Select {0} as Stratum_CN, Field, FieldOrder, ColumnType, Heading, Width, Format, Behavior " +
-            "FROM TreeFieldSetupDefault " +
-            "WHERE Method = '{1}';", stratum.Stratum_CN, stratum.Method);
+            string setLogFieldCommand = String.Format(@"INSERT OR IGNORE INTO LogFieldSetup (Stratum_CN, Field, FieldOrder, ColumnType, Heading, Width, Format, Behavior)
+            Select {0} as Stratum_CN, Field, FieldOrder, ColumnType, Heading, Width, Format, Behavior
+            FROM LogFieldSetupDefault;",
+            stratum.Stratum_CN);
 
             database.Execute(setTreeFieldCommand);
             database.Execute(setLogFieldCommand);
