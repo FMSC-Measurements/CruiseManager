@@ -170,7 +170,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             // 
             // StratumBindingSource
             // 
-            this.StratumBindingSource.DataSource = typeof(StratumVM);
+            this.StratumBindingSource.DataSource = typeof(CruiseManager.Core.Models.StratumVM);
             this.StratumBindingSource.CurrentChanged += new System.EventHandler(this.StratumBindingSource_CurrentChanged);
             // 
             // toolStripLabel1
@@ -248,8 +248,8 @@ namespace CruiseManager.WinForms.CruiseWizard
             // 
             // panel1
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.panel1.Controls.Add(this.FinishButton);
             this.panel1.Controls.Add(this.CancelButton);
@@ -332,8 +332,8 @@ namespace CruiseManager.WinForms.CruiseWizard
             // SampleGroupBindingSource
             // 
             this.SampleGroupBindingSource.DataSource = typeof(CruiseDAL.DataObjects.SampleGroupDO);
-            this.SampleGroupBindingSource.CurrentChanged += new System.EventHandler(this.SampleGroupBindingSource_CurrentChanged);
             this.SampleGroupBindingSource.AddingNew += new System.ComponentModel.AddingNewEventHandler(this.SampleGroupBindingSource_AddingNew);
+            this.SampleGroupBindingSource.CurrentChanged += new System.EventHandler(this.SampleGroupBindingSource_CurrentChanged);
             // 
             // toolStripLabel2
             // 
@@ -390,9 +390,9 @@ namespace CruiseManager.WinForms.CruiseWizard
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.AutoSize = true;
             this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.InsetDouble;
             this.tableLayoutPanel1.ColumnCount = 2;
