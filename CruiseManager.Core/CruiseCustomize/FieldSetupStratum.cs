@@ -57,5 +57,12 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             this.HasEdits = true;
         }
+
+        public override void Save(OnConflictOption option)
+        {
+            base.Save(option);
+            this._hasEdits = false;
+        }
+       
     }
 }
