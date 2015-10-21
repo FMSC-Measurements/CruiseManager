@@ -82,13 +82,7 @@ namespace CruiseManager.Core.App
                 }
             }
 
-
-
-            if (tree.SampleGroup.TreeDefaultValues.IsPopulated == false)
-            {
-                tree.SampleGroup.TreeDefaultValues.Populate();
-            }
-            return tree.SampleGroup.TreeDefaultValues;
+            return database.Read<TreeDefaultValueDO>("TreeDefaultValue", "JOIN SampleGroupTreeDefaultValue USING (TreeDefaultValue_CN) WHERE SampleGroup_CN = ?", tree.SampleGroup_CN);
 
         }
 
