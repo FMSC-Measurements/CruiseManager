@@ -58,7 +58,6 @@ namespace CruiseManager.WinForms.DataEditor
 
             this.TreeDataGridView.RowEnter += this.HandleCurrentTreeChanged;
             this.TreeDataGridView.CellValueChanged += this.HandleTreeValueChanged;
-            this.TreeDataGridView.EditingControlShowing += this.HandleTreeEditControlShowing;
         }
 
         public DataEditorView(WindowPresenter windowPresenter, ApplicationControllerBase applicationController) : this()
@@ -74,7 +73,7 @@ namespace CruiseManager.WinForms.DataEditor
             //ResetViewFilters();
         }
 
-        
+        protected DAL Database { get { return this.ApplicationController.Database; } }
 
         public bool SuppressUpdates { get; set; }
 
@@ -769,28 +768,54 @@ namespace CruiseManager.WinForms.DataEditor
         }
 
         
-
-        protected void HandleTreeEditControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        protected void TreeDataGrid_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
-            if (this.TreeDataGridView.CurrentCell.ColumnIndex == this.speciesDataGridViewColumn.Index)
+            DataGridViewComboBoxCell cell = TreeDataGridView[e.ColumnIndex, e.RowIndex] as DataGridViewComboBoxCell;
+            if (cell == null) { return; }
+            
+            TreeVM curTree = this.TreeBindingSource[e.RowIndex] as TreeVM;
+            if (curTree == null) { return; }
+
+            
+            if (this.sampleGroupDataGridViewTextBoxColumn != null && e.ColumnIndex == this.sampleGroupDataGridViewTextBoxColumn.Index)
             {
-                DataGridViewComboBoxEditingControl control = e.Control as DataGridViewComboBoxEditingControl;
-                //BindingSource bs = control.DataSource as BindingSource;
-                //if (bs != null)
-                //{
-                //    this._BS_TreeSpecies.DataSource = AppController.GetTreeTDVList(_currentTreeSelection);
-                //}
-                //control.DataSource = AppController.GetTreeTDVList(_currentTreeSelection);
-                control.DataSource = ApplicationController.Database.GetTreeTDVList(_currentTreeSelection);
+                this.UpdateSampleGroupColumn(curTree, cell);
             }
-            if (this.TreeDataGridView.CurrentCell.ColumnIndex == this.sampleGroupDataGridViewTextBoxColumn.Index)
+
+            if (this.speciesDataGridViewColumn != null && e.ColumnIndex == this.speciesDataGridViewColumn.Index)
             {
-                String sgCode = _currentTreeSelection.SampleGroup.Code; 
-                DataGridViewComboBoxEditingControl control = e.Control as DataGridViewComboBoxEditingControl;
-                control.DataSource = this.ApplicationController.Database.GetSampleGroupsByStratum(_currentTreeSelection.Stratum_CN);
-                control.SelectedIndex = control.FindString(sgCode);
+                this.UpdateSpeciesColumn(curTree, cell);
             }
         }
+
+        protected void UpdateSampleGroupColumn(TreeVM tree, DataGridViewComboBoxCell cell)
+        {
+            if (cell == null) { return; }
+            cell.DataSource = ApplicationController.Database.GetSampleGroupsByStratum(tree.Stratum_CN);
+        }
+
+        protected void UpdateSpeciesColumn(TreeVM tree, DataGridViewComboBoxCell cell)
+        {
+            if (cell == null) { return; }
+            cell.DataSource = ApplicationController.Database.GetTreeTDVList(tree);
+        }
+
+        //protected void HandleTreeEditControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        //{
+        //    if (this.TreeDataGridView.CurrentCell.ColumnIndex == this.speciesDataGridViewColumn.Index)
+        //    {
+        //        DataGridViewComboBoxEditingControl control = e.Control as DataGridViewComboBoxEditingControl;
+
+        //        control.DataSource = ApplicationController.Database.GetTreeTDVList(_currentTreeSelection);
+        //    }
+        //    if (this.TreeDataGridView.CurrentCell.ColumnIndex == this.sampleGroupDataGridViewTextBoxColumn.Index)
+        //    {
+        //        String sgCode = _currentTreeSelection.SampleGroup.Code;
+        //        DataGridViewComboBoxEditingControl control = e.Control as DataGridViewComboBoxEditingControl;
+        //        control.DataSource = this.ApplicationController.Database.GetSampleGroupsByStratum(_currentTreeSelection.Stratum_CN);
+        //        control.SelectedIndex = control.FindString(sgCode);
+        //    }
+        //}
 
 
         protected bool DeleteTree(TreeVM tree)
@@ -806,12 +831,140 @@ namespace CruiseManager.WinForms.DataEditor
             }
         }
 
-        private void TreeDataGridView_CellValidated(object sender, DataGridViewCellEventArgs e)
+        private void TreeDataGridView_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
-            TreeVM tree = this.Trees[e.RowIndex];
+            DataGridViewComboBoxCell cell = TreeDataGridView[e.ColumnIndex, e.RowIndex] as DataGridViewComboBoxCell;
+            if (cell == null) { return; }
+            if (cell.FormattedValue == e.FormattedValue) { return; }//are there any changes 
+            bool cancel = e.Cancel;
+
+            TreeVM curTree = null;
+            try
+            {
+                curTree = this.TreeBindingSource[e.RowIndex] as TreeVM;
+            }
+            catch (SystemException) { return; }//ignore posible out of bound exceptions
+            if (curTree == null) { return; }
+
+            object cellValue = e.FormattedValue;
+            cellValue = cell.ParseFormattedValue(cellValue, cell.InheritedStyle, null, null);
+
+
+            if (sampleGroupDataGridViewTextBoxColumn != null && cell.ColumnIndex == sampleGroupDataGridViewTextBoxColumn.Index)
+            {
+                SampleGroupDO sg = cellValue as SampleGroupDO;
+                this.HandleSampleGroupChanging(curTree, sg, out cancel);
+                //e.Cancel = !ProcessSampleGroupChanging(curTree, sg);
+
+            }
+            if (speciesDataGridViewColumn != null && cell.ColumnIndex == speciesDataGridViewColumn.Index)
+            {
+                TreeDefaultValueDO tdv = cellValue as TreeDefaultValueDO;
+                cancel = !this.HandleSpeciesChanged(curTree, tdv);
+                //e.Cancel = !ProcessSpeciesChanged(curTree, tdv);
+            }
+            e.Cancel = cancel;
+
+        }
+
+        public void HandleKPIChanging(TreeVM tree, float newKPI, bool doSample, out bool cancel)
+        {
+            if (tree == null)
+            {
+                cancel = true;
+                return;
+            }
+            if (tree.KPI != 0.0F)
+            {
+                string message = string.Format("Tree RecID:{0} KPI changed from {1} to {2}", tree.Tree_CN, tree.KPI, newKPI);
+                this.Database.LogMessage(message, "I");
+            }
+            cancel = false;
+        }
+
+        public void HandleSampleGroupChanged(TreeVM tree)
+        {
             if (tree == null) { return; }
-            tree.Save();
-            tree.SaveErrors();
+            if (!tree.SampleGroup.TreeDefaultValues.Contains(tree.TreeDefaultValue))
+            {
+                DatabaseExtentions.SetTreeTDV(tree, null);
+            }
+            //this.UpdateSpeciesColumn(tree);
+            this.TrySaveTree(tree);
+        }
+
+        public void HandleSampleGroupChanging(TreeVM tree, SampleGroupDO newSG, out bool cancel)
+        {
+            if (tree == null || newSG == null) { cancel = true; return; }
+            if (tree.SampleGroup != null && tree.SampleGroup_CN == newSG.SampleGroup_CN) { cancel = true; return; }
+            if (tree.SampleGroup != null)
+            {
+                if (MessageBox.Show("You are changing the Sample Group of a tree, are you sure you want to do this?", "!", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button2)
+                    == DialogResult.No)
+                {
+                    cancel = true;//disregard changes
+                    return;
+                }
+                else
+                {
+
+                    this.Database.LogMessage(String.Format("Tree Sample Group Changed (Cu:{0} St:{1} Sg:{2} -> {3} Tdv_CN:{4} T#: {5} P#:{6}",
+                        tree.CuttingUnit.Code,
+                        tree.Stratum.Code,
+                        (tree.SampleGroup != null) ? tree.SampleGroup.Code : "?",
+                        newSG.Code,
+                        (tree.TreeDefaultValue != null) ? tree.TreeDefaultValue.TreeDefaultValue_CN.ToString() : "?",
+                        tree.TreeNumber,
+                        (tree.Plot != null) ? tree.Plot.PlotNumber.ToString() : "-"), "high");
+                }
+            }
+            cancel = false;
+        }
+
+        public bool HandleSpeciesChanged(TreeVM tree, TreeDefaultValueDO tdv)
+        {
+            if (tree == null) { return true; }
+            //if (tree.TreeDefaultValue == tdv) { return true; }
+            DatabaseExtentions.SetTreeTDV(tree, tdv);
+            return this.TrySaveTree(tree);
+        }
+
+        public void HandleStratumChanged(TreeVM tree)
+        {
+            if (tree == null) { return; }
+
+            tree.Species = null;
+            tree.SampleGroup = null;
+            DatabaseExtentions.SetTreeTDV(tree, null);
+            //this.UpdateSampleGroupColumn(tree);
+            //this.UpdateSpeciesColumn(tree);
+            this.TrySaveTree(tree);
+        }
+
+        public void HandleStratumChanging(TreeVM tree, StratumDO st, out bool cancel)
+        {
+            if (tree == null || st == null) { cancel = true; return; }
+            if (tree.Stratum != null && tree.Stratum.Stratum_CN == st.Stratum_CN) { cancel = true; return; }
+            if (tree.Stratum != null)
+            {
+                if (!this.AskYesNo("You are changing the stratum of a tree, are you sure you want to do this?", "!", MessageBoxIcon.Asterisk))
+                {
+                    cancel = true;//do not change stratum
+                }
+                else
+                {
+                    //log stratum changed
+                    this.Database.LogMessage(String.Format("Tree Stratum Changed (Cu:{0} St:{1} -> {2} Sg:{3} Tdv_CN:{4} T#: {5} P#:{6}",
+                        tree.CuttingUnit.Code,
+                        tree.Stratum.Code,
+                        st.Code,
+                        (tree.SampleGroup != null) ? tree.SampleGroup.Code : "?",
+                        (tree.TreeDefaultValue != null) ? tree.TreeDefaultValue.TreeDefaultValue_CN.ToString() : "?",
+                        tree.TreeNumber,
+                        (tree.Plot != null) ? tree.Plot.PlotNumber.ToString() : "-"), "I");
+                }
+            }
+            cancel = false;
         }
 
         private void TreeDataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
@@ -824,6 +977,21 @@ namespace CruiseManager.WinForms.DataEditor
             TreeVM tree = e.Row.DataBoundItem as TreeVM;
             if (tree == null) { e.Cancel = true; return; }
             e.Cancel = !this.DeleteTree(tree);
+        }
+
+        protected bool TrySaveTree(TreeVM tree)
+        {
+            try
+            {
+                tree.Save();
+                return true;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Unable to save tree. Ensure Tree Number, Sample Group and Stratum are valid");
+                //this.HandleNonCriticalException(e, "Unable to save tree. Ensure Tree Number, Sample Group and Stratum are valid");
+                return false;
+            }
         }
 
 
@@ -1038,7 +1206,19 @@ namespace CruiseManager.WinForms.DataEditor
         }
         #endregion 
 
+        public bool AskYesNo(String message, String caption, MessageBoxIcon icon)
+        {
+            return DialogResult.Yes == MessageBox.Show(message, caption, MessageBoxButtons.YesNo, icon, MessageBoxDefaultButton.Button2);
+        }
 
+        public bool AskYesNo(String message, String caption, MessageBoxIcon icon, bool defaultNo)
+        {
+            return DialogResult.Yes == MessageBox.Show(message,
+                caption,
+                MessageBoxButtons.YesNo,
+                icon,
+                (defaultNo) ? MessageBoxDefaultButton.Button2 : MessageBoxDefaultButton.Button1);
+        }
 
         //private void TreeBindingSource_CurrentChanged(object sender, EventArgs e)
         //{
@@ -1052,7 +1232,7 @@ namespace CruiseManager.WinForms.DataEditor
         //    _BS_treeDefaults.DataSource = tree.SampleGroup.TreeDefaultValues;
         //    _BS_sampleGroups.DataSource = DAL.Read<SampleGroupDO>("SampleGroup", "WHERE Stratum_CN = ?", tree.Stratum_CN);
         //}
-        
+
     }
 
         
