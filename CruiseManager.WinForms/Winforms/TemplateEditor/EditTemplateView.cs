@@ -13,6 +13,7 @@ namespace CruiseManager.WinForms.TemplateEditor
 
         public EditTemplateView(WindowPresenter windowPresenter, TemplateEditViewPresenter viewPresenter )
         {
+            this.WindowPresenter = windowPresenter; 
             this.ViewPresenter = viewPresenter;
             ViewPresenter.View = this;
             
