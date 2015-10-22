@@ -118,6 +118,7 @@ namespace CruiseManager.WinForms.App
             //Provide event handlers to catch any uncaught exceptions
             //AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
             //FMSC.Utility.ErrorHandling.ErrorHandlers.SendToAddress = "benjaminjcampbell@fs.fes.us";
+            AppDomain.CurrentDomain.UnhandledException += FMSC.Utility.ErrorHandling.ErrorHandlers.UnhandledException;
             Application.ThreadException += FMSC.Utility.ErrorHandling.ErrorHandlers.ThreadException;
 
 
