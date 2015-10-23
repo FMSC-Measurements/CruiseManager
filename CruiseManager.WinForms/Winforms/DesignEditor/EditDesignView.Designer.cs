@@ -90,7 +90,21 @@
             this.comboBox6 = new System.Windows.Forms.ComboBox();
             this.Strata_CuttingUnitsSelectionBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.StrataDataGridView = new System.Windows.Forms.DataGridView();
+            this.codeDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.descriptionDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Method = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.cruiseMethodBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.basalAreaFactorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fixedPlotSizeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.KZ3PPNT = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fBSCodeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MonthStr = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.yearDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.YieldComponent = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.createdByDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.createdDateDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.modifiedByDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.modifiedDateDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.StrataBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
@@ -142,20 +156,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this._deleteSubPopBTN = new System.Windows.Forms.Button();
             this.CuttingUnitErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.codeDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.descriptionDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Method = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.basalAreaFactorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.fixedPlotSizeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.KZ3PPNT = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.fBSCodeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.MonthStr = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.yearDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.YieldComponent = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.createdByDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.createdDateDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.modifiedByDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.modifiedDateDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             panel1 = new System.Windows.Forms.Panel();
             label6 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
@@ -851,9 +851,140 @@
             this.StrataDataGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.StrataDataGridView_CellEnter);
             this.StrataDataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.StrataDataGridView_DataError);
             // 
+            // codeDataGridViewTextBoxColumn1
+            // 
+            this.codeDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.codeDataGridViewTextBoxColumn1.DataPropertyName = "Code";
+            this.codeDataGridViewTextBoxColumn1.HeaderText = "Stratum";
+            this.codeDataGridViewTextBoxColumn1.MaxInputLength = 2;
+            this.codeDataGridViewTextBoxColumn1.Name = "codeDataGridViewTextBoxColumn1";
+            this.codeDataGridViewTextBoxColumn1.ToolTipText = "Stratum Code";
+            this.codeDataGridViewTextBoxColumn1.Width = 68;
+            // 
+            // descriptionDataGridViewTextBoxColumn1
+            // 
+            this.descriptionDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.descriptionDataGridViewTextBoxColumn1.DataPropertyName = "Description";
+            this.descriptionDataGridViewTextBoxColumn1.HeaderText = "Description";
+            this.descriptionDataGridViewTextBoxColumn1.Name = "descriptionDataGridViewTextBoxColumn1";
+            this.descriptionDataGridViewTextBoxColumn1.ToolTipText = "Stratum Description";
+            this.descriptionDataGridViewTextBoxColumn1.Width = 85;
+            // 
+            // Method
+            // 
+            this.Method.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.Method.DataPropertyName = "Method";
+            this.Method.DataSource = this.cruiseMethodBindingSource;
+            this.Method.DisplayStyleForCurrentCellOnly = true;
+            this.Method.HeaderText = "Method";
+            this.Method.Name = "Method";
+            this.Method.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Method.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Method.ToolTipText = "Cruising Method";
+            this.Method.Width = 68;
+            // 
             // cruiseMethodBindingSource
             // 
             this.cruiseMethodBindingSource.DataSource = typeof(string);
+            // 
+            // basalAreaFactorDataGridViewTextBoxColumn
+            // 
+            this.basalAreaFactorDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.basalAreaFactorDataGridViewTextBoxColumn.DataPropertyName = "BasalAreaFactor";
+            this.basalAreaFactorDataGridViewTextBoxColumn.HeaderText = "BAF";
+            this.basalAreaFactorDataGridViewTextBoxColumn.Name = "basalAreaFactorDataGridViewTextBoxColumn";
+            this.basalAreaFactorDataGridViewTextBoxColumn.ToolTipText = "Basal Area Factor";
+            this.basalAreaFactorDataGridViewTextBoxColumn.Width = 52;
+            // 
+            // fixedPlotSizeDataGridViewTextBoxColumn
+            // 
+            this.fixedPlotSizeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.fixedPlotSizeDataGridViewTextBoxColumn.DataPropertyName = "FixedPlotSize";
+            this.fixedPlotSizeDataGridViewTextBoxColumn.HeaderText = "Fixed";
+            this.fixedPlotSizeDataGridViewTextBoxColumn.Name = "fixedPlotSizeDataGridViewTextBoxColumn";
+            this.fixedPlotSizeDataGridViewTextBoxColumn.ToolTipText = "Fixed Plot Size";
+            this.fixedPlotSizeDataGridViewTextBoxColumn.Width = 57;
+            // 
+            // KZ3PPNT
+            // 
+            this.KZ3PPNT.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.KZ3PPNT.DataPropertyName = "KZ3PPNT";
+            this.KZ3PPNT.HeaderText = "KZ";
+            this.KZ3PPNT.Name = "KZ3PPNT";
+            this.KZ3PPNT.ToolTipText = "KZ Value for Plot Level Estimates of Volume";
+            this.KZ3PPNT.Width = 46;
+            // 
+            // fBSCodeDataGridViewTextBoxColumn
+            // 
+            this.fBSCodeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.fBSCodeDataGridViewTextBoxColumn.DataPropertyName = "FBSCode";
+            this.fBSCodeDataGridViewTextBoxColumn.HeaderText = "FBSCode";
+            this.fBSCodeDataGridViewTextBoxColumn.Name = "fBSCodeDataGridViewTextBoxColumn";
+            this.fBSCodeDataGridViewTextBoxColumn.ToolTipText = "Fall Buck and Scale Code";
+            this.fBSCodeDataGridViewTextBoxColumn.Width = 77;
+            // 
+            // MonthStr
+            // 
+            this.MonthStr.DataPropertyName = "MonthStr";
+            this.MonthStr.HeaderText = "Month";
+            this.MonthStr.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12"});
+            this.MonthStr.Name = "MonthStr";
+            // 
+            // yearDataGridViewTextBoxColumn
+            // 
+            this.yearDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.yearDataGridViewTextBoxColumn.DataPropertyName = "Year";
+            this.yearDataGridViewTextBoxColumn.HeaderText = "Year";
+            this.yearDataGridViewTextBoxColumn.Name = "yearDataGridViewTextBoxColumn";
+            this.yearDataGridViewTextBoxColumn.ToolTipText = "Year";
+            this.yearDataGridViewTextBoxColumn.Width = 54;
+            // 
+            // YieldComponent
+            // 
+            this.YieldComponent.DataPropertyName = "YieldComponent";
+            this.YieldComponent.HeaderText = "Yield Component";
+            this.YieldComponent.Name = "YieldComponent";
+            this.YieldComponent.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // createdByDataGridViewTextBoxColumn1
+            // 
+            this.createdByDataGridViewTextBoxColumn1.DataPropertyName = "CreatedBy";
+            this.createdByDataGridViewTextBoxColumn1.HeaderText = "CreatedBy";
+            this.createdByDataGridViewTextBoxColumn1.Name = "createdByDataGridViewTextBoxColumn1";
+            this.createdByDataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // createdDateDataGridViewTextBoxColumn1
+            // 
+            this.createdDateDataGridViewTextBoxColumn1.DataPropertyName = "CreatedDate";
+            this.createdDateDataGridViewTextBoxColumn1.HeaderText = "CreatedDate";
+            this.createdDateDataGridViewTextBoxColumn1.Name = "createdDateDataGridViewTextBoxColumn1";
+            this.createdDateDataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // modifiedByDataGridViewTextBoxColumn1
+            // 
+            this.modifiedByDataGridViewTextBoxColumn1.DataPropertyName = "ModifiedBy";
+            this.modifiedByDataGridViewTextBoxColumn1.HeaderText = "ModifiedBy";
+            this.modifiedByDataGridViewTextBoxColumn1.Name = "modifiedByDataGridViewTextBoxColumn1";
+            this.modifiedByDataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // modifiedDateDataGridViewTextBoxColumn1
+            // 
+            this.modifiedDateDataGridViewTextBoxColumn1.DataPropertyName = "ModifiedDate";
+            this.modifiedDateDataGridViewTextBoxColumn1.HeaderText = "ModifiedDate";
+            this.modifiedDateDataGridViewTextBoxColumn1.Name = "modifiedDateDataGridViewTextBoxColumn1";
+            this.modifiedDateDataGridViewTextBoxColumn1.ReadOnly = true;
             // 
             // StrataBindingSource
             // 
@@ -1433,144 +1564,13 @@
             this.CuttingUnitErrorProvider.ContainerControl = this;
             this.CuttingUnitErrorProvider.DataSource = this.CuttingUnitsBindingSource;
             // 
-            // codeDataGridViewTextBoxColumn1
-            // 
-            this.codeDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.codeDataGridViewTextBoxColumn1.DataPropertyName = "Code";
-            this.codeDataGridViewTextBoxColumn1.HeaderText = "Stratum";
-            this.codeDataGridViewTextBoxColumn1.MaxInputLength = 2;
-            this.codeDataGridViewTextBoxColumn1.Name = "codeDataGridViewTextBoxColumn1";
-            this.codeDataGridViewTextBoxColumn1.ToolTipText = "Stratum Code";
-            this.codeDataGridViewTextBoxColumn1.Width = 68;
-            // 
-            // descriptionDataGridViewTextBoxColumn1
-            // 
-            this.descriptionDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.descriptionDataGridViewTextBoxColumn1.DataPropertyName = "Description";
-            this.descriptionDataGridViewTextBoxColumn1.HeaderText = "Description";
-            this.descriptionDataGridViewTextBoxColumn1.Name = "descriptionDataGridViewTextBoxColumn1";
-            this.descriptionDataGridViewTextBoxColumn1.ToolTipText = "Stratum Description";
-            this.descriptionDataGridViewTextBoxColumn1.Width = 85;
-            // 
-            // Method
-            // 
-            this.Method.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.Method.DataPropertyName = "Method";
-            this.Method.DataSource = this.cruiseMethodBindingSource;
-            this.Method.DisplayStyleForCurrentCellOnly = true;
-            this.Method.HeaderText = "Method";
-            this.Method.Name = "Method";
-            this.Method.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Method.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Method.ToolTipText = "Cruising Method";
-            this.Method.Width = 68;
-            // 
-            // basalAreaFactorDataGridViewTextBoxColumn
-            // 
-            this.basalAreaFactorDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.basalAreaFactorDataGridViewTextBoxColumn.DataPropertyName = "BasalAreaFactor";
-            this.basalAreaFactorDataGridViewTextBoxColumn.HeaderText = "BAF";
-            this.basalAreaFactorDataGridViewTextBoxColumn.Name = "basalAreaFactorDataGridViewTextBoxColumn";
-            this.basalAreaFactorDataGridViewTextBoxColumn.ToolTipText = "Basal Area Factor";
-            this.basalAreaFactorDataGridViewTextBoxColumn.Width = 52;
-            // 
-            // fixedPlotSizeDataGridViewTextBoxColumn
-            // 
-            this.fixedPlotSizeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.fixedPlotSizeDataGridViewTextBoxColumn.DataPropertyName = "FixedPlotSize";
-            this.fixedPlotSizeDataGridViewTextBoxColumn.HeaderText = "Fixed";
-            this.fixedPlotSizeDataGridViewTextBoxColumn.Name = "fixedPlotSizeDataGridViewTextBoxColumn";
-            this.fixedPlotSizeDataGridViewTextBoxColumn.ToolTipText = "Fixed Plot Size";
-            this.fixedPlotSizeDataGridViewTextBoxColumn.Width = 57;
-            // 
-            // KZ3PPNT
-            // 
-            this.KZ3PPNT.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.KZ3PPNT.DataPropertyName = "KZ3PPNT";
-            this.KZ3PPNT.HeaderText = "KZ";
-            this.KZ3PPNT.Name = "KZ3PPNT";
-            this.KZ3PPNT.ToolTipText = "KZ Value for Plot Level Estimates of Volume";
-            this.KZ3PPNT.Width = 46;
-            // 
-            // fBSCodeDataGridViewTextBoxColumn
-            // 
-            this.fBSCodeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.fBSCodeDataGridViewTextBoxColumn.DataPropertyName = "FBSCode";
-            this.fBSCodeDataGridViewTextBoxColumn.HeaderText = "FBSCode";
-            this.fBSCodeDataGridViewTextBoxColumn.Name = "fBSCodeDataGridViewTextBoxColumn";
-            this.fBSCodeDataGridViewTextBoxColumn.ToolTipText = "Fall Buck and Scale Code";
-            this.fBSCodeDataGridViewTextBoxColumn.Width = 77;
-            // 
-            // MonthStr
-            // 
-            this.MonthStr.DataPropertyName = "MonthStr";
-            this.MonthStr.HeaderText = "Month";
-            this.MonthStr.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12"});
-            this.MonthStr.Name = "MonthStr";
-            // 
-            // yearDataGridViewTextBoxColumn
-            // 
-            this.yearDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.yearDataGridViewTextBoxColumn.DataPropertyName = "Year";
-            this.yearDataGridViewTextBoxColumn.HeaderText = "Year";
-            this.yearDataGridViewTextBoxColumn.Name = "yearDataGridViewTextBoxColumn";
-            this.yearDataGridViewTextBoxColumn.ToolTipText = "Year";
-            this.yearDataGridViewTextBoxColumn.Width = 54;
-            // 
-            // YieldComponent
-            // 
-            this.YieldComponent.DataPropertyName = "YieldComponent";
-            this.YieldComponent.HeaderText = "Yield Component";
-            this.YieldComponent.Name = "YieldComponent";
-            this.YieldComponent.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            // 
-            // createdByDataGridViewTextBoxColumn1
-            // 
-            this.createdByDataGridViewTextBoxColumn1.DataPropertyName = "CreatedBy";
-            this.createdByDataGridViewTextBoxColumn1.HeaderText = "CreatedBy";
-            this.createdByDataGridViewTextBoxColumn1.Name = "createdByDataGridViewTextBoxColumn1";
-            this.createdByDataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
-            // createdDateDataGridViewTextBoxColumn1
-            // 
-            this.createdDateDataGridViewTextBoxColumn1.DataPropertyName = "CreatedDate";
-            this.createdDateDataGridViewTextBoxColumn1.HeaderText = "CreatedDate";
-            this.createdDateDataGridViewTextBoxColumn1.Name = "createdDateDataGridViewTextBoxColumn1";
-            this.createdDateDataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
-            // modifiedByDataGridViewTextBoxColumn1
-            // 
-            this.modifiedByDataGridViewTextBoxColumn1.DataPropertyName = "ModifiedBy";
-            this.modifiedByDataGridViewTextBoxColumn1.HeaderText = "ModifiedBy";
-            this.modifiedByDataGridViewTextBoxColumn1.Name = "modifiedByDataGridViewTextBoxColumn1";
-            this.modifiedByDataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
-            // modifiedDateDataGridViewTextBoxColumn1
-            // 
-            this.modifiedDateDataGridViewTextBoxColumn1.DataPropertyName = "ModifiedDate";
-            this.modifiedDateDataGridViewTextBoxColumn1.HeaderText = "ModifiedDate";
-            this.modifiedDateDataGridViewTextBoxColumn1.Name = "modifiedDateDataGridViewTextBoxColumn1";
-            this.modifiedDateDataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
-            // EditDesignViewWinForms
+            // EditDesignView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.TabControl1);
             this.Margin = new System.Windows.Forms.Padding(0);
-            this.Name = "EditDesignViewWinForms";
+            this.Name = "EditDesignView";
             this.Size = new System.Drawing.Size(665, 415);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();

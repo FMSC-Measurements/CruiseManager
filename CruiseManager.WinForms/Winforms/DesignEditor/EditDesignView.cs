@@ -46,8 +46,9 @@ namespace CruiseManager.WinForms.EditDesign
         {
             base.OnLoad(e);
             System.Diagnostics.Debug.Assert(ViewPresenter != null);
+            this.BindSetup();//bind setup needs to be called before bind data, otherwise comboBoxes wont bind properly 
             this.BindData();
-            this.BindSetup();
+            
 
         }
 
