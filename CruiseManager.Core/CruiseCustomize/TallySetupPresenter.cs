@@ -149,6 +149,7 @@ namespace CruiseManager.Core.CruiseCustomize
                     if (hk == char.MinValue)
                     {
                         errorBuilder.AppendFormat("Missing Hot Key in SG:{0} Stratum:{1}\r\n", sgVM.ToString(), st.Code);
+                        success = false;
                     }
                     else if (usedHotKeys.IndexOf(hk) >= 0)//see if usedHotKeys already CONTAINS value
                     {
@@ -170,8 +171,9 @@ namespace CruiseManager.Core.CruiseCustomize
                         if (hk == char.MinValue)
                         {
                             errorBuilder.AppendFormat("Missing Hot Key in SG:{0} Stratum:{1}\r\n", sgVM.ToString(), st.Code);
+                            success = false;
                         }
-                        if (usedHotKeys.IndexOf(hk) >= 0)//see if usedHotKeys already CONTAINS value
+                        else if (usedHotKeys.IndexOf(hk) >= 0)//see if usedHotKeys already CONTAINS value
                         {
                             //ERROR stratum already has hot-key
                             errorBuilder.AppendFormat("Hot Key '{0}' in SG:{1} Stratum:{2} already in use\r\n", t.Hotkey, sgVM.ToString(), st.Code);
@@ -205,6 +207,8 @@ namespace CruiseManager.Core.CruiseCustomize
 
         private bool Save()
         {
+            this.View.EndEdits();
+
             var errorBuilder = new StringBuilder();
             if(!ValidateTallySettup(ref errorBuilder))
             {
@@ -300,7 +304,7 @@ END;"
 
         private void SaveTallyBySampleGroup(TallySetupSampleGroup sgVM)
         {
-            this.Database.BeginTransaction();
+            //this.Database.BeginTransaction();
             try
             {
                 if ((sgVM.TallyMethod & TallyMode.Locked) != TallyMode.Locked)
@@ -331,18 +335,19 @@ END;"
                     tally.Tally_CN, sgVM.SampleGroup_CN);
 
                 this.Database.Execute(setTallyCommand);
-                this.Database.EndTransaction();
+
+                //this.Database.EndTransaction();
             }
             catch(Exception)
             {
-                this.Database.CancelTransaction();
+                //this.Database.CancelTransaction();
                 throw;
             }
         }
 
         private void SaveTallyBySpecies(TallySetupSampleGroup sgVM)
         {
-            this.Database.BeginTransaction();
+            //this.Database.BeginTransaction();
             try
             {
                 if ((sgVM.TallyMethod & TallyMode.Locked) != TallyMode.Locked)
@@ -383,11 +388,11 @@ END;"
                     this.Database.Execute(setTallyCommand);
                 }
 
-                this.Database.EndTransaction();
+                //this.Database.EndTransaction();
             }
             catch(Exception)
             {
-                this.Database.CancelTransaction();
+                //this.Database.CancelTransaction();
                 throw;
             }
 
