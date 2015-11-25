@@ -1,0 +1,52 @@
+Feature: Edit Hotkeys
+	User can select hotkeys for tallies and strata
+	
+Background:
+GIVEN the following strata exist:
+	|code	|method	|
+	|01		|str	|
+	|02		|3p		|	
+AND the following samplegroups exist:
+	|stratum|code	|
+	|01		|01	 	|
+	|01		|02		|
+AND the folling SG-TDV mappings exist:
+	|SG	|TDV	|	
+	|01	|01		|
+	|02	|02		|
+	|02	|03		|
+	
+
+GIVEN samplegroup 01 tally setup has not been set
+WHEN samplegroup 01 is selected
+AND samplegroup 01 is set to tally by samplegroup
+THEN description reads 01 #pass
+AND hotkey is empty #pass
+
+
+GIVEN samplegroup 01 is set to tally by samplegroup
+AND tally hotkey for samplegroup 01 is blank
+WHEN user clicks saved
+THEN Missing Hot Key in SG:01 Stratum:01 is shown to user #pass
+AND tally setup data for samplegroup 01 is not saved #pass
+
+
+GIVEN samplegroup 01 is set to tally by species
+AND tally hotkey for samplegroup 01 is blank
+WHEN user clicks save
+THEN Missing Hot Key in SG:01 Stratum:01 is shown to user #pass
+AND tally setup data for samplegroup 01 is not saved #pass
+
+GIVEN stratum 01 has hotkey of 'A'
+WHEN tally hotkey list is opened 
+THEN tally hotkey list doesn't contain 'A' #pass 
+
+GIVEN stratum 01 has no hotkey
+WHEN stratum is given hotkey of 'A'
+AND tally hotkey list is opened
+THEN tally hotkey list doesn't contain A #fails (hotkey list is not refreshed until samplegroup is changed)
+
+GIVEN stratum 01 has no hotkey
+WHEN stratum is given hotkey of 'A'
+AND user clicks save
+THEN stratum 01 is persisted with hotkey of 'A' #fails
