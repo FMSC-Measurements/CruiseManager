@@ -135,7 +135,7 @@ namespace CruiseManager.WinForms
                 
                 if (value < -1 || value >= this.Controls.Count)
                 {
-                    throw new ArgumentOutOfRangeException("SelectedIndex", value, "value out of range");
+                    throw new ArgumentOutOfRangeException("CurrentPageIndex", value, "CurrentPageIndex out of range");
                 }
 
                 this.Display(value);

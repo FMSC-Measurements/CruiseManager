@@ -138,7 +138,7 @@ namespace CruiseManager.WinForms.CruiseWizard
         {
             string method = MethodComboBox.SelectedValue as string;
             if (string.IsNullOrEmpty(method)) { return; }
-            if (method.StartsWith("F"))
+            if (method.StartsWith("F", StringComparison.CurrentCultureIgnoreCase))
             {
                 _kzTB.Enabled = false;
                 _kzTB.Text = "0";
@@ -146,7 +146,7 @@ namespace CruiseManager.WinForms.CruiseWizard
                 BAFTextBox.TextBox.Enabled = false;
                 FixedPlotSizeTextBox.TextBox.Enabled = true;
             }
-            else if (method.StartsWith("P"))
+            else if (method.StartsWith("P", StringComparison.CurrentCultureIgnoreCase))
             {
                 _kzTB.Enabled = false;
                 _kzTB.Text = "0";

@@ -37,7 +37,7 @@ namespace CruiseManager.Core.Models
 
         public int Compare(TreeFieldSetupDO x, TreeFieldSetupDO y)
         {
-            return string.Compare(x.Field, y.Field);
+            return string.Compare(x.Field, y.Field, StringComparison.OrdinalIgnoreCase);
         }
 
         #endregion
@@ -79,7 +79,7 @@ namespace CruiseManager.Core.Models
 
         public int Compare(LogFieldSetupDO x, LogFieldSetupDO y)
         {
-            return string.Compare(x.Field, y.Field);
+            return string.Compare(x.Field, y.Field, StringComparison.OrdinalIgnoreCase);
         }
 
         #endregion
@@ -89,7 +89,7 @@ namespace CruiseManager.Core.Models
     {
         public override int Compare(TreeDefaultValueDO x, TreeDefaultValueDO y)
         {
-            return String.Compare(x.Species, y.Species, true);
+            return String.Compare(x.Species, y.Species, StringComparison.OrdinalIgnoreCase);
         }
     }
 

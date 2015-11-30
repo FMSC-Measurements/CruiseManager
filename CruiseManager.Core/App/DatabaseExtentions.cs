@@ -9,7 +9,7 @@ namespace CruiseManager.Core.App
 {
     public static class DatabaseExtentions
     {
-        private static TreeDefaultValueDO[] EMPTY_SPECIES_LIST = new TreeDefaultValueDO[] { };
+        private static TreeDefaultValueDO[] EMPTY_SPECIES_LIST = { };
 
         public static void SetTreeTDV(TreeVM tree, TreeDefaultValueDO tdv)
         {

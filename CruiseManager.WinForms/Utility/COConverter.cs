@@ -78,7 +78,7 @@ namespace CruiseManager.Utility
         {
             if (result == null)
             {
-                throw new ArgumentNullException("result");
+                throw new ArgumentNullException(nameof(result));
             }
             if (_convertCallerHandel == null)
             {

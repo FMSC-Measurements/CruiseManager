@@ -25,18 +25,18 @@ namespace CruiseManager.Core.Constants
 
         //public static readonly string[] THREE_P_METHODS = new string[] { "3P", "S3P", "F3P", "P3P" };//moved to CruiseDAL.Schema.CruiseMethods
 
-        public static readonly string[] EDITABLE_UNIT_FILEDS = new string[] { CUTTINGUNIT.AREA, CUTTINGUNIT.DESCRIPTION, CUTTINGUNIT.LOGGINGMETHOD };
-        public static readonly string[] EDITABLE_ST_FIELDS = new string[] { STRATUM.DESCRIPTION, STRATUM.MONTH, STRATUM.YEAR, STRATUM.YIELDCOMPONENT };
-        public static readonly string[] EDITABLE_SG_FIELDS = new string[] { SAMPLEGROUP.BIGBAF };
+        public static readonly string[] EDITABLE_UNIT_FILEDS = { CUTTINGUNIT.AREA, CUTTINGUNIT.DESCRIPTION, CUTTINGUNIT.LOGGINGMETHOD };
+        public static readonly string[] EDITABLE_ST_FIELDS = { STRATUM.DESCRIPTION, STRATUM.MONTH, STRATUM.YEAR, STRATUM.YIELDCOMPONENT };
+        public static readonly string[] EDITABLE_SG_FIELDS = { SAMPLEGROUP.BIGBAF };
 
-        public static readonly string[] HOTKEYS = new string[] { "A", "B", "C", "D",
+        public static readonly string[] HOTKEYS = { "A", "B", "C", "D",
                 "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P",
                 "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "1", "2",
                 "3", "4", "5", "6", "7", "8", "9", "0", "*", "." };
 
-        public static readonly string[] INDICATOR_TYPES = new string[] { "Beep", "None" };
+        public static readonly string[] INDICATOR_TYPES = { "Beep", "None" };
 
-        public static readonly String[] SALE_PURPOSE = new string[] { "Timber Sale", "Check Cruise", "Right of Way", "Recon", "Other" };
+        public static readonly String[] SALE_PURPOSE = { "Timber Sale", "Check Cruise", "Right of Way", "Recon", "Other" };
 
         public enum IndicatorType { Beep, None };
 

@@ -53,7 +53,7 @@ namespace CruiseManager.WinForms.DataEditor
             //this.AllTreeFields.Add(new FieldDiscriptor { Field = "SampleGroup", Header = "Sample Group", Format = "[Code]", DataType = typeof(TreeVM) });
             //this.AllTreeFields.Add(new FieldDiscriptor { Field = "TreeDefaultValue", Header = "Default Sp/LD/ProdP", Format = "[Species]/[LiveDead]/[PrimaryProduct]", DataType = typeof(TreeVM) });
             this.AllTreeFields.Add(new FieldDiscriptor { Field = "Plot", Header = "Plot Number", Format = "[PlotNumber]", DataType = typeof(TreeVM) });
-            this.AllTreeFields.Sort((x, y) => x.Header.CompareTo(y.Header));
+            this.AllTreeFields.Sort((x, y) => string.Compare(x.Header, y.Header, StringComparison.CurrentCulture));
 
             List<TreeFieldSetupDO> tf = ApplicationController.Database.Read<TreeFieldSetupDO>("TreeFieldSetup", "GROUP BY Field ORDER BY FieldOrder");
             TreeFields = (from field in tf
@@ -75,7 +75,7 @@ namespace CruiseManager.WinForms.DataEditor
             //this.AllLogFields.Add(new FieldDiscriptor { Field = "TreeDefaultValue", Header = "Default Sp/LD/ProdP", Format = "[Species]/[LiveDead]/[PrimaryProduct]", DataType = typeof(LogDO) });
             this.AllLogFields.Add(new FieldDiscriptor { Field = "TreeNumber", Header = "Tree Number", DataType = typeof(LogVM) });
             this.AllLogFields.Add(new FieldDiscriptor { Field = "PlotNumber", Header = "Plot Number", DataType = typeof(LogVM) });
-            this.AllLogFields.Sort((x, y) => x.Header.CompareTo(y.Header));
+            this.AllLogFields.Sort((x, y) => string.Compare(x.Header, y.Header, StringComparison.CurrentCulture));
             this.LogFields = new List<FieldDiscriptor>();
             this.LogOrderableAddRemoveWidget.DataSource = AllLogFields;
             this.LogOrderableAddRemoveWidget.SelectedItemsDataSource = LogFields;
@@ -355,6 +355,7 @@ namespace CruiseManager.WinForms.DataEditor
             //setup writer 
             using (PdfWriter writer = PdfWriter.GetInstance(document, stream)) 
             {
+                
                 document.AddHeader(Header.AUTHOR, "FMSC");
                 document.AddHeader(Header.CREATIONDATE, DateTime.Today.ToShortDateString());
                 document.Open();
@@ -639,7 +640,7 @@ namespace CruiseManager.WinForms.DataEditor
 
             public int CompareTo(FieldDiscriptor other)
             {
-                return this.Field.CompareTo(other.Field); 
+                return string.Compare(this.Field, other.Field, StringComparison.OrdinalIgnoreCase); 
             }
 
             #endregion

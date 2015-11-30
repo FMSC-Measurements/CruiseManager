@@ -47,7 +47,7 @@ namespace CruiseManager.WinForms.Components
 
         public DataGridViewColumn[] BuildDGVColumns()
         {
-            DataGridViewColumn[] cols = new DataGridViewColumn[]{
+            DataGridViewColumn[] cols = {
                 new DataGridViewTextBoxColumn(){ DataPropertyName = "MergeRowID", HeaderText = "Merge Track ID", ReadOnly = true },
                 new DataGridViewTextBoxColumn(){ DataPropertyName = "SiblingRecords", HeaderText = "SiblingRecords", ReadOnly = true },
                 new DataGridViewTextBoxColumn(){ DataPropertyName = "NaturalSiblings", HeaderText = "NaturalSiblings", ReadOnly = true },

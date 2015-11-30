@@ -17,7 +17,7 @@ namespace CruiseManager.Core.App
 {
     public abstract class ApplicationControllerBase : IDisposable, INavigationService
     {
-        internal static readonly TreeDefaultValueDO[] EMPTY_SPECIES_LIST = new TreeDefaultValueDO[] { };
+        internal static readonly TreeDefaultValueDO[] EMPTY_SPECIES_LIST = { };
 
         public Ninject.StandardKernel Kernel { get; set; }
 

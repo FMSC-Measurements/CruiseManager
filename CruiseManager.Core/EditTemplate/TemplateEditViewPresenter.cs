@@ -19,12 +19,12 @@ namespace CruiseManager.Core.EditTemplate
         private FMSC.Utility.Collections.BindingListRedux<TreeDefaultValueDO> _treeDefaultValues;
         //private List<TreeDefaultValueDO> _toBeDeletedTreeDefaults = new List<TreeDefaultValueDO>();
 
-        public EditTemplateView View { get; set; }
+        public new EditTemplateView View { get; set; }
         public DAL Database { get { return ApplicationController.Database; } }
 
 
         public BindingList<EditTemplateCruiseMethod> CruiseMethods { get; set; }
-        public FMSC.Utility.Collections.BindingListRedux<TreeDefaultValueDO> TreeDefaultValues 
+        public FMSC.Utility.Collections.BindingListRedux<TreeDefaultValueDO> TreeDefaultValues
         {
             get { return _treeDefaultValues; }
             set
@@ -74,11 +74,11 @@ namespace CruiseManager.Core.EditTemplate
                 this.TreeFields.Add(newTF);
             }
             this.LogFields = new List<LogFieldSetupDefaultDO>();
-            foreach(LogFieldSetupDO lf in ApplicationController.SetupService.GetLogFieldSetups())
+            foreach (LogFieldSetupDO lf in ApplicationController.SetupService.GetLogFieldSetups())
             {
                 LogFieldSetupDefaultDO newLF = new LogFieldSetupDefaultDO();
                 newLF.Field = lf.Field;
-                newLF.Heading = lf.Heading; 
+                newLF.Heading = lf.Heading;
                 newLF.Format = lf.Format;
                 newLF.ColumnType = lf.ColumnType;
                 newLF.Behavior = lf.Behavior;
@@ -107,7 +107,7 @@ namespace CruiseManager.Core.EditTemplate
                         vm.TreeFields = new BindingList<TreeFieldSetupDefaultDO>(treeFields);
 
 
-                        List<TreeFieldSetupDefaultDO> unselectedTreeFields = (from tfs in this.TreeFields.Except(treeFields, new TreeFieldDefaultComparer()) 
+                        List<TreeFieldSetupDefaultDO> unselectedTreeFields = (from tfs in this.TreeFields.Except(treeFields, new TreeFieldDefaultComparer())
                                                                               select new TreeFieldSetupDefaultDO(tfs)).ToList();
 
 
@@ -130,7 +130,7 @@ namespace CruiseManager.Core.EditTemplate
                 {
                     List<LogFieldSetupDefaultDO> logFields = this.ApplicationController.Database.Read<LogFieldSetupDefaultDO>("LogFieldSetupDefault", "ORDER BY FieldOrder");
                     SelectedLogFields = new BindingList<LogFieldSetupDefaultDO>(logFields);
-                    List<LogFieldSetupDefaultDO> unselectedLogFields = (from lfs in this.LogFields.Except(logFields, new LogFieldDefaultComparer()) 
+                    List<LogFieldSetupDefaultDO> unselectedLogFields = (from lfs in this.LogFields.Except(logFields, new LogFieldDefaultComparer())
                                                                         select new LogFieldSetupDefaultDO(lfs)).ToList();
                     UnselectedLogFields = new BindingList<LogFieldSetupDefaultDO>(unselectedLogFields);
                 }
@@ -212,7 +212,7 @@ namespace CruiseManager.Core.EditTemplate
 
         public List<TreeFieldSetupDefaultDO> GetSelectedTreeFields(CruiseMethodsDO method)
         {
-           return this.ApplicationController.Database.Read<TreeFieldSetupDefaultDO>("TreeFieldSetupDefault", "WHERE Method = ? ORDER BY FieldOrder", method.Code);
+            return this.ApplicationController.Database.Read<TreeFieldSetupDefaultDO>("TreeFieldSetupDefault", "WHERE Method = ? ORDER BY FieldOrder", method.Code);
         }
 
         public List<LogFieldSetupDefaultDO> GetSelectedLogFields()
@@ -232,14 +232,14 @@ namespace CruiseManager.Core.EditTemplate
             {
                 foreach (EditTemplateCruiseMethod method in CruiseMethods)
                 {
-                    foreach( TreeFieldSetupDefaultDO tfs in method.UnselectedTreeFields)
+                    foreach (TreeFieldSetupDefaultDO tfs in method.UnselectedTreeFields)
                     {
                         if (tfs.IsPersisted == true)
                         {
                             tfs.Delete();
                         }
                     }
-                   
+
 
                     foreach (TreeFieldSetupDefaultDO tfs in method.TreeFields)
                     {
@@ -273,7 +273,7 @@ namespace CruiseManager.Core.EditTemplate
                     //lfs.Method = method.CruiseMethod.Code;
                     lfs.Save(OnConflictOption.Ignore);
                 }
-                else if( lfs.HasChanges == true)
+                else if (lfs.HasChanges == true)
                 {
                     lfs.Save();
                 }
@@ -404,7 +404,7 @@ namespace CruiseManager.Core.EditTemplate
 
         public int Compare(TreeFieldSetupDefaultDO x, TreeFieldSetupDefaultDO y)
         {
-            return string.Compare(x.Field, y.Field);
+            return string.Compare(x.Field, y.Field, StringComparison.Ordinal);
         }
 
         #endregion
@@ -441,7 +441,7 @@ namespace CruiseManager.Core.EditTemplate
 
         public int Compare(LogFieldSetupDefaultDO x, LogFieldSetupDefaultDO y)
         {
-            return string.Compare(x.Field, y.Field);
+            return string.Compare(x.Field, y.Field, StringComparison.Ordinal);
         }
 
         #endregion
