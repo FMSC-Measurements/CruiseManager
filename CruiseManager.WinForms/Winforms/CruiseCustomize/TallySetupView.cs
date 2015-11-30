@@ -90,7 +90,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             }
 
             _tallyEditPanel.SampleGroup = _currentSG;
-            _tallyEditPanel.SetHotKeys(this.ViewPresenter.GetAvalibleHotKeysInStratum(_currentTallySetupStratum));
+            _tallyEditPanel.SetHotKeys(this.ViewPresenter.GetAvalibleTallyHotKeys(_currentTallySetupStratum));
         }
     }
 }

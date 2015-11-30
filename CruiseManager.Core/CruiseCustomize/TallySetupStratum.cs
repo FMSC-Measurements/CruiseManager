@@ -11,15 +11,23 @@ namespace CruiseManager.Core.CruiseCustomize
         public List<TallySetupSampleGroup> SampleGroups { get; set; }
 
 
-        /// <returns>collection containing all hotkeys in use by samplegroups in the stratum</returns>
+        /// <returns>collection containing all hot-keys in use by samplegroups in the stratum</returns>
         public ICollection<String> ListHotKeysInuse()
         {
-            string[] inuseHotKeys = new string[0];
+            var inuseHotKeys = new List<string>();
             foreach (TallySetupSampleGroup sg in this.SampleGroups)
             {
-                inuseHotKeys = inuseHotKeys.Union(
-                    (from TallyDO tally in sg.Tallies.Values
-                     select tally.Hotkey)).ToArray();
+                if (sg.TallyMethod.HasFlag(CruiseDAL.Enums.TallyMode.BySpecies))
+                {
+                    inuseHotKeys.AddRange(
+                        (from TallyDO tally in sg.Tallies.Values
+                         select tally.Hotkey));
+                }
+                else if (sg.TallyMethod.HasFlag(CruiseDAL.Enums.TallyMode.BySampleGroup))
+                {
+                    inuseHotKeys.Add(sg.SgTallie.Hotkey);
+
+                }
             }
             return inuseHotKeys;
         }
