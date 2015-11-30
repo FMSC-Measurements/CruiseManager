@@ -874,7 +874,7 @@ namespace CruiseManager.WinForms.DataEditor
                 cancel = true;
                 return;
             }
-            if (System.Math.Abs(tree.KPI) > float.Epsilon)
+            if (System.Math.Abs(tree.KPI) > float.Epsilon)//KPI == 0.0
             {
                 string message = string.Format("Tree RecID:{0} KPI changed from {1} to {2}", tree.Tree_CN, tree.KPI, newKPI);
                 this.Database.LogMessage(message, "I");
