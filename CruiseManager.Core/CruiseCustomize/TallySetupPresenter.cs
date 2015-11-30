@@ -156,7 +156,7 @@ namespace CruiseManager.Core.CruiseCustomize
 
             foreach (TallySetupSampleGroup sgVM in st.SampleGroups)
             {
-                if ((sgVM.TallyMethod & TallyMode.BySampleGroup) == TallyMode.BySampleGroup)
+                if (sgVM.TallyMethod.HasFlag(TallyMode.BySampleGroup))
                 {
                     char hk = HotKeyToChar(sgVM.SgTallie.Hotkey);
                     if (hk == char.MinValue)
@@ -176,7 +176,7 @@ namespace CruiseManager.Core.CruiseCustomize
                         usedHotKeys.Add(hk);
                     }
                 }
-                else if ((sgVM.TallyMethod & TallyMode.BySpecies) == TallyMode.BySpecies)
+                else if (sgVM.TallyMethod.HasFlag(TallyMode.BySpecies))
                 {
                     foreach (TallyVM t in sgVM.Tallies.Values)
                     {
@@ -318,11 +318,11 @@ END;"
                 //    Controller.Database.Execute(delCommand); //cleaned any existing count records. 
                 //}
 
-                if ((sgVM.TallyMethod & TallyMode.BySampleGroup) == TallyMode.BySampleGroup)
+                if (sgVM.TallyMethod.HasFlag(TallyMode.BySampleGroup))
                 {
                     SaveTallyBySampleGroup(sgVM);
                 }
-                else if ((sgVM.TallyMethod & TallyMode.BySpecies) == TallyMode.BySpecies)
+                else if (sgVM.TallyMethod.HasFlag(TallyMode.BySpecies))
                 {
                     SaveTallyBySpecies(sgVM);
                 }
