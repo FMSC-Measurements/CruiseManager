@@ -22,7 +22,6 @@ THEN Use Systematic Sampling checkbox is enabled #pass
 AND Use Systematic Sampling checkbox is checked #pass
 
 GIVEN stratum 01 has no trees
-AND use systmatic sampling for stratum 01 is false
 WHEN stratum 01 is selected
 AND samplegroup 02 is selected
 THEN Use Systematic Sampling checkbox is enabled #pass
@@ -34,5 +33,5 @@ THEN Use Systematic Sampling checkbox is disabled #pass
 
 GIVEN stratum 02 has no trees
 WHEN stratum 02 is selected
-THEN Use Systematic Sampling checkbox is disabled #pass
+THEN Tally by sample group is disabled #pass
 	
