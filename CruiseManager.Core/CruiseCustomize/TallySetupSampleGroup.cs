@@ -133,6 +133,23 @@ namespace CruiseManager.Core.CruiseCustomize
         }
         #endregion
 
+        public IEnumerable<string> ListUsedHotKeys()
+        {
+            var inuseHotKeys = new List<string>();
+            if (this.TallyMethod.HasFlag(CruiseDAL.Enums.TallyMode.BySpecies))
+            {
+                inuseHotKeys.AddRange(
+                    (from TallyDO tally in this.Tallies.Values
+                     select tally.Hotkey));
+            }
+            else if (this.TallyMethod.HasFlag(CruiseDAL.Enums.TallyMode.BySampleGroup))
+            {
+                inuseHotKeys.Add(this.SgTallie.Hotkey);
+
+            }
+            return inuseHotKeys;
+        }
+
         public void LoadTallieData()
         {
             if (this._tallieDataLoaded) { return; }//we have already loaded this samplegroup before, dont reload it

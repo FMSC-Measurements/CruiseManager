@@ -12,22 +12,12 @@ namespace CruiseManager.Core.CruiseCustomize
 
 
         /// <returns>collection containing all hot-keys in use by samplegroups in the stratum</returns>
-        public ICollection<String> ListHotKeysInuse()
+        public ICollection<String> ListUsedHotKeys()
         {
             var inuseHotKeys = new List<string>();
             foreach (TallySetupSampleGroup sg in this.SampleGroups)
             {
-                if (sg.TallyMethod.HasFlag(CruiseDAL.Enums.TallyMode.BySpecies))
-                {
-                    inuseHotKeys.AddRange(
-                        (from TallyDO tally in sg.Tallies.Values
-                         select tally.Hotkey));
-                }
-                else if (sg.TallyMethod.HasFlag(CruiseDAL.Enums.TallyMode.BySampleGroup))
-                {
-                    inuseHotKeys.Add(sg.SgTallie.Hotkey);
-
-                }
+                inuseHotKeys.Union(sg.ListUsedHotKeys());
             }
             return inuseHotKeys;
         }
