@@ -128,12 +128,12 @@ namespace CruiseManager.WinForms.TemplateEditor
 
         private void _logFieldWidget_SelectedValueChanged(object sender, EventArgs e, object selectedValue)
         {
-            this._BS_LogField.DataSource = selectedValue ?? String.Empty;
+            this._BS_LogField.DataSource = selectedValue ?? new LogFieldSetupDefaultDO[0];
         }
 
         private void _treeFieldWidget_SelectedValueChanged(object sender, EventArgs e, object selectedValue)
         {
-            this._BS_TreeField.DataSource = selectedValue ?? String.Empty;
+            this._BS_TreeField.DataSource = selectedValue ?? new TreeFieldSetupDefaultDO[0];
         }
 
         private void _treeFieldWidget_SelectionMoved(object sender, FMSC.Controls.ItemMovedEventArgs e)
