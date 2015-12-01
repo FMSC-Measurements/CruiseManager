@@ -22,7 +22,9 @@ namespace CruiseManager.WinForms.CruiseCustomize
         private bool _changingSampleGroup = false;
         private bool _changingCurrTally = false;
 
-        private TreeDefaultValueDO _currTDV; 
+        private TreeDefaultValueDO _currTDV;
+
+        
 
         public TallyEditPanel()
         {
@@ -31,6 +33,9 @@ namespace CruiseManager.WinForms.CruiseCustomize
             //this._hotKeyCB.Items.AddRange(CSM.Utility.R.Strings.HOTKEYS);
             this._behaviorCB.Items.AddRange(Strings.INDICATOR_TYPES);
         }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Func<string, string[]> GetHotKeys { get; set; }
 
         protected bool AllowTallyBySpecies 
         {
@@ -138,6 +143,18 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
                 _changingCurrTally = false;
             }
+        }
+
+        protected void NotifyHotKeysDropedDown(object sender, EventArgs e)
+        {
+            if(GetHotKeys != null)
+            {
+                var curHotKey = CurrentTally.Hotkey; 
+
+                var avalibleHotKeys = GetHotKeys(curHotKey);
+                this._hotKeyCB.DataSource = avalibleHotKeys;
+            }
+
         }
 
         protected override void OnEnabledChanged(EventArgs e)

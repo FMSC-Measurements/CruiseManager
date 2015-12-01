@@ -86,6 +86,7 @@
             this._stratumHKCB.Name = "_stratumHKCB";
             this._stratumHKCB.Size = new System.Drawing.Size(47, 21);
             this._stratumHKCB.TabIndex = 13;
+            this._stratumHKCB.DropDown += new System.EventHandler(this._stratumHKCB_DropDown);
             // 
             // label21
             // 

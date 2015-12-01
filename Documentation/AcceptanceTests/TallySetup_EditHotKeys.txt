@@ -49,4 +49,4 @@ THEN tally hotkey list doesn't contain A #fails (hotkey list is not refreshed un
 GIVEN stratum 01 has no hotkey
 WHEN stratum is given hotkey of 'A'
 AND user clicks save
-THEN stratum 01 is persisted with hotkey of 'A' #fails
+THEN stratum 01 is persisted with hotkey of 'A' #pass

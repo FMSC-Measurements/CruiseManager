@@ -26,6 +26,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this.ViewPresenter = presenter;
             presenter.View = this;
             InitializeComponent();
+            this._tallyEditPanel.GetHotKeys = this._tallyEditPanel_GetHotKeys;
         }
 
         
@@ -61,7 +62,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
             if (_currentTallySetupStratum == null) { return; }
 
-            _stratumHKCB.DataSource = this.ViewPresenter.GetAvalibleStratumHotKeys(_currentTallySetupStratum);
+            //_stratumHKCB.DataSource = this.ViewPresenter.GetAvalibleStratumHotKeys(_currentTallySetupStratum);
             _stratumHKCB.Text = _currentTallySetupStratum.Hotkey;
 
             this._tallyEditPanel.Enabled = ViewPresenter.CanDefintTallys(_currentTallySetupStratum);
@@ -90,7 +91,21 @@ namespace CruiseManager.WinForms.CruiseCustomize
             }
 
             _tallyEditPanel.SampleGroup = _currentSG;
-            _tallyEditPanel.SetHotKeys(this.ViewPresenter.GetAvalibleTallyHotKeys(_currentTallySetupStratum));
+           // _tallyEditPanel.SetHotKeys(this.ViewPresenter.GetAvalibleTallyHotKeys(_currentTallySetupStratum));
+        }
+
+        private void _stratumHKCB_DropDown(object sender, EventArgs e)
+        {
+            _stratumHKCB.DataSource = this.ViewPresenter.GetAvalibleStratumHotKeys(_currentTallySetupStratum);
+        }
+
+        private string[] _tallyEditPanel_GetHotKeys(string curHotKey)
+        {
+            if(_currentTallySetupStratum != null)
+            {
+                return this.ViewPresenter.GetAvalibleTallyHotKeys(this._currentTallySetupStratum, curHotKey);
+            }
+            return new string[]{ };
         }
     }
 }

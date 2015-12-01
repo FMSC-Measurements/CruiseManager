@@ -119,13 +119,15 @@ namespace CruiseManager.Core.CruiseCustomize
         /// </summary>
         /// <param name="st"></param>
         /// <returns></returns>
-        public string[] GetAvalibleTallyHotKeys(TallySetupStratum st)
+        public string[] GetAvalibleTallyHotKeys(TallySetupStratum st, string curHotKey)
         {
-            var useHotKeys = (from StratumDO stratum in this.TallySetupStrata
+            var usedHotKeys = (from StratumDO stratum in this.TallySetupStrata
                               select stratum.Hotkey);
-            useHotKeys = useHotKeys.Union(st.ListHotKeysInuse());
+            var stratumLevelHotKeys = st.ListHotKeysInuse();
+            stratumLevelHotKeys.Remove(curHotKey);
+            usedHotKeys = usedHotKeys.Union(stratumLevelHotKeys);
 
-            var avalibleHotHeys = Strings.HOTKEYS.Except(useHotKeys).ToArray();
+            var avalibleHotHeys = Strings.HOTKEYS.Except(usedHotKeys).ToArray();
             return avalibleHotHeys;
         }
 
