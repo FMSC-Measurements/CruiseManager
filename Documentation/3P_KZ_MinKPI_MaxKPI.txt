@@ -1,0 +1,12 @@
+Here is one example to use for KPI’s and max KZ’s:
+
+Given:
+Recon data indicates there are about 500 trees in the population.
+The average sized tree in the population is 11” DBH and 60’ tall = 20 CF per tree.
+
+KZ = estimated population volume / desired number of samples
+KZ = (500 x 20) / 30
+KZ = 333
+
+KPI’s would be around 20 +/-    How much + or – depends on the variability of tree sizes. If they are really variable, KPI’s could range from 10 to 30. Or more.
+Let’s say the cruise designer doesn’t expect a tree bigger than 20” DBH and 100’ tall (95 CF). They might use 95 for max KPI.
