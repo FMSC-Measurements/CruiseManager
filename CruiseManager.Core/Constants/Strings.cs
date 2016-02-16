@@ -27,7 +27,7 @@ namespace CruiseManager.Core.Constants
 
         public static readonly string[] EDITABLE_UNIT_FILEDS = { CUTTINGUNIT.AREA, CUTTINGUNIT.DESCRIPTION, CUTTINGUNIT.LOGGINGMETHOD };
         public static readonly string[] EDITABLE_ST_FIELDS = { STRATUM.DESCRIPTION, STRATUM.MONTH, STRATUM.YEAR, STRATUM.YIELDCOMPONENT };
-        public static readonly string[] EDITABLE_SG_FIELDS = { SAMPLEGROUP.BIGBAF };
+        public static readonly string[] EDITABLE_SG_FIELDS = { SAMPLEGROUP.BIGBAF, SAMPLEGROUP.SECONDARYPRODUCT };
 
         public static readonly string[] HOTKEYS = { "A", "B", "C", "D",
                 "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P",
