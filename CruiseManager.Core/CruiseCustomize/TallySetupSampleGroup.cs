@@ -60,15 +60,15 @@ namespace CruiseManager.Core.CruiseCustomize
             set
             {
                 if(UseSystematicSampling == value) { return; }
-                if(CanChangeSamplerType)
+                if(CanChangeSamplerType && IsSTR)
                 {
-                    if(IsSTR)
-                    {
-                        base.SampleSelectorType = (value) ? CruiseDAL.Schema.Constants.CruiseMethods.SYSTEMATIC_SAMPLER_TYPE : string.Empty;
-                        this.HasTallyEdits = true;
-                    }
+
+                    base.SampleSelectorType = (value) ? CruiseDAL.Schema.Constants.CruiseMethods.SYSTEMATIC_SAMPLER_TYPE : string.Empty;
+                    NotifyPropertyChanged(nameof(UseSystematicSampling));
+                    this.HasTallyEdits = true;
+                    
                 }
-                else
+                else if (!CanChangeSamplerType)
                 {
                     throw new UserFacingException("Sample Settings are locked on this Sample Group");
                 }
@@ -94,6 +94,9 @@ namespace CruiseManager.Core.CruiseCustomize
         public bool CanTallyBySpecies
         {  get { return true; } }
 
+        /// <summary>
+        /// returns true if parent stratum's cruise method is STR
+        /// </summary>
         public bool IsSTR
         {
             get
@@ -135,19 +138,19 @@ namespace CruiseManager.Core.CruiseCustomize
 
         public IEnumerable<string> ListUsedHotKeys()
         {
-            var inuseHotKeys = new List<string>();
             if (this.TallyMethod.HasFlag(CruiseDAL.Enums.TallyMode.BySpecies))
             {
-                inuseHotKeys.AddRange(
-                    (from TallyDO tally in this.Tallies.Values
-                     select tally.Hotkey));
+                return (from TallyDO tally in this.Tallies.Values
+                        select tally.Hotkey);
             }
             else if (this.TallyMethod.HasFlag(CruiseDAL.Enums.TallyMode.BySampleGroup))
             {
-                inuseHotKeys.Add(this.SgTallie.Hotkey);
-
+                return new string[] { this.SgTallie.Hotkey, };
             }
-            return inuseHotKeys;
+            else // SG is not tally by SG or Sp
+            {
+                return new string[] { };
+            }
         }
 
         public void LoadTallieData()

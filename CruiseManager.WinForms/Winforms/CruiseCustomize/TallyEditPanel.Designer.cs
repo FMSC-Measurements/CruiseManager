@@ -112,7 +112,6 @@
             // 
             // _hotKeyCB
             // 
-            this._hotKeyCB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this._BS_CurTally, "Hotkey", true));
             this._hotKeyCB.Dock = System.Windows.Forms.DockStyle.Top;
             this._hotKeyCB.FormattingEnabled = true;
             this._hotKeyCB.Location = new System.Drawing.Point(3, 62);
@@ -120,6 +119,7 @@
             this._hotKeyCB.Size = new System.Drawing.Size(163, 21);
             this._hotKeyCB.TabIndex = 3;
             this._hotKeyCB.DropDown += new System.EventHandler(this.NotifyHotKeysDropedDown);
+            this._hotKeyCB.TextChanged += new System.EventHandler(this._hotKeyCB_TextChanged);
             // 
             // label12
             // 

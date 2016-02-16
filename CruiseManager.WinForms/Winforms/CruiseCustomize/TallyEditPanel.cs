@@ -125,6 +125,10 @@ namespace CruiseManager.WinForms.CruiseCustomize
                 {
                     _hotKeyCB.Text = "";
                 }
+                else
+                {
+                    _hotKeyCB.Text = value.Hotkey;
+                }
                 if (value == null || string.IsNullOrEmpty(value.IndicatorType))
                 {
                     _behaviorCB.Text = "";
@@ -152,7 +156,9 @@ namespace CruiseManager.WinForms.CruiseCustomize
                 var curHotKey = CurrentTally.Hotkey; 
 
                 var avalibleHotKeys = GetHotKeys(curHotKey);
-                this._hotKeyCB.DataSource = avalibleHotKeys;
+                //this._hotKeyCB.DataSource = avalibleHotKeys;
+                this._hotKeyCB.Items.Clear();
+                this._hotKeyCB.Items.AddRange(avalibleHotKeys);
             }
 
         }
@@ -319,6 +325,15 @@ namespace CruiseManager.WinForms.CruiseCustomize
         internal void EndEdits()
         {
             this._BS_CurTally.EndEdit();
+        }
+
+        private void _hotKeyCB_TextChanged(object sender, EventArgs e)
+        {
+            if(_changingCurrTally || this.CurrentTally == null)
+            {
+                return;
+            }
+            this.CurrentTally.Hotkey = _hotKeyCB.Text;
         }
     }
 }

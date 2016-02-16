@@ -499,6 +499,8 @@
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.SampleGroupDO.datasource" />
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.StratumDO.datasource" />
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.TreeDefaultValueDO.datasource" />
+    <None Include="Properties\DataSources\CruiseManager.Core.CruiseCustomize.TallySetupSampleGroup.datasource" />
+    <None Include="Properties\DataSources\CruiseManager.Core.CruiseCustomize.TallySetupStratum.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
