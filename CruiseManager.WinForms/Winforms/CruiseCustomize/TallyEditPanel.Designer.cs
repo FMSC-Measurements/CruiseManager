@@ -80,10 +80,11 @@
             this._GB_tallyFields.Controls.Add(this._discriptionTB);
             this._GB_tallyFields.Controls.Add(this.label1);
             this._GB_tallyFields.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._GB_tallyFields.Location = new System.Drawing.Point(147, 16);
+            this._GB_tallyFields.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this._GB_tallyFields.Location = new System.Drawing.Point(147, 18);
             this._GB_tallyFields.Name = "_GB_tallyFields";
             this._GB_tallyFields.Padding = new System.Windows.Forms.Padding(3, 3, 20, 3);
-            this._GB_tallyFields.Size = new System.Drawing.Size(186, 260);
+            this._GB_tallyFields.Size = new System.Drawing.Size(186, 258);
             this._GB_tallyFields.TabIndex = 7;
             this._GB_tallyFields.TabStop = false;
             // 
@@ -92,8 +93,9 @@
             this._behaviorCB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this._BS_CurTally, "IndicatorType", true));
             this._behaviorCB.Dock = System.Windows.Forms.DockStyle.Top;
             this._behaviorCB.Enabled = false;
+            this._behaviorCB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this._behaviorCB.FormattingEnabled = true;
-            this._behaviorCB.Location = new System.Drawing.Point(3, 96);
+            this._behaviorCB.Location = new System.Drawing.Point(3, 100);
             this._behaviorCB.Name = "_behaviorCB";
             this._behaviorCB.Size = new System.Drawing.Size(163, 21);
             this._behaviorCB.TabIndex = 5;
@@ -103,9 +105,9 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label11.Location = new System.Drawing.Point(3, 83);
+            this.label11.Location = new System.Drawing.Point(3, 87);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(49, 13);
+            this.label11.Size = new System.Drawing.Size(52, 13);
             this.label11.TabIndex = 4;
             this.label11.Text = "Behavior";
             this.label11.Visible = false;
@@ -113,8 +115,9 @@
             // _hotKeyCB
             // 
             this._hotKeyCB.Dock = System.Windows.Forms.DockStyle.Top;
+            this._hotKeyCB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this._hotKeyCB.FormattingEnabled = true;
-            this._hotKeyCB.Location = new System.Drawing.Point(3, 62);
+            this._hotKeyCB.Location = new System.Drawing.Point(3, 66);
             this._hotKeyCB.Name = "_hotKeyCB";
             this._hotKeyCB.Size = new System.Drawing.Size(163, 21);
             this._hotKeyCB.TabIndex = 3;
@@ -125,28 +128,29 @@
             // 
             this.label12.AutoSize = true;
             this.label12.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label12.Location = new System.Drawing.Point(3, 49);
+            this.label12.Location = new System.Drawing.Point(3, 53);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(45, 13);
+            this.label12.Size = new System.Drawing.Size(46, 13);
             this.label12.TabIndex = 2;
             this.label12.Text = "Hot Key";
             // 
             // _discriptionTB
             // 
+            this._discriptionTB.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this._discriptionTB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this._BS_CurTally, "Description", true));
             this._discriptionTB.Dock = System.Windows.Forms.DockStyle.Top;
-            this._discriptionTB.Location = new System.Drawing.Point(3, 29);
+            this._discriptionTB.Location = new System.Drawing.Point(3, 31);
             this._discriptionTB.Name = "_discriptionTB";
-            this._discriptionTB.Size = new System.Drawing.Size(163, 20);
+            this._discriptionTB.Size = new System.Drawing.Size(163, 22);
             this._discriptionTB.TabIndex = 7;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label1.Location = new System.Drawing.Point(3, 16);
+            this.label1.Location = new System.Drawing.Point(3, 18);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(87, 13);
+            this.label1.Size = new System.Drawing.Size(91, 13);
             this.label1.TabIndex = 6;
             this.label1.Text = "Tally Button Text";
             // 
@@ -157,18 +161,19 @@
             this.panel1.Controls.Add(this._tallyBySpRB);
             this.panel1.Controls.Add(this._tallyBySGRB);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel1.Location = new System.Drawing.Point(3, 16);
+            this.panel1.Location = new System.Drawing.Point(3, 18);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(144, 260);
+            this.panel1.Size = new System.Drawing.Size(144, 258);
             this.panel1.TabIndex = 6;
             // 
             // _speciesGB
             // 
             this._speciesGB.Controls.Add(this._speciesLB);
             this._speciesGB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._speciesGB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this._speciesGB.Location = new System.Drawing.Point(0, 51);
             this._speciesGB.Name = "_speciesGB";
-            this._speciesGB.Size = new System.Drawing.Size(144, 209);
+            this._speciesGB.Size = new System.Drawing.Size(144, 207);
             this._speciesGB.TabIndex = 6;
             this._speciesGB.TabStop = false;
             this._speciesGB.Text = "Species";
@@ -180,9 +185,9 @@
             this._speciesLB.Dock = System.Windows.Forms.DockStyle.Fill;
             this._speciesLB.FormatString = "[Species]";
             this._speciesLB.FormattingEnabled = true;
-            this._speciesLB.Location = new System.Drawing.Point(3, 16);
+            this._speciesLB.Location = new System.Drawing.Point(3, 18);
             this._speciesLB.Name = "_speciesLB";
-            this._speciesLB.Size = new System.Drawing.Size(138, 190);
+            this._speciesLB.Size = new System.Drawing.Size(138, 186);
             this._speciesLB.TabIndex = 0;
             // 
             // _BS_SPList
@@ -195,6 +200,7 @@
             this._dontTallyRB.AutoSize = true;
             this._dontTallyRB.Checked = true;
             this._dontTallyRB.Dock = System.Windows.Forms.DockStyle.Top;
+            this._dontTallyRB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this._dontTallyRB.Location = new System.Drawing.Point(0, 34);
             this._dontTallyRB.Name = "_dontTallyRB";
             this._dontTallyRB.Size = new System.Drawing.Size(144, 17);
@@ -208,6 +214,7 @@
             // 
             this._tallyBySpRB.AutoSize = true;
             this._tallyBySpRB.Dock = System.Windows.Forms.DockStyle.Top;
+            this._tallyBySpRB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this._tallyBySpRB.Location = new System.Drawing.Point(0, 17);
             this._tallyBySpRB.Name = "_tallyBySpRB";
             this._tallyBySpRB.Size = new System.Drawing.Size(144, 17);
@@ -220,6 +227,7 @@
             // 
             this._tallyBySGRB.AutoSize = true;
             this._tallyBySGRB.Dock = System.Windows.Forms.DockStyle.Top;
+            this._tallyBySGRB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this._tallyBySGRB.Location = new System.Drawing.Point(0, 0);
             this._tallyBySGRB.Name = "_tallyBySGRB";
             this._tallyBySGRB.Size = new System.Drawing.Size(144, 17);
@@ -238,6 +246,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this._GB_topLevelContainer);
+            this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "TallyEditPanel";
             this.Size = new System.Drawing.Size(336, 279);
             ((System.ComponentModel.ISupportInitialize)(this._BS_CurTally)).EndInit();
