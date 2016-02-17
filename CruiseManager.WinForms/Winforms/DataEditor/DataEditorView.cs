@@ -14,18 +14,9 @@ namespace CruiseManager.WinForms.DataEditor
 {
     public partial class DataEditorView : Form
     {
-        public const string CUTTING_UNIT_COLUMN_NAME = "Cutting Unit";
-        public const string STRATUM_COLUMN_NAME = "Stratum";
-        public const string SAMPLEGROUP_COLUMN_NAME = "Sample Group";
-        public const string DEFAULTS_COLUMN_NAME = "Defaults";
-        public const string TREENUMBER_COLUMN_NAME = "Tree Number";
-        public const string COUNT_SPECIES_COLUMN_NAME = "Species";
-
-        //private System.Threading.Thread _rebuildErrorsThread; 
 
         #region Constants
-        //these constants will be stand-in for the user to select "ANY" as an option from the drop downs
-        //to determine if the user has selected the "ANY" option we will use Object.ReferenceEquals
+        //place holder objects for "All" filter
         private readonly CuttingUnitDO ANY_OPTION_CUTTINGUNIT =
             new CuttingUnitDO
             {
@@ -49,13 +40,18 @@ namespace CruiseManager.WinForms.DataEditor
             {
                 Species = "All"
             };
+
+        const string CUTTING_UNIT_COLUMN_NAME = "Cutting Unit";
+        const string STRATUM_COLUMN_NAME = "Stratum";
+        const string SAMPLEGROUP_COLUMN_NAME = "Sample Group";
+        const string DEFAULTS_COLUMN_NAME = "Defaults";
+        const string TREENUMBER_COLUMN_NAME = "Tree Number";
+        const string COUNT_SPECIES_COLUMN_NAME = "Species";
         #endregion
 
         protected DataEditorView() 
         {
             InitializeComponent();
-
-            this._DGV_Trees.CellValueChanged += this.HandleTreeValueChanged;
         }
 
         public DataEditorView(WindowPresenter windowPresenter, ApplicationControllerBase applicationController) : this()
@@ -71,94 +67,13 @@ namespace CruiseManager.WinForms.DataEditor
             //ResetViewFilters();
         }
 
-        protected DAL Database { get { return this.ApplicationController.Database; } }
+        DAL Database { get { return this.ApplicationController.Database; } }
+        WindowPresenter WindowPresenter { get; set; }
+        ApplicationControllerBase ApplicationController { get; set; }
 
-        public bool SuppressUpdates { get; set; }
-
-        public WindowPresenter WindowPresenter { get; set; }
-        public ApplicationControllerBase ApplicationController { get; set; }
-
-        public DAL DAL
-        {
-            get { return ApplicationController.Database; }
-        }
-
-
-        #region Current selections
-
-        private CuttingUnitDO _CuttingUnitFilter;
-        public CuttingUnitDO CuttingUnitFilter
-        {
-            get
-            {
-                if (Object.ReferenceEquals(_CuttingUnitFilter, ANY_OPTION_CUTTINGUNIT))
-                { return null; }
-                else
-                { return _CuttingUnitFilter; }
-            }
-            set
-            {
-                this._CuttingUnitFilter = value;
-                OnCuttingUnitFilterChanged(); 
-                PopulateData();
-            }
-        }
-
-        private StratumDO _stratumFilter;
-        public StratumDO StratumFilter
-        {
-            get
-            {
-                if (Object.ReferenceEquals(_stratumFilter, ANY_OPTION_STRATUM))
-                { return null; }
-                else
-                { return _stratumFilter; }
-            }
-            set
-            {
-                this._stratumFilter = value;
-                OnStratumFilterChanged(); 
-                PopulateData();
-            }
-        }
-
-        private SampleGroupDO _sampleGroupFilter;
-        public SampleGroupDO SampleGroupFilter
-        {
-            get
-            {
-                if (Object.ReferenceEquals(_sampleGroupFilter, ANY_OPTION_SAMPLEGROUP))
-                { return null; }
-                else
-                { return _sampleGroupFilter; }
-            }
-            set
-            {
-                _sampleGroupFilter = value;
-                OnSampleGroupFilterChanged(); 
-                PopulateData();
-            }
-        }
+        bool SuppressUpdates { get; set; }
 
         
-
-        private TreeDefaultValueDO _treeDefaultValueFilter;
-        public TreeDefaultValueDO TreeDefaultValueFilter
-        {
-            get
-            {
-                if (Object.ReferenceEquals(_treeDefaultValueFilter, ANY_OPTION_TREEDEFAULT))
-                { return null; }
-                else
-                { return _treeDefaultValueFilter; }
-            }
-            set 
-            { 
-                _treeDefaultValueFilter = value;
-                PopulateData();
-            }
-        }
-        #endregion
 
         #region Data set stuff
         public List<ErrorLogDO> ErrorLogs { get; set; }
@@ -247,9 +162,7 @@ namespace CruiseManager.WinForms.DataEditor
             get { return _BS_Trees.DataSource as BindingList<TreeVM>; }
             set { _BS_Trees.DataSource = value; }
         }
-
-        
-
+       
         public BindingList<LogVM> Logs
         {
             get { return _BS_.DataSource as BindingList<LogVM>; }
@@ -281,27 +194,83 @@ namespace CruiseManager.WinForms.DataEditor
 
         #endregion
 
-        //private DataEditorPresentor _presentor;
-        //public DataEditorPresentor Presentor {
-        //    get { return _presentor; }
-        //    set
-        //    {
-        //        _presentor = value;
-        //        if (_presentor == null) { return; }
-        //        this.CuttingUnitBindingSource.DataSource = _presentor;
-        //        this.StratumBindingSource.DataSource = _presentor;
-        //        this.SampleGroupComboBox.DataSource = _presentor;
-        //        this.TreeDefaultBindingSource.DataSource = _presentor;
-        //        this.TreeBindingSource.DataSource = _presentor;
-        //        this.LogsBindingSource.DataSource = _presentor;
-        //        this.PlotsBindingSource.DataSource = _presentor;
-        //        this.CountsBindingSource.DataSource = _presentor;
+        #region filter selections
 
-        //        //Update();
-        //    }
-        //}
+        private CuttingUnitDO _CuttingUnitFilter;
+        public CuttingUnitDO CuttingUnitFilter
+        {
+            get
+            {
+                if (Object.ReferenceEquals(_CuttingUnitFilter, ANY_OPTION_CUTTINGUNIT))
+                { return null; }
+                else
+                { return _CuttingUnitFilter; }
+            }
+            set
+            {
+                this._CuttingUnitFilter = value;
+                OnCuttingUnitFilterChanged();
+                PopulateData();
+            }
+        }
 
-        #region event handlers
+        private StratumDO _stratumFilter;
+        public StratumDO StratumFilter
+        {
+            get
+            {
+                if (Object.ReferenceEquals(_stratumFilter, ANY_OPTION_STRATUM))
+                { return null; }
+                else
+                { return _stratumFilter; }
+            }
+            set
+            {
+                this._stratumFilter = value;
+                OnStratumFilterChanged();
+                PopulateData();
+            }
+        }
+
+        private SampleGroupDO _sampleGroupFilter;
+        public SampleGroupDO SampleGroupFilter
+        {
+            get
+            {
+                if (Object.ReferenceEquals(_sampleGroupFilter, ANY_OPTION_SAMPLEGROUP))
+                { return null; }
+                else
+                { return _sampleGroupFilter; }
+            }
+            set
+            {
+                _sampleGroupFilter = value;
+                OnSampleGroupFilterChanged();
+                PopulateData();
+            }
+        }
+
+
+
+        private TreeDefaultValueDO _treeDefaultValueFilter;
+        public TreeDefaultValueDO TreeDefaultValueFilter
+        {
+            get
+            {
+                if (Object.ReferenceEquals(_treeDefaultValueFilter, ANY_OPTION_TREEDEFAULT))
+                { return null; }
+                else
+                { return _treeDefaultValueFilter; }
+            }
+            set
+            {
+                _treeDefaultValueFilter = value;
+                PopulateData();
+            }
+        }
+        #endregion
+
+        #region filter event handlers
         private void CuttingUnitBindingSource_CurrentChanged(object sender, EventArgs e)
         {
             if (!SuppressUpdates)
@@ -334,23 +303,78 @@ namespace CruiseManager.WinForms.DataEditor
             }
         }
 
-        
+        void OnSampleGroupFilterChanged()
+        {
+            if (this.DesignMode == true) { return; }
+            //if sample group given
+            if (SampleGroupFilter != null)
+            {
+                //populate list of tree defaults for given sample group
+                if (SampleGroupFilter.TreeDefaultValues.IsPopulated == false)
+                {
+                    SampleGroupFilter.TreeDefaultValues.Populate();
+                }
+                TreeDefaults = SampleGroupFilter.TreeDefaultValues.ToList();
+            }
+            else
+            {
+                //populate tree default selection list with all tree defaults
+                TreeDefaults = new List<TreeDefaultValueDO>();
+            }
+        }
+
+        void OnStratumFilterChanged()
+        {
+            if (this.DesignMode == true) { return; }
+            //if all stratum selected
+            if (StratumFilter == null)
+            {
+                //read all cutting units
+                this.CuttingUnits = Database.Read<CuttingUnitDO>("CuttingUnit", null, null);
+                //and disable ability to select samplegroup or tree default
+                _sampleGroupFilter = ANY_OPTION_SAMPLEGROUP;
+                _treeDefaultValueFilter = ANY_OPTION_TREEDEFAULT;
+                CanSelectSampleGroup = false;
+                CanSelectTreeDefaultValue = false;
+            }
+            else
+            {
+                //load cutting unit selection list with all cutting units in stratum
+                if (StratumFilter.CuttingUnits.IsPopulated == false)
+                {
+                    StratumFilter.CuttingUnits.Populate();
+                }
+                this.CuttingUnits = StratumFilter.CuttingUnits.ToList();
+                //load sample group selection list with all sample groups in stratum
+                this.SampleGroups = Database.Read<SampleGroupDO>("SampleGroup", "WHERE Stratum_CN = ?", StratumFilter.Stratum_CN.ToString());
+                //and enable ability to select sample group and tree default
+                CanSelectSampleGroup = true;
+                CanSelectTreeDefaultValue = true;
+            }
+        }
+
+        void OnCuttingUnitFilterChanged()
+        {
+            if (this.DesignMode == true) { return; }
+            //if cutting unit not given
+            if (CuttingUnitFilter == null)
+            {
+                //populate stratum selection list with all stratum
+                this.Strata = Database.Read<StratumDO>("Stratum", null, null);
+            }
+            else
+            {
+                //populate stratum selection with stratum in cutting unit
+                if (CuttingUnitFilter.Strata.IsPopulated == false)
+                {
+                    CuttingUnitFilter.Strata.Populate();
+                }
+                this.Strata = CuttingUnitFilter.Strata.ToList();
+            }
+
+        }
         #endregion
 
-        //public void UpdateData()
-        //{
-        //    //PopulateData();
-        //    //this.CuttingUnitBindingSource.ResetBindings(false);
-        //    //this.StratumBindingSource.ResetBindings(false);
-        //    //this.SampleGroupBindingSource.ResetBindings(false);
-        //    //this.TreeDefaultBindingSource.ResetBindings(false);
-        //    //this.TreeBindingSource.ResetBindings(false);
-        //    //this.LogsBindingSource.ResetBindings(false);
-        //    //this.PlotsBindingSource.ResetBindings(false);
-        //    //this.CountsBindingSource.ResetBindings(false);
-
-
-        //}
 
         protected override void OnLoad(EventArgs e)
         {
@@ -358,7 +382,6 @@ namespace CruiseManager.WinForms.DataEditor
             try
             {
                 this.ResetViewFilters();//initialize filters and load data
-
 
                 this.RebuildErrors();
 
@@ -390,77 +413,6 @@ namespace CruiseManager.WinForms.DataEditor
             OnCuttingUnitFilterChanged();
             OnStratumFilterChanged();
             PopulateData();
-        }
-
-        private void OnSampleGroupFilterChanged()
-        {
-            if (this.DesignMode == true) { return; }
-            //if sample group given
-            if (SampleGroupFilter != null)
-            {
-                //populate list of tree defaults for given sample group
-                if (SampleGroupFilter.TreeDefaultValues.IsPopulated == false)
-                {
-                    SampleGroupFilter.TreeDefaultValues.Populate();
-                }
-                TreeDefaults = SampleGroupFilter.TreeDefaultValues.ToList();
-            }
-            else
-            {
-                //populate tree default selection list with all tree defaults
-                TreeDefaults = new List<TreeDefaultValueDO>();
-            }
-        }
-
-        protected void OnStratumFilterChanged()
-        {
-            if (this.DesignMode == true) { return; }
-            //if all stratum selected
-            if (StratumFilter == null)
-            {
-                //read all cutting units
-                this.CuttingUnits = DAL.Read<CuttingUnitDO>("CuttingUnit", null, null);
-                //and disable ability to select samplegroup or tree default
-                _sampleGroupFilter = ANY_OPTION_SAMPLEGROUP;
-                _treeDefaultValueFilter = ANY_OPTION_TREEDEFAULT;
-                CanSelectSampleGroup = false;
-                CanSelectTreeDefaultValue = false;
-            }
-            else
-            {
-                //load cutting unit selection list with all cutting units in stratum
-                if (StratumFilter.CuttingUnits.IsPopulated == false) 
-                { 
-                    StratumFilter.CuttingUnits.Populate(); 
-                }
-                this.CuttingUnits = StratumFilter.CuttingUnits.ToList();
-                //load sample group selection list with all sample groups in stratum
-                this.SampleGroups = DAL.Read<SampleGroupDO>("SampleGroup", "WHERE Stratum_CN = ?", StratumFilter.Stratum_CN.ToString());
-                //and enable ability to select sample group and tree default
-                CanSelectSampleGroup = true;
-                CanSelectTreeDefaultValue = true;
-            }
-        }
-
-        protected void OnCuttingUnitFilterChanged()
-        {
-            if (this.DesignMode == true) { return; }
-            //if cutting unit not given
-            if (CuttingUnitFilter == null)
-            {
-                //populate stratum selection list with all stratum
-                this.Strata = DAL.Read<StratumDO>("Stratum", null, null);
-            }
-            else
-            {
-                //populate stratum selection with stratum in cutting unit
-                if (CuttingUnitFilter.Strata.IsPopulated == false)
-                {
-                    CuttingUnitFilter.Strata.Populate();
-                }
-                this.Strata = CuttingUnitFilter.Strata.ToList();
-            }
-
         }
 
         private void PopulateData()
@@ -498,7 +450,7 @@ namespace CruiseManager.WinForms.DataEditor
 
         private void RebuildErrors()
         {
-            this.DAL.Execute("DELETE FROM ErrorLog WHERE TableName in ('Tree','Log') AND Suppress = 0;");
+            this.Database.Execute("DELETE FROM ErrorLog WHERE TableName in ('Tree','Log') AND Suppress = 0;");
             foreach (TreeVM tree in Trees)
             {
                 tree.PurgeErrorList();
@@ -541,12 +493,12 @@ namespace CruiseManager.WinForms.DataEditor
             if (selectionList.Count > 0)
             {
                 String selection = "WHERE " + String.Join(" AND ", selectionList.ToArray());
-                return DAL.Read<TreeVM>(CruiseDAL.Schema.TREE._NAME, selection + " ORDER BY TreeNumber, Plot_CN", selectionArgs.ToArray());
+                return Database.Read<TreeVM>(CruiseDAL.Schema.TREE._NAME, selection + " ORDER BY TreeNumber, Plot_CN", selectionArgs.ToArray());
             }
             else
             {
 
-                return DAL.Read<TreeVM>(CruiseDAL.Schema.TREE._NAME, "ORDER BY TreeNumber, Plot_CN", null);
+                return Database.Read<TreeVM>(CruiseDAL.Schema.TREE._NAME, "ORDER BY TreeNumber, Plot_CN", null);
             }
         }
 
@@ -578,11 +530,11 @@ namespace CruiseManager.WinForms.DataEditor
             {
                 String selection = "WHERE " + String.Join(" AND ", selectionList.ToArray());
                 //return DAL.Read<LogDO>(CruiseDAL.Schema.LOG._NAME, "INNER JOIN Tree USING Tree_CN " + selection, selectionArgs.ToArray());
-                return DAL.Read<LogVM>(CruiseDAL.Schema.LOG._NAME, selection, selectionArgs.ToArray());//since we are using LogVM we don't need to join tree, it already joins Tree
+                return Database.Read<LogVM>(CruiseDAL.Schema.LOG._NAME, selection, selectionArgs.ToArray());//since we are using LogVM we don't need to join tree, it already joins Tree
             }
             else
             {
-                return DAL.Read<LogVM>(CruiseDAL.Schema.LOG._NAME, null, null);
+                return Database.Read<LogVM>(CruiseDAL.Schema.LOG._NAME, null, null);
             }
         }
 
@@ -604,11 +556,11 @@ namespace CruiseManager.WinForms.DataEditor
             if (selectionList.Count > 0)
             {
                 String selection = "WHERE " + String.Join(" AND ", selectionList.ToArray());
-                return DAL.Read<PlotDO>(CruiseDAL.Schema.PLOT._NAME, selection, selectionArgs.ToArray());
+                return Database.Read<PlotDO>(CruiseDAL.Schema.PLOT._NAME, selection, selectionArgs.ToArray());
             }
             else
             {
-                return DAL.Read<PlotDO>(CruiseDAL.Schema.PLOT._NAME, null, null);
+                return Database.Read<PlotDO>(CruiseDAL.Schema.PLOT._NAME, null, null);
             }
         }
 
@@ -635,11 +587,11 @@ namespace CruiseManager.WinForms.DataEditor
             if (selectionList.Count > 0)
             {
                 String selection = String.Join(" AND ", selectionList.ToArray());
-                return DAL.Read<CountTreeDO>(CruiseDAL.Schema.COUNTTREE._NAME, "JOIN SampleGroup ON CountTree.SampleGroup_CN = SampleGroup.SampleGroup_CN WHERE " + selection, selectionArgs.ToArray());
+                return Database.Read<CountTreeDO>(CruiseDAL.Schema.COUNTTREE._NAME, "JOIN SampleGroup ON CountTree.SampleGroup_CN = SampleGroup.SampleGroup_CN WHERE " + selection, selectionArgs.ToArray());
             }
             else
             {
-                return DAL.Read<CountTreeDO>(CruiseDAL.Schema.COUNTTREE._NAME, null, null);
+                return Database.Read<CountTreeDO>(CruiseDAL.Schema.COUNTTREE._NAME, null, null);
             }
 
         }
@@ -680,7 +632,7 @@ namespace CruiseManager.WinForms.DataEditor
             {
                 case "tree":
                     {
-                        record = DAL.ReadSingleRow<TreeVM>("Tree", rowID);
+                        record = Database.ReadSingleRow<TreeVM>("Tree", rowID);
                         ResetViewFilters();
                         this._BS_Trees.Position = this._BS_Trees.IndexOf(record);
                         this.DisplayTrees();
@@ -689,7 +641,7 @@ namespace CruiseManager.WinForms.DataEditor
                 case "log":
                     {
 
-                        record = DAL.ReadSingleRow<LogDO>("Log", rowID);
+                        record = Database.ReadSingleRow<LogDO>("Log", rowID);
                         ResetViewFilters();
                         this._BS_.Position = this._BS_.IndexOf(record);
                         this.DisplayLogs();
@@ -697,7 +649,7 @@ namespace CruiseManager.WinForms.DataEditor
                     }
                 case "plot":
                     {
-                        record = DAL.ReadSingleRow<PlotDO>("Plot", rowID);
+                        record = Database.ReadSingleRow<PlotDO>("Plot", rowID);
                         ResetViewFilters();
                         this._BS_Plots.Position = this._BS_Plots.IndexOf(record);
                         this.DisplayPlots();
@@ -708,16 +660,17 @@ namespace CruiseManager.WinForms.DataEditor
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            //reread errors every time the user enters the errorLog tab
             if (tabControl1.SelectedIndex == 4)
             {
-                this.ErrorLogs = DAL.Read<ErrorLogDO>("ErrorLog", null);
+                this.ErrorLogs = Database.Read<ErrorLogDO>("ErrorLog", null);
                 this._BS_Errors.DataSource = this.ErrorLogs;
             }
         }
         
 
         #region Trees page
-
+ 
         protected void HandleTreeValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             TreeVM tree = null;
@@ -729,17 +682,23 @@ namespace CruiseManager.WinForms.DataEditor
 
             if (tree == null) { return; }
 
-            if (speciesDataGridViewColumn != null && e.ColumnIndex == speciesDataGridViewColumn.Index)
+            // if species value changed
+            if (speciesDataGridViewColumn != null 
+                && e.ColumnIndex == speciesDataGridViewColumn.Index)
             {
                 DatabaseExtentions.SetTreeTDV(tree, tree.TreeDefaultValue);
             }
-            else if (stratumDataGridViewTextBoxColumn != null && e.ColumnIndex == stratumDataGridViewTextBoxColumn.Index)
+            // if stratum value changed
+            else if (stratumDataGridViewTextBoxColumn != null 
+                && e.ColumnIndex == stratumDataGridViewTextBoxColumn.Index)
             {
                 tree.Species = null;
                 tree.SampleGroup = null;
                 DatabaseExtentions.SetTreeTDV(tree, null);
             }
-            else if (sampleGroupDataGridViewTextBoxColumn != null && e.ColumnIndex == sampleGroupDataGridViewTextBoxColumn.Index)
+            // if sample group value changed
+            else if (sampleGroupDataGridViewTextBoxColumn != null 
+                && e.ColumnIndex == sampleGroupDataGridViewTextBoxColumn.Index)
             {
                 if (!tree.SampleGroup.TreeDefaultValues.Contains(tree.TreeDefaultValue))
                 {
@@ -752,19 +711,24 @@ namespace CruiseManager.WinForms.DataEditor
         
         protected void TreeDataGrid_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
-            var cell = _DGV_Trees[e.ColumnIndex, e.RowIndex] as DataGridViewComboBoxCell;
-            if (cell == null) { return; }
+            
             
             var curTree = this._BS_Trees[e.RowIndex] as TreeVM;
             if (curTree == null) { return; }
 
-            
-            if (this.sampleGroupDataGridViewTextBoxColumn != null && e.ColumnIndex == this.sampleGroupDataGridViewTextBoxColumn.Index)
+            var cell = _DGV_Trees[e.ColumnIndex, e.RowIndex] as DataGridViewComboBoxCell;
+            if (cell == null) { return; }
+
+            // if entering sample group column, update sample group selection 
+            if (this.sampleGroupDataGridViewTextBoxColumn != null 
+                && e.ColumnIndex == this.sampleGroupDataGridViewTextBoxColumn.Index)
             {
                 this.UpdateSampleGroupColumn(curTree, cell);
             }
 
-            if (this.speciesDataGridViewColumn != null && e.ColumnIndex == this.speciesDataGridViewColumn.Index)
+            // if entering species column, update species selection 
+            if (this.speciesDataGridViewColumn != null 
+                && e.ColumnIndex == this.speciesDataGridViewColumn.Index)
             {
                 this.UpdateSpeciesColumn(curTree, cell);
             }
@@ -811,38 +775,6 @@ namespace CruiseManager.WinForms.DataEditor
                 }
             }
         }
-
-        //private void TreeDataGridView_CellValidated(object sender, DataGridViewCellEventArgs e)
-        //{
-        //    TreeVM tree = null;
-        //    try
-        //    {
-        //        tree = this.TreeBindingSource[e.RowIndex] as TreeVM;
-        //    }
-        //    catch (ArgumentOutOfRangeException) { return; }//ignore possible out of bound exceptions
-
-        //    if (tree == null) { return; }
-
-        //    if (speciesDataGridViewColumn != null && e.ColumnIndex == speciesDataGridViewColumn.Index)
-        //    {
-        //        DatabaseExtentions.SetTreeTDV(tree, tree.TreeDefaultValue);
-        //    }
-        //    else if (stratumDataGridViewTextBoxColumn != null && e.ColumnIndex == stratumDataGridViewTextBoxColumn.Index)
-        //    {
-        //        tree.Species = null;
-        //        tree.SampleGroup = null;
-        //        DatabaseExtentions.SetTreeTDV(tree, null);
-        //    }
-        //    else if (sampleGroupDataGridViewTextBoxColumn != null && e.ColumnIndex == sampleGroupDataGridViewTextBoxColumn.Index)
-        //    {
-        //        if (!tree.SampleGroup.TreeDefaultValues.Contains(tree.TreeDefaultValue))
-        //        {
-        //            DatabaseExtentions.SetTreeTDV(tree, null);
-        //        }
-        //    }
-
-        //    TrySaveTree(tree);
-        //}
 
         private void TreeDataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
@@ -903,10 +835,14 @@ namespace CruiseManager.WinForms.DataEditor
 
         private void _DGV_Logs_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
+            if(e.RowIndex < 0 || e.RowIndex > this.Logs.Count) { return; }
+
             try
             {
-                this.Logs[e.RowIndex].Save();
+                var log = this.Logs[e.RowIndex];
+                log.Save();
             }
+            catch (ArgumentOutOfRangeException) { return; }
             catch (Exception)
             {
                 MessageBox.Show("Unable to save Log.");
@@ -976,10 +912,14 @@ namespace CruiseManager.WinForms.DataEditor
         #region Plots page
         private void _DGV_Plots_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex < 0 || e.RowIndex > this.Plots.Count) { return; }
+
             try
             {
-                this.Plots[e.RowIndex].Save();
+                var plot = this.Plots[e.RowIndex];
+                plot.Save();
             }
+            catch (ArgumentOutOfRangeException) { return; }
             catch (Exception)
             {
                 MessageBox.Show("Unable to save changes.");
@@ -1011,10 +951,14 @@ namespace CruiseManager.WinForms.DataEditor
 
         private void _DGV_Counts_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex < 0 || e.RowIndex > this.Counts.Count) { return; }
+
             try
             {
-                this.Counts[e.RowIndex].Save();
+                var count = this.Counts[e.RowIndex];
+                count.Save();
             }
+            catch (ArgumentOutOfRangeException) { return; }
             catch (Exception)
             {
                 MessageBox.Show("Unable to save changes.");
@@ -1042,12 +986,16 @@ namespace CruiseManager.WinForms.DataEditor
 
         private void _DGV_Errors_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            var eLog = _BS_Errors[e.RowIndex] as ErrorLogDO;
-            if (eLog == null) { return; }
+            if (e.RowIndex < 0 || e.RowIndex > _BS_Errors.Count) { return; }
+                        
             try
             {
+                var eLog = _BS_Errors[e.RowIndex] as ErrorLogDO;
+                if (eLog == null) { return; }
+
                 eLog.Save();
             }
+            catch (ArgumentOutOfRangeException) { return; }
             catch (Exception)
             {
                 MessageBox.Show("Unable to save changes.");
