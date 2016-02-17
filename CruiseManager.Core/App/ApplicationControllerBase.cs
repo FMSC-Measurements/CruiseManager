@@ -286,7 +286,7 @@ namespace CruiseManager.Core.App
 
         public void SaveAs()
         {
-            var path = WindowPresenter.AskCruiseSaveLocation();
+            var path = WindowPresenter.AskSaveAsLocation(this.Database.Path);
             if(path != null)
             {
                 this.SaveAs(path);
