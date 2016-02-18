@@ -523,21 +523,6 @@
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.TreeFieldSetupDefaultDO.datasource" />
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.TreeFieldSetupDO.datasource" />
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.VolumeEquationDO.datasource" />
-    <None Include="Properties\DataSources\CSM.Logic.Components.ComponentFileVM.datasource" />
-    <None Include="Properties\DataSources\CSM.Logic.Components.MergeLog.datasource" />
-    <None Include="Properties\DataSources\CSM.Logic.Components.MergeObject.datasource" />
-    <None Include="Properties\DataSources\CSM.Logic.Components.MergePlot.datasource" />
-    <None Include="Properties\DataSources\CSM.Logic.Components.MergeStem.datasource" />
-    <None Include="Properties\DataSources\CSM.Logic.Components.MergeTree.datasource" />
-    <None Include="Properties\DataSources\CSM.Logic.MergeComponentsPresenter+ComponentFileVM.datasource" />
-    <None Include="Properties\DataSources\CSM.Logic.TreeVM.datasource" />
-    <None Include="Properties\DataSources\CSM.UI.CruiseCustomize.TallyViewModel.datasource" />
-    <None Include="Properties\DataSources\CSM.UI.SetupEditor.CruiseMethodViewModel.datasource" />
-    <None Include="Properties\DataSources\CSM.Utility.Setup.CruiseMethod.datasource" />
-    <None Include="Properties\DataSources\CSM.Utility.Setup.LoggingMethod.datasource" />
-    <None Include="Properties\DataSources\CSM.Utility.Setup.ProductCode.datasource" />
-    <None Include="Properties\DataSources\CSM.Utility.Setup.Region.datasource" />
-    <None Include="Properties\DataSources\CSM.Utility.Setup.UOMCode.datasource" />
     <None Include="STPinfo.setup">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -548,8 +533,6 @@
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.PlotDO.datasource" />
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.SaleDO.datasource" />
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.TreeDO.datasource" />
-    <None Include="Properties\DataSources\CSM.UI.CruiseWizard.CruiseWizardPresenter.datasource" />
-    <None Include="Properties\DataSources\CSM.UI.SetupEditor.SetupPresenter.datasource" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
