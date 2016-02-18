@@ -770,55 +770,64 @@ namespace CruiseManager.WinForms.CruiseWizard
         protected void CopyTemplateData(DAL templateDB)
         {
 
-//            _database.Execute(@"
-//DELETE FROM TreeDefaultValue;
-//DELETE FROM TreeAuditValue;
-//DELETE FROM TreeDefaultValueTreeAuditValue;");//ensure that these tables are clean 
-
-            foreach (TreeDefaultValueDO tdv in templateDB.Query<TreeDefaultValueDO>("SELECT * FROM TreeDefaultValue;"))
+            //            _database.Execute(@"
+            //DELETE FROM TreeDefaultValue;
+            //DELETE FROM TreeAuditValue;
+            //DELETE FROM TreeDefaultValueTreeAuditValue;");//ensure that these tables are clean 
+            _database.BeginTransaction();
+            try
             {
-                _database.Insert(tdv, true, OnConflictOption.Replace);
+                foreach (TreeDefaultValueDO tdv in templateDB.Query<TreeDefaultValueDO>("SELECT * FROM TreeDefaultValue;"))
+                {
+                    _database.Insert(tdv, true, OnConflictOption.Replace);
+                }
+
+                foreach (TreeAuditValueDO tav in templateDB.Query<TreeAuditValueDO>("SELECT * FROM TreeAuditValue;"))
+                {
+                    _database.Insert(tav, true, OnConflictOption.Replace);
+                }
+
+                foreach (TreeDefaultValueTreeAuditValueDO map in templateDB.Query<TreeDefaultValueTreeAuditValueDO>("SELECT * FROM TreeDefaultValueTReeAuditValue;"))
+                {
+                    _database.Insert(map, true, OnConflictOption.Replace);
+                }
+
+                foreach (ReportsDO rpt in templateDB.Query<ReportsDO>("SELECT * FROM Reports;"))
+                {
+                    _database.Insert(rpt, true, OnConflictOption.Replace);
+                }
+
+                string CMselectCondition = null;
+                if (this.Sale.Purpose == "Recon")
+                {
+                    CMselectCondition = "WHERE Code = 'FIX' OR Code = 'PNT'";
+                }
+
+                foreach (CruiseMethodsDO cm in templateDB.Query<CruiseMethodsDO>("SELECT * FROM CruiseMethods " + CMselectCondition + ";"))
+                {
+                    _database.Insert(cm, false, OnConflictOption.Ignore);
+                }
+
+                foreach (VolumeEquationDO ve in templateDB.Query<VolumeEquationDO>("SELECT * FROM VolumeEquation;"))
+                {
+                    _database.Insert(ve, false, OnConflictOption.Ignore);
+                }
+
+                foreach (TreeFieldSetupDefaultDO tf in templateDB.Query<TreeFieldSetupDefaultDO>("SELECT * FROM TreeFieldSetupDefault;"))
+                {
+                    _database.Insert(tf, false, OnConflictOption.Ignore);
+                }
+
+                foreach (LogFieldSetupDefaultDO lf in templateDB.Query<LogFieldSetupDefaultDO>("SELECT * FROM LogFieldSetupDefault;"))
+                {
+                    _database.Insert(lf, false, OnConflictOption.Ignore);
+                }
+                _database.EndTransaction();
             }
-
-            foreach(TreeAuditValueDO tav in templateDB.Query<TreeAuditValueDO>("SELECT * FROM TreeAuditValue;"))
+            catch
             {
-                _database.Insert(tav, true, OnConflictOption.Replace);
-            }
-
-            foreach(TreeDefaultValueTreeAuditValueDO map in templateDB.Query<TreeDefaultValueTreeAuditValueDO>("SELECT * FROM TreeDefaultValueTReeAuditValue;"))
-            {
-                _database.Insert(map, true, OnConflictOption.Replace);
-            }
-
-            foreach(ReportsDO rpt in templateDB.Query<ReportsDO>("SELECT * FROM Reports;"))
-            {
-                _database.Insert(rpt, true, OnConflictOption.Replace);
-            }
-
-            string CMselectCondition = null;
-            if (this.Sale.Purpose == "Recon")
-            {
-                CMselectCondition = "WHERE Code = 'FIX' OR Code = 'PNT'";
-            }
-
-            foreach (CruiseMethodsDO cm in templateDB.Query<CruiseMethodsDO>("SELECT * FROM CruiseMethods " + CMselectCondition + ";"))
-            {
-                _database.Insert(cm, false, OnConflictOption.Ignore);
-            }
-
-            foreach(VolumeEquationDO ve in templateDB.Query<VolumeEquationDO>("SELECT * FROM VolumeEquation;"))
-            {
-                _database.Insert(ve, false, OnConflictOption.Ignore);
-            }
-
-            foreach(TreeFieldSetupDefaultDO tf in templateDB.Query<TreeFieldSetupDefaultDO>("SELECT * FROM TreeFieldSetupDefault;"))
-            {
-                _database.Insert(tf, false, OnConflictOption.Ignore);
-            }
-
-            foreach(LogFieldSetupDefaultDO lf in templateDB.Query<LogFieldSetupDefaultDO>("SELECT * FROM LogFieldSetupDefault;"))
-            {
-                _database.Insert(lf, false, OnConflictOption.Ignore);
+                _database.CancelTransaction();
+                throw;
             }
 
 
