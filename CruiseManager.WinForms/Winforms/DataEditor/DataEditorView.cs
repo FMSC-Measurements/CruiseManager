@@ -73,6 +73,7 @@ namespace CruiseManager.WinForms.DataEditor
 
         bool SuppressUpdates { get; set; }
 
+        bool TreeDataDirty { get; set; }
         
 
         #region Data set stuff
@@ -419,10 +420,7 @@ namespace CruiseManager.WinForms.DataEditor
         {
             if (this.DesignMode == true) { return; }
 
-            //populate tree, log, plot, and count lists with selected unit, stratum, samplegroup, and defaults, if given
-            var treeList = new FMSC.Utility.Collections.SortableBindingList<TreeVM>(ReadTrees(CuttingUnitFilter, StratumFilter, SampleGroupFilter, TreeDefaultValueFilter));
-            treeList.SetPropertyComparer("TreeDefaultValue", new TreeDefaultSpeciesComparer());
-            this.Trees = treeList;
+            PopulateTreeData();
             this.Logs = new FMSC.Utility.Collections.SortableBindingList<LogVM>(ReadLogs(CuttingUnitFilter, StratumFilter, SampleGroupFilter, TreeDefaultValueFilter));
             this.Plots = new FMSC.Utility.Collections.SortableBindingList<PlotDO>(ReadPlots(CuttingUnitFilter, StratumFilter));
             var countList = new FMSC.Utility.Collections.SortableBindingList<CountTreeDO>(ReadCounts(CuttingUnitFilter, StratumFilter, SampleGroupFilter));
@@ -432,6 +430,15 @@ namespace CruiseManager.WinForms.DataEditor
 
             this.ValidateData();
         }
+
+        void PopulateTreeData()
+        {
+            //populate tree, log, plot, and count lists with selected unit, stratum, samplegroup, and defaults, if given
+            var treeList = new FMSC.Utility.Collections.SortableBindingList<TreeVM>(ReadTrees(CuttingUnitFilter, StratumFilter, SampleGroupFilter, TreeDefaultValueFilter));
+            treeList.SetPropertyComparer("TreeDefaultValue", new TreeDefaultSpeciesComparer());
+            this.Trees = treeList;
+        }
+
 
         private void ValidateData()
         {
@@ -660,12 +667,22 @@ namespace CruiseManager.WinForms.DataEditor
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (tabControl1.SelectedTab == tabPage1)
+            {
+                if (TreeDataDirty)
+                {
+                    PopulateTreeData();
+                    TreeDataDirty = false;
+                }
+            }
             //reread errors every time the user enters the errorLog tab
-            if (tabControl1.SelectedIndex == 4)
+            else if (tabControl1.SelectedTab == tabPage5)
             {
                 this.ErrorLogs = Database.Read<ErrorLogDO>("ErrorLog", null);
                 this._BS_Errors.DataSource = this.ErrorLogs;
             }
+
+
         }
         
 
@@ -781,12 +798,12 @@ namespace CruiseManager.WinForms.DataEditor
 
         }
 
-        private void TreeDataGridView_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
-        {
-            var tree = e.Row.DataBoundItem as TreeVM;
-            if (tree == null) { e.Cancel = true; return; }
-            e.Cancel = !this.TryDeleteTree(tree);
-        }
+        //private void TreeDataGridView_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        //{
+        //    var tree = e.Row.DataBoundItem as TreeVM;
+        //    if (tree == null) { e.Cancel = true; return; }
+        //    e.Cancel = !this.TryDeleteTree(tree);
+        //}
 
         protected void UpdateSampleGroupColumn(TreeVM tree, DataGridViewComboBoxCell cell)
         {
@@ -887,12 +904,12 @@ namespace CruiseManager.WinForms.DataEditor
             }
         }
 
-        private void _DGV_Logs_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
-        {
-            var log = e.Row.DataBoundItem as LogDO;
-            if (log == null) { e.Cancel = true; return; }
-            e.Cancel = !this.TryDeleteLog(log);
-        }
+        //private void _DGV_Logs_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        //{
+        //    var log = e.Row.DataBoundItem as LogDO;
+        //    if (log == null) { e.Cancel = true; return; }
+        //    e.Cancel = !this.TryDeleteLog(log);
+        //}
 
         protected bool TryDeleteLog(LogDO log)
         {
@@ -926,22 +943,27 @@ namespace CruiseManager.WinForms.DataEditor
             }
         }
 
-        private void _DGV_Plots_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
-        {
-            var plot = e.Row.DataBoundItem as PlotDO;
-            if (plot == null) { e.Cancel = true; return; }
-            e.Cancel = !this.DeletePlot(plot); 
-        }
+        //private void _DGV_Plots_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        //{
+        //    var plot = e.Row.DataBoundItem as PlotDO;
+        //    if (plot == null) { e.Cancel = true; return; }
+        //    e.Cancel = !this.DeletePlot(plot); 
+        //}
 
-        protected bool DeletePlot(PlotDO plot)
+        protected bool TryDeletePlot(PlotDO plot)
         {
+            plot.DAL.BeginTransaction();
             try
             {
+                
                 PlotDO.RecursiveDeletePlot(plot);
+                plot.DAL.EndTransaction();
+                TreeDataDirty = true;
                 return true;
             }
             catch
             {
+                plot.DAL.CancelTransaction();
                 return false;
             }
         }
@@ -1046,6 +1068,11 @@ namespace CruiseManager.WinForms.DataEditor
                     }
                     else if (dataType.IsAssignableFrom(typeof(PlotDO)))
                     {
+                        var plot = row.DataBoundItem as PlotDO;
+                        if (this.TryDeletePlot(plot))
+                        {
+                            dgv.Rows.RemoveAt(rowIndex);
+                        }
                         //CountTreeDO ct = row.DataBoundItem as CountTreeDO;
                     }
 
