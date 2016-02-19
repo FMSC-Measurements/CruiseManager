@@ -10,7 +10,8 @@ AND the following strata exist:
     |01     |fix    |
 AND the following sample groups exists:
     |st     |code   |Sp         |TallyMode  |
-    |01     |01     |101 & 102  |By SG      |
+    |01     |01     |100 & 107  |By SG      |
+    |01     |02     |100 & 107  |           |
 AND the following tallys are setup:
     |St |SG |Sp |
     |01 |01 |   |
@@ -20,10 +21,13 @@ AND the following tree audits are setup:
 AND the following plots exist:
     |Unit   |St |Plot   |
     |01     |01 |1      |   
+    |01     |01 |2      |
 AND the following trees exist:
     |unit   |St |SG |Plot   |Tree#  |Sp |DBH    |
     |01     |01 |01 |1      |01     |101|11     |  
     |01     |01 |01 |1      |02     |101|9      |
+    |01     |01 |01 |2      |01     |   |       |
+    
     
 
 WHEN Field Data is displayed
@@ -31,4 +35,21 @@ THEN Cutting Units fileter contains {All, 01}
 AND Strata filter contains {All, 01}
 AND Sample Group fileter is disabled
 AND Tree Default filter is disabled
+
+WHEN Strata filter is set to 01
+THEN sample gorup filter contains {All,01,02}
+
+GIVEN Strata filter is set to 01
+WHEN Sample Group filter is set to 01
+THEN Tree Default filter contains {All,100,107}
+
+WHEN sample group is changed on a tree 
+THEN the message "You are changing the Sample Group of a tree. Are you sure you want to do this?"
+
+WHEN plot 2 is deleted
+THEN the plot page doesn't contain plot 01
+AND the tree page doesn't contain tree#01 in plot 2
+
+
+
 
