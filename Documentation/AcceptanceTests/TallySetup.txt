@@ -22,6 +22,9 @@ THEN Tally by Sample Group is enabled #pass
 WHEN stratum 02 is selected 
 THEN Tally by Sample Group is disabled #pass
 
+WHEN stratum 02 is selected 
+THEN "Use Systematic Sampling" is disabled #pass
+
 
 
 

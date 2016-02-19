@@ -148,10 +148,10 @@ namespace CruiseManager.Core.CruiseCustomize
             {
                 this.TallySetupStrata = this.Database.Read<TallySetupStratum>("Stratum", null);
 
-                foreach (TallySetupStratum stratum in this.TallySetupStrata)
-                {
-                    this.LoadSampleGroups(stratum);
-                }
+                //foreach (TallySetupStratum stratum in this.TallySetupStrata)
+                //{
+                //    this.LoadSampleGroups(stratum);
+                //}
                 //TallyPresets = this.Database.Read<TallyVM>("Tally", null);
                 _isTallySetupInitialized = true;
 
@@ -170,29 +170,7 @@ namespace CruiseManager.Core.CruiseCustomize
             return StratumDO.CanDefineTallys(stratum);
         }
 
-        //called when the view is initialized, for eash stratum 
-        //initialized a list containing information about sampleGroups
-        public void LoadSampleGroups(TallySetupStratum stratum)
-        {
-            if (stratum.SampleGroups != null) { return; }//if we have already created initialized this stratum, 
-
-            stratum.SampleGroups = Database.Read<TallySetupSampleGroup>("SampleGroup", "WHERE Stratum_CN = ?", stratum.Stratum_CN);
-            foreach (TallySetupSampleGroup sg in stratum.SampleGroups)
-            {
-                //TODO compare what we see as the tally mode vs. the stored mode on the sample group
-                sg.TallyMethod = sg.GetSampleGroupTallyMode();
-                sg.LoadTallieData();
-
-                if (stratum.Method == CruiseDAL.Schema.Constants.CruiseMethods.STR && sg.TallyMethod == TallyMode.None)
-                {
-                    sg.TallyMethod = TallyMode.BySampleGroup;
-                }
-                if (CruiseDAL.Schema.Constants.CruiseMethods.THREE_P_METHODS.Contains(stratum.Method) && sg.TallyMethod == TallyMode.None)
-                {
-                    sg.TallyMethod = TallyMode.BySpecies;
-                }
-            }
-        }
+        
 
 
         ////called when a samplegroup is selected from the dropdown list in tally setup
