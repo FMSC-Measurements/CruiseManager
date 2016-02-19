@@ -120,6 +120,7 @@ namespace CruiseManager.WinForms.EditDesign
         
         private void CuttingUnitDataGridView_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex < 0 || e.RowIndex > CuttingUnitsBindingSource.Count) { return; }
             try
             {
                 var unit = CuttingUnitsBindingSource[e.RowIndex] as CuttingUnitDO;
@@ -210,7 +211,7 @@ namespace CruiseManager.WinForms.EditDesign
 
         private void StrataDataGridView_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
-
+            if (e.RowIndex < 0 || e.RowIndex > StrataBindingSource.Count) { return; }
             try
             {
                 var stratum = StrataBindingSource[e.RowIndex] as StratumDO;
@@ -291,6 +292,7 @@ namespace CruiseManager.WinForms.EditDesign
 
         private void SampleGroupDataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex < 0 || e.RowIndex > SampleGroupBindingSource.Count) { return; }
             try
             {
                 SampleGroupDO sg = this.SampleGroupBindingSource[e.RowIndex] as SampleGroupDO;
