@@ -51,6 +51,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             try
             {
                 _currentTallySetupStratum = _BS_strata.Current as TallySetupStratum;
+                _systematicOptCB.Enabled = _currentTallySetupStratum?.IsSTR ?? false;
 
                 if (_currentTallySetupStratum != null)
                 {

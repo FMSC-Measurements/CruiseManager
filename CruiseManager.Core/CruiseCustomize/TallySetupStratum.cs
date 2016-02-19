@@ -10,6 +10,13 @@ namespace CruiseManager.Core.CruiseCustomize
     {
         public List<TallySetupSampleGroup> SampleGroups { get; set; }
 
+        public bool IsSTR
+        {
+            get
+            {
+                return Method == CruiseDAL.Schema.Constants.CruiseMethods.STR;
+            }
+        }
 
         //public static bool CanDefineTallys(StratumDO stratum)
         //{
