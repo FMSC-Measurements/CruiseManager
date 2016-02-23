@@ -121,6 +121,7 @@
       <Forest State="SC" Name="Francis Marion-Sumter" ForestNumber="12" />
       <Forest State="TX" Name="National Forests Texas" ForestNumber="13" />
       <Forest State="PR" Name="El Yunque" ForestNumber="16" />
+      <Forest State="KY" Name="Land Between the Lakes" ForestNumber="60" />
     </Forests>
   </Region>
   <Region RegionNumber="09" Name="Eastern">

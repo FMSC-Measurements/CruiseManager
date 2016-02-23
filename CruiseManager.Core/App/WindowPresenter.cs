@@ -30,7 +30,7 @@ namespace CruiseManager.Core.App
         }
 
         public abstract string AskTemplateLocation();
-        public abstract String AskCruiseSaveLocation();
+        public abstract String AskSaveAsLocation(string originalPath);
         public abstract string AskOpenFileLocation();
 
         public abstract void ShowAboutDialog();

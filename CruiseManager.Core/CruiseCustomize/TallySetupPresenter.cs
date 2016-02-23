@@ -30,7 +30,8 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             get
             {
-                return TallySetupStrata.Any(x => x.SampleGroups.Any(y => y.HasTallyEdits));
+                return TallySetupStrata.Any(x => x.HasChanges)
+                    || TallySetupStrata.Any(x => x.SampleGroups.Any(y => y.HasTallyEdits));
             }
         }
 
@@ -50,7 +51,8 @@ namespace CruiseManager.Core.CruiseCustomize
 
                 foreach (TallySetupStratum stratum in this.TallySetupStrata)
                 {
-                    this.LoadSampleGroups(stratum);
+                    stratum.LoadSampleGroups();
+                    //this.LoadSampleGroups(stratum);
                 }
                 //TallyPresets = this.Database.Read<TallyVM>("Tally", null);
                 _isInitialized = true;
@@ -126,7 +128,7 @@ namespace CruiseManager.Core.CruiseCustomize
             usedHotKeys = usedHotKeys.Union(st.ListUsedHotKeys());
 
             //remove current hot key from list of in use hot keys 
-            usedHotKeys.Except(new string[] { curHotKey });
+            usedHotKeys = usedHotKeys.Except(new string[] { curHotKey });
 
 
             var avalibleHotHeys = Strings.HOTKEYS.Except(usedHotKeys).ToArray();
@@ -140,14 +142,15 @@ namespace CruiseManager.Core.CruiseCustomize
         /// <returns></returns>
         public string[] GetAvalibleStratumHotKeys(TallySetupStratum stratum)
         {
-            var usedHotKeys = (from StratumDO st in this.TallySetupStrata
+            IEnumerable<String> avalibleHotKeys = Strings.HOTKEYS;
+            avalibleHotKeys = avalibleHotKeys.Except(from StratumDO st in this.TallySetupStrata
                                where st != stratum
                                select st.Hotkey);
             foreach (TallySetupStratum straum in this.TallySetupStrata)
             {
-                usedHotKeys = usedHotKeys.Union(straum.ListUsedHotKeys());
+                avalibleHotKeys = avalibleHotKeys.Except(straum.ListUsedHotKeys());
             }
-            return Strings.HOTKEYS.Except(usedHotKeys).ToArray();
+            return avalibleHotKeys.ToArray();
         }
 
 

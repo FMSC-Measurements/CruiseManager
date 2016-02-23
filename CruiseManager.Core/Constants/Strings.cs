@@ -26,8 +26,8 @@ namespace CruiseManager.Core.Constants
         //public static readonly string[] THREE_P_METHODS = new string[] { "3P", "S3P", "F3P", "P3P" };//moved to CruiseDAL.Schema.CruiseMethods
 
         public static readonly string[] EDITABLE_UNIT_FILEDS = { CUTTINGUNIT.AREA, CUTTINGUNIT.DESCRIPTION, CUTTINGUNIT.LOGGINGMETHOD };
-        public static readonly string[] EDITABLE_ST_FIELDS = { STRATUM.DESCRIPTION, STRATUM.MONTH, STRATUM.YEAR, STRATUM.YIELDCOMPONENT };
-        public static readonly string[] EDITABLE_SG_FIELDS = { SAMPLEGROUP.BIGBAF };
+        public static readonly string[] EDITABLE_ST_FIELDS = { STRATUM.DESCRIPTION, STRATUM.MONTH, STRATUM.YEAR, STRATUM.YIELDCOMPONENT, "MonthStr" };
+        public static readonly string[] EDITABLE_SG_FIELDS = { SAMPLEGROUP.BIGBAF, SAMPLEGROUP.SECONDARYPRODUCT };
 
         public static readonly string[] HOTKEYS = { "A", "B", "C", "D",
                 "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P",

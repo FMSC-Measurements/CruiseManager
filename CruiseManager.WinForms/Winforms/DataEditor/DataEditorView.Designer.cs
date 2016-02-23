@@ -29,56 +29,44 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.Label label1;
+            System.Windows.Forms.Label label5;
+            System.Windows.Forms.Label label4;
+            System.Windows.Forms.Label label3;
+            System.Windows.Forms.Label label2;
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.Panel panel2;
+            System.Windows.Forms.Label label6;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DataEditorView));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.TreeDefaultComboBox = new System.Windows.Forms.ComboBox();
             this.TreeDefaultBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.label5 = new System.Windows.Forms.Label();
             this.SampleGroupComboBox = new System.Windows.Forms.ComboBox();
             this.SampleGroupBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.label4 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.StratumComboBox = new System.Windows.Forms.ComboBox();
             this.StratumBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.label3 = new System.Windows.Forms.Label();
             this.CuttingUnitComboBox = new System.Windows.Forms.ComboBox();
             this.CuttingUnitBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.label2 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this._ContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.TreeDataGridView = new System.Windows.Forms.DataGridView();
+            this._DGV_Trees = new System.Windows.Forms.DataGridView();
             this.Tree_CN = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cuttingUnitDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.stratumDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -132,9 +120,9 @@
             this.createdDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.modifiedByDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.modifiedDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TreeBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this._BS_Trees = new System.Windows.Forms.BindingSource(this.components);
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.LogDataGridView = new System.Windows.Forms.DataGridView();
+            this._DGV_Logs = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.logNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.seenDefectDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -156,9 +144,9 @@
             this.createdDateDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.modifiedByDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.modifiedDateDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LogsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this._BS_ = new System.Windows.Forms.BindingSource(this.components);
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.PlotDataGridView = new System.Windows.Forms.DataGridView();
+            this._DGV_Plots = new System.Windows.Forms.DataGridView();
             this.stratumDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cuttingUnitDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.plotNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -174,9 +162,9 @@
             this.createdDateDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.modifiedByDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.modifiedDateDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PlotsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this._BS_Plots = new System.Windows.Forms.BindingSource(this.components);
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.CountDataGridView = new System.Windows.Forms.DataGridView();
+            this._DGV_Counts = new System.Windows.Forms.DataGridView();
             this.sampleGroupDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cuttingUnitDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tallyDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -188,10 +176,9 @@
             this.createdDateDataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.modifiedByDataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.modifiedDateDataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CountsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this._BS_Counts = new System.Windows.Forms.BindingSource(this.components);
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this._errorsDGV = new System.Windows.Forms.DataGridView();
+            this._DGV_Errors = new System.Windows.Forms.DataGridView();
             this.tableNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cNNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.columnNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -200,10 +187,16 @@
             this.programDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.suppressDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this._BS_Errors = new System.Windows.Forms.BindingSource(this.components);
-            this.label6 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            label1 = new System.Windows.Forms.Label();
+            label5 = new System.Windows.Forms.Label();
+            label4 = new System.Windows.Forms.Label();
+            label3 = new System.Windows.Forms.Label();
+            label2 = new System.Windows.Forms.Label();
+            panel2 = new System.Windows.Forms.Panel();
+            label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -219,22 +212,22 @@
             this.tabControl1.SuspendLayout();
             this._ContextMenu.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.TreeDataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._DGV_Trees)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._BS_TreeSampleGroups)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._BS_TreeSpecies)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.TreeBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._BS_Trees)).BeginInit();
             this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.LogDataGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.LogsBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._DGV_Logs)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._BS_)).BeginInit();
             this.tabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PlotDataGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PlotsBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._DGV_Plots)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._BS_Plots)).BeginInit();
             this.tabPage4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.CountDataGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.CountsBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._DGV_Counts)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._BS_Counts)).BeginInit();
             this.tabPage5.SuspendLayout();
-            this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._errorsDGV)).BeginInit();
+            panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._DGV_Errors)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._BS_Errors)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -262,7 +255,7 @@
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -275,17 +268,17 @@
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.DarkSeaGreen;
-            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Margin = new System.Windows.Forms.Padding(0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(191, 20);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Filters";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            label1.AutoSize = true;
+            label1.BackColor = System.Drawing.Color.DarkSeaGreen;
+            label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            label1.Dock = System.Windows.Forms.DockStyle.Fill;
+            label1.Location = new System.Drawing.Point(0, 0);
+            label1.Margin = new System.Windows.Forms.Padding(0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(191, 20);
+            label1.TabIndex = 0;
+            label1.Text = "Filters";
+            label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // panel1
             // 
@@ -302,9 +295,9 @@
             // 
             this.groupBox2.BackColor = System.Drawing.SystemColors.Control;
             this.groupBox2.Controls.Add(this.TreeDefaultComboBox);
-            this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Controls.Add(label5);
             this.groupBox2.Controls.Add(this.SampleGroupComboBox);
-            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(label4);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox2.Location = new System.Drawing.Point(0, 112);
             this.groupBox2.Name = "groupBox2";
@@ -316,6 +309,7 @@
             // 
             this.TreeDefaultComboBox.DataSource = this.TreeDefaultBindingSource;
             this.TreeDefaultComboBox.DisplayMember = "Species";
+            this.TreeDefaultComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.TreeDefaultComboBox.FormattingEnabled = true;
             this.TreeDefaultComboBox.Location = new System.Drawing.Point(7, 81);
             this.TreeDefaultComboBox.Name = "TreeDefaultComboBox";
@@ -329,17 +323,18 @@
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(4, 64);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(115, 13);
-            this.label5.TabIndex = 2;
-            this.label5.Text = "Tree Default / Species";
+            label5.AutoSize = true;
+            label5.Location = new System.Drawing.Point(4, 64);
+            label5.Name = "label5";
+            label5.Size = new System.Drawing.Size(117, 13);
+            label5.TabIndex = 2;
+            label5.Text = "Tree Default / Species";
             // 
             // SampleGroupComboBox
             // 
             this.SampleGroupComboBox.DataSource = this.SampleGroupBindingSource;
             this.SampleGroupComboBox.DisplayMember = "Code";
+            this.SampleGroupComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SampleGroupComboBox.FormattingEnabled = true;
             this.SampleGroupComboBox.Location = new System.Drawing.Point(7, 37);
             this.SampleGroupComboBox.Name = "SampleGroupComboBox";
@@ -353,20 +348,20 @@
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(4, 20);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(74, 13);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "Sample Group";
+            label4.AutoSize = true;
+            label4.Location = new System.Drawing.Point(4, 20);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(80, 13);
+            label4.TabIndex = 0;
+            label4.Text = "Sample Group";
             // 
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.SystemColors.Control;
             this.groupBox1.Controls.Add(this.StratumComboBox);
-            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(label3);
             this.groupBox1.Controls.Add(this.CuttingUnitComboBox);
-            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(label2);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
@@ -378,6 +373,7 @@
             // 
             this.StratumComboBox.DataSource = this.StratumBindingSource;
             this.StratumComboBox.DisplayMember = "Code";
+            this.StratumComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.StratumComboBox.FormattingEnabled = true;
             this.StratumComboBox.Location = new System.Drawing.Point(7, 77);
             this.StratumComboBox.Name = "StratumComboBox";
@@ -391,17 +387,18 @@
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(4, 60);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(43, 13);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Stratum";
+            label3.AutoSize = true;
+            label3.Location = new System.Drawing.Point(4, 60);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(47, 13);
+            label3.TabIndex = 2;
+            label3.Text = "Stratum";
             // 
             // CuttingUnitComboBox
             // 
             this.CuttingUnitComboBox.DataSource = this.CuttingUnitBindingSource;
             this.CuttingUnitComboBox.DisplayMember = "Code";
+            this.CuttingUnitComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CuttingUnitComboBox.FormattingEnabled = true;
             this.CuttingUnitComboBox.Location = new System.Drawing.Point(7, 32);
             this.CuttingUnitComboBox.Name = "CuttingUnitComboBox";
@@ -415,16 +412,15 @@
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(4, 15);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(62, 13);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Cutting Unit";
+            label2.AutoSize = true;
+            label2.Location = new System.Drawing.Point(4, 15);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(71, 13);
+            label2.TabIndex = 0;
+            label2.Text = "Cutting Unit";
             // 
             // tabControl1
             // 
-            this.tabControl1.ContextMenuStrip = this._ContextMenu;
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
@@ -455,7 +451,7 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.TreeDataGridView);
+            this.tabPage1.Controls.Add(this._DGV_Trees);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -464,20 +460,21 @@
             this.tabPage1.Text = "Trees";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // TreeDataGridView
+            // _DGV_Trees
             // 
-            this.TreeDataGridView.AllowUserToAddRows = false;
-            this.TreeDataGridView.AllowUserToOrderColumns = true;
-            this.TreeDataGridView.AllowUserToResizeRows = false;
-            this.TreeDataGridView.AutoGenerateColumns = false;
+            this._DGV_Trees.AllowUserToAddRows = false;
+            this._DGV_Trees.AllowUserToOrderColumns = true;
+            this._DGV_Trees.AllowUserToResizeRows = false;
+            this._DGV_Trees.AutoGenerateColumns = false;
+            this._DGV_Trees.BorderStyle = System.Windows.Forms.BorderStyle.None;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            this.TreeDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.TreeDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.TreeDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this._DGV_Trees.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this._DGV_Trees.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this._DGV_Trees.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Tree_CN,
             this.cuttingUnitDataGridViewTextBoxColumn,
             this.stratumDataGridViewTextBoxColumn,
@@ -529,34 +526,18 @@
             this.createdDateDataGridViewTextBoxColumn,
             this.modifiedByDataGridViewTextBoxColumn,
             this.modifiedDateDataGridViewTextBoxColumn});
-            this.TreeDataGridView.ContextMenuStrip = this._ContextMenu;
-            this.TreeDataGridView.DataSource = this.TreeBindingSource;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.TreeDataGridView.DefaultCellStyle = dataGridViewCellStyle5;
-            this.TreeDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TreeDataGridView.Location = new System.Drawing.Point(3, 3);
-            this.TreeDataGridView.Name = "TreeDataGridView";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.TreeDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
-            this.TreeDataGridView.RowTemplate.Height = 24;
-            this.TreeDataGridView.Size = new System.Drawing.Size(568, 374);
-            this.TreeDataGridView.TabIndex = 0;
-            this.TreeDataGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.TreeDataGrid_CellEnter);
-            this.TreeDataGridView.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.TreeDataGridView_CellValidating);
-            this.TreeDataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.TreeDataGridView_DataError);
-            this.TreeDataGridView.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.TreeDataGridView_UserDeletingRow);
+            this._DGV_Trees.ContextMenuStrip = this._ContextMenu;
+            this._DGV_Trees.DataSource = this._BS_Trees;
+            this._DGV_Trees.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._DGV_Trees.Location = new System.Drawing.Point(3, 3);
+            this._DGV_Trees.Name = "_DGV_Trees";
+            this._DGV_Trees.RowTemplate.Height = 24;
+            this._DGV_Trees.Size = new System.Drawing.Size(568, 374);
+            this._DGV_Trees.TabIndex = 0;
+            this._DGV_Trees.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.TreeDataGrid_CellEnter);
+            this._DGV_Trees.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.TreeDataGridView_CellValidating);
+            this._DGV_Trees.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.HandleTreeValueChanged);
+            this._DGV_Trees.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.TreeDataGridView_DataError);
             // 
             // Tree_CN
             // 
@@ -566,7 +547,7 @@
             this.Tree_CN.Name = "Tree_CN";
             this.Tree_CN.ReadOnly = true;
             this.Tree_CN.ToolTipText = "Tree Data Reference Number";
-            this.Tree_CN.Width = 63;
+            this.Tree_CN.Width = 61;
             // 
             // cuttingUnitDataGridViewTextBoxColumn
             // 
@@ -578,7 +559,7 @@
             this.cuttingUnitDataGridViewTextBoxColumn.Name = "cuttingUnitDataGridViewTextBoxColumn";
             this.cuttingUnitDataGridViewTextBoxColumn.ReadOnly = true;
             this.cuttingUnitDataGridViewTextBoxColumn.ToolTipText = "Cutting Unit Code";
-            this.cuttingUnitDataGridViewTextBoxColumn.Width = 51;
+            this.cuttingUnitDataGridViewTextBoxColumn.Width = 54;
             // 
             // stratumDataGridViewTextBoxColumn
             // 
@@ -588,7 +569,7 @@
             this.stratumDataGridViewTextBoxColumn.Name = "stratumDataGridViewTextBoxColumn";
             this.stratumDataGridViewTextBoxColumn.ReadOnly = true;
             this.stratumDataGridViewTextBoxColumn.ToolTipText = "Stratum Code";
-            this.stratumDataGridViewTextBoxColumn.Width = 68;
+            this.stratumDataGridViewTextBoxColumn.Width = 72;
             // 
             // plotDataGridViewTextBoxColumn
             // 
@@ -598,7 +579,7 @@
             this.plotDataGridViewTextBoxColumn.Name = "plotDataGridViewTextBoxColumn";
             this.plotDataGridViewTextBoxColumn.ReadOnly = true;
             this.plotDataGridViewTextBoxColumn.ToolTipText = "Plot Number";
-            this.plotDataGridViewTextBoxColumn.Width = 50;
+            this.plotDataGridViewTextBoxColumn.Width = 52;
             // 
             // treeNumberDataGridViewTextBoxColumn
             // 
@@ -607,7 +588,7 @@
             this.treeNumberDataGridViewTextBoxColumn.HeaderText = "Tree";
             this.treeNumberDataGridViewTextBoxColumn.Name = "treeNumberDataGridViewTextBoxColumn";
             this.treeNumberDataGridViewTextBoxColumn.ToolTipText = "Tree Number";
-            this.treeNumberDataGridViewTextBoxColumn.Width = 54;
+            this.treeNumberDataGridViewTextBoxColumn.Width = 53;
             // 
             // sampleGroupDataGridViewTextBoxColumn
             // 
@@ -617,14 +598,14 @@
             dataGridViewCellStyle3.Format = "[Code]";
             this.sampleGroupDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle3;
             this.sampleGroupDataGridViewTextBoxColumn.DisplayMember = "Code";
-            this.sampleGroupDataGridViewTextBoxColumn.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
+            this.sampleGroupDataGridViewTextBoxColumn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.sampleGroupDataGridViewTextBoxColumn.HeaderText = "SG";
             this.sampleGroupDataGridViewTextBoxColumn.Name = "sampleGroupDataGridViewTextBoxColumn";
             this.sampleGroupDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.sampleGroupDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.sampleGroupDataGridViewTextBoxColumn.ToolTipText = "Sample Group Code";
             this.sampleGroupDataGridViewTextBoxColumn.ValueMember = "Self";
-            this.sampleGroupDataGridViewTextBoxColumn.Width = 47;
+            this.sampleGroupDataGridViewTextBoxColumn.Width = 46;
             // 
             // _BS_TreeSampleGroups
             // 
@@ -636,7 +617,7 @@
             this.speciesDataGridViewColumn.DataPropertyName = "TreeDefaultValue";
             this.speciesDataGridViewColumn.DataSource = this._BS_TreeSpecies;
             this.speciesDataGridViewColumn.DisplayMember = "Species";
-            this.speciesDataGridViewColumn.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
+            this.speciesDataGridViewColumn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.speciesDataGridViewColumn.HeaderText = "Species";
             this.speciesDataGridViewColumn.Name = "speciesDataGridViewColumn";
             this.speciesDataGridViewColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
@@ -674,7 +655,7 @@
             this.dRCDataGridViewTextBoxColumn.HeaderText = "DRC";
             this.dRCDataGridViewTextBoxColumn.Name = "dRCDataGridViewTextBoxColumn";
             this.dRCDataGridViewTextBoxColumn.ToolTipText = "Diameter Root Collar";
-            this.dRCDataGridViewTextBoxColumn.Width = 55;
+            this.dRCDataGridViewTextBoxColumn.Width = 54;
             // 
             // totalHeightDataGridViewTextBoxColumn
             // 
@@ -683,7 +664,7 @@
             this.totalHeightDataGridViewTextBoxColumn.HeaderText = "Total Ht";
             this.totalHeightDataGridViewTextBoxColumn.Name = "totalHeightDataGridViewTextBoxColumn";
             this.totalHeightDataGridViewTextBoxColumn.ToolTipText = "Total Tree Height";
-            this.totalHeightDataGridViewTextBoxColumn.Width = 70;
+            this.totalHeightDataGridViewTextBoxColumn.Width = 72;
             // 
             // merchHeightPrimaryDataGridViewTextBoxColumn
             // 
@@ -692,7 +673,7 @@
             this.merchHeightPrimaryDataGridViewTextBoxColumn.HeaderText = "Merch Ht P";
             this.merchHeightPrimaryDataGridViewTextBoxColumn.Name = "merchHeightPrimaryDataGridViewTextBoxColumn";
             this.merchHeightPrimaryDataGridViewTextBoxColumn.ToolTipText = "Merchantable Height Primary Product";
-            this.merchHeightPrimaryDataGridViewTextBoxColumn.Width = 86;
+            this.merchHeightPrimaryDataGridViewTextBoxColumn.Width = 88;
             // 
             // merchHeightSecondaryDataGridViewTextBoxColumn
             // 
@@ -701,7 +682,7 @@
             this.merchHeightSecondaryDataGridViewTextBoxColumn.HeaderText = "Merch Ht S";
             this.merchHeightSecondaryDataGridViewTextBoxColumn.Name = "merchHeightSecondaryDataGridViewTextBoxColumn";
             this.merchHeightSecondaryDataGridViewTextBoxColumn.ToolTipText = "Merchantable Height Secondary Product";
-            this.merchHeightSecondaryDataGridViewTextBoxColumn.Width = 86;
+            this.merchHeightSecondaryDataGridViewTextBoxColumn.Width = 88;
             // 
             // upperStemHeightDataGridViewTextBoxColumn
             // 
@@ -710,7 +691,7 @@
             this.upperStemHeightDataGridViewTextBoxColumn.HeaderText = "Up Stem Ht";
             this.upperStemHeightDataGridViewTextBoxColumn.Name = "upperStemHeightDataGridViewTextBoxColumn";
             this.upperStemHeightDataGridViewTextBoxColumn.ToolTipText = "Upper Stem Height";
-            this.upperStemHeightDataGridViewTextBoxColumn.Width = 87;
+            this.upperStemHeightDataGridViewTextBoxColumn.Width = 90;
             // 
             // treeDefaultValueDataGridViewTextBoxColumn
             // 
@@ -721,7 +702,7 @@
             this.treeDefaultValueDataGridViewTextBoxColumn.HeaderText = "TreeDefaultValue";
             this.treeDefaultValueDataGridViewTextBoxColumn.Name = "treeDefaultValueDataGridViewTextBoxColumn";
             this.treeDefaultValueDataGridViewTextBoxColumn.ToolTipText = "Tree Default Value (Species/LiveDead/Product)";
-            this.treeDefaultValueDataGridViewTextBoxColumn.Width = 115;
+            this.treeDefaultValueDataGridViewTextBoxColumn.Width = 120;
             // 
             // kPIDataGridViewTextBoxColumn
             // 
@@ -730,7 +711,7 @@
             this.kPIDataGridViewTextBoxColumn.HeaderText = "KPI";
             this.kPIDataGridViewTextBoxColumn.Name = "kPIDataGridViewTextBoxColumn";
             this.kPIDataGridViewTextBoxColumn.ToolTipText = "Volume Estimate for this Tree";
-            this.kPIDataGridViewTextBoxColumn.Width = 49;
+            this.kPIDataGridViewTextBoxColumn.Width = 47;
             // 
             // sTMDataGridViewTextBoxColumn
             // 
@@ -739,7 +720,7 @@
             this.sTMDataGridViewTextBoxColumn.HeaderText = "STM";
             this.sTMDataGridViewTextBoxColumn.Name = "sTMDataGridViewTextBoxColumn";
             this.sTMDataGridViewTextBoxColumn.ToolTipText = "Sure To Measure";
-            this.sTMDataGridViewTextBoxColumn.Width = 55;
+            this.sTMDataGridViewTextBoxColumn.Width = 53;
             // 
             // seenDefectPrimaryDataGridViewTextBoxColumn
             // 
@@ -773,7 +754,7 @@
             this.recoverablePrimaryDataGridViewTextBoxColumn.HeaderText = "Recover";
             this.recoverablePrimaryDataGridViewTextBoxColumn.Name = "recoverablePrimaryDataGridViewTextBoxColumn";
             this.recoverablePrimaryDataGridViewTextBoxColumn.ToolTipText = "Percent Recoverable Product";
-            this.recoverablePrimaryDataGridViewTextBoxColumn.Width = 73;
+            this.recoverablePrimaryDataGridViewTextBoxColumn.Width = 72;
             // 
             // liveDeadDataGridViewTextBoxColumn
             // 
@@ -782,7 +763,7 @@
             this.liveDeadDataGridViewTextBoxColumn.HeaderText = "L/D";
             this.liveDeadDataGridViewTextBoxColumn.Name = "liveDeadDataGridViewTextBoxColumn";
             this.liveDeadDataGridViewTextBoxColumn.ToolTipText = "Live/Dead";
-            this.liveDeadDataGridViewTextBoxColumn.Width = 51;
+            this.liveDeadDataGridViewTextBoxColumn.Width = 49;
             // 
             // initialsDataGridViewTextBoxColumn
             // 
@@ -791,7 +772,7 @@
             this.initialsDataGridViewTextBoxColumn.HeaderText = "Initials";
             this.initialsDataGridViewTextBoxColumn.Name = "initialsDataGridViewTextBoxColumn";
             this.initialsDataGridViewTextBoxColumn.ToolTipText = "Cruisers Inititals";
-            this.initialsDataGridViewTextBoxColumn.Width = 61;
+            this.initialsDataGridViewTextBoxColumn.Width = 66;
             // 
             // treeCountDataGridViewTextBoxColumn
             // 
@@ -800,7 +781,7 @@
             this.treeCountDataGridViewTextBoxColumn.HeaderText = "Count";
             this.treeCountDataGridViewTextBoxColumn.Name = "treeCountDataGridViewTextBoxColumn";
             this.treeCountDataGridViewTextBoxColumn.ToolTipText = "Tree Count";
-            this.treeCountDataGridViewTextBoxColumn.Width = 60;
+            this.treeCountDataGridViewTextBoxColumn.Width = 64;
             // 
             // gradeDataGridViewTextBoxColumn
             // 
@@ -809,7 +790,7 @@
             this.gradeDataGridViewTextBoxColumn.HeaderText = "Grade";
             this.gradeDataGridViewTextBoxColumn.Name = "gradeDataGridViewTextBoxColumn";
             this.gradeDataGridViewTextBoxColumn.ToolTipText = "Tree Grade";
-            this.gradeDataGridViewTextBoxColumn.Width = 61;
+            this.gradeDataGridViewTextBoxColumn.Width = 63;
             // 
             // topDIBPrimaryDataGridViewTextBoxColumn
             // 
@@ -818,7 +799,7 @@
             this.topDIBPrimaryDataGridViewTextBoxColumn.HeaderText = "TopD P";
             this.topDIBPrimaryDataGridViewTextBoxColumn.Name = "topDIBPrimaryDataGridViewTextBoxColumn";
             this.topDIBPrimaryDataGridViewTextBoxColumn.ToolTipText = "Minimum Top Diameter Primary Product";
-            this.topDIBPrimaryDataGridViewTextBoxColumn.Width = 69;
+            this.topDIBPrimaryDataGridViewTextBoxColumn.Width = 68;
             // 
             // topDIBSecondaryDataGridViewTextBoxColumn
             // 
@@ -827,7 +808,7 @@
             this.topDIBSecondaryDataGridViewTextBoxColumn.HeaderText = "TopD S";
             this.topDIBSecondaryDataGridViewTextBoxColumn.Name = "topDIBSecondaryDataGridViewTextBoxColumn";
             this.topDIBSecondaryDataGridViewTextBoxColumn.ToolTipText = "Minimum Top Diameter Secondary Product";
-            this.topDIBSecondaryDataGridViewTextBoxColumn.Width = 69;
+            this.topDIBSecondaryDataGridViewTextBoxColumn.Width = 68;
             // 
             // heightToFirstLiveLimbDataGridViewTextBoxColumn
             // 
@@ -836,7 +817,7 @@
             this.heightToFirstLiveLimbDataGridViewTextBoxColumn.HeaderText = "Ht FLL";
             this.heightToFirstLiveLimbDataGridViewTextBoxColumn.Name = "heightToFirstLiveLimbDataGridViewTextBoxColumn";
             this.heightToFirstLiveLimbDataGridViewTextBoxColumn.ToolTipText = "Height to First Live Limb";
-            this.heightToFirstLiveLimbDataGridViewTextBoxColumn.Width = 64;
+            this.heightToFirstLiveLimbDataGridViewTextBoxColumn.Width = 63;
             // 
             // clearFaceDataGridViewTextBoxColumn
             // 
@@ -851,7 +832,7 @@
             this.poleLengthDataGridViewTextBoxColumn.HeaderText = "PoleLen";
             this.poleLengthDataGridViewTextBoxColumn.Name = "poleLengthDataGridViewTextBoxColumn";
             this.poleLengthDataGridViewTextBoxColumn.ToolTipText = "Pole Length";
-            this.poleLengthDataGridViewTextBoxColumn.Width = 71;
+            this.poleLengthDataGridViewTextBoxColumn.Width = 72;
             // 
             // crownRatioDataGridViewTextBoxColumn
             // 
@@ -860,7 +841,7 @@
             this.crownRatioDataGridViewTextBoxColumn.HeaderText = "CR";
             this.crownRatioDataGridViewTextBoxColumn.Name = "crownRatioDataGridViewTextBoxColumn";
             this.crownRatioDataGridViewTextBoxColumn.ToolTipText = "Crown Ratio";
-            this.crownRatioDataGridViewTextBoxColumn.Width = 47;
+            this.crownRatioDataGridViewTextBoxColumn.Width = 46;
             // 
             // formClassDataGridViewTextBoxColumn
             // 
@@ -869,7 +850,7 @@
             this.formClassDataGridViewTextBoxColumn.HeaderText = "FClass";
             this.formClassDataGridViewTextBoxColumn.Name = "formClassDataGridViewTextBoxColumn";
             this.formClassDataGridViewTextBoxColumn.ToolTipText = "Form Class";
-            this.formClassDataGridViewTextBoxColumn.Width = 63;
+            this.formClassDataGridViewTextBoxColumn.Width = 64;
             // 
             // dBHDoubleBarkThicknessDataGridViewTextBoxColumn
             // 
@@ -887,7 +868,7 @@
             this.defectCodeDataGridViewTextBoxColumn.HeaderText = "DefectCode";
             this.defectCodeDataGridViewTextBoxColumn.Name = "defectCodeDataGridViewTextBoxColumn";
             this.defectCodeDataGridViewTextBoxColumn.ToolTipText = "Defect Code";
-            this.defectCodeDataGridViewTextBoxColumn.Width = 89;
+            this.defectCodeDataGridViewTextBoxColumn.Width = 92;
             // 
             // diameterAtDefectDataGridViewTextBoxColumn
             // 
@@ -896,7 +877,7 @@
             this.diameterAtDefectDataGridViewTextBoxColumn.HeaderText = "Dia at Def";
             this.diameterAtDefectDataGridViewTextBoxColumn.Name = "diameterAtDefectDataGridViewTextBoxColumn";
             this.diameterAtDefectDataGridViewTextBoxColumn.ToolTipText = "Diameter at Defect";
-            this.diameterAtDefectDataGridViewTextBoxColumn.Width = 80;
+            this.diameterAtDefectDataGridViewTextBoxColumn.Width = 83;
             // 
             // voidPercentDataGridViewTextBoxColumn
             // 
@@ -905,7 +886,7 @@
             this.voidPercentDataGridViewTextBoxColumn.HeaderText = "Void";
             this.voidPercentDataGridViewTextBoxColumn.Name = "voidPercentDataGridViewTextBoxColumn";
             this.voidPercentDataGridViewTextBoxColumn.ToolTipText = "Void Percent";
-            this.voidPercentDataGridViewTextBoxColumn.Width = 53;
+            this.voidPercentDataGridViewTextBoxColumn.Width = 56;
             // 
             // slopeDataGridViewTextBoxColumn
             // 
@@ -914,7 +895,7 @@
             this.slopeDataGridViewTextBoxColumn.HeaderText = "Slope";
             this.slopeDataGridViewTextBoxColumn.Name = "slopeDataGridViewTextBoxColumn";
             this.slopeDataGridViewTextBoxColumn.ToolTipText = "Slpoe";
-            this.slopeDataGridViewTextBoxColumn.Width = 59;
+            this.slopeDataGridViewTextBoxColumn.Width = 61;
             // 
             // aspectDataGridViewTextBoxColumn
             // 
@@ -923,7 +904,7 @@
             this.aspectDataGridViewTextBoxColumn.HeaderText = "Aspect";
             this.aspectDataGridViewTextBoxColumn.Name = "aspectDataGridViewTextBoxColumn";
             this.aspectDataGridViewTextBoxColumn.ToolTipText = "Aspect";
-            this.aspectDataGridViewTextBoxColumn.Width = 65;
+            this.aspectDataGridViewTextBoxColumn.Width = 66;
             // 
             // remarksDataGridViewTextBoxColumn
             // 
@@ -932,7 +913,7 @@
             this.remarksDataGridViewTextBoxColumn.HeaderText = "Remarks";
             this.remarksDataGridViewTextBoxColumn.Name = "remarksDataGridViewTextBoxColumn";
             this.remarksDataGridViewTextBoxColumn.ToolTipText = "Remarks about Tree";
-            this.remarksDataGridViewTextBoxColumn.Width = 74;
+            this.remarksDataGridViewTextBoxColumn.Width = 75;
             // 
             // expansionFactorDataGridViewTextBoxColumn
             // 
@@ -942,7 +923,7 @@
             this.expansionFactorDataGridViewTextBoxColumn.Name = "expansionFactorDataGridViewTextBoxColumn";
             this.expansionFactorDataGridViewTextBoxColumn.ReadOnly = true;
             this.expansionFactorDataGridViewTextBoxColumn.ToolTipText = "Calculated Expansion Factor";
-            this.expansionFactorDataGridViewTextBoxColumn.Width = 68;
+            this.expansionFactorDataGridViewTextBoxColumn.Width = 67;
             // 
             // treeFactorDataGridViewTextBoxColumn
             // 
@@ -952,7 +933,7 @@
             this.treeFactorDataGridViewTextBoxColumn.Name = "treeFactorDataGridViewTextBoxColumn";
             this.treeFactorDataGridViewTextBoxColumn.ReadOnly = true;
             this.treeFactorDataGridViewTextBoxColumn.ToolTipText = "Calculated Tree Factor";
-            this.treeFactorDataGridViewTextBoxColumn.Width = 72;
+            this.treeFactorDataGridViewTextBoxColumn.Width = 70;
             // 
             // pointFactorDataGridViewTextBoxColumn
             // 
@@ -978,7 +959,7 @@
             this.xCoordinateDataGridViewTextBoxColumn.HeaderText = "XCoord";
             this.xCoordinateDataGridViewTextBoxColumn.Name = "xCoordinateDataGridViewTextBoxColumn";
             this.xCoordinateDataGridViewTextBoxColumn.ToolTipText = "X-Coordinate";
-            this.xCoordinateDataGridViewTextBoxColumn.Width = 67;
+            this.xCoordinateDataGridViewTextBoxColumn.Width = 70;
             // 
             // yCoordinateDataGridViewTextBoxColumn
             // 
@@ -987,7 +968,7 @@
             this.yCoordinateDataGridViewTextBoxColumn.HeaderText = "YCoord";
             this.yCoordinateDataGridViewTextBoxColumn.Name = "yCoordinateDataGridViewTextBoxColumn";
             this.yCoordinateDataGridViewTextBoxColumn.ToolTipText = "Y-Coordinate";
-            this.yCoordinateDataGridViewTextBoxColumn.Width = 67;
+            this.yCoordinateDataGridViewTextBoxColumn.Width = 69;
             // 
             // zCoordinateDataGridViewTextBoxColumn
             // 
@@ -996,7 +977,7 @@
             this.zCoordinateDataGridViewTextBoxColumn.HeaderText = "ZCoord";
             this.zCoordinateDataGridViewTextBoxColumn.Name = "zCoordinateDataGridViewTextBoxColumn";
             this.zCoordinateDataGridViewTextBoxColumn.ToolTipText = "Z-Coordinate";
-            this.zCoordinateDataGridViewTextBoxColumn.Width = 67;
+            this.zCoordinateDataGridViewTextBoxColumn.Width = 70;
             // 
             // metaDataDataGridViewTextBoxColumn
             // 
@@ -1006,7 +987,7 @@
             this.metaDataDataGridViewTextBoxColumn.Name = "metaDataDataGridViewTextBoxColumn";
             this.metaDataDataGridViewTextBoxColumn.ReadOnly = true;
             this.metaDataDataGridViewTextBoxColumn.ToolTipText = "MetaData for Spacial Data";
-            this.metaDataDataGridViewTextBoxColumn.Width = 79;
+            this.metaDataDataGridViewTextBoxColumn.Width = 82;
             // 
             // createdByDataGridViewTextBoxColumn
             // 
@@ -1015,7 +996,7 @@
             this.createdByDataGridViewTextBoxColumn.HeaderText = "CreatedBy";
             this.createdByDataGridViewTextBoxColumn.Name = "createdByDataGridViewTextBoxColumn";
             this.createdByDataGridViewTextBoxColumn.ReadOnly = true;
-            this.createdByDataGridViewTextBoxColumn.Width = 81;
+            this.createdByDataGridViewTextBoxColumn.Width = 84;
             // 
             // createdDateDataGridViewTextBoxColumn
             // 
@@ -1024,7 +1005,7 @@
             this.createdDateDataGridViewTextBoxColumn.HeaderText = "CreatedDate";
             this.createdDateDataGridViewTextBoxColumn.Name = "createdDateDataGridViewTextBoxColumn";
             this.createdDateDataGridViewTextBoxColumn.ReadOnly = true;
-            this.createdDateDataGridViewTextBoxColumn.Width = 92;
+            this.createdDateDataGridViewTextBoxColumn.Width = 96;
             // 
             // modifiedByDataGridViewTextBoxColumn
             // 
@@ -1033,7 +1014,7 @@
             this.modifiedByDataGridViewTextBoxColumn.HeaderText = "ModifiedBy";
             this.modifiedByDataGridViewTextBoxColumn.Name = "modifiedByDataGridViewTextBoxColumn";
             this.modifiedByDataGridViewTextBoxColumn.ReadOnly = true;
-            this.modifiedByDataGridViewTextBoxColumn.Width = 84;
+            this.modifiedByDataGridViewTextBoxColumn.Width = 91;
             // 
             // modifiedDateDataGridViewTextBoxColumn
             // 
@@ -1042,15 +1023,15 @@
             this.modifiedDateDataGridViewTextBoxColumn.HeaderText = "ModifiedDate";
             this.modifiedDateDataGridViewTextBoxColumn.Name = "modifiedDateDataGridViewTextBoxColumn";
             this.modifiedDateDataGridViewTextBoxColumn.ReadOnly = true;
-            this.modifiedDateDataGridViewTextBoxColumn.Width = 95;
+            this.modifiedDateDataGridViewTextBoxColumn.Width = 103;
             // 
-            // TreeBindingSource
+            // _BS_Trees
             // 
-            this.TreeBindingSource.DataSource = typeof(CruiseManager.Core.Models.TreeVM);
+            this._BS_Trees.DataSource = typeof(CruiseManager.Core.Models.TreeVM);
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.LogDataGridView);
+            this.tabPage2.Controls.Add(this._DGV_Logs);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -1059,22 +1040,14 @@
             this.tabPage2.Text = "Logs";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // LogDataGridView
+            // _DGV_Logs
             // 
-            this.LogDataGridView.AllowUserToAddRows = false;
-            this.LogDataGridView.AllowUserToOrderColumns = true;
-            this.LogDataGridView.AllowUserToResizeRows = false;
-            this.LogDataGridView.AutoGenerateColumns = false;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.LogDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
-            this.LogDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.LogDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this._DGV_Logs.AllowUserToAddRows = false;
+            this._DGV_Logs.AllowUserToOrderColumns = true;
+            this._DGV_Logs.AllowUserToResizeRows = false;
+            this._DGV_Logs.AutoGenerateColumns = false;
+            this._DGV_Logs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this._DGV_Logs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn1,
             this.logNumberDataGridViewTextBoxColumn,
             this.seenDefectDataGridViewTextBoxColumn,
@@ -1096,33 +1069,16 @@
             this.createdDateDataGridViewTextBoxColumn1,
             this.modifiedByDataGridViewTextBoxColumn1,
             this.modifiedDateDataGridViewTextBoxColumn1});
-            this.LogDataGridView.ContextMenuStrip = this._ContextMenu;
-            this.LogDataGridView.DataSource = this.LogsBindingSource;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.LogDataGridView.DefaultCellStyle = dataGridViewCellStyle9;
-            this.LogDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LogDataGridView.Location = new System.Drawing.Point(3, 3);
-            this.LogDataGridView.Name = "LogDataGridView";
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.LogDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle10;
-            this.LogDataGridView.RowTemplate.Height = 24;
-            this.LogDataGridView.Size = new System.Drawing.Size(568, 374);
-            this.LogDataGridView.TabIndex = 0;
-            this.LogDataGridView.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.LogDataGridView_CellValidated);
-            this.LogDataGridView.CellValueNeeded += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.LogsDataGridView_CellValueNeeded);
-            this.LogDataGridView.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.LogDataGridView_UserDeletingRow);
+            this._DGV_Logs.ContextMenuStrip = this._ContextMenu;
+            this._DGV_Logs.DataSource = this._BS_;
+            this._DGV_Logs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._DGV_Logs.Location = new System.Drawing.Point(3, 3);
+            this._DGV_Logs.Name = "_DGV_Logs";
+            this._DGV_Logs.RowTemplate.Height = 24;
+            this._DGV_Logs.Size = new System.Drawing.Size(568, 374);
+            this._DGV_Logs.TabIndex = 0;
+            this._DGV_Logs.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this._DGV_Logs_CellValueChanged);
+            this._DGV_Logs.CellValueNeeded += new System.Windows.Forms.DataGridViewCellValueEventHandler(this._DGV_Logs_CellValueNeeded);
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -1132,7 +1088,7 @@
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
             this.dataGridViewTextBoxColumn1.ToolTipText = "Tree Data Reference Number";
-            this.dataGridViewTextBoxColumn1.Width = 88;
+            this.dataGridViewTextBoxColumn1.Width = 85;
             // 
             // logNumberDataGridViewTextBoxColumn
             // 
@@ -1141,7 +1097,7 @@
             this.logNumberDataGridViewTextBoxColumn.HeaderText = "Log";
             this.logNumberDataGridViewTextBoxColumn.Name = "logNumberDataGridViewTextBoxColumn";
             this.logNumberDataGridViewTextBoxColumn.ToolTipText = "Log Number";
-            this.logNumberDataGridViewTextBoxColumn.Width = 50;
+            this.logNumberDataGridViewTextBoxColumn.Width = 51;
             // 
             // seenDefectDataGridViewTextBoxColumn
             // 
@@ -1150,7 +1106,7 @@
             this.seenDefectDataGridViewTextBoxColumn.HeaderText = "Seen Def";
             this.seenDefectDataGridViewTextBoxColumn.Name = "seenDefectDataGridViewTextBoxColumn";
             this.seenDefectDataGridViewTextBoxColumn.ToolTipText = "Seen Defect for Log";
-            this.seenDefectDataGridViewTextBoxColumn.Width = 77;
+            this.seenDefectDataGridViewTextBoxColumn.Width = 78;
             // 
             // percentRecoverableDataGridViewTextBoxColumn
             // 
@@ -1159,7 +1115,7 @@
             this.percentRecoverableDataGridViewTextBoxColumn.HeaderText = "% Rec";
             this.percentRecoverableDataGridViewTextBoxColumn.Name = "percentRecoverableDataGridViewTextBoxColumn";
             this.percentRecoverableDataGridViewTextBoxColumn.ToolTipText = "Percent Recoverable";
-            this.percentRecoverableDataGridViewTextBoxColumn.Width = 63;
+            this.percentRecoverableDataGridViewTextBoxColumn.Width = 62;
             // 
             // gradeDataGridViewTextBoxColumn1
             // 
@@ -1168,7 +1124,7 @@
             this.gradeDataGridViewTextBoxColumn1.HeaderText = "Grade";
             this.gradeDataGridViewTextBoxColumn1.Name = "gradeDataGridViewTextBoxColumn1";
             this.gradeDataGridViewTextBoxColumn1.ToolTipText = "Log Grade";
-            this.gradeDataGridViewTextBoxColumn1.Width = 61;
+            this.gradeDataGridViewTextBoxColumn1.Width = 63;
             // 
             // exportGradeDataGridViewTextBoxColumn
             // 
@@ -1177,7 +1133,7 @@
             this.exportGradeDataGridViewTextBoxColumn.HeaderText = "Export";
             this.exportGradeDataGridViewTextBoxColumn.Name = "exportGradeDataGridViewTextBoxColumn";
             this.exportGradeDataGridViewTextBoxColumn.ToolTipText = "Export Grade";
-            this.exportGradeDataGridViewTextBoxColumn.Width = 62;
+            this.exportGradeDataGridViewTextBoxColumn.Width = 65;
             // 
             // smallEndDiameterDataGridViewTextBoxColumn
             // 
@@ -1186,7 +1142,7 @@
             this.smallEndDiameterDataGridViewTextBoxColumn.HeaderText = "SED";
             this.smallEndDiameterDataGridViewTextBoxColumn.Name = "smallEndDiameterDataGridViewTextBoxColumn";
             this.smallEndDiameterDataGridViewTextBoxColumn.ToolTipText = "Small End Diameter";
-            this.smallEndDiameterDataGridViewTextBoxColumn.Width = 54;
+            this.smallEndDiameterDataGridViewTextBoxColumn.Width = 52;
             // 
             // largeEndDiameterDataGridViewTextBoxColumn
             // 
@@ -1195,7 +1151,7 @@
             this.largeEndDiameterDataGridViewTextBoxColumn.HeaderText = "LED";
             this.largeEndDiameterDataGridViewTextBoxColumn.Name = "largeEndDiameterDataGridViewTextBoxColumn";
             this.largeEndDiameterDataGridViewTextBoxColumn.ToolTipText = "Large End Diameter";
-            this.largeEndDiameterDataGridViewTextBoxColumn.Width = 53;
+            this.largeEndDiameterDataGridViewTextBoxColumn.Width = 51;
             // 
             // lengthDataGridViewTextBoxColumn
             // 
@@ -1204,7 +1160,7 @@
             this.lengthDataGridViewTextBoxColumn.HeaderText = "Length";
             this.lengthDataGridViewTextBoxColumn.Name = "lengthDataGridViewTextBoxColumn";
             this.lengthDataGridViewTextBoxColumn.ToolTipText = "Log Length";
-            this.lengthDataGridViewTextBoxColumn.Width = 65;
+            this.lengthDataGridViewTextBoxColumn.Width = 68;
             // 
             // grossBoardFootDataGridViewTextBoxColumn
             // 
@@ -1213,7 +1169,7 @@
             this.grossBoardFootDataGridViewTextBoxColumn.HeaderText = "Gross Bdft";
             this.grossBoardFootDataGridViewTextBoxColumn.Name = "grossBoardFootDataGridViewTextBoxColumn";
             this.grossBoardFootDataGridViewTextBoxColumn.ToolTipText = "Gross Board Foot Volume";
-            this.grossBoardFootDataGridViewTextBoxColumn.Width = 81;
+            this.grossBoardFootDataGridViewTextBoxColumn.Width = 86;
             // 
             // netBoardFootDataGridViewTextBoxColumn
             // 
@@ -1222,7 +1178,7 @@
             this.netBoardFootDataGridViewTextBoxColumn.HeaderText = "Net Bdft";
             this.netBoardFootDataGridViewTextBoxColumn.Name = "netBoardFootDataGridViewTextBoxColumn";
             this.netBoardFootDataGridViewTextBoxColumn.ToolTipText = "Net Board Foot Volume";
-            this.netBoardFootDataGridViewTextBoxColumn.Width = 71;
+            this.netBoardFootDataGridViewTextBoxColumn.Width = 75;
             // 
             // grossCubicFootDataGridViewTextBoxColumn
             // 
@@ -1238,7 +1194,7 @@
             this.netCubicFootDataGridViewTextBoxColumn.HeaderText = "Net Cuft";
             this.netCubicFootDataGridViewTextBoxColumn.Name = "netCubicFootDataGridViewTextBoxColumn";
             this.netCubicFootDataGridViewTextBoxColumn.ToolTipText = "Net Cubic Foot Volume";
-            this.netCubicFootDataGridViewTextBoxColumn.Width = 71;
+            this.netCubicFootDataGridViewTextBoxColumn.Width = 75;
             // 
             // boardFootRemovedDataGridViewTextBoxColumn
             // 
@@ -1247,7 +1203,7 @@
             this.boardFootRemovedDataGridViewTextBoxColumn.HeaderText = "Bdft Rem";
             this.boardFootRemovedDataGridViewTextBoxColumn.Name = "boardFootRemovedDataGridViewTextBoxColumn";
             this.boardFootRemovedDataGridViewTextBoxColumn.ToolTipText = "Percent of Board Foot Volume Removed";
-            this.boardFootRemovedDataGridViewTextBoxColumn.Width = 76;
+            this.boardFootRemovedDataGridViewTextBoxColumn.Width = 79;
             // 
             // cubicFootRemovedDataGridViewTextBoxColumn
             // 
@@ -1256,7 +1212,7 @@
             this.cubicFootRemovedDataGridViewTextBoxColumn.HeaderText = "Cuft Rem";
             this.cubicFootRemovedDataGridViewTextBoxColumn.Name = "cubicFootRemovedDataGridViewTextBoxColumn";
             this.cubicFootRemovedDataGridViewTextBoxColumn.ToolTipText = "Percent Cubic Foot Volume Removed";
-            this.cubicFootRemovedDataGridViewTextBoxColumn.Width = 76;
+            this.cubicFootRemovedDataGridViewTextBoxColumn.Width = 79;
             // 
             // dIBClassDataGridViewTextBoxColumn
             // 
@@ -1265,7 +1221,7 @@
             this.dIBClassDataGridViewTextBoxColumn.HeaderText = "DIBClass";
             this.dIBClassDataGridViewTextBoxColumn.Name = "dIBClassDataGridViewTextBoxColumn";
             this.dIBClassDataGridViewTextBoxColumn.ToolTipText = "Diameter Class (inside bark)";
-            this.dIBClassDataGridViewTextBoxColumn.Width = 75;
+            this.dIBClassDataGridViewTextBoxColumn.Width = 76;
             // 
             // barkThicknessDataGridViewTextBoxColumn
             // 
@@ -1274,7 +1230,7 @@
             this.barkThicknessDataGridViewTextBoxColumn.HeaderText = "DBT";
             this.barkThicknessDataGridViewTextBoxColumn.Name = "barkThicknessDataGridViewTextBoxColumn";
             this.barkThicknessDataGridViewTextBoxColumn.ToolTipText = "Double Bark Thickness";
-            this.barkThicknessDataGridViewTextBoxColumn.Width = 54;
+            this.barkThicknessDataGridViewTextBoxColumn.Width = 52;
             // 
             // createdByDataGridViewTextBoxColumn1
             // 
@@ -1302,19 +1258,19 @@
             // modifiedDateDataGridViewTextBoxColumn1
             // 
             this.modifiedDateDataGridViewTextBoxColumn1.DataPropertyName = "ModifiedDate";
-            dataGridViewCellStyle8.Format = "[TreeNumber]";
-            this.modifiedDateDataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle5.Format = "[TreeNumber]";
+            this.modifiedDateDataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle5;
             this.modifiedDateDataGridViewTextBoxColumn1.HeaderText = "ModifiedDate";
             this.modifiedDateDataGridViewTextBoxColumn1.Name = "modifiedDateDataGridViewTextBoxColumn1";
             this.modifiedDateDataGridViewTextBoxColumn1.ReadOnly = true;
             // 
-            // LogsBindingSource
+            // _BS_
             // 
-            this.LogsBindingSource.DataSource = typeof(CruiseDAL.DataObjects.LogDO);
+            this._BS_.DataSource = typeof(CruiseDAL.DataObjects.LogDO);
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.PlotDataGridView);
+            this.tabPage3.Controls.Add(this._DGV_Plots);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
@@ -1323,22 +1279,14 @@
             this.tabPage3.Text = "Plots";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // PlotDataGridView
+            // _DGV_Plots
             // 
-            this.PlotDataGridView.AllowUserToAddRows = false;
-            this.PlotDataGridView.AllowUserToDeleteRows = false;
-            this.PlotDataGridView.AllowUserToOrderColumns = true;
-            this.PlotDataGridView.AutoGenerateColumns = false;
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.PlotDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
-            this.PlotDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.PlotDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this._DGV_Plots.AllowUserToAddRows = false;
+            this._DGV_Plots.AllowUserToDeleteRows = false;
+            this._DGV_Plots.AllowUserToOrderColumns = true;
+            this._DGV_Plots.AutoGenerateColumns = false;
+            this._DGV_Plots.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this._DGV_Plots.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.stratumDataGridViewTextBoxColumn1,
             this.cuttingUnitDataGridViewTextBoxColumn1,
             this.plotNumberDataGridViewTextBoxColumn,
@@ -1354,56 +1302,42 @@
             this.createdDateDataGridViewTextBoxColumn2,
             this.modifiedByDataGridViewTextBoxColumn2,
             this.modifiedDateDataGridViewTextBoxColumn2});
-            this.PlotDataGridView.DataSource = this.PlotsBindingSource;
-            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.PlotDataGridView.DefaultCellStyle = dataGridViewCellStyle14;
-            this.PlotDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PlotDataGridView.Location = new System.Drawing.Point(3, 3);
-            this.PlotDataGridView.Name = "PlotDataGridView";
-            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle15.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.PlotDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle15;
-            this.PlotDataGridView.RowTemplate.Height = 24;
-            this.PlotDataGridView.Size = new System.Drawing.Size(568, 374);
-            this.PlotDataGridView.TabIndex = 0;
-            this.PlotDataGridView.VirtualMode = true;
-            this.PlotDataGridView.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.PlotDataGridView_CellValidated);
-            this.PlotDataGridView.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.PlotDataGridView_UserDeletingRow);
+            this._DGV_Plots.ContextMenuStrip = this._ContextMenu;
+            this._DGV_Plots.DataSource = this._BS_Plots;
+            this._DGV_Plots.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._DGV_Plots.Location = new System.Drawing.Point(3, 3);
+            this._DGV_Plots.Name = "_DGV_Plots";
+            this._DGV_Plots.RowTemplate.Height = 24;
+            this._DGV_Plots.Size = new System.Drawing.Size(568, 374);
+            this._DGV_Plots.TabIndex = 0;
+            this._DGV_Plots.VirtualMode = true;
+            this._DGV_Plots.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this._DGV_Plots_CellValueChanged);
             // 
             // stratumDataGridViewTextBoxColumn1
             // 
             this.stratumDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
             this.stratumDataGridViewTextBoxColumn1.DataPropertyName = "Stratum";
-            dataGridViewCellStyle12.Format = "[Code]";
-            this.stratumDataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle6.Format = "[Code]";
+            this.stratumDataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle6;
             this.stratumDataGridViewTextBoxColumn1.HeaderText = "Stratum";
             this.stratumDataGridViewTextBoxColumn1.Name = "stratumDataGridViewTextBoxColumn1";
+            this.stratumDataGridViewTextBoxColumn1.ReadOnly = true;
             this.stratumDataGridViewTextBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.stratumDataGridViewTextBoxColumn1.ToolTipText = "Stratum Number";
-            this.stratumDataGridViewTextBoxColumn1.Width = 49;
+            this.stratumDataGridViewTextBoxColumn1.Width = 53;
             // 
             // cuttingUnitDataGridViewTextBoxColumn1
             // 
             this.cuttingUnitDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
             this.cuttingUnitDataGridViewTextBoxColumn1.DataPropertyName = "CuttingUnit";
-            dataGridViewCellStyle13.Format = "[Code]";
-            this.cuttingUnitDataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle7.Format = "[Code]";
+            this.cuttingUnitDataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle7;
             this.cuttingUnitDataGridViewTextBoxColumn1.HeaderText = "Unit";
             this.cuttingUnitDataGridViewTextBoxColumn1.Name = "cuttingUnitDataGridViewTextBoxColumn1";
+            this.cuttingUnitDataGridViewTextBoxColumn1.ReadOnly = true;
             this.cuttingUnitDataGridViewTextBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.cuttingUnitDataGridViewTextBoxColumn1.ToolTipText = "Cutting Unit Code";
-            this.cuttingUnitDataGridViewTextBoxColumn1.Width = 32;
+            this.cuttingUnitDataGridViewTextBoxColumn1.Width = 35;
             // 
             // plotNumberDataGridViewTextBoxColumn
             // 
@@ -1412,7 +1346,7 @@
             this.plotNumberDataGridViewTextBoxColumn.HeaderText = "Plot";
             this.plotNumberDataGridViewTextBoxColumn.Name = "plotNumberDataGridViewTextBoxColumn";
             this.plotNumberDataGridViewTextBoxColumn.ToolTipText = "Plot Number";
-            this.plotNumberDataGridViewTextBoxColumn.Width = 50;
+            this.plotNumberDataGridViewTextBoxColumn.Width = 52;
             // 
             // isEmptyDataGridViewTextBoxColumn
             // 
@@ -1421,7 +1355,7 @@
             this.isEmptyDataGridViewTextBoxColumn.HeaderText = "Null";
             this.isEmptyDataGridViewTextBoxColumn.Name = "isEmptyDataGridViewTextBoxColumn";
             this.isEmptyDataGridViewTextBoxColumn.ToolTipText = "Null Plot Flag";
-            this.isEmptyDataGridViewTextBoxColumn.Width = 50;
+            this.isEmptyDataGridViewTextBoxColumn.Width = 53;
             // 
             // kPIDataGridViewTextBoxColumn1
             // 
@@ -1430,7 +1364,7 @@
             this.kPIDataGridViewTextBoxColumn1.HeaderText = "KPI";
             this.kPIDataGridViewTextBoxColumn1.Name = "kPIDataGridViewTextBoxColumn1";
             this.kPIDataGridViewTextBoxColumn1.ToolTipText = "Volume Estimate for the Plot";
-            this.kPIDataGridViewTextBoxColumn1.Width = 49;
+            this.kPIDataGridViewTextBoxColumn1.Width = 47;
             // 
             // slopeDataGridViewTextBoxColumn1
             // 
@@ -1439,7 +1373,7 @@
             this.slopeDataGridViewTextBoxColumn1.HeaderText = "Slope";
             this.slopeDataGridViewTextBoxColumn1.Name = "slopeDataGridViewTextBoxColumn1";
             this.slopeDataGridViewTextBoxColumn1.ToolTipText = "Percent Slope";
-            this.slopeDataGridViewTextBoxColumn1.Width = 59;
+            this.slopeDataGridViewTextBoxColumn1.Width = 61;
             // 
             // aspectDataGridViewTextBoxColumn1
             // 
@@ -1448,7 +1382,7 @@
             this.aspectDataGridViewTextBoxColumn1.HeaderText = "Aspect";
             this.aspectDataGridViewTextBoxColumn1.Name = "aspectDataGridViewTextBoxColumn1";
             this.aspectDataGridViewTextBoxColumn1.ToolTipText = "Aspect";
-            this.aspectDataGridViewTextBoxColumn1.Width = 65;
+            this.aspectDataGridViewTextBoxColumn1.Width = 66;
             // 
             // remarksDataGridViewTextBoxColumn1
             // 
@@ -1457,7 +1391,7 @@
             this.remarksDataGridViewTextBoxColumn1.HeaderText = "Remarks";
             this.remarksDataGridViewTextBoxColumn1.Name = "remarksDataGridViewTextBoxColumn1";
             this.remarksDataGridViewTextBoxColumn1.ToolTipText = "Plot Remarks";
-            this.remarksDataGridViewTextBoxColumn1.Width = 74;
+            this.remarksDataGridViewTextBoxColumn1.Width = 75;
             // 
             // xCoordinateDataGridViewTextBoxColumn1
             // 
@@ -1466,7 +1400,7 @@
             this.xCoordinateDataGridViewTextBoxColumn1.HeaderText = "XCoord";
             this.xCoordinateDataGridViewTextBoxColumn1.Name = "xCoordinateDataGridViewTextBoxColumn1";
             this.xCoordinateDataGridViewTextBoxColumn1.ToolTipText = "X-Coordinate";
-            this.xCoordinateDataGridViewTextBoxColumn1.Width = 67;
+            this.xCoordinateDataGridViewTextBoxColumn1.Width = 70;
             // 
             // yCoordinateDataGridViewTextBoxColumn1
             // 
@@ -1475,7 +1409,7 @@
             this.yCoordinateDataGridViewTextBoxColumn1.HeaderText = "YCoord";
             this.yCoordinateDataGridViewTextBoxColumn1.Name = "yCoordinateDataGridViewTextBoxColumn1";
             this.yCoordinateDataGridViewTextBoxColumn1.ToolTipText = "Y-Coordinate";
-            this.yCoordinateDataGridViewTextBoxColumn1.Width = 67;
+            this.yCoordinateDataGridViewTextBoxColumn1.Width = 69;
             // 
             // zCoordinateDataGridViewTextBoxColumn1
             // 
@@ -1484,7 +1418,7 @@
             this.zCoordinateDataGridViewTextBoxColumn1.HeaderText = "ZCoord";
             this.zCoordinateDataGridViewTextBoxColumn1.Name = "zCoordinateDataGridViewTextBoxColumn1";
             this.zCoordinateDataGridViewTextBoxColumn1.ToolTipText = "Z-Coordinate";
-            this.zCoordinateDataGridViewTextBoxColumn1.Width = 67;
+            this.zCoordinateDataGridViewTextBoxColumn1.Width = 70;
             // 
             // createdByDataGridViewTextBoxColumn2
             // 
@@ -1514,13 +1448,13 @@
             this.modifiedDateDataGridViewTextBoxColumn2.Name = "modifiedDateDataGridViewTextBoxColumn2";
             this.modifiedDateDataGridViewTextBoxColumn2.ReadOnly = true;
             // 
-            // PlotsBindingSource
+            // _BS_Plots
             // 
-            this.PlotsBindingSource.DataSource = typeof(CruiseDAL.DataObjects.PlotDO);
+            this._BS_Plots.DataSource = typeof(CruiseDAL.DataObjects.PlotDO);
             // 
             // tabPage4
             // 
-            this.tabPage4.Controls.Add(this.CountDataGridView);
+            this.tabPage4.Controls.Add(this._DGV_Counts);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
@@ -1529,23 +1463,15 @@
             this.tabPage4.Text = "Counts";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // CountDataGridView
+            // _DGV_Counts
             // 
-            this.CountDataGridView.AllowUserToAddRows = false;
-            this.CountDataGridView.AllowUserToDeleteRows = false;
-            this.CountDataGridView.AllowUserToOrderColumns = true;
-            this.CountDataGridView.AllowUserToResizeRows = false;
-            this.CountDataGridView.AutoGenerateColumns = false;
-            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CountDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle16;
-            this.CountDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.CountDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this._DGV_Counts.AllowUserToAddRows = false;
+            this._DGV_Counts.AllowUserToDeleteRows = false;
+            this._DGV_Counts.AllowUserToOrderColumns = true;
+            this._DGV_Counts.AllowUserToResizeRows = false;
+            this._DGV_Counts.AutoGenerateColumns = false;
+            this._DGV_Counts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this._DGV_Counts.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.sampleGroupDataGridViewTextBoxColumn1,
             this.cuttingUnitDataGridViewTextBoxColumn2,
             this.tallyDataGridViewTextBoxColumn,
@@ -1557,80 +1483,67 @@
             this.createdDateDataGridViewTextBoxColumn3,
             this.modifiedByDataGridViewTextBoxColumn3,
             this.modifiedDateDataGridViewTextBoxColumn3});
-            this.CountDataGridView.ContextMenuStrip = this._ContextMenu;
-            this.CountDataGridView.DataSource = this.CountsBindingSource;
-            dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle22.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle22.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle22.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle22.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle22.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.CountDataGridView.DefaultCellStyle = dataGridViewCellStyle22;
-            this.CountDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CountDataGridView.Location = new System.Drawing.Point(3, 3);
-            this.CountDataGridView.Name = "CountDataGridView";
-            dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle23.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle23.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle23.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle23.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle23.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CountDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle23;
-            this.CountDataGridView.RowTemplate.Height = 24;
-            this.CountDataGridView.Size = new System.Drawing.Size(568, 374);
-            this.CountDataGridView.TabIndex = 0;
-            this.CountDataGridView.VirtualMode = true;
-            this.CountDataGridView.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.CountDataGridView_CellValidated);
+            this._DGV_Counts.DataSource = this._BS_Counts;
+            this._DGV_Counts.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._DGV_Counts.Location = new System.Drawing.Point(3, 3);
+            this._DGV_Counts.Name = "_DGV_Counts";
+            this._DGV_Counts.RowTemplate.Height = 24;
+            this._DGV_Counts.Size = new System.Drawing.Size(568, 374);
+            this._DGV_Counts.TabIndex = 0;
+            this._DGV_Counts.VirtualMode = true;
+            this._DGV_Counts.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this._DGV_Counts_CellValueChanged);
             // 
             // sampleGroupDataGridViewTextBoxColumn1
             // 
             this.sampleGroupDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
             this.sampleGroupDataGridViewTextBoxColumn1.DataPropertyName = "SampleGroup";
-            dataGridViewCellStyle17.Format = "[Code]";
-            this.sampleGroupDataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle17;
+            dataGridViewCellStyle8.Format = "[Code]";
+            this.sampleGroupDataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle8;
             this.sampleGroupDataGridViewTextBoxColumn1.HeaderText = "SG";
             this.sampleGroupDataGridViewTextBoxColumn1.Name = "sampleGroupDataGridViewTextBoxColumn1";
+            this.sampleGroupDataGridViewTextBoxColumn1.ReadOnly = true;
             this.sampleGroupDataGridViewTextBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.sampleGroupDataGridViewTextBoxColumn1.ToolTipText = "Sample Group Code";
-            this.sampleGroupDataGridViewTextBoxColumn1.Width = 28;
+            this.sampleGroupDataGridViewTextBoxColumn1.Width = 27;
             // 
             // cuttingUnitDataGridViewTextBoxColumn2
             // 
             this.cuttingUnitDataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
             this.cuttingUnitDataGridViewTextBoxColumn2.DataPropertyName = "CuttingUnit";
-            dataGridViewCellStyle18.Format = "[Code]";
-            this.cuttingUnitDataGridViewTextBoxColumn2.DefaultCellStyle = dataGridViewCellStyle18;
+            dataGridViewCellStyle9.Format = "[Code]";
+            this.cuttingUnitDataGridViewTextBoxColumn2.DefaultCellStyle = dataGridViewCellStyle9;
             this.cuttingUnitDataGridViewTextBoxColumn2.HeaderText = "Unit";
             this.cuttingUnitDataGridViewTextBoxColumn2.Name = "cuttingUnitDataGridViewTextBoxColumn2";
+            this.cuttingUnitDataGridViewTextBoxColumn2.ReadOnly = true;
             this.cuttingUnitDataGridViewTextBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.cuttingUnitDataGridViewTextBoxColumn2.ToolTipText = "Cutting Unit Code";
-            this.cuttingUnitDataGridViewTextBoxColumn2.Width = 32;
+            this.cuttingUnitDataGridViewTextBoxColumn2.Width = 35;
             // 
             // tallyDataGridViewTextBoxColumn
             // 
             this.tallyDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
             this.tallyDataGridViewTextBoxColumn.DataPropertyName = "Tally";
-            dataGridViewCellStyle19.Format = "[Hotkey]";
-            this.tallyDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle19;
+            dataGridViewCellStyle10.Format = "[Hotkey]";
+            this.tallyDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle10;
             this.tallyDataGridViewTextBoxColumn.HeaderText = "HotKey";
             this.tallyDataGridViewTextBoxColumn.Name = "tallyDataGridViewTextBoxColumn";
+            this.tallyDataGridViewTextBoxColumn.ReadOnly = true;
             this.tallyDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.tallyDataGridViewTextBoxColumn.ToolTipText = "Tally Hot Key";
-            this.tallyDataGridViewTextBoxColumn.Width = 48;
+            this.tallyDataGridViewTextBoxColumn.Width = 49;
             // 
             // treeDefaultValueDataGridViewTextBoxColumn1
             // 
             this.treeDefaultValueDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
             this.treeDefaultValueDataGridViewTextBoxColumn1.DataPropertyName = "TreeDefaultValue";
-            dataGridViewCellStyle20.Format = "[Species]/[LiveDead]/[PrimaryProduct]";
-            this.treeDefaultValueDataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle20;
+            dataGridViewCellStyle11.Format = "[Species]/[LiveDead]/[PrimaryProduct]";
+            this.treeDefaultValueDataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle11;
             this.treeDefaultValueDataGridViewTextBoxColumn1.HeaderText = "TreeDefaultValue";
             this.treeDefaultValueDataGridViewTextBoxColumn1.Name = "treeDefaultValueDataGridViewTextBoxColumn1";
+            this.treeDefaultValueDataGridViewTextBoxColumn1.ReadOnly = true;
             this.treeDefaultValueDataGridViewTextBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.treeDefaultValueDataGridViewTextBoxColumn1.ToolTipText = "Tree Default Value (Species/LiveDead/Product)";
-            this.treeDefaultValueDataGridViewTextBoxColumn1.Width = 96;
+            this.treeDefaultValueDataGridViewTextBoxColumn1.Width = 101;
             // 
             // treeCountDataGridViewTextBoxColumn1
             // 
@@ -1639,7 +1552,7 @@
             this.treeCountDataGridViewTextBoxColumn1.HeaderText = "Count";
             this.treeCountDataGridViewTextBoxColumn1.Name = "treeCountDataGridViewTextBoxColumn1";
             this.treeCountDataGridViewTextBoxColumn1.ToolTipText = "Tally Count for Population";
-            this.treeCountDataGridViewTextBoxColumn1.Width = 60;
+            this.treeCountDataGridViewTextBoxColumn1.Width = 64;
             // 
             // sumKPIDataGridViewTextBoxColumn
             // 
@@ -1648,19 +1561,19 @@
             this.sumKPIDataGridViewTextBoxColumn.HeaderText = "Sum KPI";
             this.sumKPIDataGridViewTextBoxColumn.Name = "sumKPIDataGridViewTextBoxColumn";
             this.sumKPIDataGridViewTextBoxColumn.ToolTipText = "Sum of Individual Tree Volume Estimates";
-            this.sumKPIDataGridViewTextBoxColumn.Width = 73;
+            this.sumKPIDataGridViewTextBoxColumn.Width = 72;
             // 
             // Component
             // 
             this.Component.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
             this.Component.DataPropertyName = "Component";
-            dataGridViewCellStyle21.Format = "[rowID]";
-            this.Component.DefaultCellStyle = dataGridViewCellStyle21;
+            dataGridViewCellStyle12.Format = "[rowID]";
+            this.Component.DefaultCellStyle = dataGridViewCellStyle12;
             this.Component.HeaderText = "Comp";
             this.Component.Name = "Component";
             this.Component.ReadOnly = true;
             this.Component.ToolTipText = "Component Cruise Number";
-            this.Component.Width = 59;
+            this.Component.Width = 62;
             // 
             // createdByDataGridViewTextBoxColumn3
             // 
@@ -1690,13 +1603,13 @@
             this.modifiedDateDataGridViewTextBoxColumn3.Name = "modifiedDateDataGridViewTextBoxColumn3";
             this.modifiedDateDataGridViewTextBoxColumn3.ReadOnly = true;
             // 
-            // CountsBindingSource
+            // _BS_Counts
             // 
-            this.CountsBindingSource.DataSource = typeof(CruiseDAL.DataObjects.CountTreeDO);
+            this._BS_Counts.DataSource = typeof(CruiseDAL.DataObjects.CountTreeDO);
             // 
             // tabPage5
             // 
-            this.tabPage5.Controls.Add(this.panel2);
+            this.tabPage5.Controls.Add(panel2);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
@@ -1707,31 +1620,23 @@
             // 
             // panel2
             // 
-            this.panel2.BackColor = System.Drawing.Color.DarkSeaGreen;
-            this.panel2.Controls.Add(this._errorsDGV);
-            this.panel2.Controls.Add(this.label6);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(3, 3);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(568, 374);
-            this.panel2.TabIndex = 1;
+            panel2.BackColor = System.Drawing.Color.DarkSeaGreen;
+            panel2.Controls.Add(this._DGV_Errors);
+            panel2.Controls.Add(label6);
+            panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            panel2.Location = new System.Drawing.Point(3, 3);
+            panel2.Name = "panel2";
+            panel2.Size = new System.Drawing.Size(568, 374);
+            panel2.TabIndex = 1;
             // 
-            // _errorsDGV
+            // _DGV_Errors
             // 
-            this._errorsDGV.AllowUserToAddRows = false;
-            this._errorsDGV.AllowUserToDeleteRows = false;
-            this._errorsDGV.AllowUserToOrderColumns = true;
-            this._errorsDGV.AutoGenerateColumns = false;
-            dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle24.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle24.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle24.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle24.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle24.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this._errorsDGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle24;
-            this._errorsDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this._errorsDGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this._DGV_Errors.AllowUserToAddRows = false;
+            this._DGV_Errors.AllowUserToDeleteRows = false;
+            this._DGV_Errors.AllowUserToOrderColumns = true;
+            this._DGV_Errors.AutoGenerateColumns = false;
+            this._DGV_Errors.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this._DGV_Errors.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.tableNameDataGridViewTextBoxColumn,
             this.cNNumberDataGridViewTextBoxColumn,
             this.columnNameDataGridViewTextBoxColumn,
@@ -1739,38 +1644,23 @@
             this.messageDataGridViewTextBoxColumn,
             this.programDataGridViewTextBoxColumn,
             this.suppressDataGridViewCheckBoxColumn});
-            this._errorsDGV.DataSource = this._BS_Errors;
-            dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle25.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle25.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle25.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle25.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle25.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle25.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this._errorsDGV.DefaultCellStyle = dataGridViewCellStyle25;
-            this._errorsDGV.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._errorsDGV.Location = new System.Drawing.Point(0, 13);
-            this._errorsDGV.Name = "_errorsDGV";
-            dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle26.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle26.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle26.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle26.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle26.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this._errorsDGV.RowHeadersDefaultCellStyle = dataGridViewCellStyle26;
-            this._errorsDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this._errorsDGV.Size = new System.Drawing.Size(568, 361);
-            this._errorsDGV.TabIndex = 0;
-            this._errorsDGV.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this._errorsDGV_CellMouseDoubleClick);
-            this._errorsDGV.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this._errorsDGV_CellValidated);
-            this._errorsDGV.RowHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this._errorsDGV_RowHeaderMouseDoubleClick);
+            this._DGV_Errors.DataSource = this._BS_Errors;
+            this._DGV_Errors.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._DGV_Errors.Location = new System.Drawing.Point(0, 13);
+            this._DGV_Errors.Name = "_DGV_Errors";
+            this._DGV_Errors.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this._DGV_Errors.Size = new System.Drawing.Size(568, 361);
+            this._DGV_Errors.TabIndex = 0;
+            this._DGV_Errors.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this._DGV_Errors_CellMouseDoubleClick);
+            this._DGV_Errors.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this._DGV_Errors_CellValueChanged);
+            this._DGV_Errors.RowHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this._DGV_Errors_RowHeaderMouseDoubleClick);
             // 
             // tableNameDataGridViewTextBoxColumn
             // 
             this.tableNameDataGridViewTextBoxColumn.DataPropertyName = "TableName";
             this.tableNameDataGridViewTextBoxColumn.HeaderText = "Table";
             this.tableNameDataGridViewTextBoxColumn.Name = "tableNameDataGridViewTextBoxColumn";
+            this.tableNameDataGridViewTextBoxColumn.ReadOnly = true;
             this.tableNameDataGridViewTextBoxColumn.ToolTipText = "Table Containing Error";
             // 
             // cNNumberDataGridViewTextBoxColumn
@@ -1779,8 +1669,9 @@
             this.cNNumberDataGridViewTextBoxColumn.DataPropertyName = "CN_Number";
             this.cNNumberDataGridViewTextBoxColumn.HeaderText = "RecID";
             this.cNNumberDataGridViewTextBoxColumn.Name = "cNNumberDataGridViewTextBoxColumn";
+            this.cNNumberDataGridViewTextBoxColumn.ReadOnly = true;
             this.cNNumberDataGridViewTextBoxColumn.ToolTipText = "Data Reference Number (Double Click to Go to Error)";
-            this.cNNumberDataGridViewTextBoxColumn.Width = 63;
+            this.cNNumberDataGridViewTextBoxColumn.Width = 61;
             // 
             // columnNameDataGridViewTextBoxColumn
             // 
@@ -1788,41 +1679,46 @@
             this.columnNameDataGridViewTextBoxColumn.DataPropertyName = "ColumnName";
             this.columnNameDataGridViewTextBoxColumn.HeaderText = "Column";
             this.columnNameDataGridViewTextBoxColumn.Name = "columnNameDataGridViewTextBoxColumn";
+            this.columnNameDataGridViewTextBoxColumn.ReadOnly = true;
             this.columnNameDataGridViewTextBoxColumn.ToolTipText = "Name of the Column Containing the Error";
-            this.columnNameDataGridViewTextBoxColumn.Width = 67;
+            this.columnNameDataGridViewTextBoxColumn.Width = 72;
             // 
             // levelDataGridViewTextBoxColumn
             // 
             this.levelDataGridViewTextBoxColumn.DataPropertyName = "Level";
             this.levelDataGridViewTextBoxColumn.HeaderText = "Level";
             this.levelDataGridViewTextBoxColumn.Name = "levelDataGridViewTextBoxColumn";
+            this.levelDataGridViewTextBoxColumn.ReadOnly = true;
             this.levelDataGridViewTextBoxColumn.ToolTipText = "Error Level";
             this.levelDataGridViewTextBoxColumn.Width = 58;
             // 
             // messageDataGridViewTextBoxColumn
             // 
-            this.messageDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            this.messageDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.messageDataGridViewTextBoxColumn.DataPropertyName = "Message";
             this.messageDataGridViewTextBoxColumn.HeaderText = "Message";
             this.messageDataGridViewTextBoxColumn.Name = "messageDataGridViewTextBoxColumn";
+            this.messageDataGridViewTextBoxColumn.ReadOnly = true;
             this.messageDataGridViewTextBoxColumn.ToolTipText = "Error Message";
-            this.messageDataGridViewTextBoxColumn.Width = 5;
+            this.messageDataGridViewTextBoxColumn.Width = 77;
             // 
             // programDataGridViewTextBoxColumn
             // 
             this.programDataGridViewTextBoxColumn.DataPropertyName = "Program";
             this.programDataGridViewTextBoxColumn.HeaderText = "Program";
             this.programDataGridViewTextBoxColumn.Name = "programDataGridViewTextBoxColumn";
+            this.programDataGridViewTextBoxColumn.ReadOnly = true;
             this.programDataGridViewTextBoxColumn.ToolTipText = "Name of the Program That Flagged the Error";
             // 
             // suppressDataGridViewCheckBoxColumn
             // 
             this.suppressDataGridViewCheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
             this.suppressDataGridViewCheckBoxColumn.DataPropertyName = "Suppress";
+            this.suppressDataGridViewCheckBoxColumn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.suppressDataGridViewCheckBoxColumn.HeaderText = "Suppress Error";
             this.suppressDataGridViewCheckBoxColumn.Name = "suppressDataGridViewCheckBoxColumn";
             this.suppressDataGridViewCheckBoxColumn.ToolTipText = "Check the Box to Suppress This Error";
-            this.suppressDataGridViewCheckBoxColumn.Width = 82;
+            this.suppressDataGridViewCheckBoxColumn.Width = 79;
             // 
             // _BS_Errors
             // 
@@ -1830,12 +1726,12 @@
             // 
             // label6
             // 
-            this.label6.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label6.Location = new System.Drawing.Point(0, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(568, 13);
-            this.label6.TabIndex = 0;
-            this.label6.Text = "Double Click Row To View Data Entry";
+            label6.Dock = System.Windows.Forms.DockStyle.Top;
+            label6.Location = new System.Drawing.Point(0, 0);
+            label6.Name = "label6";
+            label6.Size = new System.Drawing.Size(568, 13);
+            label6.TabIndex = 0;
+            label6.Text = "Double Click Row To View Data Entry";
             // 
             // menuStrip1
             // 
@@ -1870,6 +1766,7 @@
             this.ClientSize = new System.Drawing.Size(777, 430);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
+            this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
@@ -1895,22 +1792,22 @@
             this.tabControl1.ResumeLayout(false);
             this._ContextMenu.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.TreeDataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._DGV_Trees)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._BS_TreeSampleGroups)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._BS_TreeSpecies)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.TreeBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._BS_Trees)).EndInit();
             this.tabPage2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.LogDataGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.LogsBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._DGV_Logs)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._BS_)).EndInit();
             this.tabPage3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.PlotDataGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PlotsBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._DGV_Plots)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._BS_Plots)).EndInit();
             this.tabPage4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.CountDataGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.CountsBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._DGV_Counts)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._BS_Counts)).EndInit();
             this.tabPage5.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this._errorsDGV)).EndInit();
+            panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this._DGV_Errors)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._BS_Errors)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -1923,43 +1820,36 @@
 
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ComboBox StratumComboBox;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox CuttingUnitComboBox;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.ComboBox TreeDefaultComboBox;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox SampleGroupComboBox;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.DataGridView TreeDataGridView;
+        private System.Windows.Forms.DataGridView _DGV_Trees;
         private System.Windows.Forms.BindingSource CuttingUnitBindingSource;
         private System.Windows.Forms.BindingSource StratumBindingSource;
         private System.Windows.Forms.BindingSource SampleGroupBindingSource;
         private System.Windows.Forms.BindingSource TreeDefaultBindingSource;
-        private System.Windows.Forms.BindingSource TreeBindingSource;
-        private System.Windows.Forms.BindingSource LogsBindingSource;
-        private System.Windows.Forms.BindingSource PlotsBindingSource;
-        private System.Windows.Forms.BindingSource CountsBindingSource;
-        private System.Windows.Forms.DataGridView LogDataGridView;
-        private System.Windows.Forms.DataGridView PlotDataGridView;
-        private System.Windows.Forms.DataGridView CountDataGridView;
+        private System.Windows.Forms.BindingSource _BS_Trees;
+        private System.Windows.Forms.BindingSource _BS_;
+        private System.Windows.Forms.BindingSource _BS_Plots;
+        private System.Windows.Forms.BindingSource _BS_Counts;
+        private System.Windows.Forms.DataGridView _DGV_Logs;
+        private System.Windows.Forms.DataGridView _DGV_Plots;
+        private System.Windows.Forms.DataGridView _DGV_Counts;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem1;
         private System.Windows.Forms.TabPage tabPage5;
-        private System.Windows.Forms.DataGridView _errorsDGV;
+        private System.Windows.Forms.DataGridView _DGV_Errors;
         private System.Windows.Forms.BindingSource _BS_Errors;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn logNumberDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn seenDefectDataGridViewTextBoxColumn;
@@ -1981,93 +1871,93 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn createdDateDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn modifiedByDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn modifiedDateDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn stratumDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn cuttingUnitDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn plotNumberDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn isEmptyDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn kPIDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn slopeDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn aspectDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn remarksDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn xCoordinateDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn yCoordinateDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn zCoordinateDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn createdByDataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn createdDateDataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn modifiedByDataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn modifiedDateDataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn sampleGroupDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn cuttingUnitDataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn tallyDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn treeDefaultValueDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn treeCountDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn sumKPIDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Component;
-        private System.Windows.Forms.DataGridViewTextBoxColumn createdByDataGridViewTextBoxColumn3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn createdDateDataGridViewTextBoxColumn3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn modifiedByDataGridViewTextBoxColumn3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn modifiedDateDataGridViewTextBoxColumn3;
         private System.Windows.Forms.ContextMenuStrip _ContextMenu;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private System.Windows.Forms.BindingSource _BS_TreeSpecies;
-        private System.Windows.Forms.DataGridViewTextBoxColumn tableNameDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn cNNumberDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn columnNameDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn levelDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn messageDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn programDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn suppressDataGridViewCheckBoxColumn;
         private System.Windows.Forms.BindingSource _BS_TreeSampleGroups;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Tree_CN;
-        private System.Windows.Forms.DataGridViewTextBoxColumn cuttingUnitDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn stratumDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn plotDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn treeNumberDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewComboBoxColumn sampleGroupDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewComboBoxColumn speciesDataGridViewColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn countOrMeasureDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dBHDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dRCDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn totalHeightDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn merchHeightPrimaryDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn merchHeightSecondaryDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn upperStemHeightDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn treeDefaultValueDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn kPIDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn sTMDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn seenDefectPrimaryDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn seenDefectSecondaryDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn HiddenPrimary;
-        private System.Windows.Forms.DataGridViewTextBoxColumn recoverablePrimaryDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn liveDeadDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn initialsDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn treeCountDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn gradeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn topDIBPrimaryDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn topDIBSecondaryDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn heightToFirstLiveLimbDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn clearFaceDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn poleLengthDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn crownRatioDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn formClassDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dBHDoubleBarkThicknessDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn defectCodeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn diameterAtDefectDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn voidPercentDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn slopeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn aspectDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn remarksDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn expansionFactorDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn treeFactorDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn pointFactorDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn isFallBuckScaleDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn xCoordinateDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn yCoordinateDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn zCoordinateDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn metaDataDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn createdByDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn createdDateDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn modifiedByDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn modifiedDateDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn modifiedByDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn createdDateDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn createdByDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn metaDataDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn zCoordinateDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn yCoordinateDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn xCoordinateDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn isFallBuckScaleDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn pointFactorDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn treeFactorDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn expansionFactorDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn remarksDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn aspectDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn slopeDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn voidPercentDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn diameterAtDefectDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn defectCodeDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dBHDoubleBarkThicknessDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn formClassDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn crownRatioDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn poleLengthDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn clearFaceDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn heightToFirstLiveLimbDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn topDIBSecondaryDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn topDIBPrimaryDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn gradeDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn treeCountDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn initialsDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn liveDeadDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn recoverablePrimaryDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn HiddenPrimary;
+        private System.Windows.Forms.DataGridViewTextBoxColumn seenDefectSecondaryDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn seenDefectPrimaryDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn sTMDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn kPIDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn treeDefaultValueDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn upperStemHeightDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn merchHeightSecondaryDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn merchHeightPrimaryDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn totalHeightDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dRCDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dBHDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn countOrMeasureDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewComboBoxColumn speciesDataGridViewColumn;
+        private System.Windows.Forms.DataGridViewComboBoxColumn sampleGroupDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn treeNumberDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn plotDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn stratumDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cuttingUnitDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Tree_CN;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn suppressDataGridViewCheckBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn programDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn messageDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn levelDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn columnNameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cNNumberDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tableNameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn modifiedDateDataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn modifiedByDataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn createdDateDataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn createdByDataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Component;
+        private System.Windows.Forms.DataGridViewTextBoxColumn sumKPIDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn treeCountDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn treeDefaultValueDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tallyDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cuttingUnitDataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn sampleGroupDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn modifiedDateDataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn modifiedByDataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn createdDateDataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn createdByDataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn zCoordinateDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn yCoordinateDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn xCoordinateDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn remarksDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn aspectDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn slopeDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn kPIDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn isEmptyDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn plotNumberDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cuttingUnitDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn stratumDataGridViewTextBoxColumn1;
     }
 }

@@ -770,50 +770,78 @@ namespace CruiseManager.WinForms.CruiseWizard
         protected void CopyTemplateData(DAL templateDB)
         {
 
-            //List<TreeAuditValueDO> treeAuditValues = templateDB.Read<TreeAuditValueDO>("TreeAuditValue", null);
+            //            _database.Execute(@"
+            //DELETE FROM TreeDefaultValue;
+            //DELETE FROM TreeAuditValue;
+            //DELETE FROM TreeDefaultValueTreeAuditValue;");//ensure that these tables are clean 
+            _database.BeginTransaction();
+            try
+            {
+                foreach (TreeDefaultValueDO tdv in templateDB.Query<TreeDefaultValueDO>("SELECT * FROM TreeDefaultValue;"))
+                {
+                    _database.Insert(tdv, true, OnConflictOption.Replace);
+                }
 
-            //foreach (TreeDefaultValueDO tdv in templateDB.Read<TreeDefaultValueDO>("TreeDefaultValue", null, null))
-            //{
-            //    tdv.TreeAuditValues.Populate();
-            //    //tdv.DAL = null;
-            //    TreeDefaults.Add(tdv);
-            //}
+                foreach (TreeAuditValueDO tav in templateDB.Query<TreeAuditValueDO>("SELECT * FROM TreeAuditValue;"))
+                {
+                    _database.Insert(tav, true, OnConflictOption.Replace);
+                }
 
-            //foreach (TreeAuditValueDO tav in treeAuditValues)
-            //{
-            //    tav.DAL = _database;
-            //    tav.Save();
-            //}
+                foreach (TreeDefaultValueTreeAuditValueDO map in templateDB.Query<TreeDefaultValueTreeAuditValueDO>("SELECT * FROM TreeDefaultValueTReeAuditValue;"))
+                {
+                    _database.Insert(map, true, OnConflictOption.Replace);
+                }
 
-            //foreach (TreeDefaultValueDO tdv in TreeDefaults)
-            //{
-            //    tdv.DAL = _database;
-            //    tdv.Save();
-            //    tdv.TreeAuditValues.Save();
-            //}
-            _database.Execute(@"
-DELETE FROM TreeDefaultValue;
-DELETE FROM TreeAuditValue;
-DELETE FROM TreeDefaultValueTreeAuditValue;");//ensure that these tables are clean 
-            _database.DirectCopy(templateDB, CruiseDAL.Schema.TREEDEFAULTVALUE._NAME, null, OnConflictOption.Fail);
-            _database.DirectCopy(templateDB, CruiseDAL.Schema.TREEAUDITVALUE._NAME, null, OnConflictOption.Fail);
-            _database.DirectCopy(templateDB, CruiseDAL.Schema.TREEDEFAULTVALUETREEAUDITVALUE._NAME, null, OnConflictOption.Fail);
+                foreach (ReportsDO rpt in templateDB.Query<ReportsDO>("SELECT * FROM Reports;"))
+                {
+                    _database.Insert(rpt, true, OnConflictOption.Replace);
+                }
+
+                string CMselectCondition = null;
+                if (this.Sale.Purpose == "Recon")
+                {
+                    CMselectCondition = "WHERE Code = 'FIX' OR Code = 'PNT'";
+                }
+
+                foreach (CruiseMethodsDO cm in templateDB.Query<CruiseMethodsDO>("SELECT * FROM CruiseMethods " + CMselectCondition + ";"))
+                {
+                    _database.Insert(cm, false, OnConflictOption.Ignore);
+                }
+
+                foreach (VolumeEquationDO ve in templateDB.Query<VolumeEquationDO>("SELECT * FROM VolumeEquation;"))
+                {
+                    _database.Insert(ve, false, OnConflictOption.Ignore);
+                }
+
+                foreach (TreeFieldSetupDefaultDO tf in templateDB.Query<TreeFieldSetupDefaultDO>("SELECT * FROM TreeFieldSetupDefault;"))
+                {
+                    _database.Insert(tf, false, OnConflictOption.Ignore);
+                }
+
+                foreach (LogFieldSetupDefaultDO lf in templateDB.Query<LogFieldSetupDefaultDO>("SELECT * FROM LogFieldSetupDefault;"))
+                {
+                    _database.Insert(lf, false, OnConflictOption.Ignore);
+                }
+                _database.EndTransaction();
+            }
+            catch
+            {
+                _database.CancelTransaction();
+                throw;
+            }
+
 
             this.TreeDefaults = _database.Read<TreeDefaultValueDO>(CruiseDAL.Schema.TREEDEFAULTVALUE._NAME, null);
 
-            _database.DirectCopy(templateDB, "Reports", null, OnConflictOption.Ignore);
 
-            string CMselectCondition = null;
-            if (this.Sale.Purpose == "Recon")
-            {
-                CMselectCondition = "Where Code = 'FIX' OR Code = 'PNT'";
-            }
-            _database.DirectCopy(templateDB, CruiseDAL.Schema.CRUISEMETHODS._NAME, CMselectCondition, OnConflictOption.Ignore);
+            
 
-            _database.DirectCopy(templateDB, CruiseDAL.Schema.VOLUMEEQUATION._NAME, null, OnConflictOption.Ignore);
-            _database.DirectCopy(templateDB, CruiseDAL.Schema.TREEFIELDSETUPDEFAULT._NAME, null, OnConflictOption.Ignore);
-            _database.DirectCopy(templateDB, CruiseDAL.Schema.LOGFIELDSETUPDEFAULT._NAME, null, OnConflictOption.Ignore);
-            _database.DirectCopy(templateDB, CruiseDAL.Schema.TALLY._NAME, null, OnConflictOption.Ignore);
+            
+
+            //_database.DirectCopy(templateDB, CruiseDAL.Schema.VOLUMEEQUATION._NAME, null, OnConflictOption.Ignore);
+            //_database.DirectCopy(templateDB, CruiseDAL.Schema.TREEFIELDSETUPDEFAULT._NAME, null, OnConflictOption.Ignore);
+            //_database.DirectCopy(templateDB, CruiseDAL.Schema.LOGFIELDSETUPDEFAULT._NAME, null, OnConflictOption.Ignore);
+            //_database.DirectCopy(templateDB, CruiseDAL.Schema.TALLY._NAME, null, OnConflictOption.Ignore);
         }
 
        

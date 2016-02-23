@@ -28,12 +28,15 @@ namespace CruiseManager.WinForms.App
         }
 
 
-        public override string AskCruiseSaveLocation()
+        public override string AskSaveAsLocation(string originalPath)
         {
+            var extention = System.IO.Path.GetExtension(originalPath).ToLower();
+
             using (SaveFileDialog sfd = new SaveFileDialog()
             {
                 AddExtension = true,
-                DefaultExt = Strings.CRUISE_FILE_EXTENTION,
+                //DefaultExt = extention,
+                Filter = string.Format("*{0}|*{0}", extention)
             })
             {
                 if (sfd.ShowDialog((Form)this.ApplicationController.MainWindow) == DialogResult.OK)
@@ -323,12 +326,6 @@ namespace CruiseManager.WinForms.App
                 dialog.ShowDialog();
             }
         }
-
-
-
-        
-
-        
 
         public override void ShowImportTemplate()
         {
