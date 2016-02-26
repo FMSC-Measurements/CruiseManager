@@ -39,7 +39,7 @@ namespace CruiseManager.Core.App
         {
             if (reconMethodsOnly)
             {
-                return new List<string>(CruiseDAL.Schema.Constants.CruiseMethods.RECON_METHODS);
+                return new List<string>(CruiseDAL.Schema.CruiseMethods.RECON_METHODS);
             }
             List<string> cruiseMethods = null;
             try
@@ -49,7 +49,7 @@ namespace CruiseManager.Core.App
             catch { }
             if (cruiseMethods == null || cruiseMethods.Count == 0)
             {
-                cruiseMethods = new List<string>(CruiseDAL.Schema.Constants.CruiseMethods.SUPPORTED_METHODS);
+                cruiseMethods = new List<string>(CruiseDAL.Schema.CruiseMethods.SUPPORTED_METHODS);
             }
 
             return cruiseMethods;

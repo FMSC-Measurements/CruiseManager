@@ -4,53 +4,53 @@ using System.Linq;
 using System.Text;
 using CruiseDAL;
 using System.Threading;
-
+using FMSC.ORM.EntityModel.Attributes;
 
 namespace CruiseManager.Core.Components
 {
     public class TreeKey 
     {
-        [Field(FieldName=CruiseDAL.Schema.TREE.TREE_CN)]
+        [Field(Name=CruiseDAL.Schema.TREE.TREE_CN)]
         public long? Tree_CN { get; set; }
 
-        [Field(FieldName=CruiseDAL.Schema.TREE.TREE_GUID)]
+        [Field(Name=CruiseDAL.Schema.TREE.TREE_GUID)]
         public Guid Tree_GUID { get; set; }
     }
 
 
     public class PlotKey 
     {
-        [Field(FieldName=CruiseDAL.Schema.PLOT.PLOT_CN)]
+        [Field(Name=CruiseDAL.Schema.PLOT.PLOT_CN)]
         public long? Plot_CN { get; set; }
 
-        [Field(FieldName=CruiseDAL.Schema.PLOT.PLOT_GUID)]
+        [Field(Name=CruiseDAL.Schema.PLOT.PLOT_GUID)]
         public Guid Plot_GUID { get; set; }
     }
 
     public class LogKey 
     {
-        [Field(FieldName=CruiseDAL.Schema.LOG.LOG_CN)]
+        [Field(Name=CruiseDAL.Schema.LOG.LOG_CN)]
         public long? Log_CN { get; set; }
 
-        [Field(FieldName=CruiseDAL.Schema.LOG.LOG_CN)]
+        [Field(Name=CruiseDAL.Schema.LOG.LOG_CN)]
         public Guid Log_GUID { get; set; }
     }
 
     public class StemKey 
     {
-        [Field(FieldName=CruiseDAL.Schema.STEM.STEM_CN)]
+        [Field(Name=CruiseDAL.Schema.STEM.STEM_CN)]
         public long? Stem_CN { get; set; }
 
-        [Field(FieldName=CruiseDAL.Schema.STEM.STEM_GUID)]
+        [Field(Name=CruiseDAL.Schema.STEM.STEM_GUID)]
         public Guid Stem_GUID { get; set; }   
     }
 
     public class TreeEstimateKey 
     {
-        [Field(FieldName=CruiseDAL.Schema.TREEESTIMATE.TREEESTIMATE_CN)]
+        [Field(Name=CruiseDAL.Schema.TREEESTIMATE.TREEESTIMATE_CN)]
         public long? TreeEstimate_CN { get; set; }
 
-        [Field(FieldName=CruiseDAL.Schema.TREEESTIMATE.TREEESTIMATE_GUID)]
+        [Field(Name=CruiseDAL.Schema.TREEESTIMATE.TREEESTIMATE_GUID)]
         public Guid TreeEstimate_GUID { get; set; }
     }
 

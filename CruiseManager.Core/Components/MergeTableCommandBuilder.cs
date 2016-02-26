@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using CruiseDAL;
 using CruiseDAL.DataObjects;
+using FMSC.ORM.Core.SQL;
 
 namespace CruiseManager.Core.Components
 {
@@ -28,7 +29,7 @@ namespace CruiseManager.Core.Components
 
             this.HasRowVersion = this.AllClientColumns.Find(x => x.Name == "RowVersion") != null;
 
-            this.ClientUniqueFieldNames = masterDB.GetTableUniques(clientTableName);
+            this.ClientUniqueFieldNames = masterDB.GetTableUniques(clientTableName).ToArray();
             InitializeCommonColumns(this.HasGUIDKey, this.HasRowVersion);
         }
 
@@ -602,47 +603,47 @@ namespace CruiseManager.Core.Components
             {
                 case "Tree":
                     {
-                        return source.ReadSingleRow<TreeDO>("Tree", rowid);
+                        return source.From<TreeDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
                     }
                 case "Log":
                     {
-                        return source.ReadSingleRow<LogDO>("Log", rowid);
+                        return source.From<LogDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
                     }
                 case "Stem":
                     {
-                        return source.ReadSingleRow<StemDO>("Stem", rowid);
+                        return source.From<StemDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
                     }
                 case "Plot":
                     {
-                        return source.ReadSingleRow<PlotDO>("Plot", rowid);
+                        return source.From<PlotDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
                     }
                 case "CountTree":
                     {
-                        return source.ReadSingleRow<CountTreeDO>("CountTree", rowid);
+                        return source.From<CountTreeDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
                     }
                 case "CuttingUnit":
                     {
-                        return source.ReadSingleRow<CuttingUnitDO>("CuttingUnit", rowid);
+                        return source.From<CuttingUnitDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
                     }
                 case "Stratum":
                     {
-                        return source.ReadSingleRow<StratumDO>("Stratum", rowid);
+                        return source.From<StratumDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
                     }
                 case "CuttingUnitStratum":
                     {
-                        return source.ReadSingleRow<CuttingUnitStratumDO>("CuttingUnitStratum", rowid);
+                        return source.From<CuttingUnitStratumDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
                     }
                 case "SampleGroup":
                     {
-                        return source.ReadSingleRow<SampleGroupDO>("SampleGroup", rowid);
+                        return source.From<SampleGroupDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
                     }
                 case "SampleGroupTreeDefaultValue":
                     {
-                        return source.ReadSingleRow<SampleGroupTreeDefaultValueDO>("SampleGroupTreeDefaultValue", rowid);
+                        return source.From<SampleGroupTreeDefaultValueDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
                     }
                 case "TreeDefaultValue":
                     {
-                        return source.ReadSingleRow<TreeDefaultValueDO>("TreeDefaultValue", rowid);
+                        return source.From<TreeDefaultValueDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
                     }
                 default:
                     {

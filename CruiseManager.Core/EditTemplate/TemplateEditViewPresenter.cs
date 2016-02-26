@@ -271,7 +271,7 @@ namespace CruiseManager.Core.EditTemplate
                 {
                     lfs.DAL = ApplicationController.Database;
                     //lfs.Method = method.CruiseMethod.Code;
-                    lfs.Save(OnConflictOption.Ignore);
+                    lfs.Save(FMSC.ORM.Core.SQL.OnConflictOption.Ignore);
                 }
                 else if (lfs.HasChanges == true)
                 {

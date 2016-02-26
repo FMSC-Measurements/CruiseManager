@@ -231,7 +231,7 @@ namespace CruiseManager.Core.Components
                 Key = "LastMerge",
                 Value = dateStr
             };
-            data.Save(OnConflictOption.Replace);
+            data.Save(FMSC.ORM.Core.SQL.OnConflictOption.Replace);
         }
 
 

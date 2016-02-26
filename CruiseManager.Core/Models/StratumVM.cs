@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using CruiseDAL.DataObjects;
 using CruiseDAL;
+using FMSC.ORM.EntityModel.Attributes;
 
 namespace CruiseManager.Core.Models
 {
-    [SQLEntity(TableName = "Stratum"
-        , JoinCommand="JOIN (Select Stratum_CN, group_concat(Field) AS Fields From TreeFieldSetup GROUP BY Stratum_cn) USING (Stratum_CN)")]
+    [EntitySource(SourceName = "Stratum"
+        , JoinCommands="JOIN (Select Stratum_CN, group_concat(Field) AS Fields From TreeFieldSetup GROUP BY Stratum_cn) USING (Stratum_CN)")]
     public class StratumVM : StratumDO
     {
         private string _fields;
@@ -16,7 +17,7 @@ namespace CruiseManager.Core.Models
 
         public IList<SampleGroupDO> SampleGroups { get; set; }
 
-        [Field(Alias="Fields", IsPersisted=false)]
+        [Field(Alias="Fields", PersistanceFlags = PersistanceFlags.Never)]
         public string Fields 
         {
             get { return _fields; }

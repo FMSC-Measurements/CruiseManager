@@ -55,7 +55,7 @@ namespace CruiseManager.Core.CruiseCustomize
             get
             {
        
-                return base.SampleSelectorType == CruiseDAL.Schema.Constants.CruiseMethods.SYSTEMATIC_SAMPLER_TYPE;                
+                return base.SampleSelectorType == CruiseDAL.Schema.CruiseMethods.SYSTEMATIC_SAMPLER_TYPE;                
             }
             set
             {
@@ -63,7 +63,7 @@ namespace CruiseManager.Core.CruiseCustomize
                 if(CanChangeSamplerType && IsSTR)
                 {
 
-                    base.SampleSelectorType = (value) ? CruiseDAL.Schema.Constants.CruiseMethods.SYSTEMATIC_SAMPLER_TYPE : string.Empty;
+                    base.SampleSelectorType = (value) ? CruiseDAL.Schema.CruiseMethods.SYSTEMATIC_SAMPLER_TYPE : string.Empty;
                     NotifyPropertyChanged(nameof(UseSystematicSampling));
                     this.HasTallyEdits = true;
                     
@@ -87,7 +87,7 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             get
             {
-                return (this.Stratum.Method != CruiseDAL.Schema.Constants.CruiseMethods.THREEP);
+                return (this.Stratum.Method != CruiseDAL.Schema.CruiseMethods.THREEP);
             }
         }
 
@@ -101,7 +101,7 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             get
             {
-                return base.Stratum.Method == CruiseDAL.Schema.Constants.CruiseMethods.STR;
+                return base.Stratum.Method == CruiseDAL.Schema.CruiseMethods.STR;
             }
         }
 
@@ -187,8 +187,11 @@ namespace CruiseManager.Core.CruiseCustomize
             this.TreeDefaultValues.Populate();
             foreach (TreeDefaultValueDO tdv in this.TreeDefaultValues)
             {
-                TallyVM tally = DAL.Read<TallyVM>("Tally", "JOIN CountTree WHERE CountTree.Tally_CN = Tally.Tally_CN AND CountTree.SampleGroup_CN = ? AND CountTree.TreeDefaultValue_CN = ?",
-                    this.SampleGroup_CN, tdv.TreeDefaultValue_CN).FirstOrDefault();
+                TallyVM tally = DAL.From<TallyVM>()
+                    .Join("CountTree", "USING (Tally_CN)")
+                    .Where("CountTree.SampleGroup_CN = ? AND CountTree.TreeDefaultValue_CN = ?")
+                    .Query(this.SampleGroup_CN, tdv.TreeDefaultValue_CN)
+                    .FirstOrDefault();
 
                 if (tally == null)
                 {

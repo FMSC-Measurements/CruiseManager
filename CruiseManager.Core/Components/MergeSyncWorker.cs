@@ -6,6 +6,7 @@ using CruiseDAL;
 using CruiseDAL.DataObjects;
 using System.Threading;
 using System.Diagnostics;
+using FMSC.ORM.Core.SQL;
 
 namespace CruiseManager.Core.Components
 {
@@ -188,7 +189,7 @@ namespace CruiseManager.Core.Components
             {
                 CheckWorkerStatus();
                 DataObject newFromComp = cmdBldr.ReadSingleRow(comp.Database, mRec.ComponentRowID.Value);
-                Master.Insert(newFromComp, true, OnConflictOption.Fail);
+                Master.Insert(newFromComp, OnConflictOption.Fail);
                 this.ResetComponentRowVersion(comp, mRec.ComponentRowID.Value, cmdBldr);
             }
 
@@ -205,8 +206,9 @@ namespace CruiseManager.Core.Components
             foreach (MergeObject mRec in mergeRecords)
             {
                 CheckWorkerStatus();
-                TreeDO tree = comp.Database.ReadSingleRow<TreeDO>("Tree", mRec.ComponentRowID);
-                Master.Insert(tree, true, OnConflictOption.Fail);
+                TreeDO tree = comp.Database.From<TreeDO>()
+                    .Where("rowid = ?").Query(mRec.ComponentRowID).FirstOrDefault();
+                Master.Insert(tree, OnConflictOption.Fail);
                 this.ResetComponentRowVersion(comp,  mRec.ComponentRowID.Value, cmdBldr);
                 IncrementProgress();
             }
@@ -223,8 +225,9 @@ namespace CruiseManager.Core.Components
             foreach (MergeObject mRec in mergeRecords)
             {
                 CheckWorkerStatus();
-                LogDO log = comp.Database.ReadSingleRow<LogDO>("Log", mRec.ComponentRowID);
-                Master.Insert(log, true, OnConflictOption.Fail);
+                LogDO log = comp.Database.From<LogDO>()
+                    .Where("rowid = ?").Query(mRec.ComponentRowID).FirstOrDefault();
+                Master.Insert(log, OnConflictOption.Fail);
                 this.ResetComponentRowVersion(comp, mRec.ComponentRowID.Value, cmdBldr);
                 IncrementProgress();
             }
@@ -241,8 +244,10 @@ namespace CruiseManager.Core.Components
             foreach (MergeObject mRec in mergeRecords)
             {
                 CheckWorkerStatus();
-                StemDO stem = comp.Database.ReadSingleRow<StemDO>("Stem", mRec.ComponentRowID);
-                Master.Insert(stem, true, OnConflictOption.Fail);
+                StemDO stem = comp.Database.From<StemDO>()
+                    .Where("rowid = ?").Query(mRec.ComponentRowID).FirstOrDefault();
+                
+                Master.Insert(stem, OnConflictOption.Fail);
                 this.ResetComponentRowVersion(comp, mRec.ComponentRowID.Value, cmdBldr);
                 IncrementProgress();
             }
@@ -259,8 +264,10 @@ namespace CruiseManager.Core.Components
             foreach (MergeObject mRec in mergeRecords)
             {
                 CheckWorkerStatus();
-                PlotDO plot = comp.Database.ReadSingleRow<PlotDO>("Plot", mRec.ComponentRowID);
-                Master.Insert(plot, true, OnConflictOption.Fail);
+                PlotDO plot = comp.Database.From<PlotDO>()
+                    .Where("rowid = ?").Query(mRec.ComponentRowID).FirstOrDefault();
+                
+                Master.Insert(plot, OnConflictOption.Fail);
                 this.ResetComponentRowVersion(comp, mRec.ComponentRowID.Value, cmdBldr);
                 IncrementProgress();
             }
@@ -272,7 +279,7 @@ namespace CruiseManager.Core.Components
         public void PullTreeDefaultInserts(ComponentFileVM comp)
         {
             StartJob("Pull TreeDefault Inserts");
-            List<TreeDefaultValueDO> compTreeDefaults = comp.Database.Read<TreeDefaultValueDO>("TreeDefaultValue", null);
+            var compTreeDefaults = comp.Database.From<TreeDefaultValueDO>().Query();
             foreach (TreeDefaultValueDO tdv in compTreeDefaults)
             {
                 CheckWorkerStatus();
@@ -283,7 +290,7 @@ namespace CruiseManager.Core.Components
                 {
                     if(Master.GetRowCount("TreeDefaultValue", "WHERE TreeDefaultValue_CN = ?", tdv.TreeDefaultValue_CN) == 0)
                     {
-                        Master.Insert(tdv, true, OnConflictOption.Fail);
+                        Master.Insert(tdv, OnConflictOption.Fail);
                     }
                     else
                     {
@@ -301,10 +308,13 @@ namespace CruiseManager.Core.Components
         {
             StartJob("Add New Sample Groups");
 
-            List<SampleGroupDO> compSGList = comp.Database.Read<SampleGroupDO>("SampleGroup", null);
+            var compSGList = comp.Database.From<SampleGroupDO>().Query();
             foreach (SampleGroupDO sg in compSGList)
             {
-                SampleGroupDO match = Master.ReadSingleRow<SampleGroupDO>("SampleGroup", "WHERE Code = ? AND Stratum_CN = ?", sg.Code, sg.Stratum_CN);
+                SampleGroupDO match = Master.From<SampleGroupDO>()
+                    .Where("Code = ? AND Stratum_CN = ?")
+                    .Query(sg.Code, sg.Stratum_CN).FirstOrDefault(); 
+                                   
                 if (match == null)
                 {
                     SampleGroupDO newSG = new SampleGroupDO(Master);
@@ -364,19 +374,20 @@ namespace CruiseManager.Core.Components
         public void PullCountTreeChanges(ComponentFileVM comp)
         {
             StartJob("Add New CountTree Records");
-            List<CountTreeDO> compCounts = comp.Database.Read<CountTreeDO>("CountTree", null);
+            var compCounts = comp.Database.From<CountTreeDO>().Query();
             foreach (CountTreeDO count in compCounts)
             {
                 CheckWorkerStatus();
-                CountTreeDO match = Master.ReadSingleRow<CountTreeDO>("CountTree",
-                    "WHERE SampleGroup_CN = ? " +
+                CountTreeDO match = Master.From<CountTreeDO>()
+                    .Where("SampleGroup_CN = ? " +
                     "AND ifnull(TreeDefaultValue_CN, 0) = ifnull(?, 0) " +
                     "AND CuttingUnit_CN = ? " +
-                    "AND Component_CN = ?",
-                    count.SampleGroup_CN,
+                    "AND Component_CN = ?")
+                    .Query(count.SampleGroup_CN,
                     count.TreeDefaultValue_CN,
                     count.CuttingUnit_CN,
-                    comp.Component_CN);//use component cn from component record because component cn is not set when record is created by FScruiser
+                    comp.Component_CN).FirstOrDefault();
+                    //use component cn from component record because component cn is not set when record is created by FScruiser
 
                 if (match != null)
                 {
@@ -387,7 +398,8 @@ namespace CruiseManager.Core.Components
                 else
                 {
                     TallyDO tally = count.Tally;
-                    TallyDO masterTally = Master.ReadSingleRow<TallyDO>("Tally", "WHERE HotKey = ?", tally.Hotkey);
+                    TallyDO masterTally = Master.From<TallyDO>().Where("HotKey = ?")
+                        .Query(tally.Hotkey).FirstOrDefault();
                     if (masterTally == null)
                     {
                         //TODO unsupported 
@@ -398,11 +410,10 @@ namespace CruiseManager.Core.Components
                     }
                     if (count.Component_CN == null)
                     {
-
                         count.Component_CN = comp.Component_CN;
                         //Master.Execute("UPDATE " + comp.DBAlias + ".CountTree Set Component_CN = ? WHERE CountTree_CN = ?;", comp.Component_CN, count.CountTree_CN);
                     }
-                    Master.Insert(count, false, OnConflictOption.Fail);
+                    Master.Insert(count, null, OnConflictOption.Fail);
                 }
             }
             EndJob();
@@ -499,7 +510,8 @@ namespace CruiseManager.Core.Components
             {
                 CheckWorkerStatus();
                 long matchRowid = mRec.MatchRowID.Value;
-                TreeDO tree = comp.Database.ReadSingleRow<TreeDO>("Tree", mRec.ComponentRowID);
+                TreeDO tree = comp.Database.From<TreeDO>().Where("rowid = ?")
+                    .Query(mRec.ComponentRowID).FirstOrDefault();
                 Master.Update(tree, matchRowid, OnConflictOption.Fail);
                 this.ResetRowVersion(comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
                 IncrementProgress();

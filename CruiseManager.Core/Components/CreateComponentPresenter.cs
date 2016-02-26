@@ -7,6 +7,7 @@ using CruiseManager.Core.App;
 using CruiseManager.Core.Constants;
 using CruiseManager.Core.ViewModel;
 using CruiseManager.Core.Components.ViewInterfaces;
+using FMSC.ORM.Core.SQL;
 
 namespace CruiseManager.Core.Components
 {
@@ -86,7 +87,8 @@ namespace CruiseManager.Core.Components
             {
                 //initialize a master component file
                 //create a master component by creating a copy of the parent
-                MasterDAL = parentDB.CopyTo(_masterPath);
+                parentDB.CopyTo(_masterPath);
+                MasterDAL = new DAL(_masterPath);
 
                 ////clean the master file, any field data from the original file will be removed
                 //ClearFieldData(masterDAL);
@@ -144,7 +146,8 @@ namespace CruiseManager.Core.Components
         protected void CreateComponent(DAL masterDAL, int compNum, ComponentDO compInfo, String compPath)
         {
             //copy master to create component file
-            DAL compDB = masterDAL.CopyTo(compPath);
+            masterDAL.CopyTo(compPath);
+            var compDB = new DAL(compPath);
 
             try
             {

@@ -311,7 +311,7 @@ namespace CruiseManager.Core.CruiseCustomize
             {
                 isValid = this.ValidateHotKeys(st, ref errorBuilder) && isValid;
 
-                if (CruiseDAL.Schema.Constants.CruiseMethods.MANDITORY_TALLY_METHODS.Contains(st.Method))
+                if (CruiseDAL.Schema.CruiseMethods.MANDITORY_TALLY_METHODS.Contains(st.Method))
                 {
                     foreach (TallySetupSampleGroup sg in st.SampleGroups)
                     {
@@ -619,7 +619,9 @@ namespace CruiseManager.Core.CruiseCustomize
 
                 this.Database.Execute(makeCountsCommand);
             }
-            TallyVM tally = this.Database.ReadSingleRow<TallyVM>("Tally", "WHERE Description = ? AND HotKey = ?", sgVM.SgTallie.Description, sgVM.SgTallie.Hotkey);
+            TallyVM tally = this.Database.From<TallyVM>()
+                .Where("Description = ? AND HotKey = ?")
+                .Query(sgVM.SgTallie.Description, sgVM.SgTallie.Hotkey).FirstOrDefault();
             if (tally == null)
             {
                 tally = new TallyVM(this.Database) { Description = sgVM.SgTallie.Description, Hotkey = sgVM.SgTallie.Hotkey };
@@ -658,7 +660,10 @@ namespace CruiseManager.Core.CruiseCustomize
             }
             foreach (KeyValuePair<TreeDefaultValueDO, TallyVM> pair in sgVM.Tallies)
             {
-                TallyVM tally = this.Database.ReadSingleRow<TallyVM>("Tally", "WHERE Description = ? AND HotKey = ?", pair.Value.Description, pair.Value.Hotkey);
+                TallyVM tally = this.Database.From<TallyVM>()
+                    .Where("Description = ? AND HotKey = ?")
+                    .Query(pair.Value.Description, pair.Value.Hotkey)
+                    .FirstOrDefault();                
                 if (tally == null)
                 {
                     tally = new TallyVM(this.Database) { Description = pair.Value.Description, Hotkey = pair.Value.Hotkey };
