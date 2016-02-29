@@ -99,6 +99,8 @@ namespace CruiseManager.Core.App
         {
             this.ApplicationController.NavigateTo<IHomeView>();
 
+            this.ApplicationController.MainWindow.Text = "Cruise Manager " + CruiseManager.Core.Constants.Version.VersionID;
+
             this.ApplicationController.MainWindow.SetNavCommands(new BindableCommand[]
             {
                 this.ApplicationController.OpenFileCommand,
@@ -113,9 +115,11 @@ namespace CruiseManager.Core.App
 
         public void ShowTemplateLandingLayout()
         {
-            //this.ApplicationController.MainWindow.Text = System.IO.Path.GetFileName(this.ApplicationController.Database.Path);
+            
 
             this.ApplicationController.NavigateTo<EditTemplateView>();
+
+            this.ApplicationController.MainWindow.Text = System.IO.Path.GetFileName(this.ApplicationController.Database.Path);
 
             if (templateLandingNavOptions == null)
             {
