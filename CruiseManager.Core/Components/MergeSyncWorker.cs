@@ -340,7 +340,7 @@ namespace CruiseManager.Core.Components
         {
             StartJob("Update Sample Group Species Mappings");
             
-            int? rowsAffected = Master.Execute("INSERT OR IGNORE INTO main.SampleGroupTreeDefaultValue " +
+            int? rowsAffected = Master.ExecuteMultiDB("INSERT OR IGNORE INTO main.SampleGroupTreeDefaultValue " +
                 "SELECT * FROM " + comp.DBAlias + ".SampleGroupTreeDefaultValue;");
 
             PostStatus(rowsAffected.GetValueOrDefault(0).ToString() + " Rows Affected"); 

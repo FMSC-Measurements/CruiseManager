@@ -200,8 +200,8 @@ namespace CruiseManager.Core.Components
         {
             CheckWorkerStatus();
 
-            masterDB.Execute(table.GetPopulateMergeTableCommand(comp));
-            masterDB.Execute(table.GetPopulateDeletedRecordsCommand(comp));
+            masterDB.ExecuteMultiDB(table.GetPopulateMergeTableCommand(comp));
+            masterDB.ExecuteMultiDB(table.GetPopulateDeletedRecordsCommand(comp));
         }
 
         public void ProcessMergeTables()
