@@ -6,6 +6,6 @@ namespace CruiseManager.Core.Constants
 {
     public class Version
     {
-        public const string VersionID = "2016.02.19";
+        public const string VersionID = "2016.03.01";
     }
 }

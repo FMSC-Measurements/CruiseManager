@@ -24,7 +24,7 @@ namespace CruiseManager.WinForms.Dashboard
             this.ApplicationController = applicationController;
             InitializeComponent();
 
-            this.Text = "Cruise Manager " + CruiseManager.Core.Constants.Version.VersionID;
+            
 
             this.ApplicationController.OpenFileCommand.BindTo(this.openToolStripMenuItem);
             this.ApplicationController.CreateNewCruiseCommand.BindTo(this.newToolStripMenuItem);
