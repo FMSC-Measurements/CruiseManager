@@ -781,7 +781,7 @@ namespace CruiseManager.Core.Components
             {
                 lock (_threadLock)
                 {
-                    return _isCanceled;
+                    return _isDone;
                 }
             }
             private set
