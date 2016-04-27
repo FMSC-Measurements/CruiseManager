@@ -27,7 +27,7 @@ namespace CruiseManager.Core.Collections
             {
                 return TobeDeleted.Count > 0 ||
                     NewItems.Count > 0 ||
-                    Items.Exists(x => x.HasChanges == true);
+                    Items.Exists(x => x.IsChanged == true);
             }
         }
 

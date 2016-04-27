@@ -130,11 +130,11 @@ namespace CruiseManager.Core.Components
                     MakeMergeTable(cmdBldr);
                 }
 
-                MasterDB.EndTransaction();
+                MasterDB.CommitTransaction();
             }
             catch
             {
-                MasterDB.CancelTransaction();
+                MasterDB.RollbackTransaction();
                 throw;
             }
         }
@@ -179,12 +179,12 @@ namespace CruiseManager.Core.Components
                 //PopulateMergeTable(this.MasterDB, this.CommandBuilders["Stem"], comp);
                 ////PopulateMergeTable(this.MasterDB, this.CommandBuilders["TreeEstimate"], comp);
                 //PopulateMergeTable(this.MasterDB, this.CommandBuilders["Plot"], comp);
-                MasterDB.EndTransaction();
+                MasterDB.CommitTransaction();
                 this.NotifyProgressChanged(this._progressInCurrentJob++, false, "Imported Merge Info For Component #" + comp.Component_CN.ToString(), null);
             }
             catch
             {
-                MasterDB.CancelTransaction();
+                MasterDB.RollbackTransaction();
                 throw;
             }
             finally
@@ -223,11 +223,11 @@ namespace CruiseManager.Core.Components
                 //ProcessMergeTable(mergeDB, this.CommandBuilders["Stem"]);
                 ////ProcessMergeTable(mergeDB, this.CommandBuilders["TreeEstimate"]);
                 //ProcessMergeTable(mergeDB, this.CommandBuilders["Plot"]);
-                mergeDB.EndTransaction();
+                mergeDB.CommitTransaction();
             }
             catch
             {
-                mergeDB.CancelTransaction();
+                mergeDB.RollbackTransaction();
                 throw;
             }
         }

@@ -26,7 +26,7 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             get
             {
-                return LogMatrix.Any(x => !x.IsPersisted || x.HasChanges);
+                return LogMatrix.Any(x => !x.IsPersisted || x.IsChanged);
             }
         }
 
@@ -77,13 +77,13 @@ namespace CruiseManager.Core.CruiseCustomize
                     }
                     lm.Save();
                 }
-                this.Database.EndTransaction();
+                this.Database.CommitTransaction();
                 return true;
             }
             catch (Exception ex)
             {
                 errorBuilder.AppendFormat("File save error. Log Matrix data was not saved. <Error details: {0}>", ex.ToString());
-                this.Database.CancelTransaction();
+                this.Database.RollbackTransaction();
                 return false;
             }
         }

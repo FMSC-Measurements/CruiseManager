@@ -140,14 +140,14 @@ namespace CruiseManager.Core.Components
 
                 foreach (DAL db in allFiles)
                 {
-                    db.EndTransaction();
+                    db.CommitTransaction();
                 }
             }
             catch
             {
                 foreach (DAL db in allFiles)
                 {
-                    db.CancelTransaction();
+                    db.RollbackTransaction();
                 }
                 throw;
             }
@@ -182,11 +182,11 @@ namespace CruiseManager.Core.Components
                     db.Execute("UPDATE TreeEstimate SET TreeEstimate_GUID = ? WHERE TreeEstimate_CN = ?", tek.TreeEstimate_GUID.ToString(), tek.TreeEstimate_CN);
                 }
 
-                db.EndTransaction();
+                db.CommitTransaction();
             }
             catch
             {
-                db.CancelTransaction();
+                db.RollbackTransaction();
                 throw;
             }
         }

@@ -432,13 +432,13 @@ namespace CruiseManager.Core.CruiseCustomize
                     tav.Save();
                     tav.TreeDefaultValues.Save();
                 }
-                this.Database.EndTransaction();
+                this.Database.CommitTransaction();
                 return true;
             }
             catch (Exception ex)
             {
                 errorBuilder.AppendFormat("File save error. Tree Audit Rules was not saved. <Error details: {0}>", ex.ToString());
-                this.Database.CancelTransaction();
+                this.Database.RollbackTransaction();
                 return false;
             }
 
@@ -459,13 +459,13 @@ namespace CruiseManager.Core.CruiseCustomize
                     }
                     lm.Save();
                 }
-                this.Database.EndTransaction();
+                this.Database.CommitTransaction();
                 return true;
             }
             catch (Exception ex)
             {
                 errorBuilder.AppendFormat("File save error. Log Matrix data was not saved. <Error details: {0}>", ex.ToString());
-                this.Database.CancelTransaction();
+                this.Database.RollbackTransaction();
                 return false;
             }
         }
@@ -521,13 +521,13 @@ namespace CruiseManager.Core.CruiseCustomize
                         lf.Save();
                     }
                 }//end foreach
-                this.Database.EndTransaction();
+                this.Database.CommitTransaction();
                 return true;
             }
             catch (Exception ex)
             {
                 errorBuilder.AppendFormat("Field setup was not saved. <Error details: {0}>", ex.ToString());
-                this.Database.CancelTransaction();
+                this.Database.RollbackTransaction();
                 return false;
             }
         }
@@ -589,13 +589,13 @@ namespace CruiseManager.Core.CruiseCustomize
                 {
                     SaveTallyBySpecies(sgVM);
                 }
-                this.Database.EndTransaction();
+                this.Database.CommitTransaction();
                 sgVM.HasTallyEdits = false;
                 return true;
             }
             catch (Exception)
             {
-                this.Database.CancelTransaction();
+                this.Database.RollbackTransaction();
                 errorBuilder.AppendFormat("Error: failed to setup tallies for SampleGroup({0} ) in Stratum ({1})", sgVM.Code, sgVM.Stratum.Code);
                 return false;
             }
@@ -696,7 +696,7 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             get
             {
-                return TreeAudits.Any(x => x.HasChanges
+                return TreeAudits.Any(x => x.IsChanged
                 || !x.IsPersisted
                 || x.TreeDefaultValues.HasChanges);//TODO add HasChanges property to mapping collection
             }
@@ -723,7 +723,7 @@ namespace CruiseManager.Core.CruiseCustomize
             get
             {
                 if(LogMatrix == null) { return false; }
-                return LogMatrix.Any(x => !x.IsPersisted || x.HasChanges);
+                return LogMatrix.Any(x => !x.IsPersisted || x.IsChanged);
             }
         }
 

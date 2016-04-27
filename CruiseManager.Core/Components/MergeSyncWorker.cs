@@ -59,19 +59,19 @@ namespace CruiseManager.Core.Components
 
         private void EndTransactionAll()
         {
-            this.Master.EndTransaction();
+            Master.CommitTransaction();
             foreach (ComponentFileVM comp in this.Components)
             {
-                comp.Database.EndTransaction();
+                comp.Database.CommitTransaction();
             }
         }
 
         private void CancelTransactionAll()
         {
-            this.Master.CancelTransaction();
+            this.Master.RollbackTransaction();
             foreach (ComponentFileVM comp in this.Components)
             {
-                comp.Database.CancelTransaction();
+                comp.Database.RollbackTransaction();
             }
         }
         #endregion
@@ -86,11 +86,11 @@ namespace CruiseManager.Core.Components
             {
                 PullDesignChanges();
                 PushDesignChanges();
-                Master.EndTransaction();
+                Master.CommitTransaction();
             }
             catch
             {
-                Master.CancelTransaction();
+                Master.RollbackTransaction();
                 throw;
             }
             finally

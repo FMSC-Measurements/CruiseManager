@@ -45,8 +45,8 @@ namespace CruiseManager.Core.CruiseCustomize
             get
             {
                 return _hasEdits 
-                    || SelectedTreeFields.Any(x => x.HasChanges)
-                    || SelectedLogFields.Any(x => x.HasChanges) 
+                    || SelectedTreeFields.Any(x => x.IsChanged)
+                    || SelectedLogFields.Any(x => x.IsChanged) 
                     || UnselectedTreeFields.Any( x=> x.IsPersisted)
                     || UnselectedLogFields.Any( x => x.IsPersisted);
             }

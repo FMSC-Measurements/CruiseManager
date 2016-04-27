@@ -30,7 +30,7 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             get
             {
-                return TallySetupStrata.Any(x => x.HasChanges)
+                return TallySetupStrata.Any(x => x.IsChanged)
                     || TallySetupStrata.Any(x => x.SampleGroups.Any(y => y.HasTallyEdits));
             }
         }
@@ -305,12 +305,12 @@ END;"
                     }
                 }
 
-                this.Database.EndTransaction();
+                this.Database.CommitTransaction();
                 return success;
             }
             catch (Exception e)
             {
-                this.Database.CancelTransaction();
+                this.Database.RollbackTransaction();
                 throw e;
             }
         }

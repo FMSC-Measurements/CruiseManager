@@ -476,7 +476,7 @@ namespace CruiseManager.Core.EditDesign
                     StratumDO.RecursiveDeleteStratum(st);
                 }
 
-                Database.EndTransaction();
+                Database.CommitTransaction();
 
                 DataContext.DeletedTreeDefaults.Clear();
                 DataContext.DeletedStrata.Clear();
@@ -488,7 +488,7 @@ namespace CruiseManager.Core.EditDesign
             }
             catch (Exception ex)
             {
-                Database.CancelTransaction();
+                Database.RollbackTransaction();
                 throw new UserFacingException("Error saving data, please check for errors and try saving again", ex);
             }
             

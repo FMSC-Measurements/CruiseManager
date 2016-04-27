@@ -169,11 +169,11 @@ namespace CruiseManager.Core.Components
                 compDB.Execute("DELETE FROM Globals WHERE Block = 'Comp' AND Key = 'LastMerge';");
 
 
-                compDB.EndTransaction();
+                compDB.CommitTransaction();
             }
             catch (Exception)
             {
-                compDB.CancelTransaction();
+                compDB.RollbackTransaction();
                 try 
                 {
                     //component is probably jacked up, so delete it
