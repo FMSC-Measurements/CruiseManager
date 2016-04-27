@@ -249,7 +249,7 @@ namespace CruiseManager.Core.EditTemplate
                             tfs.Method = method.CruiseMethod.Code;
                             tfs.Save();
                         }
-                        else if (tfs.HasChanges == true)
+                        else if (tfs.IsChanged == true)
                         {
                             tfs.Save();
                         }
@@ -271,9 +271,9 @@ namespace CruiseManager.Core.EditTemplate
                 {
                     lfs.DAL = ApplicationController.Database;
                     //lfs.Method = method.CruiseMethod.Code;
-                    lfs.Save(OnConflictOption.Ignore);
+                    lfs.Save(FMSC.ORM.Core.SQL.OnConflictOption.Ignore);
                 }
-                else if (lfs.HasChanges == true)
+                else if (lfs.IsChanged == true)
                 {
                     lfs.Save();
                 }

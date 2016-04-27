@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    public class FieldSetupStratum : CruiseDAL.DataObjects.StratumDO
+    public class FieldSetupStratum : StratumDO
     {
         private bool _hasEdits;
         private ObservableCollection<TreeFieldSetupDO> _selectedTreeFields;
@@ -45,8 +45,8 @@ namespace CruiseManager.Core.CruiseCustomize
             get
             {
                 return _hasEdits 
-                    || SelectedTreeFields.Any(x => x.HasChanges)
-                    || SelectedLogFields.Any(x => x.HasChanges) 
+                    || SelectedTreeFields.Any(x => x.IsChanged)
+                    || SelectedLogFields.Any(x => x.IsChanged) 
                     || UnselectedTreeFields.Any( x=> x.IsPersisted)
                     || UnselectedLogFields.Any( x => x.IsPersisted);
             }
@@ -58,7 +58,7 @@ namespace CruiseManager.Core.CruiseCustomize
             this.HasEdits = true;
         }
 
-        public override void Save(OnConflictOption option)
+        public override void Save(FMSC.ORM.Core.SQL.OnConflictOption option)
         {
             base.Save(option);
             this._hasEdits = false;

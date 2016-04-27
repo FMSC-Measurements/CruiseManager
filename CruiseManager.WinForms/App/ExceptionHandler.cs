@@ -19,7 +19,7 @@ namespace CruiseManager.WinForms.App
                 MessageBox.Show(e.Message);
                 return true;
             }
-            else if (e is CruiseDAL.UniqueConstraintException)
+            else if (e is FMSC.ORM.UniqueConstraintException)
             {
                 //WindowPresenter.Instance.ShowMessage("Record Already Exists", null);                
                 MessageBox.Show("Record Already Exists");

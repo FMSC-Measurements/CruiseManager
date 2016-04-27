@@ -81,7 +81,7 @@ namespace CruiseManager.Core.App
             }
 
             list.RemoveAll((CruiseMethod cm) =>
-                Array.IndexOf(CruiseDAL.Schema.Constants.CruiseMethods.UNSUPPORTED_METHODS, cm.Code) != -1);
+                Array.IndexOf(CruiseDAL.Schema.CruiseMethods.UNSUPPORTED_METHODS, cm.Code) != -1);
 
             return list;
         }

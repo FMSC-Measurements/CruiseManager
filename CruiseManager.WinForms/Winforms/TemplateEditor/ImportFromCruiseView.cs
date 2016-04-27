@@ -76,14 +76,28 @@ namespace CruiseManager.WinForms.TemplateEditor
         {
             if (this._importVolEqCB.Checked)
             {
-                OnConflictOption cOpt = (this.ReplaceExistingVolEq == true) ? OnConflictOption.Replace : OnConflictOption.Ignore;
-                this.ApplicationController.Database.DirectCopy(this._copyFromDB, CruiseDAL.Schema.VOLUMEEQUATION._NAME, null, cOpt);
+                var cOpt = (this.ReplaceExistingVolEq == true) ? FMSC.ORM.Core.SQL.OnConflictOption.Replace : FMSC.ORM.Core.SQL.OnConflictOption.Ignore;
+                this.ApplicationController.Database.BeginTransaction();
+                try
+                {
+                    foreach (var volEq in _copyFromDB.From<VolumeEquationDO>().Query())
+                    {
+                        this.ApplicationController.Database.Insert(volEq, null, FMSC.ORM.Core.SQL.OnConflictOption.Ignore);
+                    }
+                    this.ApplicationController.Database.CommitTransaction();
+                }
+                catch
+                {
+                    this.ApplicationController.Database.RollbackTransaction();
+                }
+
+                //this.ApplicationController.Database.DirectCopy(this._copyFromDB, CruiseDAL.Schema.VOLUMEEQUATION._NAME, null, cOpt);
             }
 
             foreach (TreeDefaultValueDO tdv in TreeDefaultsToCopy)
             {
                 tdv.DAL = this.ApplicationController.Database;
-                tdv.Save(OnConflictOption.Ignore);
+                tdv.Save(FMSC.ORM.Core.SQL.OnConflictOption.Ignore);
             }
         }
 

@@ -26,7 +26,7 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             get
             {
-                return TreeAudits.Any(x => x.HasChanges
+                return TreeAudits.Any(x => x.IsChanged
                 || !x.IsPersisted
                 || x.TreeDefaultValues.HasChanges);//TODO add HasChanges property to mapping collection
             }
@@ -80,13 +80,13 @@ namespace CruiseManager.Core.CruiseCustomize
                     tav.Save();
                     tav.TreeDefaultValues.Save();
                 }
-                this.Database.EndTransaction();
+                this.Database.CommitTransaction();
                 return true;
             }
             catch (Exception ex)
             {
                 errorBuilder.AppendFormat("File save error. Tree Audit Rules was not saved. <Error details: {0}>", ex.ToString());
-                this.Database.CancelTransaction();
+                this.Database.RollbackTransaction();
                 return false;
             }
 

@@ -216,11 +216,11 @@ namespace CruiseManager.WinForms.App
                             tdv.SetValues(temp);
                             tdv.Save();
                         }
-                        catch (CruiseDAL.UniqueConstraintException ex)
+                        catch (FMSC.ORM.UniqueConstraintException ex)
                         {
                             throw new UserFacingException("Values Conflict With Existing Tree Default", ex);
                         }
-                        catch (CruiseDAL.ConstraintException ex)
+                        catch (FMSC.ORM.ConstraintException ex)
                         {
                             throw new UserFacingException("Invalid Values", ex);
                         }

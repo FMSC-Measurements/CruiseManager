@@ -14,7 +14,7 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             get
             {
-                return Method == CruiseDAL.Schema.Constants.CruiseMethods.STR;
+                return Method == CruiseDAL.Schema.CruiseMethods.STR;
             }
         }
 
@@ -46,12 +46,12 @@ namespace CruiseManager.Core.CruiseCustomize
                 sg.TallyMethod = sg.GetSampleGroupTallyMode();
                 sg.LoadTallieData();
 
-                if (Method == CruiseDAL.Schema.Constants.CruiseMethods.STR 
+                if (Method == CruiseDAL.Schema.CruiseMethods.STR 
                     && sg.TallyMethod == CruiseDAL.Enums.TallyMode.None)
                 {
                     sg.TallyMethod = CruiseDAL.Enums.TallyMode.BySampleGroup;
                 }
-                if (CruiseDAL.Schema.Constants.CruiseMethods.THREE_P_METHODS.Contains(Method) 
+                if (CruiseDAL.Schema.CruiseMethods.THREE_P_METHODS.Contains(Method) 
                     && sg.TallyMethod == CruiseDAL.Enums.TallyMode.None)
                 {
                     sg.TallyMethod = CruiseDAL.Enums.TallyMode.BySpecies;

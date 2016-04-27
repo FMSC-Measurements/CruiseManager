@@ -184,12 +184,12 @@ namespace CruiseManager.Core.CruiseCustomize
                         lf.Save();
                     }
                 }//end foreach
-                this.Database.EndTransaction();
+                this.Database.CommitTransaction();
             }
             catch (Exception ex)
             {
                 //errorBuilder.AppendFormat("Field setup was not saved. <Error details: {0}>", ex.ToString());
-                this.Database.CancelTransaction();
+                this.Database.RollbackTransaction();
                 throw new NotImplementedException("Exception Handler not implemented",ex);
             }
         }

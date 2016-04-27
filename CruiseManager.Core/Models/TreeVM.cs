@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using CruiseDAL.DataObjects;
 using CruiseDAL;
+using FMSC.ORM.EntityModel.Attributes;
 
 namespace CruiseManager.Core.Models
 {
-    [SQLEntity(TableName = "Tree", 
-        JoinCommand= "JOIN Stratum USING (Stratum_CN) JOIN CuttingUnit USING (CuttingUnit_CN) LEFT JOIN SampleGroup USING (SampleGroup_CN)")]
+    [EntitySource(SourceName = "Tree", 
+        JoinCommands = "JOIN Stratum USING (Stratum_CN) JOIN CuttingUnit USING (CuttingUnit_CN) LEFT JOIN SampleGroup USING (SampleGroup_CN)")]
         
     public class TreeVM : TreeDO
     {
@@ -24,13 +25,13 @@ namespace CruiseManager.Core.Models
             }
         }
 
-        [Field( MapExpression= "CuttingUnit.Code", Alias="CUCode")]
+        [Field( SQLExpression = "CuttingUnit.Code", Alias="CUCode")]
         public string UnitCode
         {
             get; set;
         }
 
-        [Field(MapExpression= "Stratum.Code", Alias="STCode") ]
+        [Field(SQLExpression = "Stratum.Code", Alias="STCode") ]
         public string StratumCode
         {
             get; set;
@@ -47,7 +48,7 @@ namespace CruiseManager.Core.Models
         public override StratumDO GetStratum()
         {
             if (DAL == null) { return null; }
-            return DAL.ReadSingleRow<StratumVM>(CruiseDAL.Schema.STRATUM._NAME, this.Stratum_CN);
+            return DAL.From<StratumVM>().Where("Stratum_CN = ?").Read(Stratum_CN).FirstOrDefault();
         }
 
         public new StratumVM Stratum

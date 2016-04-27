@@ -226,17 +226,17 @@ namespace CruiseManager.Core.App
                 hasError = true;
                 this.ActiveView.ShowMessage("File can not be opened in multiple applications");
             }
-            catch (CruiseDAL.ReadOnlyException)
+            catch (FMSC.ORM.ReadOnlyException)
             {
                 hasError = true;
                 this.ActiveView.ShowMessage("Unable to open file because it is read only");
             }
-            catch (CruiseDAL.IncompatibleSchemaException ex)
+            catch (FMSC.ORM.IncompatibleSchemaException ex)
             {
                 hasError = true;
                 this.ActiveView.ShowMessage("File is not compatible with this version of Cruise Manager: " + ex.Message);
             }
-            catch (CruiseDAL.DatabaseExecutionException ex)
+            catch (FMSC.ORM.SQLException ex)
             {
                 hasError = true;
                 this.ActiveView.ShowMessage("Unable to open file : " + ex.GetType().Name);
@@ -297,12 +297,10 @@ namespace CruiseManager.Core.App
         {
             try
             {
-                if (this.Database.CopyAs(fileName))
-                {
-                    //save after copying 
-                    this.Save();
-                    this.MainWindow.Text = System.IO.Path.GetFileName(this.Database.Path);
-                }
+                this.Database.CopyAs(fileName, true);
+                //save after copying 
+                this.Save();
+                this.MainWindow.Text = System.IO.Path.GetFileName(this.Database.Path);
             }
             catch (Exception ex)
             {

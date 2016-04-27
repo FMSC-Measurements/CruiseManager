@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using CruiseDAL.DataObjects;
 using CruiseDAL;
+using FMSC.ORM.EntityModel.Attributes;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    [CruiseDAL.SQLEntity(TableName = "Tally", IsCached = false)]
+    [EntitySource(SourceName = "Tally")]
     public class TallyVM : TallyDO
     {
         public TallyVM() : base() { }

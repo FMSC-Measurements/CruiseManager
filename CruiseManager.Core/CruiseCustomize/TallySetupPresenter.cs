@@ -30,7 +30,7 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             get
             {
-                return TallySetupStrata.Any(x => x.HasChanges)
+                return TallySetupStrata.Any(x => x.IsChanged)
                     || TallySetupStrata.Any(x => x.SampleGroups.Any(y => y.HasTallyEdits));
             }
         }
@@ -81,11 +81,11 @@ namespace CruiseManager.Core.CruiseCustomize
                 sg.TallyMethod = sg.GetSampleGroupTallyMode();
                 sg.LoadTallieData();
 
-                if (stratum.Method == CruiseDAL.Schema.Constants.CruiseMethods.STR && sg.TallyMethod == TallyMode.None)
+                if (stratum.Method == CruiseDAL.Schema.CruiseMethods.STR && sg.TallyMethod == TallyMode.None)
                 {
                     sg.TallyMethod = TallyMode.BySampleGroup;
                 }
-                if (CruiseDAL.Schema.Constants.CruiseMethods.THREE_P_METHODS.Contains(stratum.Method) && sg.TallyMethod == TallyMode.None)
+                if (CruiseDAL.Schema.CruiseMethods.THREE_P_METHODS.Contains(stratum.Method) && sg.TallyMethod == TallyMode.None)
                 {
                     sg.TallyMethod = TallyMode.BySpecies;
                 }
@@ -100,7 +100,7 @@ namespace CruiseManager.Core.CruiseCustomize
             {
                 isValid = this.ValidateTallyHotKeys(st, ref errorBuilder) && isValid;
 
-                if (CruiseDAL.Schema.Constants.CruiseMethods.MANDITORY_TALLY_METHODS.Contains(st.Method))
+                if (CruiseDAL.Schema.CruiseMethods.MANDITORY_TALLY_METHODS.Contains(st.Method))
                 {
                     foreach (TallySetupSampleGroup sg in st.SampleGroups)
                     {
@@ -305,12 +305,12 @@ END;"
                     }
                 }
 
-                this.Database.EndTransaction();
+                this.Database.CommitTransaction();
                 return success;
             }
             catch (Exception e)
             {
-                this.Database.CancelTransaction();
+                this.Database.RollbackTransaction();
                 throw e;
             }
         }
@@ -364,7 +364,11 @@ END;"
 
                     this.Database.Execute(makeCountsCommand);
                 }
-                TallyVM tally = this.Database.ReadSingleRow<TallyVM>("Tally", "WHERE Description = ? AND HotKey = ?", sgVM.SgTallie.Description, sgVM.SgTallie.Hotkey);
+                TallyVM tally = this.Database.From<TallyVM>()
+                    .Where("Description = ? AND HotKey = ?")
+                    .Query(sgVM.SgTallie.Description, sgVM.SgTallie.Hotkey)
+                    .FirstOrDefault();
+                
                 if (tally == null)
                 {
                     tally = new TallyVM(this.Database) { Description = sgVM.SgTallie.Description, Hotkey = sgVM.SgTallie.Hotkey };
@@ -414,7 +418,11 @@ END;"
                 }
                 foreach (KeyValuePair<TreeDefaultValueDO, TallyVM> pair in sgVM.Tallies)
                 {
-                    TallyVM tally = this.Database.ReadSingleRow<TallyVM>("Tally", "WHERE Description = ? AND HotKey = ?", pair.Value.Description, pair.Value.Hotkey);
+                    TallyVM tally = this.Database.From<TallyVM>()
+                        .Where("Description = ? AND HotKey = ?")
+                        .Query(pair.Value.Description, pair.Value.Hotkey)
+                        .FirstOrDefault();
+
                     if (tally == null)
                     {
                         tally = new TallyVM(this.Database) { Description = pair.Value.Description, Hotkey = pair.Value.Hotkey };

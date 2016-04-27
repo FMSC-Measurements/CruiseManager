@@ -957,13 +957,13 @@ namespace CruiseManager.WinForms.DataEditor
             {
                 
                 PlotDO.RecursiveDeletePlot(plot);
-                plot.DAL.EndTransaction();
+                plot.DAL.CommitTransaction();
                 TreeDataDirty = true;
                 return true;
             }
             catch
             {
-                plot.DAL.CancelTransaction();
+                plot.DAL.RollbackTransaction();
                 return false;
             }
         }

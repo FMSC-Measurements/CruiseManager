@@ -14,6 +14,7 @@ using CruiseManager.Core.Models;
 using CruiseManager.Core.SetupModels;
 using CruiseManager.Core.App;
 using CruiseManager.Core.Constants;
+using FMSC.ORM.Core.SQL;
 
 namespace CruiseManager.WinForms.CruiseWizard
 {
@@ -777,61 +778,61 @@ namespace CruiseManager.WinForms.CruiseWizard
             _database.BeginTransaction();
             try
             {
-                foreach (TreeDefaultValueDO tdv in templateDB.Query<TreeDefaultValueDO>("SELECT * FROM TreeDefaultValue;"))
+                foreach (TreeDefaultValueDO tdv in templateDB.From<TreeDefaultValueDO>().Query())
                 {
-                    _database.Insert(tdv, true, OnConflictOption.Replace);
+                    _database.Insert(tdv, OnConflictOption.Replace);
                 }
 
-                foreach (TreeAuditValueDO tav in templateDB.Query<TreeAuditValueDO>("SELECT * FROM TreeAuditValue;"))
+                foreach (TreeAuditValueDO tav in templateDB.From<TreeAuditValueDO>().Query())
                 {
-                    _database.Insert(tav, true, OnConflictOption.Replace);
+                    _database.Insert(tav, OnConflictOption.Replace);
                 }
 
-                foreach (TreeDefaultValueTreeAuditValueDO map in templateDB.Query<TreeDefaultValueTreeAuditValueDO>("SELECT * FROM TreeDefaultValueTReeAuditValue;"))
+                foreach (TreeDefaultValueTreeAuditValueDO map in templateDB.From<TreeDefaultValueTreeAuditValueDO>().Query())
                 {
-                    _database.Insert(map, true, OnConflictOption.Replace);
+                    _database.Insert(map, OnConflictOption.Replace);
                 }
 
-                foreach (ReportsDO rpt in templateDB.Query<ReportsDO>("SELECT * FROM Reports;"))
+                foreach (ReportsDO rpt in templateDB.From<ReportsDO>().Query())
                 {
-                    _database.Insert(rpt, true, OnConflictOption.Replace);
+                    _database.Insert(rpt, OnConflictOption.Replace);
                 }
 
                 string CMselectCondition = null;
                 if (this.Sale.Purpose == "Recon")
                 {
-                    CMselectCondition = "WHERE Code = 'FIX' OR Code = 'PNT'";
+                    CMselectCondition = "Code = 'FIX' OR Code = 'PNT'";
                 }
 
-                foreach (CruiseMethodsDO cm in templateDB.Query<CruiseMethodsDO>("SELECT * FROM CruiseMethods " + CMselectCondition + ";"))
+                foreach (CruiseMethodsDO cm in templateDB.From<CruiseMethodsDO>().Where(CMselectCondition).Query())
                 {
-                    _database.Insert(cm, false, OnConflictOption.Ignore);
+                    _database.Insert(cm, OnConflictOption.Ignore);
                 }
 
-                foreach (VolumeEquationDO ve in templateDB.Query<VolumeEquationDO>("SELECT * FROM VolumeEquation;"))
+                foreach (VolumeEquationDO ve in templateDB.From<VolumeEquationDO>().Query())
                 {
-                    _database.Insert(ve, false, OnConflictOption.Ignore);
+                    _database.Insert(ve, OnConflictOption.Ignore);
                 }
 
-                foreach (TreeFieldSetupDefaultDO tf in templateDB.Query<TreeFieldSetupDefaultDO>("SELECT * FROM TreeFieldSetupDefault;"))
+                foreach (TreeFieldSetupDefaultDO tf in templateDB.From<TreeFieldSetupDefaultDO>().Query())
                 {
-                    _database.Insert(tf, false, OnConflictOption.Ignore);
+                    _database.Insert(tf, OnConflictOption.Ignore);
                 }
 
-                foreach (LogFieldSetupDefaultDO lf in templateDB.Query<LogFieldSetupDefaultDO>("SELECT * FROM LogFieldSetupDefault;"))
+                foreach (LogFieldSetupDefaultDO lf in templateDB.From<LogFieldSetupDefaultDO>().Query())
                 {
-                    _database.Insert(lf, false, OnConflictOption.Ignore);
+                    _database.Insert(lf, OnConflictOption.Ignore);
                 }
-                _database.EndTransaction();
+                _database.CommitTransaction();
             }
             catch
             {
-                _database.CancelTransaction();
+                _database.RollbackTransaction();
                 throw;
             }
 
 
-            this.TreeDefaults = _database.Read<TreeDefaultValueDO>(CruiseDAL.Schema.TREEDEFAULTVALUE._NAME, null);
+            TreeDefaults = _database.From<TreeDefaultValueDO>().Read().ToList();
 
 
             

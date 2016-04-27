@@ -64,12 +64,26 @@ namespace CruiseManager.WinForms.App
             }
 
             this.RecentFiles = newRecentFiles;
-            this.Save();
+
+            try
+            {
+                this.Save();
+            }
+            catch (IOException e)
+            {
+                throw new UserFacingException("Could Not Access Setting File", e);                
+            }                
         }
 
         public void Save()
         {
-            string path = GetAppSettingsPath();
+            var path = GetAppSettingsPath();
+            var directory = Path.GetDirectoryName(path);
+            if (Directory.Exists(directory) == false)
+            {
+                Directory.CreateDirectory(directory);
+            }
+
             using (StreamWriter writer = new StreamWriter(path, false))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(ApplicationStateData));
@@ -84,7 +98,11 @@ namespace CruiseManager.WinForms.App
                 string path = GetAppSettingsPath();
                 if (!File.Exists(path))
                 {
-                    return null;
+                    path = GetOldAppSettingPath();
+                    if(!File.Exists(path))
+                    {
+                        return null;
+                    }
                 } 
 
                 using (StreamReader reader = new StreamReader(path))
@@ -101,10 +119,16 @@ namespace CruiseManager.WinForms.App
 
         }
 
-        private static string GetAppSettingsPath()
+        private static string GetOldAppSettingPath()
         {
             string directory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             return directory + "\\state.xml";
+        }
+
+        private static string GetAppSettingsPath()
+        {
+            string directory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) , "FMSC\\CruiseManager");
+            return Path.Combine(directory, "state.xml");
         }
 
 
