@@ -31,18 +31,16 @@ namespace CruiseManager.WinForms.App
         {
             get
             {
-                try
-                {
-                    return bool.Parse(Properties.Settings.Default.CreateSaleFolder);
-                }
-                catch
-                {
-                    return null;
-                }                
+                bool tmp;
+                if (bool.TryParse(Properties.Settings.Default.CreateSaleFolder, out tmp))
+                { return tmp; }
+                else
+                { return null; }              
             }
             set
             {
-                Properties.Settings.Default.CreateSaleFolder = value.ToString();
+                Properties.Settings.Default.CreateSaleFolder 
+                    = (value.HasValue) ? value.ToString() : string.Empty;
             }
         }
 

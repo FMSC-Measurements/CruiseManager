@@ -27,14 +27,14 @@ namespace CruiseManager.Core.Models
         {
             get
             {
-                try
-                {
-                    return int.Parse(this.District);
-                }
-                catch
-                {
-                    return null;
-                }
+                if (District == null) { return null; }
+
+                int distNum;
+                if (int.TryParse(District, out distNum))
+                { return distNum; }
+                else
+                { return null; }
+
             }
             set
             {
