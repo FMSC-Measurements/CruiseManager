@@ -798,13 +798,14 @@ namespace CruiseManager.WinForms.CruiseWizard
                     _database.Insert(rpt, OnConflictOption.Replace);
                 }
 
-                string CMselectCondition = null;
+                var crusemethods = templateDB.From<CruiseMethodsDO>() ;
                 if (this.Sale.Purpose == "Recon")
                 {
-                    CMselectCondition = "Code = 'FIX' OR Code = 'PNT'";
+                    crusemethods.Where("Code = 'FIX' OR Code = 'PNT'");
                 }
 
-                foreach (CruiseMethodsDO cm in templateDB.From<CruiseMethodsDO>().Where(CMselectCondition).Query())
+
+                foreach (CruiseMethodsDO cm in crusemethods.Query())
                 {
                     _database.Insert(cm, OnConflictOption.Ignore);
                 }
