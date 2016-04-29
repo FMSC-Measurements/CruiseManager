@@ -32,7 +32,7 @@ namespace CruiseManager.Core.Models
                 int distNum;
                 if (int.TryParse(District, out distNum))
                 { return distNum; }
-                else
+                else 
                 { return null; }
 
             }
