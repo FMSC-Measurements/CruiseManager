@@ -166,7 +166,7 @@ namespace CruiseManager.Core.Components
         private void PopulateMergeTables(ComponentFileVM comp)
         {
             MasterDB.AttachDB(comp.Database, "compDB"); //may throw exception                           
-            MasterDB.BeginTransaction();
+            MasterDB.BeginMultiDBTransaction();
             try
             {
                 foreach (MergeTableCommandBuilder cmdBldr in this.CommandBuilders.Values)
@@ -179,12 +179,12 @@ namespace CruiseManager.Core.Components
                 //PopulateMergeTable(this.MasterDB, this.CommandBuilders["Stem"], comp);
                 ////PopulateMergeTable(this.MasterDB, this.CommandBuilders["TreeEstimate"], comp);
                 //PopulateMergeTable(this.MasterDB, this.CommandBuilders["Plot"], comp);
-                MasterDB.CommitTransaction();
+                MasterDB.CommitMultiDBTransaction();
                 this.NotifyProgressChanged(this._progressInCurrentJob++, false, "Imported Merge Info For Component #" + comp.Component_CN.ToString(), null);
             }
             catch
             {
-                MasterDB.RollbackTransaction();
+                MasterDB.RollbackMultiDBTransaction();
                 throw;
             }
             finally
