@@ -158,16 +158,16 @@ namespace CruiseManager.Core.Components
         private void SyncDesign()
         {
             AttachAll();
-            Master.BeginMultiDBTransaction();
+            Master.BeginTransaction();
             try
             {
                 PullDesignChanges();
                 PushDesignChanges();
-                Master.CommitMultiDBTransaction();
+                Master.CommitTransaction();
             }
             catch
             {
-                Master.RollbackMultiDBTransaction();
+                Master.RollbackTransaction();
                 throw;
             }
             finally
@@ -404,7 +404,7 @@ namespace CruiseManager.Core.Components
         {
             StartJob("Update Sample Group Species Mappings");
 
-            int? rowsAffected = Master.ExecuteMultiDB("INSERT OR IGNORE INTO main.SampleGroupTreeDefaultValue " +
+            int? rowsAffected = Master.Execute("INSERT OR IGNORE INTO main.SampleGroupTreeDefaultValue " +
                 "SELECT * FROM " + comp.DBAlias + ".SampleGroupTreeDefaultValue;");
 
             PostStatus(rowsAffected.GetValueOrDefault(0).ToString() + " Rows Affected");
@@ -770,7 +770,7 @@ namespace CruiseManager.Core.Components
         //}
         #endregion
 
-        #region 
+        #region Job Mgmt
         private string _currentJobName;
         //private Stopwatch _stopwatch;
 

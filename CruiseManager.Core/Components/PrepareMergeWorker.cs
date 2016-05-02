@@ -19,10 +19,8 @@ namespace CruiseManager.Core.Components
         protected DAL MasterDB { get { return this.MergePresenter.MasterDB; } }
         protected IList<ComponentFileVM> Components { get { return this.MergePresenter.ActiveComponents; } }
 
-        public MergeComponentsPresenter MergePresenter { get; set; }
-
         private IDictionary<String, MergeTableCommandBuilder> CommandBuilders { get { return this.MergePresenter.CommandBuilders; } }
-
+        public MergeComponentsPresenter MergePresenter { get; set; }
         public PrepareMergeWorker(MergeComponentsPresenter mergePresenter)
         {
             this.MergePresenter = mergePresenter;
@@ -46,6 +44,12 @@ namespace CruiseManager.Core.Components
             this._thread.Start();
         }
 
+        private void CheckWorkerStatus()
+        {
+            if (this.IsCanceled)
+            { throw new CancelWorkerException(); }
+        }
+
         public void DoWork()
         {
             
@@ -63,7 +67,6 @@ namespace CruiseManager.Core.Components
             this.IsDone = true;
             this.NotifyProgressChanged(this._workInCurrentJob, true, "Done", null);
         }
-
         //private bool CheckFiles(ConsolidateCountTreeScript maintenanceScript)
         //{
         //    bool masterOK = !maintenanceScript.CheckCanExecute(this.MasterDB);
@@ -166,7 +169,7 @@ namespace CruiseManager.Core.Components
         private void PopulateMergeTables(ComponentFileVM comp)
         {
             MasterDB.AttachDB(comp.Database, "compDB"); //may throw exception                           
-            MasterDB.BeginMultiDBTransaction();
+            MasterDB.BeginTransaction();
             try
             {
                 foreach (MergeTableCommandBuilder cmdBldr in this.CommandBuilders.Values)
@@ -179,12 +182,12 @@ namespace CruiseManager.Core.Components
                 //PopulateMergeTable(this.MasterDB, this.CommandBuilders["Stem"], comp);
                 ////PopulateMergeTable(this.MasterDB, this.CommandBuilders["TreeEstimate"], comp);
                 //PopulateMergeTable(this.MasterDB, this.CommandBuilders["Plot"], comp);
-                MasterDB.CommitMultiDBTransaction();
+                MasterDB.CommitTransaction();
                 this.NotifyProgressChanged(this._progressInCurrentJob++, false, "Imported Merge Info For Component #" + comp.Component_CN.ToString(), null);
             }
             catch
             {
-                MasterDB.RollbackMultiDBTransaction();
+                MasterDB.RollbackTransaction();
                 throw;
             }
             finally
@@ -200,8 +203,8 @@ namespace CruiseManager.Core.Components
         {
             CheckWorkerStatus();
 
-            masterDB.ExecuteMultiDB(table.GetPopulateMergeTableCommand(comp));
-            masterDB.ExecuteMultiDB(table.GetPopulateDeletedRecordsCommand(comp));
+            masterDB.Execute(table.GetPopulateMergeTableCommand(comp));
+            masterDB.Execute(table.GetPopulateDeletedRecordsCommand(comp));
         }
 
         public void ProcessMergeTables()
@@ -568,14 +571,6 @@ namespace CruiseManager.Core.Components
                 }
             }
         }
-
-        private void CheckWorkerStatus()
-        {
-            if (this.IsCanceled) 
-            { throw new CancelWorkerException();  }
-        }
-
-
         #region IDisposable Members
 
         protected void Dispose(bool disposing)
