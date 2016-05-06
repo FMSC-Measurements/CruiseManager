@@ -40,6 +40,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\CustomizeCruisePresenter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\FieldSetupPresenter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\FieldSetupStratum.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\FixCNTTallyClass.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\FixCNTTallyPopulation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\LogMatrixPresenter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\TallyPopulation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\TallySetupPresenter.cs" />

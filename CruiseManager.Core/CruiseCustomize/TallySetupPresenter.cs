@@ -52,9 +52,7 @@ namespace CruiseManager.Core.CruiseCustomize
                 foreach (TallySetupStratum stratum in this.TallySetupStrata)
                 {
                     stratum.LoadSampleGroups();
-                    //this.LoadSampleGroups(stratum);
                 }
-                //TallyPresets = this.Database.Read<TallyVM>("Tally", null);
                 _isInitialized = true;
 
             }
@@ -70,27 +68,6 @@ namespace CruiseManager.Core.CruiseCustomize
             return StratumDO.CanDefineTallys(stratum);
         }
 
-        protected void LoadSampleGroups(TallySetupStratum stratum)
-        {
-            if (stratum.SampleGroups != null) { return; }//if we have already created initialized this stratum, 
-
-            stratum.SampleGroups = Database.Read<TallySetupSampleGroup>("SampleGroup", "WHERE Stratum_CN = ?", stratum.Stratum_CN);
-            foreach (TallySetupSampleGroup sg in stratum.SampleGroups)
-            {
-                //TODO compare what we see as the tally mode vs. the stored mode on the sample group
-                sg.TallyMethod = sg.GetSampleGroupTallyMode();
-                sg.LoadTallieData();
-
-                if (stratum.Method == CruiseDAL.Schema.CruiseMethods.STR && sg.TallyMethod == TallyMode.None)
-                {
-                    sg.TallyMethod = TallyMode.BySampleGroup;
-                }
-                if (CruiseDAL.Schema.CruiseMethods.THREE_P_METHODS.Contains(stratum.Method) && sg.TallyMethod == TallyMode.None)
-                {
-                    sg.TallyMethod = TallyMode.BySpecies;
-                }
-            }
-        }
 
         public bool ValidateTallySettup(ref StringBuilder errorBuilder)
         {
