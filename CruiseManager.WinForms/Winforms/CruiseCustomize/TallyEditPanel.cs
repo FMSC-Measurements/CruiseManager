@@ -1,20 +1,22 @@
-﻿using System;
+﻿using CruiseDAL.DataObjects;
+using CruiseManager.Core.Constants;
+using CruiseManager.Core.CruiseCustomize;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
-using CruiseDAL.DataObjects;
-using CruiseManager.Core.Constants;
-using CruiseManager.Core.CruiseCustomize;
 
 namespace CruiseManager.WinForms.CruiseCustomize
 {
     public delegate void TallyModeChangedEventHandler(object sender);
-    public delegate TallyDO GetTallyEventHandler(SampleGroupDO sg, TreeDefaultValueDO tdv);
-    public delegate void SelectedTallyChangedEventHandler(SampleGroupDO sg, TreeDefaultValueDO tdv, TallyDO tally);
-    public delegate void TallyItemChangedEventHandler(TallyDO tally);
-    public delegate TallyDO AddNewTallyEventHandler();
 
-    
+    public delegate TallyDO GetTallyEventHandler(SampleGroupDO sg, TreeDefaultValueDO tdv);
+
+    public delegate void SelectedTallyChangedEventHandler(SampleGroupDO sg, TreeDefaultValueDO tdv, TallyDO tally);
+
+    public delegate void TallyItemChangedEventHandler(TallyDO tally);
+
+    public delegate TallyDO AddNewTallyEventHandler();
 
     public partial class TallyEditPanel : UserControl
     {
@@ -24,20 +26,19 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
         private TreeDefaultValueDO _currTDV;
 
-        
-
         public TallyEditPanel()
         {
             InitializeComponent();
 
-            //this._hotKeyCB.Items.AddRange(CSM.Utility.R.Strings.HOTKEYS);
             this._behaviorCB.Items.AddRange(Strings.INDICATOR_TYPES);
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Func<string, string[]> GetHotKeys { get; set; }
 
-        protected bool AllowTallyBySpecies 
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        protected bool AllowTallyBySpecies
         {
             get { return this._tallyBySpRB.Enabled; }
             set
@@ -46,6 +47,8 @@ namespace CruiseManager.WinForms.CruiseCustomize
             }
         }
 
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         protected bool AllowTallyBySG
         {
             get { return this._tallyBySGRB.Enabled; }
@@ -55,62 +58,8 @@ namespace CruiseManager.WinForms.CruiseCustomize
             }
         }
 
-        public void SetHotKeys(string[] hotkeys)
-        {
-            this._hotKeyCB.Items.Clear();
-            //if hotkeys null use empty string array
-            this._hotKeyCB.Items.AddRange(hotkeys ?? new String[0]);
-        }
-
-        private TallySetupSampleGroup _sampleGroup;
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public TallySetupSampleGroup SampleGroup 
-        {
-            get { return _sampleGroup; }
-            set
-            {
-                if (_sampleGroup == value) { return; }
-
-                _sampleGroup = value;
-                _changingSampleGroup = true;
-                OnSampleGroupChanged();
-                _changingSampleGroup = false;
-            }
-        }
-
-        //private List<TallyVM> _tallyPresets;
-        //[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        //public List<TallyVM> TallyPresets 
-        //{
-        //    get { return _tallyPresets; }
-        //    set
-        //    {
-        //        _BS_tallyPresets.DataSource = value;
-        //        _tallyPresets = value;
-        //    }
-        //}
-
-
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public CruiseDAL.Enums.TallyMode TallyMode
-        {
-            get 
-            {
-                if (_sampleGroup == null) { return CruiseDAL.Enums.TallyMode.Unknown; }
-                return _sampleGroup.TallyMethod; 
-            }
-            protected set
-            {
-                if (SampleGroup.TallyMethod == value) { return; }
-                SampleGroup.TallyMethod = value;
-                OnTallyModeChanged();
-            }
-        }
-
-        
-
         private TallyDO _currentTally;
+
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public TallyDO CurrentTally
@@ -140,7 +89,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
                 //    //if (index == -1)
                 //    //{
                 //    //    _presetCB.Text = "";
-                //    //}                                        
+                //    //}
                 //}
 
                 _BS_CurTally.DataSource = (object)value ?? (object)typeof(TallyDO);
@@ -149,18 +98,63 @@ namespace CruiseManager.WinForms.CruiseCustomize
             }
         }
 
+        private TallySetupSampleGroup _currentSampleGroup;
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public TallySetupSampleGroup CurrentSampleGroup
+        {
+            get { return _currentSampleGroup; }
+            set
+            {
+                if (_currentSampleGroup == value) { return; }
+
+                _currentSampleGroup = value;
+                _changingSampleGroup = true;
+                OnSampleGroupChanged();
+                _changingSampleGroup = false;
+            }
+        }
+
+
+        public IList<TallySetupSampleGroup> SampleGroups
+        {
+            get { return _BS_sampleGroups.DataSource as IList<TallySetupSampleGroup>; }
+            set { _BS_sampleGroups.DataSource = value ?? new TallySetupSampleGroup[0]; }
+        }
+
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public CruiseDAL.Enums.TallyMode TallyMode
+        {
+            get
+            {
+                if (_currentSampleGroup == null) { return CruiseDAL.Enums.TallyMode.Unknown; }
+                return _currentSampleGroup.TallyMethod;
+            }
+            protected set
+            {
+                if (CurrentSampleGroup.TallyMethod == value) { return; }
+                CurrentSampleGroup.TallyMethod = value;
+                OnTallyModeChanged();
+            }
+        }
+
+        internal void EndEdits()
+        {
+            this._BS_CurTally.EndEdit();
+        }
+
         protected void NotifyHotKeysDropedDown(object sender, EventArgs e)
         {
-            if(GetHotKeys != null)
+            if (GetHotKeys != null)
             {
-                var curHotKey = CurrentTally.Hotkey; 
+                var curHotKey = CurrentTally.Hotkey;
 
                 var avalibleHotKeys = GetHotKeys(curHotKey);
                 //this._hotKeyCB.DataSource = avalibleHotKeys;
                 this._hotKeyCB.Items.Clear();
                 this._hotKeyCB.Items.AddRange(avalibleHotKeys);
             }
-
         }
 
         protected override void OnEnabledChanged(EventArgs e)
@@ -176,9 +170,9 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
         protected void OnSampleGroupChanged()
         {
-            if(this.SampleGroup != null)
+            if (this.CurrentSampleGroup != null)
             {
-                if (this.SampleGroup.IsTallyModeLocked)
+                if (this.CurrentSampleGroup.IsTallyModeLocked)
                 {
                     _tallyBySGRB.Enabled = false;
                     _tallyBySpRB.Enabled = false;
@@ -186,8 +180,8 @@ namespace CruiseManager.WinForms.CruiseCustomize
                 }
                 else
                 {
-                    _tallyBySGRB.Enabled = this.SampleGroup.CanTallyBySG;
-                    _tallyBySpRB.Enabled = this.SampleGroup.CanTallyBySpecies;
+                    _tallyBySGRB.Enabled = this.CurrentSampleGroup.CanTallyBySG;
+                    _tallyBySpRB.Enabled = this.CurrentSampleGroup.CanTallyBySpecies;
                     _dontTallyRB.Enabled = true;
                 }
 
@@ -201,7 +195,6 @@ namespace CruiseManager.WinForms.CruiseCustomize
                 _dontTallyRB.Checked = false;
                 _BS_SPList.DataSource = EMPTY_SPECIES_LIST;
             }
-            
         }
 
         protected void OnTallyModeChanged()
@@ -214,8 +207,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
                 _dontTallyRB.Checked = false;
                 _speciesGB.Enabled = false;
                 _BS_SPList.DataSource = EMPTY_SPECIES_LIST;
-                CurrentTally = SampleGroup.SgTallie;
-
+                CurrentTally = CurrentSampleGroup.SgTallie;
             }
             else if ((this.TallyMode & CruiseDAL.Enums.TallyMode.BySpecies) == CruiseDAL.Enums.TallyMode.BySpecies)
             {
@@ -224,9 +216,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
                 _tallyBySpRB.Checked = true;
                 _dontTallyRB.Checked = false;
                 _speciesGB.Enabled = true;
-                if (SampleGroup.TreeDefaultValues.IsPopulated == false)
-                    { SampleGroup.TreeDefaultValues.Populate(); }
-                _BS_SPList.DataSource = SampleGroup.TreeDefaultValues;
+                _BS_SPList.DataSource = CurrentSampleGroup.TreeDefaultValues;
             }
             else if ((this.TallyMode & CruiseDAL.Enums.TallyMode.None) == CruiseDAL.Enums.TallyMode.None)
             {
@@ -241,7 +231,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
             if (!_changingSampleGroup)
             {
-                SampleGroup.HasTallyEdits = true;
+                CurrentSampleGroup.HasTallyEdits = true;
             }
 
             //if (TallyModeChanged != null && !_changingSampleGroup)
@@ -250,45 +240,31 @@ namespace CruiseManager.WinForms.CruiseCustomize
             //}
         }
 
-
-        //private void _BS_tallyPresets_CurrentChanged(object sender, EventArgs e)
-        //{
-        //    if (_changingCurrTally == true) { return; }
-        //    if (this.SampleGroup == null) { return; }
-        //    this.SampleGroup.HasTallyEdits = true;
-            
-        //    TallyVM tally = _BS_tallyPresets.Current as TallyVM;
-        //    if (this._currTDV != null)
-        //    {
-        //        this.SampleGroup.Tallies[_currTDV] = tally;
-        //    }
-        //    else
-        //    {
-        //        this.SampleGroup.SgTallie = tally;
-        //    }
-
-        //    CurrentTally = tally;
-        //}
-
-
-        private void _addTallyButton_Click(object sender, EventArgs e)
+        public void SetHotKeys(string[] hotkeys)
         {
-            //TallyDO tally = OnAddNewTally();
-            //if (tally != null)
-            //{
-            //    CurrentTally = tally;
-            //}
+            this._hotKeyCB.Items.Clear();
+            //if hotkeys null use empty string array
+            this._hotKeyCB.Items.AddRange(hotkeys ?? new String[0]);
         }
 
+        #region Event Handlers
 
         private void _BS_SPList_CurrentChanged(object sender, EventArgs e)
         {
             _currTDV = _BS_SPList.Current as TreeDefaultValueDO;
             if (_currTDV == null) { return; }
 
-            TallyDO tally = this.SampleGroup.Tallies[_currTDV];
+            TallyDO tally = this.CurrentSampleGroup.Tallies[_currTDV];
             CurrentTally = tally;
         }
+
+        private void _BS_sampleGroups_CurrentChanged(object sender, EventArgs e)
+        {
+            var curSG = _BS_sampleGroups.Current as TallySetupSampleGroup;
+
+            CurrentSampleGroup = curSG;
+        }
+
         private void _tallyBySGRB_CheckedChanged(object sender, EventArgs e)
         {
             if (!_changingSampleGroup && _tallyBySGRB.Checked == true)
@@ -317,23 +293,19 @@ namespace CruiseManager.WinForms.CruiseCustomize
         {
             if (!_changingSampleGroup && !_changingCurrTally)
             {
-                this.SampleGroup.HasTallyEdits = true;
+                this.CurrentSampleGroup.HasTallyEdits = true;
             }
-        }
-
-
-        internal void EndEdits()
-        {
-            this._BS_CurTally.EndEdit();
         }
 
         private void _hotKeyCB_TextChanged(object sender, EventArgs e)
         {
-            if(_changingCurrTally || this.CurrentTally == null)
+            if (_changingCurrTally || this.CurrentTally == null)
             {
                 return;
             }
             this.CurrentTally.Hotkey = _hotKeyCB.Text;
         }
+
+        #endregion Event Handlers
     }
 }

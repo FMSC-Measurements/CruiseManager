@@ -23,7 +23,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
         }
 
         FixCNTTallyClass _tallyClass;
-
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public FixCNTTallyClass TallyClass
         {
             get { return _tallyClass; }

@@ -1,18 +1,23 @@
-﻿using System;
+﻿using CruiseDAL;
+using CruiseDAL.DataObjects;
+using CruiseDAL.Enums;
+using CruiseManager.Core.App;
+using FMSC.ORM.EntityModel;
+using FMSC.ORM.EntityModel.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using CruiseDAL.DataObjects;
-using CruiseDAL;
-using CruiseManager.Core.App;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    public class TallySetupSampleGroup : SampleGroupDO
+    [EntitySource(SourceName = "SampleGroup")]
+    public class TallySetupSampleGroup : DataObject_Base
     {
         private TallyVM _sgTallie;
         private bool _hasTallyEdits = false;
         private bool _tallieDataLoaded = false;
+
+        #region CTor
 
         public TallySetupSampleGroup()
             : base()
@@ -22,19 +27,80 @@ namespace CruiseManager.Core.CruiseCustomize
             : base(db)
         { }
 
-        public TallySetupSampleGroup(SampleGroupDO dObj)
-            : base(dObj)
-        { }
+        #endregion CTor
 
-        public Dictionary<TreeDefaultValueDO, TallyVM> Tallies { get; set; }
+        #region Persisted Members
 
-        public TallyVM SgTallie 
+        [PrimaryKeyField(Name = "SampleGroup_CN")]
+        public Int64? SampleGroup_CN { get; set; }
+
+        [Field(Name = "Stratum_CN")]
+        public virtual long? Stratum_CN { get; set; }
+
+        [Field(Name = "Code")]
+        public virtual String Code { get; set; }
+
+        [Field(Name = "TallyMethod")]
+        public virtual CruiseDAL.Enums.TallyMode TallyMethod { get; set; }
+
+        //[Field(Name = "Description")]
+        //public virtual String Description { get; set; }
+
+        [Field(Name = "SampleSelectorType")]
+        public virtual String SampleSelectorType { get; set; }
+
+        [Field(Name = "SampleSelectorState")]
+        public virtual String SampleSelectorState { get; set; }
+
+        #endregion Persisted Members
+
+        public TallySetupStratum Stratum { get; set; }
+
+        private IList<TreeDefaultValueDO> _treeDefaultValues;
+
+        public IList<TreeDefaultValueDO> TreeDefaultValues
         {
-            get { return _sgTallie; }
-            set { _sgTallie = value; }
+            get
+            {
+                if (_treeDefaultValues == null)
+                {
+                    _treeDefaultValues = DAL.From<TreeDefaultValueDO>()
+                        .Read().ToList();
+                }
+                return _treeDefaultValues;
+            }
         }
 
         public Dictionary<String, TallyPopulation> TallyPopulations { get; protected set; }
+
+        public TallyMode GetSampleGroupTallyMode()
+        {
+            TallyMode mode = TallyMode.Unknown;
+            if (base.DAL.GetRowCount("CountTree", "WHERE SampleGroup_CN = ?", SampleGroup_CN) == 0)
+            {
+                return TallyMode.None;
+            }
+
+            if (base.DAL.GetRowCount("CountTree",
+                "WHERE SampleGroup_CN = ? AND ifnull(TreeDefaultValue_CN, 0) == 0",
+                SampleGroup_CN) > 0)
+            {
+                mode = mode | TallyMode.BySampleGroup;
+            }
+            if (base.DAL.GetRowCount("CountTree",
+                "WHERE SampleGroup_CN = ? AND TreeDefaultValue_CN NOT NULL AND TreeDefaultValue_CN > 0",
+                this.SampleGroup_CN) > 0)
+            {
+                mode = mode | TallyMode.BySpecies;
+            }
+            if (base.DAL.GetRowCount("CountTree",
+                "WHERE SampleGroup_CN = ? AND TreeCount > 0", this.SampleGroup_CN) > 0)
+            {
+                mode = mode | TallyMode.Locked;
+            }
+
+            return mode;
+        }
 
         public bool HasTallyEdits
         {
@@ -54,32 +120,30 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             get
             {
-       
-                return base.SampleSelectorType == CruiseDAL.Schema.CruiseMethods.SYSTEMATIC_SAMPLER_TYPE;                
+                return SampleSelectorType == CruiseDAL.Schema.CruiseMethods.SYSTEMATIC_SAMPLER_TYPE;
             }
             set
             {
-                if(UseSystematicSampling == value) { return; }
-                if(CanChangeSamplerType && IsSTR)
+                if (UseSystematicSampling == value) { return; }
+                if (CanEditSampleType)
                 {
-
-                    base.SampleSelectorType = (value) ? CruiseDAL.Schema.CruiseMethods.SYSTEMATIC_SAMPLER_TYPE : string.Empty;
+                    SampleSelectorType = (value) ? CruiseDAL.Schema.CruiseMethods.SYSTEMATIC_SAMPLER_TYPE : string.Empty;
                     NotifyPropertyChanged(nameof(UseSystematicSampling));
                     this.HasTallyEdits = true;
-                    
                 }
-                else if (!CanChangeSamplerType)
+                else
                 {
                     throw new UserFacingException("Sample Settings are locked on this Sample Group");
                 }
             }
         }
 
-        public bool CanChangeSamplerType
+        public bool CanEditSampleType
         {
             get
             {
-                return SampleGroupDO.CanChangeSamplerType(this);
+                return String.IsNullOrEmpty(SampleSelectorState)
+                    && Stratum.Method == CruiseDAL.Schema.CruiseMethods.STR;
             }
         }
 
@@ -92,49 +156,15 @@ namespace CruiseManager.Core.CruiseCustomize
         }
 
         public bool CanTallyBySpecies
-        {  get { return true; } }
+        { get { return true; } }
 
-        /// <summary>
-        /// returns true if parent stratum's cruise method is STR
-        /// </summary>
-        public bool IsSTR
+        public TallyVM SgTallie
         {
-            get
-            {
-                return base.Stratum.Method == CruiseDAL.Schema.CruiseMethods.STR;
-            }
+            get { return _sgTallie; }
+            set { _sgTallie = value; }
         }
 
-        #region readMethods
-        public List<T> ReadSpeciesCountTreeRecords<T>(CuttingUnitDO unit) where T : CountTreeDO, new()
-        {
-            return base.DAL.Read<T>(CruiseDAL.Schema.COUNTTREE._NAME,
-                "WHERE SampleGroup_CN = ? AND CuttingUnit_CN AND ifnull(TreeDefaultValue_CN, 0) != 0", base.SampleGroup_CN, unit.CuttingUnit_CN);
-        }
-
-
-        public T ReadSpeciesCountTreeRecord<T>(TreeDefaultValueDO species, CuttingUnitDO unit) where T : CountTreeDO, new()
-        {
-            return base.DAL.ReadSingleRow<T>(CruiseDAL.Schema.COUNTTREE._NAME,
-                "WHERE SampleGroup_CN = ? AND CuttingUnit_CN = ? AND TreeDefaultValue_CN = ?", this.SampleGroup_CN, unit.CuttingUnit_CN, species.TreeDefaultValue_CN);
-        }
-
-        public CountTreeDO ReadSpeciesCountTreeRecourd(TreeDefaultValueDO species, CuttingUnitDO unit)
-        {
-            return this.ReadSpeciesCountTreeRecord<CountTreeDO>(species, unit);
-        }
-
-        public T ReadSampleGroupCountTreeRecord<T>() where T : CountTreeDO, new()
-        {
-            return base.DAL.ReadSingleRow<T>(CruiseDAL.Schema.COUNTTREE._NAME,
-                "WHERE SampleGroup_CN = ? AND ifnull(TreeDefaultValue_CN, 0) = 0", base.SampleGroup_CN);
-        }
-
-        public CountTreeDO ReadSampleGroupCountTreeRecord()
-        {
-            return this.ReadSampleGroupCountTreeRecord<CountTreeDO>();
-        }
-        #endregion
+        public Dictionary<TreeDefaultValueDO, TallyVM> Tallies { get; set; }
 
         public IEnumerable<string> ListUsedHotKeys()
         {
@@ -155,21 +185,22 @@ namespace CruiseManager.Core.CruiseCustomize
 
         public void LoadTallieData()
         {
-            if (this._tallieDataLoaded) { return; }//we have already loaded this samplegroup before, dont reload it
+            if (this._tallieDataLoaded) { return; }//we have already loaded this samplegroup before, don't reload it
 
             this.TallyPopulations = new Dictionary<String, TallyPopulation>();
 
             //initialize a tally entity for use with tally by sample group
-            TallyVM sgTally = DAL.ReadSingleRow<TallyVM>("Tally",
-                "JOIN CountTree WHERE CountTree.Tally_CN = Tally.Tally_CN AND CountTree.SampleGroup_CN = ? AND ifnull(CountTree.TreeDefaultValue_CN, 0) = 0",
-                this.SampleGroup_CN);
+            TallyVM sgTally = DAL.From<TallyVM>()
+                .Join("CountTree", "USING Tally_CN")
+                .Where("SampleGroup_CN = ? AND ifnull(TreeDefaultValue_CN, 0) = 0")
+                .Query(SampleGroup_CN).FirstOrDefault();
 
             TallyPopulation sgTallyPopulation = DAL.QuerySingleRecord<TallyPopulation>("SELECT SampleGroup_CN, TreeDefaultValue_CN, Tally.HotKey as HotKey, Tally.Description as Description " +
                 "FROM CountTree " +
                 "JOIN Tally USING (Tally_CN) " +
                 "WHERE CountTree.Tally_CN = Tally.Tally_CN " +
-                "AND CountTree.SampleGroup_CN = ? " + 
-                "AND ifnull(CountTree.TreeDefaultValue_CN, 0) = 0;", this.SampleGroup_CN) 
+                "AND CountTree.SampleGroup_CN = ? " +
+                "AND ifnull(CountTree.TreeDefaultValue_CN, 0) = 0;", this.SampleGroup_CN)
                 ?? new TallyPopulation() { Description = Code };
 
             this.TallyPopulations.Add("", sgTallyPopulation);
@@ -182,14 +213,13 @@ namespace CruiseManager.Core.CruiseCustomize
             SgTallie = sgTally;
             SgTallie.Validate();
 
-            //initialize a list of tallys for use with tally by species 
+            //initialize a list of tallies for use with tally by species
             this.Tallies = new Dictionary<TreeDefaultValueDO, TallyVM>();
-            this.TreeDefaultValues.Populate();
-            foreach (TreeDefaultValueDO tdv in this.TreeDefaultValues)
+            foreach (var tdv in TreeDefaultValues)
             {
                 TallyVM tally = DAL.From<TallyVM>()
                     .Join("CountTree", "USING (Tally_CN)")
-                    .Where("CountTree.SampleGroup_CN = ? AND CountTree.TreeDefaultValue_CN = ?")
+                    .Where("SampleGroup_CN = ? AND TreeDefaultValue_CN = ?")
                     .Query(this.SampleGroup_CN, tdv.TreeDefaultValue_CN)
                     .FirstOrDefault();
 
@@ -217,7 +247,7 @@ namespace CruiseManager.Core.CruiseCustomize
 
         public override string ToString()
         {
-            return base.Code;
+            return Code;
         }
     }
 }

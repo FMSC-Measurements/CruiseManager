@@ -218,7 +218,7 @@ namespace CruiseManager.Core.CruiseCustomize
 
         public string[] GetAvalibleHotKeysInStratum(TallySetupStratum st)
         {
-            var useHotKeys = (from StratumDO stratum in this.TallySetupStrata
+            var useHotKeys = (from stratum in this.TallySetupStrata
                               select stratum.Hotkey).Union(st.ListUsedHotKeys());
             var avalibleHotHeys = Strings.HOTKEYS.Except(useHotKeys).ToArray();
             return avalibleHotHeys;
@@ -227,7 +227,7 @@ namespace CruiseManager.Core.CruiseCustomize
 
         public string[] GetAvalibleStratumHotKeys(TallySetupStratum stratum)
         {
-            var usedHotKeys = (from StratumDO st in this.TallySetupStrata
+            var usedHotKeys = (from st in this.TallySetupStrata
                                where st != stratum
                                select st.Hotkey);
             foreach (TallySetupStratum straum in this.TallySetupStrata)
