@@ -128,7 +128,7 @@
             this._hotKeyCB.Name = "_hotKeyCB";
             this._hotKeyCB.Size = new System.Drawing.Size(340, 21);
             this._hotKeyCB.TabIndex = 3;
-            this._hotKeyCB.DropDown += new System.EventHandler(this.NotifyHotKeysDropedDown);
+            this._hotKeyCB.DropDown += new System.EventHandler(this._hotKeyCB_DropedDown);
             this._hotKeyCB.TextChanged += new System.EventHandler(this._hotKeyCB_TextChanged);
             // 
             // label12

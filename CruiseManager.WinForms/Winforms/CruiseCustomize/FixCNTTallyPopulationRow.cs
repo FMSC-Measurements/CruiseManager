@@ -49,6 +49,14 @@ namespace CruiseManager.WinForms.CruiseCustomize
             }
         }
 
+        private void _max_CmbB_DropDown(object sender, EventArgs e)
+        {
+            _max_CmbB.Items.Clear();
 
+            foreach (var opt in _tallyPopulation.MaxOptions().Take(5))
+            {
+                _max_CmbB.Items.Add(opt);
+            }
+        }
     }
 }

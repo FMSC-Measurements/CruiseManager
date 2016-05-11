@@ -1,28 +1,16 @@
-﻿using CruiseManager.Core.Models;
+﻿using FMSC.ORM.EntityModel;
 using FMSC.ORM.EntityModel.Attributes;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
     public enum FixCNTTallyField { Unknown, DBH, TotalHeight };
 
-    public interface IFixCNTTallyClass
+    [EntitySource(SourceName = "FixCNTTallyClass")]
+    public class FixCNTTallyClass : DataObject_Base
     {
-        FixCNTTallyField Field { get; set; }
 
-        long? Stratum_CN { get; set; }
-
-        TallySetupStratum Stratum { get; set; }
-
-
-    }
-
-
-    [EntitySource(SourceName = "FixCNTClass")]
-    public class FixCNTTallyClass : IFixCNTTallyClass
-    {
         [Field(Name = "FieldName")]
         public FixCNTTallyField Field { get; set; }
 
@@ -31,6 +19,60 @@ namespace CruiseManager.Core.CruiseCustomize
 
         public TallySetupStratum Stratum { get; set; }
 
+        private IList<FixCNTTallyPopulation> _tallyPopulations;
 
+        public IList<FixCNTTallyPopulation> TallyPopulations
+        {
+            get
+            {
+                if (_tallyPopulations == null)
+                {
+                    _tallyPopulations = PopulateTallyPopulations();
+                }
+
+                return _tallyPopulations;
+            }
+        }
+
+        private IList<FixCNTTallyPopulation> PopulateTallyPopulations()
+        {
+            var list = DAL.From<FixCNTTallyPopulation>()
+                .Join("FixCNTTallyClass", "USING (FixCNTTallyClass_CN)")
+                .Where("Stratum_CN = ?")
+                .Query(Stratum_CN).ToList();
+
+            if (list == null
+                || list.Count == 0)
+            {
+                MakeTallyPopulations();
+            }
+
+            return list;
+        }
+
+        private IList<FixCNTTallyPopulation> MakeTallyPopulations()
+        {
+            System.Diagnostics.Debug.Assert(Stratum != null);
+
+            var list = new List<FixCNTTallyPopulation>();
+
+            foreach (var sg in Stratum.SampleGroups)
+            {
+                foreach (var tdv in sg.TreeDefaultValues)
+                {
+                    var newPop = new FixCNTTallyPopulation()
+                    {
+                        SampleGroup_CN = sg.SampleGroup_CN
+                        ,
+                        TreeDefaultValue_CN = tdv.TreeDefaultValue_CN
+                        ,
+                        TallyClass = this
+                    };
+
+                    list.Add(newPop);
+                }
+            }
+            return list;
+        }
     }
 }

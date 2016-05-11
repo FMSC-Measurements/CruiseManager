@@ -37,7 +37,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
         protected void OnTallyClassChanging()
         {
-
+            _lowerPannel.Controls.Clear();
         }
 
         protected void OnTallyClassChanged()
@@ -45,6 +45,18 @@ namespace CruiseManager.WinForms.CruiseCustomize
             if(TallyClass != null)
             {
                 _tallyField_CmbB.SelectedItem = TallyClass.Field.ToString();
+
+                _lowerPannel.SuspendLayout();
+                foreach(var tallyPop in TallyClass.TallyPopulations)
+                {
+                    var newPopRow = new FixCNTTallyPopulationRow()
+                    {
+                        TallyPopulation = tallyPop
+                    };
+
+                    _lowerPannel.Controls.Add(newPopRow);                    
+                }
+                _lowerPannel.ResumeLayout(true);
             }
         }
     }

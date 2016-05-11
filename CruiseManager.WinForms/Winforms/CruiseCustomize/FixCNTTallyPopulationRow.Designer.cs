@@ -37,11 +37,11 @@
             this._sp_LBL = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
+            this._inc_TB = new System.Windows.Forms.TextBox();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
+            this._min_TB = new System.Windows.Forms.TextBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this._max_CmbB = new System.Windows.Forms.ComboBox();
-            this._inc_TB = new System.Windows.Forms.TextBox();
-            this._min_TB = new System.Windows.Forms.TextBox();
             this.bindingSource = new System.Windows.Forms.BindingSource(this.components);
             label1 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
@@ -55,18 +55,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).BeginInit();
             this.SuspendLayout();
             // 
-            // flowLayoutPanel1
-            // 
-            this.flowLayoutPanel1.AutoSize = true;
-            this.flowLayoutPanel1.Controls.Add(label1);
-            this.flowLayoutPanel1.Controls.Add(this._sp_LBL);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(54, 45);
-            this.flowLayoutPanel1.TabIndex = 0;
-            // 
             // label1
             // 
             label1.AutoSize = true;
@@ -78,6 +66,54 @@
             label1.TabIndex = 0;
             label1.Text = "Species:";
             label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Dock = System.Windows.Forms.DockStyle.Left;
+            label4.Location = new System.Drawing.Point(3, 0);
+            label4.MinimumSize = new System.Drawing.Size(0, 21);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(21, 21);
+            label4.TabIndex = 0;
+            label4.Text = "inc";
+            label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Dock = System.Windows.Forms.DockStyle.Left;
+            label3.Location = new System.Drawing.Point(3, 0);
+            label3.MinimumSize = new System.Drawing.Size(0, 21);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(23, 21);
+            label3.TabIndex = 0;
+            label3.Text = "min";
+            label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Dock = System.Windows.Forms.DockStyle.Left;
+            label2.Location = new System.Drawing.Point(3, 0);
+            label2.MinimumSize = new System.Drawing.Size(0, 21);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(26, 21);
+            label2.TabIndex = 0;
+            label2.Text = "max";
+            label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.AutoSize = true;
+            this.flowLayoutPanel1.Controls.Add(label1);
+            this.flowLayoutPanel1.Controls.Add(this._sp_LBL);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(54, 45);
+            this.flowLayoutPanel1.TabIndex = 0;
             // 
             // _sp_LBL
             // 
@@ -114,17 +150,14 @@
             this.flowLayoutPanel4.Size = new System.Drawing.Size(77, 45);
             this.flowLayoutPanel4.TabIndex = 6;
             // 
-            // label4
+            // _inc_TB
             // 
-            label4.AutoSize = true;
-            label4.Dock = System.Windows.Forms.DockStyle.Left;
-            label4.Location = new System.Drawing.Point(3, 0);
-            label4.MinimumSize = new System.Drawing.Size(0, 21);
-            label4.Name = "label4";
-            label4.Size = new System.Drawing.Size(21, 21);
-            label4.TabIndex = 0;
-            label4.Text = "inc";
-            label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this._inc_TB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bindingSource, "IntervalSize", true));
+            this._inc_TB.Location = new System.Drawing.Point(30, 3);
+            this._inc_TB.Name = "_inc_TB";
+            this._inc_TB.Size = new System.Drawing.Size(44, 20);
+            this._inc_TB.TabIndex = 2;
+            this._inc_TB.Text = "123.4";
             // 
             // flowLayoutPanel3
             // 
@@ -138,17 +171,14 @@
             this.flowLayoutPanel3.Size = new System.Drawing.Size(79, 45);
             this.flowLayoutPanel3.TabIndex = 5;
             // 
-            // label3
+            // _min_TB
             // 
-            label3.AutoSize = true;
-            label3.Dock = System.Windows.Forms.DockStyle.Left;
-            label3.Location = new System.Drawing.Point(3, 0);
-            label3.MinimumSize = new System.Drawing.Size(0, 21);
-            label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(23, 21);
-            label3.TabIndex = 0;
-            label3.Text = "min";
-            label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this._min_TB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bindingSource, "Min", true));
+            this._min_TB.Location = new System.Drawing.Point(32, 3);
+            this._min_TB.Name = "_min_TB";
+            this._min_TB.Size = new System.Drawing.Size(44, 20);
+            this._min_TB.TabIndex = 1;
+            this._min_TB.Text = "123.4";
             // 
             // flowLayoutPanel2
             // 
@@ -162,45 +192,16 @@
             this.flowLayoutPanel2.Size = new System.Drawing.Size(95, 45);
             this.flowLayoutPanel2.TabIndex = 4;
             // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Dock = System.Windows.Forms.DockStyle.Left;
-            label2.Location = new System.Drawing.Point(3, 0);
-            label2.MinimumSize = new System.Drawing.Size(0, 21);
-            label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(26, 21);
-            label2.TabIndex = 0;
-            label2.Text = "max";
-            label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // _max_CmbB
             // 
-            this._max_CmbB.DataBindings.Add(new System.Windows.Forms.Binding("SelectedItem", this.bindingSource, "Max", true));
+            this._max_CmbB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bindingSource, "Max", true));
             this._max_CmbB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this._max_CmbB.FormattingEnabled = true;
             this._max_CmbB.Location = new System.Drawing.Point(35, 3);
             this._max_CmbB.Name = "_max_CmbB";
             this._max_CmbB.Size = new System.Drawing.Size(57, 21);
             this._max_CmbB.TabIndex = 1;
-            // 
-            // _inc_TB
-            // 
-            this._inc_TB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bindingSource, "IntervalSize", true));
-            this._inc_TB.Location = new System.Drawing.Point(30, 3);
-            this._inc_TB.Name = "_inc_TB";
-            this._inc_TB.Size = new System.Drawing.Size(44, 20);
-            this._inc_TB.TabIndex = 2;
-            this._inc_TB.Text = "123.4";
-            // 
-            // _min_TB
-            // 
-            this._min_TB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bindingSource, "Min", true));
-            this._min_TB.Location = new System.Drawing.Point(32, 3);
-            this._min_TB.Name = "_min_TB";
-            this._min_TB.Size = new System.Drawing.Size(44, 20);
-            this._min_TB.TabIndex = 1;
-            this._min_TB.Text = "123.4";
+            this._max_CmbB.DropDown += new System.EventHandler(this._max_CmbB_DropDown);
             // 
             // bindingSource
             // 

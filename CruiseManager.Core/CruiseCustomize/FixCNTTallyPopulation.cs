@@ -1,44 +1,19 @@
-﻿using CruiseDAL;
-using CruiseDAL.DataObjects;
+﻿using CruiseDAL.DataObjects;
+using FMSC.ORM.EntityModel;
 using FMSC.ORM.EntityModel.Attributes;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    public interface IFixCNTTallyPopulation
-    {
-        //string SpeciesName { get; set; }
-
-        long? ID { get; }
-
-        long? SampleGroup_CN { get; }
-        long? TreeDefaultValue_CN { get; }
-
-        TreeDefaultValueDO TreeDefaultValue { get; }
-        SampleGroupDO SampleGroup { get; }
-
-        long? FixCNTTallyClass_CN { get; set; }
-        IFixCNTTallyClass TallyClass { get; set; }
-
-        double IntervalSize { get; set; }
-        double Min { get; set; }
-        double Max { get; set; }
-
-    }
-
     [EntitySource(SourceName = "FixCNTTallyPopulation")]
-    public class FixCNTTallyPopulation : IFixCNTTallyPopulation
-    {
-
-        #region IFixCNTTallyPopulation Members
-
-        [Field(Name = "ID")]
-        public long? ID { get; set; }
+    public class FixCNTTallyPopulation : DataObject_Base
+    {       
 
         [Field(Name = "SampleGroup_CN")]
         public long? SampleGroup_CN { get; set; }
+
         public SampleGroupDO SampleGroup
         {
             get
@@ -53,21 +28,30 @@ namespace CruiseManager.Core.CruiseCustomize
 
         [Field(Name = "TreeDefaultValue_CN")]
         public long? TreeDefaultValue_CN { get; set; }
+
+        TreeDefaultValueDO _treeDefaultValue;
         public TreeDefaultValueDO TreeDefaultValue
         {
             get
             {
-                throw new NotImplementedException();
+                if(_treeDefaultValue == null)
+                {
+                    _treeDefaultValue = DAL.From<TreeDefaultValueDO>()
+                        .Where("TreeDefaultValue_CN = ?")
+                        .Query(TreeDefaultValue_CN).FirstOrDefault();
+                }
+                return _treeDefaultValue;
             }
             set
             {
-                throw new NotImplementedException();
+                _treeDefaultValue = value;
             }
         }
 
         [Field(Name = "FixCNTTallyClass_CN")]
         public long? FixCNTTallyClass_CN { get; set; }
-        public IFixCNTTallyClass TallyClass { get; set; }
+
+        public FixCNTTallyClass TallyClass { get; set; }
 
         [Field(Name = "IntervalSize")]
         public double IntervalSize { get; set; }
@@ -77,6 +61,26 @@ namespace CruiseManager.Core.CruiseCustomize
 
         [Field(Name = "Max")]
         public double Max { get; set; }
-        #endregion       
+
+        public IEnumerable<Double> MaxOptions()
+        {
+            var opt = (Min > 0) ? Min : 0;
+
+            if (Max > 0)
+            {
+                yield return Max;
+            }
+
+            if (IntervalSize > 0)
+            {
+                while (true)
+                {
+                    opt = opt + IntervalSize;
+                    yield return opt;
+                }
+            }
+        }
+
+        
     }
 }

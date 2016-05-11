@@ -8,15 +8,15 @@ using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.CruiseCustomize
 {
-    public delegate void TallyModeChangedEventHandler(object sender);
+    //public delegate void TallyModeChangedEventHandler(object sender);
 
-    public delegate TallyDO GetTallyEventHandler(SampleGroupDO sg, TreeDefaultValueDO tdv);
+    //public delegate TallyDO GetTallyEventHandler(SampleGroupDO sg, TreeDefaultValueDO tdv);
 
-    public delegate void SelectedTallyChangedEventHandler(SampleGroupDO sg, TreeDefaultValueDO tdv, TallyDO tally);
+    //public delegate void SelectedTallyChangedEventHandler(SampleGroupDO sg, TreeDefaultValueDO tdv, TallyDO tally);
 
-    public delegate void TallyItemChangedEventHandler(TallyDO tally);
+    //public delegate void TallyItemChangedEventHandler(TallyDO tally);
 
-    public delegate TallyDO AddNewTallyEventHandler();
+    //public delegate TallyDO AddNewTallyEventHandler();
 
     public partial class TallyEditPanel : UserControl
     {
@@ -143,20 +143,6 @@ namespace CruiseManager.WinForms.CruiseCustomize
         {
             this._BS_CurTally.EndEdit();
         }
-
-        protected void NotifyHotKeysDropedDown(object sender, EventArgs e)
-        {
-            if (GetHotKeys != null)
-            {
-                var curHotKey = CurrentTally.Hotkey;
-
-                var avalibleHotKeys = GetHotKeys(curHotKey);
-                //this._hotKeyCB.DataSource = avalibleHotKeys;
-                this._hotKeyCB.Items.Clear();
-                this._hotKeyCB.Items.AddRange(avalibleHotKeys);
-            }
-        }
-
         protected override void OnEnabledChanged(EventArgs e)
         {
             base.OnEnabledChanged(e);
@@ -304,6 +290,19 @@ namespace CruiseManager.WinForms.CruiseCustomize
                 return;
             }
             this.CurrentTally.Hotkey = _hotKeyCB.Text;
+        }
+
+        protected void _hotKeyCB_DropedDown(object sender, EventArgs e)
+        {
+            if (GetHotKeys != null)
+            {
+                var curHotKey = CurrentTally.Hotkey;
+
+                var avalibleHotKeys = GetHotKeys(curHotKey);
+                //this._hotKeyCB.DataSource = avalibleHotKeys;
+                this._hotKeyCB.Items.Clear();
+                this._hotKeyCB.Items.AddRange(avalibleHotKeys);
+            }
         }
 
         #endregion Event Handlers

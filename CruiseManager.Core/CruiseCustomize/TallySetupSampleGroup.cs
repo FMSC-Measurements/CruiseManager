@@ -65,7 +65,9 @@ namespace CruiseManager.Core.CruiseCustomize
                 if (_treeDefaultValues == null)
                 {
                     _treeDefaultValues = DAL.From<TreeDefaultValueDO>()
-                        .Read().ToList();
+                        .Join("SampleGroupTreeDefaultValue", "USING (TreeDefaultValue_CN)")
+                        .Where("SampleGroup_CN = ?")
+                        .Query(SampleGroup_CN).ToList();
                 }
                 return _treeDefaultValues;
             }
@@ -191,7 +193,7 @@ namespace CruiseManager.Core.CruiseCustomize
 
             //initialize a tally entity for use with tally by sample group
             TallyVM sgTally = DAL.From<TallyVM>()
-                .Join("CountTree", "USING Tally_CN")
+                .Join("CountTree", "USING (Tally_CN)")
                 .Where("SampleGroup_CN = ? AND ifnull(TreeDefaultValue_CN, 0) = 0")
                 .Query(SampleGroup_CN).FirstOrDefault();
 

@@ -32,13 +32,12 @@
             System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
             System.Windows.Forms.Label _tallyField_LBL;
             System.Windows.Forms.Label _title_LBL;
-            System.Windows.Forms.Panel _lowerPannel;
             this._tallyField_CmbB = new System.Windows.Forms.ComboBox();
+            this._lowerPannel = new System.Windows.Forms.Panel();
             _upperPannel = new System.Windows.Forms.Panel();
             flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             _tallyField_LBL = new System.Windows.Forms.Label();
             _title_LBL = new System.Windows.Forms.Label();
-            _lowerPannel = new System.Windows.Forms.Panel();
             _upperPannel.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -99,18 +98,18 @@
             // 
             // _lowerPannel
             // 
-            _lowerPannel.AutoScroll = true;
-            _lowerPannel.Dock = System.Windows.Forms.DockStyle.Fill;
-            _lowerPannel.Location = new System.Drawing.Point(0, 71);
-            _lowerPannel.Name = "_lowerPannel";
-            _lowerPannel.Size = new System.Drawing.Size(313, 216);
-            _lowerPannel.TabIndex = 1;
+            this._lowerPannel.AutoScroll = true;
+            this._lowerPannel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._lowerPannel.Location = new System.Drawing.Point(0, 71);
+            this._lowerPannel.Name = "_lowerPannel";
+            this._lowerPannel.Size = new System.Drawing.Size(313, 216);
+            this._lowerPannel.TabIndex = 1;
             // 
             // FixCNTTallyEditPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(_lowerPannel);
+            this.Controls.Add(this._lowerPannel);
             this.Controls.Add(_upperPannel);
             this.Name = "FixCNTTallyEditPanel";
             this.Size = new System.Drawing.Size(313, 287);
@@ -124,5 +123,6 @@
 
         #endregion
         private System.Windows.Forms.ComboBox _tallyField_CmbB;
+        private System.Windows.Forms.Panel _lowerPannel;
     }
 }

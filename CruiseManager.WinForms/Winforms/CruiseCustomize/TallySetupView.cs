@@ -8,7 +8,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
     public partial class TallySetupView : CruiseManager.WinForms.UserControlView, ITallySetupView
     {
         private BindingList<String> _stratumHotkeys = new BindingList<string>();
-        private TallySetupStratum _currentTallySetupStratum;
+        private TallySetupStratum _currentStratum;
         private bool _currentStratumChanging = false;
 
         public new TallySetupPresenter ViewPresenter
@@ -16,6 +16,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             get { return (TallySetupPresenter)base.ViewPresenter; }
             set { base.ViewPresenter = value; }
         }
+
 
         public TallySetupView(TallySetupPresenter presenter)
         {
@@ -35,28 +36,42 @@ namespace CruiseManager.WinForms.CruiseCustomize
             _BS_strata.DataSource = ViewPresenter.TallySetupStrata;
         }
 
-        void UpdateStratumHotKeys()
+        private void UpdateStratumHotKeys()
         {
-            if (_currentTallySetupStratum != null)
+            if (_currentStratum != null)
             {
-                var list = this.ViewPresenter.GetAvalibleStratumHotKeys(_currentTallySetupStratum);
+                var list = this.ViewPresenter.GetAvalibleStratumHotKeys(_currentStratum);
                 _stratumHKCB.Items.Clear();
                 _stratumHKCB.Items.AddRange(list);
             }
         }
 
-        void _BS_strata_CurrentChanged(object sender, EventArgs e)
+        #region event handlers
+
+        private void _BS_strata_CurrentChanged(object sender, EventArgs e)
         {
             _currentStratumChanging = true;
             try
             {
-                _currentTallySetupStratum = _BS_strata.Current as TallySetupStratum;
+                _currentStratum = _BS_strata.Current as TallySetupStratum;
 
-                if (_currentTallySetupStratum != null)
+                if (_currentStratum != null)
                 {
-                    _tallyEditPanel.SampleGroups = _currentTallySetupStratum.SampleGroups;
-                    _tallyEditPanel.Enabled = _currentTallySetupStratum.CanDefineTallies;
-                    _stratumHKCB.Text = _currentTallySetupStratum.Hotkey;
+                    var isFixCNT = _currentStratum.Method == CruiseDAL.Schema.CruiseMethods.FIXCNT;
+
+                    _tallyEditPanel.Visible = !isFixCNT;
+                    _fixCNTTallyEditPanel.Visible = isFixCNT;
+
+                    if (isFixCNT)
+                    {
+                        _fixCNTTallyEditPanel.TallyClass = _currentStratum.TallyClass;
+                    }
+                    else
+                    {
+                        _tallyEditPanel.SampleGroups = _currentStratum.SampleGroups;
+                        _tallyEditPanel.Enabled = _currentStratum.CanDefineTallies;
+                        _stratumHKCB.Text = _currentStratum.Hotkey;
+                    }
                 }
                 else
                 {
@@ -64,7 +79,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
                     _tallyEditPanel.Enabled = false;
                     _stratumHKCB.Text = String.Empty;
                 }
-                _stratumHKCB.Enabled = _currentTallySetupStratum != null;
+                _stratumHKCB.Enabled = _currentStratum != null;
             }
             finally
             {
@@ -72,29 +87,31 @@ namespace CruiseManager.WinForms.CruiseCustomize
             }
         }
 
-        void _stratumHKCB_DropDown(object sender, EventArgs e)
+        private void _stratumHKCB_DropDown(object sender, EventArgs e)
         {
             UpdateStratumHotKeys();
         }
 
-        void _stratumHKCB_TextChanged(object sender, EventArgs e)
+        private void _stratumHKCB_TextChanged(object sender, EventArgs e)
         {
-            if (_currentTallySetupStratum == null || _currentStratumChanging) { return; }
+            if (_currentStratum == null || _currentStratumChanging) { return; }
             else
             {
-                _currentTallySetupStratum.Hotkey = _stratumHKCB.Text;
+                _currentStratum.Hotkey = _stratumHKCB.Text;
             }
         }
 
-        string[] _tallyEditPanel_GetHotKeys(string curHotKey)
+        private string[] _tallyEditPanel_GetHotKeys(string curHotKey)
         {
-            _currentTallySetupStratum = _BS_strata.Current as TallySetupStratum;
+            _currentStratum = _BS_strata.Current as TallySetupStratum;
 
-            if (_currentTallySetupStratum != null)
+            if (_currentStratum != null)
             {
-                return this.ViewPresenter.GetAvalibleTallyHotKeys(_currentTallySetupStratum, curHotKey);
+                return this.ViewPresenter.GetAvalibleTallyHotKeys(_currentStratum, curHotKey);
             }
             return new string[] { };
         }
+
+        #endregion event handlers
     }
 }

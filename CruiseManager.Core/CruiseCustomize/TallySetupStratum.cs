@@ -32,14 +32,30 @@ namespace CruiseManager.Core.CruiseCustomize
         }
 
         public bool IsSTR
+        { get { return Method == CruiseDAL.Schema.CruiseMethods.STR; } }
+
+
+
+        public List<TallySetupSampleGroup> SampleGroups { get; set; }
+
+        FixCNTTallyClass _tallyClass;
+        public FixCNTTallyClass TallyClass
         {
             get
             {
-                return Method == CruiseDAL.Schema.CruiseMethods.STR;
+                if(_tallyClass == null)
+                {
+                    _tallyClass = DAL.From<FixCNTTallyClass>()
+                        .Where("Stratum_CN = ?")
+                        .Query(Stratum_CN)
+                        .FirstOrDefault()
+                        ?? new FixCNTTallyClass();
+
+                    _tallyClass.Stratum = this;
+                }
+                return _tallyClass;
             }
         }
-
-        public List<TallySetupSampleGroup> SampleGroups { get; set; }
 
         #region Persisted Members
 
