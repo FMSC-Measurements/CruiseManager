@@ -53,7 +53,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
         {
             _max_CmbB.Items.Clear();
 
-            foreach (var opt in _tallyPopulation.MaxOptions().Take(5))
+            foreach (var opt in _tallyPopulation.EnumerateMaxOptions().Take(10))
             {
                 _max_CmbB.Items.Add(opt);
             }

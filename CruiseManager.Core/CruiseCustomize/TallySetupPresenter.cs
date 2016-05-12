@@ -1,9 +1,7 @@
 ﻿using CruiseDAL;
-using CruiseDAL.DataObjects;
 using CruiseDAL.Enums;
 using CruiseManager.Core.App;
 using CruiseManager.Core.Constants;
-using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -14,7 +12,7 @@ namespace CruiseManager.Core.CruiseCustomize
 {
     public class TallySetupPresenter : Presentor, ISaveHandler
     {
-        bool _isInitialized;
+        private bool _isInitialized;
 
         public new ViewInterfaces.ITallySetupView View
         {
@@ -24,7 +22,7 @@ namespace CruiseManager.Core.CruiseCustomize
 
         public DAL Database { get { return ApplicationController.Database; } }
 
-        public List<TallySetupStratum> TallySetupStrata { get; set; }
+        public List<TallySetupStratum_Base> TallySetupStrata { get; set; }
 
         public bool HasChangesToSave
         {
@@ -35,10 +33,9 @@ namespace CruiseManager.Core.CruiseCustomize
             }
         }
 
-        public TallySetupPresenter(ApplicationControllerBase appController) 
-            :base(appController)
+        public TallySetupPresenter(ApplicationControllerBase appController)
+            : base(appController)
         {
-
         }
 
         protected override void OnViewLoad(EventArgs e)
@@ -47,14 +44,24 @@ namespace CruiseManager.Core.CruiseCustomize
 
             try
             {
-                this.TallySetupStrata = this.Database.Read<TallySetupStratum>("Stratum", null);
+                TallySetupStrata = new List<TallySetupStratum_Base>();
 
-                foreach (TallySetupStratum stratum in this.TallySetupStrata)
+                var standardStata = Database.From<TallySetupStratum_Base>()
+                    .Where("Method != " + CruiseDAL.Schema.CruiseMethods.FIXCNT)
+                    .Query();
+
+                var fixCNTStrata = Database.From<FixCNTTallySetupStratum>()
+                    .Where("Method = " + CruiseDAL.Schema.CruiseMethods.FIXCNT)
+                    .Query();
+
+                
+
+                foreach (var stratum in standardStata.Union(fixCNTStrata))
                 {
-                    stratum.LoadSampleGroups();
+                    stratum.Initialize();
+                    TallySetupStrata.Add(stratum);
                 }
                 _isInitialized = true;
-
             }
             catch (Exception ex)
             {
@@ -63,35 +70,21 @@ namespace CruiseManager.Core.CruiseCustomize
             this.View.UpdateTallySetupView();
         }
 
-        public bool CanDefintTallys(StratumDO stratum)
-        {
-            return StratumDO.CanDefineTallys(stratum);
-        }
-
-
-        public bool ValidateTallySettup(ref StringBuilder errorBuilder)
+        public bool ValidateStrata(ref StringBuilder errorBuilder)
         {
             if (!_isInitialized) { return true; }
             bool isValid = true;
-            foreach (TallySetupStratum st in this.TallySetupStrata)
+            foreach (TallySetupStratum_Base st in this.TallySetupStrata)
             {
-                isValid = this.ValidateTallyHotKeys(st, ref errorBuilder) && isValid;
-
-                if (CruiseDAL.Schema.CruiseMethods.MANDITORY_TALLY_METHODS.Contains(st.Method))
+                if(!st.Validate())
                 {
-                    foreach (TallySetupSampleGroup sg in st.SampleGroups)
-                    {
-                        if (sg.TallyMethod == TallyMode.Unknown || (sg.TallyMethod & TallyMode.None) == TallyMode.None)
-                        {
-                            errorBuilder.AppendFormat("Sample Group {0} in Stratum {1} needs tally configuration\r\n", sg.Code, st.Code);
-                            isValid = false;
-                        }
-                    }
+                    errorBuilder.AppendLine("Stratum " + st.Code + ":");
+                    errorBuilder.AppendLine(st.Errors);
+                    isValid = false;
                 }
             }
             return isValid;
         }
-
 
         /// <summary>
         /// returns all hot-keys that can be assigned as tally hot keys
@@ -101,10 +94,11 @@ namespace CruiseManager.Core.CruiseCustomize
         public string[] GetAvalibleTallyHotKeys(TallySetupStratum st, string curHotKey)
         {
             var usedHotKeys = (from stratum in this.TallySetupStrata
-                              select stratum.Hotkey);
+                               select stratum.Hotkey);
+
             usedHotKeys = usedHotKeys.Union(st.ListUsedHotKeys());
 
-            //remove current hot key from list of in use hot keys 
+            //remove current hot key from list of in use hot keys
             usedHotKeys = usedHotKeys.Except(new string[] { curHotKey });
 
             var avalibleHotHeys = Strings.HOTKEYS.Except(usedHotKeys).ToArray();
@@ -112,109 +106,38 @@ namespace CruiseManager.Core.CruiseCustomize
         }
 
         /// <summary>
-        /// returns all hot-keys that can be assigned as stratum hot-keys. 
+        /// returns all hot-keys that can be assigned as stratum hot-keys.
         /// </summary>
         /// <param name="stratum"></param>
         /// <returns></returns>
-        public string[] GetAvalibleStratumHotKeys(TallySetupStratum stratum)
+        public string[] GetAvalibleStratumHotKeys(TallySetupStratum_Base stratum)
         {
             IEnumerable<String> avalibleHotKeys = Strings.HOTKEYS;
             avalibleHotKeys = avalibleHotKeys.Except(from st in this.TallySetupStrata
-                               where st != stratum
-                               select st.Hotkey);
-            foreach (TallySetupStratum straum in this.TallySetupStrata)
+                                                     where st != stratum
+                                                     select st.Hotkey);
+
+            foreach (var straum in TallySetupStrata.OfType<TallySetupStratum>())
             {
                 avalibleHotKeys = avalibleHotKeys.Except(straum.ListUsedHotKeys());
             }
             return avalibleHotKeys.ToArray();
         }
 
-
-
-        private bool ValidateTallyHotKeys(TallySetupStratum st, ref StringBuilder errorBuilder)
-        {
-            bool success = true;
-            List<char> usedHotKeys = new List<char>();
-            //StringBuilder errorBuilder = new StringBuilder();
-
-            foreach (TallySetupSampleGroup sgVM in st.SampleGroups)
-            {
-                if (sgVM.TallyMethod.HasFlag(TallyMode.BySampleGroup))
-                {
-                    char hk = HotKeyToChar(sgVM.SgTallie.Hotkey);
-                    if (hk == char.MinValue)
-                    {
-                        errorBuilder.AppendFormat("Missing Hot Key in SG:{0} Stratum:{1}\r\n", sgVM.ToString(), st.Code);
-                        success = false;
-                    }
-                    else if (usedHotKeys.IndexOf(hk) >= 0)//see if usedHotKeys already CONTAINS value
-                    {
-                        //ERROR stratum already has hot-key
-                        errorBuilder.AppendFormat("Hot Key '{0}' in SG:{1} Stratum:{2} already in use\r\n", sgVM.SgTallie.Hotkey, sgVM.ToString(), st.Code);
-                        success = false;
-                    }
-                    else
-                    {
-                        //SUCCESS add hot key to list of in use hot keys
-                        usedHotKeys.Add(hk);
-                    }
-                }
-                else if (sgVM.TallyMethod.HasFlag(TallyMode.BySpecies))
-                {
-                    foreach (TallyVM t in sgVM.Tallies.Values)
-                    {
-                        char hk = HotKeyToChar(t.Hotkey);
-                        if (hk == char.MinValue)
-                        {
-                            errorBuilder.AppendFormat("Missing Hot Key in SG:{0} Stratum:{1}\r\n", sgVM.ToString(), st.Code);
-                            success = false;
-                        }
-                        else if (usedHotKeys.IndexOf(hk) >= 0)//see if usedHotKeys already CONTAINS value
-                        {
-                            //ERROR stratum already has hot-key
-                            errorBuilder.AppendFormat("Hot Key '{0}' in SG:{1} Stratum:{2} already in use\r\n", t.Hotkey, sgVM.ToString(), st.Code);
-                            success = false;
-                        }
-                        else
-                        {
-                            //SUCCESS add hot key to list of in use hot keys
-                            usedHotKeys.Add(hk);
-                        }
-                    }
-                }
-            }
-
-            return success;
-        }
-
-        public static char HotKeyToChar(string str)//TODO move method somewhere more useful
-        {
-            if (String.IsNullOrEmpty(str))
-            {
-                return char.MinValue;
-            }
-            return char.ToUpper(str[0]);
-        }
-
         public bool HandleSave()
-        {
-            return this.Save();
-        }
-
-        private bool Save()
         {
             this.View.EndEdits();
 
             var errorBuilder = new StringBuilder();
 
-            SaveStrata(ref errorBuilder);
+            SaveStrata();
 
-            if(!ValidateTallySettup(ref errorBuilder))
+            if (!ValidateStrata(ref errorBuilder))
             {
                 this.View.ShowErrorMessage("Validation Errors", errorBuilder.ToString());
                 return false;
             }
-            else if(!SaveTallies(ref errorBuilder))
+            else if (!SaveTallies(ref errorBuilder))
             {
                 this.View.ShowErrorMessage("Save Errors", errorBuilder.ToString());
                 return false;
@@ -223,11 +146,11 @@ namespace CruiseManager.Core.CruiseCustomize
             { return true; }
         }
 
-        private bool SaveStrata(ref StringBuilder errorBuilder)
+        private bool SaveStrata()
         {
             bool success = true;
 
-            foreach (TallySetupStratum st in TallySetupStrata)
+            foreach (TallySetupStratum_Base st in TallySetupStrata)
             {
                 try
                 {
@@ -249,9 +172,8 @@ namespace CruiseManager.Core.CruiseCustomize
             this.Database.BeginTransaction();
             try
             {
-
                 this.Database.Execute(
-@"CREATE TEMP TRIGGER IF NOT EXISTS IgnoreConflictsOnCountTree 
+@"CREATE TEMP TRIGGER IF NOT EXISTS IgnoreConflictsOnCountTree
 BEFORE INSERT
 ON CountTree
 WHEN Exists
@@ -266,7 +188,7 @@ SELECT RAISE(IGNORE);
 END;"
                     );
 
-                foreach (TallySetupStratum stratum in TallySetupStrata)
+                foreach (TallySetupStratum_Base stratum in TallySetupStrata)
                 {
                     if (stratum.SampleGroups != null)
                     {
@@ -275,7 +197,7 @@ END;"
                             sgVM.Save();
                             if (sgVM.HasTallyEdits == true)
                             {
-                                success = SaveTallies(sgVM, ref errorBuilder) && success;
+                                success = sgVM.SaveTallies(ref errorBuilder) && success;
                             }
                         }
                     }
@@ -291,138 +213,133 @@ END;"
             }
         }
 
-        private bool SaveTallies(TallySetupSampleGroup sgVM, ref StringBuilder errorBuilder)
-        {
-            try
-            { 
-                //if ((sgVM.TallyMethod & TallyMode.Locked) != TallyMode.Locked)
-                //{
-                //    string delCommand = String.Format("DELETE FROM CountTree WHERE SampleGroup_CN = {0}", sgVM.SampleGroup_CN);
-                //    Controller.Database.Execute(delCommand); //cleaned any existing count records. 
-                //}
+        //private bool SaveTallies(TallySetupSampleGroup sgVM, ref StringBuilder errorBuilder)
+        //{
+        //    try
+        //    {
+        //        //if ((sgVM.TallyMethod & TallyMode.Locked) != TallyMode.Locked)
+        //        //{
+        //        //    string delCommand = String.Format("DELETE FROM CountTree WHERE SampleGroup_CN = {0}", sgVM.SampleGroup_CN);
+        //        //    Controller.Database.Execute(delCommand); //cleaned any existing count records.
+        //        //}
 
-                if (sgVM.TallyMethod.HasFlag(TallyMode.BySampleGroup))
-                {
-                    SaveTallyBySampleGroup(sgVM);
-                }
-                else if (sgVM.TallyMethod.HasFlag(TallyMode.BySpecies))
-                {
-                    SaveTallyBySpecies(sgVM);
-                }
-                sgVM.HasTallyEdits = false;
-                return true;
-            }
-            catch (Exception e)
-            {
-                errorBuilder.AppendFormat("{2}: failed to setup tallies for SampleGroup({0} ) in Stratum ({1})", sgVM.Code, sgVM.Stratum.Code, e.GetType().Name);
-                return false;
-            }
-        }
+        //        if (sgVM.TallyMethod.HasFlag(TallyMode.BySampleGroup))
+        //        {
+        //            SaveTallyBySampleGroup(sgVM);
+        //        }
+        //        else if (sgVM.TallyMethod.HasFlag(TallyMode.BySpecies))
+        //        {
+        //            SaveTallyBySpecies(sgVM);
+        //        }
+        //        sgVM.HasTallyEdits = false;
+        //        return true;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        errorBuilder.AppendFormat("{2}: failed to setup tallies for SampleGroup({0} ) in Stratum ({1})", sgVM.Code, sgVM.Stratum.Code, e.GetType().Name);
+        //        return false;
+        //    }
+        //}
 
-        private void SaveTallyBySampleGroup(TallySetupSampleGroup sgVM)
-        {
-            //this.Database.BeginTransaction();
-            try
-            {
-                if ((sgVM.TallyMethod & TallyMode.Locked) != TallyMode.Locked)
-                {
-                    //remove any possible tally by species records
-                    string command = "DELETE FROM CountTree WHERE SampleGroup_CN = ? AND ifnull(TreeDefaultValue_CN, 0) != 0;";
-                    this.Database.Execute(command, sgVM.SampleGroup_CN);
+        //private void SaveTallyBySampleGroup(TallySetupSampleGroup sgVM)
+        //{
+        //    //this.Database.BeginTransaction();
+        //    try
+        //    {
+        //        if (sgVM.IsTallyModeLocked)
+        //        {
+        //            //remove any possible tally by species records
+        //            string command = "DELETE FROM CountTree WHERE SampleGroup_CN = ? AND ifnull(TreeDefaultValue_CN, 0) != 0;";
+        //            this.Database.Execute(command, sgVM.SampleGroup_CN);
 
-                    string user = this.Database.User;
-                    String makeCountsCommand = String.Format(@"INSERT  OR Ignore INTO CountTree (CuttingUnit_CN, SampleGroup_CN,  CreatedBy)
-                            Select CuttingUnitStratum.CuttingUnit_CN, SampleGroup.SampleGroup_CN,  '{0}' AS CreatedBy
-                            From SampleGroup 
-                            INNER JOIN CuttingUnitStratum 
-                            ON SampleGroup.Stratum_CN = CuttingUnitStratum.Stratum_CN 
-                            WHERE SampleGroup.SampleGroup_CN = {1};", user, sgVM.SampleGroup_CN);
+        //            string user = this.Database.User;
+        //            String makeCountsCommand = String.Format(@"INSERT  OR Ignore INTO CountTree (CuttingUnit_CN, SampleGroup_CN,  CreatedBy)
+        //                    Select CuttingUnitStratum.CuttingUnit_CN, SampleGroup.SampleGroup_CN,  '{0}' AS CreatedBy
+        //                    From SampleGroup
+        //                    INNER JOIN CuttingUnitStratum
+        //                    ON SampleGroup.Stratum_CN = CuttingUnitStratum.Stratum_CN
+        //                    WHERE SampleGroup.SampleGroup_CN = {1};", user, sgVM.SampleGroup_CN);
 
-                    this.Database.Execute(makeCountsCommand);
-                }
-                TallyVM tally = this.Database.From<TallyVM>()
-                    .Where("Description = ? AND HotKey = ?")
-                    .Query(sgVM.SgTallie.Description, sgVM.SgTallie.Hotkey)
-                    .FirstOrDefault();
-                
-                if (tally == null)
-                {
-                    tally = new TallyVM(this.Database) { Description = sgVM.SgTallie.Description, Hotkey = sgVM.SgTallie.Hotkey };
-                    //tally = sgVM.SgTallie;
-                    tally.Save();
-                }
+        //            this.Database.Execute(makeCountsCommand);
+        //        }
+        //        TallyVM tally = this.Database.From<TallyVM>()
+        //            .Where("Description = ? AND HotKey = ?")
+        //            .Query(sgVM.SgTallie.Description, sgVM.SgTallie.Hotkey)
+        //            .FirstOrDefault();
 
-                String setTallyCommand = String.Format("UPDATE CountTree Set Tally_CN = {0} WHERE SampleGroup_CN = {1};",
-                    tally.Tally_CN, sgVM.SampleGroup_CN);
+        //        if (tally == null)
+        //        {
+        //            tally = new TallyVM(this.Database) { Description = sgVM.SgTallie.Description, Hotkey = sgVM.SgTallie.Hotkey };
+        //            //tally = sgVM.SgTallie;
+        //            tally.Save();
+        //        }
 
-                this.Database.Execute(setTallyCommand);
+        //        String setTallyCommand = String.Format("UPDATE CountTree Set Tally_CN = {0} WHERE SampleGroup_CN = {1};",
+        //            tally.Tally_CN, sgVM.SampleGroup_CN);
 
-                //this.Database.EndTransaction();
-            }
-            catch(Exception)
-            {
-                //this.Database.CancelTransaction();
-                throw;
-            }
-        }
+        //        this.Database.Execute(setTallyCommand);
 
-        private void SaveTallyBySpecies(TallySetupSampleGroup sgVM)
-        {
-            //this.Database.BeginTransaction();
-            try
-            {
-                if ((sgVM.TallyMethod & TallyMode.Locked) != TallyMode.Locked)
-                {
-                    //remove any preexisting tally by sg entries
-                    string command = "DELETE FROM CountTree WHERE SampleGroup_CN = ? AND ifnull(TreeDefaultValue_CN, 0) = 0;";
-                    this.Database.Execute(command, sgVM.SampleGroup_CN);
+        //        //this.Database.EndTransaction();
+        //    }
+        //    catch (Exception)
+        //    {
+        //        //this.Database.CancelTransaction();
+        //        throw;
+        //    }
+        //}
 
-                    string user = this.Database.User;
-                    String makeCountsCommand = String.Format(@"INSERT  OR IGNORE INTO CountTree (CuttingUnit_CN, SampleGroup_CN, TreeDefaultValue_CN, CreatedBy)
-                        Select CuttingUnitStratum.CuttingUnit_CN, SampleGroup.SampleGroup_CN, SampleGroupTreeDefaultValue.TreeDefaultValue_CN, '{0}' AS CreatedBy 
-                        From SampleGroup 
-                        INNER JOIN CuttingUnitStratum 
-                        ON SampleGroup.Stratum_CN = CuttingUnitStratum.Stratum_CN 
-                        INNER JOIN SampleGroupTreeDefaultValue 
-                        ON SampleGroupTreeDefaultValue.SampleGroup_CN = SampleGroup.SampleGroup_CN 
-                        WHERE SampleGroup.SampleGroup_CN = {1};",
-                            user, sgVM.SampleGroup_CN);
+        //private void SaveTallyBySpecies(TallySetupSampleGroup sgVM)
+        //{
+        //    //this.Database.BeginTransaction();
+        //    try
+        //    {
+        //        if (sgVM.IsTallyModeLocked)
+        //        {
+        //            //remove any preexisting tally by sg entries
+        //            string command = "DELETE FROM CountTree WHERE SampleGroup_CN = ? AND ifnull(TreeDefaultValue_CN, 0) = 0;";
+        //            this.Database.Execute(command, sgVM.SampleGroup_CN);
 
+        //            string user = this.Database.User;
+        //            String makeCountsCommand = String.Format(@"INSERT  OR IGNORE INTO CountTree (CuttingUnit_CN, SampleGroup_CN, TreeDefaultValue_CN, CreatedBy)
+        //                Select CuttingUnitStratum.CuttingUnit_CN, SampleGroup.SampleGroup_CN, SampleGroupTreeDefaultValue.TreeDefaultValue_CN, '{0}' AS CreatedBy
+        //                From SampleGroup
+        //                INNER JOIN CuttingUnitStratum
+        //                ON SampleGroup.Stratum_CN = CuttingUnitStratum.Stratum_CN
+        //                INNER JOIN SampleGroupTreeDefaultValue
+        //                ON SampleGroupTreeDefaultValue.SampleGroup_CN = SampleGroup.SampleGroup_CN
+        //                WHERE SampleGroup.SampleGroup_CN = {1};",
+        //                    user, sgVM.SampleGroup_CN);
 
+        //            this.Database.Execute(makeCountsCommand);
+        //        }
+        //        foreach (KeyValuePair<TreeDefaultValueDO, TallyVM> pair in sgVM.Tallies)
+        //        {
+        //            TallyVM tally = this.Database.From<TallyVM>()
+        //                .Where("Description = ? AND HotKey = ?")
+        //                .Query(pair.Value.Description, pair.Value.Hotkey)
+        //                .FirstOrDefault();
 
-                    this.Database.Execute(makeCountsCommand);
-                }
-                foreach (KeyValuePair<TreeDefaultValueDO, TallyVM> pair in sgVM.Tallies)
-                {
-                    TallyVM tally = this.Database.From<TallyVM>()
-                        .Where("Description = ? AND HotKey = ?")
-                        .Query(pair.Value.Description, pair.Value.Hotkey)
-                        .FirstOrDefault();
+        //            if (tally == null)
+        //            {
+        //                tally = new TallyVM(this.Database) { Description = pair.Value.Description, Hotkey = pair.Value.Hotkey };
+        //                //tally = pair.Value;
+        //                //tally.DAL = Controller.Database;
+        //                tally.Save();
+        //            }
 
-                    if (tally == null)
-                    {
-                        tally = new TallyVM(this.Database) { Description = pair.Value.Description, Hotkey = pair.Value.Hotkey };
-                        //tally = pair.Value;
-                        //tally.DAL = Controller.Database;
-                        tally.Save();
-                    }
+        //            string setTallyCommand = String.Format("UPDATE CountTree Set Tally_CN = {0} WHERE SampleGroup_CN = {1} AND TreeDefaultValue_CN = {2}",
+        //                tally.Tally_CN, sgVM.SampleGroup_CN, pair.Key.TreeDefaultValue_CN);
 
-                    string setTallyCommand = String.Format("UPDATE CountTree Set Tally_CN = {0} WHERE SampleGroup_CN = {1} AND TreeDefaultValue_CN = {2}",
-                        tally.Tally_CN, sgVM.SampleGroup_CN, pair.Key.TreeDefaultValue_CN);
+        //            this.Database.Execute(setTallyCommand);
+        //        }
 
-                    this.Database.Execute(setTallyCommand);
-                }
-
-                //this.Database.EndTransaction();
-            }
-            catch(Exception)
-            {
-                //this.Database.CancelTransaction();
-                throw;
-            }
-
-        }
-
-
+        //        //this.Database.EndTransaction();
+        //    }
+        //    catch (Exception)
+        //    {
+        //        //this.Database.CancelTransaction();
+        //        throw;
+        //    }
+        //}
     }
 }

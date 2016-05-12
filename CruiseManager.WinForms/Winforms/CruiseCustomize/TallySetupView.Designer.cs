@@ -138,7 +138,7 @@
             // 
             // _BS_strata
             // 
-            this._BS_strata.DataSource = typeof(CruiseManager.Core.CruiseCustomize.TallySetupStratum);
+            this._BS_strata.DataSource = typeof(CruiseManager.Core.CruiseCustomize.TallySetupStratum_Base);
             this._BS_strata.CurrentChanged += new System.EventHandler(this._BS_strata_CurrentChanged);
             // 
             // label21

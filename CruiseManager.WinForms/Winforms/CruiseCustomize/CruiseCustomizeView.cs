@@ -20,7 +20,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
     {
         private TabPage _logMatrixTabPage;
         
-        private TallySetupStratum _currentTallySetupStratum;
+        private TallySetupStratum_Base _currentTallySetupStratum;
         private TallySetupSampleGroup _currentSG;
         private DataGridViewComboBoxColumn fieldDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn minDataGridViewTextBoxColumn;
@@ -164,7 +164,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
                 _currentTallySetupStratum.Hotkey = _stratumHKCB.Text;
                 _currentTallySetupStratum.Save();
             }
-            _currentTallySetupStratum = _strataCB.SelectedValue as TallySetupStratum;
+            _currentTallySetupStratum = _strataCB.SelectedValue as TallySetupStratum_Base;
 
             
             if(_currentTallySetupStratum == null) { return; }

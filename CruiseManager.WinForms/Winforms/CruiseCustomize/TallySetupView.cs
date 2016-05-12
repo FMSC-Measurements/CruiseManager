@@ -8,7 +8,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
     public partial class TallySetupView : CruiseManager.WinForms.UserControlView, ITallySetupView
     {
         private BindingList<String> _stratumHotkeys = new BindingList<string>();
-        private TallySetupStratum _currentStratum;
+        private TallySetupStratum_Base _currentStratum;
         private bool _currentStratumChanging = false;
 
         public new TallySetupPresenter ViewPresenter
@@ -53,7 +53,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             _currentStratumChanging = true;
             try
             {
-                _currentStratum = _BS_strata.Current as TallySetupStratum;
+                _currentStratum = _BS_strata.Current as TallySetupStratum_Base;
 
                 if (_currentStratum != null)
                 {
@@ -103,12 +103,13 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
         private string[] _tallyEditPanel_GetHotKeys(string curHotKey)
         {
-            _currentStratum = _BS_strata.Current as TallySetupStratum;
+            var currentStratum = _BS_strata.Current as TallySetupStratum;
 
             if (_currentStratum != null)
             {
-                return this.ViewPresenter.GetAvalibleTallyHotKeys(_currentStratum, curHotKey);
+                return this.ViewPresenter.GetAvalibleTallyHotKeys(currentStratum, curHotKey);
             }
+
             return new string[] { };
         }
 

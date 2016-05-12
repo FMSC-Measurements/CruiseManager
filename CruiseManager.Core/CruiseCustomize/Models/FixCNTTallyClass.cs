@@ -10,6 +10,7 @@ namespace CruiseManager.Core.CruiseCustomize
     [EntitySource(SourceName = "FixCNTTallyClass")]
     public class FixCNTTallyClass : DataObject_Base
     {
+        #region Persisted Members
 
         [Field(Name = "FieldName")]
         public FixCNTTallyField Field { get; set; }
@@ -17,7 +18,11 @@ namespace CruiseManager.Core.CruiseCustomize
         [Field(Name = "Stratum_CN")]
         public long? Stratum_CN { get; set; }
 
-        public TallySetupStratum Stratum { get; set; }
+        #endregion Persisted Members
+
+        public string Errors { get; set; }
+
+        public TallySetupStratum_Base Stratum { get; set; }
 
         private IList<FixCNTTallyPopulation> _tallyPopulations;
 
@@ -62,10 +67,8 @@ namespace CruiseManager.Core.CruiseCustomize
                 {
                     var newPop = new FixCNTTallyPopulation()
                     {
-                        SampleGroup_CN = sg.SampleGroup_CN
-                        ,
-                        TreeDefaultValue_CN = tdv.TreeDefaultValue_CN
-                        ,
+                        SampleGroup_CN = sg.SampleGroup_CN ,
+                        TreeDefaultValue_CN = tdv.TreeDefaultValue_CN ,
                         TallyClass = this
                     };
 
@@ -73,6 +76,20 @@ namespace CruiseManager.Core.CruiseCustomize
                 }
             }
             return list;
+        }
+
+        public bool Validate()
+        {
+            if (Field == FixCNTTallyField.Unknown)
+            {
+                Errors = "Field Not Set";
+                return false;
+            }
+            else
+            {
+                Errors = string.Empty;
+                return true;
+            }
         }
     }
 }
