@@ -49,8 +49,8 @@
             this._sampleGroup_PNL = new System.Windows.Forms.Panel();
             this._systematicOptCB = new System.Windows.Forms.CheckBox();
             this._sampleGroupCB = new System.Windows.Forms.ComboBox();
-            this.label10 = new System.Windows.Forms.Label();
             this._BS_sampleGroups = new System.Windows.Forms.BindingSource(this.components);
+            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this._BS_CurTally)).BeginInit();
             this._GB_topLevelContainer.SuspendLayout();
             this._GB_tallyFields.SuspendLayout();
@@ -262,6 +262,7 @@
             // _systematicOptCB
             // 
             this._systematicOptCB.AutoSize = true;
+            this._systematicOptCB.DataBindings.Add(new System.Windows.Forms.Binding("Checked", this._BS_sampleGroups, "UseSystematicSampling", true));
             this._systematicOptCB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this._systematicOptCB.Location = new System.Drawing.Point(214, 7);
             this._systematicOptCB.Name = "_systematicOptCB";
@@ -272,12 +273,18 @@
             // 
             // _sampleGroupCB
             // 
+            this._sampleGroupCB.DataSource = this._BS_sampleGroups;
             this._sampleGroupCB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this._sampleGroupCB.FormattingEnabled = true;
             this._sampleGroupCB.Location = new System.Drawing.Point(83, 3);
             this._sampleGroupCB.Name = "_sampleGroupCB";
             this._sampleGroupCB.Size = new System.Drawing.Size(121, 21);
             this._sampleGroupCB.TabIndex = 11;
+            this._sampleGroupCB.SelectedValueChanged += new System.EventHandler(this._BS_sampleGroups_CurrentChanged);
+            // 
+            // _BS_sampleGroups
+            // 
+            this._BS_sampleGroups.DataSource = typeof(CruiseManager.Core.CruiseCustomize.TallySetupSampleGroup);
             // 
             // label10
             // 
@@ -287,10 +294,6 @@
             this.label10.Size = new System.Drawing.Size(80, 13);
             this.label10.TabIndex = 10;
             this.label10.Text = "Sample Group";
-            // 
-            // _BS_sampleGroups
-            // 
-            this._BS_sampleGroups.DataSource = typeof(CruiseManager.Core.CruiseCustomize.TallySetupSampleGroup);
             // 
             // TallyEditPanel
             // 

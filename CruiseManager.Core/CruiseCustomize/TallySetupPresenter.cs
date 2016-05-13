@@ -46,21 +46,28 @@ namespace CruiseManager.Core.CruiseCustomize
             {
                 TallySetupStrata = new List<TallySetupStratum_Base>();
 
-                var standardStata = Database.From<TallySetupStratum_Base>()
-                    .Where("Method != " + CruiseDAL.Schema.CruiseMethods.FIXCNT)
+                var standardStata = Database.From<TallySetupStratum>()
+                    .Where("Method != '" + CruiseDAL.Schema.CruiseMethods.FIXCNT + "'")
                     .Query();
 
                 var fixCNTStrata = Database.From<FixCNTTallySetupStratum>()
-                    .Where("Method = " + CruiseDAL.Schema.CruiseMethods.FIXCNT)
+                    .Where("Method = '" + CruiseDAL.Schema.CruiseMethods.FIXCNT + "'")
                     .Query();
 
                 
 
-                foreach (var stratum in standardStata.Union(fixCNTStrata))
+                foreach (var stratum in standardStata)
                 {
                     stratum.Initialize();
                     TallySetupStrata.Add(stratum);
                 }
+
+                foreach (var stratum in fixCNTStrata)
+                {
+                    stratum.Initialize();
+                    TallySetupStrata.Add(stratum);
+                }
+
                 _isInitialized = true;
             }
             catch (Exception ex)

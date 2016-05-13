@@ -98,6 +98,7 @@ namespace CruiseManager.Core.CruiseCustomize
                 yield return Max;
             }
 
+            opt = opt - 0.1;
             if (IntervalSize > 0)
             {
                 while (true)

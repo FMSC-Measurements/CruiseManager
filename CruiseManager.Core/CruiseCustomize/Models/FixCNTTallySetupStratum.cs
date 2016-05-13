@@ -4,7 +4,6 @@ using System.Text;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    [EntitySource(SourceName = "Stratum")]
     public class FixCNTTallySetupStratum : TallySetupStratum_Base
     {
         FixCNTTallyClass _tallyClass;

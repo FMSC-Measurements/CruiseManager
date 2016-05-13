@@ -1,26 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using CruiseDAL.DataObjects;
+﻿using CruiseDAL.DataObjects;
 using CruiseManager.Core.CruiseCustomize;
+using CruiseManager.Core.CruiseCustomize.ViewInterfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.CruiseCustomize
 {
-    public partial class LogMatrixSettingsPage : UserControl
+    public partial class LogMatrixSettingsPage : CruiseManager.WinForms.UserControlView, ILogMatrixView
     {
         private CheckBox[] grades;
         private bool _currentLogMatrixChanging = false;
 
-        public CustomizeCruisePresenter Presenter { get; set; }
-
-        public LogMatrixSettingsPage(CustomizeCruisePresenter presenter)
+        public new LogMatrixPresenter ViewPresenter
         {
-            this.Presenter = presenter;
+            get { return ((LogMatrixPresenter)base.ViewPresenter); }
+            set { base.ViewPresenter = value; }
+        }
+
+        public LogMatrixSettingsPage(LogMatrixPresenter presenter)
+        {
+            this.ViewPresenter = presenter;
             InitializeComponent();
 
             //put all the grade checkBoxes in to a nice array
@@ -60,8 +61,11 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
         public void EndEdit()
         {
+        }
 
-
+        public void UpdateLogMatrix()
+        {
+            _BS_LogMatrix.DataSource = (IList<LogMatrixDO>)ViewPresenter.LogMatrix ?? new LogMatrixDO[0];
         }
 
         private void UpdateLogGradeCode()
@@ -84,6 +88,18 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
             lm.GradeDescription = string.Join(" " + GradeCodeSeperator + " ",
                 list.ToArray());
+        }
+
+        private void UpdateSEDLimmit()
+        {
+            LogMatrixDO lm = _BS_LogMatrix.Current as LogMatrixDO;
+            if (lm == null) { return; }
+
+            lm.SEDlimit = string.Format("{0} {1} {2} {3}",
+                this._descriptor1.Text,
+                (lm.SEDminimum > 0) ? lm.SEDminimum.ToString() : string.Empty,
+                this._descriptor2.Text,
+                (lm.SEDmaximum > 0) ? lm.SEDmaximum.ToString() : string.Empty);
         }
 
         private void OnCurrentLogMatrixChanged(LogMatrixDO lm)
@@ -256,6 +272,8 @@ namespace CruiseManager.WinForms.CruiseCustomize
             }
         }
 
+        #region Event Handlers
+
         private void grade_CheckedChanged(object sender, EventArgs e)
         {
             if (_currentLogMatrixChanging == true) { return; }
@@ -281,7 +299,6 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
         private void _addLogMatrixBTN_Click(object sender, EventArgs e)
         {
-
             this._BS_LogMatrix.Add(new LogMatrixDO());
         }
 
@@ -295,7 +312,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
         private void _clearLogMatrixBTN_Click(object sender, EventArgs e)
         {
-            foreach (LogMatrixDO lm in Presenter.LogMatrix)
+            foreach (LogMatrixDO lm in ViewPresenter.LogMatrix)
             {
                 if (lm.IsPersisted)
                 {
@@ -317,20 +334,6 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this.OnCurrentLogMatrixChanged(lm);
         }
 
-        private void UpdateSEDLimmit()
-        {
-            LogMatrixDO lm = _BS_LogMatrix.Current as LogMatrixDO;
-            if (lm == null) { return; }
-
-            lm.SEDlimit = string.Format("{0} {1} {2} {3}",
-                this._descriptor1.Text,
-                (lm.SEDminimum > 0) ? lm.SEDminimum.ToString() : string.Empty,
-                this._descriptor2.Text,
-                (lm.SEDmaximum > 0) ? lm.SEDmaximum.ToString() : string.Empty);
-
-        }
-
-
         private void sedLimmitSettingsChanged(object sender, EventArgs e)
         {
             UpdateSEDLimmit();
@@ -351,8 +354,6 @@ namespace CruiseManager.WinForms.CruiseCustomize
             }
         }
 
+        #endregion Event Handlers
     }
-
-
-    
 }

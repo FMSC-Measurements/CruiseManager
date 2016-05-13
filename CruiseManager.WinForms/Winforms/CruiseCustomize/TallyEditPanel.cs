@@ -1,6 +1,7 @@
 ﻿using CruiseDAL.DataObjects;
 using CruiseManager.Core.Constants;
 using CruiseManager.Core.CruiseCustomize;
+using CruiseManager.Core.CruiseCustomize.ViewInterfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,7 +19,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
     //public delegate TallyDO AddNewTallyEventHandler();
 
-    public partial class TallyEditPanel : UserControl
+    public partial class TallyEditPanel : UserControl, ITallyEditPanel
     {
         private static readonly TreeDefaultValueDO[] EMPTY_SPECIES_LIST = new TreeDefaultValueDO[0];
         private bool _changingSampleGroup = false;
@@ -33,6 +34,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this._behaviorCB.Items.AddRange(Strings.INDICATOR_TYPES);
         }
 
+        [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Func<string, string[]> GetHotKeys { get; set; }
 
@@ -100,6 +102,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
         private TallySetupSampleGroup _currentSampleGroup;
 
+        [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public TallySetupSampleGroup CurrentSampleGroup
         {
@@ -115,8 +118,26 @@ namespace CruiseManager.WinForms.CruiseCustomize
             }
         }
 
+        TallySetupStratum _stratum;
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public TallySetupStratum_Base Stratum
+        {
+            get { return _stratum; }
+            set
+            {
+                _stratum = value as TallySetupStratum;
+                OnStratumChanged();
+            }
+        }
 
-        public IList<TallySetupSampleGroup> SampleGroups
+        protected void OnStratumChanged()
+        {
+            var str = Stratum as TallySetupStratum;
+            SampleGroups = str?.SampleGroups;
+        }
+
+        protected IList<TallySetupSampleGroup> SampleGroups
         {
             get { return _BS_sampleGroups.DataSource as IList<TallySetupSampleGroup>; }
             set { _BS_sampleGroups.DataSource = value ?? new TallySetupSampleGroup[0]; }
@@ -139,7 +160,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             }
         }
 
-        internal void EndEdits()
+        public void EndEdits()
         {
             this._BS_CurTally.EndEdit();
         }

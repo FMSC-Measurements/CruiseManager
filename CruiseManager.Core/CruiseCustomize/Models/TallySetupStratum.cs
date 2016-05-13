@@ -45,7 +45,7 @@ namespace CruiseManager.Core.CruiseCustomize
                 {
                     if (sg.TallyMethod == TallyMode.Unknown || (sg.TallyMethod & TallyMode.None) == TallyMode.None)
                     {
-                        errorBuilder.AppendFormat("Sample Group {0} in Stratum {1} needs tally configuration\r\n", sg.Code, st.Code);
+                        errorBuilder.AppendFormat("Sample Group {0} in Stratum {1} needs tally configuration\r\n", sg.Code, Code);
                         isValid = false;
                     }
                 }

@@ -203,12 +203,6 @@
     <Compile Include="WinForms\Components\MergeInfoView.Designer.cs">
       <DependentUpon>MergeInfoView.cs</DependentUpon>
     </Compile>
-    <Compile Include="WinForms\CruiseCustomize\CruiseCustomizeView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="WinForms\CruiseCustomize\CruiseCustomizeView.Designer.cs">
-      <DependentUpon>CruiseCustomizeView.cs</DependentUpon>
-    </Compile>
     <Compile Include="WinForms\CruiseCustomize\FieldSetupView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -391,10 +385,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="WinForms\Components\MergeInfoView.resx">
       <DependentUpon>MergeInfoView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="WinForms\CruiseCustomize\CruiseCustomizeView.resx">
-      <DependentUpon>CruiseCustomizeView.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="WinForms\CruiseCustomize\FieldSetupView.resx">
       <DependentUpon>FieldSetupView.cs</DependentUpon>

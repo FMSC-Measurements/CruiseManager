@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CruiseManager.Core.CruiseCustomize;
+using CruiseManager.Core.CruiseCustomize.ViewInterfaces;
+using System;
 using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using CruiseManager.Core.CruiseCustomize;
 
 namespace CruiseManager.WinForms.CruiseCustomize
 {
-    public partial class FixCNTTallyEditPanel : UserControl
+    public partial class FixCNTTallyEditPanel : UserControl, ITallyEditPanel
     {
         public FixCNTTallyEditPanel()
         {
@@ -19,12 +14,33 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
             var tallFieldValues = Enum.GetNames(typeof(FixCNTTallyField));
             _tallyField_CmbB.Items.AddRange(tallFieldValues);
+        }
 
+        FixCNTTallySetupStratum _stratum;
+
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public TallySetupStratum_Base Stratum
+        {
+            get { return _stratum; }
+            set
+            {
+                _stratum = value as FixCNTTallySetupStratum;
+                OnStratumChanged();
+            }
+        }
+
+        protected void OnStratumChanged()
+        {
+            var str = _stratum as FixCNTTallySetupStratum;
+            TallyClass = str?.TallyClass;
         }
 
         FixCNTTallyClass _tallyClass;
+
+        [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public FixCNTTallyClass TallyClass
+        protected FixCNTTallyClass TallyClass
         {
             get { return _tallyClass; }
             set
@@ -35,6 +51,11 @@ namespace CruiseManager.WinForms.CruiseCustomize
             }
         }
 
+        public void EndEdits()
+        {
+#warning TODO 
+        }
+
         protected void OnTallyClassChanging()
         {
             _lowerPannel.Controls.Clear();
@@ -42,19 +63,19 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
         protected void OnTallyClassChanged()
         {
-            if(TallyClass != null)
+            if (TallyClass != null)
             {
                 _tallyField_CmbB.SelectedItem = TallyClass.Field.ToString();
 
                 _lowerPannel.SuspendLayout();
-                foreach(var tallyPop in TallyClass.TallyPopulations)
+                foreach (var tallyPop in TallyClass.TallyPopulations)
                 {
                     var newPopRow = new FixCNTTallyPopulationRow()
                     {
                         TallyPopulation = tallyPop
                     };
 
-                    _lowerPannel.Controls.Add(newPopRow);                    
+                    _lowerPannel.Controls.Add(newPopRow);
                 }
                 _lowerPannel.ResumeLayout(true);
             }

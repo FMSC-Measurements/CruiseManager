@@ -260,7 +260,7 @@ namespace CruiseManager.Core.CruiseCustomize
 
                 if (tally == null)
                 {
-                    tally = new TallyVM() { Description = tdv.Species + ((tdv.LiveDead == "D") ? "/D" : "") };
+                    tally = new TallyVM() { Description = Code + "/" + tdv.Species + ((tdv.LiveDead == "D") ? "/D" : "") };
                 }
 
                 tally.Validate();
@@ -272,7 +272,7 @@ namespace CruiseManager.Core.CruiseCustomize
                 "WHERE CountTree.Tally_CN = Tally.Tally_CN " +
                 "AND CountTree.SampleGroup_CN = ? " +
                 "AND CountTree.TreeDefaultValue_CN = ?;", this.SampleGroup_CN, tdv.TreeDefaultValue_CN)
-                ?? new TallyPopulation() { Description = tdv.Species + ((tdv.LiveDead == "D") ? "/D" : "") };
+                ?? new TallyPopulation() { Description = Code + "/" + tdv.Species + ((tdv.LiveDead == "D") ? "/D" : "") };
 
                 this.TallyPopulations.Add(tdv.Species, tallyPopulation);
             }
@@ -303,7 +303,7 @@ namespace CruiseManager.Core.CruiseCustomize
             }
             catch (Exception e)
             {
-                errorBuilder.AppendFormat("{2}: failed to setup tallies for SampleGroup({0} ) in Stratum ({1})", sgVM.Code, sgVM.Stratum.Code, e.GetType().Name);
+                errorBuilder.AppendFormat("{2}: failed to setup tallies for SampleGroup({0} ) in Stratum ({1})", Code, Stratum.Code, e.GetType().Name);
                 return false;
             }
         }
