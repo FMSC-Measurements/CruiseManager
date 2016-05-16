@@ -12,8 +12,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
         {
             InitializeComponent();
 
-            var tallFieldValues = Enum.GetNames(typeof(FixCNTTallyField));
-            _tallyField_CmbB.Items.AddRange(tallFieldValues);
+            _tallyField_CmbB.DataSource = FixCNTTallyClass.FIXCNT_FIELD_NAMES;
         }
 
         FixCNTTallySetupStratum _stratum;
@@ -53,21 +52,23 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
         public void EndEdits()
         {
-#warning TODO 
+            _BS_TallyClass.EndEdit();
         }
 
         protected void OnTallyClassChanging()
         {
-            _lowerPannel.Controls.Clear();
+            _lowerPanel.Controls.Clear();
         }
 
         protected void OnTallyClassChanged()
         {
+            _BS_TallyClass.DataSource = TallyClass;
+
             if (TallyClass != null)
             {
-                _tallyField_CmbB.SelectedItem = TallyClass.Field.ToString();
+                //_tallyField_CmbB.SelectedItem = TallyClass.Field.ToString();
 
-                _lowerPannel.SuspendLayout();
+                _lowerPanel.SuspendLayout();
                 foreach (var tallyPop in TallyClass.TallyPopulations)
                 {
                     var newPopRow = new FixCNTTallyPopulationRow()
@@ -75,9 +76,9 @@ namespace CruiseManager.WinForms.CruiseCustomize
                         TallyPopulation = tallyPop
                     };
 
-                    _lowerPannel.Controls.Add(newPopRow);
+                    _lowerPanel.Controls.Add(newPopRow);
                 }
-                _lowerPannel.ResumeLayout(true);
+                _lowerPanel.ResumeLayout(true);
             }
         }
     }

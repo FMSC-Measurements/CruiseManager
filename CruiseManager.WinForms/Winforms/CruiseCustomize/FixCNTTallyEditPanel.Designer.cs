@@ -28,18 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.Panel _upperPannel;
             System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
             System.Windows.Forms.Label _tallyField_LBL;
             System.Windows.Forms.Label _title_LBL;
             this._tallyField_CmbB = new System.Windows.Forms.ComboBox();
-            this._lowerPannel = new System.Windows.Forms.Panel();
+            this._BS_TallyClass = new System.Windows.Forms.BindingSource(this.components);
+            this._lowerPanel = new System.Windows.Forms.FlowLayoutPanel();
             _upperPannel = new System.Windows.Forms.Panel();
             flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             _tallyField_LBL = new System.Windows.Forms.Label();
             _title_LBL = new System.Windows.Forms.Label();
             _upperPannel.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._BS_TallyClass)).BeginInit();
             this.SuspendLayout();
             // 
             // _upperPannel
@@ -78,12 +81,17 @@
             // 
             // _tallyField_CmbB
             // 
+            this._tallyField_CmbB.DataBindings.Add(new System.Windows.Forms.Binding("SelectedItem", this._BS_TallyClass, "Field", true));
             this._tallyField_CmbB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this._tallyField_CmbB.FormattingEnabled = true;
             this._tallyField_CmbB.Location = new System.Drawing.Point(63, 3);
             this._tallyField_CmbB.Name = "_tallyField_CmbB";
             this._tallyField_CmbB.Size = new System.Drawing.Size(121, 21);
             this._tallyField_CmbB.TabIndex = 2;
+            // 
+            // _BS_TallyClass
+            // 
+            this._BS_TallyClass.DataSource = typeof(CruiseManager.Core.CruiseCustomize.FixCNTTallyClass);
             // 
             // _title_LBL
             // 
@@ -96,20 +104,20 @@
             _title_LBL.TabIndex = 0;
             _title_LBL.Text = "FixCNT Tally Setup";
             // 
-            // _lowerPannel
+            // _lowerPanel
             // 
-            this._lowerPannel.AutoScroll = true;
-            this._lowerPannel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._lowerPannel.Location = new System.Drawing.Point(0, 71);
-            this._lowerPannel.Name = "_lowerPannel";
-            this._lowerPannel.Size = new System.Drawing.Size(313, 216);
-            this._lowerPannel.TabIndex = 1;
+            this._lowerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._lowerPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this._lowerPanel.Location = new System.Drawing.Point(0, 71);
+            this._lowerPanel.Name = "_lowerPanel";
+            this._lowerPanel.Size = new System.Drawing.Size(313, 216);
+            this._lowerPanel.TabIndex = 1;
             // 
             // FixCNTTallyEditPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this._lowerPannel);
+            this.Controls.Add(this._lowerPanel);
             this.Controls.Add(_upperPannel);
             this.Name = "FixCNTTallyEditPanel";
             this.Size = new System.Drawing.Size(313, 287);
@@ -117,12 +125,14 @@
             _upperPannel.PerformLayout();
             flowLayoutPanel1.ResumeLayout(false);
             flowLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._BS_TallyClass)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
         private System.Windows.Forms.ComboBox _tallyField_CmbB;
-        private System.Windows.Forms.Panel _lowerPannel;
+        private System.Windows.Forms.BindingSource _BS_TallyClass;
+        private System.Windows.Forms.FlowLayoutPanel _lowerPanel;
     }
 }

@@ -3,6 +3,7 @@ using FMSC.ORM.EntityModel;
 using FMSC.ORM.EntityModel.Attributes;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace CruiseManager.Core.CruiseCustomize
@@ -72,6 +73,8 @@ namespace CruiseManager.Core.CruiseCustomize
 
         #endregion Persisted Members
 
+        public abstract bool HasChangesToSave { get; }
+
         public List<TallySetupSampleGroup> SampleGroups { get; set; }
 
         public string Errors { get; set; }
@@ -81,6 +84,8 @@ namespace CruiseManager.Core.CruiseCustomize
         public abstract void Initialize();
 
         public abstract bool Validate();
+
+        public abstract bool SaveTallySetup(ref StringBuilder errorBuilder);
 
         public override string ToString()
         {

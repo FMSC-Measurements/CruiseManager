@@ -16,6 +16,15 @@ namespace CruiseManager.Core.CruiseCustomize
             get { return CruiseMethods.MANDITORY_TALLY_METHODS.Contains(Method); }
         }
 
+        public override bool HasChangesToSave
+        {
+            get
+            {
+                return IsChanged 
+                    || SampleGroups.Any(x => x.HasTallyEdits);
+            }
+        }
+
         //called when the view is initialized, for each stratum
         //initialized a list containing information about sampleGroups
         public override void Initialize()
@@ -104,6 +113,25 @@ namespace CruiseManager.Core.CruiseCustomize
                             //SUCCESS add hot key to list of in use hot keys
                             usedHotKeys.Add(hk);
                         }
+                    }
+                }
+            }
+
+            return success;
+        }
+
+        public override bool SaveTallySetup(ref StringBuilder errorBuilder)
+        {
+            bool success = true;
+
+            if (SampleGroups != null)
+            {
+                foreach (TallySetupSampleGroup sgVM in SampleGroups)
+                {
+                    sgVM.Save();
+                    if (sgVM.HasTallyEdits == true)
+                    {
+                        success = sgVM.SaveTallies(ref errorBuilder) && success;
                     }
                 }
             }

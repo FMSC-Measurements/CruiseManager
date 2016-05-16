@@ -28,8 +28,7 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             get
             {
-                return TallySetupStrata.Any(x => x.IsChanged)
-                    || TallySetupStrata.Any(x => x.SampleGroups.Any(y => y.HasTallyEdits));
+                return TallySetupStrata.Any(x => x.HasChangesToSave);
             }
         }
 
@@ -197,17 +196,7 @@ END;"
 
                 foreach (TallySetupStratum_Base stratum in TallySetupStrata)
                 {
-                    if (stratum.SampleGroups != null)
-                    {
-                        foreach (TallySetupSampleGroup sgVM in stratum.SampleGroups)
-                        {
-                            sgVM.Save();
-                            if (sgVM.HasTallyEdits == true)
-                            {
-                                success = sgVM.SaveTallies(ref errorBuilder) && success;
-                            }
-                        }
-                    }
+                    stratum.SaveTallySetup(ref errorBuilder);
                 }
 
                 this.Database.CommitTransaction();

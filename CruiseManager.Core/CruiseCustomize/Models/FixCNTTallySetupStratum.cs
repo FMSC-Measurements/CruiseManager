@@ -1,5 +1,4 @@
-﻿using FMSC.ORM.EntityModel.Attributes;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 
 namespace CruiseManager.Core.CruiseCustomize
@@ -18,11 +17,25 @@ namespace CruiseManager.Core.CruiseCustomize
                         .Where("Stratum_CN = ?")
                         .Query(Stratum_CN)
                         .FirstOrDefault()
-                        ?? new FixCNTTallyClass();
+                        ?? new FixCNTTallyClass()
+                        {
+                            Stratum_CN = Stratum_CN,
+                            DAL = this.DAL
+                        };
 
                     _tallyClass.Stratum = this;
                 }
                 return _tallyClass;
+            }
+        }
+
+        public override bool HasChangesToSave
+        {
+            get
+            {
+                return IsChanged 
+                    || !IsPersisted
+                    || TallyClass.HasChangesToSave;
             }
         }
 
@@ -38,6 +51,20 @@ namespace CruiseManager.Core.CruiseCustomize
             {
                 sg.Stratum = this;
             }
+        }
+
+        public override bool SaveTallySetup(ref StringBuilder errorBuilder)
+        {
+            bool success = true;
+
+            TallyClass.Save();
+
+            foreach (var pop in TallyClass.TallyPopulations)
+            {
+                pop.Save();
+            }
+
+            return success;
         }
 
         public override bool Validate()

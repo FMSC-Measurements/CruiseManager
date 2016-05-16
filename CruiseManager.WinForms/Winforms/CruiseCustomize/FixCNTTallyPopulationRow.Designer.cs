@@ -38,11 +38,11 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
             this._inc_TB = new System.Windows.Forms.TextBox();
+            this._BS_tallyPop = new System.Windows.Forms.BindingSource(this.components);
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this._min_TB = new System.Windows.Forms.TextBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this._max_CmbB = new System.Windows.Forms.ComboBox();
-            this.bindingSource = new System.Windows.Forms.BindingSource(this.components);
             label1 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
             label3 = new System.Windows.Forms.Label();
@@ -50,9 +50,9 @@
             this.flowLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._BS_tallyPop)).BeginInit();
             this.flowLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -148,16 +148,20 @@
             this.flowLayoutPanel4.Location = new System.Drawing.Point(54, 0);
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
             this.flowLayoutPanel4.Size = new System.Drawing.Size(77, 45);
-            this.flowLayoutPanel4.TabIndex = 6;
+            this.flowLayoutPanel4.TabIndex = 0;
             // 
             // _inc_TB
             // 
-            this._inc_TB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bindingSource, "IntervalSize", true));
+            this._inc_TB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this._BS_tallyPop, "IntervalSize", true));
             this._inc_TB.Location = new System.Drawing.Point(30, 3);
             this._inc_TB.Name = "_inc_TB";
             this._inc_TB.Size = new System.Drawing.Size(44, 20);
-            this._inc_TB.TabIndex = 2;
+            this._inc_TB.TabIndex = 0;
             this._inc_TB.Text = "123.4";
+            // 
+            // _BS_tallyPop
+            // 
+            this._BS_tallyPop.DataSource = typeof(CruiseManager.Core.CruiseCustomize.FixCNTTallyPopulation);
             // 
             // flowLayoutPanel3
             // 
@@ -169,15 +173,15 @@
             this.flowLayoutPanel3.Location = new System.Drawing.Point(131, 0);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
             this.flowLayoutPanel3.Size = new System.Drawing.Size(79, 45);
-            this.flowLayoutPanel3.TabIndex = 5;
+            this.flowLayoutPanel3.TabIndex = 1;
             // 
             // _min_TB
             // 
-            this._min_TB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bindingSource, "Min", true));
+            this._min_TB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this._BS_tallyPop, "Min", true));
             this._min_TB.Location = new System.Drawing.Point(32, 3);
             this._min_TB.Name = "_min_TB";
             this._min_TB.Size = new System.Drawing.Size(44, 20);
-            this._min_TB.TabIndex = 1;
+            this._min_TB.TabIndex = 0;
             this._min_TB.Text = "123.4";
             // 
             // flowLayoutPanel2
@@ -190,22 +194,18 @@
             this.flowLayoutPanel2.Location = new System.Drawing.Point(210, 0);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(95, 45);
-            this.flowLayoutPanel2.TabIndex = 4;
+            this.flowLayoutPanel2.TabIndex = 2;
             // 
             // _max_CmbB
             // 
-            this._max_CmbB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bindingSource, "Max", true));
+            this._max_CmbB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this._BS_tallyPop, "Max", true));
             this._max_CmbB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this._max_CmbB.FormattingEnabled = true;
             this._max_CmbB.Location = new System.Drawing.Point(35, 3);
             this._max_CmbB.Name = "_max_CmbB";
             this._max_CmbB.Size = new System.Drawing.Size(57, 21);
-            this._max_CmbB.TabIndex = 1;
+            this._max_CmbB.TabIndex = 0;
             this._max_CmbB.DropDown += new System.EventHandler(this._max_CmbB_DropDown);
-            // 
-            // bindingSource
-            // 
-            this.bindingSource.DataSource = typeof(CruiseManager.Core.CruiseCustomize.FixCNTTallyPopulation);
             // 
             // FixCNTTallyPopulationRow
             // 
@@ -221,11 +221,11 @@
             this.panel1.PerformLayout();
             this.flowLayoutPanel4.ResumeLayout(false);
             this.flowLayoutPanel4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._BS_tallyPop)).EndInit();
             this.flowLayoutPanel3.ResumeLayout(false);
             this.flowLayoutPanel3.PerformLayout();
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -242,6 +242,6 @@
         private System.Windows.Forms.ComboBox _max_CmbB;
         private System.Windows.Forms.TextBox _inc_TB;
         private System.Windows.Forms.TextBox _min_TB;
-        private System.Windows.Forms.BindingSource bindingSource;
+        private System.Windows.Forms.BindingSource _BS_tallyPop;
     }
 }

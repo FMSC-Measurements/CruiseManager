@@ -28,6 +28,9 @@ namespace CruiseManager.Core.CruiseCustomize
         [Field(Name = "FixCNTTallyClass_CN")]
         public long? FixCNTTallyClass_CN { get; set; }
 
+        [PrimaryKeyField(Name = "FixCNTTallyPopulation_CN")]
+        public long? FixCNTTallyPopulation_CN { get; set; }
+
         [Field(Name = "IntervalSize")]
         public double IntervalSize
         {
@@ -67,6 +70,15 @@ namespace CruiseManager.Core.CruiseCustomize
         #endregion Persisted Members
 
         public string Errors { get; set; }
+
+        public bool HasChangesToSave
+        {
+            get
+            {
+                return IsChanged || !IsPersisted;
+            }
+        }
+
         public FixCNTTallyClass TallyClass { get; set; }
 
         TreeDefaultValueDO _treeDefaultValue;
@@ -120,7 +132,7 @@ namespace CruiseManager.Core.CruiseCustomize
                 isValid = false;
             }
             if (Max <= Min
-                || (Max - Min) < IntervalSize)
+                || ((Max + 0.1) - Min).LessThanEx(IntervalSize))
             {
                 errorBuilder.AppendLine("Min/Max Range Invalid");
                 isValid = false;

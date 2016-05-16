@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
+﻿using CruiseManager.Core.CruiseCustomize;
+using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using CruiseManager.Core.CruiseCustomize;
 
 namespace CruiseManager.WinForms.CruiseCustomize
 {
@@ -31,6 +25,11 @@ namespace CruiseManager.WinForms.CruiseCustomize
             }
         }
 
+        public void EndEdits()
+        {
+            _BS_tallyPop.EndEdit();
+        }
+
         protected void OnTallyPopulationChangeing()
         {
             _sp_LBL.Text = string.Empty;
@@ -41,7 +40,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             if (_tallyPopulation != null)
             {
                 _sp_LBL.Text = TallyPopulation.TreeDefaultValue.Species;
-                bindingSource.DataSource = _tallyPopulation;
+                _BS_tallyPop.DataSource = _tallyPopulation;
             }
             else
             {
