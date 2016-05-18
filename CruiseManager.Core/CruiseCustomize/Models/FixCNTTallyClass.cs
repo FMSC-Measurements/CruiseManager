@@ -98,9 +98,10 @@ namespace CruiseManager.Core.CruiseCustomize
                             DAL = this.DAL,
                             SampleGroup_CN = sg.SampleGroup_CN,
                             TreeDefaultValue_CN = tdv.TreeDefaultValue_CN,
-                            TallyClass = this
                         };
                     }
+
+                    pop.TallyClass = this;
 
                     list.Add(pop);
 
