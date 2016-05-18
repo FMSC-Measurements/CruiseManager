@@ -26,7 +26,12 @@ namespace CruiseManager.Core.CruiseCustomize
         public long? TreeDefaultValue_CN { get; set; }
 
         [Field(Name = "FixCNTTallyClass_CN")]
-        public long? FixCNTTallyClass_CN { get; set; }
+        public long? FixCNTTallyClass_CN
+        {
+
+            get { return TallyClass.FixCNTTallyClass_CN; }
+            set { }
+        }
 
         [PrimaryKeyField(Name = "FixCNTTallyPopulation_CN")]
         public long? FixCNTTallyPopulation_CN { get; set; }
