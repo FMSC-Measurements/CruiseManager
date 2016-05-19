@@ -1,7 +1,7 @@
 ﻿using CruiseManager.Core.CruiseCustomize;
 using CruiseManager.Core.CruiseCustomize.ViewInterfaces;
-using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.CruiseCustomize
@@ -53,6 +53,12 @@ namespace CruiseManager.WinForms.CruiseCustomize
         public void EndEdits()
         {
             _BS_TallyClass.EndEdit();
+
+            foreach (var tallyPopRow
+                in _lowerPanel.Controls.OfType<FixCNTTallyPopulationRow>())
+            {
+                tallyPopRow.EndEdits();
+            }
         }
 
         protected void OnTallyClassChanging()
