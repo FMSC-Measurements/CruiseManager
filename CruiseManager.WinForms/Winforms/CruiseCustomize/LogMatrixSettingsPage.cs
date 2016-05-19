@@ -21,7 +21,8 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
         public LogMatrixSettingsPage(LogMatrixPresenter presenter)
         {
-            this.ViewPresenter = presenter;
+            ViewPresenter = presenter;
+            ViewPresenter.View = this;
             InitializeComponent();
 
             //put all the grade checkBoxes in to a nice array
@@ -37,6 +38,11 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this.grades[7] = this.grade7;
             this.grades[8] = this.grade8;
             this.grades[9] = this.grade9;
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
         }
 
         private string GradeCodeSeperator
