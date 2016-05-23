@@ -1,9 +1,4 @@
 ﻿using CruiseManager.Core.CommandModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.CommandModel
@@ -20,7 +15,6 @@ namespace CruiseManager.WinForms.CommandModel
         {
             var newBinding = new ToolStripItemCommandBinding(command, tsItem);
             command.AddBinding(newBinding);
-
         }
     }
 }
