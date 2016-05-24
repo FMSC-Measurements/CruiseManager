@@ -201,13 +201,13 @@ namespace CruiseManager.WinForms.CruiseWizard
             LoadCruiseData();//read data from existing file
 
             //See if the file contains a template file record
-            GlobalsDO record = this._database.ReadSingleRow<GlobalsDO>("Globals", "WHERE Block = 'CSM' AND KEY = 'TemplatePath'");
+            string templatePath = _database.ReadGlobalValue("CSM", "TemplatePath");
 
-            if (record != null && !String.IsNullOrEmpty(record.Value))
+            if (!String.IsNullOrEmpty(templatePath))
             {
                 this._fileHasTemplate = true;
-                this._templateFile = new FileInfo(record.Value);
-                View.SetTemplatePathTextBox(record.Value, false);
+                this._templateFile = new FileInfo(templatePath);
+                View.SetTemplatePathTextBox(templatePath, false);
             }
 
             if (this.CuttingUnits.Count == 0)
@@ -217,8 +217,6 @@ namespace CruiseManager.WinForms.CruiseWizard
         }
 
         #endregion CTor
-
-
 
         //private static string GetTempPath()
         //{
@@ -544,7 +542,6 @@ namespace CruiseManager.WinForms.CruiseWizard
             string errorMsg;
             if (AreStrataValid(out errorMsg) == false)
             {
-                //MessageBox.Show("Some strata contain errors, please fix before continuing", "Warning", MessageBoxButtons.OK);
                 MessageBox.Show(errorMsg, "Warning", MessageBoxButtons.OK);
                 return;
             }
@@ -570,9 +567,7 @@ namespace CruiseManager.WinForms.CruiseWizard
 
         #endregion page navigation methods
 
-
-
-        #region validateion methods
+        #region validation methods
 
         protected bool AreCuttingUnitsValid(out string errorMsg)
         {
@@ -650,36 +645,13 @@ namespace CruiseManager.WinForms.CruiseWizard
                         errorSB.AppendLine(error);
                     }
                 }
-
-                //    sg.Validate();
-                //    if(sg.HasErrors())
-                //    {
-                //        allSgValid = false;
-                //        errorSB.AppendLine("Stratum = " + st.Code + " SG = " + sg.Code + sg.Error);
-                //    }
-                //    if (String.IsNullOrEmpty(sg.Code))
-                //    {
-                //        errorSB.AppendLine("Stratum = " + st.Code + " SG = " + sg.Code + " Code can't be empty");
-                //        allSgValid = false;
-                //    }
-                //    if (sg.TreeDefaultValues.Count == 0)
-                //    {
-                //        errorSB.AppendLine("Stratum = " + st.Code + " SG = " + sg.Code + " No Tree Tree Defaults Selected");
-                //    }
-                //    string tmp = string.Empty;
-                //    if(!sg.ValidatePProdOnTDVs(ref tmp))
-                //    {
-                //        errorSB.AppendLine(tmp);
-                //        allSgValid = false;
-                //    }
-                //}
             }
 
             errorMsg = (!allSgValid) ? errorSB.ToString() : null;
             return allSgValid;
         }
 
-        #endregion validateion methods
+        #endregion validation methods
 
         /// <summary>
         /// Start CopyTemplate thread
