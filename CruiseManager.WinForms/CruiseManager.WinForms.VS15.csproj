@@ -367,7 +367,6 @@
     <Compile Include="WinForms\CruiseWizard\CruiseWizardPresenter.cs" />
     <Compile Include="WinForms\IPage.cs" />
     <Compile Include="WinForms\IPagingView.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WinForms\UserControlView.cs">
       <SubType>UserControl</SubType>
