@@ -38,7 +38,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
                 ,new ViewNavigateCommand(this,
                 "Log Matrix",
                 typeof(Core.CruiseCustomize.ViewInterfaces.ILogMatrixView))
-                { ExceptionHandler = _exceptionHandler }
+                { ExceptionHandler = _exceptionHandler, Enabled = ApplicationController.InSupervisorMode }
             };
         }
 
