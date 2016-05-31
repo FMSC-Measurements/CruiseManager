@@ -89,7 +89,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             {
                 _stratumDiscriptionLBL.Text = string.Format("{0}: {1} - {2}", CurrentStratum.Code, CurrentStratum.Method, CurrentStratum.Description);
 
-                //grab the list of sample groups atatched to the selected stratum 
+                //grab the list of sample groups attached to the selected stratum 
                 IList<SampleGroupDO> sgList = CurrentStratum.SampleGroups;
                 if (sgList != null)
                 {
