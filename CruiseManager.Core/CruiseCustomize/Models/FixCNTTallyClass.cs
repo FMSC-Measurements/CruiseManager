@@ -13,7 +13,7 @@ namespace CruiseManager.Core.CruiseCustomize
     [EntitySource(SourceName = "FixCNTTallyClass")]
     public class FixCNTTallyClass : DataObject_Base
     {
-        public static readonly string[] FIXCNT_FIELD_NAMES = { "DBH", "TotalHeight" };
+        public static readonly string[] FIXCNT_FIELD_NAMES = { "DBH", "TotalHeight", "DRC"};
 
         #region Persisted Members
 
