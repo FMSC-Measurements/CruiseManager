@@ -1,58 +1,48 @@
-﻿using CruiseDAL;
-using CruiseManager.Core.App;
+﻿using CruiseManager.Core.App;
 using CruiseManager.Core.Constants;
 using CruiseManager.Utility;
 using CruiseManager.WinForms.Dashboard;
 using Ninject.Modules;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.App
 {
-    public class ApplicationController : ApplicationControllerBase 
+    public class ApplicationController : ApplicationControllerBase
     {
         private CruiseManager.Utility.COConverter _converter;
         private string _convertedFilePath;
 
-
         public ApplicationController(NinjectModule viewModule, NinjectModule coreModule)
-            :base(viewModule, coreModule)
+            : base(viewModule, coreModule)
         {
             Kernel.Bind<ApplicationControllerBase>().ToConstant<ApplicationController>(this);
 
             this.MainWindow = new FormCSMMain(this);
             this.WindowPresenter.ShowHomeLayout();
-
         }
 
         //public ApplicationControllerWinForms() : this(WindowPresenter.Instance, UserSettings.Instance, SetupService.Instance) { }
 
         //public ApplicationControllerWinForms(
-        //    WindowPresenter windowPresenter, 
-        //    ExceptionHandler exceptionHandler, 
-        //    IUserSettings userSettings, 
-        //    SetupService setupService, 
-        //    IApplicationState applicationState, 
-        //    PlatformHelper platformHelper) 
+        //    WindowPresenter windowPresenter,
+        //    ExceptionHandler exceptionHandler,
+        //    IUserSettings userSettings,
+        //    SetupService setupService,
+        //    IApplicationState applicationState,
+        //    PlatformHelper platformHelper)
         //    : base(windowPresenter, exceptionHandler, userSettings, setupService, applicationState, platformHelper)
         //{
-
         //}
 
         public override void Start()
         {
-            
             Application.Run((Form)MainWindow);
         }
 
-
         /// <summary>
-        /// opens file for use, handles various exceptions that can ocure whild opening file,
-        /// determins if a cruise file/template file/or legacy cruise file
+        /// opens file for use, handles various exceptions that can occur while opening file,
+        /// determines if a cruise file/template file/or legacy cruise file
         /// </summary>
         /// <param name="filePath"></param>
         public override void OpenFile(String filePath)
@@ -73,7 +63,6 @@ namespace CruiseManager.WinForms.App
         {
             if (_converter.EndConvert(result))
             {
-
                 base.InitializeDAL(_convertedFilePath);
                 this.AppState.AddRecentFile(_convertedFilePath);
                 this.WindowPresenter.ShowCruiseLandingLayout();
@@ -97,17 +86,16 @@ namespace CruiseManager.WinForms.App
             //    );
 
             /*side note about Trace Listeners:
-             * Tracing is a feature built into .net applications to allow 
-             * applications to make logs and can be configured using the app.config 
-             * file. 
+             * Tracing is a feature built into .net applications to allow
+             * applications to make logs and can be configured using the app.config
+             * file.
              */
 
             System.Diagnostics.Trace.TraceInformation("Application Started @{0}", DateTime.Now);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-
-            //read command line arguments 
+            //read command line arguments
             var args = Environment.GetCommandLineArgs();
             string dalPath = null;
             if (args.Length > 1)
@@ -121,12 +109,11 @@ namespace CruiseManager.WinForms.App
             AppDomain.CurrentDomain.UnhandledException += FMSC.Utility.ErrorHandling.ErrorHandlers.UnhandledException;
             Application.ThreadException += FMSC.Utility.ErrorHandling.ErrorHandlers.ThreadException;
 
-
             ApplicationControllerBase applicationController = new ApplicationController(
                 new ViewModule(),
                 new CruiseManagerWinformsModule());
 
-            if(dalPath != null)
+            if (dalPath != null)
             {
                 applicationController.OpenFile(dalPath);
             }

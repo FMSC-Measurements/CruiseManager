@@ -2,31 +2,24 @@
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
 using CruiseManager.Core.Constants;
+using CruiseManager.Core.EditTemplate;
 using CruiseManager.Core.Models;
-using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Utility;
 using CruiseManager.WinForms.CruiseWizard;
 using CruiseManager.WinForms.DataEditor;
 using CruiseManager.WinForms.TemplateEditor;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using CruiseManager.Core.EditTemplate;
-
 
 namespace CruiseManager.WinForms.App
 {
     public class WindowPresenterWinForms : WindowPresenter
     {
-
         public WindowPresenterWinForms(ApplicationControllerBase appController)
         {
             this.ApplicationController = appController;
         }
-
 
         public override string AskSaveAsLocation(string originalPath)
         {
@@ -71,7 +64,7 @@ namespace CruiseManager.WinForms.App
                     return dialog.FileName;
                     //String fileName = dialog.FileName;
                     //String directroy = System.IO.Path.GetDirectoryName(fileName);
-                    //this.ApplicationController.UserSettings.CruiseSaveLocation = directroy;                    
+                    //this.ApplicationController.UserSettings.CruiseSaveLocation = directroy;
                     //this.ApplicationController.OpenFile(dialog.FileName);
                 }
                 else
@@ -96,7 +89,6 @@ namespace CruiseManager.WinForms.App
                 {
                     string filePath = dialog.FileName;
                     string dir = System.IO.Path.GetDirectoryName(filePath);
-
 
                     ApplicationController.UserSettings.TemplateSaveLocation = dir;
 
@@ -144,7 +136,6 @@ namespace CruiseManager.WinForms.App
 
                     if (createSaleFolder)
                     {
-
                         dir += sale.ToString("\\[SaleNumber] [Name]\\", null);
                         if (!System.IO.Directory.Exists(dir))
                         {
@@ -166,7 +157,7 @@ namespace CruiseManager.WinForms.App
             }
         }
 
-        public override TreeDefaultValueDO  ShowAddTreeDefault(TreeDefaultValueDO newTDV)
+        public override TreeDefaultValueDO ShowAddTreeDefault(TreeDefaultValueDO newTDV)
         {
             try
             {
@@ -225,23 +216,18 @@ namespace CruiseManager.WinForms.App
                             throw new UserFacingException("Invalid Values", ex);
                         }
                     }
-                }           
-
+                }
             }
             catch (Exception ex)
             {
-                if(!this.ApplicationController.ExceptionHandler.Handel(ex))
+                if (!this.ApplicationController.ExceptionHandler.Handel(ex))
                 {
                     throw;
                 }
             }
         }
 
-        
-
-        
-
-       private bool ShowWizardDialog(DAL database, out SaleDO sale)
+        private bool ShowWizardDialog(DAL database, out SaleDO sale)
         {
             CruiseWizardView view = new CruiseWizardView();
             CruiseWizardPresenter p = new CruiseWizardPresenter(view, this, this.ApplicationController, database);
@@ -257,15 +243,13 @@ namespace CruiseManager.WinForms.App
             }
         }
 
-        
-
         public override void ShowCruiseWizardDialog()
         {
             DAL tempfile = ApplicationController.GetNewOrUnfinishedCruise();
             if (tempfile != null)
             {
                 SaleDO sale;
-                if (this.ShowWizardDialog(tempfile, out sale ))
+                if (this.ShowWizardDialog(tempfile, out sale))
                 {
                     var destPath = AskSavePath(sale);
                     if (destPath == null)
@@ -339,7 +323,7 @@ namespace CruiseManager.WinForms.App
                 //this.MainWindow.AddNavButton("Finish", this.HandleFinishImportTemplateClick);
                 //this.MainWindow.AddNavButton("Cancel", this.HandleCancelImportTemplateClick);
                 TemplateEditViewPresenter presenter = new TemplateEditViewPresenter(this.ApplicationController);
-                ImportFromCruiseView view = new ImportFromCruiseView( dialog.FileName, this, presenter);
+                ImportFromCruiseView view = new ImportFromCruiseView(dialog.FileName, this, presenter);
 
                 this.ApplicationController.ActiveView = view;
             }
@@ -352,11 +336,5 @@ namespace CruiseManager.WinForms.App
             //form.Controls.Add(convertPage);
             //form.ShowDialog();
         }
-
-        
-
-
-        
-        
     }
 }

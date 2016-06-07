@@ -34,7 +34,7 @@ namespace CruiseManager.Core.CruiseCustomize
         //public List<StratumCustomizeViewModel> StrataVM { get; set; }
 
         public List<FieldSetupStratum> FieldSetupStrata { get; set; }
-        public List<TallySetupStratum> TallySetupStrata { get; set; }
+        public List<TallySetupStratum_Base> TallySetupStrata { get; set; }
 
 
         public List<TreeDefaultValueDO> TreeDefaults { get; set; }
@@ -146,7 +146,7 @@ namespace CruiseManager.Core.CruiseCustomize
             if (_isTallySetupInitialized) { return; }
             try
             {
-                this.TallySetupStrata = this.Database.Read<TallySetupStratum>("Stratum", null);
+                this.TallySetupStrata = this.Database.Read<TallySetupStratum_Base>("Stratum", null);
 
                 //foreach (TallySetupStratum stratum in this.TallySetupStrata)
                 //{
@@ -216,21 +216,21 @@ namespace CruiseManager.Core.CruiseCustomize
 
 
 
-        public string[] GetAvalibleHotKeysInStratum(TallySetupStratum st)
+        public string[] GetAvalibleHotKeysInStratum(TallySetupStratum_Base st)
         {
-            var useHotKeys = (from StratumDO stratum in this.TallySetupStrata
+            var useHotKeys = (from stratum in this.TallySetupStrata
                               select stratum.Hotkey).Union(st.ListUsedHotKeys());
             var avalibleHotHeys = Strings.HOTKEYS.Except(useHotKeys).ToArray();
             return avalibleHotHeys;
             //return CSM.Utility.R.Strings.HOTKEYS;
         }
 
-        public string[] GetAvalibleStratumHotKeys(TallySetupStratum stratum)
+        public string[] GetAvalibleStratumHotKeys(TallySetupStratum_Base stratum)
         {
-            var usedHotKeys = (from StratumDO st in this.TallySetupStrata
+            var usedHotKeys = (from st in this.TallySetupStrata
                                where st != stratum
                                select st.Hotkey);
-            foreach (TallySetupStratum straum in this.TallySetupStrata)
+            foreach (TallySetupStratum_Base straum in this.TallySetupStrata)
             {
                 usedHotKeys = usedHotKeys.Union(straum.ListUsedHotKeys());
             }
@@ -249,7 +249,7 @@ namespace CruiseManager.Core.CruiseCustomize
 
 
 
-        private bool ValidateHotKeys(TallySetupStratum st, ref StringBuilder errorBuilder)
+        private bool ValidateHotKeys(TallySetupStratum_Base st, ref StringBuilder errorBuilder)
         {
             bool success = true;
             List<char> usedHotKeys = new List<char>();
@@ -307,7 +307,7 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             if (!_isTallySetupInitialized) { return true; }
             bool isValid = true;
-            foreach (TallySetupStratum st in this.TallySetupStrata)
+            foreach (TallySetupStratum_Base st in this.TallySetupStrata)
             {
                 isValid = this.ValidateHotKeys(st, ref errorBuilder) && isValid;
 
@@ -536,7 +536,7 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             if (!_isTallySetupInitialized) { return true; }
             bool success = true;
-            foreach (TallySetupStratum stratum in TallySetupStrata)
+            foreach (TallySetupStratum_Base stratum in TallySetupStrata)
             {
                 if (stratum.SampleGroups != null)
                 {

@@ -1,7 +1,7 @@
 ﻿using CruiseDAL;
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
-using CruiseManager.Core.ViewInterfaces;
+using CruiseManager.Core.CruiseCustomize.ViewInterfaces;
 using CruiseManager.Core.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -14,9 +14,9 @@ namespace CruiseManager.Core.CruiseCustomize
     {
         bool _isInitialized;
 
-        public new CruiseCustomizeView View
+        public new ILogMatrixView View
         {
-            get { return (CruiseCustomizeView)base.View; }
+            get { return (ILogMatrixView)base.View; }
             set { base.View = value; }
         }
 
@@ -30,13 +30,11 @@ namespace CruiseManager.Core.CruiseCustomize
             }
         }
 
-        public List<LogMatrixDO> LogMatrix { get; protected set; }
-        
+        public IList<LogMatrixDO> LogMatrix { get; protected set; }
 
         public LogMatrixPresenter(ApplicationControllerBase appController)
             : base(appController)
         {
-            
         }
 
         protected override void OnViewLoad(EventArgs e)
@@ -45,7 +43,8 @@ namespace CruiseManager.Core.CruiseCustomize
 
             try
             {
-                this.LogMatrix = this.Database.Read<LogMatrixDO>("LogMatrix", null);
+                this.LogMatrix = this.Database
+                    .From<LogMatrixDO>().Query().ToList();
                 _isInitialized = true;
             }
             catch (Exception ex)
@@ -59,7 +58,6 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             var errorBuilder = new StringBuilder();
             return this.SaveLogMatrix(ref errorBuilder);
-
         }
 
         private bool SaveLogMatrix(ref StringBuilder errorBuilder)
@@ -87,6 +85,5 @@ namespace CruiseManager.Core.CruiseCustomize
                 return false;
             }
         }
-
     }
 }

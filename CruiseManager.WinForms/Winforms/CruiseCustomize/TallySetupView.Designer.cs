@@ -30,66 +30,57 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TallySetupView));
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this._tallyNavPanel = new System.Windows.Forms.Panel();
-            this._systematicOptCB = new System.Windows.Forms.CheckBox();
-            this._BS_sampleGroups = new System.Windows.Forms.BindingSource(this.components);
+            this._tallyEditContainer = new System.Windows.Forms.Panel();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this._stratum_PNL = new System.Windows.Forms.Panel();
+            this.label9 = new System.Windows.Forms.Label();
             this._stratumHKCB = new System.Windows.Forms.ComboBox();
+            this._strataCB = new System.Windows.Forms.ComboBox();
             this._BS_strata = new System.Windows.Forms.BindingSource(this.components);
             this.label21 = new System.Windows.Forms.Label();
-            this._sampleGroupCB = new System.Windows.Forms.ComboBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this._strataCB = new System.Windows.Forms.ComboBox();
-            this._tallyEditPanel = new CruiseManager.WinForms.CruiseCustomize.TallyEditPanel();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.flowLayoutPanel1.SuspendLayout();
-            this._tallyNavPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._BS_sampleGroups)).BeginInit();
+            this._stratum_PNL.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._BS_strata)).BeginInit();
             this.SuspendLayout();
             // 
-            // flowLayoutPanel1
+            // _tallyEditContainer
             // 
-            this.flowLayoutPanel1.Controls.Add(this._tallyNavPanel);
-            this.flowLayoutPanel1.Controls.Add(this._tallyEditPanel);
-            this.flowLayoutPanel1.Controls.Add(this.richTextBox1);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(659, 460);
-            this.flowLayoutPanel1.TabIndex = 1;
+            this._tallyEditContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._tallyEditContainer.Location = new System.Drawing.Point(0, 32);
+            this._tallyEditContainer.Name = "_tallyEditContainer";
+            this._tallyEditContainer.Size = new System.Drawing.Size(624, 290);
+            this._tallyEditContainer.TabIndex = 13;
             // 
-            // _tallyNavPanel
+            // richTextBox1
             // 
-            this._tallyNavPanel.Controls.Add(this._systematicOptCB);
-            this._tallyNavPanel.Controls.Add(this._stratumHKCB);
-            this._tallyNavPanel.Controls.Add(this.label21);
-            this._tallyNavPanel.Controls.Add(this._sampleGroupCB);
-            this._tallyNavPanel.Controls.Add(this.label10);
-            this._tallyNavPanel.Controls.Add(this.label9);
-            this._tallyNavPanel.Controls.Add(this._strataCB);
-            this._tallyNavPanel.Location = new System.Drawing.Point(3, 3);
-            this._tallyNavPanel.Name = "_tallyNavPanel";
-            this._tallyNavPanel.Size = new System.Drawing.Size(445, 56);
-            this._tallyNavPanel.TabIndex = 10;
+            this.richTextBox1.BackColor = System.Drawing.SystemColors.Info;
+            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.richTextBox1.Location = new System.Drawing.Point(0, 322);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.ReadOnly = true;
+            this.richTextBox1.Size = new System.Drawing.Size(624, 94);
+            this.richTextBox1.TabIndex = 11;
+            this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
             // 
-            // _systematicOptCB
+            // _stratum_PNL
             // 
-            this._systematicOptCB.AutoSize = true;
-            this._systematicOptCB.DataBindings.Add(new System.Windows.Forms.Binding("Checked", this._BS_sampleGroups, "UseSystematicSampling", true));
-            this._systematicOptCB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this._systematicOptCB.Location = new System.Drawing.Point(214, 35);
-            this._systematicOptCB.Name = "_systematicOptCB";
-            this._systematicOptCB.Size = new System.Drawing.Size(201, 17);
-            this._systematicOptCB.TabIndex = 14;
-            this._systematicOptCB.Text = "Use Systematic Sampling (STR only)";
-            this._systematicOptCB.UseVisualStyleBackColor = true;
+            this._stratum_PNL.Controls.Add(this.label9);
+            this._stratum_PNL.Controls.Add(this._stratumHKCB);
+            this._stratum_PNL.Controls.Add(this._strataCB);
+            this._stratum_PNL.Controls.Add(this.label21);
+            this._stratum_PNL.Dock = System.Windows.Forms.DockStyle.Top;
+            this._stratum_PNL.Location = new System.Drawing.Point(0, 0);
+            this._stratum_PNL.Name = "_stratum_PNL";
+            this._stratum_PNL.Size = new System.Drawing.Size(624, 32);
+            this._stratum_PNL.TabIndex = 12;
             // 
-            // _BS_sampleGroups
+            // label9
             // 
-            this._BS_sampleGroups.DataSource = typeof(CruiseManager.Core.CruiseCustomize.TallySetupSampleGroup);
-            this._BS_sampleGroups.CurrentChanged += new System.EventHandler(this._BS_sampleGroups_CurrentChanged);
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(3, 6);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(47, 13);
+            this.label9.TabIndex = 9;
+            this.label9.Text = "Stratum";
             // 
             // _stratumHKCB
             // 
@@ -102,9 +93,19 @@
             this._stratumHKCB.DropDown += new System.EventHandler(this._stratumHKCB_DropDown);
             this._stratumHKCB.TextChanged += new System.EventHandler(this._stratumHKCB_TextChanged);
             // 
+            // _strataCB
+            // 
+            this._strataCB.DataSource = this._BS_strata;
+            this._strataCB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this._strataCB.FormattingEnabled = true;
+            this._strataCB.Location = new System.Drawing.Point(83, 3);
+            this._strataCB.Name = "_strataCB";
+            this._strataCB.Size = new System.Drawing.Size(121, 21);
+            this._strataCB.TabIndex = 8;
+            // 
             // _BS_strata
             // 
-            this._BS_strata.DataSource = typeof(CruiseManager.Core.CruiseCustomize.TallySetupStratum);
+            this._BS_strata.DataSource = typeof(CruiseManager.Core.CruiseCustomize.TallySetupStratum_Base);
             this._BS_strata.CurrentChanged += new System.EventHandler(this._BS_strata_CurrentChanged);
             // 
             // label21
@@ -116,91 +117,29 @@
             this.label21.TabIndex = 12;
             this.label21.Text = "Stratum Hot Key";
             // 
-            // _sampleGroupCB
-            // 
-            this._sampleGroupCB.DataSource = this._BS_sampleGroups;
-            this._sampleGroupCB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this._sampleGroupCB.FormattingEnabled = true;
-            this._sampleGroupCB.Location = new System.Drawing.Point(83, 31);
-            this._sampleGroupCB.Name = "_sampleGroupCB";
-            this._sampleGroupCB.Size = new System.Drawing.Size(121, 21);
-            this._sampleGroupCB.TabIndex = 11;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(3, 34);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(80, 13);
-            this.label10.TabIndex = 10;
-            this.label10.Text = "Sample Group";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(3, 6);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(47, 13);
-            this.label9.TabIndex = 9;
-            this.label9.Text = "Stratum";
-            // 
-            // _strataCB
-            // 
-            this._strataCB.DataSource = this._BS_strata;
-            this._strataCB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this._strataCB.FormattingEnabled = true;
-            this._strataCB.Location = new System.Drawing.Point(83, 3);
-            this._strataCB.Name = "_strataCB";
-            this._strataCB.Size = new System.Drawing.Size(121, 21);
-            this._strataCB.TabIndex = 8;
-            // 
-            // _tallyEditPanel
-            // 
-            this._tallyEditPanel.Location = new System.Drawing.Point(4, 66);
-            this._tallyEditPanel.Margin = new System.Windows.Forms.Padding(4);
-            this._tallyEditPanel.Name = "_tallyEditPanel";
-            this._tallyEditPanel.Size = new System.Drawing.Size(342, 258);
-            this._tallyEditPanel.TabIndex = 9;
-            // 
-            // richTextBox1
-            // 
-            this.richTextBox1.BackColor = System.Drawing.SystemColors.Info;
-            this.richTextBox1.Location = new System.Drawing.Point(353, 65);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(175, 259);
-            this.richTextBox1.TabIndex = 11;
-            this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
-            // 
             // TallySetupView
             // 
-            this.Controls.Add(this.flowLayoutPanel1);
+            this.Controls.Add(this._tallyEditContainer);
+            this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this._stratum_PNL);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "TallySetupView";
-            this.Size = new System.Drawing.Size(659, 460);
-            this.flowLayoutPanel1.ResumeLayout(false);
-            this._tallyNavPanel.ResumeLayout(false);
-            this._tallyNavPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._BS_sampleGroups)).EndInit();
+            this.Size = new System.Drawing.Size(624, 416);
+            this._stratum_PNL.ResumeLayout(false);
+            this._stratum_PNL.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this._BS_strata)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.Panel _tallyNavPanel;
-        private System.Windows.Forms.CheckBox _systematicOptCB;
         private System.Windows.Forms.ComboBox _stratumHKCB;
         private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.ComboBox _sampleGroupCB;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox _strataCB;
-        private TallyEditPanel _tallyEditPanel;
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.BindingSource _BS_strata;
-        private System.Windows.Forms.BindingSource _BS_sampleGroups;
+        private System.Windows.Forms.Panel _stratum_PNL;
+        private System.Windows.Forms.Panel _tallyEditContainer;
     }
 }

@@ -20,7 +20,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
     {
         private TabPage _logMatrixTabPage;
         
-        private TallySetupStratum _currentTallySetupStratum;
+        private TallySetupStratum_Base _currentTallySetupStratum;
         private TallySetupSampleGroup _currentSG;
         private DataGridViewComboBoxColumn fieldDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn minDataGridViewTextBoxColumn;
@@ -164,7 +164,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
                 _currentTallySetupStratum.Hotkey = _stratumHKCB.Text;
                 _currentTallySetupStratum.Save();
             }
-            _currentTallySetupStratum = _strataCB.SelectedValue as TallySetupStratum;
+            _currentTallySetupStratum = _strataCB.SelectedValue as TallySetupStratum_Base;
 
             
             if(_currentTallySetupStratum == null) { return; }
@@ -172,7 +172,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             _stratumHKCB.DataSource = this.ViewPresenter.GetAvalibleStratumHotKeys(_currentTallySetupStratum);
             _stratumHKCB.Text = _currentTallySetupStratum.Hotkey;
 
-            this._tallyEditPanel.Enabled = ViewPresenter.CanDefintTallys(_currentTallySetupStratum);
+            this._tallyEditPanel.Enabled = _currentTallySetupStratum.CanDefineTallies;
             
             _sampleGroupCB.DataSource = _currentTallySetupStratum.SampleGroups;                
         }
@@ -193,11 +193,11 @@ namespace CruiseManager.WinForms.CruiseCustomize
             }
             else
             {
-                this._systematicOptCB.Enabled = _currentSG.IsSTR && _currentSG.CanChangeSamplerType;
+                this._systematicOptCB.Enabled =  _currentSG.CanEditSampleType;
                 this._systematicOptCB.Checked = _currentSG.UseSystematicSampling;
             }
 
-            _tallyEditPanel.SampleGroup = _currentSG;
+            _tallyEditPanel.CurrentSampleGroup = _currentSG;
             _tallyEditPanel.SetHotKeys(this.ViewPresenter.GetAvalibleHotKeysInStratum(_currentTallySetupStratum));
         }
 

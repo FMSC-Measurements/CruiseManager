@@ -135,6 +135,10 @@ namespace CruiseManager.Core.App
             {
                 return (IView)this.Kernel.Get(viewType);
             }
+            catch(ActivationException e)
+            {
+                throw new UserFacingException("View Missing", e);
+            }
             catch (Exception e)
             {
                 //TODO throw spacific exception indication view could not be created
