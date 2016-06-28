@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using CruiseManager.Core;
+﻿using CruiseManager.Core;
 using CruiseManager.Core.Components;
 using CruiseManager.Core.Components.ViewInterfaces;
+using System;
+using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.Components
 {
@@ -22,12 +16,12 @@ namespace CruiseManager.WinForms.Components
             set { base.ViewPresenter = value; }
         }
 
-        public MergeComponentView(MergeComponentsPresenter viewPresenter) 
+        public MergeComponentView(MergeComponentsPresenter viewPresenter)
         {
             InitializeComponent();
 
             mergeInfoView = new MergeInfoView(viewPresenter);
-            mergeInfoView.Dock = DockStyle.Fill; 
+            mergeInfoView.Dock = DockStyle.Fill;
             this._contentPanel.Controls.Add(mergeInfoView);
 
             this.ViewPresenter = viewPresenter;
@@ -36,11 +30,10 @@ namespace CruiseManager.WinForms.Components
             this.HandleWorkerStatusChanged();
         }
 
-
         public void UpdateMergeInfoView()
-        {            
+        {
             mergeInfoView.UpdateMasterInfo();
-            mergeInfoView.UpdateComponentInfo(); 
+            mergeInfoView.UpdateComponentInfo();
         }
 
         public void ShowPremergeReport()
@@ -81,9 +74,7 @@ namespace CruiseManager.WinForms.Components
             }
         }
 
-
-
-        public void HandleProgressChanged(Object sender, WorkerProgressChangedEventArgs e) 
+        public void HandleProgressChanged(Object sender, WorkerProgressChangedEventArgs e)
         {
             System.Diagnostics.Debug.Assert(e != null);
             if (this.__progressBar.InvokeRequired)
@@ -95,7 +86,7 @@ namespace CruiseManager.WinForms.Components
             percentDone = Math.Max(0, percentDone);
             this.__progressBar.Value = percentDone;
             this._progressMessageTB.Text = e.Message;
-            this.HandleWorkerStatusChanged(); 
+            this.HandleWorkerStatusChanged();
         }
 
         private void _goButton_Click(object sender, EventArgs e)
@@ -110,6 +101,5 @@ namespace CruiseManager.WinForms.Components
         {
             this.ViewPresenter.CurrentWorker.Cancel();
         }
-
     }
 }

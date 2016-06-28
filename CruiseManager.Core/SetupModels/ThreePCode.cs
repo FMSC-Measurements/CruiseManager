@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml.Serialization;
 
 namespace CruiseManager.Core.SetupModels
@@ -9,7 +6,9 @@ namespace CruiseManager.Core.SetupModels
     [Serializable]
     public class ThreePCode
     {
-        public ThreePCode() { }
+        public ThreePCode()
+        {
+        }
 
         public ThreePCode(String[] values)
         {
@@ -21,6 +20,6 @@ namespace CruiseManager.Core.SetupModels
         public String Code { get; set; }
 
         [XmlAttribute]
-        public String FriendlyValue { get; set; } 
+        public String FriendlyValue { get; set; }
     }
 }

@@ -1,16 +1,14 @@
-﻿using System;
+﻿using CruiseDAL.DataObjects;
+using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Linq;
 using System.Xml.Serialization;
-using CruiseDAL.DataObjects;
 
 namespace CruiseManager.Core.SetupModels
 {
     [Serializable]
     public class CruiseMethod : CruiseMethodsDO
     {
-        public CruiseMethod() 
+        public CruiseMethod()
         {
             TreeFieldSetups = new List<TreeFieldSetupDO>();
             LogFieldSetups = new List<LogFieldSetupDO>();
@@ -20,14 +18,11 @@ namespace CruiseManager.Core.SetupModels
             : this(values[0], values[1])
         { }
 
-
         public CruiseMethod(string Code, string FriendlyValue)
         {
             this.Code = Code;
             this.FriendlyValue = FriendlyValue;
         }
-
-
 
         [XmlArray]
         public List<TreeFieldSetupDO> TreeFieldSetups { get; set; }
@@ -42,9 +37,7 @@ namespace CruiseManager.Core.SetupModels
     //    public CruiseMethodCollection()
     //    { }
 
-    //    private List<CruiseMethod> _cruiseMethods = new List<CruiseMethod>(); 
-
-
+    //    private List<CruiseMethod> _cruiseMethods = new List<CruiseMethod>();
 
     //    [XmlArray]
     //    public List<CruiseMethod> Items
@@ -58,5 +51,4 @@ namespace CruiseManager.Core.SetupModels
     //        _cruiseMethods.Add(cm);
     //    }
     //}
-
 }

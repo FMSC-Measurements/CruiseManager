@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
+﻿using CruiseManager.Core.Components;
+using System;
 using System.Windows.Forms;
-using CruiseManager.Core.Components;
-using CruiseManager.Core;
-using CruiseManager.Core.ViewInterfaces;
-using CruiseManager.Core.App;
 
 namespace CruiseManager.WinForms.Components
 {
@@ -29,7 +20,6 @@ namespace CruiseManager.WinForms.Components
             get; set;
         }
 
-
         public void UpdateMasterInfo()
         {
             __numComLBL.Text = ViewPresenter.NumComponents.ToString();
@@ -44,8 +34,7 @@ namespace CruiseManager.WinForms.Components
 
         private void __searchBTN_Click(object sender, EventArgs e)
         {
-            this.ViewPresenter.FindComponents(); 
+            this.ViewPresenter.FindComponents();
         }
-
     }
 }

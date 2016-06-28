@@ -44,8 +44,8 @@ namespace CruiseManager.Core.CruiseCustomize
         [Field(Name = "Code")]
         public virtual String Code { get; set; }
 
-        
         TallyMode _tallyMethod;
+
         [Field(Name = "TallyMethod", PersistanceFlags = PersistanceFlags.OnUpdate)]
         public virtual CruiseDAL.Enums.TallyMode TallyMethod
         {
@@ -75,6 +75,7 @@ namespace CruiseManager.Core.CruiseCustomize
         #endregion Persisted Members
 
         public TallySetupStratum_Base Stratum { get; set; }
+
         public IList<TreeDefaultValueDO> TreeDefaultValues
         {
             get
@@ -97,11 +98,11 @@ namespace CruiseManager.Core.CruiseCustomize
             TallyMode mode = TallyMode.Unknown;
             if (DAL.GetRowCount("CountTree", "WHERE SampleGroup_CN = ?", SampleGroup_CN) == 0)
             {
-                if(Stratum.Method == CruiseDAL.Schema.CruiseMethods.STR)
+                if (Stratum.Method == CruiseDAL.Schema.CruiseMethods.STR)
                 {
                     return TallyMode.BySampleGroup;
                 }
-                else if(CruiseDAL.Schema.CruiseMethods.THREE_P_METHODS.Contains(Stratum.Method))
+                else if (CruiseDAL.Schema.CruiseMethods.THREE_P_METHODS.Contains(Stratum.Method))
                 {
                     return TallyMode.BySpecies;
                 }
@@ -390,9 +391,12 @@ namespace CruiseManager.Core.CruiseCustomize
 
                 if (tally == null)
                 {
-                    tally = new TallyVM(DAL) {
+                    tally = new TallyVM(DAL)
+                    {
                         Description = SgTallie.Description
-                        , Hotkey = SgTallie.Hotkey };
+                        ,
+                        Hotkey = SgTallie.Hotkey
+                    };
 
                     //tally = sgVM.SgTallie;
                     tally.Save();

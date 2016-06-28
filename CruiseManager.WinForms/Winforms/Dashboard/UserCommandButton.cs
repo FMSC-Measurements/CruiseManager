@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.Dashboard
 {
     public class UserCommandButton : Button
     {
-        public UserCommandButton(): base()
+        public UserCommandButton() : base()
         {
             this.BackColor = Color.Transparent;
             this.ForeColor = SystemColors.ControlText;

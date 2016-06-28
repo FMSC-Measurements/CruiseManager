@@ -55,7 +55,7 @@ namespace CruiseManager.Core.CommandModel
 
         public abstract void Execute();
 
-        protected abstract void OnNameChanged();        
+        protected abstract void OnNameChanged();
 
         protected virtual void OnExceptionHandlerChanged()
         {

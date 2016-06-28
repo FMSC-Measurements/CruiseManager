@@ -20,7 +20,7 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             get
             {
-                return IsChanged 
+                return IsChanged
                     || SampleGroups.Any(x => x.HasTallyEdits);
             }
         }
@@ -158,6 +158,5 @@ namespace CruiseManager.Core.CruiseCustomize
             }
             return inuseHotKeys;
         }
-
     }
 }

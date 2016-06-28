@@ -1,11 +1,4 @@
-﻿using CruiseManager.Core;
-using CruiseManager.Core.App;
-using CruiseManager.WinForms.App;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CruiseManager.Core.App;
 
 namespace CruiseManager.WinForms.App
 {

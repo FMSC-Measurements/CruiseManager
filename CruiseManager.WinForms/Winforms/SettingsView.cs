@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
+﻿using CruiseManager.Core.App;
+using System;
 using System.Windows.Forms;
-using CruiseManager.Core.App;
 
 namespace CruiseManager.WinForms
 {
@@ -35,15 +29,14 @@ namespace CruiseManager.WinForms
 
         public void SaveSettings()
         {
-
         }
 
         public void RevertSettings()
         {
-
         }
 
         #region IView Members
+
         protected void InitializeView(WindowPresenter windowPresenter)
         {
             this.WindowPresenter = windowPresenter;
@@ -61,6 +54,6 @@ namespace CruiseManager.WinForms
         //    get { throw new NotImplementedException(); }
         //}
 
-        #endregion
+        #endregion IView Members
     }
 }

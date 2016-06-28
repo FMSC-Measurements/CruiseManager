@@ -1,9 +1,5 @@
 ﻿using CruiseManager.Core.App;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.App
@@ -21,7 +17,7 @@ namespace CruiseManager.WinForms.App
             }
             else if (e is FMSC.ORM.UniqueConstraintException)
             {
-                //WindowPresenter.Instance.ShowMessage("Record Already Exists", null);                
+                //WindowPresenter.Instance.ShowMessage("Record Already Exists", null);
                 MessageBox.Show("Record Already Exists");
                 return true;
             }
@@ -30,6 +26,5 @@ namespace CruiseManager.WinForms.App
                 return false;
             }
         }
-
     }
 }

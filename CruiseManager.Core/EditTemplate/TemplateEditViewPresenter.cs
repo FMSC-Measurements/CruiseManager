@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using CruiseDAL;
 using CruiseDAL.DataObjects;
-using System.ComponentModel;
-using CruiseDAL;
 using CruiseManager.Core.App;
 using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core.ViewModel;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 
 namespace CruiseManager.Core.EditTemplate
 {
-
-
-
     public class TemplateEditViewPresenter : Presentor, ISaveHandler
     {
         private FMSC.Utility.Collections.BindingListRedux<TreeDefaultValueDO> _treeDefaultValues;
@@ -22,8 +18,8 @@ namespace CruiseManager.Core.EditTemplate
         public new EditTemplateView View { get; set; }
         public DAL Database { get { return ApplicationController.Database; } }
 
-
         public BindingList<EditTemplateCruiseMethod> CruiseMethods { get; set; }
+
         public FMSC.Utility.Collections.BindingListRedux<TreeDefaultValueDO> TreeDefaultValues
         {
             get { return _treeDefaultValues; }
@@ -32,7 +28,7 @@ namespace CruiseManager.Core.EditTemplate
                 if (value == _treeDefaultValues) { return; }
                 if (_treeDefaultValues != null)
                 {
-                    _treeDefaultValues.ItemRemoved -= this.TreeDefaults_ItemRemoved;//unwire item removed 
+                    _treeDefaultValues.ItemRemoved -= this.TreeDefaults_ItemRemoved;//unwire item removed
                 }
                 if (value != null)
                 {
@@ -41,8 +37,10 @@ namespace CruiseManager.Core.EditTemplate
                 _treeDefaultValues = value;
             }
         }
+
         //public BindingList<TallyDO> Tallies {get; set; }
         public BindingList<VolumeEquationDO> VolumeEQs { get; set; }
+
         public BindingList<ReportsDO> Reports { get; set; }
         public List<TreeAuditValueDO> TreeAudits { get; set; }
 
@@ -52,11 +50,9 @@ namespace CruiseManager.Core.EditTemplate
         public BindingList<LogFieldSetupDefaultDO> SelectedLogFields { get; set; }
         public BindingList<LogFieldSetupDefaultDO> UnselectedLogFields { get; set; }
 
-
         public TemplateEditViewPresenter(ApplicationControllerBase applicationController)
         {
             this.ApplicationController = applicationController;
-
 
             //read TreeFiedleSetup info from .setup file and convert the data to TreeFieldSetupDefault
             //it may be posible to simplify this task by asking for the data in the form of a TreeFieldSetupDefault object
@@ -88,7 +84,7 @@ namespace CruiseManager.Core.EditTemplate
         }
 
         /// <summary>
-        /// Handels the initialization of the Field setups, creating a list of cruise methods and 
+        /// Handels the initialization of the Field setups, creating a list of cruise methods and
         /// </summary>
         public void HandleFieldSetupLoad()
         {
@@ -106,11 +102,8 @@ namespace CruiseManager.Core.EditTemplate
 
                         vm.TreeFields = new BindingList<TreeFieldSetupDefaultDO>(treeFields);
 
-
                         List<TreeFieldSetupDefaultDO> unselectedTreeFields = (from tfs in this.TreeFields.Except(treeFields, new TreeFieldDefaultComparer())
                                                                               select new TreeFieldSetupDefaultDO(tfs)).ToList();
-
-
 
                         vm.UnselectedTreeFields = new BindingList<TreeFieldSetupDefaultDO>(unselectedTreeFields);
 
@@ -121,7 +114,6 @@ namespace CruiseManager.Core.EditTemplate
                 {
                     this.CruiseMethods = null;
                 }
-
             }
 
             if (this.SelectedLogFields == null)
@@ -240,7 +232,6 @@ namespace CruiseManager.Core.EditTemplate
                         }
                     }
 
-
                     foreach (TreeFieldSetupDefaultDO tfs in method.TreeFields)
                     {
                         if (tfs.DAL == null || tfs.IsPersisted == false)
@@ -341,8 +332,6 @@ namespace CruiseManager.Core.EditTemplate
             }
         }
 
-
-
         #region ISaveHandler Members
 
         public bool HasChangesToSave
@@ -372,14 +361,14 @@ namespace CruiseManager.Core.EditTemplate
             this.Save();
         }
 
-        #endregion
-
+        #endregion ISaveHandler Members
     }
 
-    //a worker class for comparing TreeFieldSetupDO 
+    //a worker class for comparing TreeFieldSetupDO
     public class TreeFieldDefaultComparer : IEqualityComparer<TreeFieldSetupDefaultDO>, IComparer<TreeFieldSetupDefaultDO>
     {
         private static TreeFieldDefaultComparer _instance;
+
         public static TreeFieldDefaultComparer GetInstance()
         {
             if (_instance == null) { _instance = new TreeFieldDefaultComparer(); }
@@ -398,7 +387,7 @@ namespace CruiseManager.Core.EditTemplate
             return obj.Field.GetHashCode();
         }
 
-        #endregion
+        #endregion IEqualityComparer<TreeFieldSetupDO> Members
 
         #region IComparer<TreeFieldSetupDO> Members
 
@@ -407,13 +396,14 @@ namespace CruiseManager.Core.EditTemplate
             return string.Compare(x.Field, y.Field, StringComparison.Ordinal);
         }
 
-        #endregion
+        #endregion IComparer<TreeFieldSetupDO> Members
     }
 
-    //a worker class for comparing LogFieldSetupDO 
+    //a worker class for comparing LogFieldSetupDO
     public class LogFieldDefaultComparer : IEqualityComparer<LogFieldSetupDefaultDO>, IComparer<LogFieldSetupDefaultDO>
     {
         private static LogFieldDefaultComparer _instance;
+
         public static LogFieldDefaultComparer GetInstance()
         {
             if (_instance == null)
@@ -435,7 +425,7 @@ namespace CruiseManager.Core.EditTemplate
             return obj.Field.GetHashCode();
         }
 
-        #endregion
+        #endregion IEqualityComparer<LogFieldSetupDO> Members
 
         #region IComparer<LogFieldSetupDO> Members
 
@@ -444,6 +434,6 @@ namespace CruiseManager.Core.EditTemplate
             return string.Compare(x.Field, y.Field, StringComparison.Ordinal);
         }
 
-        #endregion
+        #endregion IComparer<LogFieldSetupDO> Members
     }
 }

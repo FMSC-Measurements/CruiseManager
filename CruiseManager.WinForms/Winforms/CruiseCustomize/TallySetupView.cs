@@ -1,7 +1,6 @@
 ﻿using CruiseManager.Core.CruiseCustomize;
 using CruiseManager.Core.CruiseCustomize.ViewInterfaces;
 using System;
-using System.Linq;
 using System.ComponentModel;
 using System.Windows.Forms;
 
@@ -47,7 +46,6 @@ namespace CruiseManager.WinForms.CruiseCustomize
             }
         }
 
-
         public TallySetupView(TallySetupPresenter presenter)
         {
             this.ViewPresenter = presenter;
@@ -78,13 +76,12 @@ namespace CruiseManager.WinForms.CruiseCustomize
         TallyEditPanel _standardTallyEditPanel;
         FixCNTTallyEditPanel _myfixCNTTallyEditPanel;
 
-
         protected ITallyEditPanel GetEditView(TallySetupStratum_Base stratum)
         {
             if (stratum == null) { return null; }
-            if(stratum is TallySetupStratum)
+            if (stratum is TallySetupStratum)
             {
-                if(_standardTallyEditPanel == null)
+                if (_standardTallyEditPanel == null)
                 {
                     _standardTallyEditPanel = new TallyEditPanel();
                     _standardTallyEditPanel.GetHotKeys = this._tallyEditPanel_GetHotKeys;
@@ -92,9 +89,9 @@ namespace CruiseManager.WinForms.CruiseCustomize
                 }
                 return _standardTallyEditPanel;
             }
-            else if(stratum is FixCNTTallySetupStratum)
+            else if (stratum is FixCNTTallySetupStratum)
             {
-                if(_myfixCNTTallyEditPanel == null)
+                if (_myfixCNTTallyEditPanel == null)
                 {
                     _myfixCNTTallyEditPanel = new FixCNTTallyEditPanel();
                     _myfixCNTTallyEditPanel.Dock = DockStyle.Fill;
@@ -137,7 +134,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
                 //    {
                 //        _tallyEditPanel.SampleGroups = _currentStratum.SampleGroups;
                 //        _tallyEditPanel.Enabled = _currentStratum.CanDefineTallies;
-                        
+
                 //    }
                 //}
                 //else
@@ -146,7 +143,6 @@ namespace CruiseManager.WinForms.CruiseCustomize
                 //    _tallyEditPanel.Enabled = false;
                 //    _stratumHKCB.Text = String.Empty;
                 //}
-                
             }
             finally
             {

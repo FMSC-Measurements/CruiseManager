@@ -1,9 +1,4 @@
-﻿using CruiseManager.Core.Components;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using CruiseManager.Core.App;
-using CruiseManager.Core.ViewModel;
+﻿using CruiseManager.Core.ViewModel;
 
 namespace CruiseManager.Core.Components.ViewInterfaces
 {
@@ -12,7 +7,9 @@ namespace CruiseManager.Core.Components.ViewInterfaces
         new CreateComponentPresenter ViewPresenter { get; set; }
 
         void HideProgressBar();
+
         void InitializeAndShowProgress(int totalSteps);
+
         void StepProgressBar();
     }
 }

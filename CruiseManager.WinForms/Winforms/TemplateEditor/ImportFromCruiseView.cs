@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using CruiseDAL;
+﻿using CruiseDAL;
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
 using CruiseManager.Core.EditTemplate;
+using System;
+using System.Collections.Generic;
 
 namespace CruiseManager.WinForms.TemplateEditor
 {
@@ -17,11 +11,9 @@ namespace CruiseManager.WinForms.TemplateEditor
     {
         public ImportFromCruiseView(WindowPresenter windowPresenter, TemplateEditViewPresenter viewPresenter)
         {
-            
             InitializeComponent();
             this.WindowPresenter = windowPresenter;
             this.ApplicationController = viewPresenter.ApplicationController;
-
 
             //this.UserCommands = new ViewCommand[]{
             //    ApplicationController.MakeViewCommand("Import", this.Finish ),
@@ -42,24 +34,23 @@ namespace CruiseManager.WinForms.TemplateEditor
             get { return (TemplateEditViewPresenter)base.ViewPresenter; }
             set { base.ViewPresenter = value; }
         }
+
         protected WindowPresenter WindowPresenter { get; set; }
         protected ApplicationControllerBase ApplicationController { get; set; }
         public List<TreeDefaultValueDO> TreeDefaults { get; set; }
         public List<TreeDefaultValueDO> TreeDefaultsToCopy { get; set; }
 
-        public string FileName 
+        public string FileName
         {
             get { return this._copyFromDB.Path; }
         }
 
-        private DAL _copyFromDB; 
+        private DAL _copyFromDB;
 
         public bool ReplaceExistingVolEq
         {
             get { return _replaceVolEqRB.Checked; }
         }
-
-        
 
         private void _importVolEqCB_CheckedChanged(object sender, EventArgs e)
         {
@@ -101,8 +92,6 @@ namespace CruiseManager.WinForms.TemplateEditor
             }
         }
 
-        
-
         private void _selectAllTDVBTN_Click(object sender, EventArgs e)
         {
             foreach (TreeDefaultValueDO tdv in this.TreeDefaults)
@@ -114,6 +103,5 @@ namespace CruiseManager.WinForms.TemplateEditor
             }
             this.selectedItemsGridView1.Refresh();
         }
-
     }
 }

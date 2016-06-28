@@ -1,12 +1,6 @@
-﻿using CruiseDAL.DataObjects;
-using CruiseManager.Core.App;
-using CruiseManager.Core.CommandModel;
+﻿using CruiseManager.Core.CommandModel;
 using CruiseManager.Core.ViewModel;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-using System.Windows.Forms;
 
 namespace CruiseManager.Core.ViewInterfaces
 {

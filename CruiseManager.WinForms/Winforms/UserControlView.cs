@@ -1,11 +1,5 @@
-﻿using CruiseManager.Core;
-using CruiseManager.Core.App;
-using CruiseManager.Core.ViewModel;
+﻿using CruiseManager.Core.ViewModel;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CruiseManager.WinForms
@@ -14,9 +8,8 @@ namespace CruiseManager.WinForms
     {
         public virtual IPresentor ViewPresenter
         {
-            get; protected set; 
+            get; protected set;
         }
-
 
         //#region abstract methods
         //public virtual void EndEdits()
@@ -36,13 +29,12 @@ namespace CruiseManager.WinForms
             {
                 MessageBoxDefaultButton defaultBtn = (defaultOption == true) ? MessageBoxDefaultButton.Button1 : MessageBoxDefaultButton.Button2;
 
-
-                DialogResult result = MessageBox.Show(this.TopLevelControl, 
-                    message, caption, 
-                    MessageBoxButtons.OKCancel, 
-                    MessageBoxIcon.Question, 
+                DialogResult result = MessageBox.Show(this.TopLevelControl,
+                    message, caption,
+                    MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Question,
                     defaultBtn);
-                switch(result)
+                switch (result)
                 {
                     case DialogResult.OK: { return true; }
                     case DialogResult.Cancel: { return false; }
@@ -114,9 +106,7 @@ namespace CruiseManager.WinForms
             }
         }
 
-
-        #endregion
-
+        #endregion message box methods
 
         public void ShowWaitCursor()
         {

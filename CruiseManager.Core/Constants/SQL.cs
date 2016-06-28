@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CruiseManager.Core.Constants
+﻿namespace CruiseManager.Core.Constants
 {
     public static class SQL
     {
@@ -19,7 +15,7 @@ DELETE FROM ErrorLog WHERE TableName IN ('Tree', 'Plot', 'Log', 'Stem');
 UPDATE CuttingUnit Set TallyHistory = NULL;
 ";
 
-        public static string MAKE_COUNTS_FOR_COMPONENTS = @"INSERT OR IGNORE INTO CountTree (Component_CN, SampleGroup_CN, CuttingUnit_CN, Tally_CN, TreeDefaultValue_CN, CreatedBy) 
+        public static string MAKE_COUNTS_FOR_COMPONENTS = @"INSERT OR IGNORE INTO CountTree (Component_CN, SampleGroup_CN, CuttingUnit_CN, Tally_CN, TreeDefaultValue_CN, CreatedBy)
 SELECT Component.Component_CN, CountTree.SampleGroup_CN, CountTree.CuttingUnit_CN, Tally_CN, CountTree.TreeDefaultValue_CN, CountTree.CreatedBy
 FROM CountTree JOIN Component ON CountTree.Component_CN = Component.Component_CN
 UNION ALL

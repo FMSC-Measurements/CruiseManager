@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
+﻿using CruiseDAL.DataObjects;
 using CruiseManager.Core.CruiseCustomize;
 using CruiseManager.Core.CruiseCustomize.ViewInterfaces;
-using CruiseDAL.DataObjects;
-using System.Linq;
+using System;
+using System.Collections.Generic;
 
 namespace CruiseManager.WinForms.CruiseCustomize
 {
@@ -62,7 +56,6 @@ namespace CruiseManager.WinForms.CruiseCustomize
             }
         }
 
-
         private void _treeFieldWidget_SelectionMoved(object sender, FMSC.Controls.ItemMovedEventArgs e)
         {
             UpdateTreeFieldOrder();
@@ -106,8 +99,6 @@ namespace CruiseManager.WinForms.CruiseCustomize
             ////lf.Save();
             ////otherlf.Save();
         }
-
-
 
         //refreshes the field order on all items
         //item's fieldOrder = item's list position + 1

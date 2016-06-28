@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CruiseDAL;
-using CruiseDAL.DataObjects;
+﻿using CruiseManager.Core.App;
+using System;
 using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
-using CruiseManager.Core.App;
 
 namespace CruiseManager.WinForms.App
 {
-
-    
     public class ApplicationState : IApplicationState
     {
         const int RECENT_FILE_LIST_SIZE = 10;
@@ -29,15 +23,13 @@ namespace CruiseManager.WinForms.App
             }
         }
 
-
         private ApplicationStateData _data;
+
         public ApplicationState()
         {
             _data = Deserialize() ?? new ApplicationStateData();
-
         }
 
-        
         public String[] RecentFiles
         {
             get
@@ -71,8 +63,8 @@ namespace CruiseManager.WinForms.App
             }
             catch (IOException e)
             {
-                throw new UserFacingException("Could Not Access Setting File", e);                
-            }                
+                throw new UserFacingException("Could Not Access Setting File", e);
+            }
         }
 
         public void Save()
@@ -99,11 +91,11 @@ namespace CruiseManager.WinForms.App
                 if (!File.Exists(path))
                 {
                     path = GetOldAppSettingPath();
-                    if(!File.Exists(path))
+                    if (!File.Exists(path))
                     {
                         return null;
                     }
-                } 
+                }
 
                 using (StreamReader reader = new StreamReader(path))
                 {
@@ -116,7 +108,6 @@ namespace CruiseManager.WinForms.App
                 System.Diagnostics.Trace.Write(ex);
                 return null;
             }
-
         }
 
         private static string GetOldAppSettingPath()
@@ -127,10 +118,8 @@ namespace CruiseManager.WinForms.App
 
         private static string GetAppSettingsPath()
         {
-            string directory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) , "FMSC\\CruiseManager");
+            string directory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "FMSC\\CruiseManager");
             return Path.Combine(directory, "state.xml");
         }
-
-
     }
 }

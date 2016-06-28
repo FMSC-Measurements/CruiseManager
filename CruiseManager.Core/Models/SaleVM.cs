@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using CruiseDAL;
 using CruiseDAL.DataObjects;
-using CruiseDAL;
+using System;
 
 namespace CruiseManager.Core.Models
 {
@@ -17,11 +14,9 @@ namespace CruiseManager.Core.Models
             : base(database)
         { }
 
-
         public SaleVM(SaleDO sale)
             : base(sale)
         { }
-
 
         public int? DistrictNum
         {
@@ -32,9 +27,8 @@ namespace CruiseManager.Core.Models
                 int distNum;
                 if (int.TryParse(District, out distNum))
                 { return distNum; }
-                else 
+                else
                 { return null; }
-
             }
             set
             {
@@ -42,8 +36,6 @@ namespace CruiseManager.Core.Models
                 if (this.District == str) { return; }
                 this.District = str;
             }
-
         }
-
     }
 }

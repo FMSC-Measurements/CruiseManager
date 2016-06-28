@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.ComponentModel;
 using System.Reflection;
-using CruiseManager.WinForms;
-using System.Windows;
-using CruiseManager.Core.App;
 
-namespace CruiseManager.Utility 
+namespace CruiseManager.Utility
 {
     public class ProcessUpdateEventArgs
     {
@@ -21,7 +15,6 @@ namespace CruiseManager.Utility
 
     public class COConverter //: IDisposable
     {
-
         private delegate bool AsyncConvertCaller(String imputPath, String outputPath, ProcessUpdateEventHandler updateHandler);
 
         public static bool IsInstalled()
@@ -30,17 +23,16 @@ namespace CruiseManager.Utility
         }
 
         //public readonly string COCONVERT_PATH = string.Format(
-        //    "{0}\\utility\\COConverter.py", 
+        //    "{0}\\utility\\COConverter.py",
         //    Path.GetDirectoryName(Assembly.GetCallingAssembly().Location));
 
         //public static readonly string COConvertBat = String.Format(
-        //    "{0}\\Utility\\RunCOConvert.bat", 
+        //    "{0}\\Utility\\RunCOConvert.bat",
         //    CSM.WindowPresenter.GetApplicationDirectory());
 
         public static readonly string COConvertEXE = String.Format(
             "{0}\\Utility\\COConverter.exe",
             WinForms.App.PlatformHelper.GetApplicationDirectory());
-
 
         public BindingList<String> Output { get; private set; }
         public String ErrorOutput { get; private set; }
@@ -51,9 +43,8 @@ namespace CruiseManager.Utility
             //return System.IO.Path.GetFullPath(System.IO.Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath) + "\\utility\\COConverter.py");
         }
 
+        private AsyncConvertCaller _convertCallerHandel;
 
-
-        private AsyncConvertCaller _convertCallerHandel; 
         /// <summary>
         /// Begins a asyncronis process to convert a .crz file
         /// </summary>
@@ -62,7 +53,7 @@ namespace CruiseManager.Utility
         /// <param name="updateCaller">optional event handler to get called whenever the process progress updates</param>
         /// <param name="processDoneCallbackFunct">optional event handler to be called when the asyncronis process is done</param>
         /// <returns></returns>
-        public IAsyncResult BenginConvert(String inputPath, String outputPath, ProcessUpdateEventHandler updateHandler,  AsyncCallback processDoneCallbackFunct)
+        public IAsyncResult BenginConvert(String inputPath, String outputPath, ProcessUpdateEventHandler updateHandler, AsyncCallback processDoneCallbackFunct)
         {
             _convertCallerHandel = new AsyncConvertCaller(this.Convert);
 
@@ -70,7 +61,7 @@ namespace CruiseManager.Utility
         }
 
         /// <summary>
-        /// Waits until the Asyncronis process finishes 
+        /// Waits until the Asyncronis process finishes
         /// </summary>
         /// <param name="result"></param>
         /// <returns></returns>
@@ -84,7 +75,7 @@ namespace CruiseManager.Utility
             {
                 throw new ArgumentException("You must call BeginCreate first");
             }
-            
+
             return _convertCallerHandel.EndInvoke(result);
         }
 
@@ -96,7 +87,7 @@ namespace CruiseManager.Utility
             //module = PythonEngine.ImportModule("Utility.COConverter");
         }
 
-        private ProcessUpdateEventHandler _processUpdateEventHandle; 
+        private ProcessUpdateEventHandler _processUpdateEventHandle;
 
         /// <summary>
         /// Runs a process to convert a .crz file to a .cruise file
@@ -106,7 +97,7 @@ namespace CruiseManager.Utility
         /// <param name="updateCaller">optional event handler to get called whenever the process progress updates</param>
         /// <returns></returns>
         public bool Convert(
-            string targetPath, 
+            string targetPath,
             string outputPath,
             ProcessUpdateEventHandler updateHandler)
         {
@@ -121,7 +112,6 @@ namespace CruiseManager.Utility
                     throw new FileNotFoundException("target path can not be found", targetPath);
                 }
 
-
                 if (File.Exists(COConvertEXE) == false)                                               //throw exception if we are unable to locate python.exe
                 {
                     Trace.TraceError("COConverter can not be found");
@@ -132,7 +122,6 @@ namespace CruiseManager.Utility
 
                 using (Process myProcess = new Process())
                 {
-
                     try
                     {
                         myProcess.StartInfo.UseShellExecute = true;
@@ -160,7 +149,6 @@ namespace CruiseManager.Utility
                         //inputWriter.WriteLine();
                         //this.ErrorOutput = myProcess.StandardError.ReadToEnd();
                         myProcess.WaitForExit();
-
                     }
                     finally
                     {
@@ -169,18 +157,16 @@ namespace CruiseManager.Utility
 
                     if (myProcess.ExitCode == 1)
                     {
-
                         return false;
                     }
                     else if (myProcess.ExitCode == 0)
                     {
                         return true;
                     }
-
                 }
                 return false;//fall through case, shouln't be reachable
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 if (_processUpdateEventHandle != null)
                 {
@@ -200,11 +186,10 @@ namespace CruiseManager.Utility
         {
             if (e.Data == null) { return; }                                                     //if there's no data, return
             this.Output.Add(e.Data);                                                            //read the data to our output
-            if (_processUpdateEventHandle != null)                                              //if user requested update even 
+            if (_processUpdateEventHandle != null)                                              //if user requested update even
             {
                 _processUpdateEventHandle(new ProcessUpdateEventArgs() { output = e.Data });   //call update event
             }
         }
-
     }
 }

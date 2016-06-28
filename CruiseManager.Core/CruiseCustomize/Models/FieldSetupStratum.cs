@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using CruiseDAL.DataObjects;
-using CruiseDAL;
-using System.Collections.Specialized;
+﻿using CruiseDAL.DataObjects;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 
 namespace CruiseManager.Core.CruiseCustomize
@@ -11,15 +10,15 @@ namespace CruiseManager.Core.CruiseCustomize
     {
         private bool _hasEdits;
         private ObservableCollection<TreeFieldSetupDO> _selectedTreeFields;
-        private ObservableCollection<LogFieldSetupDO> _selectedLogFields; 
+        private ObservableCollection<LogFieldSetupDO> _selectedLogFields;
 
         public ObservableCollection<TreeFieldSetupDO> SelectedTreeFields
         {
             get { return _selectedTreeFields; }
             set
             {
-                if(_selectedTreeFields != null) { _selectedTreeFields.CollectionChanged -= this.FieldCollectionChanged; }
-                if(value != null) { value.CollectionChanged += this.FieldCollectionChanged; }
+                if (_selectedTreeFields != null) { _selectedTreeFields.CollectionChanged -= this.FieldCollectionChanged; }
+                if (value != null) { value.CollectionChanged += this.FieldCollectionChanged; }
                 _selectedTreeFields = value;
             }
         }
@@ -29,26 +28,24 @@ namespace CruiseManager.Core.CruiseCustomize
             get { return _selectedLogFields; }
             set
             {
-                if(_selectedLogFields != null) { _selectedLogFields.CollectionChanged -= this.FieldCollectionChanged; }
-                if(value != null) { value.CollectionChanged += this.FieldCollectionChanged; }
+                if (_selectedLogFields != null) { _selectedLogFields.CollectionChanged -= this.FieldCollectionChanged; }
+                if (value != null) { value.CollectionChanged += this.FieldCollectionChanged; }
                 _selectedLogFields = value;
             }
         }
 
-
         public List<TreeFieldSetupDO> UnselectedTreeFields { get; set; }
         public List<LogFieldSetupDO> UnselectedLogFields { get; set; }
 
-        
         public bool HasEdits
         {
             get
             {
-                return _hasEdits 
+                return _hasEdits
                     || SelectedTreeFields.Any(x => x.IsChanged)
-                    || SelectedLogFields.Any(x => x.IsChanged) 
-                    || UnselectedTreeFields.Any( x=> x.IsPersisted)
-                    || UnselectedLogFields.Any( x => x.IsPersisted);
+                    || SelectedLogFields.Any(x => x.IsChanged)
+                    || UnselectedTreeFields.Any(x => x.IsPersisted)
+                    || UnselectedLogFields.Any(x => x.IsPersisted);
             }
             protected set { _hasEdits = value; }
         }
@@ -63,6 +60,5 @@ namespace CruiseManager.Core.CruiseCustomize
             base.Save(option);
             this._hasEdits = false;
         }
-       
     }
 }

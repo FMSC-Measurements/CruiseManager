@@ -1,7 +1,5 @@
 ﻿using CruiseDAL.Schema;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CruiseManager.Core.Constants
 {

@@ -57,7 +57,7 @@ namespace CruiseManager.Core.CommandModel
 
         public override bool IsBoundTo(object value)
         {
-            if(_target == null || value == null) { return false; }
+            if (_target == null || value == null) { return false; }
             return object.ReferenceEquals(_target, value);
         }
 

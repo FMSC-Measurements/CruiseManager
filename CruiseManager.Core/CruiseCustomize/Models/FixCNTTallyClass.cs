@@ -8,12 +8,10 @@ namespace CruiseManager.Core.CruiseCustomize
 {
     public enum FixCNTTallyField { Unknown, DBH, TotalHeight };
 
-
-
     [EntitySource(SourceName = "FixCNTTallyClass")]
     public class FixCNTTallyClass : DataObject_Base
     {
-        public static readonly string[] FIXCNT_FIELD_NAMES = { "DBH", "TotalHeight", "DRC"};
+        public static readonly string[] FIXCNT_FIELD_NAMES = { "DBH", "TotalHeight", "DRC" };
 
         #region Persisted Members
 
@@ -25,7 +23,7 @@ namespace CruiseManager.Core.CruiseCustomize
             get { return _field; }
             set
             {
-                if(_field == value) { return; }
+                if (_field == value) { return; }
                 _field = value;
                 base.NotifyPropertyChanged(nameof(Field));
             }
@@ -43,7 +41,7 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             get
             {
-                return IsChanged 
+                return IsChanged
                     || !IsPersisted
                     || TallyPopulations.Any(x => x.HasChangesToSave);
             }
@@ -104,12 +102,11 @@ namespace CruiseManager.Core.CruiseCustomize
                     pop.TallyClass = this;
 
                     list.Add(pop);
-
                 }
             }
 
             return list;
-        }       
+        }
 
         public bool Validate()
         {

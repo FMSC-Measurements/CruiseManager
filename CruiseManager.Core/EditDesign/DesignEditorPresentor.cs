@@ -43,9 +43,35 @@ namespace CruiseManager.Core.EditDesign
 
         public DesignEditorDataContext DataContext { get; set; }
 
+        List<ProductCode> _productCodes;
+
         public List<Region> Regions { get; set; }
         public List<string> CruiseMethods { get; set; }
-        public List<ProductCode> ProductCodes { get; set; }
+
+        public List<ProductCode> PrimaryProductCodes
+        {
+            get
+            {
+                if (_productCodes == null)
+                {
+                    _productCodes = ApplicationController.SetupService.GetProductCodes();
+                }
+                return _productCodes;
+            }
+        }
+
+        public IEnumerable<ProductCode> SecondaryProductCodes
+        {
+            get
+            {
+                yield return ProductCode.Empty;
+                foreach (var pc in PrimaryProductCodes)
+                {
+                    yield return pc;
+                }
+            }
+        }
+
         public List<LoggingMethod> LoggingMethods { get; set; }
         public List<UOMCode> UOMCodes { get; set; }
 
@@ -320,7 +346,7 @@ namespace CruiseManager.Core.EditDesign
             CruiseMethods = this.ApplicationController.Database.GetCruiseMethods(this.DataContext.Sale.Purpose == "Recon");
             LoggingMethods = setupServ.GetLoggingMethods();
             UOMCodes = setupServ.GetUOMCodes();
-            ProductCodes = setupServ.GetProductCodes();
+            PrimaryProductCodes = setupServ.GetProductCodes();
         }
 
         /// <summary>

@@ -2,12 +2,6 @@
 using CruiseManager.Core.CommandModel;
 using CruiseManager.WinForms.App;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.CruiseCustomize
 {
@@ -15,11 +9,9 @@ namespace CruiseManager.WinForms.CruiseCustomize
     {
         ExceptionHandler _exceptionHandler = new ExceptionHandler();
 
-
         public CustomizeCruiseContainerView(ApplicationControllerBase appController) : base(appController)
         {
             InitializeComponent();
-
 
             this.ViewLinks = new ViewNavigateCommand[]
             {

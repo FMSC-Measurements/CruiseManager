@@ -1,30 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Collections;
-
-using System.Windows.Forms;
-
-using CruiseDAL.DataObjects;
-
+﻿using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
 using CruiseManager.Core.Constants;
 using CruiseManager.Core.EditDesign;
 using CruiseManager.Core.EditDesign.ViewInterfaces;
+using System;
+using System.Collections;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.EditDesign
 {
     public partial class EditDesignView : UserControlView, IEditDesignView
     {
-
-        protected IExceptionHandler ExceptionHandler { get; set; } 
-        protected WindowPresenter WindowPresenter { get; set; }
-
-
         public EditDesignView(WindowPresenter windowPresenter, DesignEditorPresentor viewPresenter)
         {
             this.ViewPresenter = viewPresenter;
@@ -42,23 +29,8 @@ namespace CruiseManager.WinForms.EditDesign
             set { base.ViewPresenter = value; }
         }
 
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            System.Diagnostics.Debug.Assert(ViewPresenter != null);
-            this.BindSetup();//bind setup needs to be called before bind data, otherwise comboBoxes wont bind properly 
-            this.BindData();
-            
-
-        }
-
-        public void BindSetup()
-        {
-            this.RegionBindingSource.DataSource = ViewPresenter.Regions;
-            this.cruiseMethodBindingSource.DataSource = ViewPresenter.CruiseMethods;
-            this.LoggingMethodBindingSource.DataSource = ViewPresenter.LoggingMethods;
-            this._BS_ProductTypes.DataSource = ViewPresenter.ProductCodes;
-        }
+        protected IExceptionHandler ExceptionHandler { get; set; }
+        protected WindowPresenter WindowPresenter { get; set; }
 
         public void BindData()
         {
@@ -74,12 +46,22 @@ namespace CruiseManager.WinForms.EditDesign
             this.CuttingUnits_StrataSelectionBindingSource.DataSource = ViewPresenter.DataContext.StrataFilterSelectionList;
             this.Strata_CuttingUnitsSelectionBindingSource.DataSource = ViewPresenter.DataContext.CuttingUnitFilterSelectionList;
             this.SampleGroups_StrataSelectionBindingSource.DataSource = ViewPresenter.DataContext.AllStrata;
+
             Strata_CuttingUnitBindingSource.DataSource = ViewPresenter.DataContext.AllCuttingUnits;
+        }
+
+        public void BindSetup()
+        {
+            this.RegionBindingSource.DataSource = ViewPresenter.Regions;
+            this.cruiseMethodBindingSource.DataSource = ViewPresenter.CruiseMethods;
+            this.LoggingMethodBindingSource.DataSource = ViewPresenter.LoggingMethods;
+            this._BS_ProductTypes.DataSource = ViewPresenter.PrimaryProductCodes;
+            secondaryProductDataGridViewTextBoxColumn.DataSource = ViewPresenter.SecondaryProductCodes.ToList();
         }
 
         public void EndEdits()
         {
-            //force focus away from any control that has focus, 
+            //force focus away from any control that has focus,
             //causing any control that has edited data to commit its data
             //this.Select(true, true);
 
@@ -89,15 +71,42 @@ namespace CruiseManager.WinForms.EditDesign
             this.SampleGroupBindingSource.EndEdit();
         }
 
-        #region cuttingUnitPage
-        private void CuttingUnits_StrataSelectionBindingSource_CurrentChanged(object sender, EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
-            var curStratum = CuttingUnits_StrataSelectionBindingSource.Current as StratumDO;
-            if (curStratum == null) { return; }
-            if (curStratum.Code == "All") { curStratum = null; }
-            ViewPresenter.FilterCutttingUnits(curStratum);
+            base.OnLoad(e);
+            System.Diagnostics.Debug.Assert(ViewPresenter != null);
+            this.BindSetup();//bind setup needs to be called before bind data, otherwise comboBoxes wont bind properly
+            this.BindData();
         }
-        
+
+        #region cuttingUnitPage
+
+        private void CuttingUnitDataGridView_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.RowIndex > CuttingUnitsBindingSource.Count) { return; }
+            try
+            {
+                var unit = CuttingUnitsBindingSource[e.RowIndex] as CuttingUnitDO;
+                if (unit == null) { return; }
+                var cell = CuttingUnitDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                String fieldName = CuttingUnitDataGridView.Columns[e.ColumnIndex].DataPropertyName;
+                cell.ReadOnly = !ViewPresenter.CanEditCuttingUnitField(unit, fieldName);
+            }
+            catch (IndexOutOfRangeException) { }
+            catch (Exception ex)
+            {
+                this.ExceptionHandler.Handel(ex);
+            }
+        }
+
+        private void CuttingUnitDataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            //ignore
+            //it would be nice to beable to handle a situation where the lookup value in a combobox column
+            //isn't exactly the same as the cell's value. EX. stored value is "421 " but value in combobox is "421" and causes a data error.
+            System.Diagnostics.Debug.WriteLine(e.Exception, "DataGridViewDataError");
+        }
+
         private void CuttingUnits_AddButton_Click(object sender, EventArgs e)
         {
             CuttingUnits_StrataSelectionBindingSource.Position = 0;//reset strata selection
@@ -115,37 +124,18 @@ namespace CruiseManager.WinForms.EditDesign
             catch (Exception ex)
             {
                 this.ExceptionHandler.Handel(ex);
-            }            
-        }
-        
-        private void CuttingUnitDataGridView_CellEnter(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0 || e.RowIndex > CuttingUnitsBindingSource.Count) { return; }
-            try
-            {
-                var unit = CuttingUnitsBindingSource[e.RowIndex] as CuttingUnitDO;
-                if (unit == null) { return; }
-                var cell = CuttingUnitDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                String fieldName = CuttingUnitDataGridView.Columns[e.ColumnIndex].DataPropertyName;
-                cell.ReadOnly = !ViewPresenter.CanEditCuttingUnitField(unit, fieldName);
             }
-            catch (IndexOutOfRangeException) { }
-            catch (Exception ex)
-            {
-                this.ExceptionHandler.Handel(ex);
-            }
-
         }
-        
-        private void CuttingUnitDataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
+
+        private void CuttingUnits_StrataSelectionBindingSource_CurrentChanged(object sender, EventArgs e)
         {
-            //ignore
-            //it would be nice to beable to handle a situation where the lookup value in a combobox column
-            //isn't exactly the same as the cell's value. EX. stored value is "421 " but value in combobox is "421" and causes a data error. 
-            System.Diagnostics.Debug.WriteLine(e.Exception, "DataGridViewDataError");
+            var curStratum = CuttingUnits_StrataSelectionBindingSource.Current as StratumDO;
+            if (curStratum == null) { return; }
+            if (curStratum.Code == "All") { curStratum = null; }
+            ViewPresenter.FilterCutttingUnits(curStratum);
         }
-        #endregion
 
+        #endregion cuttingUnitPage
 
         #region Strata Page
 
@@ -153,6 +143,35 @@ namespace CruiseManager.WinForms.EditDesign
         {
             Strata_CuttingUnitsSelectionBindingSource.Position = 0;//reset cutting unit selection
             ViewPresenter.AddStratum();
+        }
+
+        private void Strata_CuttingUnitsGridView_SelectionChanging(object sender, FMSC.Controls.SelectionChangingEventArgs e)
+        {
+            try
+            {
+                //stratum is being removed from cutting unit
+                StratumDO st = this.StrataBindingSource.Current as StratumDO;
+                if (e.IsRemoving == false) { return; } // we don't care if they are adding
+                if (st == null) { e.Cancel = true; return; }
+                //see if that stratum can be edited
+                if (!ViewPresenter.CanEditStratumField(st, null))
+                {
+                    throw new UserFacingException("Stratum Can Not Be Removed", null);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ExceptionHandler.Handel(ex);
+                e.Cancel = true;
+            }
+        }
+
+        private void Strata_CuttingUnitsSelectionBindingSource_CurrentChanged(object sender, EventArgs e)
+        {
+            var curUnit = Strata_CuttingUnitsSelectionBindingSource.Current as CuttingUnitDO;
+            if (curUnit == null) { return; }
+            if (curUnit.Code == "All") { curUnit = null; }
+            ViewPresenter.FilterStrata(curUnit);
         }
 
         private void Strata_DeleteButton_Click(object sender, EventArgs e)
@@ -169,41 +188,12 @@ namespace CruiseManager.WinForms.EditDesign
             }
         }
 
-        private void Strata_CuttingUnitsSelectionBindingSource_CurrentChanged(object sender, EventArgs e)
-        {
-            var curUnit = Strata_CuttingUnitsSelectionBindingSource.Current as CuttingUnitDO;
-            if (curUnit == null) { return; }
-            if (curUnit.Code == "All") { curUnit = null; }
-            ViewPresenter.FilterStrata(curUnit);
-        }
-
-        private void Strata_CuttingUnitsGridView_SelectionChanging(object sender, FMSC.Controls.SelectionChangingEventArgs e)
-        {
-            try
-            {
-                //stratum is being removed from cutting unit             
-                StratumDO st = this.StrataBindingSource.Current as StratumDO;
-                if (e.IsRemoving == false) { return; } // we don't care if they are adding 
-                if (st == null) { e.Cancel = true; return; }
-                //see if that stratum can be edited
-                if (!ViewPresenter.CanEditStratumField(st, null))
-                {
-                    throw new UserFacingException("Stratum Can Not Be Removed", null);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ExceptionHandler.Handel(ex);
-                e.Cancel = true; 
-            }
-        }
-
         private void StrataBindingSource_CurrentChanged(object sender, EventArgs e)
         {
             var stratum = StrataBindingSource.Current as StratumDO;
             //make sure the currently selected stratum is not null
             if (stratum == null) { return; }
-            //get the selection of cutting units in the stratum 
+            //get the selection of cutting units in the stratum
             stratum.CuttingUnits.Populate();
             //display the cutting units in the stratum
             Strata_CuttingUnitsGridView.SelectedItems = (IList)stratum.CuttingUnits;
@@ -229,79 +219,31 @@ namespace CruiseManager.WinForms.EditDesign
 
         private void StrataDataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
-            
             System.Diagnostics.Debug.WriteLine(e.Exception, "DataGridViewDataError");
         }
-        #endregion
+
+        #endregion Strata Page
 
         #region SampleGroup Page
 
-        private void SampleGroups_AddButton_Click(object sender, EventArgs e)
+        public void UpdateCuttingUnits(object cuttingUnits)
         {
-            try
-            {
-                ViewPresenter.GetNewSampleGroup();
-            }
-            catch (Exception ex)
-            {
-                this.ExceptionHandler.Handel(ex);
-            }
-            
+            this.CuttingUnitsBindingSource.DataSource = cuttingUnits;
         }
 
-        private void SampleGroups_DeleteButton_Click(object sender, EventArgs e)
+        public void UpdateSampleGroups(object samplegroups)
         {
-            try
-            {
-                var curSG = SampleGroupBindingSource.Current as SampleGroupDO;
-                ViewPresenter.DeleteSampleGroup(curSG);
-            }
-            catch (Exception ex)
-            {
-                this.ExceptionHandler.Handel(ex);
-            }
+            this.SampleGroupBindingSource.DataSource = samplegroups;
         }
 
-        private void SampleGroups_StrataSelectionBindingSource_CurrentChanged(object sender, EventArgs e)
+        public void UpdateSampleGroupTDVs(object tdvs)
         {
-            var curStratum = SampleGroups_StrataSelectionBindingSource.Current as StratumDO;
-            if (curStratum == null) { return; }
-            if (curStratum.Code == "All") { curStratum = null; }
-            ViewPresenter.SampleGroups_SelectedStrata = curStratum;
+            this.SampleGroup_TDVBindingSource.DataSource = tdvs;
         }
 
-        private void SampleGroups_TDVGridView_SelectionChanging(object sender, FMSC.Controls.SelectionChangingEventArgs e)
+        public void UpdateStrata(object strata)
         {
-            try
-            {
-                SampleGroupDO sg = this.SampleGroupBindingSource.Current as SampleGroupDO;
-                TreeDefaultValueDO tdv = e.Item as TreeDefaultValueDO;
-                if (e.IsRemoving == false) { return; } // we don't care if they are adding 
-                if (sg == null || tdv == null) { e.Cancel = true; return; }
-                if (!ViewPresenter.CanRemoveTreeDefault(sg, tdv))
-                {
-                    throw new UserFacingException("Can't remove this species because it has tree data or tree counts.", null);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ExceptionHandler.Handel(ex);
-                e.Cancel = false;
-            }
-        }
-
-        private void SampleGroupDataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0 || e.RowIndex > SampleGroupBindingSource.Count) { return; }
-            try
-            {
-                SampleGroupDO sg = this.SampleGroupBindingSource[e.RowIndex] as SampleGroupDO;
-                if (sg == null) { return; }
-                String propName = this.SampleGroupDataGridView.Columns[e.ColumnIndex].DataPropertyName;
-                this.ViewPresenter.HandleSampleGroupValueChanged(sg, propName);
-            }
-            catch (ArgumentOutOfRangeException) { }
-
+            this.StrataBindingSource.DataSource = strata;
         }
 
         private void _addSubPopBTN_Click(object sender, EventArgs e)
@@ -310,6 +252,20 @@ namespace CruiseManager.WinForms.EditDesign
             if (newTDV != null)
             {
                 this.ViewPresenter.DataContext.AllTreeDefaults.Add(newTDV);
+            }
+        }
+
+        private void _deleteSubPopBTN_Click(object sender, EventArgs e)
+        {
+            TreeDefaultValueDO tdv = this.SampleGroup_TDVBindingSource.Current as TreeDefaultValueDO;
+            if (tdv == null) { return; }
+            try
+            {
+                ViewPresenter.DeleteTreeDefaultValue(tdv);
+            }
+            catch (Exception ex)
+            {
+                this.ExceptionHandler.Handel(ex);
             }
         }
 
@@ -352,20 +308,6 @@ namespace CruiseManager.WinForms.EditDesign
             //}
         }
 
-        private void _deleteSubPopBTN_Click(object sender, EventArgs e)
-        {
-            TreeDefaultValueDO tdv = this.SampleGroup_TDVBindingSource.Current as TreeDefaultValueDO;
-            if (tdv == null) { return; }
-            try
-            {
-                ViewPresenter.DeleteTreeDefaultValue(tdv);
-            }
-            catch (Exception ex)
-            {
-                this.ExceptionHandler.Handel(ex);
-            }
-        }
-
         private void SampleGroupBindingSource_CurrentChanged(object sender, EventArgs e)
         {
             var sampleGroup = SampleGroupBindingSource.Current as SampleGroupDO;
@@ -379,7 +321,6 @@ namespace CruiseManager.WinForms.EditDesign
 
         private void SampleGroupDataGridView_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
-
             try
             {
                 var sg = SampleGroupBindingSource[e.RowIndex] as SampleGroupDO;
@@ -395,31 +336,77 @@ namespace CruiseManager.WinForms.EditDesign
             }
         }
 
+        private void SampleGroupDataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.RowIndex > SampleGroupBindingSource.Count) { return; }
+            try
+            {
+                SampleGroupDO sg = this.SampleGroupBindingSource[e.RowIndex] as SampleGroupDO;
+                if (sg == null) { return; }
+                String propName = this.SampleGroupDataGridView.Columns[e.ColumnIndex].DataPropertyName;
+                this.ViewPresenter.HandleSampleGroupValueChanged(sg, propName);
+            }
+            catch (ArgumentOutOfRangeException) { }
+        }
+
         private void SampleGroupDataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine(e.Exception, "DataGridViewDataErrror");
         }
 
-        public void UpdateSampleGroups(object samplegroups)
+        private void SampleGroups_AddButton_Click(object sender, EventArgs e)
         {
-            this.SampleGroupBindingSource.DataSource = samplegroups;
+            try
+            {
+                ViewPresenter.GetNewSampleGroup();
+            }
+            catch (Exception ex)
+            {
+                this.ExceptionHandler.Handel(ex);
+            }
         }
 
-        public void UpdateSampleGroupTDVs(object tdvs)
+        private void SampleGroups_DeleteButton_Click(object sender, EventArgs e)
         {
-            this.SampleGroup_TDVBindingSource.DataSource = tdvs;
+            try
+            {
+                var curSG = SampleGroupBindingSource.Current as SampleGroupDO;
+                ViewPresenter.DeleteSampleGroup(curSG);
+            }
+            catch (Exception ex)
+            {
+                this.ExceptionHandler.Handel(ex);
+            }
         }
 
-        public void UpdateStrata(object strata)
+        private void SampleGroups_StrataSelectionBindingSource_CurrentChanged(object sender, EventArgs e)
         {
-            this.StrataBindingSource.DataSource = strata;
+            var curStratum = SampleGroups_StrataSelectionBindingSource.Current as StratumDO;
+            if (curStratum == null) { return; }
+            if (curStratum.Code == "All") { curStratum = null; }
+            ViewPresenter.SampleGroups_SelectedStrata = curStratum;
         }
 
-        public void UpdateCuttingUnits(object cuttingUnits)
+        private void SampleGroups_TDVGridView_SelectionChanging(object sender, FMSC.Controls.SelectionChangingEventArgs e)
         {
-            this.CuttingUnitsBindingSource.DataSource = cuttingUnits;
+            try
+            {
+                SampleGroupDO sg = this.SampleGroupBindingSource.Current as SampleGroupDO;
+                TreeDefaultValueDO tdv = e.Item as TreeDefaultValueDO;
+                if (e.IsRemoving == false) { return; } // we don't care if they are adding
+                if (sg == null || tdv == null) { e.Cancel = true; return; }
+                if (!ViewPresenter.CanRemoveTreeDefault(sg, tdv))
+                {
+                    throw new UserFacingException("Can't remove this species because it has tree data or tree counts.", null);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ExceptionHandler.Handel(ex);
+                e.Cancel = false;
+            }
         }
-        #endregion
 
+        #endregion SampleGroup Page
     }
 }

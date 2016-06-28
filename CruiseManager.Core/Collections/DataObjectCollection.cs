@@ -1,7 +1,6 @@
 ﻿using CruiseDAL;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CruiseManager.Core.Collections
 {
@@ -37,7 +36,7 @@ namespace CruiseManager.Core.Collections
             {
                 TobeDeleted.Add(item);
             }
-            else if(!NewItems.Remove(item))
+            else if (!NewItems.Remove(item))
             {
                 throw new NotImplementedException();
             }

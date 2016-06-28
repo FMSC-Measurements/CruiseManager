@@ -1,11 +1,5 @@
 ﻿using CruiseManager.Core.App;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace CruiseManager.WinForms
@@ -26,7 +20,5 @@ namespace CruiseManager.WinForms
             FormSupervisorLogin view = new FormSupervisorLogin(this.ApplicationController);
             view.ShowDialog(this);
         }
-
-
     }
 }

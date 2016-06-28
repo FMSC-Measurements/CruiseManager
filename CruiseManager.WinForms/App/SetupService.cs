@@ -1,21 +1,13 @@
 ﻿using CruiseManager.Core.App;
 using Ionic.Zip;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CruiseManager.WinForms.App
 {
     public class SetupService : SetupServiceBase
     {
-
-
         public SetupService() : base()
         { }
-
 
         protected override void ExtractStream(string fileName, Stream stream)
         {

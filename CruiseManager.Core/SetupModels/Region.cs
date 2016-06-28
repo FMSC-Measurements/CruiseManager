@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml.Serialization;
 
 namespace CruiseManager.Core.SetupModels
@@ -34,7 +32,5 @@ namespace CruiseManager.Core.SetupModels
 
         [XmlIgnore]
         public Region Self { get { return this; } }
-
-        
     }
 }

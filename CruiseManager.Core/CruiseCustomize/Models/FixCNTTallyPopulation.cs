@@ -28,7 +28,6 @@ namespace CruiseManager.Core.CruiseCustomize
         [Field(Name = "FixCNTTallyClass_CN")]
         public long? FixCNTTallyClass_CN
         {
-
             get { return TallyClass.FixCNTTallyClass_CN; }
             set { }
         }

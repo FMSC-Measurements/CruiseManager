@@ -22,7 +22,7 @@
                 return x.Equals(y);
             else if (float.IsInfinity(y) | float.IsNaN(y))
                 return x.Equals(y);
-            else 
+            else
             {
                 return Math.Abs(x - y) < epsilon;
             }
@@ -42,7 +42,6 @@
 
         public static bool EqualsEx(this float? x, float y)
         {
-            
             if (x == null) { return false; }
             return x.Value.EqualsEx(y, DEFAULT_EPSILON);
         }
@@ -79,7 +78,7 @@
             }
         }
 
-        #endregion
+        #endregion Equals
 
         #region Less Than Or Equals
 
@@ -100,7 +99,7 @@
             }
         }
 
-        #endregion
+        #endregion Less Than Or Equals
 
         #region Less Than
 
@@ -121,7 +120,7 @@
             }
         }
 
-        #endregion
+        #endregion Less Than
 
         #region Greater Than Or Equals
 
@@ -142,9 +141,9 @@
             }
         }
 
-        #endregion
+        #endregion Greater Than Or Equals
 
-        #region Greater Than 
+        #region Greater Than
 
         public static bool GreaterThanEx(this float x, float y)
         {
@@ -163,7 +162,6 @@
             }
         }
 
-        #endregion
-
+        #endregion Greater Than
     }
 }

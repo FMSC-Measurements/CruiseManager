@@ -3,7 +3,6 @@ using CruiseDAL.DataObjects;
 using CruiseManager.Core.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CruiseManager.Core.App
 {
@@ -83,7 +82,6 @@ namespace CruiseManager.Core.App
             }
 
             return database.Read<TreeDefaultValueDO>("TreeDefaultValue", "JOIN SampleGroupTreeDefaultValue USING (TreeDefaultValue_CN) WHERE SampleGroup_CN = ?", tree.SampleGroup_CN);
-
         }
 
         public static object GetSampleGroupsByStratum(this DAL database, long? st_cn)
@@ -94,6 +92,5 @@ namespace CruiseManager.Core.App
             }
             return database.Read<SampleGroupDO>("SampleGroup", "WHERE Stratum_CN = ?", st_cn);
         }
-
     }
 }

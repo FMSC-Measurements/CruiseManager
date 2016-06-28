@@ -33,7 +33,7 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             get
             {
-                return IsChanged 
+                return IsChanged
                     || !IsPersisted
                     || TallyClass.HasChangesToSave;
             }

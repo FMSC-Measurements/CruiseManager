@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using CruiseDAL.DataObjects;
-using Logger;
+﻿using CruiseDAL.DataObjects;
+using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.CruiseWizard
 {
     public partial class StrataPage : UserControl, IPage
     {
-
         #region Ctor
+
         public StrataPage(string Name, CruiseWizardView MasterView)
         {
             this.MasterView = MasterView;
@@ -28,14 +26,17 @@ namespace CruiseManager.WinForms.CruiseWizard
             UpdateCruiseMethods(Presentor.CruiseMethods);
             MonthComboBox.DataSource = Enumerable.Range(1, 12).ToArray();
         }
-        #endregion
-        #endregion
+
+        #endregion Ctor Helper methods
+
+        #endregion Ctor
 
         #region Properties
+
         public CruiseWizardView MasterView { get; set; }
         public CruiseWizardPresenter Presentor { get { return MasterView.Presenter; } }
-        #endregion
 
+        #endregion Properties
 
         public void UpdateCruiseMethods(object value)
         {
@@ -43,6 +44,7 @@ namespace CruiseManager.WinForms.CruiseWizard
         }
 
         #region Click Events
+
         private void CuttingUnitButton_Click(object sender, EventArgs e)
         {
             Presentor.ShowCuttingUnits();
@@ -53,7 +55,6 @@ namespace CruiseManager.WinForms.CruiseWizard
             StratumDO st = StrataBindingSource.Current as StratumDO;
             Presentor.ShowSampleGroups(st);
         }
-
 
         //uses the x,y position of mouse click to find what item was clicked on
         //and determins if the item click resulted in the item being removed
@@ -79,7 +80,6 @@ namespace CruiseManager.WinForms.CruiseWizard
 
         //    if (CuttingUnitListBox.SelectedIndices.Contains(index))
         //    {
-
         //        stratum.CuttingUnits.Add(cuttingUnit);
         //    }
         //    else
@@ -87,7 +87,8 @@ namespace CruiseManager.WinForms.CruiseWizard
         //        stratum.CuttingUnits.Remove(cuttingUnit);
         //    }
         //}
-        #endregion
+
+        #endregion Click Events
 
         protected override void OnLoad(EventArgs e)
         {
@@ -96,7 +97,6 @@ namespace CruiseManager.WinForms.CruiseWizard
             if (Presentor.Strata.Count == 0)
             {
                 StrataBindingSource.AddNew();
- 
             }
             this.CodeTextBox.TextBox.Focus();
         }
@@ -105,7 +105,6 @@ namespace CruiseManager.WinForms.CruiseWizard
         {
             e.NewObject = Presentor.GetNewStratum();
         }
-
 
         private void StrataBindingSource_CurrentChanged(object sender, EventArgs e)
         {
@@ -123,8 +122,6 @@ namespace CruiseManager.WinForms.CruiseWizard
             stratum.CuttingUnits.Populate();
             CuttingUnitGridView.SelectedItems = stratum.CuttingUnits;
         }
-
-
 
         private void YearComboBox_DropDown(object sender, EventArgs e)
         {
@@ -170,12 +167,9 @@ namespace CruiseManager.WinForms.CruiseWizard
                 BAFTextBox.TextBox.Enabled = false;
                 FixedPlotSizeTextBox.TextBox.Enabled = false;
             }
-
         }
 
-
         #region IPage Members
-
 
         public bool HandleKeypress(System.Windows.Forms.Keys key)
         {
@@ -188,8 +182,6 @@ namespace CruiseManager.WinForms.CruiseWizard
             return false;
         }
 
-        #endregion
-
-        
+        #endregion IPage Members
     }
 }

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using CruiseDAL;
 using CruiseDAL.DataObjects;
-using CruiseDAL;
 using FMSC.ORM.EntityModel.Attributes;
 
 namespace CruiseManager.Core.CruiseCustomize
@@ -11,8 +7,13 @@ namespace CruiseManager.Core.CruiseCustomize
     [EntitySource(SourceName = "Tally")]
     public class TallyVM : TallyDO
     {
-        public TallyVM() : base() { }
-        public TallyVM(DAL db) : base(db) { }
+        public TallyVM() : base()
+        {
+        }
+
+        public TallyVM(DAL db) : base(db)
+        {
+        }
 
         public override string Hotkey
         {
@@ -23,7 +24,7 @@ namespace CruiseManager.Core.CruiseCustomize
 
             set
             {
-                if(base.Hotkey == value) { return; }
+                if (base.Hotkey == value) { return; }
                 base.Hotkey = value;
             }
         }
@@ -37,7 +38,7 @@ namespace CruiseManager.Core.CruiseCustomize
 
             set
             {
-                if(base.IndicatorType == value) { return; }
+                if (base.IndicatorType == value) { return; }
                 base.IndicatorType = value;
             }
         }
@@ -51,7 +52,7 @@ namespace CruiseManager.Core.CruiseCustomize
 
             set
             {
-                if(base.IndicatorValue == value) { return; }
+                if (base.IndicatorValue == value) { return; }
                 base.IndicatorValue = value;
             }
         }
@@ -65,12 +66,11 @@ namespace CruiseManager.Core.CruiseCustomize
 
             set
             {
-                if(base.Description == value) { return; }
+                if (base.Description == value) { return; }
                 base.Description = value;
             }
         }
     }
-
 
     public class TallyPopulation
     {

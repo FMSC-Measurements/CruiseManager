@@ -1312,7 +1312,7 @@
             // 
             this.secondaryProductDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
             this.secondaryProductDataGridViewTextBoxColumn.DataPropertyName = "SecondaryProduct";
-            this.secondaryProductDataGridViewTextBoxColumn.DataSource = this._BS_ProductTypes;
+            //this.secondaryProductDataGridViewTextBoxColumn.DataSource = this._BS_ProductTypes;
             this.secondaryProductDataGridViewTextBoxColumn.DisplayMember = "FriendlyValue";
             this.secondaryProductDataGridViewTextBoxColumn.HeaderText = "SProd";
             this.secondaryProductDataGridViewTextBoxColumn.Name = "secondaryProductDataGridViewTextBoxColumn";

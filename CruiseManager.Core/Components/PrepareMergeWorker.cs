@@ -1,32 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CruiseDAL;
-using System.Threading;
+﻿using CruiseDAL;
 using CruiseManager.Core.FileMaintenance;
+using System;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace CruiseManager.Core.Components
 {
-
-
     public class PrepareMergeWorker : IDisposable, IWorker
     {
-        public event EventHandler<WorkerProgressChangedEventArgs> ProgressChanged; 
-
-        
+        public event EventHandler<WorkerProgressChangedEventArgs> ProgressChanged;
 
         protected DAL MasterDB { get { return this.MergePresenter.MasterDB; } }
         protected IList<ComponentFileVM> Components { get { return this.MergePresenter.ActiveComponents; } }
 
         private IDictionary<String, MergeTableCommandBuilder> CommandBuilders { get { return this.MergePresenter.CommandBuilders; } }
         public MergeComponentsPresenter MergePresenter { get; set; }
+
         public PrepareMergeWorker(MergeComponentsPresenter mergePresenter)
         {
             this.MergePresenter = mergePresenter;
-
         }
-
 
         public void BeginWork()
         {
@@ -52,14 +45,13 @@ namespace CruiseManager.Core.Components
 
         public void DoWork()
         {
-            
             this.IsDone = false;
             this.IsCanceled = false;
 
             ConsolidateCountTreeScript maintenanceScript = new FileMaintenance.ConsolidateCountTreeScript();
 
             this.PatchFiles(maintenanceScript);
-            
+
             this.MakeMergeTables();
             this.PopulateMergeTables();
             this.ProcessMergeTables();
@@ -67,6 +59,7 @@ namespace CruiseManager.Core.Components
             this.IsDone = true;
             this.NotifyProgressChanged(this._workInCurrentJob, true, "Done", null);
         }
+
         //private bool CheckFiles(ConsolidateCountTreeScript maintenanceScript)
         //{
         //    bool masterOK = !maintenanceScript.CheckCanExecute(this.MasterDB);
@@ -86,7 +79,7 @@ namespace CruiseManager.Core.Components
                 PostStatus("Applying CountTree Fix To Master");
                 maintenanceScript.Execute(this.MasterDB);
             }
-            foreach(ComponentFileVM comp in this.Components)
+            foreach (ComponentFileVM comp in this.Components)
             {
                 if (maintenanceScript.CheckCanExecute(comp.Database))
                 {
@@ -106,7 +99,7 @@ namespace CruiseManager.Core.Components
             {
                 int percentDone = (int)(100 * (float)workDone / _workInCurrentJob);
                 System.Diagnostics.Debug.Assert(percentDone <= 100 && percentDone >= 0);
-                
+
                 WorkerProgressChangedEventArgs e = new WorkerProgressChangedEventArgs(percentDone)
                 {
                     IsDone = isDone,
@@ -116,9 +109,6 @@ namespace CruiseManager.Core.Components
                 this.ProgressChanged(this, e);
             }
         }
-
-        
-
 
         protected void MakeMergeTables()
         {
@@ -142,8 +132,6 @@ namespace CruiseManager.Core.Components
             }
         }
 
-
-
         private void MakeMergeTable(MergeTableCommandBuilder table)
         {
             this.CheckWorkerStatus();
@@ -152,10 +140,8 @@ namespace CruiseManager.Core.Components
             MasterDB.Execute("DROP TABLE IF EXISTS " + table.MergeTableName + ";");
             MasterDB.Execute(table.MakeMergeTableCommand);
 
-            EndJob();  
+            EndJob();
         }
-
-        
 
         public void PopulateMergeTables()
         {
@@ -168,7 +154,7 @@ namespace CruiseManager.Core.Components
 
         private void PopulateMergeTables(ComponentFileVM comp)
         {
-            MasterDB.AttachDB(comp.Database, "compDB"); //may throw exception                           
+            MasterDB.AttachDB(comp.Database, "compDB"); //may throw exception
             MasterDB.BeginTransaction();
             try
             {
@@ -196,10 +182,7 @@ namespace CruiseManager.Core.Components
             }
         }
 
-        
-
-
-        private void PopulateMergeTable(DAL masterDB ,MergeTableCommandBuilder table, ComponentFileVM comp)
+        private void PopulateMergeTable(DAL masterDB, MergeTableCommandBuilder table, ComponentFileVM comp)
         {
             CheckWorkerStatus();
 
@@ -248,14 +231,13 @@ namespace CruiseManager.Core.Components
 
             IdentifySiblingRecords(mergeDB, commandBuider);
             FindNaturalSiblingMatches(mergeDB, commandBuider);
-            //set match row id on valid matches 
-            
+            //set match row id on valid matches
 
             //if (commandBuider.RecordsUniqueAccrossComponents)
             //{
             //    ProcessCrossComponentConflicts(mergeDB, commandBuider);
             //    IdentifySiblingRecords(mergeDB, commandBuider);
-            //}            
+            //}
             if (commandBuider.HasRowVersion)
             {
                 SetMasterRowVersion(mergeDB, commandBuider);
@@ -265,12 +247,9 @@ namespace CruiseManager.Core.Components
             //    SetIncomingPlaceholder(mergeDB, commandBuider);
             //}
             if (commandBuider.MergeNewFromMaster)
-            {                
+            {
                 ProcessMasterNew(mergeDB, commandBuider);
             }
-
-
-
         }
 
         //private void ProcessExistingMasterRecordsWithoutGuids(DAL mergeDB, MergeTableCommandBuilder commandBuider)
@@ -330,17 +309,16 @@ namespace CruiseManager.Core.Components
 
         private void FindNaturalSiblingMatches(DAL mergeDB, MergeTableCommandBuilder cmdBldr)
         {
+            List<MergeObject> naturalSiblings = mergeDB.Query<MergeObject>(
+                "SELECT CompoundNaturalKey, NaturalSiblings FROM (" +
+                "SELECT CompoundNaturalKey, group_concat(MergeRowID, ',') as NaturalSiblings, count(1) as size FROM " + cmdBldr.MergeTableName +
+                " GROUP BY CompoundNaturalKey) WHERE size > 1;");
 
-                List<MergeObject> naturalSiblings = mergeDB.Query<MergeObject>(
-                    "SELECT CompoundNaturalKey, NaturalSiblings FROM (" +
-                    "SELECT CompoundNaturalKey, group_concat(MergeRowID, ',') as NaturalSiblings, count(1) as size FROM " + cmdBldr.MergeTableName +
-                    " GROUP BY CompoundNaturalKey) WHERE size > 1;");
-
-                string setNaturalSiblings = "UPDATE " + cmdBldr.MergeTableName + " SET NaturalSiblings = ? WHERE CompoundNaturalKey = ?;";
-                foreach (MergeObject groups in naturalSiblings)
-                {
-                    mergeDB.Execute(setNaturalSiblings, groups.NaturalSiblings, groups.CompoundNaturalKey);
-                }
+            string setNaturalSiblings = "UPDATE " + cmdBldr.MergeTableName + " SET NaturalSiblings = ? WHERE CompoundNaturalKey = ?;";
+            foreach (MergeObject groups in naturalSiblings)
+            {
+                mergeDB.Execute(setNaturalSiblings, groups.NaturalSiblings, groups.CompoundNaturalKey);
+            }
         }
 
         private void SetPartialMatches(DAL mergeDB, MergeTableCommandBuilder cmdBldr)
@@ -369,12 +347,11 @@ namespace CruiseManager.Core.Components
 
             List<MergeObject> partialMatchs = mergeDB.Query<MergeObject>(selectPartialMatches);
             string setPartialMatch = "UPDATE " + cmdBldr.MergeTableName + " SET PartialMatch = ? WHERE MergeRowID = ?;";
-            foreach(MergeObject mRec in partialMatchs)
+            foreach (MergeObject mRec in partialMatchs)
             {
                 mergeDB.Execute(setPartialMatch, mRec.PartialMatch, mRec.MergeRowID);
             }
         }
-
 
         //private void ProcessMasterConflicts(DAL mergeDB, MergeTableCommandBuilder commandBuider)
         //{
@@ -399,7 +376,7 @@ namespace CruiseManager.Core.Components
         {
             if (cmdBldr.DoKeyMatch)
             {
-                List<MergeObject> keyMatches = master.Query<MergeObject>(cmdBldr.SelectRowIDMatches);                
+                List<MergeObject> keyMatches = master.Query<MergeObject>(cmdBldr.SelectRowIDMatches);
                 this._workInCurrentJob += keyMatches.Count;
                 string setKeyMatch = "UPDATE " + cmdBldr.MergeTableName + " SET RowIDMatch = ? WHERE MergeRowID = ?;";
                 foreach (MergeObject item in keyMatches)
@@ -415,7 +392,7 @@ namespace CruiseManager.Core.Components
                 List<MergeObject> natMatches = master.Query<MergeObject>(cmdBldr.SelectNaturalMatches);
                 this._workInCurrentJob += natMatches.Count;
                 string setNatMatch = "UPDATE " + cmdBldr.MergeTableName + " SET NaturalMatch = ? WHERE MergeRowID = ?;";
-                foreach(MergeObject mRec in natMatches)
+                foreach (MergeObject mRec in natMatches)
                 {
                     CheckWorkerStatus();
                     master.Execute(setNatMatch, mRec.NaturalMatch, mRec.MergeRowID);
@@ -428,7 +405,7 @@ namespace CruiseManager.Core.Components
                 List<MergeObject> guidMatches = master.Query<MergeObject>(cmdBldr.SelectGUIDMatches);
                 this._workInCurrentJob += guidMatches.Count;
                 string setGuidMatch = "UPDATE " + cmdBldr.MergeTableName + " SET GUIDMatch = ? WHERE MergeRowID = ?;";
-                foreach(MergeObject mRec in guidMatches)
+                foreach (MergeObject mRec in guidMatches)
                 {
                     CheckWorkerStatus();
                     master.Execute(setGuidMatch, mRec.GUIDMatch, mRec.MergeRowID);
@@ -439,7 +416,7 @@ namespace CruiseManager.Core.Components
 
         //private void ProcessMissingRecords(DAL mergeDB, MergeTableCommandBuilder commandBuider)
         //{
-        //    //check records in master against records in merge table, for missing matches 
+        //    //check records in master against records in merge table, for missing matches
         //    //create merge record where component row id and component GUID is null
         //    List<MergeObject> missing = mergeDB.Query<MergeObject>(
         //            commandBuider.MissingRecords);
@@ -473,7 +450,7 @@ namespace CruiseManager.Core.Components
 
         //private void ProcessInvalidMatchs(DAL master, MergeTableCommandBuilder cmdBldr)
         //{
-        //    string setConflict = "UPDATE " + cmdBldr.MergeTableName + 
+        //    string setConflict = "UPDATE " + cmdBldr.MergeTableName +
         //        " SET MatchConflict = 'invalid match' " +
         //        "WHERE MergeRowID IN (" + cmdBldr.SelectInvalidMatchs +");";
         //    master.Execute(setConflict);
@@ -498,13 +475,8 @@ namespace CruiseManager.Core.Components
                     " WHERE GUIDMatch IS NOT NULL");
             }
 
-
-
             string selectSiblings = "SELECT SiblingRecords FROM (SELECT PartialMatch , group_concat(MergeRowID, ',') as SiblingRecords, count(1) as size FROM ( " +
                 string.Join(" UNION ", matchSources.ToArray()) + " )  GROUP BY PartialMatch) where size > 1;";
-
-
-
 
             List<MergeObject> siblingsGroups = master.Query<MergeObject>(selectSiblings);
             string setSiblingsformat = "UPDATE " + cmdBldr.MergeTableName + " SET SiblingRecords = ifnull(SiblingRecords, '') || ?  WHERE MergeRowID in ({0});";
@@ -513,8 +485,6 @@ namespace CruiseManager.Core.Components
                 string setSiblings = String.Format(setSiblingsformat, mRec.SiblingRecords);
                 master.Execute(setSiblings, mRec.SiblingRecords);
             }
-
-
 
             //List<MergeObject> matchConflicts = master.Query<MergeObject>(cmdBldr.SelectSiblingRecords);
 
@@ -528,7 +498,6 @@ namespace CruiseManager.Core.Components
             //    master.Execute(setMatchConflicts, item.SiblingRecords, item.PartialMatch);
             //    this.NotifyProgressChanged(this._progressInCurrentJob++, false, null, null);
             //}
-
         }
 
         private void SetMasterRowVersion(DAL master, MergeTableCommandBuilder cmdBldr)
@@ -543,13 +512,12 @@ namespace CruiseManager.Core.Components
         //{
         //    List<MergeObject> incomming = master.Query<MergeObject>("SELECT * FROM " + cmdBldr.MergeTableName +
         //        " WHERE MatchRowID IS NULL AND MatchConflict IS NULL" +
-        //        " GROUP BY " + String.Join(", ", cmdBldr.ClientUniqueFieldNames) + 
+        //        " GROUP BY " + String.Join(", ", cmdBldr.ClientUniqueFieldNames) +
         //        " ORDER BY ComponentID;");
         //    this._workInCurrentJob += incomming.Count;
 
-
         //    string setplaceHolder = "UPDATE " + cmdBldr.MergeTableName + " SET IncomingPlaceholder = ? WHERE MergeRowID = ?;";
-        //    long placeHolderCounter = 0; 
+        //    long placeHolderCounter = 0;
         //    foreach (MergeObject mRec in incomming)
         //    {
         //        CheckWorkerStatus();
@@ -571,6 +539,7 @@ namespace CruiseManager.Core.Components
                 }
             }
         }
+
         #region IDisposable Members
 
         protected void Dispose(bool disposing)
@@ -586,7 +555,7 @@ namespace CruiseManager.Core.Components
                     this._thread = null;
                 }
 
-                this.MergePresenter = null; 
+                this.MergePresenter = null;
             }
         }
 
@@ -595,22 +564,22 @@ namespace CruiseManager.Core.Components
             this.Dispose(true);
         }
 
-        #endregion
+        #endregion IDisposable Members
 
         #region IWorker Members
 
         private object _threadLock = new object();
         private bool _isCanceled;
         private bool _isDone;
-        private Thread _thread; 
-        private int _workInCurrentJob = 1; 
+        private Thread _thread;
+        private int _workInCurrentJob = 1;
         private int _progressInCurrentJob;
 
         public string ActionName { get { return "Check Files"; } }
 
         public bool IsDone
         {
-            get 
+            get
             {
                 lock (_threadLock)
                 {
@@ -637,7 +606,7 @@ namespace CruiseManager.Core.Components
 
         public bool IsCanceled
         {
-            get 
+            get
             {
                 lock (_threadLock)
                 {
@@ -702,7 +671,6 @@ namespace CruiseManager.Core.Components
             this.NotifyProgressChanged(this._progressInCurrentJob, false, message, null);
         }
 
-        #endregion
+        #endregion IWorker Members
     }
-
 }

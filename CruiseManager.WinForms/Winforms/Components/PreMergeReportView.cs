@@ -1,12 +1,8 @@
-﻿using System;
+﻿using CruiseManager.Core.Components;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using CruiseManager.Core.Components;
 
 namespace CruiseManager.WinForms.Components
 {
@@ -21,27 +17,26 @@ namespace CruiseManager.WinForms.Components
 
             public MergeTableCommandBuilder CmdBldr;
             public DataGridView ConflictsDGV;
-            public DataGridView MatchDGV; 
-            public DataGridView NewDGV; 
-            //public DataGridView DeletedDGV; 
-            public BindingSource ConflictsDataSource;
-            public BindingSource MatchDataSource; 
-            public BindingSource NewDataSource; 
-            //public BindingSource DeletedDataSource; 
-        }
+            public DataGridView MatchDGV;
+            public DataGridView NewDGV;
 
+            //public DataGridView DeletedDGV;
+            public BindingSource ConflictsDataSource;
+
+            public BindingSource MatchDataSource;
+            public BindingSource NewDataSource;
+            //public BindingSource DeletedDataSource;
+        }
 
         public PreMergeReportView(MergeComponentsPresenter viewPresenter)
         {
-            this.ViewPresenter = viewPresenter; 
+            this.ViewPresenter = viewPresenter;
             InitializeComponent();
 
-
             InitializeTableByTableViews();
-
         }
 
-        List<ViewDataLink> _viewDataLinks; 
+        List<ViewDataLink> _viewDataLinks;
 
         MergeComponentsPresenter ViewPresenter { get; set; }
 
@@ -57,7 +52,7 @@ namespace CruiseManager.WinForms.Components
                 new DataGridViewTextBoxColumn(){ DataPropertyName = "ComponentID", HeaderText = "Component File Number", ReadOnly = true},
                 new DataGridViewTextBoxColumn(){ DataPropertyName = "GUIDMatch", HeaderText = "GUIDMatch", ReadOnly = true},
                 new DataGridViewTextBoxColumn(){ DataPropertyName = "RowIDMatch", HeaderText = "RowIDMatch", ReadOnly = true},
-                new DataGridViewTextBoxColumn(){ DataPropertyName = "NaturalMatch", HeaderText = "NaturalMatch", ReadOnly = true},                
+                new DataGridViewTextBoxColumn(){ DataPropertyName = "NaturalMatch", HeaderText = "NaturalMatch", ReadOnly = true},
                 new DataGridViewTextBoxColumn(){ DataPropertyName = "MasterRowVersion", HeaderText = "MasterRowVersion", ReadOnly = true},
                 new DataGridViewTextBoxColumn(){ DataPropertyName = "ComponentRowVersion", HeaderText = "ComponentRowVersion", ReadOnly = true},
                 //new DataGridViewTextBoxColumn(){ DataPropertyName = "ComponentConflict", HeaderText = "ComponentConflict", ReadOnly = true},
@@ -67,12 +62,10 @@ namespace CruiseManager.WinForms.Components
             return cols;
         }
 
-
         public void InitializeTableByTableViews()
         {
             _viewDataLinks = (from MergeTableCommandBuilder bldr in ViewPresenter.CommandBuilders.Values
-                                                      select new ViewDataLink(bldr)).ToList();
-
+                              select new ViewDataLink(bldr)).ToList();
 
             foreach (ViewDataLink thing in _viewDataLinks)
             {
@@ -81,12 +74,13 @@ namespace CruiseManager.WinForms.Components
 
                 thing.ConflictsDataSource = new BindingSource(typeof(MergeObject), (string)null);
 
-                thing.ConflictsDGV = new DataGridView(){
-                    AllowUserToAddRows = false, 
+                thing.ConflictsDGV = new DataGridView()
+                {
+                    AllowUserToAddRows = false,
                     AllowUserToDeleteRows = false,
-                    AllowUserToOrderColumns = false, 
-                    AllowUserToResizeColumns = false, 
-                    AllowUserToResizeRows = false, 
+                    AllowUserToOrderColumns = false,
+                    AllowUserToResizeColumns = false,
+                    AllowUserToResizeRows = false,
                     AutoGenerateColumns = false,
                     Dock = DockStyle.Fill
                 };
@@ -107,11 +101,12 @@ namespace CruiseManager.WinForms.Components
 
                 thing.MatchDataSource = new BindingSource(typeof(MergeObject), (string)null);
 
-                thing.MatchDGV = new DataGridView(){
-                    AllowUserToAddRows = false, 
+                thing.MatchDGV = new DataGridView()
+                {
+                    AllowUserToAddRows = false,
                     AllowUserToDeleteRows = false,
-                    AllowUserToOrderColumns = false, 
-                    AllowUserToResizeColumns = false, 
+                    AllowUserToOrderColumns = false,
+                    AllowUserToResizeColumns = false,
                     AllowUserToResizeRows = false,
                     AutoGenerateColumns = false,
                     Dock = DockStyle.Fill
@@ -169,7 +164,7 @@ namespace CruiseManager.WinForms.Components
             //        Dock = DockStyle.Fill,
             //        DataSource = thing.DeletedDataSource
             //    };
-                
+
             //    thing.DeletedDGV.Columns.AddRange(BuildDGVColumns());
 
             //    tp.Controls.Add(thing.DeletedDGV);
@@ -177,9 +172,7 @@ namespace CruiseManager.WinForms.Components
             //    _TH_deletions.TabPages.Add(tp);
             //    tp.ResumeLayout();
             //}
-                 
         }
-
 
         public void UpdateView()
         {
@@ -190,11 +183,9 @@ namespace CruiseManager.WinForms.Components
         }
 
         private bool _matchesLoaded = false;
-        
 
         private void _TP_matches_Enter(object sender, EventArgs e)
         {
-
             if (!_matchesLoaded)
             {
                 foreach (ViewDataLink link in _viewDataLinks)
@@ -205,8 +196,8 @@ namespace CruiseManager.WinForms.Components
             }
         }
 
-
         private bool _newLoaded = false;
+
         private void _TP_new_Enter(object sender, EventArgs e)
         {
             if (!_newLoaded)
@@ -231,6 +222,5 @@ namespace CruiseManager.WinForms.Components
         //        _deletedLoaded = true;
         //    }
         //}
-
     }
 }

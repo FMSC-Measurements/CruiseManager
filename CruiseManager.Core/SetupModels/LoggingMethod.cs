@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml.Serialization;
 
 namespace CruiseManager.Core.SetupModels
 {
     [Serializable]
-    
-    public class LoggingMethod 
+    public class LoggingMethod
     {
-        public LoggingMethod() { }
+        public LoggingMethod()
+        {
+        }
 
         public LoggingMethod(String[] values)
         {
@@ -23,8 +21,6 @@ namespace CruiseManager.Core.SetupModels
 
         [XmlAttribute]
         public String FriendlyValue { get; set; }
-
-       
 
         [XmlIgnore]
         public string CodePlus

@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using CruiseDAL;
+﻿using CruiseDAL;
 using CruiseDAL.DataObjects;
-using System.IO;
 using CruiseManager.Core.App;
+using CruiseManager.Core.Components.ViewInterfaces;
 using CruiseManager.Core.Constants;
 using CruiseManager.Core.ViewModel;
-using CruiseManager.Core.Components.ViewInterfaces;
 using FMSC.ORM.Core.SQL;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace CruiseManager.Core.Components
 {
@@ -17,15 +17,16 @@ namespace CruiseManager.Core.Components
         static int PLOT_ROW_SPACING = 1000;
 
         //private int _progressPercentage = 0;
-        //private bool _showProgress = false; 
-        //private bool _lastOpperationSuccess = false; 
-        //private string _lastError = null; 
+        //private bool _showProgress = false;
+        //private bool _lastOpperationSuccess = false;
+        //private string _lastError = null;
 
         private string _masterPath;
         private bool _doesMasterExist;
         public int NumComponents { get; set; }
 
         private DAL _masterDAL;
+
         private DAL MasterDAL
         {
             get
@@ -37,7 +38,7 @@ namespace CruiseManager.Core.Components
                 if (_masterDAL != null)
                 {
                     if (value != null && _masterDAL.Path == value.Path)
-                    { return; }//break out 
+                    { return; }//break out
                     else
                     {
                         _masterDAL.Dispose();
@@ -48,17 +49,18 @@ namespace CruiseManager.Core.Components
         }
 
         public DAL ParentDB { get { return ApplicationController.Database; } }
-        public new ICreateComponentView View {
-            get { return (ICreateComponentView)base.View; }
-            set { base.View = value; } }
 
+        public new ICreateComponentView View
+        {
+            get { return (ICreateComponentView)base.View; }
+            set { base.View = value; }
+        }
 
         public CreateComponentPresenter(ApplicationControllerBase applicationController)
         {
             this.ApplicationController = applicationController;
 
             InitializeState();
-
         }
 
         private void InitializeState()
@@ -81,8 +83,8 @@ namespace CruiseManager.Core.Components
         {
             //start up the progress bar
             int totalSteps = numComponents + 4;
-            View.InitializeAndShowProgress(totalSteps); 
-  
+            View.InitializeAndShowProgress(totalSteps);
+
             if (!_doesMasterExist)
             {
                 //initialize a master component file
@@ -98,7 +100,7 @@ namespace CruiseManager.Core.Components
 
             //insert component records into the master file
             List<ComponentDO> componentInfo = BuildMasterComponentTable(MasterDAL, numComponents);
-       
+
             View.StepProgressBar();/////////////////////////////////////////////////
 
             int curCompNum = 1;
@@ -140,7 +142,6 @@ namespace CruiseManager.Core.Components
             View.StepProgressBar();/////////////////////////////////////////////////
 
             View.HideProgressBar();
-
         }
 
         protected void CreateComponent(DAL masterDAL, int compNum, ComponentDO compInfo, String compPath)
@@ -157,8 +158,7 @@ namespace CruiseManager.Core.Components
                 string command = string.Format("UPDATE CountTree Set Component_CN = {0};", compInfo.Component_CN);
                 compDB.Execute(command);
 
-
-                //Set the starting rowID for each component 
+                //Set the starting rowID for each component
                 compDB.SetTableAutoIncrementStart("Tree", GetComponentRowIDStart(compNum));
                 compDB.SetTableAutoIncrementStart("Log", GetComponentRowIDStart(compNum));
                 compDB.SetTableAutoIncrementStart("TreeEstimate", GetComponentRowIDStart(compNum));
@@ -168,19 +168,17 @@ namespace CruiseManager.Core.Components
                 compDB.Execute("DELETE FROM Globals WHERE Block = 'Comp' AND Key = 'ChildComponents';");
                 compDB.Execute("DELETE FROM Globals WHERE Block = 'Comp' AND Key = 'LastMerge';");
 
-
                 compDB.CommitTransaction();
             }
             catch (Exception)
             {
                 compDB.RollbackTransaction();
-                try 
+                try
                 {
                     //component is probably jacked up, so delete it
                     System.IO.File.Delete(compDB.Path);
                 }
                 catch { } //may throw exception if file doesn't exist, but we can ignore that
-
             }
             finally
             {
@@ -188,14 +186,12 @@ namespace CruiseManager.Core.Components
             }
         }
 
-
-
         //private static void ClearFieldData(DAL database)
         //{
         //    database.Execute(CSM.Utility.SQL.CLEAR_FIELD_DATA);
         //}
 
-        //inserts Component Records into master 
+        //inserts Component Records into master
         private static List<ComponentDO> BuildMasterComponentTable(DAL masterDAL, int numComp)
         {
             string masterFileName = System.IO.Path.GetFileName(masterDAL.Path);
@@ -217,7 +213,6 @@ namespace CruiseManager.Core.Components
             return compList;
         }
 
-        
         protected static int GetComponentRowIDStart(int compNum)
         {
             return compNum * ROWID_SPACING;
@@ -243,12 +238,8 @@ namespace CruiseManager.Core.Components
 
         //protected override void OnViewLoad(EventArgs e)
         //{
-            
         //}
 
-
-        #endregion
-
-
+        #endregion Presentor Members
     }
 }

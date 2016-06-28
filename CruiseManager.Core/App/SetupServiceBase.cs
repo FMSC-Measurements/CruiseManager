@@ -1,14 +1,13 @@
-using System.IO;
-using System.Xml.Serialization;
-using System.Collections.Generic;
-using System;
 using CruiseDAL.DataObjects;
-using System.Reflection;
 using CruiseManager.Core.SetupModels;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Xml.Serialization;
 
 namespace CruiseManager.Core.App
 {
-
     public abstract class SetupServiceBase
     {
         public static readonly string DEFAULT_SETUP_PATH = "\\STPinfo.setup";
@@ -22,7 +21,6 @@ namespace CruiseManager.Core.App
         public static readonly string CRUISE_METHOD_FILE_NAME = @"CruiseMethods.xml";
         public static readonly string TREE_DEFAULT_FILE_NAME = "TreeDefaults.xml";
         public static readonly string REGION_FILE_NAME = "Regions.xml";
-
 
         //public static SetupService Instance { get; set; }
 
@@ -63,10 +61,8 @@ namespace CruiseManager.Core.App
         }
 
         protected abstract void ExtractStream(string fileName, Stream stream);
-        
 
         protected abstract void SaveStream(string fileName, MemoryStream stream);
-       
 
         public List<CruiseMethod> GetCruiseMethods()
         {
@@ -74,8 +70,7 @@ namespace CruiseManager.Core.App
             CheckFileExists();
             using (Stream stream = new MemoryStream())
             {
-                
-                ExtractStream(CRUISE_METHOD_FILE_NAME, stream);             
+                ExtractStream(CRUISE_METHOD_FILE_NAME, stream);
                 XmlSerializer s = new XmlSerializer(typeof(List<CruiseMethod>));
                 list = s.Deserialize(stream) as List<CruiseMethod>;
             }
@@ -123,11 +118,8 @@ namespace CruiseManager.Core.App
                 {
                     return new List<Region>();
                 }
-                
             }
-
         }
-        
 
         public List<ThreePCode> GetThreePCodes()
         {
@@ -138,7 +130,6 @@ namespace CruiseManager.Core.App
                 XmlSerializer s = new XmlSerializer(typeof(List<ThreePCode>));
                 return s.Deserialize(stream) as List<ThreePCode>;
             }
-
         }
 
         public List<LoggingMethod> GetLoggingMethods()
@@ -196,15 +187,11 @@ namespace CruiseManager.Core.App
             }
         }
 
-
-
-
         public List<TreeDefaultValueDO> GetTreeDefaults()
         {
             CheckFileExists();
             using (Stream stream = new MemoryStream())
             {
-
                 ExtractStream(TREE_DEFAULT_FILE_NAME, stream);
                 XmlSerializer s = new XmlSerializer(typeof(List<TreeDefaultValueDO>));
                 return s.Deserialize(stream) as List<TreeDefaultValueDO>;
@@ -220,7 +207,6 @@ namespace CruiseManager.Core.App
                 s.Serialize(stream, tdvList);
                 SaveStream(TREE_DEFAULT_FILE_NAME, stream);
             }
-
         }
 
         public void SaveLoggingMethods(List<LoggingMethod> lMeths)
@@ -255,8 +241,5 @@ namespace CruiseManager.Core.App
                 SaveStream(UOM_FILE_NAME, stream);
             }
         }
-
-
     }
-
 }

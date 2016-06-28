@@ -16,10 +16,8 @@
 ////        public SampleGroupDO SampleGroupFilter { get; set; }
 ////        public TreeDefaultValueDO SpeciesFilter { get; set; }
 
-
 //        public DataEditorPresentor(WindowPresenter WindowPresenter, DataEditorView view)
 //        {
-
 //            this.WindowPresenter = WindowPresenter;
 //            this.View = view;
 //            //this.View.Presentor = this;
@@ -82,7 +80,6 @@
 //            set { _currentTreeDefaultValue = value; }
 //        }
 
-
 //        public List<StratumDO> Strata { get; set; }
 //        public List<CuttingUnitDO> CuttingUnits { get; set; }
 //        public List<TreeDO> Trees { get; set; }
@@ -94,7 +91,6 @@
 
 //        public bool CanSelectSampleGroup { get; set; }
 //        public bool CanSelectTreeDefaultValue { get; set; }
-
 
 //        protected void ChangeCurrentStratum(StratumDO value)
 //        {
@@ -136,8 +132,6 @@
 
 //            View.Update();
 //        }
-
-
 
 //        protected List<TreeDO> ReadTrees(CuttingUnitDO cu, StratumDO st, SampleGroupDO sg, TreeDefaultValueDO tdv)
 //        {

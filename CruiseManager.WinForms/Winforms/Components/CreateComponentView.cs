@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using CruiseManager.Core.Components;
+﻿using CruiseManager.Core.Components;
 using CruiseManager.Core.Components.ViewInterfaces;
+using System;
 
 namespace CruiseManager.WinForms.Components
 {
@@ -21,7 +14,7 @@ namespace CruiseManager.WinForms.Components
             this.ViewPresenter.View = this;
         }
 
-        public new CreateComponentPresenter ViewPresenter 
+        public new CreateComponentPresenter ViewPresenter
         {
             get { return (CreateComponentPresenter)base.ViewPresenter; }
             set { base.ViewPresenter = value; }
@@ -33,8 +26,6 @@ namespace CruiseManager.WinForms.Components
             System.Diagnostics.Debug.Assert(ViewPresenter != null);
             this.__numCompTB.Value = (Decimal)ViewPresenter.NumComponents;
         }
-
-
 
         private void __makeBtn_Click(object sender, EventArgs e)
         {
@@ -60,7 +51,6 @@ namespace CruiseManager.WinForms.Components
         {
             this.__progressBar.PerformStep();
         }
-
 
         public void EndEdits()
         {

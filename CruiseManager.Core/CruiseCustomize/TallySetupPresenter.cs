@@ -1,5 +1,4 @@
 ﻿using CruiseDAL;
-using CruiseDAL.Enums;
 using CruiseManager.Core.App;
 using CruiseManager.Core.Constants;
 using CruiseManager.Core.ViewModel;
@@ -53,8 +52,6 @@ namespace CruiseManager.Core.CruiseCustomize
                     .Where("Method = '" + CruiseDAL.Schema.CruiseMethods.FIXCNT + "'")
                     .Query();
 
-                
-
                 foreach (var stratum in standardStata)
                 {
                     stratum.Initialize();
@@ -82,7 +79,7 @@ namespace CruiseManager.Core.CruiseCustomize
             bool isValid = true;
             foreach (TallySetupStratum_Base st in this.TallySetupStrata)
             {
-                if(!st.Validate())
+                if (!st.Validate())
                 {
                     errorBuilder.AppendLine("Stratum " + st.Code + ":");
                     errorBuilder.AppendLine(st.Errors);

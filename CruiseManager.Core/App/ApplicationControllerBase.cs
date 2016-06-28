@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CruiseDAL;
+﻿using CruiseDAL;
 using CruiseDAL.DataObjects;
-using System.IO;
-using CruiseManager.Core.Constants;
 using CruiseManager.Core.CommandModel;
+using CruiseManager.Core.Constants;
 using CruiseManager.Core.ViewInterfaces;
-using System.ComponentModel;
+using CruiseManager.Core.ViewModel;
 using Ninject;
 using Ninject.Modules;
-using CruiseManager.Core.ViewModel;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 
 namespace CruiseManager.Core.App
 {
@@ -22,25 +20,30 @@ namespace CruiseManager.Core.App
         public Ninject.StandardKernel Kernel { get; set; }
 
         #region ViewCommands
+
         public BindableCommand CreateNewCruiseCommand { get; protected set; }
         public BindableCommand SaveCommand { get; protected set; }
         public BindableCommand SaveAsCommand { get; set; }
         public BindableCommand OpenFileCommand { get; protected set; }
-        #endregion
+
+        #endregion ViewCommands
 
         #region properties
+
         public DAL Database { get; set; }
         public bool InSupervisorMode { get; set; }
 
-        //the current save handler is the active locical component of the program that is 
-        //responceable for saving the user's data 
+        //the current save handler is the active locical component of the program that is
+        //responceable for saving the user's data
         public ISaveHandler SaveHandler { get { return ActivePresentor as ISaveHandler; } }
+
         //private IPresentor _activePresentor;
 
         private IView _activeView;
+
         public IView ActiveView
         {
-            get { return _activeView;  }
+            get { return _activeView; }
             set
             {
                 //if(SaveHandler != null)
@@ -76,7 +79,8 @@ namespace CruiseManager.Core.App
             }
         }
 
-        private MainWindow _mainWindow; 
+        private MainWindow _mainWindow;
+
         public MainWindow MainWindow
         {
             get { return _mainWindow; }
@@ -90,8 +94,8 @@ namespace CruiseManager.Core.App
                 _mainWindow = value;
             }
         }
-        #endregion
 
+        #endregion properties
 
         public WindowPresenter WindowPresenter { get { return this.Kernel.Get<WindowPresenter>(); } }
         public IExceptionHandler ExceptionHandler { get { return this.Kernel.Get<IExceptionHandler>(); } }
@@ -100,12 +104,11 @@ namespace CruiseManager.Core.App
         public IApplicationState AppState { get { return this.Kernel.Get<IApplicationState>(); } }
         public IPlatformHelper PlatformHelper { get { return this.Kernel.Get<IPlatformHelper>(); } }
 
-
         protected ApplicationControllerBase(NinjectModule viewModule, NinjectModule coreModule)
         {
             this.Kernel = new StandardKernel(viewModule, coreModule);
 
-            this.SaveCommand = new BindableActionCommand("Save", this.Save, enabled:false);
+            this.SaveCommand = new BindableActionCommand("Save", this.Save, enabled: false);
             this.SaveAsCommand = new BindableActionCommand("SaveAs", this.SaveAs, enabled: false);
             this.OpenFileCommand = new BindableActionCommand("Open File", this.OpenFile);
             this.CreateNewCruiseCommand = new BindableActionCommand("New Cruise", this.CreateNewCruise);
@@ -114,7 +117,6 @@ namespace CruiseManager.Core.App
             InSupervisorMode = true;
 #endif
         }
-
 
         public IView GetView<T>() where T : IView
         {
@@ -135,7 +137,7 @@ namespace CruiseManager.Core.App
             {
                 return (IView)this.Kernel.Get(viewType);
             }
-            catch(ActivationException e)
+            catch (ActivationException e)
             {
                 throw new UserFacingException("View Missing", e);
             }
@@ -146,7 +148,7 @@ namespace CruiseManager.Core.App
             }
         }
 
-        public void NavigateTo<T>() where T :IView
+        public void NavigateTo<T>() where T : IView
         {
             var view = this.GetView<T>();
             this.ActiveView = view;
@@ -159,7 +161,6 @@ namespace CruiseManager.Core.App
         }
 
         public abstract void Start();
-
 
         public void CreateNewCruise()
         {
@@ -193,7 +194,7 @@ namespace CruiseManager.Core.App
             bool hasError = false;
             try
             {
-                //start wait cursor incase this takes a long time 
+                //start wait cursor incase this takes a long time
                 this.ActiveView.ShowWaitCursor();
                 switch (System.IO.Path.GetExtension(filePath))
                 {
@@ -219,7 +220,7 @@ namespace CruiseManager.Core.App
                             this.UserSettings.TemplateSaveLocation = directroy;
                             WindowPresenter.ShowTemplateLandingLayout();
                             break;
-                        }                    
+                        }
                     default:
                         this.ActiveView.ShowMessage("Invalid file name", null);
                         return;
@@ -265,7 +266,6 @@ namespace CruiseManager.Core.App
                 }
 
                 this.SaveCommand.Enabled = this.SaveAsCommand.Enabled = (this.Database != null);
-
             }
         }
 
@@ -280,18 +280,17 @@ namespace CruiseManager.Core.App
             }
             catch (Exception ex)
             {
-                if(!this.ExceptionHandler.Handel(ex))
+                if (!this.ExceptionHandler.Handel(ex))
                 {
                     throw;
                 }
-                
             }
         }
 
         public void SaveAs()
         {
             var path = WindowPresenter.AskSaveAsLocation(this.Database.Path);
-            if(path != null)
+            if (path != null)
             {
                 this.SaveAs(path);
             }
@@ -302,13 +301,13 @@ namespace CruiseManager.Core.App
             try
             {
                 this.Database.CopyAs(fileName, true);
-                //save after copying 
+                //save after copying
                 this.Save();
                 this.MainWindow.Text = System.IO.Path.GetFileName(this.Database.Path);
             }
             catch (Exception ex)
             {
-                if(!this.ExceptionHandler.Handel(ex))
+                if (!this.ExceptionHandler.Handel(ex))
                 {
                     throw;
                 }
@@ -344,7 +343,6 @@ namespace CruiseManager.Core.App
                 }
             }
         }
-  
 
         public DAL GetNewOrUnfinishedCruise()
         {
@@ -384,9 +382,7 @@ namespace CruiseManager.Core.App
             {
                 this.ActiveView.ShowDefaultCursor();
             }
-             
         }
-
 
         #region Static Methods
 
@@ -408,11 +404,12 @@ namespace CruiseManager.Core.App
             List<FileInfo> files = new List<FileInfo>(tDir.GetFiles("*" + Constants.Strings.CRUISE_TEMPLATE_FILE_EXTENTION));
             return files;
         }
-        #endregion
+
+        #endregion Static Methods
 
         #region IDisposable Members
-        bool _disposed = false;
 
+        bool _disposed = false;
 
         public void Dispose()
         {
@@ -436,7 +433,7 @@ namespace CruiseManager.Core.App
 
             _disposed = true;
         }
-        #endregion
 
+        #endregion IDisposable Members
     }
 }
