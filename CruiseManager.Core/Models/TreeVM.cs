@@ -21,13 +21,13 @@ namespace CruiseManager.Core.Models
             }
         }
 
-        [Field(SQLExpression = "CuttingUnit.Code", Alias = "CUCode")]
+        [Field(SQLExpression = "CuttingUnit.Code", Alias = "CUCode", PersistanceFlags = PersistanceFlags.Never)]
         public string UnitCode
         {
             get; set;
         }
 
-        [Field(SQLExpression = "Stratum.Code", Alias = "STCode")]
+        [Field(SQLExpression = "Stratum.Code", Alias = "STCode", PersistanceFlags = PersistanceFlags.Never)]
         public string StratumCode
         {
             get; set;

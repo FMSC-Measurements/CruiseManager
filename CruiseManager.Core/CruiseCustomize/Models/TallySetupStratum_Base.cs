@@ -73,6 +73,14 @@ namespace CruiseManager.Core.CruiseCustomize
 
         #endregion Persisted Members
 
+        public bool CanSelectSystematic
+        {
+            get
+            {
+                return Method == CruiseMethods.STR;
+            }
+        }
+
         public abstract bool HasChangesToSave { get; }
 
         public List<TallySetupSampleGroup> SampleGroups { get; set; }

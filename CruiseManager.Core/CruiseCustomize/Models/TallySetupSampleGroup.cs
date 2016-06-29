@@ -13,38 +13,34 @@ namespace CruiseManager.Core.CruiseCustomize
     [EntitySource(SourceName = "SampleGroup")]
     public class TallySetupSampleGroup : DataObject_Base
     {
-        bool? _isTallyModeLocked;
         bool _hasTallyEdits = false;
+        bool? _isTallyModeLocked;
         TallyVM _sgTallie;
         bool _tallieDataLoaded = false;
         IList<TreeDefaultValueDO> _treeDefaultValues;
-
-        #region CTor
 
         public TallySetupSampleGroup()
             : base()
         { }
 
-        #endregion CTor
-
-        public new CruiseDAL.DAL DAL
-        {
-            get { return (CruiseDAL.DAL)base.DAL; }
-            set { base.DAL = value; }
-        }
-
         #region Persisted Members
 
-        [PrimaryKeyField(Name = "SampleGroup_CN")]
-        public Int64? SampleGroup_CN { get; set; }
-
-        [Field(Name = "Stratum_CN")]
-        public virtual long? Stratum_CN { get; set; }
+        TallyMode _tallyMethod;
 
         [Field(Name = "Code")]
         public virtual String Code { get; set; }
 
-        TallyMode _tallyMethod;
+        [PrimaryKeyField(Name = "SampleGroup_CN")]
+        public Int64? SampleGroup_CN { get; set; }
+
+        [Field(Name = "SampleSelectorState")]
+        public virtual String SampleSelectorState { get; set; }
+
+        [Field(Name = "SampleSelectorType")]
+        public virtual String SampleSelectorType { get; set; }
+
+        [Field(Name = "Stratum_CN")]
+        public virtual long? Stratum_CN { get; set; }
 
         [Field(Name = "TallyMethod", PersistanceFlags = PersistanceFlags.OnUpdate)]
         public virtual CruiseDAL.Enums.TallyMode TallyMethod
@@ -66,15 +62,66 @@ namespace CruiseManager.Core.CruiseCustomize
         //[Field(Name = "Description")]
         //public virtual String Description { get; set; }
 
-        [Field(Name = "SampleSelectorType")]
-        public virtual String SampleSelectorType { get; set; }
-
-        [Field(Name = "SampleSelectorState")]
-        public virtual String SampleSelectorState { get; set; }
-
         #endregion Persisted Members
 
+        public bool CanEditSampleType
+        {
+            get
+            {
+                return String.IsNullOrEmpty(SampleSelectorState)
+                    && Stratum.Method == CruiseDAL.Schema.CruiseMethods.STR;
+            }
+        }
+
+        public bool CanTallyBySG
+        {
+            get
+            {
+                return (this.Stratum.Method != CruiseDAL.Schema.CruiseMethods.THREEP);
+            }
+        }
+
+        public bool CanTallyBySpecies
+        { get { return true; } }
+
+        public new CruiseDAL.DAL DAL
+        {
+            get { return (CruiseDAL.DAL)base.DAL; }
+            set { base.DAL = value; }
+        }
+
+        public bool HasTallyEdits
+        {
+            get { return _hasTallyEdits; }
+            set { _hasTallyEdits = value; }
+        }
+
+        public bool IsTallyModeLocked
+        {
+            get
+            {
+                if (_isTallyModeLocked == null)
+                {
+                    _isTallyModeLocked = DAL.GetRowCount("CountTree",
+                "WHERE SampleGroup_CN = ? AND TreeCount > 0", this.SampleGroup_CN) > 0;
+                }
+                return _isTallyModeLocked.Value;
+
+                //return (TallyMethod & CruiseDAL.Enums.TallyMode.Locked) == CruiseDAL.Enums.TallyMode.Locked;
+            }
+        }
+
+        public TallyVM SgTallie
+        {
+            get { return _sgTallie; }
+            set { _sgTallie = value; }
+        }
+
         public TallySetupStratum_Base Stratum { get; set; }
+
+        public Dictionary<TreeDefaultValueDO, TallyVM> Tallies { get; set; }
+
+        public Dictionary<String, TallyPopulation> TallyPopulations { get; protected set; }
 
         public IList<TreeDefaultValueDO> TreeDefaultValues
         {
@@ -91,7 +138,28 @@ namespace CruiseManager.Core.CruiseCustomize
             }
         }
 
-        public Dictionary<String, TallyPopulation> TallyPopulations { get; protected set; }
+        public bool UseSystematicSampling
+        {
+            get
+            {
+                return SampleSelectorType == CruiseDAL.Schema.CruiseMethods.SYSTEMATIC_SAMPLER_TYPE;
+            }
+            set
+            {
+                if (UseSystematicSampling == value) { return; }
+                if (!Stratum.CanSelectSystematic) { return; }
+                if (CanEditSampleType)
+                {
+                    SampleSelectorType = (value) ? CruiseDAL.Schema.CruiseMethods.SYSTEMATIC_SAMPLER_TYPE : string.Empty;
+                    NotifyPropertyChanged(nameof(UseSystematicSampling));
+                    this.HasTallyEdits = true;
+                }
+                else
+                {
+                    throw new UserFacingException("Sample Settings are locked on this Sample Group");
+                }
+            }
+        }
 
         public TallyMode GetSampleGroupTallyMode()
         {
@@ -130,77 +198,6 @@ namespace CruiseManager.Core.CruiseCustomize
 
             return mode;
         }
-
-        public bool CanEditSampleType
-        {
-            get
-            {
-                return String.IsNullOrEmpty(SampleSelectorState)
-                    && Stratum.Method == CruiseDAL.Schema.CruiseMethods.STR;
-            }
-        }
-
-        public bool CanTallyBySG
-        {
-            get
-            {
-                return (this.Stratum.Method != CruiseDAL.Schema.CruiseMethods.THREEP);
-            }
-        }
-
-        public bool CanTallyBySpecies
-        { get { return true; } }
-
-        public bool HasTallyEdits
-        {
-            get { return _hasTallyEdits; }
-            set { _hasTallyEdits = value; }
-        }
-
-        public bool IsTallyModeLocked
-        {
-            get
-            {
-                if (_isTallyModeLocked == null)
-                {
-                    _isTallyModeLocked = DAL.GetRowCount("CountTree",
-                "WHERE SampleGroup_CN = ? AND TreeCount > 0", this.SampleGroup_CN) > 0;
-                }
-                return _isTallyModeLocked.Value;
-
-                //return (TallyMethod & CruiseDAL.Enums.TallyMode.Locked) == CruiseDAL.Enums.TallyMode.Locked;
-            }
-        }
-
-        public bool UseSystematicSampling
-        {
-            get
-            {
-                return SampleSelectorType == CruiseDAL.Schema.CruiseMethods.SYSTEMATIC_SAMPLER_TYPE;
-            }
-            set
-            {
-                if (UseSystematicSampling == value) { return; }
-                if (CanEditSampleType)
-                {
-                    SampleSelectorType = (value) ? CruiseDAL.Schema.CruiseMethods.SYSTEMATIC_SAMPLER_TYPE : string.Empty;
-                    NotifyPropertyChanged(nameof(UseSystematicSampling));
-                    this.HasTallyEdits = true;
-                }
-                else
-                {
-                    throw new UserFacingException("Sample Settings are locked on this Sample Group");
-                }
-            }
-        }
-
-        public TallyVM SgTallie
-        {
-            get { return _sgTallie; }
-            set { _sgTallie = value; }
-        }
-
-        public Dictionary<TreeDefaultValueDO, TallyVM> Tallies { get; set; }
 
         public IEnumerable<string> ListUsedHotKeys()
         {
@@ -309,58 +306,9 @@ namespace CruiseManager.Core.CruiseCustomize
             }
         }
 
-        private void SaveTallyBySpecies()
+        public override string ToString()
         {
-            //this.Database.BeginTransaction();
-            try
-            {
-                if (!IsTallyModeLocked)
-                {
-                    //remove any preexisting tally by sg entries
-                    string command = "DELETE FROM CountTree WHERE SampleGroup_CN = ? AND ifnull(TreeDefaultValue_CN, 0) = 0;";
-                    DAL.Execute(command, SampleGroup_CN);
-
-                    string user = DAL.User;
-                    String makeCountsCommand = String.Format(@"INSERT  OR IGNORE INTO CountTree (CuttingUnit_CN, SampleGroup_CN, TreeDefaultValue_CN, CreatedBy)
-                        Select CuttingUnitStratum.CuttingUnit_CN, SampleGroup.SampleGroup_CN, SampleGroupTreeDefaultValue.TreeDefaultValue_CN, '{0}' AS CreatedBy
-                        From SampleGroup
-                        INNER JOIN CuttingUnitStratum
-                        ON SampleGroup.Stratum_CN = CuttingUnitStratum.Stratum_CN
-                        INNER JOIN SampleGroupTreeDefaultValue
-                        ON SampleGroupTreeDefaultValue.SampleGroup_CN = SampleGroup.SampleGroup_CN
-                        WHERE SampleGroup.SampleGroup_CN = {1};",
-                            user, SampleGroup_CN);
-
-                    DAL.Execute(makeCountsCommand);
-                }
-                foreach (KeyValuePair<TreeDefaultValueDO, TallyVM> pair in Tallies)
-                {
-                    TallyVM tally = DAL.From<TallyVM>()
-                        .Where("Description = ? AND HotKey = ?")
-                        .Query(pair.Value.Description, pair.Value.Hotkey)
-                        .FirstOrDefault();
-
-                    if (tally == null)
-                    {
-                        tally = new TallyVM(DAL) { Description = pair.Value.Description, Hotkey = pair.Value.Hotkey };
-                        //tally = pair.Value;
-                        //tally.DAL = Controller.Database;
-                        tally.Save();
-                    }
-
-                    string setTallyCommand = String.Format("UPDATE CountTree Set Tally_CN = {0} WHERE SampleGroup_CN = {1} AND TreeDefaultValue_CN = {2}",
-                        tally.Tally_CN, SampleGroup_CN, pair.Key.TreeDefaultValue_CN);
-
-                    DAL.Execute(setTallyCommand);
-                }
-
-                //this.Database.EndTransaction();
-            }
-            catch (Exception)
-            {
-                //this.Database.CancelTransaction();
-                throw;
-            }
+            return Code;
         }
 
         private void SaveTallyBySampleGroup()
@@ -416,9 +364,58 @@ namespace CruiseManager.Core.CruiseCustomize
             }
         }
 
-        public override string ToString()
+        private void SaveTallyBySpecies()
         {
-            return Code;
+            //this.Database.BeginTransaction();
+            try
+            {
+                if (!IsTallyModeLocked)
+                {
+                    //remove any preexisting tally by sg entries
+                    string command = "DELETE FROM CountTree WHERE SampleGroup_CN = ? AND ifnull(TreeDefaultValue_CN, 0) = 0;";
+                    DAL.Execute(command, SampleGroup_CN);
+
+                    string user = DAL.User;
+                    String makeCountsCommand = String.Format(@"INSERT  OR IGNORE INTO CountTree (CuttingUnit_CN, SampleGroup_CN, TreeDefaultValue_CN, CreatedBy)
+                        Select CuttingUnitStratum.CuttingUnit_CN, SampleGroup.SampleGroup_CN, SampleGroupTreeDefaultValue.TreeDefaultValue_CN, '{0}' AS CreatedBy
+                        From SampleGroup
+                        INNER JOIN CuttingUnitStratum
+                        ON SampleGroup.Stratum_CN = CuttingUnitStratum.Stratum_CN
+                        INNER JOIN SampleGroupTreeDefaultValue
+                        ON SampleGroupTreeDefaultValue.SampleGroup_CN = SampleGroup.SampleGroup_CN
+                        WHERE SampleGroup.SampleGroup_CN = {1};",
+                            user, SampleGroup_CN);
+
+                    DAL.Execute(makeCountsCommand);
+                }
+                foreach (KeyValuePair<TreeDefaultValueDO, TallyVM> pair in Tallies)
+                {
+                    TallyVM tally = DAL.From<TallyVM>()
+                        .Where("Description = ? AND HotKey = ?")
+                        .Query(pair.Value.Description, pair.Value.Hotkey)
+                        .FirstOrDefault();
+
+                    if (tally == null)
+                    {
+                        tally = new TallyVM(DAL) { Description = pair.Value.Description, Hotkey = pair.Value.Hotkey };
+                        //tally = pair.Value;
+                        //tally.DAL = Controller.Database;
+                        tally.Save();
+                    }
+
+                    string setTallyCommand = String.Format("UPDATE CountTree Set Tally_CN = {0} WHERE SampleGroup_CN = {1} AND TreeDefaultValue_CN = {2}",
+                        tally.Tally_CN, SampleGroup_CN, pair.Key.TreeDefaultValue_CN);
+
+                    DAL.Execute(setTallyCommand);
+                }
+
+                //this.Database.EndTransaction();
+            }
+            catch (Exception)
+            {
+                //this.Database.CancelTransaction();
+                throw;
+            }
         }
     }
 }

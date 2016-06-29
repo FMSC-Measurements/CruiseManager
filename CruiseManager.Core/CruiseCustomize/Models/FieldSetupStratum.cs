@@ -12,7 +12,6 @@ namespace CruiseManager.Core.CruiseCustomize
         private ObservableCollection<TreeFieldSetupDO> _selectedTreeFields;
         private ObservableCollection<LogFieldSetupDO> _selectedLogFields;
 
-
         public string FriendlyStr
         {
             get
@@ -62,10 +61,45 @@ namespace CruiseManager.Core.CruiseCustomize
             }
         }
 
+        public IEnumerable<TreeFieldSetupDO> GetSelectedTreeFields()
+        {
+            return this.DAL.From<TreeFieldSetupDO>().Where("Stratum_CN = ?")
+                .OrderBy("FieldOrder").Query(Stratum_CN);
+        }
+
+        public IEnumerable<TreeFieldSetupDO> GetSelectedTreeFieldsDefault()
+        {
+            //select from TreeFieldSetupDefault where method = stratum.method
+            var treeFieldDefaults = this.DAL.From<TreeFieldSetupDefaultDO>()
+                .Where("Method = ?")
+                .OrderBy("FieldOrder")
+                .Query(Method);
+
+            foreach (var tfd in treeFieldDefaults)
+            {
+                var tfs = new TreeFieldSetupDO();
+                tfs.Stratum_CN = Stratum_CN;
+                tfs.Field = tfd.Field;
+                tfs.FieldOrder = tfd.FieldOrder;
+                tfs.ColumnType = tfd.ColumnType;
+                tfs.Heading = tfd.Heading;
+                tfs.Width = tfd.Width;
+                tfs.Format = tfd.Format;
+                tfs.Behavior = tfd.Behavior;
+
+                yield return tfs;
+            }
+        }
+
+        public IEnumerable<LogFieldSetupDO> GetSelectedLogFields()
+        {
+            return this.DAL.From<LogFieldSetupDO>().Where("Stratum_CN = ?")
+                .OrderBy("FieldOrder").Query(Stratum_CN);
+        }
+
         private void FieldCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            //this.HasEdits = true;
-            NotifyPropertyChanged("FriendlyStr");
+            this.HasEdits = true;
         }
 
         public override void Save(FMSC.ORM.Core.SQL.OnConflictOption option)
@@ -74,11 +108,49 @@ namespace CruiseManager.Core.CruiseCustomize
             this._hasEdits = false;
         }
 
+        public void SaveFieldSetup()
+        {
+            //ensure all unselected tree fields are removed
+            foreach (TreeFieldSetupDO tf in UnselectedTreeFields)
+            {
+                if (tf.IsPersisted == true)
+                {
+                    tf.Delete();
+                }
+            }
 
+            //ensure all unselected log fields are removed
+            foreach (LogFieldSetupDO lf in UnselectedLogFields)
+            {
+                if (lf.IsPersisted == true)
+                {
+                    lf.Delete();
+                }
+            }
+
+            foreach (TreeFieldSetupDO tf in SelectedTreeFields)
+            {
+                if (tf.IsPersisted == false)
+                {
+                    tf.DAL = this.DAL;
+                    tf.Stratum = this;
+                }
+                tf.Save();
+            }
+            foreach (LogFieldSetupDO lf in SelectedLogFields)
+            {
+                if (lf.IsPersisted == false)
+                {
+                    lf.DAL = this.DAL;
+                    lf.Stratum = this;
+                }
+                lf.Save();
+            }
+        }
 
         public override string ToString()
         {
-            return Code + " - " + Method + ((HasEdits) ? "*" : string.Empty);
+            return Code + " - " + Method;
         }
     }
 }

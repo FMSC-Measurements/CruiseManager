@@ -8,9 +8,18 @@ namespace CruiseManager.WinForms.CruiseCustomize
 {
     public partial class TallySetupView : CruiseManager.WinForms.UserControlView, ITallySetupView
     {
-        private BindingList<String> _stratumHotkeys = new BindingList<string>();
         private TallySetupStratum_Base _currentStratum;
         private bool _currentStratumChanging = false;
+        FixCNTTallyEditPanel _myfixCNTTallyEditPanel;
+        TallyEditPanel _standardTallyEditPanel;
+        private BindingList<String> _stratumHotkeys = new BindingList<string>();
+
+        public TallySetupView(TallySetupPresenter presenter)
+        {
+            this.ViewPresenter = presenter;
+            presenter.View = this;
+            InitializeComponent();
+        }
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -46,13 +55,6 @@ namespace CruiseManager.WinForms.CruiseCustomize
             }
         }
 
-        public TallySetupView(TallySetupPresenter presenter)
-        {
-            this.ViewPresenter = presenter;
-            presenter.View = this;
-            InitializeComponent();
-        }
-
         public void EndEdits()
         {
             TallyEditPanel.EndEdits();
@@ -62,19 +64,6 @@ namespace CruiseManager.WinForms.CruiseCustomize
         {
             _BS_strata.DataSource = ViewPresenter.TallySetupStrata;
         }
-
-        private void UpdateStratumHotKeys()
-        {
-            if (_currentStratum != null)
-            {
-                var list = this.ViewPresenter.GetAvalibleStratumHotKeys(_currentStratum);
-                _stratumHKCB.Items.Clear();
-                _stratumHKCB.Items.AddRange(list);
-            }
-        }
-
-        TallyEditPanel _standardTallyEditPanel;
-        FixCNTTallyEditPanel _myfixCNTTallyEditPanel;
 
         protected ITallyEditPanel GetEditView(TallySetupStratum_Base stratum)
         {
@@ -87,6 +76,8 @@ namespace CruiseManager.WinForms.CruiseCustomize
                     _standardTallyEditPanel.GetHotKeys = this._tallyEditPanel_GetHotKeys;
                     _standardTallyEditPanel.Dock = DockStyle.Fill;
                 }
+
+                _standardTallyEditPanel.Stratum = (TallySetupStratum)stratum;
                 return _standardTallyEditPanel;
             }
             else if (stratum is FixCNTTallySetupStratum)
@@ -96,11 +87,22 @@ namespace CruiseManager.WinForms.CruiseCustomize
                     _myfixCNTTallyEditPanel = new FixCNTTallyEditPanel();
                     _myfixCNTTallyEditPanel.Dock = DockStyle.Fill;
                 }
+                _myfixCNTTallyEditPanel.Stratum = (FixCNTTallySetupStratum)stratum;
                 return _myfixCNTTallyEditPanel;
             }
             else
             {
                 throw new InvalidOperationException();
+            }
+        }
+
+        private void UpdateStratumHotKeys()
+        {
+            if (_currentStratum != null)
+            {
+                var list = this.ViewPresenter.GetAvalibleStratumHotKeys(_currentStratum);
+                _stratumHKCB.Items.Clear();
+                _stratumHKCB.Items.AddRange(list);
             }
         }
 
@@ -116,33 +118,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
                 _stratumHKCB.Text = _currentStratum?.Hotkey ?? string.Empty;
 
                 var tallyEditPanel = GetEditView(_currentStratum);
-                tallyEditPanel.Stratum = _currentStratum;
                 TallyEditPanel = tallyEditPanel;
-
-                //if (_currentStratum != null)
-                //{
-                //    var isFixCNT = _currentStratum.Method == CruiseDAL.Schema.CruiseMethods.FIXCNT;
-
-                //    _tallyEditPanel.Visible = !isFixCNT;
-                //    _fixCNTTallyEditPanel.Visible = isFixCNT;
-
-                //    if (isFixCNT)
-                //    {
-                //        _fixCNTTallyEditPanel.TallyClass = _currentStratum.TallyClass;
-                //    }
-                //    else
-                //    {
-                //        _tallyEditPanel.SampleGroups = _currentStratum.SampleGroups;
-                //        _tallyEditPanel.Enabled = _currentStratum.CanDefineTallies;
-
-                //    }
-                //}
-                //else
-                //{
-                //    _tallyEditPanel.SampleGroups = null;
-                //    _tallyEditPanel.Enabled = false;
-                //    _stratumHKCB.Text = String.Empty;
-                //}
             }
             finally
             {

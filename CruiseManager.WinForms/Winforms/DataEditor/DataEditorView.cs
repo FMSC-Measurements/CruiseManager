@@ -763,7 +763,8 @@ namespace CruiseManager.WinForms.DataEditor
             {
                 var newStratum = cellValue as StratumDO;
                 if (newStratum == null) { e.Cancel = true; }
-                if (curTree.Stratum.Stratum_CN != newStratum.Stratum_CN)
+                if (curTree.Stratum != null
+                    && curTree.Stratum.Stratum_CN != newStratum.Stratum_CN)
                 {
                     e.Cancel = !this.AskYesNo(
                         "You are changing the stratum of a tree\r\n" +
@@ -774,7 +775,8 @@ namespace CruiseManager.WinForms.DataEditor
             {
                 var newSg = cellValue as SampleGroupDO;
                 if (newSg == null) { e.Cancel = true; }
-                if (curTree.SampleGroup.SampleGroup_CN != newSg.SampleGroup_CN)
+                if (curTree.SampleGroup != null
+                    && curTree.SampleGroup.SampleGroup_CN != newSg.SampleGroup_CN)
                 {
                     e.Cancel = !this.AskYesNo(
                         "You are changing the Sample Group of a tree\r\n" +
@@ -912,8 +914,6 @@ namespace CruiseManager.WinForms.DataEditor
 
         #endregion Logs page
 
-
-
         #region Plots page
 
         private void _DGV_Plots_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -957,8 +957,6 @@ namespace CruiseManager.WinForms.DataEditor
         }
 
         #endregion Plots page
-
-
 
         #region Counts page
 
@@ -1017,8 +1015,6 @@ namespace CruiseManager.WinForms.DataEditor
         }
 
         #endregion Errors page
-
-
 
         #region context menu
 
@@ -1102,8 +1098,6 @@ namespace CruiseManager.WinForms.DataEditor
         }
 
         #endregion context menu
-
-
 
         public bool AskYesNo(String message, String caption, MessageBoxIcon icon)
         {

@@ -10,19 +10,19 @@ LEFT JOIN Samplegroup USING (SampleGroup_CN)
 LEFT JOIN Plot USING (Plot_CN)")]
     public class LogVM : CruiseDAL.DataObjects.LogDO
     {
-        [Field(SQLExpression = "Tree.TreeNumber", Alias = "TreeNumber")]
+        [Field(SQLExpression = "Tree.TreeNumber", Alias = "TreeNumber", PersistanceFlags = PersistanceFlags.Never)]
         public long TreeNumber { get; set; }
 
-        [Field(SQLExpression = "CuttingUnit.Code", Alias = "CUCode")]
+        [Field(SQLExpression = "CuttingUnit.Code", Alias = "CUCode", PersistanceFlags = PersistanceFlags.Never)]
         public string CUCode { get; set; }
 
-        [Field(SQLExpression = "Stratum.Code", Alias = "STCode")]
+        [Field(SQLExpression = "Stratum.Code", Alias = "STCode", PersistanceFlags = PersistanceFlags.Never)]
         public string StratumCode { get; set; }
 
-        [Field(SQLExpression = "SampleGroup.Code", Alias = "SGCode")]
+        [Field(SQLExpression = "SampleGroup.Code", Alias = "SGCode", PersistanceFlags = PersistanceFlags.Never)]
         public string SGCode { get; set; }
 
-        [Field(SQLExpression = "Plot.PlotNumber", Alias = "PlotNum")]
+        [Field(SQLExpression = "Plot.PlotNumber", Alias = "PlotNum", PersistanceFlags = PersistanceFlags.Never)]
         public long PlotNumber { get; set; }
     }
 }

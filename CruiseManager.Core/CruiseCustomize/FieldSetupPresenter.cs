@@ -53,7 +53,7 @@ namespace CruiseManager.Core.CruiseCustomize
                 this.TreeFields = ApplicationController.SetupService.GetTreeFieldSetups();
                 this.LogFields = ApplicationController.SetupService.GetLogFieldSetups();
 
-                this.FieldSetupStrata = this.Database.Read<FieldSetupStratum>("Stratum", null);
+                this.FieldSetupStrata = this.Database.From<FieldSetupStratum>().Read().ToList();
                 foreach (FieldSetupStratum st in FieldSetupStrata)
                 {
                     //initialize each stratum object
@@ -140,53 +140,17 @@ namespace CruiseManager.Core.CruiseCustomize
                 this.Database.BeginTransaction();
                 foreach (FieldSetupStratum stratum in this.FieldSetupStrata)
                 {
-                    //ensure any canges to stratum are saved
+                    //ensure any changes to stratum are saved
                     stratum.Save();
 
-                    //ensure all unselected tree fields are removed
-                    foreach (TreeFieldSetupDO tf in stratum.UnselectedTreeFields)
-                    {
-                        if (tf.IsPersisted == true)
-                        {
-                            tf.Delete();
-                        }
-                    }
-
-                    //ensure all unselected log fields are removed
-                    foreach (LogFieldSetupDO lf in stratum.UnselectedLogFields)
-                    {
-                        if (lf.IsPersisted == true)
-                        {
-                            lf.Delete();
-                        }
-                    }
-
-                    foreach (TreeFieldSetupDO tf in stratum.SelectedTreeFields)
-                    {
-                        if (tf.IsPersisted == false)
-                        {
-                            tf.DAL = this.Database;
-                            tf.Stratum = stratum;
-                        }
-                        tf.Save();
-                    }
-                    foreach (LogFieldSetupDO lf in stratum.SelectedLogFields)
-                    {
-                        if (lf.IsPersisted == false)
-                        {
-                            lf.DAL = this.Database;
-                            lf.Stratum = stratum;
-                        }
-                        lf.Save();
-                    }
-                }//end foreach
+                    stratum.SaveFieldSetup();
+                }
                 this.Database.CommitTransaction();
             }
             catch (Exception ex)
             {
-                //errorBuilder.AppendFormat("Field setup was not saved. <Error details: {0}>", ex.ToString());
                 this.Database.RollbackTransaction();
-                throw new NotImplementedException("Exception Handler not implemented", ex);
+                throw new UserFacingException("Field setup didn't save", ex);
             }
         }
     }

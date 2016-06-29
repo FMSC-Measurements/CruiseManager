@@ -37,6 +37,10 @@ namespace CruiseManager.Core.CruiseCustomize
 
         #endregion Persisted Members
 
+        private IList<FixCNTTallyPopulation> _tallyPopulations;
+
+        public string Errors { get; set; }
+
         public bool HasChangesToSave
         {
             get
@@ -47,11 +51,7 @@ namespace CruiseManager.Core.CruiseCustomize
             }
         }
 
-        public string Errors { get; set; }
-
         public TallySetupStratum_Base Stratum { get; set; }
-
-        private IList<FixCNTTallyPopulation> _tallyPopulations;
 
         public IList<FixCNTTallyPopulation> TallyPopulations
         {
@@ -63,6 +63,20 @@ namespace CruiseManager.Core.CruiseCustomize
                 }
 
                 return _tallyPopulations;
+            }
+        }
+
+        public bool Validate()
+        {
+            if (string.IsNullOrWhiteSpace(Field))
+            {
+                Errors = "Field Not Set";
+                return false;
+            }
+            else
+            {
+                Errors = string.Empty;
+                return true;
             }
         }
 
@@ -106,20 +120,6 @@ namespace CruiseManager.Core.CruiseCustomize
             }
 
             return list;
-        }
-
-        public bool Validate()
-        {
-            if (string.IsNullOrWhiteSpace(Field))
-            {
-                Errors = "Field Not Set";
-                return false;
-            }
-            else
-            {
-                Errors = string.Empty;
-                return true;
-            }
         }
     }
 }

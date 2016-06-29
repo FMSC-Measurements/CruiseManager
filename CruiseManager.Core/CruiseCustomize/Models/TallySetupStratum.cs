@@ -11,11 +11,6 @@ namespace CruiseManager.Core.CruiseCustomize
     [EntitySource(SourceName = "Stratum")]
     public class TallySetupStratum : TallySetupStratum_Base
     {
-        public bool IsManditoryTally
-        {
-            get { return CruiseMethods.MANDITORY_TALLY_METHODS.Contains(Method); }
-        }
-
         public override bool HasChangesToSave
         {
             get
@@ -23,6 +18,20 @@ namespace CruiseManager.Core.CruiseCustomize
                 return IsChanged
                     || SampleGroups.Any(x => x.HasTallyEdits);
             }
+        }
+
+        public bool IsManditoryTally
+        {
+            get { return CruiseMethods.MANDITORY_TALLY_METHODS.Contains(Method); }
+        }
+
+        public static char HotKeyToChar(string str)//TODO move method somewhere more useful
+        {
+            if (String.IsNullOrEmpty(str))
+            {
+                return char.MinValue;
+            }
+            return char.ToUpper(str[0]);
         }
 
         //called when the view is initialized, for each stratum
@@ -39,6 +48,36 @@ namespace CruiseManager.Core.CruiseCustomize
 
                 sg.LoadTallieData();
             }
+        }
+
+        /// <returns>collection containing all hot-keys in use by sample groups in the stratum</returns>
+        public IEnumerable<String> ListUsedHotKeys()
+        {
+            var inuseHotKeys = new String[] { } as IEnumerable<String>;
+            foreach (TallySetupSampleGroup sg in this.SampleGroups)
+            {
+                inuseHotKeys = inuseHotKeys.Union(sg.ListUsedHotKeys());
+            }
+            return inuseHotKeys;
+        }
+
+        public override bool SaveTallySetup(ref StringBuilder errorBuilder)
+        {
+            bool success = true;
+
+            if (SampleGroups != null)
+            {
+                foreach (TallySetupSampleGroup sgVM in SampleGroups)
+                {
+                    sgVM.Save();
+                    if (sgVM.HasTallyEdits == true)
+                    {
+                        success = sgVM.SaveTallies(ref errorBuilder) && success;
+                    }
+                }
+            }
+
+            return success;
         }
 
         public override bool Validate()
@@ -118,45 +157,6 @@ namespace CruiseManager.Core.CruiseCustomize
             }
 
             return success;
-        }
-
-        public override bool SaveTallySetup(ref StringBuilder errorBuilder)
-        {
-            bool success = true;
-
-            if (SampleGroups != null)
-            {
-                foreach (TallySetupSampleGroup sgVM in SampleGroups)
-                {
-                    sgVM.Save();
-                    if (sgVM.HasTallyEdits == true)
-                    {
-                        success = sgVM.SaveTallies(ref errorBuilder) && success;
-                    }
-                }
-            }
-
-            return success;
-        }
-
-        public static char HotKeyToChar(string str)//TODO move method somewhere more useful
-        {
-            if (String.IsNullOrEmpty(str))
-            {
-                return char.MinValue;
-            }
-            return char.ToUpper(str[0]);
-        }
-
-        /// <returns>collection containing all hot-keys in use by sample groups in the stratum</returns>
-        public IEnumerable<String> ListUsedHotKeys()
-        {
-            var inuseHotKeys = new String[] { } as IEnumerable<String>;
-            foreach (TallySetupSampleGroup sg in this.SampleGroups)
-            {
-                inuseHotKeys = inuseHotKeys.Union(sg.ListUsedHotKeys());
-            }
-            return inuseHotKeys;
         }
     }
 }

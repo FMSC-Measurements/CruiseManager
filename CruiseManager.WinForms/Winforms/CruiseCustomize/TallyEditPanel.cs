@@ -9,23 +9,16 @@ using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.CruiseCustomize
 {
-    //public delegate void TallyModeChangedEventHandler(object sender);
-
-    //public delegate TallyDO GetTallyEventHandler(SampleGroupDO sg, TreeDefaultValueDO tdv);
-
-    //public delegate void SelectedTallyChangedEventHandler(SampleGroupDO sg, TreeDefaultValueDO tdv, TallyDO tally);
-
-    //public delegate void TallyItemChangedEventHandler(TallyDO tally);
-
-    //public delegate TallyDO AddNewTallyEventHandler();
-
     public partial class TallyEditPanel : UserControl, ITallyEditPanel
     {
         private static readonly TreeDefaultValueDO[] EMPTY_SPECIES_LIST = new TreeDefaultValueDO[0];
-        private bool _changingSampleGroup = false;
         private bool _changingCurrTally = false;
-
+        private bool _changingSampleGroup = false;
+        private TallySetupSampleGroup _currentSampleGroup;
+        private TallyDO _currentTally;
         private TreeDefaultValueDO _currTDV;
+
+        TallySetupStratum _stratum;
 
         public TallyEditPanel()
         {
@@ -36,31 +29,19 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Func<string, string[]> GetHotKeys { get; set; }
-
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        protected bool AllowTallyBySpecies
+        public TallySetupSampleGroup CurrentSampleGroup
         {
-            get { return this._tallyBySpRB.Enabled; }
+            get { return _currentSampleGroup; }
             set
             {
-                this._tallyBySpRB.Enabled = value;
+                if (_currentSampleGroup == value) { return; }
+
+                _currentSampleGroup = value;
+                _changingSampleGroup = true;
+                OnSampleGroupChanged();
+                _changingSampleGroup = false;
             }
         }
-
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        protected bool AllowTallyBySG
-        {
-            get { return this._tallyBySGRB.Enabled; }
-            set
-            {
-                this._tallyBySGRB.Enabled = value;
-            }
-        }
-
-        private TallyDO _currentTally;
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -100,25 +81,10 @@ namespace CruiseManager.WinForms.CruiseCustomize
             }
         }
 
-        private TallySetupSampleGroup _currentSampleGroup;
-
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public TallySetupSampleGroup CurrentSampleGroup
-        {
-            get { return _currentSampleGroup; }
-            set
-            {
-                if (_currentSampleGroup == value) { return; }
+        public Func<string, string[]> GetHotKeys { get; set; }
 
-                _currentSampleGroup = value;
-                _changingSampleGroup = true;
-                OnSampleGroupChanged();
-                _changingSampleGroup = false;
-            }
-        }
-
-        TallySetupStratum _stratum;
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public TallySetupStratum_Base Stratum
@@ -129,18 +95,6 @@ namespace CruiseManager.WinForms.CruiseCustomize
                 _stratum = value as TallySetupStratum;
                 OnStratumChanged();
             }
-        }
-
-        protected void OnStratumChanged()
-        {
-            var str = Stratum as TallySetupStratum;
-            SampleGroups = str?.SampleGroups;
-        }
-
-        protected IList<TallySetupSampleGroup> SampleGroups
-        {
-            get { return _BS_sampleGroups.DataSource as IList<TallySetupSampleGroup>; }
-            set { _BS_sampleGroups.DataSource = value ?? new TallySetupSampleGroup[0]; }
         }
 
         [Browsable(false)]
@@ -160,10 +114,46 @@ namespace CruiseManager.WinForms.CruiseCustomize
             }
         }
 
+        //[Browsable(false)]
+        //[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        //protected bool AllowTallyBySG
+        //{
+        //    get { return this._tallyBySGRB.Enabled; }
+        //    set
+        //    {
+        //        this._tallyBySGRB.Enabled = value;
+        //    }
+        //}
+
+        //[Browsable(false)]
+        //[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        //protected bool AllowTallyBySpecies
+        //{
+        //    get { return this._tallyBySpRB.Enabled; }
+        //    set
+        //    {
+        //        this._tallyBySpRB.Enabled = value;
+        //    }
+        //}
+
+        protected IList<TallySetupSampleGroup> SampleGroups
+        {
+            get { return _BS_sampleGroups.DataSource as IList<TallySetupSampleGroup>; }
+            set { _BS_sampleGroups.DataSource = value ?? new TallySetupSampleGroup[0]; }
+        }
+
         public void EndEdits()
         {
             this._BS_CurTally.EndEdit();
         }
+
+        public void SetHotKeys(string[] hotkeys)
+        {
+            this._hotKeyCB.Items.Clear();
+            //if hotkeys null use empty string array
+            this._hotKeyCB.Items.AddRange(hotkeys ?? new String[0]);
+        }
+
         protected override void OnEnabledChanged(EventArgs e)
         {
             base.OnEnabledChanged(e);
@@ -204,6 +194,13 @@ namespace CruiseManager.WinForms.CruiseCustomize
             }
         }
 
+        protected void OnStratumChanged()
+        {
+            var str = Stratum as TallySetupStratum;
+            SampleGroups = str?.SampleGroups;
+            _systematicOptCB.Visible = str?.CanSelectSystematic ?? false;
+        }
+
         protected void OnTallyModeChanged()
         {
             if ((this.TallyMode & CruiseDAL.Enums.TallyMode.BySampleGroup) == CruiseDAL.Enums.TallyMode.BySampleGroup)
@@ -240,78 +237,9 @@ namespace CruiseManager.WinForms.CruiseCustomize
             {
                 CurrentSampleGroup.HasTallyEdits = true;
             }
-
-            //if (TallyModeChanged != null && !_changingSampleGroup)
-            //{
-            //    TallyModeChanged(this);
-            //}
-        }
-
-        public void SetHotKeys(string[] hotkeys)
-        {
-            this._hotKeyCB.Items.Clear();
-            //if hotkeys null use empty string array
-            this._hotKeyCB.Items.AddRange(hotkeys ?? new String[0]);
         }
 
         #region Event Handlers
-
-        private void _BS_SPList_CurrentChanged(object sender, EventArgs e)
-        {
-            _currTDV = _BS_SPList.Current as TreeDefaultValueDO;
-            if (_currTDV == null) { return; }
-
-            TallyDO tally = this.CurrentSampleGroup.Tallies[_currTDV];
-            CurrentTally = tally;
-        }
-
-        private void _BS_sampleGroups_CurrentChanged(object sender, EventArgs e)
-        {
-            var curSG = _BS_sampleGroups.Current as TallySetupSampleGroup;
-
-            CurrentSampleGroup = curSG;
-        }
-
-        private void _tallyBySGRB_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!_changingSampleGroup && _tallyBySGRB.Checked == true)
-            {
-                this.TallyMode = (this.TallyMode & CruiseDAL.Enums.TallyMode.Locked) | CruiseDAL.Enums.TallyMode.BySampleGroup;
-            }
-        }
-
-        private void _dontTallyRB_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!_changingSampleGroup && _dontTallyRB.Checked == true)
-            {
-                this.TallyMode = (this.TallyMode & CruiseDAL.Enums.TallyMode.Locked) | CruiseDAL.Enums.TallyMode.None;
-            }
-        }
-
-        private void _tallyBySpRB_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!_changingSampleGroup && _tallyBySpRB.Checked == true)
-            {
-                this.TallyMode = (this.TallyMode & CruiseDAL.Enums.TallyMode.Locked) | CruiseDAL.Enums.TallyMode.BySpecies;
-            }
-        }
-
-        private void _BS_CurTally_CurrentItemChanged(object sender, EventArgs e)
-        {
-            if (!_changingSampleGroup && !_changingCurrTally)
-            {
-                this.CurrentSampleGroup.HasTallyEdits = true;
-            }
-        }
-
-        private void _hotKeyCB_TextChanged(object sender, EventArgs e)
-        {
-            if (_changingCurrTally || this.CurrentTally == null)
-            {
-                return;
-            }
-            this.CurrentTally.Hotkey = _hotKeyCB.Text;
-        }
 
         protected void _hotKeyCB_DropedDown(object sender, EventArgs e)
         {
@@ -326,6 +254,64 @@ namespace CruiseManager.WinForms.CruiseCustomize
             }
         }
 
+        private void _BS_CurTally_CurrentItemChanged(object sender, EventArgs e)
+        {
+            if (!_changingSampleGroup && !_changingCurrTally)
+            {
+                this.CurrentSampleGroup.HasTallyEdits = true;
+            }
+        }
+
+        private void _BS_sampleGroups_CurrentChanged(object sender, EventArgs e)
+        {
+            var curSG = _BS_sampleGroups.Current as TallySetupSampleGroup;
+
+            CurrentSampleGroup = curSG;
+        }
+
+        private void _BS_SPList_CurrentChanged(object sender, EventArgs e)
+        {
+            _currTDV = _BS_SPList.Current as TreeDefaultValueDO;
+            if (_currTDV == null) { return; }
+
+            TallyDO tally = this.CurrentSampleGroup.Tallies[_currTDV];
+            CurrentTally = tally;
+        }
+
+        private void _dontTallyRB_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!_changingSampleGroup && _dontTallyRB.Checked == true)
+            {
+                this.TallyMode = (this.TallyMode & CruiseDAL.Enums.TallyMode.Locked) | CruiseDAL.Enums.TallyMode.None;
+            }
+        }
+
+        private void _hotKeyCB_TextChanged(object sender, EventArgs e)
+        {
+            if (_changingCurrTally || this.CurrentTally == null)
+            {
+                return;
+            }
+            this.CurrentTally.Hotkey = _hotKeyCB.Text;
+        }
+
+        private void _tallyBySGRB_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!_changingSampleGroup && _tallyBySGRB.Checked == true)
+            {
+                this.TallyMode = (this.TallyMode & CruiseDAL.Enums.TallyMode.Locked) | CruiseDAL.Enums.TallyMode.BySampleGroup;
+            }
+        }
+
+        private void _tallyBySpRB_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!_changingSampleGroup && _tallyBySpRB.Checked == true)
+            {
+                this.TallyMode = (this.TallyMode & CruiseDAL.Enums.TallyMode.Locked) | CruiseDAL.Enums.TallyMode.BySpecies;
+            }
+        }
+
         #endregion Event Handlers
+
     }
 }
