@@ -12,6 +12,15 @@ namespace CruiseManager.Core.CruiseCustomize
         private ObservableCollection<TreeFieldSetupDO> _selectedTreeFields;
         private ObservableCollection<LogFieldSetupDO> _selectedLogFields;
 
+
+        public string FriendlyStr
+        {
+            get
+            {
+                return ToString();
+            }
+        }
+
         public ObservableCollection<TreeFieldSetupDO> SelectedTreeFields
         {
             get { return _selectedTreeFields; }
@@ -47,18 +56,29 @@ namespace CruiseManager.Core.CruiseCustomize
                     || UnselectedTreeFields.Any(x => x.IsPersisted)
                     || UnselectedLogFields.Any(x => x.IsPersisted);
             }
-            protected set { _hasEdits = value; }
+            protected set
+            {
+                _hasEdits = value;
+            }
         }
 
         private void FieldCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            this.HasEdits = true;
+            //this.HasEdits = true;
+            NotifyPropertyChanged("FriendlyStr");
         }
 
         public override void Save(FMSC.ORM.Core.SQL.OnConflictOption option)
         {
             base.Save(option);
             this._hasEdits = false;
+        }
+
+
+
+        public override string ToString()
+        {
+            return Code + " - " + Method + ((HasEdits) ? "*" : string.Empty);
         }
     }
 }

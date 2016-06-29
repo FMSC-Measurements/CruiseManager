@@ -160,6 +160,18 @@ namespace CruiseManager.WinForms.CruiseWizard
             }
         }
 
+        public IEnumerable<ProductCode> SecondaryProductCodes
+        {
+            get
+            {
+                yield return ProductCode.Empty;
+                foreach (var pc in ProductCodes)
+                {
+                    yield return pc;
+                }
+            }
+        }
+
         public List<Region> Regions
         {
             get { return _regions; }

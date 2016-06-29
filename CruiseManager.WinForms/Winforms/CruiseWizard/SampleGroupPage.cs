@@ -57,7 +57,7 @@ namespace CruiseManager.WinForms.CruiseWizard
 
         private void InitializeBindings()
         {
-            PrimaryProductBindingSource.DataSource = Presenter.ProductCodes;
+            PrimaryProductBindingSource.DataSource = Presenter.SecondaryProductCodes.ToList();
             SecondaryProductBindingSource.DataSource = Presenter.ProductCodes;
             UOMBindingSource.DataSource = Presenter.UOMCodes;
             TreeDefaultBindingSource.DataSource = Presenter.TreeDefaults;
