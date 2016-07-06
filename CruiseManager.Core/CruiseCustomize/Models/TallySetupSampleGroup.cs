@@ -68,7 +68,7 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             get
             {
-                return String.IsNullOrEmpty(SampleSelectorState)
+                return !IsTallyModeLocked
                     && Stratum.Method == CruiseDAL.Schema.CruiseMethods.STR;
             }
         }
@@ -102,8 +102,8 @@ namespace CruiseManager.Core.CruiseCustomize
             {
                 if (_isTallyModeLocked == null)
                 {
-                    _isTallyModeLocked = DAL.GetRowCount("CountTree",
-                "WHERE SampleGroup_CN = ? AND TreeCount > 0", this.SampleGroup_CN) > 0;
+                    _isTallyModeLocked = DAL.GetRowCount("CountTree", "WHERE SampleGroup_CN = ? AND TreeCount > 0", this.SampleGroup_CN) > 0
+                        && DAL.GetRowCount("Tree", "WHERE SampleGroup_CN = ?", SampleGroup_CN) > 0;
                 }
                 return _isTallyModeLocked.Value;
 
