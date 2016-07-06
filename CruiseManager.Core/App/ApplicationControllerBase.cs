@@ -51,7 +51,7 @@ namespace CruiseManager.Core.App
                 {
                     if (SaveHandler.HasChangesToSave)
                     {
-                        var doSave = _activeView.AskYesNoCancel("You Have Unsaved Changes, Would You Like To Save Before Closing?", "Save Changes?", null);
+                        var doSave = _activeView.AskYesNoCancel("Would You Like To Save Changes?", "Save Changes?", null);
                         if (doSave == null)//user selects cancel
                         {
                             return;
