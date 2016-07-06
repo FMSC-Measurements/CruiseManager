@@ -1,7 +1,5 @@
 ﻿using CruiseDAL;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CruiseManager.Core.FileMaintenance
 {
@@ -10,6 +8,7 @@ namespace CruiseManager.Core.FileMaintenance
         String Description { get; }
 
         bool CheckCanExecute(DAL database);
+
         void Execute(DAL database);
     }
 }

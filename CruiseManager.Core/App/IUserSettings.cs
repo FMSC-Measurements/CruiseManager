@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CruiseManager.Core.App
+﻿namespace CruiseManager.Core.App
 {
     public interface IUserSettings
     {
@@ -21,6 +17,5 @@ namespace CruiseManager.Core.App
         void Revert();
 
         void Reset();
-
     }
 }

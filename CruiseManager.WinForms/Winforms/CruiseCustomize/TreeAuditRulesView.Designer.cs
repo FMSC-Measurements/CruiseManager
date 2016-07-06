@@ -94,10 +94,10 @@
             _treeAuditRulesLayout.Name = "_treeAuditRulesLayout";
             _treeAuditRulesLayout.RowCount = 4;
             _treeAuditRulesLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            _treeAuditRulesLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            _treeAuditRulesLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             _treeAuditRulesLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            _treeAuditRulesLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            _treeAuditRulesLayout.Size = new System.Drawing.Size(675, 492);
+            _treeAuditRulesLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            _treeAuditRulesLayout.Size = new System.Drawing.Size(649, 521);
             _treeAuditRulesLayout.TabIndex = 3;
             // 
             // _tdvDGV
@@ -142,14 +142,14 @@
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this._tdvDGV.DefaultCellStyle = dataGridViewCellStyle2;
             this._tdvDGV.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._tdvDGV.Location = new System.Drawing.Point(0, 236);
+            this._tdvDGV.Location = new System.Drawing.Point(0, 280);
             this._tdvDGV.Margin = new System.Windows.Forms.Padding(0);
             this._tdvDGV.Name = "_tdvDGV";
             this._tdvDGV.RowHeadersVisible = false;
             this._tdvDGV.RowTemplate.Height = 24;
             this._tdvDGV.SelectedItems = null;
             this._tdvDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this._tdvDGV.Size = new System.Drawing.Size(675, 256);
+            this._tdvDGV.Size = new System.Drawing.Size(649, 241);
             this._tdvDGV.TabIndex = 1;
             this._tdvDGV.VirtualMode = true;
             // 
@@ -344,7 +344,7 @@
             this._treeAuditDGV.RowHeadersVisible = false;
             this._treeAuditDGV.RowTemplate.Height = 24;
             this._treeAuditDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this._treeAuditDGV.Size = new System.Drawing.Size(675, 196);
+            this._treeAuditDGV.Size = new System.Drawing.Size(649, 240);
             this._treeAuditDGV.TabIndex = 0;
             this._treeAuditDGV.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this._treeAuditDGV_DataError);
             // 
@@ -393,16 +393,16 @@
             this.panel5.Controls.Add(this._treeAuditClearSelectionBtn);
             this.panel5.Controls.Add(label8);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel5.Location = new System.Drawing.Point(0, 216);
+            this.panel5.Location = new System.Drawing.Point(0, 260);
             this.panel5.Margin = new System.Windows.Forms.Padding(0);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(675, 20);
+            this.panel5.Size = new System.Drawing.Size(649, 20);
             this.panel5.TabIndex = 3;
             // 
             // _treeAuditClearSelectionBtn
             // 
             this._treeAuditClearSelectionBtn.Dock = System.Windows.Forms.DockStyle.Right;
-            this._treeAuditClearSelectionBtn.Location = new System.Drawing.Point(588, 0);
+            this._treeAuditClearSelectionBtn.Location = new System.Drawing.Point(562, 0);
             this._treeAuditClearSelectionBtn.Name = "_treeAuditClearSelectionBtn";
             this._treeAuditClearSelectionBtn.Size = new System.Drawing.Size(87, 20);
             this._treeAuditClearSelectionBtn.TabIndex = 5;
@@ -432,7 +432,7 @@
             this.panel6.Location = new System.Drawing.Point(0, 0);
             this.panel6.Margin = new System.Windows.Forms.Padding(0);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(675, 20);
+            this.panel6.Size = new System.Drawing.Size(649, 20);
             this.panel6.TabIndex = 4;
             // 
             // label7
@@ -468,7 +468,7 @@
             // _tavDeleteBTN
             // 
             this._tavDeleteBTN.Dock = System.Windows.Forms.DockStyle.Right;
-            this._tavDeleteBTN.Location = new System.Drawing.Point(600, 0);
+            this._tavDeleteBTN.Location = new System.Drawing.Point(574, 0);
             this._tavDeleteBTN.Name = "_tavDeleteBTN";
             this._tavDeleteBTN.Size = new System.Drawing.Size(75, 20);
             this._tavDeleteBTN.TabIndex = 4;
@@ -480,7 +480,7 @@
             // 
             this.Controls.Add(_treeAuditRulesLayout);
             this.Name = "TreeAuditRulesView";
-            this.Size = new System.Drawing.Size(675, 492);
+            this.Size = new System.Drawing.Size(649, 521);
             _treeAuditRulesLayout.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this._tdvDGV)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._BS_treeDefaults)).EndInit();

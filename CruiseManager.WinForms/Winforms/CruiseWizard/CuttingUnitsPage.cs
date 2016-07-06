@@ -1,33 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CruiseDAL.DataObjects;
+using System;
 using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using CruiseDAL;
-using CruiseDAL.DataObjects;
 
 namespace CruiseManager.WinForms.CruiseWizard
 {
     public partial class CuttingUnitsPage : UserControl, IPage
     {
         #region Constructer
+
         public CuttingUnitsPage(String Name, CruiseWizardView MasterView)
         {
             InitializeComponent();
             this.MasterView = MasterView;
             base.Name = Name;
         }
-        #endregion
+
+        #endregion Constructer
 
         #region Properties
+
         public CruiseWizardPresenter Presenter { get { return MasterView.Presenter; } }
         public CruiseWizardView MasterView { get; set; }
-        #endregion 
+        #endregion Properties
+
+
 
         #region Initialization methods
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -35,16 +35,16 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.CodeTextBox.TextBox.Focus();
         }
 
-
         public void InitializeBindings()
         {
             CuttingUnitBindingSource.DataSource = Presenter.CuttingUnits;
             LoggingMethodBindingSource.DataSource = Presenter.LoggingMethods;
         }
-        #endregion
 
+        #endregion Initialization methods
 
         #region Click Envent
+
         private void StrataButton_Click(object sender, EventArgs e)
         {
             Presenter.ShowStratum();
@@ -54,16 +54,15 @@ namespace CruiseManager.WinForms.CruiseWizard
         {
             MasterView.Close();
         }
-        #endregion
+
+        #endregion Click Envent
 
         private void CuttingUnitBindingSource_AddingNew(object sender, AddingNewEventArgs e)
         {
             e.NewObject = Presenter.GetNewCuttingUnit();
         }
 
-
         #region IPage Members
-
 
         public bool HandleKeypress(System.Windows.Forms.Keys key)
         {
@@ -76,7 +75,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             return false;
         }
 
-        #endregion
+        #endregion IPage Members
 
         private void CuttingUnitBindingSource_CurrentChanged(object sender, EventArgs e)
         {
@@ -91,7 +90,5 @@ namespace CruiseManager.WinForms.CruiseWizard
                 this.CodeTextBox.TextBox.Focus();
             }
         }
-
-
     }
 }

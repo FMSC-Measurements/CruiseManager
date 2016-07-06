@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using CruiseDAL;
+﻿using CruiseDAL;
 
 namespace CruiseManager.Core.FileMaintenance
 {
@@ -11,18 +8,17 @@ namespace CruiseManager.Core.FileMaintenance
         {
             get
             {
-                return"Removes Duplicate Entries in the count tree table by combining their tree counts and kpi totals";
+                return "Removes Duplicate Entries in the count tree table by combining their tree counts and kpi totals";
             }
         }
 
         public bool CheckCanExecute(DAL database)
         {
-
             long numDups = (long)database.ExecuteScalar(
                 @"SELECT count(1) FROM (
                     SELECT * FROM (
-                        SELECT count(1) as cnt FROM 
-                        CountTree 
+                        SELECT count(1) as cnt FROM
+                        CountTree
                         GROUP BY CuttingUnit_CN, SampleGroup_CN, ifnull(TreeDefaultValue_CN,0), ifnull(Component_CN,0)
                     )
                     WHERE cnt > 1
@@ -32,7 +28,6 @@ namespace CruiseManager.Core.FileMaintenance
 
         public void Execute(DAL database)
         {
-
             database.Execute(
                 @"BEGIN;
 
@@ -53,7 +48,6 @@ namespace CruiseManager.Core.FileMaintenance
                 ModifiedDate DATETIME,
                 UNIQUE(SampleGroup_CN, CuttingUnit_CN, TreeDefaultValue_CN, Component_CN));
 
-
             INSERT INTO CountTree
             (CountTree_CN, SampleGroup_CN, CuttingUnit_CN, Tally_CN, TreeDefaultValue_CN, Component_CN,
             TreeCount, SumKPI,
@@ -66,7 +60,6 @@ namespace CruiseManager.Core.FileMaintenance
                 ifnull(TreeDefaultValue_CN, 0), ifnull(Component_CN, 0);
 
             DROP TABLE TempCountTree;
-
 
             CREATE TRIGGER OnNewCountTree AFTER INSERT ON CountTree BEGIN
             UPDATE CountTree SET CreatedDate = datetime(current_timestamp, 'localtime') WHERE rowID = new.rowID; END;

@@ -1,16 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-
-using System.Diagnostics;
-
-using CruiseDAL;
-using CruiseDAL.DataObjects;
-
+﻿using CruiseDAL.DataObjects;
+using CruiseManager.Core.CommandModel;
 using CruiseManager.Core.Models;
 using CruiseManager.Core.ViewInterfaces;
-using CruiseManager.Core.CommandModel;
-
+using System;
+using System.Collections.Generic;
 
 namespace CruiseManager.Core.App
 {
@@ -19,7 +12,7 @@ namespace CruiseManager.Core.App
     /// provide a common place to for all the forms to access data and other infomation about the application state.
     /// it is the glue that binds the application together
     /// </summary>
-    public abstract class WindowPresenter 
+    public abstract class WindowPresenter
     {
         //public static WindowPresenter Instance { get; set; }
 
@@ -30,18 +23,29 @@ namespace CruiseManager.Core.App
         }
 
         public abstract string AskTemplateLocation();
+
         public abstract String AskSaveAsLocation(string originalPath);
+
         public abstract string AskOpenFileLocation();
 
         public abstract void ShowAboutDialog();
+
         public abstract TreeDefaultValueDO ShowAddTreeDefault();
+
         public abstract TreeDefaultValueDO ShowAddTreeDefault(TreeDefaultValueDO newTDV);
+
         public abstract void ShowEditTreeDefault(TreeDefaultValueDO tdv);
+
         public abstract void ShowImportTemplate();
+
         public abstract void ShowDataEditor();
+
         public abstract void ShowDataExportDialog(IList<TreeVM> Trees, IList<LogVM> Logs, IList<PlotDO> Plots, IList<CountTreeDO> Counts);
+
         public abstract void ShowEditWizard();
+
         public abstract void ShowCruiseWizardDialog();
+
         //public abstract void ShowOpenCruiseDialog();
 
         public void ShowCruiseLandingLayout()
@@ -115,8 +119,6 @@ namespace CruiseManager.Core.App
 
         public void ShowTemplateLandingLayout()
         {
-            
-
             this.ApplicationController.NavigateTo<EditTemplateView>();
 
             this.ApplicationController.MainWindow.Text = System.IO.Path.GetFileName(this.ApplicationController.Database.Path);
@@ -126,10 +128,10 @@ namespace CruiseManager.Core.App
                 this.InitializeTemplateNavOptions();
             }
             this.ApplicationController.MainWindow.SetNavCommands(this.templateLandingNavOptions);
-
         }
 
         private BindableCommand[] templateLandingNavOptions;
+
         private void InitializeTemplateNavOptions()
         {
             this.templateLandingNavOptions = new BindableCommand[]{
@@ -137,6 +139,5 @@ namespace CruiseManager.Core.App
                 new BindableActionCommand("Close File", this.ShowHomeLayout )
             };
         }
-
     }
 }

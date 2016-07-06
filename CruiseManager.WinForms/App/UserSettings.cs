@@ -1,27 +1,22 @@
 ﻿using CruiseManager.Core.App;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CruiseManager.WinForms.App
 {
     public class UserSettings : IUserSettings
     {
-
         public UserSettings()
         {
-            if(string.IsNullOrEmpty( Properties.Settings.Default.DefaultCruiseSaveLocation))
+            if (string.IsNullOrEmpty(Properties.Settings.Default.DefaultCruiseSaveLocation))
             {
-                Properties.Settings.Default.DefaultCruiseSaveLocation = 
-                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) 
+                Properties.Settings.Default.DefaultCruiseSaveLocation =
+                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
                     + @"\CruiseFiles";
             }
-            if(String.IsNullOrEmpty(Properties.Settings.Default.DefaultTemplateSaveLocation))
+            if (String.IsNullOrEmpty(Properties.Settings.Default.DefaultTemplateSaveLocation))
             {
-                Properties.Settings.Default.DefaultTemplateSaveLocation = 
-                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) 
+                Properties.Settings.Default.DefaultTemplateSaveLocation =
+                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
                     + "\\CruiseFiles\\Templates";
             }
         }
@@ -34,11 +29,11 @@ namespace CruiseManager.WinForms.App
                 if (bool.TryParse(Properties.Settings.Default.CreateSaleFolder, out tmp))
                 { return tmp; }
                 else
-                { return null; }              
+                { return null; }
             }
             set
             {
-                Properties.Settings.Default.CreateSaleFolder 
+                Properties.Settings.Default.CreateSaleFolder
                     = (value.HasValue) ? value.ToString() : string.Empty;
             }
         }
@@ -70,12 +65,11 @@ namespace CruiseManager.WinForms.App
             }
         }
 
-
         public string Region
         {
             get
             {
-                return Properties.Settings.Default.UserRegion; 
+                return Properties.Settings.Default.UserRegion;
             }
             set
             {
@@ -111,6 +105,5 @@ namespace CruiseManager.WinForms.App
         {
             Properties.Settings.Default.Reset();
         }
-
     }
 }

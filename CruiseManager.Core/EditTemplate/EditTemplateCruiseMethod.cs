@@ -1,12 +1,9 @@
 ﻿using CruiseDAL.DataObjects;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 
 namespace CruiseManager.Core.EditTemplate
 {
-    public class EditTemplateCruiseMethod 
+    public class EditTemplateCruiseMethod
     {
         public EditTemplateCruiseMethod(CruiseMethodsDO method)
         {

@@ -1,7 +1,5 @@
 ﻿using CruiseManager.Core.App;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CruiseManager.Core.ViewModel
 {
@@ -10,9 +8,11 @@ namespace CruiseManager.Core.ViewModel
     public abstract class Presentor : IPresentor, IDisposable
     {
         private IView _view;
-        //private PresenterStatus _status = PresenterStatus.Ready; 
+
+        //private PresenterStatus _status = PresenterStatus.Ready;
         //public WindowPresenter WindowPresenter { get; protected set; }
         public ApplicationControllerBase ApplicationController { get; protected set; }
+
         public IView View
         {
             get { return _view; }
@@ -25,7 +25,9 @@ namespace CruiseManager.Core.ViewModel
             }
         }
 
-        public Presentor() { }
+        public Presentor()
+        {
+        }
 
         public Presentor(ApplicationControllerBase appController)
         {
@@ -42,11 +44,10 @@ namespace CruiseManager.Core.ViewModel
         //    }
         //}
 
-        //public event EventHandler<PresenterStatusChangedEventArgs> StatusChanged; 
+        //public event EventHandler<PresenterStatusChangedEventArgs> StatusChanged;
 
         protected virtual void OnViewLoad(EventArgs e)
         {
-
         }
 
         //protected void OnStatusChanged(PresenterStatus status)
@@ -79,6 +80,7 @@ namespace CruiseManager.Core.ViewModel
         }
 
         #region IDisposable Support
+
         private bool disposedValue = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
@@ -111,8 +113,7 @@ namespace CruiseManager.Core.ViewModel
             // TODO: uncomment the following line if the finalizer is overridden above.
             // GC.SuppressFinalize(this);
         }
-        #endregion
 
-
+        #endregion IDisposable Support
     }
 }

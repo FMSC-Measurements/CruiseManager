@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using CruiseDAL.DataObjects;
+using System.Collections.Generic;
 using System.ComponentModel;
-using CruiseDAL.DataObjects;
-using CruiseManager.Core.Collections;
-using System.Linq;
-using CruiseManager.Core.Models;
 
 namespace CruiseManager.Core.EditDesign
 {
@@ -15,6 +12,7 @@ namespace CruiseManager.Core.EditDesign
         private List<TreeDefaultValueDO> _ToBeDelectedTreeDefaults = new List<TreeDefaultValueDO>();
 
         private bool _hasUnsavedChanges = false;
+
         public bool HasUnsavedChanges
         {
             get
@@ -31,6 +29,7 @@ namespace CruiseManager.Core.EditDesign
         }
 
         private SaleDO _Sale;
+
         public SaleDO Sale
         {
             get { return _Sale; }
@@ -41,7 +40,7 @@ namespace CruiseManager.Core.EditDesign
                 {
                     _Sale.PropertyChanged -= Sale_PropertyChanged;
                 }
-                //add a property changed listener 
+                //add a property changed listener
                 if (value != null && !object.ReferenceEquals(_Sale, value))
                 {
                     value.PropertyChanged += new PropertyChangedEventHandler(Sale_PropertyChanged);
@@ -50,7 +49,6 @@ namespace CruiseManager.Core.EditDesign
                 _Sale = value;
             }
         }
-
 
         public BindingList<CuttingUnitDO> CuttingUnits { get; set; }
         public BindingList<DesignEditorStratum> Strata { get; set; }
@@ -64,13 +62,13 @@ namespace CruiseManager.Core.EditDesign
                 return _ToBeDeletedCuttingUnits;
             }
         }
+
         public List<DesignEditorStratum> DeletedStrata
         {
             get
             {
                 return _ToBeDeletedStrata;
             }
-
         }
 
         public List<SampleGroupDO> DeletedSampleGroups
@@ -90,6 +88,7 @@ namespace CruiseManager.Core.EditDesign
         }
 
         private BindingList<CuttingUnitDO> _AllCuttingUnits;
+
         public BindingList<CuttingUnitDO> AllCuttingUnits
         {
             get { return _AllCuttingUnits; }
@@ -109,6 +108,7 @@ namespace CruiseManager.Core.EditDesign
         }
 
         private BindingList<DesignEditorStratum> _AllStrata;
+
         public BindingList<DesignEditorStratum> AllStrata
         {
             get { return _AllStrata; }
@@ -128,6 +128,7 @@ namespace CruiseManager.Core.EditDesign
         }
 
         public BindingList<SampleGroupDO> _AllSampleGroups;
+
         public BindingList<SampleGroupDO> AllSampleGroups
         {
             get { return _AllSampleGroups; }
@@ -149,9 +150,8 @@ namespace CruiseManager.Core.EditDesign
         public BindingList<CuttingUnitDO> CuttingUnitFilterSelectionList { get; set; }
         public BindingList<DesignEditorStratum> StrataFilterSelectionList { get; set; }
 
-
-
         private BindingList<TreeDefaultValueDO> _allTreeDefaults;
+
         public BindingList<TreeDefaultValueDO> AllTreeDefaults
         {
             get { return _allTreeDefaults; }
@@ -187,7 +187,5 @@ namespace CruiseManager.Core.EditDesign
                 OnDataModified();
             }
         }
-
-
     }
 }

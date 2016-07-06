@@ -1,7 +1,4 @@
-﻿using CruiseManager.Core.App;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 
 namespace CruiseManager.Core.ViewModel
 {
@@ -15,17 +12,19 @@ namespace CruiseManager.Core.ViewModel
         event EventHandler Load;
 
         void ShowMessage(String message);
+
         void ShowMessage(String message, String caption);
 
         void ShowErrorMessage(String shortDiscription, String longDiscription);
 
         bool AskOKOrCancel(string message, string caption, bool defaultOption);
+
         bool? AskYesNoCancel(String message, String caption);
+
         bool? AskYesNoCancel(String message, String caption, bool? defaultOption);
 
         void ShowWaitCursor();
-        void ShowDefaultCursor();
 
+        void ShowDefaultCursor();
     }
 }
-

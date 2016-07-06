@@ -1,33 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using CruiseDAL;
-using CruiseDAL.DataObjects;
-using System.Diagnostics;
-using System.IO;
+﻿using CruiseDAL.DataObjects;
 using CruiseManager.Core.Models;
 using CruiseManager.Core.SetupModels;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.CruiseWizard
 {
     public partial class CruiseWizardView : Form, IPagingView
     {
-
         #region Fields
+
         private SalePage salePage = null;
         private CuttingUnitsPage cuttingUnitPage = null;
         private StrataPage strataPage = null;
         public SampleGroupPage sampleGroupPage = null;
 
+        #endregion Fields
 
-        #endregion 
+
 
         #region CTor
+
         public CruiseWizardView()
         {
             //this.Presenter = Presenter;
@@ -38,14 +33,14 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.DialogResult = DialogResult.Cancel;
         }
 
+        #endregion CTor
 
+        #region Properties
 
-        #endregion
-
-        #region Properties 
         public CruiseWizardPresenter Presenter { get; set; }
 
-        public PageHost PageHost {
+        public PageHost PageHost
+        {
             get
             {
                 return pageHost;
@@ -56,14 +51,12 @@ namespace CruiseManager.WinForms.CruiseWizard
             }
         }
 
-        #endregion 
+        #endregion Properties
 
-       
+        #region Initialization Methods
 
-        #region Initialization Methods 
         private void InitializePages()
         {
-
             salePage = new SalePage("Sale", this) { Dock = DockStyle.Fill };
             pageHost.Add(salePage);
 
@@ -75,12 +68,12 @@ namespace CruiseManager.WinForms.CruiseWizard
 
             sampleGroupPage = new SampleGroupPage("SampleGroups", this) { Dock = DockStyle.Fill };
             pageHost.Add(sampleGroupPage);
-
-
         }
-        #endregion
+
+        #endregion Initialization Methods
 
         #region data update methods
+
         public void UpdateSale(SaleDO obj)
         {
             salePage.SaleDOBindingSource.DataSource = obj;
@@ -133,15 +126,13 @@ namespace CruiseManager.WinForms.CruiseWizard
         {
             salePage.RegionForestBindingSource.DataSource = list;
         }
-        #endregion
 
-       
+        #endregion data update methods
 
         public void SetTemplatePathTextBox(string value, bool enable)
         {
             this.salePage.SetTemplatePathTextBox(value, enable);
         }
-
 
         protected override void OnLoad(EventArgs e)
         {
@@ -161,10 +152,6 @@ namespace CruiseManager.WinForms.CruiseWizard
             if (e.Handled == true) { return; }
             e.Handled = this.PageHost.CurrentPage.HandleKeypress(e.KeyData);
         }
-
-
-
-        
 
         ////#region Paging Methods
         ////public void ShowCuttingUnits()
@@ -191,12 +178,10 @@ namespace CruiseManager.WinForms.CruiseWizard
 
         ////#endregion
 
-
         //#region Methods
-        
 
-        ////prompts the user with a save file diolog 
-        ////to get the path for the file to be created 
+        ////prompts the user with a save file diolog
+        ////to get the path for the file to be created
         ////public string AskSavePath()
         ////{
         ////    saveFileDialog.DefaultExt = "cruise";
@@ -218,7 +203,6 @@ namespace CruiseManager.WinForms.CruiseWizard
         ////    return null;
         ////}
 
-
         #region IPagingView Members
 
         public void Display(string Name)
@@ -231,19 +215,14 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.PageHost.Display(Page);
         }
 
-        #endregion
-
+        #endregion IPagingView Members
 
         #region IView Members
 
-
-
         public void HandleLoad()
         {
-            
         }
 
-        #endregion
-
+        #endregion IView Members
     }
 }

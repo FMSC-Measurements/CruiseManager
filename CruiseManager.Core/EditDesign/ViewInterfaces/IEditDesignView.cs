@@ -1,9 +1,4 @@
-﻿using CruiseManager.Core.EditDesign;
-using CruiseManager.Core.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
+﻿using CruiseManager.Core.ViewModel;
 
 namespace CruiseManager.Core.EditDesign.ViewInterfaces
 {
@@ -17,13 +12,17 @@ namespace CruiseManager.Core.EditDesign.ViewInterfaces
         //BindingSource CuttingUnitsBindingSource { get; set; }
 
         void UpdateSampleGroups(object samplegroups);
+
         void UpdateSampleGroupTDVs(object tdvs);
+
         void UpdateStrata(object strata);
+
         void UpdateCuttingUnits(object cuttingUnits);
 
-
         void BindSetup();
+
         void BindData();
+
         void EndEdits();
     }
 }

@@ -1,8 +1,6 @@
-﻿using System;
+﻿using CruiseDAL.DataObjects;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CruiseDAL.DataObjects;
 
 namespace CruiseManager.Core.Models
 {
@@ -31,7 +29,7 @@ namespace CruiseManager.Core.Models
             return (obj.Field != null) ? obj.Field.GetHashCode() : 0;
         }
 
-        #endregion
+        #endregion IEqualityComparer<TreeFieldSetupDO> Members
 
         #region IComparer<TreeFieldSetupDO> Members
 
@@ -40,10 +38,10 @@ namespace CruiseManager.Core.Models
             return string.Compare(x.Field, y.Field, StringComparison.OrdinalIgnoreCase);
         }
 
-        #endregion
+        #endregion IComparer<TreeFieldSetupDO> Members
     }
 
-    //a worker class for comparing LogFieldSetupDO 
+    //a worker class for comparing LogFieldSetupDO
     public class LogFieldComparer : IEqualityComparer<LogFieldSetupDO>, IComparer<LogFieldSetupDO>
     {
         public static LogFieldComparer Instance
@@ -60,7 +58,6 @@ namespace CruiseManager.Core.Models
 
         private static LogFieldComparer _instance;
 
-
         #region IEqualityComparer<LogFieldSetupDO> Members
 
         public bool Equals(LogFieldSetupDO x, LogFieldSetupDO y)
@@ -73,7 +70,7 @@ namespace CruiseManager.Core.Models
             return (obj.Field != null) ? obj.Field.GetHashCode() : 0;
         }
 
-        #endregion
+        #endregion IEqualityComparer<LogFieldSetupDO> Members
 
         #region IComparer<LogFieldSetupDO> Members
 
@@ -82,7 +79,7 @@ namespace CruiseManager.Core.Models
             return string.Compare(x.Field, y.Field, StringComparison.OrdinalIgnoreCase);
         }
 
-        #endregion
+        #endregion IComparer<LogFieldSetupDO> Members
     }
 
     public class TreeDefaultSpeciesComparer : Comparer<TreeDefaultValueDO>
@@ -97,7 +94,8 @@ namespace CruiseManager.Core.Models
     {
         #region IEqualityComparer<TreeDefaultValueDO> Members
 
-        private static TreeDefaultComparer _instance; 
+        private static TreeDefaultComparer _instance;
+
         public static TreeDefaultComparer Instance
         {
             get
@@ -106,7 +104,7 @@ namespace CruiseManager.Core.Models
                 {
                     _instance = new TreeDefaultComparer();
                 }
-                return _instance; 
+                return _instance;
             }
         }
 
@@ -122,7 +120,7 @@ namespace CruiseManager.Core.Models
             return obj.PrimaryProduct.GetHashCode() ^ 3 + obj.Species.GetHashCode() ^ 2 + obj.LiveDead.GetHashCode();
         }
 
-        #endregion
+        #endregion IEqualityComparer<TreeDefaultValueDO> Members
     }
 
     public class ComponentComparer : Comparer<ComponentDO>
@@ -134,6 +132,6 @@ namespace CruiseManager.Core.Models
             return x.Component_CN.GetValueOrDefault(0).CompareTo(y.Component_CN.GetValueOrDefault(0));
         }
 
-        #endregion
+        #endregion IComparer<ComponentDO> Members
     }
 }

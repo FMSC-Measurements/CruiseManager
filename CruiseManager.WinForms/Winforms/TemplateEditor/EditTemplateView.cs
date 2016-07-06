@@ -1,22 +1,19 @@
-﻿using System;
+﻿using CruiseDAL.DataObjects;
+using CruiseManager.Core.App;
+using CruiseManager.Core.EditTemplate;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using CruiseDAL.DataObjects;
-using CruiseManager.Core.App;
-using CruiseManager.Core.ViewInterfaces;
-using CruiseManager.Core.EditTemplate;
 
 namespace CruiseManager.WinForms.TemplateEditor
 {
     public partial class EditTemplateView : UserControlView, Core.ViewInterfaces.EditTemplateView
     {
-
-        public EditTemplateView(WindowPresenter windowPresenter, TemplateEditViewPresenter viewPresenter )
+        public EditTemplateView(WindowPresenter windowPresenter, TemplateEditViewPresenter viewPresenter)
         {
-            this.WindowPresenter = windowPresenter; 
+            this.WindowPresenter = windowPresenter;
             this.ViewPresenter = viewPresenter;
             ViewPresenter.View = this;
-            
 
             //this.UserCommands = new ViewCommand[]{
             //    this.ViewPresenter.ApplicationController.MakeViewCommand("Close File", this.ViewPresenter.WindowPresenter.ShowCruiseLandingLayout),
@@ -27,16 +24,15 @@ namespace CruiseManager.WinForms.TemplateEditor
         }
 
         protected WindowPresenter WindowPresenter { get; set; }
-        
+
         public new TemplateEditViewPresenter ViewPresenter
         {
             get { return (TemplateEditViewPresenter)base.ViewPresenter; }
             set { base.ViewPresenter = value; }
         }
+
         protected TreeDefaultValueDO TreeAudit_CurrentTDV { get; set; }
         protected CruiseMethodsDO FieldSetup_CurrentMethod { get; set; }
-
-
 
         //private void _tallyDGV_VisibleChanged(object sender, EventArgs e)
         //{
@@ -70,22 +66,15 @@ namespace CruiseManager.WinForms.TemplateEditor
             _BS_VolEquations.DataSource = ViewPresenter.VolumeEQs;
         }
 
-        #endregion
+        #endregion VolEq
 
-        
-       
         //public void UpdateTallySetup()
         //{
         //    _BS_Tallies.DataSource = Presenter.Tallies;
         //}
 
-        
+        #region Tree/Log Field Setup
 
-        
-
-       
-
-#region Tree/Log Field Setup
         public void UpdateFieldSetup()
         {
             if (ViewPresenter.CruiseMethods != null)
@@ -111,8 +100,6 @@ namespace CruiseManager.WinForms.TemplateEditor
 
         private void HandleFieldSetupSelectedCruiseMethodChanged(EditTemplateCruiseMethod method)
         {
-
-
             if (method != null)
             {
                 //List<String> selectedTreeFields = (from TreeFieldSetupDefaultDO tf in this.Presenter.GetSelectedTreeFields(method) select tf.Field).ToList();
@@ -122,7 +109,6 @@ namespace CruiseManager.WinForms.TemplateEditor
 
                 //List<String> selectedLogFields = (from LogFieldSetupDefaultDO lf in this.Presenter.GetSelectedLogFields(method) select lf.Field).ToList();
                 //List<LogFieldSetupDefaultDO> unselectedLogFields = method.UnselectedLogFields;
-
             }
         }
 
@@ -173,9 +159,11 @@ namespace CruiseManager.WinForms.TemplateEditor
                 list[i].FieldOrder = i + 1;
             }
         }
-#endregion
+
+        #endregion Tree/Log Field Setup
 
         #region Tree Audits
+
         public void UpdateTreeAudit()
         {
             _BS_TreeDefaults.DataSource = ViewPresenter.TreeDefaultValues;
@@ -218,7 +206,6 @@ namespace CruiseManager.WinForms.TemplateEditor
 
         private void _treeAuditDGV_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
-
         }
 
         private void _treeAuditClearSelectionBTN_Click(object sender, EventArgs e)
@@ -228,9 +215,11 @@ namespace CruiseManager.WinForms.TemplateEditor
             tav.TreeDefaultValues.Clear();
             _tdvDGV.Invalidate();
         }
-        #endregion
+
+        #endregion Tree Audits
 
         #region TreeDefaults
+
         public void UpdateTreeDefaults()
         {
             _BS_TreeDefaults.DataSource = ViewPresenter.TreeDefaultValues;
@@ -244,7 +233,7 @@ namespace CruiseManager.WinForms.TemplateEditor
         private void _addTDVButton_Click(object sender, EventArgs e)
         {
             TreeDefaultValueDO newTDV = this.WindowPresenter.ShowAddTreeDefault();
-            if(newTDV != null)
+            if (newTDV != null)
             {
                 this._BS_TreeDefaults.Add(newTDV);
             }
@@ -300,9 +289,11 @@ namespace CruiseManager.WinForms.TemplateEditor
             //    tdv.Delete();
             //}
         }
-        #endregion
+
+        #endregion TreeDefaults
 
         #region Reports
+
         private void _reportsSelectAllBtn_Click(object sender, EventArgs e)
         {
             foreach (ReportsDO rpt in this.ViewPresenter.Reports)
@@ -328,8 +319,7 @@ namespace CruiseManager.WinForms.TemplateEditor
         {
             _BS_Reports.DataSource = ViewPresenter.Reports;
         }
-        #endregion
 
-
+        #endregion Reports
     }
 }

@@ -1,25 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using CruiseDAL;
-using System.Linq;
-using System.ComponentModel;
+﻿using CruiseDAL;
 using CruiseDAL.DataObjects;
-using System.Windows.Forms;
-using System.Diagnostics;
-using System.IO;
-using CruiseManager.Utility;
-using FMSC.Utility.Collections;
-using System.Threading;
+using CruiseManager.Core.App;
 using CruiseManager.Core.Models;
 using CruiseManager.Core.SetupModels;
-using CruiseManager.Core.App;
-using CruiseManager.Core.Constants;
 using FMSC.ORM.Core.SQL;
+using FMSC.Utility.Collections;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.CruiseWizard
 {
-    public class CruiseWizardPresenter 
+    public class CruiseWizardPresenter
     {
+        private const int WAIT_COPY_TEMPLATE_TIMEOUT = 4;
         private SaleDO _sale;
         private BindingListRedux<CuttingUnitDO> _cuttingUnits = new BindingListRedux<CuttingUnitDO>();
         private BindingListRedux<StratumVM> _strata = new BindingListRedux<StratumVM>();
@@ -34,19 +32,18 @@ namespace CruiseManager.WinForms.CruiseWizard
         private bool _fileHasTemplate = false;
         private Thread _copyTemplateThread;
         private DAL _templateDatabase;
-        private const int WAIT_COPY_TEMPLATE_TIMEOUT = 4;//seconds
-
+        //seconds
 
         private bool _isFinished = false;//flag for indicating if the view is closing from the user cliking finish, or canceling
         protected DAL _database;
 
-
         #region Properties
+
         public WindowPresenter WindowPresenter { get; set; }
         protected ApplicationControllerBase ApplicationController { get; set; }
         public CruiseWizardView View { get; set; }
 
-        public DAL Database 
+        public DAL Database
         {
             get
             {
@@ -65,11 +62,11 @@ namespace CruiseManager.WinForms.CruiseWizard
             get { return _sale; }
             set
             {
-                _sale = value;                
+                _sale = value;
             }
         }
 
-        public BindingListRedux<CuttingUnitDO> CuttingUnits 
+        public BindingListRedux<CuttingUnitDO> CuttingUnits
         {
             get { return _cuttingUnits; }
             set
@@ -90,7 +87,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             }
         }
 
-        public BindingListRedux<StratumVM> Strata 
+        public BindingListRedux<StratumVM> Strata
         {
             get { return _strata; }
             set
@@ -120,9 +117,11 @@ namespace CruiseManager.WinForms.CruiseWizard
                 View.UpdateTreeDefaults(value);
             }
         }
-        #endregion
+
+        #endregion cruise data properties
 
         #region Setup properties
+
         public List<FileInfo> LocalTemplateFiles
         {
             get
@@ -131,7 +130,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             }
         }
 
-        public List<string> CruiseMethods 
+        public List<string> CruiseMethods
         {
             get { return _cruiseMethods; }
             set
@@ -141,7 +140,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             }
         }
 
-        public List<LoggingMethod> LoggingMethods 
+        public List<LoggingMethod> LoggingMethods
         {
             get { return _loggingMethods; }
             set
@@ -151,13 +150,25 @@ namespace CruiseManager.WinForms.CruiseWizard
             }
         }
 
-        public List<ProductCode> ProductCodes 
+        public List<ProductCode> ProductCodes
         {
             get { return _productCodes; }
             set
             {
                 _productCodes = value;
                 View.UpdateProduectCodes(value);
+            }
+        }
+
+        public IEnumerable<ProductCode> SecondaryProductCodes
+        {
+            get
+            {
+                yield return ProductCode.Empty;
+                foreach (var pc in ProductCodes)
+                {
+                    yield return pc;
+                }
             }
         }
 
@@ -171,7 +182,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             }
         }
 
-        public List<UOMCode> UOMCodes 
+        public List<UOMCode> UOMCodes
         {
             get { return _uomCodes; }
             set
@@ -180,12 +191,14 @@ namespace CruiseManager.WinForms.CruiseWizard
                 View.UpdateUOMCodes(value);
             }
         }
-        #endregion 
-        #endregion 
 
+        #endregion Setup properties
 
-        #region CTor 
-        //TODO make testable constructor 
+        #endregion Properties
+
+        #region CTor
+
+        //TODO make testable constructor
 
         public CruiseWizardPresenter(CruiseWizardView View, WindowPresenter windowPresenter, ApplicationControllerBase applicationController, DAL database)
         {
@@ -199,14 +212,14 @@ namespace CruiseManager.WinForms.CruiseWizard
 
             LoadCruiseData();//read data from existing file
 
-            //See if the file contains a template file record 
-            GlobalsDO record = this._database.ReadSingleRow<GlobalsDO>("Globals", "WHERE Block = 'CSM' AND KEY = 'TemplatePath'");
+            //See if the file contains a template file record
+            string templatePath = _database.ReadGlobalValue("CSM", "TemplatePath");
 
-            if (record != null && !String.IsNullOrEmpty(record.Value))
+            if (!String.IsNullOrEmpty(templatePath))
             {
-                this._fileHasTemplate = true; 
-                this._templateFile = new FileInfo(record.Value);
-                View.SetTemplatePathTextBox(record.Value, false);
+                this._fileHasTemplate = true;
+                this._templateFile = new FileInfo(templatePath);
+                View.SetTemplatePathTextBox(templatePath, false);
             }
 
             if (this.CuttingUnits.Count == 0)
@@ -215,15 +228,12 @@ namespace CruiseManager.WinForms.CruiseWizard
             }
         }
 
-
-        #endregion// end ctor       
+        #endregion CTor
 
         //private static string GetTempPath()
         //{
         //    return Path.GetDirectoryName(Application.LocalUserAppDataPath) + "\\" + Strings.TEMP_FILENAME;
         //}
-
-
 
         //public void HandelLoad()
         //{
@@ -257,10 +267,8 @@ namespace CruiseManager.WinForms.CruiseWizard
         //    this.WindowPresenter.ShowDefaultCursor();
         //}
 
-        
+        //TODO test load methods
 
-        
-        //TODO test load methods 
         #region Load methods
 
         protected void LoadCruiseData()
@@ -271,7 +279,6 @@ namespace CruiseManager.WinForms.CruiseWizard
             CruiseMethods = new List<string>(CruiseMethodsDO.ReadCruiseMethodStr(this._database, this.Sale.Purpose == "Recon"));
             //this.CruiseMethods = this._database.Read<CruiseMethod>("CruiseMethods", null);
             this.TreeDefaults = this._database.Read<TreeDefaultValueDO>("TreeDefaultValue", null);
-
 
             List<StratumVM> stList = this._database.Read<StratumVM>("Stratum", null);
             foreach (StratumVM stratum in stList)
@@ -285,7 +292,6 @@ namespace CruiseManager.WinForms.CruiseWizard
                 stratum.SampleGroups = sgList;
             }
             this.Strata = new BindingListRedux<StratumVM>(stList);
-            
         }
 
         protected void LoadSetupData()
@@ -296,39 +302,35 @@ namespace CruiseManager.WinForms.CruiseWizard
             UOMCodes = setupServ.GetUOMCodes();
             ProductCodes = setupServ.GetProductCodes();
             Regions = setupServ.GetRegions();
-            //insert dummy forest, so that the comboboxes have a option when no forest is selected
+            //insert dummy forest, so that the combo-boxes have a option when no forest is selected
             foreach (Region r in Regions)
             {
                 r.Forests.Insert(0, new Forest() { Name = String.Empty });
             }
         }
 
-
         public void LoadTemplate(FileInfo template)
         {
-            //redundant condition checking 
+            //redundant condition checking
             if (template.Exists == false) { return; } // template doesn't exist do nothing..
-            if (_templateFile != null) { return; } //template already set, don't reload 
+            if (_templateFile != null) { return; } //template already set, don't reload
             if (_fileHasTemplate == true) { return; }
 
             _templateFile = template;
 
             //insert meta data containing location of template file
-            string command = string.Format("INSERT OR REPLACE INTO Globals (Block, Key, Value) VALUES ('CSM', 'TemplatePath', '{0}');", template.FullName);
-            this._database.Execute(command);
-
+            _database.WriteGlobalValue("CMS", "TemplatePath", template.FullName);
 
             try
             {
                 _templateDatabase = new DAL(template.FullName);
 
-
-                //only load FIX and PNT Cruise methods for Recon cruises 
+                //only load FIX and PNT Cruise methods for Recon cruises
                 CruiseMethods = _templateDatabase.GetCruiseMethods(this.Sale.Purpose == "Recon");
 
                 this.StartAsynCopyTemplate(_templateDatabase);
             }
-            catch (Exception) 
+            catch (Exception)
             {
                 MessageBox.Show("Error: Couldn't open template");
             }
@@ -341,7 +343,8 @@ namespace CruiseManager.WinForms.CruiseWizard
                 }
             }
         }
-        #endregion
+
+        #endregion Load methods
 
         #region DO creation and deletion methods
 
@@ -360,12 +363,6 @@ namespace CruiseManager.WinForms.CruiseWizard
 
         public StratumVM GetNewStratum()
         {
-            //because we want to store a list of samplegroups for each strata
-            //lets create a list and store it in the Tag. 
-            //the tag is a general term for a property on an object that is 
-            // designed to attatche extera data to that object that, fufills 
-            //an unexpected need. 
-
             StratumVM newStrata = new StratumVM(this._database);
             newStrata.SampleGroups = new List<SampleGroupDO>();
             return newStrata;
@@ -374,7 +371,7 @@ namespace CruiseManager.WinForms.CruiseWizard
         public void OnStratumRemoved(object sender, ItemRemovedEventArgs e)
         {
             StratumDO s = e.Item as StratumDO;
-            if (s == null) return;            
+            if (s == null) return;
             DeleteStratum(s);
         }
 
@@ -382,7 +379,6 @@ namespace CruiseManager.WinForms.CruiseWizard
         {
             if (cu.IsPersisted)
             {
-                //cu.Delete();
                 CuttingUnitDO.RecursiveDelete(cu);
             }
         }
@@ -391,7 +387,6 @@ namespace CruiseManager.WinForms.CruiseWizard
         {
             if (st.IsPersisted)
             {
-                //st.Delete();
                 StratumDO.RecursiveDeleteStratum(st);
             }
         }
@@ -400,11 +395,9 @@ namespace CruiseManager.WinForms.CruiseWizard
         {
             if (sg.IsPersisted)
             {
-                //sg.Delete();
                 SampleGroupDO.RecutsiveDeleteSampleGroup(sg);
             }
         }
-
 
         public SampleGroupDO GetNewSampleGroup(StratumDO stratum, SampleGroupDO newSampleGroup)
         {
@@ -413,12 +406,20 @@ namespace CruiseManager.WinForms.CruiseWizard
                 newSampleGroup = new SampleGroupDO(this._database);
             }
 
-
             newSampleGroup.CutLeave = "C";
             newSampleGroup.DefaultLiveDead = "L";
             newSampleGroup.Code = "<Blank>";
             newSampleGroup.Stratum = stratum;
-            newSampleGroup.UOM = Sale.DefaultUOM;
+
+            if (stratum.Method == CruiseDAL.Schema.CruiseMethods.FIXCNT)
+            {
+                newSampleGroup.UOM = "03";
+            }
+            else
+            {
+                newSampleGroup.UOM = Sale.DefaultUOM;
+            }
+
             return newSampleGroup;
         }
 
@@ -427,14 +428,14 @@ namespace CruiseManager.WinForms.CruiseWizard
             TreeDefaultValueDO tdv = new TreeDefaultValueDO(this._database);
             return tdv;
         }
-        #endregion
+
+        #endregion DO creation and deletion methods
 
         #region View lifeCycle
 
         public void OnViewLoad()
         {
             //View.UpdateSale(this.Sale);
-
         }
 
         /// <summary>
@@ -452,7 +453,6 @@ namespace CruiseManager.WinForms.CruiseWizard
                     {
                         case "CuttingUnits":
                             {
-
                                 this.SaveCuttingUnits(true);
                                 break;
                             }
@@ -475,10 +475,10 @@ namespace CruiseManager.WinForms.CruiseWizard
                 }
             }
         }
-        #endregion
+
+        #endregion View lifeCycle
 
         #region page navigation methods
-
 
         public void HandleSalePageExit(string templatePath)
         {
@@ -489,10 +489,9 @@ namespace CruiseManager.WinForms.CruiseWizard
                 return;
             }
 
-
             if (!this._fileHasTemplate)
             {
-                if( !string.IsNullOrEmpty(templatePath) 
+                if (!string.IsNullOrEmpty(templatePath)
                     && File.Exists(templatePath))
                 {
                     FileInfo template = new FileInfo(templatePath);
@@ -513,7 +512,6 @@ namespace CruiseManager.WinForms.CruiseWizard
                     }
                 }
             }
-            
 
             if (CruiseMethods.Count == 0)
             {
@@ -522,7 +520,7 @@ namespace CruiseManager.WinForms.CruiseWizard
 
             this.ShowCuttingUnits();
         }
- 
+
         public void ShowCuttingUnits()
         {
             try
@@ -539,12 +537,12 @@ namespace CruiseManager.WinForms.CruiseWizard
 
         public void ShowStratum()
         {
-            string errorMsg; 
+            string errorMsg;
             //display error message if strata data invalid
             if (AreCuttingUnitsValid(out errorMsg) == false)
             {
-                MessageBox.Show(errorMsg, "Warning", MessageBoxButtons.OK); 
-               return;
+                MessageBox.Show(errorMsg, "Warning", MessageBoxButtons.OK);
+                return;
             }
 
             try
@@ -565,16 +563,15 @@ namespace CruiseManager.WinForms.CruiseWizard
             string errorMsg;
             if (AreStrataValid(out errorMsg) == false)
             {
-                //MessageBox.Show("Some strata contain errors, please fix before continuing", "Warning", MessageBoxButtons.OK);
                 MessageBox.Show(errorMsg, "Warning", MessageBoxButtons.OK);
-               return;
+                return;
             }
 
             try
             {
                 this.SaveStrata(false);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 MessageBox.Show(e.Message);
                 return;
@@ -589,14 +586,15 @@ namespace CruiseManager.WinForms.CruiseWizard
             //}
         }
 
-        #endregion 
+        #endregion page navigation methods
 
-        #region validateion methods
+        #region validation methods
+
         protected bool AreCuttingUnitsValid(out string errorMsg)
         {
             bool allCUValid = true;
             errorMsg = "Unit Errors Found";
-                                            //check has errors on all cutting units 
+            //check has errors on all cutting units
             foreach (CuttingUnitDO cu in CuttingUnits)
             {
                 cu.Validate();              //call validate before we check for errors
@@ -615,14 +613,13 @@ namespace CruiseManager.WinForms.CruiseWizard
             bool allStValid = true;
             errorMsg = "Strata Errors Found";
 
-            
             foreach (StratumDO st in Strata)
             {
                 st.Validate();
                 if (st.HasErrors())
                 {
                     allStValid = false;
-                    errorMsg += "\r\n  Stratum " + st.Code + ": " + st.Error; 
+                    errorMsg += "\r\n  Stratum " + st.Code + ": " + st.Error;
                 }
                 if (st.CuttingUnits.Count == 0)
                 {
@@ -645,10 +642,7 @@ namespace CruiseManager.WinForms.CruiseWizard
                 {
                     allStValid = false;
                     errorMsg += String.Format("\r\n Stratum {0} should have BAF greater than 0", st.Code);
-                }  
-
-                
-
+                }
             }
             return allStValid;
         }
@@ -656,7 +650,7 @@ namespace CruiseManager.WinForms.CruiseWizard
         public bool AllSampleGroupValid(out string errorMsg)
         {
             bool allSgValid = true;
-            System.Text.StringBuilder errorSB = new System.Text.StringBuilder();            
+            System.Text.StringBuilder errorSB = new System.Text.StringBuilder();
             errorSB.AppendLine("Sample Group Errors Found");
 
             foreach (StratumVM st in Strata)
@@ -672,40 +666,13 @@ namespace CruiseManager.WinForms.CruiseWizard
                         errorSB.AppendLine(error);
                     }
                 }
-
-
-                //    sg.Validate();
-                //    if(sg.HasErrors())
-                //    {
-                //        allSgValid = false;
-                //        errorSB.AppendLine("Stratum = " + st.Code + " SG = " + sg.Code + sg.Error);
-                //    }
-                //    if (String.IsNullOrEmpty(sg.Code))
-                //    {
-                //        errorSB.AppendLine("Stratum = " + st.Code + " SG = " + sg.Code + " Code can't be empty");
-                //        allSgValid = false;
-                //    }
-                //    if (sg.TreeDefaultValues.Count == 0)
-                //    {
-                //        errorSB.AppendLine("Stratum = " + st.Code + " SG = " + sg.Code + " No Tree Tree Defaults Selected");
-                //    }
-                //    string tmp = string.Empty; 
-                //    if(!sg.ValidatePProdOnTDVs(ref tmp))
-                //    {
-                //        errorSB.AppendLine(tmp);
-                //        allSgValid = false;
-                //    }
-                //}
             }
-
 
             errorMsg = (!allSgValid) ? errorSB.ToString() : null;
             return allSgValid;
         }
-        #endregion
 
-        
-
+        #endregion validation methods
 
         /// <summary>
         /// Start CopyTemplate thread
@@ -740,7 +707,6 @@ namespace CruiseManager.WinForms.CruiseWizard
                 {
                     if (_copyTemplateThread.Join(WAIT_COPY_TEMPLATE_TIMEOUT * 1000))
                     {
-
                     }
                     else
                     {
@@ -758,9 +724,7 @@ namespace CruiseManager.WinForms.CruiseWizard
                     _copyTemplateThread = null;
                 }
             }
-
         }
-
 
         //override for call by ParameterizedThreadStart
         private void CopyTemplateData(object obj)
@@ -770,11 +734,10 @@ namespace CruiseManager.WinForms.CruiseWizard
 
         protected void CopyTemplateData(DAL templateDB)
         {
-
             //            _database.Execute(@"
             //DELETE FROM TreeDefaultValue;
             //DELETE FROM TreeAuditValue;
-            //DELETE FROM TreeDefaultValueTreeAuditValue;");//ensure that these tables are clean 
+            //DELETE FROM TreeDefaultValueTreeAuditValue;");//ensure that these tables are clean
             _database.BeginTransaction();
             try
             {
@@ -798,12 +761,11 @@ namespace CruiseManager.WinForms.CruiseWizard
                     _database.Insert(rpt, OnConflictOption.Replace);
                 }
 
-                var crusemethods = templateDB.From<CruiseMethodsDO>() ;
+                var crusemethods = templateDB.From<CruiseMethodsDO>();
                 if (this.Sale.Purpose == "Recon")
                 {
                     crusemethods.Where("Code = 'FIX' OR Code = 'PNT'");
                 }
-
 
                 foreach (CruiseMethodsDO cm in crusemethods.Query())
                 {
@@ -832,23 +794,13 @@ namespace CruiseManager.WinForms.CruiseWizard
                 throw;
             }
 
-
             TreeDefaults = _database.From<TreeDefaultValueDO>().Read().ToList();
-
-
-            
-
-            
 
             //_database.DirectCopy(templateDB, CruiseDAL.Schema.VOLUMEEQUATION._NAME, null, OnConflictOption.Ignore);
             //_database.DirectCopy(templateDB, CruiseDAL.Schema.TREEFIELDSETUPDEFAULT._NAME, null, OnConflictOption.Ignore);
             //_database.DirectCopy(templateDB, CruiseDAL.Schema.LOGFIELDSETUPDEFAULT._NAME, null, OnConflictOption.Ignore);
             //_database.DirectCopy(templateDB, CruiseDAL.Schema.TALLY._NAME, null, OnConflictOption.Ignore);
         }
-
-       
-
-        
 
         /// <summary>
         /// helper method for Finish, executes database command that creates field set up entries from field setup defaults
@@ -858,8 +810,8 @@ namespace CruiseManager.WinForms.CruiseWizard
         private void SetFieldSetup(StratumDO stratum, DAL database)
         {
             string setTreeFieldCommand = String.Format(@"INSERT OR IGNORE INTO TreeFieldSetup (Stratum_CN, Field, FieldOrder, ColumnType, Heading, Width, Format, Behavior)
-            Select {0} as Stratum_CN, Field, FieldOrder, ColumnType, Heading, Width, Format, Behavior 
-            FROM TreeFieldSetupDefault 
+            Select {0} as Stratum_CN, Field, FieldOrder, ColumnType, Heading, Width, Format, Behavior
+            FROM TreeFieldSetupDefault
             WHERE Method = '{1}';", stratum.Stratum_CN, stratum.Method);
 
             string setLogFieldCommand = String.Format(@"INSERT OR IGNORE INTO LogFieldSetup (Stratum_CN, Field, FieldOrder, ColumnType, Heading, Width, Format, Behavior)
@@ -899,12 +851,10 @@ namespace CruiseManager.WinForms.CruiseWizard
             {
                 View.Cursor = Cursors.Default;
             }
-   
-            
+
             View.DialogResult = DialogResult.OK;
             _isFinished = true;
             View.Close();
-
         }
 
         protected void SaveCuttingUnits(bool tryToSaveAll)
@@ -922,7 +872,6 @@ namespace CruiseManager.WinForms.CruiseWizard
                         throw;
                     }
                 }
-
             }
         }
 
@@ -999,10 +948,8 @@ namespace CruiseManager.WinForms.CruiseWizard
                             throw;
                         }
                     }
-
                 }
             }
         }
-
     }
 }

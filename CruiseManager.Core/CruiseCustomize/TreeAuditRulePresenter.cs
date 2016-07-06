@@ -1,7 +1,6 @@
 ﻿using CruiseDAL;
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
-using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -49,7 +48,6 @@ namespace CruiseManager.Core.CruiseCustomize
                 TreeDefaults = this.Database.Read<TreeDefaultValueDO>("TreeDefaultValue", null);
                 TreeAudits = this.Database.Read<TreeAuditValueDO>("TreeAuditValue", "Order By Field");
                 _isInitialized = true;
-
             }
             catch (Exception ex)
             {
@@ -89,7 +87,6 @@ namespace CruiseManager.Core.CruiseCustomize
                 this.Database.RollbackTransaction();
                 return false;
             }
-
         }
     }
 }

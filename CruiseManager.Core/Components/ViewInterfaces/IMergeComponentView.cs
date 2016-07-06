@@ -1,9 +1,5 @@
-﻿using CruiseManager.Core.Components;
+﻿using CruiseManager.Core.ViewModel;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using CruiseManager.Core.App;
-using CruiseManager.Core.ViewModel;
 
 namespace CruiseManager.Core.Components.ViewInterfaces
 {
@@ -12,10 +8,11 @@ namespace CruiseManager.Core.Components.ViewInterfaces
         new MergeComponentsPresenter ViewPresenter { get; set; }
 
         void UpdateMergeInfoView();
+
         void ShowPremergeReport();
 
         void HandleWorkerStatusChanged();
-        void HandleProgressChanged(Object sender, WorkerProgressChangedEventArgs e);
 
+        void HandleProgressChanged(Object sender, WorkerProgressChangedEventArgs e);
     }
 }

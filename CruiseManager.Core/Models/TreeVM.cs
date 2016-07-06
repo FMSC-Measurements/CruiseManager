@@ -1,23 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using CruiseDAL;
 using CruiseDAL.DataObjects;
-using CruiseDAL;
 using FMSC.ORM.EntityModel.Attributes;
+using System.Linq;
 
 namespace CruiseManager.Core.Models
 {
-    [EntitySource(SourceName = "Tree", 
+    [EntitySource(SourceName = "Tree",
         JoinCommands = "JOIN Stratum USING (Stratum_CN) JOIN CuttingUnit USING (CuttingUnit_CN) LEFT JOIN SampleGroup USING (SampleGroup_CN)")]
-        
     public class TreeVM : TreeDO
     {
         public long? PlotNumber
         {
             get
             {
-                if(this.Plot != null)
+                if (this.Plot != null)
                 {
                     return this.Plot.PlotNumber;
                 }
@@ -25,13 +21,13 @@ namespace CruiseManager.Core.Models
             }
         }
 
-        [Field( SQLExpression = "CuttingUnit.Code", Alias="CUCode")]
+        [Field(SQLExpression = "CuttingUnit.Code", Alias = "CUCode", PersistanceFlags = PersistanceFlags.Never)]
         public string UnitCode
         {
             get; set;
         }
 
-        [Field(SQLExpression = "Stratum.Code", Alias="STCode") ]
+        [Field(SQLExpression = "Stratum.Code", Alias = "STCode", PersistanceFlags = PersistanceFlags.Never)]
         public string StratumCode
         {
             get; set;
@@ -44,7 +40,6 @@ namespace CruiseManager.Core.Models
         //    get; set;
         //}
 
-
         public override StratumDO GetStratum()
         {
             if (DAL == null) { return null; }
@@ -56,6 +51,5 @@ namespace CruiseManager.Core.Models
             get { return (StratumVM)base.Stratum; }
             set { base.Stratum = value; }
         }
-
     }
 }

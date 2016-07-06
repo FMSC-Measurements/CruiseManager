@@ -1,21 +1,20 @@
-﻿using System;
+﻿using CruiseDAL;
+using CruiseDAL.DataObjects;
+using CruiseManager.Core.App;
+using CruiseManager.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using CruiseDAL.DataObjects;
-using CruiseDAL;
-using FMSC.Utility.Collections;
-using CruiseManager.Core.Models;
-using CruiseManager.Core.App;
 
 namespace CruiseManager.WinForms.DataEditor
 {
     public partial class DataEditorView : Form
     {
-
         #region Constants
+
         //place holder objects for "All" filter
         private readonly CuttingUnitDO ANY_OPTION_CUTTINGUNIT =
             new CuttingUnitDO
@@ -47,9 +46,10 @@ namespace CruiseManager.WinForms.DataEditor
         const string DEFAULTS_COLUMN_NAME = "Defaults";
         const string TREENUMBER_COLUMN_NAME = "Tree Number";
         const string COUNT_SPECIES_COLUMN_NAME = "Species";
-        #endregion
 
-        protected DataEditorView() 
+        #endregion Constants
+
+        protected DataEditorView()
         {
             InitializeComponent();
         }
@@ -58,9 +58,9 @@ namespace CruiseManager.WinForms.DataEditor
         {
             this.WindowPresenter = windowPresenter;
             this.ApplicationController = applicationController;
-            
-            this.Text = "Field Data - " + System.IO.Path.GetFileName(applicationController.Database.Path);                        
-       
+
+            this.Text = "Field Data - " + System.IO.Path.GetFileName(applicationController.Database.Path);
+
             this._BS_TreeSpecies.DataSource = applicationController.Database.Read<TreeDefaultValueDO>("TreeDefaultValue", null);
 
             this._BS_TreeSampleGroups.DataSource = applicationController.Database.Read<SampleGroupDO>("SampleGroup", null);
@@ -74,15 +74,15 @@ namespace CruiseManager.WinForms.DataEditor
         bool SuppressUpdates { get; set; }
 
         bool TreeDataDirty { get; set; }
-        
 
         #region Data set stuff
+
         public List<ErrorLogDO> ErrorLogs { get; set; }
 
         public List<StratumDO> Strata
         {
             get { return StratumBindingSource.DataSource as List<StratumDO>; }
-            set 
+            set
             {
                 SuppressUpdates = true;
                 value.Insert(0, ANY_OPTION_STRATUM);
@@ -98,13 +98,14 @@ namespace CruiseManager.WinForms.DataEditor
                 SuppressUpdates = false;
             }
         }
+
         public List<CuttingUnitDO> CuttingUnits
         {
             get { return CuttingUnitBindingSource.DataSource as List<CuttingUnitDO>; }
-            set 
+            set
             {
                 SuppressUpdates = true;
-                value.Insert(0, ANY_OPTION_CUTTINGUNIT); 
+                value.Insert(0, ANY_OPTION_CUTTINGUNIT);
                 CuttingUnitBindingSource.DataSource = value;
                 if (CuttingUnitBindingSource.Contains(_CuttingUnitFilter))
                 {
@@ -124,7 +125,7 @@ namespace CruiseManager.WinForms.DataEditor
             set
             {
                 SuppressUpdates = true;
-                value.Insert(0, ANY_OPTION_SAMPLEGROUP); 
+                value.Insert(0, ANY_OPTION_SAMPLEGROUP);
                 SampleGroupBindingSource.DataSource = value;
                 if (SampleGroupBindingSource.Contains(_sampleGroupFilter))
                 {
@@ -144,7 +145,7 @@ namespace CruiseManager.WinForms.DataEditor
             set
             {
                 SuppressUpdates = true;
-                value.Insert(0, ANY_OPTION_TREEDEFAULT); 
+                value.Insert(0, ANY_OPTION_TREEDEFAULT);
                 TreeDefaultBindingSource.DataSource = value;
                 if (TreeDefaultBindingSource.Contains(_treeDefaultValueFilter))
                 {
@@ -163,7 +164,7 @@ namespace CruiseManager.WinForms.DataEditor
             get { return _BS_Trees.DataSource as BindingList<TreeVM>; }
             set { _BS_Trees.DataSource = value; }
         }
-       
+
         public BindingList<LogVM> Logs
         {
             get { return _BS_.DataSource as BindingList<LogVM>; }
@@ -187,17 +188,19 @@ namespace CruiseManager.WinForms.DataEditor
             get { return SampleGroupComboBox.Enabled; }
             set { SampleGroupComboBox.Enabled = value; }
         }
+
         public bool CanSelectTreeDefaultValue
         {
             get { return TreeDefaultComboBox.Enabled; }
             set { TreeDefaultComboBox.Enabled = value; }
         }
 
-        #endregion
+        #endregion Data set stuff
 
         #region filter selections
 
         private CuttingUnitDO _CuttingUnitFilter;
+
         public CuttingUnitDO CuttingUnitFilter
         {
             get
@@ -216,6 +219,7 @@ namespace CruiseManager.WinForms.DataEditor
         }
 
         private StratumDO _stratumFilter;
+
         public StratumDO StratumFilter
         {
             get
@@ -234,6 +238,7 @@ namespace CruiseManager.WinForms.DataEditor
         }
 
         private SampleGroupDO _sampleGroupFilter;
+
         public SampleGroupDO SampleGroupFilter
         {
             get
@@ -251,9 +256,8 @@ namespace CruiseManager.WinForms.DataEditor
             }
         }
 
-
-
         private TreeDefaultValueDO _treeDefaultValueFilter;
+
         public TreeDefaultValueDO TreeDefaultValueFilter
         {
             get
@@ -269,9 +273,11 @@ namespace CruiseManager.WinForms.DataEditor
                 PopulateData();
             }
         }
-        #endregion
+
+        #endregion filter selections
 
         #region filter event handlers
+
         private void CuttingUnitBindingSource_CurrentChanged(object sender, EventArgs e)
         {
             if (!SuppressUpdates)
@@ -372,10 +378,9 @@ namespace CruiseManager.WinForms.DataEditor
                 }
                 this.Strata = CuttingUnitFilter.Strata.ToList();
             }
-
         }
-        #endregion
 
+        #endregion filter event handlers
 
         protected override void OnLoad(EventArgs e)
         {
@@ -426,7 +431,6 @@ namespace CruiseManager.WinForms.DataEditor
             var countList = new FMSC.Utility.Collections.SortableBindingList<CountTreeDO>(ReadCounts(CuttingUnitFilter, StratumFilter, SampleGroupFilter));
             countList.SetPropertyComparer("Component", new ComponentComparer());
             this.Counts = countList;
-            
 
             this.ValidateData();
         }
@@ -439,18 +443,15 @@ namespace CruiseManager.WinForms.DataEditor
             this.Trees = treeList;
         }
 
-
         private void ValidateData()
         {
             foreach (TreeVM tree in Trees)
             {
                 tree.Validate();
-
             }
 
             foreach (LogVM log in Logs)
             {
-
                 log.Validate();
             }
         }
@@ -482,7 +483,7 @@ namespace CruiseManager.WinForms.DataEditor
             }
             if (st != null)
             {
-                selectionList.Add( "Tree." + CruiseDAL.Schema.TREE.STRATUM_CN + " = ?");
+                selectionList.Add("Tree." + CruiseDAL.Schema.TREE.STRATUM_CN + " = ?");
                 selectionArgs.Add(st.Stratum_CN.ToString());
             }
             if (sg != null)
@@ -496,7 +497,6 @@ namespace CruiseManager.WinForms.DataEditor
                 selectionArgs.Add(tdv.TreeDefaultValue_CN.ToString());
             }
 
-            
             if (selectionList.Count > 0)
             {
                 String selection = "WHERE " + String.Join(" AND ", selectionList.ToArray());
@@ -504,7 +504,6 @@ namespace CruiseManager.WinForms.DataEditor
             }
             else
             {
-
                 return Database.Read<TreeVM>(CruiseDAL.Schema.TREE._NAME, "ORDER BY TreeNumber, Plot_CN", null);
             }
         }
@@ -600,11 +599,9 @@ namespace CruiseManager.WinForms.DataEditor
             {
                 return Database.Read<CountTreeDO>(CruiseDAL.Schema.COUNTTREE._NAME, null, null);
             }
-
         }
 
-        #endregion
-
+        #endregion read methods
 
         private void exportToolStripMenuItem1_Click(object sender, EventArgs e)
         {
@@ -647,7 +644,6 @@ namespace CruiseManager.WinForms.DataEditor
                     }
                 case "log":
                     {
-
                         record = Database.ReadSingleRow<LogDO>("Log", rowID);
                         ResetViewFilters();
                         this._BS_.Position = this._BS_.IndexOf(record);
@@ -681,13 +677,10 @@ namespace CruiseManager.WinForms.DataEditor
                 this.ErrorLogs = Database.Read<ErrorLogDO>("ErrorLog", null);
                 this._BS_Errors.DataSource = this.ErrorLogs;
             }
-
-
         }
-        
 
         #region Trees page
- 
+
         protected void HandleTreeValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             TreeVM tree = null;
@@ -700,13 +693,13 @@ namespace CruiseManager.WinForms.DataEditor
             if (tree == null) { return; }
 
             // if species value changed
-            if (speciesDataGridViewColumn != null 
+            if (speciesDataGridViewColumn != null
                 && e.ColumnIndex == speciesDataGridViewColumn.Index)
             {
                 DatabaseExtentions.SetTreeTDV(tree, tree.TreeDefaultValue);
             }
             // if stratum value changed
-            else if (stratumDataGridViewTextBoxColumn != null 
+            else if (stratumDataGridViewTextBoxColumn != null
                 && e.ColumnIndex == stratumDataGridViewTextBoxColumn.Index)
             {
                 tree.Species = null;
@@ -714,7 +707,7 @@ namespace CruiseManager.WinForms.DataEditor
                 DatabaseExtentions.SetTreeTDV(tree, null);
             }
             // if sample group value changed
-            else if (sampleGroupDataGridViewTextBoxColumn != null 
+            else if (sampleGroupDataGridViewTextBoxColumn != null
                 && e.ColumnIndex == sampleGroupDataGridViewTextBoxColumn.Index)
             {
                 if (!tree.SampleGroup.TreeDefaultValues.Contains(tree.TreeDefaultValue))
@@ -725,26 +718,24 @@ namespace CruiseManager.WinForms.DataEditor
 
             TrySaveTree(tree);
         }
-        
+
         protected void TreeDataGrid_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
-            
-            
             var curTree = this._BS_Trees[e.RowIndex] as TreeVM;
             if (curTree == null) { return; }
 
             var cell = _DGV_Trees[e.ColumnIndex, e.RowIndex] as DataGridViewComboBoxCell;
             if (cell == null) { return; }
 
-            // if entering sample group column, update sample group selection 
-            if (this.sampleGroupDataGridViewTextBoxColumn != null 
+            // if entering sample group column, update sample group selection
+            if (this.sampleGroupDataGridViewTextBoxColumn != null
                 && e.ColumnIndex == this.sampleGroupDataGridViewTextBoxColumn.Index)
             {
                 this.UpdateSampleGroupColumn(curTree, cell);
             }
 
-            // if entering species column, update species selection 
-            if (this.speciesDataGridViewColumn != null 
+            // if entering species column, update species selection
+            if (this.speciesDataGridViewColumn != null
                 && e.ColumnIndex == this.speciesDataGridViewColumn.Index)
             {
                 this.UpdateSpeciesColumn(curTree, cell);
@@ -755,7 +746,7 @@ namespace CruiseManager.WinForms.DataEditor
         {
             var cell = _DGV_Trees[e.ColumnIndex, e.RowIndex] as DataGridViewComboBoxCell;
             if (cell == null) { return; }
-            if (cell.FormattedValue == e.FormattedValue) { return; }//are there any changes 
+            if (cell.FormattedValue == e.FormattedValue) { return; }//are there any changes
 
             TreeVM curTree = null;
             try
@@ -765,7 +756,6 @@ namespace CruiseManager.WinForms.DataEditor
             }
             catch (SystemException) { return; }//ignore possible out of bound exceptions
 
-
             object cellValue = e.FormattedValue;
             cellValue = cell.ParseFormattedValue(cellValue, cell.InheritedStyle, null, null);
 
@@ -773,7 +763,8 @@ namespace CruiseManager.WinForms.DataEditor
             {
                 var newStratum = cellValue as StratumDO;
                 if (newStratum == null) { e.Cancel = true; }
-                if (curTree.Stratum.Stratum_CN != newStratum.Stratum_CN)
+                if (curTree.Stratum != null
+                    && curTree.Stratum.Stratum_CN != newStratum.Stratum_CN)
                 {
                     e.Cancel = !this.AskYesNo(
                         "You are changing the stratum of a tree\r\n" +
@@ -784,7 +775,8 @@ namespace CruiseManager.WinForms.DataEditor
             {
                 var newSg = cellValue as SampleGroupDO;
                 if (newSg == null) { e.Cancel = true; }
-                if (curTree.SampleGroup.SampleGroup_CN != newSg.SampleGroup_CN)
+                if (curTree.SampleGroup != null
+                    && curTree.SampleGroup.SampleGroup_CN != newSg.SampleGroup_CN)
                 {
                     e.Cancel = !this.AskYesNo(
                         "You are changing the Sample Group of a tree\r\n" +
@@ -795,7 +787,6 @@ namespace CruiseManager.WinForms.DataEditor
 
         private void TreeDataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
-
         }
 
         //private void TreeDataGridView_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
@@ -845,14 +836,13 @@ namespace CruiseManager.WinForms.DataEditor
             }
         }
 
-
-        #endregion
+        #endregion Trees page
 
         #region Logs page
 
         private void _DGV_Logs_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if(e.RowIndex < 0 || e.RowIndex > this.Logs.Count) { return; }
+            if (e.RowIndex < 0 || e.RowIndex > this.Logs.Count) { return; }
 
             try
             {
@@ -866,7 +856,6 @@ namespace CruiseManager.WinForms.DataEditor
             }
         }
 
-
         private void _DGV_Logs_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
         {
             LogDO log = Logs[e.RowIndex];
@@ -874,7 +863,6 @@ namespace CruiseManager.WinForms.DataEditor
             {
                 case CUTTING_UNIT_COLUMN_NAME:
                     {
-
                         e.Value = log.Tree.CuttingUnit.Code;
                         break;
                     }
@@ -924,9 +912,10 @@ namespace CruiseManager.WinForms.DataEditor
             }
         }
 
-        #endregion 
+        #endregion Logs page
 
         #region Plots page
+
         private void _DGV_Plots_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.RowIndex > this.Plots.Count) { return; }
@@ -947,7 +936,7 @@ namespace CruiseManager.WinForms.DataEditor
         //{
         //    var plot = e.Row.DataBoundItem as PlotDO;
         //    if (plot == null) { e.Cancel = true; return; }
-        //    e.Cancel = !this.DeletePlot(plot); 
+        //    e.Cancel = !this.DeletePlot(plot);
         //}
 
         protected bool TryDeletePlot(PlotDO plot)
@@ -955,7 +944,6 @@ namespace CruiseManager.WinForms.DataEditor
             plot.DAL.BeginTransaction();
             try
             {
-                
                 PlotDO.RecursiveDeletePlot(plot);
                 plot.DAL.CommitTransaction();
                 TreeDataDirty = true;
@@ -967,7 +955,8 @@ namespace CruiseManager.WinForms.DataEditor
                 return false;
             }
         }
-        #endregion 
+
+        #endregion Plots page
 
         #region Counts page
 
@@ -987,9 +976,10 @@ namespace CruiseManager.WinForms.DataEditor
             }
         }
 
-        #endregion
+        #endregion Counts page
 
         #region Errors page
+
         private void _DGV_Errors_RowHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (e.RowIndex < 0) { return; }
@@ -1009,7 +999,7 @@ namespace CruiseManager.WinForms.DataEditor
         private void _DGV_Errors_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.RowIndex > _BS_Errors.Count) { return; }
-                        
+
             try
             {
                 var eLog = _BS_Errors[e.RowIndex] as ErrorLogDO;
@@ -1023,16 +1013,18 @@ namespace CruiseManager.WinForms.DataEditor
                 MessageBox.Show("Unable to save changes.");
             }
         }
-        #endregion 
+
+        #endregion Errors page
 
         #region context menu
+
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var dgv = _ContextMenu.SourceControl as DataGridView;//get the DataGridView control that the menu is being displayed for
             System.Diagnostics.Debug.Assert(dgv != null);
             if (dgv == null)
             {
-                //for some reason SourceControl is null or not a DataGridView so don't continue. 
+                //for some reason SourceControl is null or not a DataGridView so don't continue.
                 return;
             }
 
@@ -1045,7 +1037,7 @@ namespace CruiseManager.WinForms.DataEditor
 
                 System.Windows.Forms.DataGridView.HitTestInfo ht = dgv.HitTest(x, y);//get row location from screen point
                 int rowIndex = ht.RowIndex;
-                if (rowIndex >= 0 && //check to see if row index if valid 
+                if (rowIndex >= 0 && //check to see if row index if valid
                     (ht.Type == DataGridViewHitTestType.Cell || ht.Type == DataGridViewHitTestType.RowHeader))
                 {
                     DataGridViewRow row = dgv.Rows[rowIndex];
@@ -1075,7 +1067,6 @@ namespace CruiseManager.WinForms.DataEditor
                         }
                         //CountTreeDO ct = row.DataBoundItem as CountTreeDO;
                     }
-
                 }
             }
             catch
@@ -1104,9 +1095,9 @@ namespace CruiseManager.WinForms.DataEditor
             catch
             {
             }
-
         }
-        #endregion 
+
+        #endregion context menu
 
         public bool AskYesNo(String message, String caption, MessageBoxIcon icon)
         {
@@ -1121,9 +1112,5 @@ namespace CruiseManager.WinForms.DataEditor
                 icon,
                 (defaultNo) ? MessageBoxDefaultButton.Button2 : MessageBoxDefaultButton.Button1);
         }
-
-        
     }
-
-        
 }

@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace CruiseManager.Core.ViewModel
+﻿namespace CruiseManager.Core.ViewModel
 {
-    public interface  ISaveHandler
+    public interface ISaveHandler
     {
         bool HandleSave();
 
         bool HasChangesToSave { get; }
-
-
     }
 }

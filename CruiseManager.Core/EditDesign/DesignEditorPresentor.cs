@@ -1,58 +1,60 @@
-﻿using System;
+﻿using CruiseDAL;
+using CruiseDAL.DataObjects;
+using CruiseManager.Core.App;
+using CruiseManager.Core.Constants;
+using CruiseManager.Core.EditDesign.ViewInterfaces;
+using CruiseManager.Core.Models;
+using CruiseManager.Core.SetupModels;
+using CruiseManager.Core.ViewModel;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using CruiseDAL.DataObjects;
-using System.ComponentModel;
-using CruiseDAL;
 using System.Windows.Forms;
-
-using CruiseManager.Core.SetupModels;
-using CruiseManager.Core.App;
-using CruiseManager.Core.Models;
-using CruiseManager.Core.Constants;
-using CruiseManager.Core.ViewModel;
-using CruiseManager.Core.EditDesign.ViewInterfaces;
 
 namespace CruiseManager.Core.EditDesign
 {
     public class DesignEditorPresentor : Presentor, ISaveHandler
     {
-        private CuttingUnitDO _anyUnitOption;
+        public StratumDO _SampleGroups_SelectedStrata;
         private DesignEditorStratum _anyStratumOption;
-        
+        private CuttingUnitDO _anyUnitOption;
+        List<ProductCode> _productCodes;
+
         public DesignEditorPresentor(ApplicationControllerBase applicationController)
         {
             this.ApplicationController = applicationController;
-
         }
 
-        public new IEditDesignView View 
+        public List<string> CruiseMethods { get; set; }
+
+        public DAL Database
         {
-            get { return (IEditDesignView)base.View; }
-            set
-            {
-                base.View = value;
-            }
-        }
-
-
-        public DAL Database 
-        { 
             get { return ApplicationController.Database; }
         }
-        public bool IsSupervisor { get { return ApplicationController.InSupervisorMode; } }
 
         public DesignEditorDataContext DataContext { get; set; }
 
-        public List<Region> Regions { get; set; }
-        public List<string> CruiseMethods { get; set; }
-        public List<ProductCode> ProductCodes { get; set; }
-        public List<LoggingMethod> LoggingMethods { get; set; }
-        public List<UOMCode> UOMCodes { get; set; }
+        public bool IsSupervisor { get { return ApplicationController.InSupervisorMode; } }
 
-        public StratumDO _SampleGroups_SelectedStrata;
-        public StratumDO SampleGroups_SelectedStrata 
+        public List<LoggingMethod> LoggingMethods { get; set; }
+
+        public List<ProductCode> PrimaryProductCodes
+        {
+            get
+            {
+                if (_productCodes == null)
+                {
+                    _productCodes = ApplicationController.SetupService.GetProductCodes();
+                }
+                return _productCodes;
+            }
+        }
+
+        public List<Region> Regions { get; set; }
+
+        public StratumDO SampleGroups_SelectedStrata
         {
             get { return _SampleGroups_SelectedStrata; }
             set
@@ -62,8 +64,8 @@ namespace CruiseManager.Core.EditDesign
                 {
                     DataContext.SampleGroups = new BindingList<SampleGroupDO>(
                         (from sg in DataContext.AllSampleGroups
-                        where sg.Stratum.Stratum_CN == value.Stratum_CN
-                        select sg).ToList());
+                         where sg.Stratum.Stratum_CN == value.Stratum_CN
+                         select sg).ToList());
                 }
                 else
                 {
@@ -73,122 +75,27 @@ namespace CruiseManager.Core.EditDesign
             }
         }
 
-
-        protected override void OnViewLoad(EventArgs e)
+        public IEnumerable<ProductCode> SecondaryProductCodes
         {
-            base.OnViewLoad(e);
-            this.LoadDesignData();
-            this.LoadSetup();
-
-        }
-
-        protected void LoadDesignData()
-        {
-            this.DataContext = new DesignEditorDataContext();
-
-            this.View.ShowWaitCursor();
-
-            try
+            get
             {
-                //initialize sale
-                DataContext.Sale = Database.ReadSingleRow<SaleVM>("Sale", null, null) ?? new SaleVM(Database);
-
-                //initialize cuttingunits 
-                var units = Database.Read<CuttingUnitDO>("CuttingUnit", null, null);
-                foreach (CuttingUnitDO cu in units)
+                yield return ProductCode.Empty;
+                foreach (var pc in PrimaryProductCodes)
                 {
-                    cu.Strata.Populate();
+                    yield return pc;
                 }
-                DataContext.AllCuttingUnits = new BindingList<CuttingUnitDO>(units);
-                DataContext.CuttingUnits = new BindingList<CuttingUnitDO>(units);
-
-                BindingList<CuttingUnitDO> filterUnits = new BindingList<CuttingUnitDO>(units.ToList());
-                _anyUnitOption = new CuttingUnitDO();
-                _anyUnitOption.Code = "ANY";
-                filterUnits.Insert(0, _anyUnitOption);
-                DataContext.CuttingUnitFilterSelectionList = filterUnits;
-
-
-
-                //initialize strata
-                var strata = Database.Read<DesignEditorStratum>("Stratum", null, null);
-                foreach (StratumDO st in strata)
-                {
-                    st.CuttingUnits.Populate();
-                }
-                DataContext.AllStrata = new BindingList<DesignEditorStratum>(strata);
-                DataContext.Strata = new BindingList<DesignEditorStratum>(strata);
-
-                BindingList<DesignEditorStratum> filterStrata = new BindingList<DesignEditorStratum>(strata.ToList());
-                _anyStratumOption = new DesignEditorStratum();
-                _anyStratumOption.Code = "ANY";
-                filterStrata.Insert(0, _anyStratumOption);
-                DataContext.StrataFilterSelectionList = filterStrata;
-
-                //initialize TreeDefault
-                List<TreeDefaultValueDO> tdvList = Database.Read<TreeDefaultValueDO>("TreeDefaultValue", null, null);
-                DataContext.AllTreeDefaults = new BindingList<TreeDefaultValueDO>(tdvList);
-
-                //initialize sample groups
-                List<SampleGroupDO> sampleGroups = Database.Read<SampleGroupDO>("SampleGroup", null, null);
-                DataContext.AllSampleGroups = new BindingList<SampleGroupDO>(sampleGroups);
-                DataContext.SampleGroups = new BindingList<SampleGroupDO>(sampleGroups);
-
-                foreach (SampleGroupDO sg in DataContext.AllSampleGroups)
-                {
-                    sg.TreeDefaultValues.Populate();
-                }
-
-
-                DataContext.HasUnsavedChanges = false;
             }
-            finally
-            {
-                this.View.ShowDefaultCursor();
-            }
-
-
         }
 
-        void OnTreeDefaultsChanged(bool error)
+        public List<UOMCode> UOMCodes { get; set; }
+
+        public new IEditDesignView View
         {
-            View.UpdateSampleGroupTDVs(DataContext.AllTreeDefaults);
-        }
-
-        public void FilterCutttingUnits(StratumDO filterBy)
-        {
-            if (DataContext.AllCuttingUnits == null) { return; }
-            if (filterBy.Code != "ANY")
+            get { return (IEditDesignView)base.View; }
+            set
             {
-                List<CuttingUnitDO> units = (from cu in DataContext.AllCuttingUnits
-                                             where cu.Strata.Contains(filterBy)
-                                             select cu).ToList();
-                DataContext.CuttingUnits = new BindingList<CuttingUnitDO>(units);
+                base.View = value;
             }
-            else
-            {
-                DataContext.CuttingUnits = DataContext.AllCuttingUnits;
-
-            }
-            View.UpdateCuttingUnits(DataContext.CuttingUnits);
-        }
-
-        public void FilterStrata(CuttingUnitDO filterBy)
-        {
-            if (DataContext.AllStrata == null) { return; }
-            if (filterBy.Code != "ANY")
-            {
-                var strata = (from st in DataContext.AllStrata
-                              where st.CuttingUnits.Contains(filterBy)
-                              select st).ToList();
-                DataContext.Strata = new BindingList<DesignEditorStratum>(strata);
-            }
-            else
-            {
-                DataContext.Strata = DataContext.AllStrata;
-
-            }
-            View.UpdateStrata(DataContext.Strata);
         }
 
         public void AddCuttingUnit()
@@ -203,49 +110,58 @@ namespace CruiseManager.Core.EditDesign
             GetNewStratum();
         }
 
-        public CuttingUnitDO GetNewCuttingUnit()
+        public bool CanDeleteTreeDefault(TreeDefaultValueDO tdv)
         {
-            if (DataContext.AllCuttingUnits == null) { return null; }
-            CuttingUnitDO newUnit = new CuttingUnitDO(this.Database);
-            DataContext.AllCuttingUnits.Add(newUnit);
-            //Data.CuttingUnits.Add(newUnit);
-            DataContext.OnDataModified();
-            //newUnit.DAL = Database;
-            return newUnit;
+            if (tdv.IsPersisted == false) { return true; }
+            bool hasTreeCounts = this.Database.GetRowCount("CountTree", "WHERE TreeCount > 0 AND TreeDefaultValue_CN = ?", tdv.TreeDefaultValue_CN) > 0;
+            bool hasTrees = this.Database.GetRowCount("Tree", "WHERE TreeDefaultValue_CN = ?", tdv.TreeDefaultValue_CN) > 0;
+            return !(hasTreeCounts || hasTrees);
         }
 
-
-
-        public StratumDO GetNewStratum()
+        public bool CanEditCuttingUnitField(CuttingUnitDO unit, String fieldName)
         {
-            if (DataContext.AllStrata == null) { return null; }
-            var newStratum = new DesignEditorStratum(Database);
-            DataContext.AllStrata.Add(newStratum);
-            //Data.Strata.Add(newStratum);
-            DataContext.OnDataModified();
-            DataContext.StrataFilterSelectionList.Add(newStratum);
-            return newStratum;
+            if (unit.IsPersisted == false) { return true; }
+            if (HasCruiseData(unit) == false) { return true; }
+            if (IsSupervisor == true) { return true; }
+            if (Strings.EDITABLE_UNIT_FILEDS.Contains(fieldName)) { return true; }
+            return false;
         }
-        
-        public SampleGroupDO GetNewSampleGroup()
-        {
-            System.Diagnostics.Debug.Assert(DataContext.AllSampleGroups != null);
 
-            if (SampleGroups_SelectedStrata == null)
+        public bool CanEditSampleGroupField(SampleGroupDO sampleGroup, String fieldName)
+        {
+            if (sampleGroup.IsPersisted == false) { return true; }
+            if (HasCruiseData(sampleGroup) == false) { return true; }
+            if (IsSupervisor == true) { return true; }
+            if (Strings.EDITABLE_SG_FIELDS.Contains(fieldName))
             {
-                throw new UserFacingException("Please Select Stratum", null);
+                return true;
             }
+            return false;
+        }
 
-            var newSampleGroup = new SampleGroupDO(Database);
-            newSampleGroup.Code = "<blank>";
-            newSampleGroup.Stratum = SampleGroups_SelectedStrata;
-            newSampleGroup.UOM = DataContext.Sale.DefaultUOM;
-            newSampleGroup.CutLeave = "C";
-            newSampleGroup.DefaultLiveDead = "L";
-            DataContext.AllSampleGroups.Add(newSampleGroup);
-            DataContext.SampleGroups.Add(newSampleGroup);
-            DataContext.OnDataModified();
-            return newSampleGroup;
+        public bool CanEditStratumField(StratumDO stratum, String fieldName)
+        {
+            if (IsSupervisor == true) { return true; }
+            if (stratum.IsPersisted == false) { return true; }
+            if (HasCruiseData(stratum) == false) { return true; }
+
+            if (fieldName == "KZ3PPNT" && stratum.Method != "3PPNT")
+            {
+                return false;
+            }
+            if (Strings.EDITABLE_ST_FIELDS.Contains(fieldName))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool CanRemoveTreeDefault(SampleGroupDO sampleGroup, TreeDefaultValueDO tdv)
+        {
+            if (sampleGroup.IsPersisted == false || tdv.IsPersisted == false) { return true; }
+            bool hasTreeCounts = this.Database.GetRowCount("CountTree", "WHERE TreeCount > 0 AND TreeDefaultValue_CN = ? AND SampleGroup_CN = ?", tdv.TreeDefaultValue_CN, sampleGroup.SampleGroup_CN) > 0;
+            bool hasTrees = this.Database.GetRowCount("Tree", "WHERE TreeDefaultValue_CN = ? AND SampleGroup_CN = ?", tdv.TreeDefaultValue_CN, sampleGroup.SampleGroup_CN) > 0;
+            return !(hasTreeCounts || hasTrees);
         }
 
         public void DeleteCuttingUnit(CuttingUnitDO unit)
@@ -261,12 +177,25 @@ namespace CruiseManager.Core.EditDesign
             DataContext.AllCuttingUnits.Remove(unit);
             DataContext.DeletedCuttingUnits.Add(unit);
 
-            DataContext.CuttingUnitFilterSelectionList.Remove(unit);            
+            DataContext.CuttingUnitFilterSelectionList.Remove(unit);
+        }
+
+        public void DeleteSampleGroup(SampleGroupDO sampleGroup)
+        {
+            System.Diagnostics.Debug.Assert(DataContext.SampleGroups != null && DataContext.AllSampleGroups != null);
+
+            if (!CanEditSampleGroupField(sampleGroup, null))
+            {
+                throw new UserFacingException("Can Not Delete Sample Group With Cruise Data", null);
+            }
+
+            DataContext.SampleGroups.Remove(sampleGroup);
+            DataContext.AllSampleGroups.Remove(sampleGroup);
+            DataContext.DeletedSampleGroups.Add(sampleGroup);
         }
 
         public void DeleteStratum(DesignEditorStratum stratum)
         {
-
             if (!CanEditStratumField(stratum, null))
             {
                 MessageBox.Show("Can not delete stratum because it contains cruise data");
@@ -292,20 +221,6 @@ namespace CruiseManager.Core.EditDesign
             }
         }
 
-        public void DeleteSampleGroup(SampleGroupDO sampleGroup)
-        {
-            System.Diagnostics.Debug.Assert(DataContext.SampleGroups != null && DataContext.AllSampleGroups != null);
-
-            if (!CanEditSampleGroupField(sampleGroup, null))
-            {
-                throw new UserFacingException("Can Not Delete Sample Group With Cruise Data", null);
-            }
-
-            DataContext.SampleGroups.Remove(sampleGroup);
-            DataContext.AllSampleGroups.Remove(sampleGroup);
-            DataContext.DeletedSampleGroups.Add(sampleGroup);
-        }
-
         public void DeleteTreeDefaultValue(TreeDefaultValueDO tdv)
         {
             if (!this.CanDeleteTreeDefault(tdv))
@@ -317,15 +232,91 @@ namespace CruiseManager.Core.EditDesign
             this.DataContext.DeletedTreeDefaults.Add(tdv);
         }
 
-
-        public void LoadSetup()
+        public void FilterCutttingUnits(StratumDO filterBy)
         {
-            var setupServ = ApplicationController.SetupService;
-            Regions = setupServ.GetRegions();
-            CruiseMethods = this.ApplicationController.Database.GetCruiseMethods(this.DataContext.Sale.Purpose == "Recon");
-            LoggingMethods = setupServ.GetLoggingMethods();
-            UOMCodes = setupServ.GetUOMCodes();
-            ProductCodes = setupServ.GetProductCodes();
+            if (DataContext.AllCuttingUnits == null) { return; }
+            if (filterBy.Code != "ANY")
+            {
+                List<CuttingUnitDO> units = (from cu in DataContext.AllCuttingUnits
+                                             where cu.Strata.Contains(filterBy)
+                                             select cu).ToList();
+                DataContext.CuttingUnits = new BindingList<CuttingUnitDO>(units);
+            }
+            else
+            {
+                DataContext.CuttingUnits = DataContext.AllCuttingUnits;
+            }
+            View.UpdateCuttingUnits(DataContext.CuttingUnits);
+        }
+
+        public void FilterStrata(CuttingUnitDO filterBy)
+        {
+            if (DataContext.AllStrata == null) { return; }
+            if (filterBy.Code != "ANY")
+            {
+                var strata = (from st in DataContext.AllStrata
+                              where st.CuttingUnits.Contains(filterBy)
+                              select st).ToList();
+                DataContext.Strata = new BindingList<DesignEditorStratum>(strata);
+            }
+            else
+            {
+                DataContext.Strata = DataContext.AllStrata;
+            }
+            View.UpdateStrata(DataContext.Strata);
+        }
+
+        public CuttingUnitDO GetNewCuttingUnit()
+        {
+            if (DataContext.AllCuttingUnits == null) { return null; }
+            CuttingUnitDO newUnit = new CuttingUnitDO(this.Database);
+            DataContext.AllCuttingUnits.Add(newUnit);
+            //Data.CuttingUnits.Add(newUnit);
+            DataContext.OnDataModified();
+            //newUnit.DAL = Database;
+            return newUnit;
+        }
+
+        public SampleGroupDO GetNewSampleGroup()
+        {
+            System.Diagnostics.Debug.Assert(DataContext.AllSampleGroups != null);
+
+            if (SampleGroups_SelectedStrata == null)
+            {
+                throw new UserFacingException("Please Select Stratum", null);
+            }
+
+            var newSampleGroup = new SampleGroupDO(Database);
+            newSampleGroup.Code = "<blank>";
+            newSampleGroup.Stratum = SampleGroups_SelectedStrata;
+
+            if (SampleGroups_SelectedStrata != null
+                && SampleGroups_SelectedStrata.Method == CruiseDAL.Schema.CruiseMethods.FIXCNT)
+            {
+                newSampleGroup.UOM = "03";
+            }
+            else
+            {
+                newSampleGroup.UOM = DataContext.Sale.DefaultUOM;
+            }
+
+            newSampleGroup.CutLeave = "C";
+            newSampleGroup.DefaultLiveDead = "L";
+            DataContext.AllSampleGroups.Add(newSampleGroup);
+            DataContext.SampleGroups.Add(newSampleGroup);
+            DataContext.OnDataModified();
+            return newSampleGroup;
+        }
+
+        public StratumDO GetNewStratum()
+        {
+            if (DataContext.AllStrata == null) { return null; }
+            var newStratum = new DesignEditorStratum(Database);
+            DataContext.AllStrata.Add(newStratum);
+            //Data.Strata.Add(newStratum);
+            DataContext.OnDataModified();
+            DataContext.StrataFilterSelectionList.Add(newStratum);
+            return newStratum;
         }
 
         /// <summary>
@@ -342,29 +333,82 @@ namespace CruiseManager.Core.EditDesign
             {
                 sg.SampleSelectorState = string.Empty;
             }
-
         }
-
 
         public bool HasCruiseData(CuttingUnitDO unit)
         {
             if (unit.CuttingUnit_CN == null) { return false; }
-            return (Database.GetRowCount("Tree", "WHERE CuttingUnit_CN = ?", unit.CuttingUnit_CN.Value) > 0) 
-                || (Database.GetRowCount("CountTree", "WHERE CuttingUnit_CN = ? AND TreeCount > 0", unit.CuttingUnit_CN.Value) > 0);           
+            return (Database.GetRowCount("Tree", "WHERE CuttingUnit_CN = ?", unit.CuttingUnit_CN.Value) > 0)
+                || (Database.GetRowCount("CountTree", "WHERE CuttingUnit_CN = ? AND TreeCount > 0", unit.CuttingUnit_CN.Value) > 0);
         }
 
         public bool HasCruiseData(StratumDO stratum)
         {
             if (stratum.Stratum_CN == null) { return false; }
             return (Database.GetRowCount("Tree", "WHERE Stratum_CN = ?", stratum.Stratum_CN.Value) > 0)
-                || (Database.GetRowCount("CountTree", "JOIN SampleGroup USING (SampleGroup_CN) WHERE Stratum_CN = ? AND TreeCount > 0", stratum.Stratum_CN.Value) > 0);  
+                || (Database.GetRowCount("CountTree", "JOIN SampleGroup USING (SampleGroup_CN) WHERE Stratum_CN = ? AND TreeCount > 0", stratum.Stratum_CN.Value) > 0);
         }
 
         public bool HasCruiseData(SampleGroupDO sg)
         {
             if (sg.SampleGroup_CN == null) { return false; }
             return (Database.GetRowCount("Tree", "WHERE SampleGroup_CN = ?", sg.SampleGroup_CN.Value) > 0)
-                || (Database.GetRowCount("CountTree", "WHERE SampleGroup_CN = ? AND TreeCount > 0", sg.SampleGroup_CN.Value) > 0); 
+                || (Database.GetRowCount("CountTree", "WHERE SampleGroup_CN = ? AND TreeCount > 0", sg.SampleGroup_CN.Value) > 0);
+        }
+
+        public void LoadSetup()
+        {
+            var setupServ = ApplicationController.SetupService;
+            Regions = setupServ.GetRegions();
+            CruiseMethods = this.ApplicationController.Database.GetCruiseMethods(this.DataContext.Sale.Purpose == "Recon");
+            LoggingMethods = setupServ.GetLoggingMethods();
+            UOMCodes = setupServ.GetUOMCodes();
+        }
+
+        public void SaveCuttingUnit(CuttingUnitDO unit)
+        {
+            unit.Save();
+        }
+
+        public void SaveSampleGroup(SampleGroupDO sampleGroup)
+        {
+            if (sampleGroup.Code == "<blank>")
+            {
+                sampleGroup.Code = " ";
+            }
+            sampleGroup.Save();
+            sampleGroup.TreeDefaultValues.Save();
+        }
+
+        //precondition:
+        //All cutting units in stratum.CuttingUnits
+        //are saved
+        public void SaveStratum(StratumDO stratum)
+        {
+            bool isNewStratum = !stratum.IsPersisted;
+            stratum.Save();
+            stratum.CuttingUnits.Save();
+
+            if (isNewStratum)
+            {
+                SetFieldSetup(stratum, stratum.DAL);
+            }
+        }
+
+        public void SetFieldSetup(StratumDO stratum, DAL database)
+        {
+            string setTreeFieldCommand = String.Format("INSERT INTO TreeFieldSetup (Stratum_CN, Field, FieldOrder, ColumnType, Heading, Width, Format, Behavior) " +
+            "Select {0} as Stratum_CN, Field, FieldOrder, ColumnType, Heading, Width, Format, Behavior " +
+            "FROM TreeFieldSetupDefault " +
+            "WHERE Method = '{1}';", stratum.Stratum_CN, stratum.Method);
+
+            string setLogFieldCommand = String.Format(@"INSERT OR IGNORE INTO LogFieldSetup (Stratum_CN, Field, FieldOrder, ColumnType, Heading, Width, Format, Behavior)
+            Select {0} as Stratum_CN, Field, FieldOrder, ColumnType, Heading, Width, Format, Behavior
+            FROM LogFieldSetupDefault;",
+            stratum.Stratum_CN);
+
+            database.Execute(setTreeFieldCommand);
+            database.Execute(setLogFieldCommand);
         }
 
         public bool ValidateData(ref StringBuilder errorBuilder)
@@ -373,7 +417,7 @@ namespace CruiseManager.Core.EditDesign
 
             bool isValid = true;
 
-            if(!DataContext.Sale.Validate())
+            if (!DataContext.Sale.Validate())
             {
                 errorBuilder.AppendLine(DataContext.Sale.Error);
                 isValid = false;
@@ -396,15 +440,15 @@ namespace CruiseManager.Core.EditDesign
                     isValid = false;
                 }
             }
-            
+
             foreach (SampleGroupDO sg in DataContext.AllSampleGroups)
             {
-                if(!sg.Validate())
+                if (!sg.Validate())
                 {
                     errorBuilder.AppendLine(sg.Error);
                     isValid = false;
                 }
-                string er; 
+                string er;
                 if (!SampleGroupDO.ValidateSetup(sg, sg.Stratum, out er))
                 {
                     errorBuilder.AppendLine(er);
@@ -425,12 +469,115 @@ namespace CruiseManager.Core.EditDesign
             return isValid;
         }
 
+        protected void LoadDesignData()
+        {
+            this.DataContext = new DesignEditorDataContext();
 
+            this.View.ShowWaitCursor();
+
+            try
+            {
+                //initialize sale
+                DataContext.Sale = Database.From<SaleVM>()
+                    .Read().FirstOrDefault() ?? new SaleVM(Database);
+
+                //initialize cuttingunits
+                var units = Database.From<CuttingUnitDO>()
+                    .Read().ToList();
+
+                foreach (CuttingUnitDO cu in units)
+                {
+                    cu.Strata.Populate();
+                }
+                DataContext.AllCuttingUnits = new BindingList<CuttingUnitDO>(units);
+                DataContext.CuttingUnits = new BindingList<CuttingUnitDO>(units);
+
+                BindingList<CuttingUnitDO> filterUnits = new BindingList<CuttingUnitDO>(units.ToList());
+                _anyUnitOption = new CuttingUnitDO();
+                _anyUnitOption.Code = "ANY";
+                filterUnits.Insert(0, _anyUnitOption);
+                DataContext.CuttingUnitFilterSelectionList = filterUnits;
+
+                //initialize strata
+                var strata = Database.From<DesignEditorStratum>()
+                    .Read().ToList();
+
+                foreach (StratumDO st in strata)
+                {
+                    st.CuttingUnits.Populate();
+                }
+                DataContext.AllStrata = new BindingList<DesignEditorStratum>(strata);
+                DataContext.Strata = new BindingList<DesignEditorStratum>(strata);
+
+                BindingList<DesignEditorStratum> filterStrata = new BindingList<DesignEditorStratum>(strata.ToList());
+                _anyStratumOption = new DesignEditorStratum();
+                _anyStratumOption.Code = "ANY";
+                filterStrata.Insert(0, _anyStratumOption);
+                DataContext.StrataFilterSelectionList = filterStrata;
+
+                //initialize TreeDefault
+                var tdvList = Database.From<TreeDefaultValueDO>()
+                    .Read().ToList();
+
+                DataContext.AllTreeDefaults = new BindingList<TreeDefaultValueDO>(tdvList);
+
+                //initialize sample groups
+                List<SampleGroupDO> sampleGroups = Database.From<SampleGroupDO>()
+                    .Read().ToList();
+
+                DataContext.AllSampleGroups = new BindingList<SampleGroupDO>(sampleGroups);
+                DataContext.SampleGroups = new BindingList<SampleGroupDO>(sampleGroups);
+
+                foreach (SampleGroupDO sg in DataContext.AllSampleGroups)
+                {
+                    sg.TreeDefaultValues.Populate();
+                }
+
+                DataContext.HasUnsavedChanges = false;
+            }
+            finally
+            {
+                this.View.ShowDefaultCursor();
+            }
+        }
+
+        protected override void OnViewLoad(EventArgs e)
+        {
+            base.OnViewLoad(e);
+            this.LoadDesignData();
+            this.LoadSetup();
+        }
+
+        [System.Diagnostics.Conditional("DEBUG")]
+        private void AssertDataContextValid()
+        {
+            System.Diagnostics.Debug.Assert(Database != null);
+            System.Diagnostics.Debug.Assert(
+                DataContext.AllCuttingUnits != null
+                && DataContext.AllStrata != null
+                && DataContext.AllSampleGroups != null
+                && DataContext.DeletedCuttingUnits != null
+                && DataContext.DeletedSampleGroups != null
+                && DataContext.DeletedStrata != null
+                && DataContext.DeletedTreeDefaults != null);
+            System.Diagnostics.Debug.Assert(
+                !DataContext.AllCuttingUnits.Contains(null)
+                && !DataContext.AllStrata.Contains(null)
+                && !DataContext.AllSampleGroups.Contains(null)
+                && !DataContext.DeletedCuttingUnits.Contains(null)
+                && !DataContext.DeletedSampleGroups.Contains(null)
+                && !DataContext.DeletedStrata.Contains(null)
+                && !DataContext.DeletedTreeDefaults.Contains(null));
+        }
+
+        void OnTreeDefaultsChanged(bool error)
+        {
+            View.UpdateSampleGroupTDVs(DataContext.AllTreeDefaults);
+        }
 
         private bool SaveData()
         {
-            
-            Database.BeginTransaction();            
+            Database.BeginTransaction();
             try
             {
                 DataContext.Sale.Save();
@@ -446,8 +593,8 @@ namespace CruiseManager.Core.EditDesign
                 }
 
                 foreach (SampleGroupDO sg in DataContext.AllSampleGroups)
-                {               
-                    SaveSampleGroup(sg);                  
+                {
+                    SaveSampleGroup(sg);
                 }
 
                 foreach (TreeDefaultValueDO tdv in DataContext.AllTreeDefaults)
@@ -465,7 +612,7 @@ namespace CruiseManager.Core.EditDesign
                 {
                     CuttingUnitDO.RecursiveDelete(unit);
                 }
-                
+
                 foreach (SampleGroupDO sg in DataContext.DeletedSampleGroups)
                 {
                     SampleGroupDO.RecutsiveDeleteSampleGroup(sg);
@@ -484,119 +631,17 @@ namespace CruiseManager.Core.EditDesign
                 DataContext.DeletedSampleGroups.Clear();
 
                 DataContext.HasUnsavedChanges = false;
-                return true; 
+                return true;
             }
             catch (Exception ex)
             {
                 Database.RollbackTransaction();
                 throw new UserFacingException("Error saving data, please check for errors and try saving again", ex);
             }
-            
-        }
-
-        public void SetFieldSetup(StratumDO stratum, DAL database)
-        {
-            string setTreeFieldCommand = String.Format("INSERT INTO TreeFieldSetup (Stratum_CN, Field, FieldOrder, ColumnType, Heading, Width, Format, Behavior) " +
-            "Select {0} as Stratum_CN, Field, FieldOrder, ColumnType, Heading, Width, Format, Behavior " +
-            "FROM TreeFieldSetupDefault " +
-            "WHERE Method = '{1}';", stratum.Stratum_CN, stratum.Method);
-
-            string setLogFieldCommand = String.Format(@"INSERT OR IGNORE INTO LogFieldSetup (Stratum_CN, Field, FieldOrder, ColumnType, Heading, Width, Format, Behavior)
-            Select {0} as Stratum_CN, Field, FieldOrder, ColumnType, Heading, Width, Format, Behavior
-            FROM LogFieldSetupDefault;",
-            stratum.Stratum_CN);
-
-            database.Execute(setTreeFieldCommand);
-            database.Execute(setLogFieldCommand);
-        }
-
-        public void SaveCuttingUnit(CuttingUnitDO unit)
-        {
-            unit.Save();
-        }
-
-        //precondition:
-        //All cutting units in stratum.CuttingUnits 
-        //are saved
-        public void SaveStratum(StratumDO stratum)
-        {
-            bool isNewStratum = !stratum.IsPersisted;
-            stratum.Save();
-            stratum.CuttingUnits.Save();
-
-            if (isNewStratum)
-            {
-                SetFieldSetup(stratum, stratum.DAL);
-            }
-        }
-
-        public void SaveSampleGroup(SampleGroupDO sampleGroup)
-        {
-            if (sampleGroup.Code == "<blank>")
-            {
-                sampleGroup.Code = " ";
-            }
-            sampleGroup.Save();
-            sampleGroup.TreeDefaultValues.Save();
-        }
-
-        public bool CanEditCuttingUnitField(CuttingUnitDO unit, String fieldName)
-        {
-            if(unit.IsPersisted == false) { return true; }
-            if (HasCruiseData(unit) == false) { return true; }
-            if(IsSupervisor == true) { return true; }
-            if (Strings.EDITABLE_UNIT_FILEDS.Contains(fieldName)) { return true; }
-            return false;
-        }
-
-        public bool CanEditStratumField(StratumDO stratum, String fieldName)
-        {
-            if (IsSupervisor == true) { return true; }
-            if (stratum.IsPersisted == false) { return true; }                        
-            if (HasCruiseData(stratum) == false) { return true; }
-
-            if (fieldName == "KZ3PPNT" && stratum.Method != "3PPNT")
-            {
-                return false;
-            }
-            if (Strings.EDITABLE_ST_FIELDS.Contains(fieldName))
-            {
-                return true;
-            }
-            return false;
-            
-        }
-
-        public bool CanEditSampleGroupField(SampleGroupDO sampleGroup, String fieldName)
-        {
-
-            if (sampleGroup.IsPersisted == false) { return true; }
-            if (HasCruiseData(sampleGroup) == false) { return true; }
-            if (IsSupervisor == true) { return true; }
-            if (Strings.EDITABLE_SG_FIELDS.Contains(fieldName))
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public bool CanRemoveTreeDefault(SampleGroupDO sampleGroup, TreeDefaultValueDO tdv)
-        {
-            if (sampleGroup.IsPersisted == false || tdv.IsPersisted == false) { return true; }
-            bool hasTreeCounts = this.Database.GetRowCount("CountTree", "WHERE TreeCount > 0 AND TreeDefaultValue_CN = ? AND SampleGroup_CN = ?", tdv.TreeDefaultValue_CN, sampleGroup.SampleGroup_CN) > 0;
-            bool hasTrees = this.Database.GetRowCount("Tree", "WHERE TreeDefaultValue_CN = ? AND SampleGroup_CN = ?", tdv.TreeDefaultValue_CN, sampleGroup.SampleGroup_CN) > 0;
-            return !(hasTreeCounts || hasTrees);
-        }
-
-        public bool CanDeleteTreeDefault(TreeDefaultValueDO tdv)
-        {
-            if (tdv.IsPersisted == false) { return true; }
-            bool hasTreeCounts = this.Database.GetRowCount("CountTree", "WHERE TreeCount > 0 AND TreeDefaultValue_CN = ?", tdv.TreeDefaultValue_CN) > 0;
-            bool hasTrees = this.Database.GetRowCount("Tree", "WHERE TreeDefaultValue_CN = ?", tdv.TreeDefaultValue_CN) > 0;
-            return !(hasTreeCounts || hasTrees);
         }
 
         #region ISaveHandler members
+
         public bool HasChangesToSave
         {
             get
@@ -637,7 +682,7 @@ namespace CruiseManager.Core.EditDesign
             }
 
             StringBuilder validationErrorBuilder = new StringBuilder();
-            bool rtnVal = true; 
+            bool rtnVal = true;
             if (!this.ValidateData(ref validationErrorBuilder))
             {
                 this.View.ShowErrorMessage("Validation Errors Found",
@@ -648,36 +693,9 @@ namespace CruiseManager.Core.EditDesign
             this.SaveData();
 
             return rtnVal;
-            
         }
 
-
-
-
-
-        #endregion
-
-        [System.Diagnostics.Conditional("DEBUG")]
-        private void AssertDataContextValid()
-        {
-            System.Diagnostics.Debug.Assert(Database != null);
-            System.Diagnostics.Debug.Assert(
-                DataContext.AllCuttingUnits != null
-                && DataContext.AllStrata != null
-                && DataContext.AllSampleGroups != null
-                && DataContext.DeletedCuttingUnits != null
-                && DataContext.DeletedSampleGroups != null
-                && DataContext.DeletedStrata != null
-                && DataContext.DeletedTreeDefaults != null);
-            System.Diagnostics.Debug.Assert(
-                !DataContext.AllCuttingUnits.Contains(null)
-                && !DataContext.AllStrata.Contains(null)
-                && !DataContext.AllSampleGroups.Contains(null)
-                && !DataContext.DeletedCuttingUnits.Contains(null)
-                && !DataContext.DeletedSampleGroups.Contains(null)
-                && !DataContext.DeletedStrata.Contains(null)
-                && !DataContext.DeletedTreeDefaults.Contains(null));
-        }
+        #endregion ISaveHandler members
 
         #region Presentor Members
 
@@ -687,10 +705,6 @@ namespace CruiseManager.Core.EditDesign
         //    this.View.BindSetup();
         //}
 
-
-        #endregion
-
-
+        #endregion Presentor Members
     }
-    
 }

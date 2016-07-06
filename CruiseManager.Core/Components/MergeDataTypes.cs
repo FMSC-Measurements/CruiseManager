@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CruiseDAL;
-using FMSC.ORM.EntityModel.Attributes;
+﻿using FMSC.ORM.EntityModel.Attributes;
 
 namespace CruiseManager.Core.Components
 {
-    public class MergeObject 
+    public class MergeObject
     {
         [Field(Name = "MergeRowID")]
         public long MergeRowID { get; set; }
-
 
         //[Field(Name = "ComponentConflict")]
         //public string ComponentConflict { get; set; }
@@ -20,7 +14,7 @@ namespace CruiseManager.Core.Components
         //[Field(Name = "ComponentConflictFileID")]
         //public long? ComponentConflictFileID { get; set; }
 
-        ////is set to 
+        ////is set to
         ////is set to a row id when another record in the merge table conflicts with this records matchRowID value
         //[Field(Name = "MatchConflict")]
         //public string MatchConflict { get; set; }
@@ -35,16 +29,12 @@ namespace CruiseManager.Core.Components
         public string CompoundNaturalKey { get; set; }
 
         //this field is slightly redundant but allows quicker processing
-        //it is set after a match is validated 
+        //it is set after a match is validated
         [Field(Name = "MatchRowID")]
         public long? MatchRowID { get; set; }
 
         [Field(Name = "PartialMatch")]
         public string PartialMatch { get; set; }
-
-        
-      
-       
 
         //[Field(Name = "MasterRowID")]
         //public long? MasterRowID { get; set; }
@@ -58,8 +48,6 @@ namespace CruiseManager.Core.Components
         [Field(Name = "GUIDMatch")]
         public long? GUIDMatch { get; set; }
 
-
-
         //the component row id of the record
         [Field(Name = "ComponentRowID")]
         public long? ComponentRowID { get; set; }
@@ -70,8 +58,6 @@ namespace CruiseManager.Core.Components
         [Field(Name = "ComponentID")]
         public long ComponentID { get; set; }
 
-
-
         [Field(Name = "MasterRowVersion")]
         public long MasterRowVersion { get; set; }
 
@@ -80,15 +66,14 @@ namespace CruiseManager.Core.Components
 
         [Field(Name = "IsDeleted")]
         public bool IsDeleted { get; set; }
-
     }
 
     public class MatchResult
     {
-        [Field(Name="MergeRowID")]
+        [Field(Name = "MergeRowID")]
         public long? MergeRowID { get; set; }
 
-        [Field(Name="MatchRowID")]
+        [Field(Name = "MatchRowID")]
         public long? MatchRowID { get; set; }
     }
 
@@ -109,14 +94,10 @@ namespace CruiseManager.Core.Components
         public long? GroupID { get; set; }
 
         public string MatchStatus { get; set; }
-
     }
 
     public class OptionGroup
     {
-
-
         public string GroupMembers { get; set; }
     }
-        
 }

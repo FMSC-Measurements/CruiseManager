@@ -1,29 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using CruiseDAL;
 using CruiseDAL.DataObjects;
-using CruiseDAL;
 using FMSC.ORM.EntityModel.Attributes;
+using System;
+using System.Collections.Generic;
 
 namespace CruiseManager.Core.Models
 {
     [EntitySource(SourceName = "Stratum"
-        , JoinCommands="JOIN (Select Stratum_CN, group_concat(Field) AS Fields From TreeFieldSetup GROUP BY Stratum_cn) USING (Stratum_CN)")]
+        , JoinCommands = "JOIN (Select Stratum_CN, group_concat(Field) AS Fields From TreeFieldSetup GROUP BY Stratum_cn) USING (Stratum_CN)")]
     public class StratumVM : StratumDO
     {
         private string _fields;
-        private string[] _fieldsArray; 
+        private string[] _fieldsArray;
 
         public IList<SampleGroupDO> SampleGroups { get; set; }
 
-        [Field(Alias="Fields", PersistanceFlags = PersistanceFlags.Never)]
-        public string Fields 
+        [Field(Alias = "Fields", PersistanceFlags = PersistanceFlags.Never)]
+        public string Fields
         {
             get { return _fields; }
             set
             {
-                if(_fields == value) { return; }
+                if (_fields == value) { return; }
                 _fields = value;
                 _fieldsArray = null;
             }
@@ -42,7 +40,9 @@ namespace CruiseManager.Core.Models
             }
         }
 
-        public StratumVM() { } 
+        public StratumVM()
+        {
+        }
 
         public StratumVM(DAL db)
             : base(db)
@@ -51,7 +51,6 @@ namespace CruiseManager.Core.Models
         public StratumVM(StratumDO st)
             : base(st)
         { }
-
 
         //public void LoadTreeFieldNames()
         //{
@@ -64,6 +63,3 @@ namespace CruiseManager.Core.Models
         //}
     }
 }
-
-
-

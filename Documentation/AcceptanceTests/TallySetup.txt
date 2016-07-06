@@ -1,19 +1,19 @@
 Background:
 GIVEN  the following strata exist:
-	|code	|method	|
-	|01		|str	|
-	|02		|3p		|
+    |code   |method |
+    |01     |str    |
+    |02     |3p     |
 AND the following samplegroups exist:
-	|stratum|code	|
-	|01		|01	 	|
-	|01		|02		|
-	|02		|03		|
+    |stratum|code   |
+    |01     |01     |
+    |01     |02     |
+    |02     |03     |
 AND the folling SG-TDV mappings exist:
-	|SG	|TDV	|
-	|01	|01		|
-	|02	|02		|
-	|02	|03		|
-	|03	|04		|
+    |SG |TDV    |
+    |01 |01     |
+    |02 |02     |
+    |02 |03     |
+    |03 |04     |
 
 
 WHEN stratum 01 is selected

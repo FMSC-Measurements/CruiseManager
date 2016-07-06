@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CruiseDAL;
+﻿using CruiseDAL;
 using CruiseDAL.DataObjects;
-using System.Threading;
-using System.Diagnostics;
 using FMSC.ORM.Core.SQL;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading;
 
 namespace CruiseManager.Core.Components
 {
     /*
- * 
+ *
 - push cutting unit inserts : TBT
 - push cutting unit updates : N
-- push stratum inserts : TBT 
+- push stratum inserts : TBT
 - push stratum updates : N
 - push new cutting unit/stratm mappings : TBT
 - push removed cutting unit/stratm mappings : TBT
@@ -29,32 +28,31 @@ namespace CruiseManager.Core.Components
 - pull tree default updates : N
 - match new tree defaults : N
 - push new tree default/sg mappings : TBT
-- push removed tree default/sg mappings : N 
+- push removed tree default/sg mappings : N
 - pull new tree default/sg mappings : TBT
 
 - pull count tree inserts : TBT
 - pull count tree updates : TBT
 - push count tree inserts : NP
-- push count tree updates : NP 
+- push count tree updates : NP
 
 - pull plot inserts : TBT
 - pull plot updates : TBT
 - push plot inserts : NP
-- push plot updates : TBT 
-
+- push plot updates : TBT
 
 - pull tree inserts : TBT
 - pull tree updates : TBT
 - push tree inserts : NP
-- push tree updates : TBT 
+- push tree updates : TBT
 
 - pull stem inserts : TBT
-- pull stem updates : TBT 
-- push stem inserts : NP 
+- pull stem updates : TBT
+- push stem inserts : NP
 - push stem updates : TBT
 
 - pull lot inserts : TBT
-- pull log updates : TBT 
+- pull log updates : TBT
 - push log inserts : NP
 - push log updates : TBT
  * */
@@ -122,8 +120,6 @@ namespace CruiseManager.Core.Components
                 this.CancelTransactionAll();
                 throw;
             }
-
-
         }
 
         public void UpdateComponents()
@@ -175,8 +171,10 @@ namespace CruiseManager.Core.Components
                 DetachAll();
             }
         }
-        #endregion
-        #region transaction and attach 
+
+        #endregion core
+
+        #region transaction and attach
 
         private void AttachAll()
         {
@@ -204,6 +202,7 @@ namespace CruiseManager.Core.Components
                 comp.Database.RollbackTransaction();
             }
         }
+
         private void EndTransactionAll()
         {
             Master.CommitTransaction();
@@ -221,7 +220,9 @@ namespace CruiseManager.Core.Components
                 comp.Database.BeginTransaction();
             }
         }
-        #endregion
+
+        #endregion transaction and attach
+
         #region pull new records
 
         public void PullNew(MergeTableCommandBuilder cmdBldr, ComponentFileVM comp)
@@ -239,7 +240,6 @@ namespace CruiseManager.Core.Components
 
             EndJob();
         }
-
 
         public void PullNewLogRecords(ComponentFileVM comp)
         {
@@ -311,15 +311,17 @@ namespace CruiseManager.Core.Components
                 TreeDO tree = comp.Database.From<TreeDO>()
                     .Where("rowid = ?").Query(mRec.ComponentRowID).FirstOrDefault();
                 Master.Insert(tree, OnConflictOption.Fail);
-                this.ResetComponentRowVersion(comp,  mRec.ComponentRowID.Value, cmdBldr);
+                this.ResetComponentRowVersion(comp, mRec.ComponentRowID.Value, cmdBldr);
                 IncrementProgress();
             }
 
             EndJob();
         }
-        #endregion
 
-        #region pull new design records 
+        #endregion pull new records
+
+        #region pull new design records
+
         public void PullCountTreeChanges(ComponentFileVM comp)
         {
             StartJob("Add New CountTree Records");
@@ -351,7 +353,7 @@ namespace CruiseManager.Core.Components
                         .Query(tally.Hotkey).FirstOrDefault();
                     if (masterTally == null)
                     {
-                        //TODO unsupported 
+                        //TODO unsupported
                     }
                     else
                     {
@@ -396,7 +398,6 @@ namespace CruiseManager.Core.Components
                 }
             }
 
-
             EndJob();
         }
 
@@ -431,8 +432,6 @@ namespace CruiseManager.Core.Components
                     match.Save();
                 }
             }
-
-
         }
 
         public void PullTreeDefaultInserts(ComponentFileVM comp)
@@ -442,12 +441,12 @@ namespace CruiseManager.Core.Components
             foreach (TreeDefaultValueDO tdv in compTreeDefaults)
             {
                 CheckWorkerStatus();
-                bool hasMatch = 0 < Master.GetRowCount("TreeDefaultValue", 
-                    "WHERE Species = ? AND PrimaryProduct = ? AND LiveDead = ?", 
+                bool hasMatch = 0 < Master.GetRowCount("TreeDefaultValue",
+                    "WHERE Species = ? AND PrimaryProduct = ? AND LiveDead = ?",
                     tdv.Species, tdv.PrimaryProduct, tdv.LiveDead);
                 if (!hasMatch)
                 {
-                    if(Master.GetRowCount("TreeDefaultValue", "WHERE TreeDefaultValue_CN = ?", tdv.TreeDefaultValue_CN) == 0)
+                    if (Master.GetRowCount("TreeDefaultValue", "WHERE TreeDefaultValue_CN = ?", tdv.TreeDefaultValue_CN) == 0)
                     {
                         Master.Insert(tdv, OnConflictOption.Fail);
                     }
@@ -455,16 +454,18 @@ namespace CruiseManager.Core.Components
                     {
                         throw new NotImplementedException("TreeDefaultValue row conflict condition not implemented");
                         //Master.Insert(tdv, false, OnConflictOption.Fail);
-                        //tdv.Save(); 
+                        //tdv.Save();
                     }
                 }
             }
 
             EndJob();
         }
-        #endregion
+
+        #endregion pull new design records
 
         #region push new design records
+
         public void PushNewSampleGroups(ComponentFileVM comp)
         {
             StartJob("Push New SampleGroup Records");
@@ -493,12 +494,11 @@ namespace CruiseManager.Core.Components
             StartJob("Add New Units");
 
             int? rowsAffected = Master.Execute("INSERT OR IGNORE INTO " + comp.DBAlias + ".CuttingUnit " +
-                "SELECT * FROM main.CuttingUnit;"); 
-
-
+                "SELECT * FROM main.CuttingUnit;");
 
             EndJob();
         }
+
         public void PushSampleGroupTreeDefaultInserts(ComponentFileVM comp)
         {
             StartJob("Push SampleGroupTreeDefault Inserts");
@@ -529,11 +529,11 @@ namespace CruiseManager.Core.Components
                 "INSERT OR IGNORE INTO " + comp.DBAlias + ".CuttingUnitStratum " +
                 "SELECT * FROM main.CuttingUnitStratum;");
 
-            PostStatus(rowsAffected.GetValueOrDefault(0).ToString() + " Rows Affected"); 
+            PostStatus(rowsAffected.GetValueOrDefault(0).ToString() + " Rows Affected");
             EndJob();
-           
         }
-        #endregion
+
+        #endregion push new design records
 
         #region Pull field data updates
 
@@ -595,7 +595,6 @@ namespace CruiseManager.Core.Components
 
         public void PullMasterTreeUpdates(ComponentFileVM comp)
         {
-
             StartJob("Update Master Trees");
             MergeTableCommandBuilder cmdBldr = this.CommandBuilders["Tree"];
             List<MergeObject> pullList = cmdBldr.ListMasterUpdates(Master, comp);
@@ -610,11 +609,11 @@ namespace CruiseManager.Core.Components
                 this.ResetRowVersion(comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
                 IncrementProgress();
             }
-            
+
             EndJob();
-           
         }
-        #endregion
+
+        #endregion Pull field data updates
 
         #region push field data updates
 
@@ -688,7 +687,8 @@ namespace CruiseManager.Core.Components
             }
             EndJob();
         }
-        #endregion
+
+        #endregion push field data updates
 
         private void ResetComponentRowVersion(ComponentFileVM comp, long componentRowID, MergeTableCommandBuilder commBldr)
         {
@@ -697,12 +697,12 @@ namespace CruiseManager.Core.Components
 
         private void ResetRowVersion(ComponentFileVM comp, long masterRowID, long componentRowID, MergeTableCommandBuilder commBldr)
         {
-            
             Master.Execute("UPDATE " + commBldr.ClientTableName + " SET RowVersion = 0 WHERE RowID = ?;", masterRowID);
             ResetComponentRowVersion(comp, componentRowID, commBldr);
         }
 
         #region Calculate work
+
         public long CountAddRecordActions()
         {
             long total = 0;
@@ -752,8 +752,9 @@ namespace CruiseManager.Core.Components
             long total = CountUpdateActions();
             //total += CountUpdateComponentActions();
             total += CountAddRecordActions();
-            return total; 
+            return total;
         }
+
         //public long CountUpdateComponentActions()
         //{
         //    long total = 0;
@@ -768,9 +769,11 @@ namespace CruiseManager.Core.Components
         //    //total += CountUpdateComponentActions("Plot");
         //    //return total;
         //}
-        #endregion
+
+        #endregion Calculate work
 
         #region Job Mgmt
+
         private string _currentJobName;
         //private Stopwatch _stopwatch;
 
@@ -790,11 +793,11 @@ namespace CruiseManager.Core.Components
             //if (_stopwatch != null) { _stopwatch.Stop(); }
             //_stopwatch = Stopwatch.StartNew();
             _currentJobName = name;
-            this.PostStatus(name); 
+            this.PostStatus(name);
             Debug.WriteLine("Started job component " + name);
         }
-        #endregion
 
+        #endregion Job Mgmt
 
         #region IWorker Members
 
@@ -804,6 +807,7 @@ namespace CruiseManager.Core.Components
         private Thread _thread;
         private object _threadLock = new object();
         private int _workInCurrentJob;
+
         public event EventHandler<WorkerProgressChangedEventArgs> ProgressChanged;
 
         public string ActionName { get { return "Merge"; } }
@@ -843,7 +847,6 @@ namespace CruiseManager.Core.Components
                 }
             }
         }
-
 
         public bool IsWorking
         {
@@ -942,15 +945,15 @@ namespace CruiseManager.Core.Components
 
         private int CalcPercentDone(int workDone)
         {
-            return (_workInCurrentJob <= 0)? 0 : (int)(100 * (float)workDone / _workInCurrentJob);
+            return (_workInCurrentJob <= 0) ? 0 : (int)(100 * (float)workDone / _workInCurrentJob);
         }
+
         private void CheckWorkerStatus()
         {
             if (this.IsCanceled)
             { throw new CancelWorkerException(); }
         }
-        #endregion
+
+        #endregion IWorker Members
     }
 }
-
-

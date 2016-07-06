@@ -1,8 +1,6 @@
 ﻿using CruiseManager.Core.App;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 
 namespace CruiseManager.Core.CommandModel
 {
@@ -10,8 +8,8 @@ namespace CruiseManager.Core.CommandModel
     {
         public Action Action { get; protected set; }
 
-        public BindableActionCommand(String name, Action action, bool enabled = true, IExceptionHandler exceptionHandler = null)
-            : base(name, enabled, exceptionHandler)
+        public BindableActionCommand(String name, Action action, bool enabled = true, bool visable = true, IExceptionHandler exceptionHandler = null)
+            : base(name, enabled, visable, exceptionHandler)
         {
             Debug.Assert(action != null);
             Action = action;
@@ -20,8 +18,7 @@ namespace CruiseManager.Core.CommandModel
         public override void Execute()
         {
             Debug.Assert(this.Action != null);
-            this.Action();
+            Action();
         }
-
     }
 }

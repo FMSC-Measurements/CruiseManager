@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CruiseManager
 {
-    public interface IPage 
+    public interface IPage
     {
         String Name
         {

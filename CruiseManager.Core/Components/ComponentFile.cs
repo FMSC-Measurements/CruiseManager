@@ -1,6 +1,6 @@
-﻿using System;
+﻿using CruiseDAL;
 using CruiseDAL.DataObjects;
-using CruiseDAL;
+using System;
 
 namespace CruiseManager.Core.Components
 {
@@ -8,6 +8,7 @@ namespace CruiseManager.Core.Components
     {
         //public String FileName { get; set; }
         public String FullPath { get; set; }
+
         public DAL Database { get; set; }
 
         public String DBAlias { get; set; }
@@ -16,7 +17,6 @@ namespace CruiseManager.Core.Components
         //public string LastMod { get; set; }
         //public int Warnings { get; set; }
         public string Errors { get; set; }
-
 
         public long? TreeCount
         {
@@ -62,7 +62,7 @@ namespace CruiseManager.Core.Components
                 {
                     _stemCount = this.Database.GetRowCount("Stem", null);
                 }
-                return _stemCount; 
+                return _stemCount;
             }
         }
 

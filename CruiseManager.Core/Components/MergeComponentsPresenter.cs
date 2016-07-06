@@ -1,39 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CruiseDAL;
+﻿using CruiseDAL;
 using CruiseDAL.DataObjects;
-
-using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core.App;
-using CruiseManager.Core.ViewModel;
 using CruiseManager.Core.Components.ViewInterfaces;
+using CruiseManager.Core.ViewModel;
+using System;
+using System.Collections.Generic;
 
 namespace CruiseManager.Core.Components
 {
-
     public class MergeComponentsPresenter : Presentor
     {
-
-     
-        public MergeComponentsPresenter(ApplicationControllerBase applicationController) 
-            :base(applicationController)
+        public MergeComponentsPresenter(ApplicationControllerBase applicationController)
+            : base(applicationController)
         {
             InitializeMergeTableCommandBuilders();
-
 
             this.CurrentWorker = new PrepareMergeWorker(this);
             this.CurrentWorker.ProgressChanged += this.HandelPrepareProgressChanged;
         }
 
-        
-
         public Dictionary<String, MergeTableCommandBuilder> CommandBuilders = new Dictionary<string, MergeTableCommandBuilder>();
 
-        public new IMergeComponentView View {
+        public new IMergeComponentView View
+        {
             get { return (IMergeComponentView)base.View; }
-            set { base.View = value; } }
+            set { base.View = value; }
+        }
 
         public DAL MasterDB { get { return ApplicationController.Database; } }
         public List<ComponentFileVM> ActiveComponents { get; set; }
@@ -91,12 +83,11 @@ namespace CruiseManager.Core.Components
             }
             private set
             {
-                
                 if (_currentWorker != null)
                 {
-                    _currentWorker.ProgressChanged -= this.CurrentWorker_ProgressChanged;                    
+                    _currentWorker.ProgressChanged -= this.CurrentWorker_ProgressChanged;
                 }
-                if(value != null) { value.ProgressChanged += this.CurrentWorker_ProgressChanged; }
+                if (value != null) { value.ProgressChanged += this.CurrentWorker_ProgressChanged; }
                 _currentWorker = value;
                 this.CurrentWorker_ProgressChanged(null, new WorkerProgressChangedEventArgs());
             }
@@ -107,12 +98,11 @@ namespace CruiseManager.Core.Components
             base.OnViewLoad(e);
 
             this.FindComponents();
-
         }
 
         private void CurrentWorker_ProgressChanged(Object sender, WorkerProgressChangedEventArgs e)
         {
-            if(View!= null)
+            if (View != null)
             {
                 View.HandleProgressChanged(sender, e);
             }
@@ -121,32 +111,63 @@ namespace CruiseManager.Core.Components
         private void InitializeMergeTableCommandBuilders()
         {
             List<MergeTableCommandBuilder> temp = new List<MergeTableCommandBuilder>();
-            temp.Add(new MergeTableCommandBuilder(this.MasterDB, "Tree") {
-                    DoGUIDMatch = true, DoKeyMatch = true, DoNaturalMatch = true,
-                    MergeChangesFromComponent = true, MergeChangesFromMaster = true, RecordsUniqueAccrossComponents = true,
-                    MergeNewFromComponent = true, MergeNewFromMaster = false, MergeDeletionsFromComponent = false });
-            temp.Add(new MergeTableCommandBuilder(this.MasterDB, "Log") {
-                    DoGUIDMatch = true, DoKeyMatch = true, DoNaturalMatch = true,
-                    MergeChangesFromComponent = true, MergeChangesFromMaster = true, RecordsUniqueAccrossComponents = true,
-                    MergeNewFromComponent = true, MergeNewFromMaster = false, MergeDeletionsFromComponent = false });
-            temp.Add(new MergeTableCommandBuilder(this.MasterDB, "Stem") {
-                    DoGUIDMatch = true, DoKeyMatch = true, DoNaturalMatch = true,
-                    MergeChangesFromComponent = true, MergeChangesFromMaster = true, RecordsUniqueAccrossComponents = true,
-                    MergeNewFromComponent = true, MergeNewFromMaster = false, MergeDeletionsFromComponent = false });
-            temp.Add(new MergeTableCommandBuilder(this.MasterDB, "Plot") {
-                    DoGUIDMatch = true, DoKeyMatch = true, DoNaturalMatch = true,
-                    MergeChangesFromComponent = true, MergeChangesFromMaster = true, RecordsUniqueAccrossComponents = true,
-                    MergeNewFromComponent = true, MergeNewFromMaster = false, MergeDeletionsFromComponent = false });          
+            temp.Add(new MergeTableCommandBuilder(this.MasterDB, "Tree")
+            {
+                DoGUIDMatch = true,
+                DoKeyMatch = true,
+                DoNaturalMatch = true,
+                MergeChangesFromComponent = true,
+                MergeChangesFromMaster = true,
+                RecordsUniqueAccrossComponents = true,
+                MergeNewFromComponent = true,
+                MergeNewFromMaster = false,
+                MergeDeletionsFromComponent = false
+            });
+            temp.Add(new MergeTableCommandBuilder(this.MasterDB, "Log")
+            {
+                DoGUIDMatch = true,
+                DoKeyMatch = true,
+                DoNaturalMatch = true,
+                MergeChangesFromComponent = true,
+                MergeChangesFromMaster = true,
+                RecordsUniqueAccrossComponents = true,
+                MergeNewFromComponent = true,
+                MergeNewFromMaster = false,
+                MergeDeletionsFromComponent = false
+            });
+            temp.Add(new MergeTableCommandBuilder(this.MasterDB, "Stem")
+            {
+                DoGUIDMatch = true,
+                DoKeyMatch = true,
+                DoNaturalMatch = true,
+                MergeChangesFromComponent = true,
+                MergeChangesFromMaster = true,
+                RecordsUniqueAccrossComponents = true,
+                MergeNewFromComponent = true,
+                MergeNewFromMaster = false,
+                MergeDeletionsFromComponent = false
+            });
+            temp.Add(new MergeTableCommandBuilder(this.MasterDB, "Plot")
+            {
+                DoGUIDMatch = true,
+                DoKeyMatch = true,
+                DoNaturalMatch = true,
+                MergeChangesFromComponent = true,
+                MergeChangesFromMaster = true,
+                RecordsUniqueAccrossComponents = true,
+                MergeNewFromComponent = true,
+                MergeNewFromMaster = false,
+                MergeDeletionsFromComponent = false
+            });
 
             foreach (MergeTableCommandBuilder cmdBldr in temp)
             {
                 this.CommandBuilders.Add(cmdBldr.ClientTableName, cmdBldr);
             }
-
         }
 
         public void FindComponents()
-        {            
+        {
             string searchDir = System.IO.Path.GetDirectoryName(MasterDB.Path);
             this.FindComponents(searchDir);
         }
@@ -155,7 +176,7 @@ namespace CruiseManager.Core.Components
         {
             System.Diagnostics.Debug.Assert(MasterDB != null);
             this.MissingComponents = new List<ComponentFileVM>();
-            this.ActiveComponents = new List<ComponentFileVM>(); 
+            this.ActiveComponents = new List<ComponentFileVM>();
             this.AllComponents = this.MasterDB.Read<ComponentFileVM>("Component", null);
 
             foreach (ComponentFileVM comp in this.AllComponents)
@@ -174,13 +195,11 @@ namespace CruiseManager.Core.Components
 
             if (View != null)
             { this.View.UpdateMergeInfoView(); }
-
-
         }
 
         private bool InitializeComponent(ComponentFileVM comp)
         {
-            comp.ResetCounts(); 
+            comp.ResetCounts();
             if (!System.IO.File.Exists(comp.FullPath))
             {
                 comp.Errors = "File not found";
@@ -202,13 +221,12 @@ namespace CruiseManager.Core.Components
                 }
                 return true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 comp.Errors += e.Message;
                 return false;
             }
         }
-
 
         private static string GetLastMergeDate(DAL dataBase)
         {
@@ -221,8 +239,6 @@ namespace CruiseManager.Core.Components
             return string.Empty;
         }
 
-
-
         private static void SetLastMergeDate(DAL db, string dateStr)
         {
             GlobalsDO data = new GlobalsDO(db)
@@ -234,7 +250,6 @@ namespace CruiseManager.Core.Components
             data.Save(FMSC.ORM.Core.SQL.OnConflictOption.Replace);
         }
 
-
         private int GetCountSum(CountTreeDO masterCopy)
         {
             int countSum = 0;
@@ -244,13 +259,9 @@ namespace CruiseManager.Core.Components
                     ("CountTree", masterCopy.CountTree_CN);
 
                 countSum += (int)compCount.TreeCount;
-
             }
             return countSum;
         }
-        
-
-
 
         public List<MergeObject> ListConflicts(String clientTableName)
         {
@@ -294,12 +305,10 @@ namespace CruiseManager.Core.Components
             return (int)totalConflicts;
         }
 
-
         private void HandelPrepareProgressChanged(Object sender, WorkerProgressChangedEventArgs e)
         {
             if (e.IsDone)
             {
-                
                 View.ShowPremergeReport();
                 if (GetNumConflicts() == 0)
                 {
@@ -311,9 +320,7 @@ namespace CruiseManager.Core.Components
                     //System.Windows.Forms.MessageBox.Show("Conflicts/Errors found\r\n Please Resolve Before Continuing");
                 }
             }
-
         }
-
 
         public string ExplaneMergeRecord(MergeObject mRec)
         {
@@ -340,26 +347,25 @@ namespace CruiseManager.Core.Components
             //    }
             //}
 
-            return error; 
+            return error;
         }
 
         #region Presentor Members
 
         //protected override void OnViewLoad(EventArgs e)
         //{
-            
         //}
 
-
-        #endregion
+        #endregion Presentor Members
 
         #region IDisposable Members
+
         private bool _disposed;
 
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
-            if(disposing && !_disposed)
+            if (disposing && !_disposed)
             {
                 if (this.ActiveComponents != null)
                 {
@@ -376,7 +382,6 @@ namespace CruiseManager.Core.Components
             }
         }
 
-        #endregion
-
+        #endregion IDisposable Members
     }
 }

@@ -46,6 +46,11 @@
             this._tallyBySpRB = new System.Windows.Forms.RadioButton();
             this._tallyBySGRB = new System.Windows.Forms.RadioButton();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this._sampleGroup_PNL = new System.Windows.Forms.Panel();
+            this._systematicOptCB = new System.Windows.Forms.CheckBox();
+            this._BS_sampleGroups = new System.Windows.Forms.BindingSource(this.components);
+            this._sampleGroupCB = new System.Windows.Forms.ComboBox();
+            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this._BS_CurTally)).BeginInit();
             this._GB_topLevelContainer.SuspendLayout();
             this._GB_tallyFields.SuspendLayout();
@@ -53,6 +58,8 @@
             this._speciesGB.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._BS_SPList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
+            this._sampleGroup_PNL.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._BS_sampleGroups)).BeginInit();
             this.SuspendLayout();
             // 
             // _BS_CurTally
@@ -64,10 +71,10 @@
             // 
             this._GB_topLevelContainer.Controls.Add(this._GB_tallyFields);
             this._GB_topLevelContainer.Controls.Add(this.panel1);
-            this._GB_topLevelContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._GB_topLevelContainer.Location = new System.Drawing.Point(0, 0);
+            this._GB_topLevelContainer.Dock = System.Windows.Forms.DockStyle.Left;
+            this._GB_topLevelContainer.Location = new System.Drawing.Point(0, 35);
             this._GB_topLevelContainer.Name = "_GB_topLevelContainer";
-            this._GB_topLevelContainer.Size = new System.Drawing.Size(336, 279);
+            this._GB_topLevelContainer.Size = new System.Drawing.Size(336, 291);
             this._GB_topLevelContainer.TabIndex = 5;
             this._GB_topLevelContainer.TabStop = false;
             // 
@@ -84,7 +91,7 @@
             this._GB_tallyFields.Location = new System.Drawing.Point(147, 18);
             this._GB_tallyFields.Name = "_GB_tallyFields";
             this._GB_tallyFields.Padding = new System.Windows.Forms.Padding(3, 3, 20, 3);
-            this._GB_tallyFields.Size = new System.Drawing.Size(186, 258);
+            this._GB_tallyFields.Size = new System.Drawing.Size(186, 270);
             this._GB_tallyFields.TabIndex = 7;
             this._GB_tallyFields.TabStop = false;
             // 
@@ -121,7 +128,7 @@
             this._hotKeyCB.Name = "_hotKeyCB";
             this._hotKeyCB.Size = new System.Drawing.Size(163, 21);
             this._hotKeyCB.TabIndex = 3;
-            this._hotKeyCB.DropDown += new System.EventHandler(this.NotifyHotKeysDropedDown);
+            this._hotKeyCB.DropDown += new System.EventHandler(this._hotKeyCB_DropedDown);
             this._hotKeyCB.TextChanged += new System.EventHandler(this._hotKeyCB_TextChanged);
             // 
             // label12
@@ -163,7 +170,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(3, 18);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(144, 258);
+            this.panel1.Size = new System.Drawing.Size(144, 270);
             this.panel1.TabIndex = 6;
             // 
             // _speciesGB
@@ -173,7 +180,7 @@
             this._speciesGB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this._speciesGB.Location = new System.Drawing.Point(0, 51);
             this._speciesGB.Name = "_speciesGB";
-            this._speciesGB.Size = new System.Drawing.Size(144, 207);
+            this._speciesGB.Size = new System.Drawing.Size(144, 219);
             this._speciesGB.TabIndex = 6;
             this._speciesGB.TabStop = false;
             this._speciesGB.Text = "Species";
@@ -187,7 +194,7 @@
             this._speciesLB.FormattingEnabled = true;
             this._speciesLB.Location = new System.Drawing.Point(3, 18);
             this._speciesLB.Name = "_speciesLB";
-            this._speciesLB.Size = new System.Drawing.Size(138, 186);
+            this._speciesLB.Size = new System.Drawing.Size(138, 198);
             this._speciesLB.TabIndex = 0;
             // 
             // _BS_SPList
@@ -241,14 +248,62 @@
             this.errorProvider1.ContainerControl = this;
             this.errorProvider1.DataSource = this._BS_CurTally;
             // 
+            // _sampleGroup_PNL
+            // 
+            this._sampleGroup_PNL.Controls.Add(this._systematicOptCB);
+            this._sampleGroup_PNL.Controls.Add(this._sampleGroupCB);
+            this._sampleGroup_PNL.Controls.Add(this.label10);
+            this._sampleGroup_PNL.Dock = System.Windows.Forms.DockStyle.Top;
+            this._sampleGroup_PNL.Location = new System.Drawing.Point(0, 0);
+            this._sampleGroup_PNL.Name = "_sampleGroup_PNL";
+            this._sampleGroup_PNL.Size = new System.Drawing.Size(461, 35);
+            this._sampleGroup_PNL.TabIndex = 11;
+            // 
+            // _systematicOptCB
+            // 
+            this._systematicOptCB.AutoSize = true;
+            this._systematicOptCB.DataBindings.Add(new System.Windows.Forms.Binding("Checked", this._BS_sampleGroups, "UseSystematicSampling", true));
+            this._systematicOptCB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this._systematicOptCB.Location = new System.Drawing.Point(214, 7);
+            this._systematicOptCB.Name = "_systematicOptCB";
+            this._systematicOptCB.Size = new System.Drawing.Size(149, 17);
+            this._systematicOptCB.TabIndex = 14;
+            this._systematicOptCB.Text = "Use Systematic Sampling";
+            this._systematicOptCB.UseVisualStyleBackColor = true;
+            // 
+            // _BS_sampleGroups
+            // 
+            this._BS_sampleGroups.DataSource = typeof(CruiseManager.Core.CruiseCustomize.TallySetupSampleGroup);
+            // 
+            // _sampleGroupCB
+            // 
+            this._sampleGroupCB.DataSource = this._BS_sampleGroups;
+            this._sampleGroupCB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this._sampleGroupCB.FormattingEnabled = true;
+            this._sampleGroupCB.Location = new System.Drawing.Point(83, 3);
+            this._sampleGroupCB.Name = "_sampleGroupCB";
+            this._sampleGroupCB.Size = new System.Drawing.Size(121, 21);
+            this._sampleGroupCB.TabIndex = 11;
+            this._sampleGroupCB.SelectedValueChanged += new System.EventHandler(this._BS_sampleGroups_CurrentChanged);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(3, 6);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(80, 13);
+            this.label10.TabIndex = 10;
+            this.label10.Text = "Sample Group";
+            // 
             // TallyEditPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this._GB_topLevelContainer);
+            this.Controls.Add(this._sampleGroup_PNL);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "TallyEditPanel";
-            this.Size = new System.Drawing.Size(336, 279);
+            this.Size = new System.Drawing.Size(461, 326);
             ((System.ComponentModel.ISupportInitialize)(this._BS_CurTally)).EndInit();
             this._GB_topLevelContainer.ResumeLayout(false);
             this._GB_tallyFields.ResumeLayout(false);
@@ -258,6 +313,9 @@
             this._speciesGB.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this._BS_SPList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
+            this._sampleGroup_PNL.ResumeLayout(false);
+            this._sampleGroup_PNL.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._BS_sampleGroups)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -281,5 +339,10 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox _discriptionTB;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel _sampleGroup_PNL;
+        private System.Windows.Forms.CheckBox _systematicOptCB;
+        private System.Windows.Forms.ComboBox _sampleGroupCB;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.BindingSource _BS_sampleGroups;
     }
 }

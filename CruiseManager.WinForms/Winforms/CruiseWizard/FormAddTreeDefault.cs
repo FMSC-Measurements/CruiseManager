@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using CruiseDAL.DataObjects;
+﻿using CruiseDAL.DataObjects;
 using CruiseManager.Core.SetupModels;
+using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.CruiseWizard
 {
@@ -15,13 +10,11 @@ namespace CruiseManager.WinForms.CruiseWizard
     {
         public FormAddTreeDefault(List<ProductCode> codeList)
         {
-            
             InitializeComponent();
             this._PProdCB.DataSource = codeList;
-
         }
 
-        public TreeDefaultValueDO TreeDefault 
+        public TreeDefaultValueDO TreeDefault
         {
             get { return this._BS_TDV.DataSource as TreeDefaultValueDO; }
             set
@@ -44,7 +37,6 @@ namespace CruiseManager.WinForms.CruiseWizard
             this._BS_TDV.EndEdit();
             if (this.TreeDefault.Validate() == true)
             {
-                
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }

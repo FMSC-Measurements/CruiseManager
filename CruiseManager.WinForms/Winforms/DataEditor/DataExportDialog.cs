@@ -1,21 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
-using CruiseDAL.DataObjects;
-using System.IO;
-using OfficeOpenXml;
+﻿using CruiseDAL.DataObjects;
+using CruiseManager.Core.App;
+using CruiseManager.Core.Models;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using OfficeOpenXml;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Reflection;
-using CruiseManager.Core.Models;
-using CruiseManager.Core.App;
+using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.DataEditor
 {
     public partial class DataExportDialog : Form
     {
         #region CTor
+
         public DataExportDialog()
         {
             InitializeComponent();
@@ -36,7 +37,6 @@ namespace CruiseManager.WinForms.DataEditor
             SetUpFieldWidgets();
         }
 
-
         public void SetUpFieldWidgets()
         {
             var setupServ = ApplicationController.SetupService;
@@ -44,7 +44,6 @@ namespace CruiseManager.WinForms.DataEditor
             //set up tree field widget
             //get list of tree fields from the setup file
 
-            
             this.AllTreeFields = (from field in setupServ.GetTreeFieldSetups()
                                   select new FieldDiscriptor(field)).ToList();
             //add additional fields for cutting units, stratum, sample groups...
@@ -59,12 +58,12 @@ namespace CruiseManager.WinForms.DataEditor
             TreeFields = (from field in tf
                           select new FieldDiscriptor(field)).ToList();
 
-            this.AllTreeFields = this.AllTreeFields.Except(this.TreeFields).ToList(); 
+            this.AllTreeFields = this.AllTreeFields.Except(this.TreeFields).ToList();
 
             this.TreeFieldOrderableAddRemoveWidget.DataSource = AllTreeFields;
             this.TreeFieldOrderableAddRemoveWidget.SelectedItemsDataSource = TreeFields;
 
-            //set up log field widget 
+            //set up log field widget
             //get list of log fields from setup file
             this.AllLogFields = (from field in setupServ.GetLogFieldSetups()
                                  select new FieldDiscriptor(field)).ToList();
@@ -91,7 +90,7 @@ namespace CruiseManager.WinForms.DataEditor
 
         private List<FieldDiscriptor> makePlotFieldList()
         {
-            return new List<FieldDiscriptor>(new FieldDiscriptor[] 
+            return new List<FieldDiscriptor>(new FieldDiscriptor[]
                 {
                     new FieldDiscriptor{ Field = "CuttingUnit", Header = "Cutting Unit", Format = "[Code]", DataType = typeof(PlotDO) },
                     new FieldDiscriptor{ Field = "Stratum", Header = "Stratum", Format = "[Code]", DataType = typeof(PlotDO) },
@@ -103,9 +102,8 @@ namespace CruiseManager.WinForms.DataEditor
                     new FieldDiscriptor{ Field = "Remarks", Header = "Remarks", DataType = typeof(PlotDO)},
                     new FieldDiscriptor{ Field = "XCoordinate", Header = "XCoordinate", DataType = typeof(PlotDO)},
                     new FieldDiscriptor{ Field = "YCoordinate", Header = "YCoordinate", DataType = typeof(PlotDO)},
-                    new FieldDiscriptor{ Field = "ZCoordinate", Header = "ZCoordinate", DataType = typeof(PlotDO)} 
+                    new FieldDiscriptor{ Field = "ZCoordinate", Header = "ZCoordinate", DataType = typeof(PlotDO)}
                 });
-
         }
 
         private List<FieldDiscriptor> makeCountFiledList()
@@ -121,7 +119,9 @@ namespace CruiseManager.WinForms.DataEditor
                 });
         }
 
-        #endregion 
+        #endregion CTor
+
+
 
         #region Properties
 
@@ -141,9 +141,9 @@ namespace CruiseManager.WinForms.DataEditor
 
         private List<FieldDiscriptor> LogFields { get; set; }
 
+        private IList<TreeVM> _trees;
 
-        private IList<TreeVM> _trees; 
-        public IList<TreeVM> Trees 
+        public IList<TreeVM> Trees
         {
             get { return _trees; }
             set
@@ -152,10 +152,9 @@ namespace CruiseManager.WinForms.DataEditor
             }
         }
 
-        
-
         private IList<LogVM> _logs;
-        public IList<LogVM> Logs 
+
+        public IList<LogVM> Logs
         {
             get { return _logs; }
             set
@@ -165,7 +164,8 @@ namespace CruiseManager.WinForms.DataEditor
         }
 
         public IList<PlotDO> _plots;
-        public IList<PlotDO> Plots 
+
+        public IList<PlotDO> Plots
         {
             get { return _plots; }
             set
@@ -175,7 +175,8 @@ namespace CruiseManager.WinForms.DataEditor
         }
 
         private IList<CountTreeDO> _counts;
-        public IList<CountTreeDO> Counts 
+
+        public IList<CountTreeDO> Counts
         {
             get { return _counts; }
             set
@@ -184,41 +185,42 @@ namespace CruiseManager.WinForms.DataEditor
             }
         }
 
-        public bool IsExportTreesSelected 
-        { 
-            get 
-            { 
-                return this.Trees != null && this.Trees.Count > 0 && this.TreeFields.Count > 0; 
-            } 
-        }
-
-        public bool IsExportLogsSelected 
-        { 
-            get 
+        public bool IsExportTreesSelected
+        {
+            get
             {
-                return this.Logs != null && this.Logs.Count > 0 && this.LogFields.Count > 0; 
-            } 
+                return this.Trees != null && this.Trees.Count > 0 && this.TreeFields.Count > 0;
+            }
         }
 
-        public bool IsExportPlotsSelected 
-        { 
-            get 
-            { 
-                return this.Plots!= null && this.Plots.Count > 0 && this.PlotFields.Count > 0; 
-            } 
+        public bool IsExportLogsSelected
+        {
+            get
+            {
+                return this.Logs != null && this.Logs.Count > 0 && this.LogFields.Count > 0;
+            }
         }
 
-        public bool IsExportCountsSelected 
-        { 
-            get 
-            { 
-                return this.Counts != null && this.Counts.Count > 0 && this.CountFields.Count > 0; 
-            } 
+        public bool IsExportPlotsSelected
+        {
+            get
+            {
+                return this.Plots != null && this.Plots.Count > 0 && this.PlotFields.Count > 0;
+            }
         }
 
-        #endregion
+        public bool IsExportCountsSelected
+        {
+            get
+            {
+                return this.Counts != null && this.Counts.Count > 0 && this.CountFields.Count > 0;
+            }
+        }
 
-        #region Event handlers 
+        #endregion Properties
+
+        #region Event handlers
+
         private void CancelButton_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
@@ -259,9 +261,11 @@ namespace CruiseManager.WinForms.DataEditor
                 }
                 MessageBox.Show("Done");
             }
-
         }
-        #endregion 
+
+        #endregion Event handlers
+
+
 
         protected string GetFieldText(object data, FieldDiscriptor field)
         {
@@ -281,7 +285,7 @@ namespace CruiseManager.WinForms.DataEditor
             }
 
             object obj = field.PropInfo.GetValue(data, null);
-            if(obj is IFormattable && !string.IsNullOrEmpty(field.Format))
+            if (obj is IFormattable && !string.IsNullOrEmpty(field.Format))
             {
                 return ((IFormattable)obj).ToString(field.Format, System.Globalization.CultureInfo.CurrentCulture);
             }
@@ -293,21 +297,19 @@ namespace CruiseManager.WinForms.DataEditor
             {
                 return obj;
             }
-
         }
-
 
         protected FileInfo AskExportPath(String exportMethod)
         {
-            String filter = String.Empty; 
-            switch(exportMethod)
+            String filter = String.Empty;
+            switch (exportMethod)
             {
                 case "Printable PDF":
                     {
                         filter = "PDF (*.pdf)|*.pdf";
                         break;
                     }
-                case"Excel Spread Sheet (.xls)":
+                case "Excel Spread Sheet (.xls)":
                     {
                         filter = "Excel Spread Sheet (*.xlsx)|*.xlsx";
                         break;
@@ -346,50 +348,45 @@ namespace CruiseManager.WinForms.DataEditor
 
         public void ExportAsPDF(FileStream stream)
         {
-
-
-            //set up letter size document, 
+            //set up letter size document,
             //with 36 PT( .5 in) left and right margins
             //and 108PT (1.5in) top and bottom margin
             using (Document document = new Document(PageSize.LETTER, 36, 36, 108, 108))
-            //setup writer 
-            using (PdfWriter writer = PdfWriter.GetInstance(document, stream)) 
+            //setup writer
+            using (PdfWriter writer = PdfWriter.GetInstance(document, stream))
             {
-                
                 document.AddHeader(Header.AUTHOR, "FMSC");
                 document.AddHeader(Header.CREATIONDATE, DateTime.Today.ToShortDateString());
                 document.Open();
                 if (IsExportTreesSelected)
                 {
-                    
                     Chapter chapter = new Chapter("Trees", 0);
                     chapter.NumberDepth = 0;
                     PdfPTable table = new PdfPTable(TreeFields.Count)
-                        {
-                            WidthPercentage = 100F,
-                            HeaderRows = 1,
-                            SpacingBefore = 10F,
-                            SplitLate = false
-                        };
-                    
+                    {
+                        WidthPercentage = 100F,
+                        HeaderRows = 1,
+                        SpacingBefore = 10F,
+                        SplitLate = false
+                    };
+
                     //write the headers
                     foreach (FieldDiscriptor field in TreeFields)
                     {
                         table.AddCell(field.Header);
                     }
-                    
 
-                    //fill in data 
+                    //fill in data
                     foreach (TreeDO tree in Trees)
                     {
                         foreach (FieldDiscriptor field in TreeFields)
                         {
                             String text = GetFieldText(tree, field);
-                            table.AddCell(text);                           
+                            table.AddCell(text);
                         }
                     }
 
-                    //add chapter to document 
+                    //add chapter to document
 
                     chapter.Add(table);
                     document.Add(chapter);
@@ -399,12 +396,12 @@ namespace CruiseManager.WinForms.DataEditor
                 {
                     Chapter chapter = new Chapter("Logs", 0);
                     chapter.NumberDepth = 0;
-                    PdfPTable table = new PdfPTable(LogFields.Count) 
-                        { 
-                            HeaderRows = 1, 
-                            WidthPercentage = 100F,
-                            SpacingBefore = 10F
-                        };
+                    PdfPTable table = new PdfPTable(LogFields.Count)
+                    {
+                        HeaderRows = 1,
+                        WidthPercentage = 100F,
+                        SpacingBefore = 10F
+                    };
 
                     //write headers
                     foreach (FieldDiscriptor field in LogFields)
@@ -412,16 +409,12 @@ namespace CruiseManager.WinForms.DataEditor
                         table.AddCell(field.Header);
                     }
 
-
                     foreach (LogDO log in Logs)
                     {
-
                         foreach (FieldDiscriptor field in LogFields)
                         {
-
                             String text = GetFieldText(log, field);
                             table.AddCell(text);
-                   
                         }
                     }
 
@@ -433,15 +426,15 @@ namespace CruiseManager.WinForms.DataEditor
                 {
                     Chapter chapter = new Chapter("Plots", 0);
                     chapter.NumberDepth = 0;
-                    PdfPTable table = new PdfPTable(PlotFields.Count) 
-                    { 
-                        HeaderRows = 1, 
+                    PdfPTable table = new PdfPTable(PlotFields.Count)
+                    {
+                        HeaderRows = 1,
                         WidthPercentage = 100F,
                         SpacingBefore = 10F
                     };
 
-                    //write headers 
-                    
+                    //write headers
+
                     foreach (FieldDiscriptor field in PlotFields)
                     {
                         table.AddCell(field.Header);
@@ -449,11 +442,10 @@ namespace CruiseManager.WinForms.DataEditor
 
                     foreach (PlotDO plot in Plots)
                     {
-                        
                         foreach (FieldDiscriptor field in PlotFields)
                         {
                             String text = GetFieldText(plot, field);
-                            table.AddCell(text);                                                        
+                            table.AddCell(text);
                         }
                     }
 
@@ -465,9 +457,9 @@ namespace CruiseManager.WinForms.DataEditor
                 {
                     Chapter chapter = new Chapter("Counts", 0);
                     chapter.NumberDepth = 0;
-                    PdfPTable table = new PdfPTable(CountFields.Count) 
-                    { 
-                        WidthPercentage = 100F, 
+                    PdfPTable table = new PdfPTable(CountFields.Count)
+                    {
+                        WidthPercentage = 100F,
                         HeaderRows = 1,
                         SpacingBefore = 10F
                     };
@@ -482,7 +474,7 @@ namespace CruiseManager.WinForms.DataEditor
                         foreach (FieldDiscriptor field in CountFields)
                         {
                             String text = GetFieldText(count, field);
-                            table.AddCell(text);                            
+                            table.AddCell(text);
                         }
                     }
 
@@ -494,7 +486,6 @@ namespace CruiseManager.WinForms.DataEditor
 
         private void WriteRow(ExcelWorksheet worksheet, int rowNum, IList<FieldDiscriptor> fields, CruiseDAL.DataObject data)
         {
-
             //populate columns
             for (int j = 0; j < fields.Count; j++)
             {
@@ -502,7 +493,6 @@ namespace CruiseManager.WinForms.DataEditor
                 object value = GetFieldValue(data, field);
                 worksheet.SetValue(rowNum, j + 1, value);
             }
-
         }
 
         public void ExportAsExcel(FileStream stream)
@@ -525,12 +515,12 @@ namespace CruiseManager.WinForms.DataEditor
                         treeWorkSheet.SetValue(1, i + 1, TreeFields[i].Header);
                     }
 
-                    //create a array of property accessors for all fields 
+                    //create a array of property accessors for all fields
 
                     //populate rows
                     for (int i = 0; i < Trees.Count; i++)
                     {
-                        TreeVM tree =  Trees[i];
+                        TreeVM tree = Trees[i];
                         WriteRow(treeWorkSheet, i + 2, TreeFields, tree);
                     }
                 }
@@ -543,7 +533,6 @@ namespace CruiseManager.WinForms.DataEditor
                         logWorkSheet.SetValue(1, i + 1, LogFields[i].Header);
                     }
 
-
                     for (int i = 0; i < Logs.Count; i++)
                     {
                         LogDO log = Logs[i];
@@ -553,7 +542,6 @@ namespace CruiseManager.WinForms.DataEditor
                 if (IsExportPlotsSelected)
                 {
                     plotsWorkSheet = excelFile.Workbook.Worksheets.Add("Plots");
-
 
                     for (int i = 0; i < PlotFields.Count; i++)
                     {
@@ -569,7 +557,6 @@ namespace CruiseManager.WinForms.DataEditor
                 if (IsExportCountsSelected)
                 {
                     countsWorkSheet = excelFile.Workbook.Worksheets.Add("Counts");
-
 
                     for (int i = 0; i < CountFields.Count; i++)
                     {
@@ -592,6 +579,7 @@ namespace CruiseManager.WinForms.DataEditor
             public FieldDiscriptor()
             {
             }
+
             public FieldDiscriptor(TreeFieldSetupDO obj)
             {
                 this.Field = obj.Field;
@@ -608,11 +596,12 @@ namespace CruiseManager.WinForms.DataEditor
                 this.DataType = typeof(LogVM);
             }
 
-            private PropertyInfo _propInfo; 
-            private bool _isInitialized = false; 
+            private PropertyInfo _propInfo;
+            private bool _isInitialized = false;
 
             public string Field { get; set; }
             public string Header { get; set; }
+
             public PropertyInfo PropInfo
             {
                 get
@@ -625,26 +614,25 @@ namespace CruiseManager.WinForms.DataEditor
                         }
                         catch (AmbiguousMatchException)//if looking for a property that overrides or hides a base class property, AmbiguousMatchException will be thrown
                         {
-                            //use DeclaredOnly to force search for only non-inharited members 
+                            //use DeclaredOnly to force search for only non-inharited members
                             _propInfo = this.DataType.GetProperty(this.Field, BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
                         }
                     }
                     return _propInfo;
                 }
             }
+
             public string Format { get; set; }
             public Type DataType { get; set; }
-
 
             #region IComparable<FieldDiscriptor> Members
 
             public int CompareTo(FieldDiscriptor other)
             {
-                return string.Compare(this.Field, other.Field, StringComparison.OrdinalIgnoreCase); 
+                return string.Compare(this.Field, other.Field, StringComparison.OrdinalIgnoreCase);
             }
 
-            #endregion
+            #endregion IComparable<FieldDiscriptor> Members
         }
     }
-
 }

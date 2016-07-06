@@ -1,34 +1,34 @@
-﻿//Notes: this is a customized control designed to switch between multiple controls and 
-//display them as if they were a page. 
+﻿//Notes: this is a customized control designed to switch between multiple controls and
+//display them as if they were a page.
 //when another control is hosted inside this control, its dock property is set to fill
 //to best use the PageHost Control, design a user control containing the elements that
 //you want, then in code create an instance of the user control and add it to the PageHost.
 //
 
-
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using System.ComponentModel;
+using System.Windows.Forms;
+
 //using System.Windows.Forms.Design;
 //using System.ComponentModel.Design;
 
 namespace CruiseManager.WinForms
 {
     //[Designer(typeof(PageHost.PageHostDesigner))]
-    public class PageHost : UserControl , IPagingView
+    public class PageHost : UserControl, IPagingView
     {
-        #region Fields 
+        #region Fields
+
         //private PanelCollection panels = null;
         private Control selectedControl = null;
-        private int selectedIndex = -1;
-        //private List<Control> pages = null; 
-        #endregion
 
+        private int selectedIndex = -1;
+        //private List<Control> pages = null;
+
+        #endregion Fields
 
         #region Designer Generated Code
+
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -38,29 +38,26 @@ namespace CruiseManager.WinForms
         {
             components = new System.ComponentModel.Container();
             this.SuspendLayout();
-            // 
+            //
             // PageHost
-            // 
+            //
             this.ResumeLayout(false);
-
         }
-        #endregion
 
+        #endregion Designer Generated Code
 
         #region Ctor & Dispose
+
         public PageHost()
         {
-
             this.InitializeComponent();
-
 
             //base.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             //base.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             //base.SetStyle(ControlStyles.ResizeRedraw, true);
-
         }
 
-        /// <summary> 
+        /// <summary>
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
@@ -73,10 +70,10 @@ namespace CruiseManager.WinForms
             base.Dispose(disposing);
         }
 
-        #endregion
-
+        #endregion Ctor & Dispose
 
         #region Properties
+
         //[DefaultValue(DockStyle.Fill)]
         //[Category("Layout")]
         //[Description("Gets or sets which edge of the parent container a control is docked to.")]
@@ -103,7 +100,6 @@ namespace CruiseManager.WinForms
         //    }
         //}
 
-
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IPage CurrentPage
@@ -120,7 +116,8 @@ namespace CruiseManager.WinForms
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public int CurrentPageIndex {
+        public int CurrentPageIndex
+        {
             get
             {
                 return this.selectedIndex;
@@ -132,7 +129,7 @@ namespace CruiseManager.WinForms
                     this.Display(-1);
                     return;
                 }
-                
+
                 if (value < -1 || value >= this.Controls.Count)
                 {
                     throw new ArgumentOutOfRangeException("value", value, "CurrentPageIndex out of range");
@@ -142,9 +139,10 @@ namespace CruiseManager.WinForms
             }
         }
 
-        #endregion
+        #endregion Properties
 
         #region Methods
+
         public void Add(Control value)
         {
             base.Controls.Add(value);
@@ -152,8 +150,6 @@ namespace CruiseManager.WinForms
 
         public void Display(Control page)
         {
-            
-
             if (page == null)
             {
                 throw new ArgumentNullException();
@@ -186,7 +182,6 @@ namespace CruiseManager.WinForms
             this.FocusFirstTabIndex(this.selectedControl);
 
             this.selectedControl.Invalidate();
-
         }
 
         public void Display(int index)
@@ -198,7 +193,6 @@ namespace CruiseManager.WinForms
             Control control = this.Controls[index];
 
             this.Display(control);
-
         }
 
         public void FocusFirstTabIndex(Control container)
@@ -248,8 +242,7 @@ namespace CruiseManager.WinForms
             base.OnControlAdded(e);
         }
 
-        
-        #endregion
+        #endregion Methods
 
         #region IPagingView Members
 
@@ -266,6 +259,6 @@ namespace CruiseManager.WinForms
             this.Display(Page as Control);
         }
 
-        #endregion
+        #endregion IPagingView Members
     }
 }

@@ -1,19 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
-using CruiseDAL.DataObjects;
-using System.IO;
-using CruiseManager.Core.App;
 
 namespace CruiseManager.WinForms.CruiseWizard
 {
     public partial class SalePage : UserControl, IPage
     {
-        #region Constructor 
+        #region Constructor
 
         public SalePage(String Name, CruiseWizardView MasterView)
         {
@@ -23,16 +15,20 @@ namespace CruiseManager.WinForms.CruiseWizard
             InitializePurposeComboBox();
         }
 
-        #endregion
+        #endregion Constructor
 
-        #region Properties 
+        #region Properties
+
         public CruiseWizardView MasterView { get; set; }
         public CruiseWizardPresenter Presenter { get { return MasterView.Presenter; } }
         string _templatePath = null;
-        #endregion 
+        #endregion Properties
+
+
 
         #region Initialization Methods
-        protected override void  OnLoad(EventArgs e)
+
+        protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
             UOMBindingSource.DataSource = Presenter.UOMCodes;
@@ -53,16 +49,16 @@ namespace CruiseManager.WinForms.CruiseWizard
         //    SaleDOBindingSource.DataSource = Presenter.Sale;
         //}
 
-
         private void InitializePurposeComboBox()
         {
             //PurposeComboBox.DataSource = CSM.Utility.Constants.SALE_PURPOSE;
             PurposeComboBox.Items.AddRange(CruiseManager.Core.Constants.Strings.SALE_PURPOSE);
         }
 
-        #endregion
+        #endregion Initialization Methods
 
         #region Button Events
+
         private void NextButton_Click(object sender, EventArgs e)
         {
             Presenter.HandleSalePageExit(_templatePath);
@@ -73,10 +69,10 @@ namespace CruiseManager.WinForms.CruiseWizard
             //    return;
             //}
 
-            //if (!string.IsNullOrEmpty(_templatePath) && File.Exists(_templatePath)) 
+            //if (!string.IsNullOrEmpty(_templatePath) && File.Exists(_templatePath))
             //{
             //    FileInfo template = new FileInfo(_templatePath);
-            //    Presenter.LoadTemplate(template); 
+            //    Presenter.LoadTemplate(template);
             //}
 
             //if (CruiseMethods.Count == 0)
@@ -102,31 +98,29 @@ namespace CruiseManager.WinForms.CruiseWizard
 
         private void _browseTemplateButton_Click(object sender, EventArgs e)
         {
-            
             string filePath = Presenter.WindowPresenter.AskTemplateLocation();
             _templatePath = filePath;
             _templatePathTB.Text = filePath;
         }
-        #endregion
+
+        #endregion Button Events
 
         private void _districtMTB_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(char.IsLetter(e.KeyChar) || char.IsPunctuation(e.KeyChar))
+            if (char.IsLetter(e.KeyChar) || char.IsPunctuation(e.KeyChar))
             {
                 e.Handled = true;
             }
         }
 
-
         #region IPage Members
-
 
         public bool HandleKeypress(System.Windows.Forms.Keys key)
         {
             return false;
         }
 
-        #endregion
+        #endregion IPage Members
 
         private void SaleDOBindingSource_CurrentItemChanged(object sender, EventArgs e)
         {
@@ -137,9 +131,5 @@ namespace CruiseManager.WinForms.CruiseWizard
         {
             System.Diagnostics.Debug.WriteLine("UOM Changed");
         }
-
-
-
-        
     }
 }

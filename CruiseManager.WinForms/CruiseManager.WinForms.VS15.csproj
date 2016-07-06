@@ -161,6 +161,18 @@
     <Compile Include="WinForms\CruiseCustomize\CustomizeCruiseContainerView.Designer.cs">
       <DependentUpon>CustomizeCruiseContainerView.cs</DependentUpon>
     </Compile>
+    <Compile Include="WinForms\CruiseCustomize\FixCNTTallyEditPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\CruiseCustomize\FixCNTTallyEditPanel.Designer.cs">
+      <DependentUpon>FixCNTTallyEditPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\CruiseCustomize\FixCNTTallyPopulationRow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\CruiseCustomize\FixCNTTallyPopulationRow.Designer.cs">
+      <DependentUpon>FixCNTTallyPopulationRow.cs</DependentUpon>
+    </Compile>
     <Compile Include="WinForms\UserControlContainerView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -190,12 +202,6 @@
     </Compile>
     <Compile Include="WinForms\Components\MergeInfoView.Designer.cs">
       <DependentUpon>MergeInfoView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="WinForms\CruiseCustomize\CruiseCustomizeView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="WinForms\CruiseCustomize\CruiseCustomizeView.Designer.cs">
-      <DependentUpon>CruiseCustomizeView.cs</DependentUpon>
     </Compile>
     <Compile Include="WinForms\CruiseCustomize\FieldSetupView.cs">
       <SubType>UserControl</SubType>
@@ -361,7 +367,6 @@
     <Compile Include="WinForms\CruiseWizard\CruiseWizardPresenter.cs" />
     <Compile Include="WinForms\IPage.cs" />
     <Compile Include="WinForms\IPagingView.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WinForms\UserControlView.cs">
       <SubType>UserControl</SubType>
@@ -380,12 +385,14 @@
     <EmbeddedResource Include="WinForms\Components\MergeInfoView.resx">
       <DependentUpon>MergeInfoView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="WinForms\CruiseCustomize\CruiseCustomizeView.resx">
-      <DependentUpon>CruiseCustomizeView.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="WinForms\CruiseCustomize\FieldSetupView.resx">
       <DependentUpon>FieldSetupView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\CruiseCustomize\FixCNTTallyEditPanel.resx">
+      <DependentUpon>FixCNTTallyEditPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\CruiseCustomize\FixCNTTallyPopulationRow.resx">
+      <DependentUpon>FixCNTTallyPopulationRow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WinForms\CruiseCustomize\LogMatrixSettingsPage.resx">
       <DependentUpon>LogMatrixSettingsPage.cs</DependentUpon>
@@ -499,6 +506,8 @@
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.SampleGroupDO.datasource" />
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.StratumDO.datasource" />
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.TreeDefaultValueDO.datasource" />
+    <None Include="Properties\DataSources\CruiseManager.Core.CruiseCustomize.FixCNTTallyClass.datasource" />
+    <None Include="Properties\DataSources\CruiseManager.Core.CruiseCustomize.FixCNTTallyPopulation.datasource" />
     <None Include="Properties\DataSources\CruiseManager.Core.CruiseCustomize.TallySetupSampleGroup.datasource" />
     <None Include="Properties\DataSources\CruiseManager.Core.CruiseCustomize.TallySetupStratum.datasource" />
     <None Include="Properties\Settings.settings">

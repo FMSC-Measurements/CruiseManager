@@ -1,8 +1,5 @@
-﻿using CruiseManager.Core.App;
-using CruiseManager.Core.ViewModel;
+﻿using CruiseManager.Core.ViewModel;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CruiseManager.Core.CommandModel
 {
@@ -29,6 +26,5 @@ namespace CruiseManager.Core.CommandModel
         {
             this.NavigationService.NavigateTo(ViewType);
         }
-
     }
 }

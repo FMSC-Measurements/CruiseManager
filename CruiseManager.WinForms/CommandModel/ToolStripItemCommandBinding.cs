@@ -1,58 +1,56 @@
 ﻿using CruiseManager.Core.CommandModel;
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.CommandModel
 {
-    public class ToolStripItemCommandBinding : CommandBinding
+    public class ToolStripItemCommandBinding : CommandBinding<ToolStripItem>
     {
         public ToolStripItemCommandBinding(BindableCommand command, ToolStripItem control) : base(command)
         {
-            this.Control = control;
+            Target = control;
         }
 
-        public new ToolStripItem Control
+        public override void OnVisableChanged(bool visable)
         {
-            get { return (ToolStripItem)base.Control; }
-            set
-            {
-                if (value != null)
-                {
-                    value.Enabled = Command.Enabled;
-                    value.Text = Command.Name;
-                    value.Click += Command.HandleClick;
-                    value.Disposed += this.Control_Disposed;
-                }
-                base.Control = value;
-            }
+            Target.Visible = visable;
         }
 
         public override void OnEnabledChanged(bool enabled)
         {
-            this.Control.Enabled = enabled;
+            Target.Enabled = enabled;
         }
 
         public override void OnNameChanged(string name)
         {
-            this.Control.Text = name;
+            Target.Text = name;
+        }
+
+        protected override void WireTarget()
+        {
+            Target.Enabled = Command.Enabled;
+            Target.Text = Command.Name;
+            Target.Click += Command.HandleClick;
+            Target.Disposed += this.Control_Disposed;
+        }
+
+        protected override void UnWireTarget()
+        {
+            Target.Click -= Command.HandleClick;
+            Target.Disposed -= Control_Disposed;
         }
 
         protected void Control_Disposed(Object sender, EventArgs e)
         {
-            this.Command.RemoveBinding(this);
+            Command.RemoveBinding(this);
         }
 
         protected override void Dispose(bool disposing)
         {
-            if (Control != null)
+            if (Target != null)
             {
-                this.Control.Click -= Command.HandleClick;
-                this.Control.Disposed -= Control_Disposed;
+                UnWireTarget();
             }
         }
     }

@@ -1,7 +1,5 @@
 ﻿using CruiseDAL.Schema;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CruiseManager.Core.Constants
 {
@@ -25,7 +23,7 @@ namespace CruiseManager.Core.Constants
 
         //public static readonly string[] THREE_P_METHODS = new string[] { "3P", "S3P", "F3P", "P3P" };//moved to CruiseDAL.Schema.CruiseMethods
 
-        public static readonly string[] EDITABLE_UNIT_FILEDS = { CUTTINGUNIT.AREA, CUTTINGUNIT.DESCRIPTION, CUTTINGUNIT.LOGGINGMETHOD };
+        public static readonly string[] EDITABLE_UNIT_FILEDS = { CUTTINGUNIT.AREA, CUTTINGUNIT.DESCRIPTION, CUTTINGUNIT.LOGGINGMETHOD, CUTTINGUNIT.PAYMENTUNIT };
         public static readonly string[] EDITABLE_ST_FIELDS = { STRATUM.DESCRIPTION, STRATUM.MONTH, STRATUM.YEAR, STRATUM.YIELDCOMPONENT, "MonthStr" };
         public static readonly string[] EDITABLE_SG_FIELDS = { SAMPLEGROUP.BIGBAF, SAMPLEGROUP.SECONDARYPRODUCT };
 

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml.Serialization;
 
 namespace CruiseManager.Core.SetupModels
@@ -9,7 +6,9 @@ namespace CruiseManager.Core.SetupModels
     [Serializable]
     public class UOMCode
     {
-        public UOMCode() { }
+        public UOMCode()
+        {
+        }
 
         public UOMCode(String[] values)
         {

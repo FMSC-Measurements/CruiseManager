@@ -1,30 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.IO;
-using CruiseManager.Core.ViewInterfaces;
-using CruiseManager.Core.App;
-using CruiseManager.Core;
+﻿using CruiseManager.Core.App;
 using CruiseManager.Core.CommandModel;
-using CruiseManager.WinForms.CommandModel;
+using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core.ViewModel;
+using CruiseManager.WinForms.CommandModel;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.Dashboard
 {
-    public partial class FormCSMMain : Form, MainWindow 
+    public partial class FormCSMMain : Form, MainWindow
     {
-        
         public FormCSMMain(ApplicationControllerBase applicationController)
         {
             this.ApplicationController = applicationController;
             InitializeComponent();
-
-            
 
             this.ApplicationController.OpenFileCommand.BindTo(this.openToolStripMenuItem);
             this.ApplicationController.CreateNewCruiseCommand.BindTo(this.newToolStripMenuItem);
@@ -33,9 +26,6 @@ namespace CruiseManager.WinForms.Dashboard
 
             var _aboutClickCommand = new BindableActionCommand("About", this.ApplicationController.WindowPresenter.ShowAboutDialog);
             _aboutClickCommand.BindTo(this.aboutToolStripMenuItem);
-            
-
-
         }
 
         protected ApplicationControllerBase ApplicationController { get; set; }
@@ -43,11 +33,9 @@ namespace CruiseManager.WinForms.Dashboard
         protected Panel ViewContentPanel { get { return this._viewContentPanel; } }
         protected Panel ViewNavPanel { get { return this._viewNavPanel; } }
 
-
-
         public void ClearActiveView()
         {
-            //clear previous content from main view content panel 
+            //clear previous content from main view content panel
             foreach (Control c in this.ViewContentPanel.Controls)
             {
                 c.Dispose();
@@ -60,7 +48,6 @@ namespace CruiseManager.WinForms.Dashboard
             Control cView = view as Control;
             System.Diagnostics.Debug.Assert(cView != null);
 
-
             SetActiveView(cView);
         }
 
@@ -69,7 +56,6 @@ namespace CruiseManager.WinForms.Dashboard
             Control cView = view as Control;
             System.Diagnostics.Debug.Assert(cView != null);
 
-
             SetActiveView(cView);
         }
 
@@ -77,14 +63,13 @@ namespace CruiseManager.WinForms.Dashboard
         {
             ClearActiveView();
 
-
             if (cView is IView)
             {
                 //this.SetNavCommands(((IView)cView).NavCommands);
                 //this.SetUserCommands(((IView)cView).UserCommands);
             }
 
-            //dock new view 
+            //dock new view
             cView.Dock = DockStyle.Fill;
             cView.Parent = this.ViewContentPanel;
         }
@@ -93,7 +78,7 @@ namespace CruiseManager.WinForms.Dashboard
         {
             this._userCommandPanel.SuspendLayout();
             this._userCommandPanel.Controls.Clear();
-            if(userCommands == null || userCommands.Count() == 0) { return;  }
+            if (userCommands == null || userCommands.Count() == 0) { return; }
             using (Graphics g = CreateGraphics())
             {
                 foreach (BindableCommand command in userCommands)
@@ -113,7 +98,7 @@ namespace CruiseManager.WinForms.Dashboard
         {
             this._viewNavPanel.SuspendLayout();
             this._viewNavPanel.Controls.Clear();
-            if(navCommands == null) { return; }
+            if (navCommands == null) { return; }
             using (Graphics g = CreateGraphics())
             {
                 foreach (BindableCommand command in navCommands.Reverse())
@@ -127,14 +112,11 @@ namespace CruiseManager.WinForms.Dashboard
 
                     this._viewNavPanel.Controls.Add(spacer);
 
-
                     Button newButton = new NavigationButton();
                     newButton.Dock = System.Windows.Forms.DockStyle.Top;
                     this._viewNavPanel.Controls.Add(newButton);
 
                     command.BindTo(newButton);
-
-                    
                 }
             }
             this._viewNavPanel.ResumeLayout();
@@ -183,8 +165,8 @@ namespace CruiseManager.WinForms.Dashboard
 
         private void _recentFilesMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            string path = e.ClickedItem.ToolTipText as string; 
-            if(!string.IsNullOrEmpty(path))
+            string path = e.ClickedItem.ToolTipText as string;
+            if (!string.IsNullOrEmpty(path))
             {
                 ApplicationController.OpenFile(path);
             }

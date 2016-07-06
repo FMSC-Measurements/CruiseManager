@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace CruiseManager.WinForms
 {
     /// <summary>
-    /// Error dialog that can display many lines 
+    /// Error dialog that can display many lines
     /// </summary>
     public partial class ErrorMessageDialog : Form
     {
@@ -18,7 +12,6 @@ namespace CruiseManager.WinForms
         {
             InitializeComponent();
         }
-
 
         public void ShowDialog(IWin32Window owner, String shortMessage, String detailedMessage)
         {

@@ -1,21 +1,21 @@
-﻿using System;
+﻿using CruiseDAL.DataObjects;
+using CruiseManager.Core.Models;
+using CruiseManager.Core.SetupModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
-using CruiseDAL.DataObjects;
-using CruiseManager.Core.Models;
-using CruiseManager.Core.SetupModels;
-using CruiseManager.Core.App;
 
 namespace CruiseManager.WinForms.CruiseWizard
 {
     public partial class SampleGroupPage : UserControl, IPage
     {
         #region Properties
+
         public CruiseWizardPresenter Presenter { get { return MasterView.Presenter; } }
         public CruiseWizardView MasterView { get; set; }
-        
+
         public StratumVM CurrentStratum
         {
             get
@@ -29,10 +29,12 @@ namespace CruiseManager.WinForms.CruiseWizard
         }
 
         private SampleGroupDO CurrentSampleGroup { get { return SampleGroupBindingSource.Current as SampleGroupDO; } }
-        #endregion
+
+        #endregion Properties
 
         #region Ctor
-        public SampleGroupPage(string Name,CruiseWizardView MasterView)
+
+        public SampleGroupPage(string Name, CruiseWizardView MasterView)
         {
             InitializeComponent();
             base.Name = Name;
@@ -41,7 +43,8 @@ namespace CruiseManager.WinForms.CruiseWizard
             BindingNavigatorItemComboBox.ComboBox.DisplayMember = "Code";
             BindingNavigatorItemComboBox.ComboBox.FormattingEnabled = true;
         }
-        #endregion
+
+        #endregion Ctor
 
         protected override void OnLoad(EventArgs e)
         {
@@ -49,23 +52,22 @@ namespace CruiseManager.WinForms.CruiseWizard
             InitializeBindings();
             StratumBindingSource_CurrentChanged(null, null);
         }
-        
 
         #region Initialization Methods
+
         private void InitializeBindings()
         {
-            PrimaryProductBindingSource.DataSource = Presenter.ProductCodes;
+            PrimaryProductBindingSource.DataSource = Presenter.SecondaryProductCodes.ToList();
             SecondaryProductBindingSource.DataSource = Presenter.ProductCodes;
             UOMBindingSource.DataSource = Presenter.UOMCodes;
             TreeDefaultBindingSource.DataSource = Presenter.TreeDefaults;
             StratumBindingSource.DataSource = Presenter.Strata;
-            
-
         }
-        #endregion
 
+        #endregion Initialization Methods
 
         #region Click events
+
         private void StrataButton_Click(object sender, EventArgs e)
         {
             Presenter.ShowStratum();
@@ -81,7 +83,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             Presenter.Finish();
         }
 
-        #endregion
+        #endregion Click events
 
         private void StratumBindingSource_CurrentChanged(object sender, EventArgs e)
         {
@@ -89,7 +91,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             {
                 _stratumDiscriptionLBL.Text = string.Format("{0}: {1} - {2}", CurrentStratum.Code, CurrentStratum.Method, CurrentStratum.Description);
 
-                //grab the list of sample groups atatched to the selected stratum 
+                //grab the list of sample groups attached to the selected stratum
                 IList<SampleGroupDO> sgList = CurrentStratum.SampleGroups;
                 if (sgList != null)
                 {
@@ -97,9 +99,8 @@ namespace CruiseManager.WinForms.CruiseWizard
                 }
                 if (SampleGroupBindingSource.Count == 0)
                 {
-                    Presenter.GetNewSampleGroup(CurrentStratum,(SampleGroupDO) SampleGroupBindingSource.AddNew());
+                    Presenter.GetNewSampleGroup(CurrentStratum, (SampleGroupDO)SampleGroupBindingSource.AddNew());
                 }
-
 
                 if (SampleGroupDO.CanEnableBigBAF(CurrentStratum) == false)
                 {
@@ -128,7 +129,6 @@ namespace CruiseManager.WinForms.CruiseWizard
 
                     _minKPITB.TextBox.Text = "0";
                     _minKPITB.TextBox.Enabled = false;
-                    
 
                     _maxKPITB.TextBox.Text = "0";
                     _maxKPITB.TextBox.Enabled = false;
@@ -155,7 +155,6 @@ namespace CruiseManager.WinForms.CruiseWizard
             }
         }
 
-        
         private void SampleGroupBindingSource_CurrentChanged(object sender, EventArgs e)
         {
             if (CurrentSampleGroup == null)
@@ -172,7 +171,6 @@ namespace CruiseManager.WinForms.CruiseWizard
             TreeDefaultGridView.SelectedItems = CurrentSampleGroup.TreeDefaultValues;
         }
 
-
         public void SetSelectedStratum(StratumDO stratrum)
         {
             var index = StratumBindingSource.IndexOf(stratrum);
@@ -182,9 +180,8 @@ namespace CruiseManager.WinForms.CruiseWizard
         private void ProductCodeBindingSource_CurrentChanged(object sender, EventArgs e)
         {
             if (Presenter == null || CurrentSampleGroup == null) { return; }
-            string selectedPP = PrimaryProductComboBox.SelectedValue as string;// get selected primary product  
+            string selectedPP = PrimaryProductComboBox.SelectedValue as string;// get selected primary product
             var visableTDV = CurrentSampleGroup.TreeDefaultValues.ToList();
-
 
             visableTDV.AddRange(from tdv in Presenter.TreeDefaults
                                 where visableTDV.Contains(tdv) == false && tdv.PrimaryProduct == selectedPP
@@ -197,7 +194,6 @@ namespace CruiseManager.WinForms.CruiseWizard
             UpdateTDVList();
         }
 
-
         protected void UpdateTDVList()
         {
             if (PrimaryProductBindingSource.Current == null) { return; }
@@ -208,7 +204,6 @@ namespace CruiseManager.WinForms.CruiseWizard
                               select tdv).ToList();
             TreeDefaultBindingSource.DataSource = visableTDV;
         }
-
 
         private void SampleGroupBindingSource_AddingNew(object sender, AddingNewEventArgs e)
         {
@@ -238,7 +233,7 @@ namespace CruiseManager.WinForms.CruiseWizard
 
             TreeDefaultValueDO newTDV = new TreeDefaultValueDO(this.Presenter.Database);
             newTDV = this.Presenter.WindowPresenter.ShowAddTreeDefault(newTDV);
-            if(newTDV != null)
+            if (newTDV != null)
             {
                 this.Presenter.TreeDefaults.Add(newTDV);
                 this.UpdateTDVList();
@@ -248,7 +243,6 @@ namespace CruiseManager.WinForms.CruiseWizard
                 {
                     this.TreeDefaultBindingSource.Position = i;
                 }
-
             }
         }
 
@@ -271,16 +265,13 @@ namespace CruiseManager.WinForms.CruiseWizard
             //}
 
             var tdv = this.TreeDefaultBindingSource.Current as TreeDefaultValueDO;
-            if(tdv != null)
+            if (tdv != null)
             {
                 this.Presenter.WindowPresenter.ShowEditTreeDefault(tdv);
             }
         }
 
-
-
         #region IPage Members
-
 
         public bool HandleKeypress(System.Windows.Forms.Keys key)
         {
@@ -293,17 +284,14 @@ namespace CruiseManager.WinForms.CruiseWizard
             return false;
         }
 
-        #endregion
+        #endregion IPage Members
 
         private void bindingNavigatorDeleteItem_Click(object sender, EventArgs e)
         {
-
             SampleGroupDO curSG = this.CurrentSampleGroup;
             if (curSG == null) { return; }
             this.SampleGroupBindingSource.Remove(curSG);
             this.Presenter.DeleteSampleGroup(curSG);
         }
     }
-
-        
 }

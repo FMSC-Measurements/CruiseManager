@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml.Serialization;
 
 namespace CruiseManager.Core.SetupModels
@@ -9,20 +6,16 @@ namespace CruiseManager.Core.SetupModels
     [Serializable]
     public class ProductCode
     {
-        public ProductCode() { }
-
-        public ProductCode(String[] values)
+        public static ProductCode Empty = new ProductCode()
         {
-            Code = values[0];
-            FriendlyValue = values[1];
-        }
+            Code = string.Empty,
+            FriendlyValue = string.Empty
+        };
 
         [XmlAttribute]
         public String Code { get; set; }
 
         [XmlAttribute]
         public String FriendlyValue { get; set; }
-
-
     }
 }

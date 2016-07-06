@@ -2,24 +2,24 @@
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
 using CruiseManager.Core.Models;
-using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
     public class FieldSetupPresenter : Presentor, ISaveHandler
     {
-        bool _isInitialized; 
+        bool _isInitialized;
 
         public FieldSetupPresenter(ApplicationControllerBase appController)
             : base(appController)
         {
-            this.IsLogGradingEnabled = this.Database.ReadSingleRow<SaleDO>("Sale", (String)null).LogGradingEnabled;
+            this.IsLogGradingEnabled = this.Database.From<SaleDO>()
+                .Query()
+                .FirstOrDefault()?.LogGradingEnabled ?? false;
         }
 
         public new ViewInterfaces.IFieldSetupView View
@@ -49,14 +49,14 @@ namespace CruiseManager.Core.CruiseCustomize
 
             try
             {
-                //initialize list of all tree and log fields 
+                //initialize list of all tree and log fields
                 this.TreeFields = ApplicationController.SetupService.GetTreeFieldSetups();
                 this.LogFields = ApplicationController.SetupService.GetLogFieldSetups();
 
-                this.FieldSetupStrata = this.Database.Read<FieldSetupStratum>("Stratum", null);
+                this.FieldSetupStrata = this.Database.From<FieldSetupStratum>().Read().ToList();
                 foreach (FieldSetupStratum st in FieldSetupStrata)
                 {
-                    //initialize each stratum object  
+                    //initialize each stratum object
                     st.SelectedLogFields = new ObservableCollection<LogFieldSetupDO>(GetSelectedLogFields(st));
                     st.SelectedTreeFields = new ObservableCollection<TreeFieldSetupDO>(GetSelectedTreeFields(st));
                     if (st.SelectedTreeFields.Count <= 0)
@@ -75,7 +75,6 @@ namespace CruiseManager.Core.CruiseCustomize
 
                     st.UnselectedLogFields = unselectedLogFields;
                     st.UnselectedTreeFields = unselectedTreeFields;
-                    
                 }
                 _isInitialized = true;
             }
@@ -90,7 +89,6 @@ namespace CruiseManager.Core.CruiseCustomize
             }
 
             this.View.UpdateFieldSetupViews();
-
         }
 
         protected List<TreeFieldSetupDO> GetSelectedTreeFields(StratumDO stratum)
@@ -135,62 +133,24 @@ namespace CruiseManager.Core.CruiseCustomize
 
         public void Save()
         {
-            if(_isInitialized == false) { return; }
+            if (_isInitialized == false) { return; }
             try
             {
                 //begin transaction for saving strata and their field set up info
                 this.Database.BeginTransaction();
                 foreach (FieldSetupStratum stratum in this.FieldSetupStrata)
                 {
-
-                    //ensure any canges to stratum are saved 
+                    //ensure any changes to stratum are saved
                     stratum.Save();
 
-                    //ensure all unselected tree fields are removed 
-                    foreach (TreeFieldSetupDO tf in stratum.UnselectedTreeFields)
-                    {
-                        if (tf.IsPersisted == true)
-                        {
-                            tf.Delete();
-                        }
-                    }
-
-                    //ensure all unselected log fields are removed 
-                    foreach (LogFieldSetupDO lf in stratum.UnselectedLogFields)
-                    {
-                        if (lf.IsPersisted == true)
-                        {
-                            lf.Delete();
-                        }
-                    }
-
-
-                    foreach (TreeFieldSetupDO tf in stratum.SelectedTreeFields)
-                    {
-                        if (tf.IsPersisted == false)
-                        {
-                            tf.DAL = this.Database;
-                            tf.Stratum = stratum;
-                        }
-                        tf.Save();
-                    }
-                    foreach (LogFieldSetupDO lf in stratum.SelectedLogFields)
-                    {
-                        if (lf.IsPersisted == false)
-                        {
-                            lf.DAL = this.Database;
-                            lf.Stratum = stratum;
-                        }
-                        lf.Save();
-                    }
-                }//end foreach
+                    stratum.SaveFieldSetup();
+                }
                 this.Database.CommitTransaction();
             }
             catch (Exception ex)
             {
-                //errorBuilder.AppendFormat("Field setup was not saved. <Error details: {0}>", ex.ToString());
                 this.Database.RollbackTransaction();
-                throw new NotImplementedException("Exception Handler not implemented",ex);
+                throw new UserFacingException("Field setup didn't save", ex);
             }
         }
     }

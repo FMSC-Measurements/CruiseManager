@@ -1,14 +1,11 @@
 ﻿using CruiseManager.Core.App;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CruiseManager.Core.CommandModel
 {
     public abstract class Command
     {
         private string _name;
-        private bool _enabled = true;
         private IExceptionHandler _exceptionHandler;
 
         public string Name
@@ -19,16 +16,6 @@ namespace CruiseManager.Core.CommandModel
                 if (_name == value) { return; }
                 _name = value;
                 OnNameChanged();
-            }
-        }
-        public bool Enabled
-        {
-            get { return _enabled; }
-            set
-            {
-                if (_enabled == value) { return; }
-                _enabled = value;
-                OnEnabledChanged();
             }
         }
 
@@ -43,10 +30,9 @@ namespace CruiseManager.Core.CommandModel
             }
         }
 
-        public Command(String name, bool enabled = true, IExceptionHandler exceptionHandler = null)
+        public Command(String name, IExceptionHandler exceptionHandler = null)
         {
             this._name = name;
-            this._enabled = enabled;
             this._exceptionHandler = exceptionHandler;
         }
 
@@ -71,9 +57,8 @@ namespace CruiseManager.Core.CommandModel
 
         protected abstract void OnNameChanged();
 
-        protected abstract void OnEnabledChanged();
-
-        protected virtual void OnExceptionHandlerChanged() { }
-
+        protected virtual void OnExceptionHandlerChanged()
+        {
+        }
     }
 }

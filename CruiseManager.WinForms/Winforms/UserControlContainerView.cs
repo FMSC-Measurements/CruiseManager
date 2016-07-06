@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using CruiseManager.Core.ViewModel;
-using CruiseManager.Core.App;
+﻿using CruiseManager.Core.App;
 using CruiseManager.Core.CommandModel;
+using CruiseManager.Core.ViewModel;
 using CruiseManager.WinForms.CommandModel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace CruiseManager.WinForms
 {
@@ -31,11 +26,11 @@ namespace CruiseManager.WinForms
 
             protected set
             {
-                
             }
         }
 
         private IView _activeView;
+
         public IView ActiveView
         {
             get
@@ -45,7 +40,7 @@ namespace CruiseManager.WinForms
 
             set
             {
-                if(value == _activeView) { return; }
+                if (value == _activeView) { return; }
                 if (UnWireActiveView(_activeView))
                 {
                     WireUpActiveView(value);
@@ -59,8 +54,8 @@ namespace CruiseManager.WinForms
             get; protected set;
         }
 
-
         private IEnumerable<ViewNavigateCommand> _viewLinks;
+
         public IEnumerable<ViewNavigateCommand> ViewLinks
         {
             get
@@ -88,22 +83,19 @@ namespace CruiseManager.WinForms
             return newButton;
         }
 
-
-        class LinkButton : Button
+        private class LinkButton : Button
         {
             public LinkButton()
             {
                 this.SetStyle(ControlStyles.Selectable, false);
                 this.FlatStyle = FlatStyle.Flat;
             }
-
-            
         }
 
         public void NavigateTo(Type viewType)
         {
             var view = this.ApplicationController.GetView(viewType);
-            this.ActiveView = view; 
+            this.ActiveView = view;
         }
 
         public void NavigateTo<T>() where T : IView
@@ -114,10 +106,9 @@ namespace CruiseManager.WinForms
 
         protected bool UnWireActiveView(IView view)
         {
-            
-            if(view == null) { return true; }
+            if (view == null) { return true; }
             var saveHandler = view.ViewPresenter as ISaveHandler;
-            if(saveHandler != null && saveHandler.HasChangesToSave)
+            if (saveHandler != null && saveHandler.HasChangesToSave)
             {
                 var doSave = _activeView.AskYesNoCancel("You Have Unsaved Changes, Would You Like To Save Before Closing?", "Save Changes?", null);
                 if (doSave == null)//user selects cancel
@@ -133,15 +124,14 @@ namespace CruiseManager.WinForms
                 { }
             }
 
-
-            Control cView = (Control)view ;
+            Control cView = (Control)view;
             this._contentPanel.Controls.Remove(cView);
             return true;
         }
 
         protected void WireUpActiveView(IView view)
         {
-            if(view == null) { this.Controls.Clear(); return; }
+            if (view == null) { this.Controls.Clear(); return; }
 
             Control cView = (Control)view;
 
