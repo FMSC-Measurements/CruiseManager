@@ -289,7 +289,17 @@ namespace CruiseManager.Core.EditDesign
             var newSampleGroup = new SampleGroupDO(Database);
             newSampleGroup.Code = "<blank>";
             newSampleGroup.Stratum = SampleGroups_SelectedStrata;
-            newSampleGroup.UOM = DataContext.Sale.DefaultUOM;
+
+            if (SampleGroups_SelectedStrata != null
+                && SampleGroups_SelectedStrata.Method == CruiseDAL.Schema.CruiseMethods.FIXCNT)
+            {
+                newSampleGroup.UOM = "03";
+            }
+            else
+            {
+                newSampleGroup.UOM = DataContext.Sale.DefaultUOM;
+            }
+
             newSampleGroup.CutLeave = "C";
             newSampleGroup.DefaultLiveDead = "L";
             DataContext.AllSampleGroups.Add(newSampleGroup);

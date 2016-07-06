@@ -410,7 +410,16 @@ namespace CruiseManager.WinForms.CruiseWizard
             newSampleGroup.DefaultLiveDead = "L";
             newSampleGroup.Code = "<Blank>";
             newSampleGroup.Stratum = stratum;
-            newSampleGroup.UOM = Sale.DefaultUOM;
+
+            if (stratum.Method == CruiseDAL.Schema.CruiseMethods.FIXCNT)
+            {
+                newSampleGroup.UOM = "03";
+            }
+            else
+            {
+                newSampleGroup.UOM = Sale.DefaultUOM;
+            }
+
             return newSampleGroup;
         }
 
