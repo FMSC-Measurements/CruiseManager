@@ -8,14 +8,16 @@ namespace CruiseManager.WinForms.CruiseCustomize
 {
     public partial class FixCNTTallyEditPanel : UserControl, ITallyEditPanel
     {
+        FixCNTTallySetupStratum _stratum;
+
+        FixCNTTallyClass _tallyClass;
+
         public FixCNTTallyEditPanel()
         {
             InitializeComponent();
 
             _tallyField_CmbB.DataSource = FixCNTTallyClass.FIXCNT_FIELD_NAMES;
         }
-
-        FixCNTTallySetupStratum _stratum;
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -28,14 +30,6 @@ namespace CruiseManager.WinForms.CruiseCustomize
                 OnStratumChanged();
             }
         }
-
-        protected void OnStratumChanged()
-        {
-            var str = _stratum as FixCNTTallySetupStratum;
-            TallyClass = str?.TallyClass;
-        }
-
-        FixCNTTallyClass _tallyClass;
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -61,9 +55,10 @@ namespace CruiseManager.WinForms.CruiseCustomize
             }
         }
 
-        protected void OnTallyClassChanging()
+        protected void OnStratumChanged()
         {
-            _lowerPanel.Controls.Clear();
+            var str = _stratum as FixCNTTallySetupStratum;
+            TallyClass = str?.TallyClass;
         }
 
         protected void OnTallyClassChanged()
@@ -86,6 +81,11 @@ namespace CruiseManager.WinForms.CruiseCustomize
                 }
                 _lowerPanel.ResumeLayout(true);
             }
+        }
+
+        protected void OnTallyClassChanging()
+        {
+            _lowerPanel.Controls.Clear();
         }
     }
 }
