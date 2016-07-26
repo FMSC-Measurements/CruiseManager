@@ -274,6 +274,7 @@
             // _BS_sampleGroups
             // 
             this._BS_sampleGroups.DataSource = typeof(CruiseManager.Core.CruiseCustomize.TallySetupSampleGroup);
+            this._BS_sampleGroups.CurrentChanged += new System.EventHandler(this._BS_sampleGroups_CurrentChanged);
             // 
             // _sampleGroupCB
             // 
@@ -284,7 +285,6 @@
             this._sampleGroupCB.Name = "_sampleGroupCB";
             this._sampleGroupCB.Size = new System.Drawing.Size(121, 21);
             this._sampleGroupCB.TabIndex = 11;
-            this._sampleGroupCB.SelectedValueChanged += new System.EventHandler(this._BS_sampleGroups_CurrentChanged);
             // 
             // label10
             // 
