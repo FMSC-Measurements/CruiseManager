@@ -319,7 +319,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             _templateFile = template;
 
             //insert meta data containing location of template file
-            _database.WriteGlobalValue("CMS", "TemplatePath", template.FullName);
+            _database.WriteGlobalValue("CSM", "TemplatePath", template.FullName);
 
             try
             {
