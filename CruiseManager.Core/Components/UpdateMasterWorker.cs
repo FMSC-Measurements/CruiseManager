@@ -28,7 +28,7 @@ namespace CruiseManager.Core.Components
         [Field(Name = CruiseDAL.Schema.LOG.LOG_CN)]
         public long? Log_CN { get; set; }
 
-        [Field(Name = CruiseDAL.Schema.LOG.LOG_CN)]
+        [Field(Name = CruiseDAL.Schema.LOG.LOG_GUID)]
         public Guid Log_GUID { get; set; }
     }
 
