@@ -59,6 +59,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)EditDesign\DesignEditorPresentor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditDesign\DesignEditorStratum.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditDesign\ViewInterfaces\IEditDesignView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EditFieldData\TypeComparers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditTemplate\EditTemplateCruiseMethod.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditTemplate\TemplateEditViewPresenter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FileMaintenance\ConsolidateCountTreeScript.cs" />

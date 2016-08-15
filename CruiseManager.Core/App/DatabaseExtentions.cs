@@ -3,6 +3,7 @@ using CruiseDAL.DataObjects;
 using CruiseManager.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CruiseManager.Core.App
 {
@@ -61,7 +62,9 @@ namespace CruiseManager.Core.App
             {
                 if (database.GetRowCount("CuttingUnitStratum", "WHERE CuttingUnit_CN = ?", tree.CuttingUnit_CN) == 1)
                 {
-                    tree.Stratum = database.ReadSingleRow<StratumVM>("Stratum", "JOIN CuttingUnitStratum USING (Stratum_CN) WHERE CuttingUnit_CN = ?", tree.CuttingUnit_CN);
+                    tree.Stratum = database.From<StratumVM>()
+                        .Join("CuttingUnitStratum", "USING (Stratum_CN)").Where("CuttingUnit_CN = ?")
+                        .Read(tree.CuttingUnit_CN).FirstOrDefault();
                 }
                 else
                 {
@@ -73,7 +76,8 @@ namespace CruiseManager.Core.App
             {
                 if (database.GetRowCount("SampleGroup", "WHERE Stratum_CN = ?", tree.Stratum_CN) == 1)
                 {
-                    tree.SampleGroup = database.ReadSingleRow<SampleGroupDO>("SampleGroup", "WHERE Stratum_CN = ?", tree.Stratum_CN);
+                    tree.SampleGroup = database.From<SampleGroupDO>()
+                        .Where("Stratum_CN = ?").Read(tree.Stratum_CN).FirstOrDefault();
                 }
                 if (tree.SampleGroup == null)
                 {
@@ -81,7 +85,9 @@ namespace CruiseManager.Core.App
                 }
             }
 
-            return database.Read<TreeDefaultValueDO>("TreeDefaultValue", "JOIN SampleGroupTreeDefaultValue USING (TreeDefaultValue_CN) WHERE SampleGroup_CN = ?", tree.SampleGroup_CN);
+            return database.From<TreeDefaultValueDO>()
+                .Join("SampleGroupTreeDefaultValue", "USING (TreeDefaultValue_CN)")
+                .Where("SampleGroup_CN = ?").Read(tree.SampleGroup_CN).FirstOrDefault();
         }
 
         public static object GetSampleGroupsByStratum(this DAL database, long? st_cn)

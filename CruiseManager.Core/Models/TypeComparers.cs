@@ -82,14 +82,6 @@ namespace CruiseManager.Core.Models
         #endregion IComparer<LogFieldSetupDO> Members
     }
 
-    public class TreeDefaultSpeciesComparer : Comparer<TreeDefaultValueDO>
-    {
-        public override int Compare(TreeDefaultValueDO x, TreeDefaultValueDO y)
-        {
-            return String.Compare(x.Species, y.Species, StringComparison.OrdinalIgnoreCase);
-        }
-    }
-
     public class TreeDefaultComparer : IEqualityComparer<TreeDefaultValueDO>
     {
         #region IEqualityComparer<TreeDefaultValueDO> Members

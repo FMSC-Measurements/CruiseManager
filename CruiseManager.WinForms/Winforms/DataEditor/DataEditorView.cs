@@ -1,6 +1,7 @@
 ﻿using CruiseDAL;
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
+using CruiseManager.Core.EditFieldData;
 using CruiseManager.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -167,8 +168,8 @@ namespace CruiseManager.WinForms.DataEditor
 
         public BindingList<LogVM> Logs
         {
-            get { return _BS_.DataSource as BindingList<LogVM>; }
-            set { _BS_.DataSource = value; }
+            get { return _BS_Logs.DataSource as BindingList<LogVM>; }
+            set { _BS_Logs.DataSource = value; }
         }
 
         public BindingList<PlotDO> Plots
@@ -440,6 +441,7 @@ namespace CruiseManager.WinForms.DataEditor
             //populate tree, log, plot, and count lists with selected unit, stratum, samplegroup, and defaults, if given
             var treeList = new FMSC.Utility.Collections.SortableBindingList<TreeVM>(ReadTrees(CuttingUnitFilter, StratumFilter, SampleGroupFilter, TreeDefaultValueFilter));
             treeList.SetPropertyComparer("TreeDefaultValue", new TreeDefaultSpeciesComparer());
+            treeList.SetPropertyComparer("SampleGroup", new SampleGroupCodeComparer());
             this.Trees = treeList;
         }
 
@@ -636,7 +638,8 @@ namespace CruiseManager.WinForms.DataEditor
             {
                 case "tree":
                     {
-                        record = Database.ReadSingleRow<TreeVM>("Tree", rowID);
+                        record = Database.From<TreeVM>()
+                            .Where("Tree.Tree_CN = ?").Read(rowID).FirstOrDefault();
                         ResetViewFilters();
                         this._BS_Trees.Position = this._BS_Trees.IndexOf(record);
                         this.DisplayTrees();
@@ -644,15 +647,17 @@ namespace CruiseManager.WinForms.DataEditor
                     }
                 case "log":
                     {
-                        record = Database.ReadSingleRow<LogDO>("Log", rowID);
+                        record = Database.From<LogDO>().Where("Log.Log_CN = ?")
+                            .Read(rowID).FirstOrDefault();
                         ResetViewFilters();
-                        this._BS_.Position = this._BS_.IndexOf(record);
+                        this._BS_Logs.Position = this._BS_Logs.IndexOf(record);
                         this.DisplayLogs();
                         break;
                     }
                 case "plot":
                     {
-                        record = Database.ReadSingleRow<PlotDO>("Plot", rowID);
+                        record = Database.From<PlotDO>()
+                            .Where("Plot.Plot_CN = ?").Read(rowID).FirstOrDefault();
                         ResetViewFilters();
                         this._BS_Plots.Position = this._BS_Plots.IndexOf(record);
                         this.DisplayPlots();
