@@ -365,36 +365,6 @@ namespace CruiseManager.Core.EditDesign
             UOMCodes = setupServ.GetUOMCodes();
         }
 
-        public void SaveCuttingUnit(CuttingUnitDO unit)
-        {
-            unit.Save();
-        }
-
-        public void SaveSampleGroup(SampleGroupDO sampleGroup)
-        {
-            if (sampleGroup.Code == "<blank>")
-            {
-                sampleGroup.Code = " ";
-            }
-            sampleGroup.Save();
-            sampleGroup.TreeDefaultValues.Save();
-        }
-
-        //precondition:
-        //All cutting units in stratum.CuttingUnits
-        //are saved
-        public void SaveStratum(StratumDO stratum)
-        {
-            bool isNewStratum = !stratum.IsPersisted;
-            stratum.Save();
-            stratum.CuttingUnits.Save();
-
-            if (isNewStratum)
-            {
-                SetFieldSetup(stratum, stratum.DAL);
-            }
-        }
-
         public void SetFieldSetup(StratumDO stratum, DAL database)
         {
             string setTreeFieldCommand = String.Format("INSERT INTO TreeFieldSetup (Stratum_CN, Field, FieldOrder, ColumnType, Heading, Width, Format, Behavior) " +
@@ -443,7 +413,7 @@ namespace CruiseManager.Core.EditDesign
 
             foreach (SampleGroupDO sg in DataContext.AllSampleGroups)
             {
-                if (!sg.Validate())
+                if (!sg.Validate(CruiseDAL.Schema.SAMPLEGROUP._ALL.Except(new string[] { "Stratum_CN" })))
                 {
                     errorBuilder.AppendLine(sg.Error);
                     isValid = false;
@@ -548,28 +518,6 @@ namespace CruiseManager.Core.EditDesign
             this.LoadSetup();
         }
 
-        [System.Diagnostics.Conditional("DEBUG")]
-        private void AssertDataContextValid()
-        {
-            System.Diagnostics.Debug.Assert(Database != null);
-            System.Diagnostics.Debug.Assert(
-                DataContext.AllCuttingUnits != null
-                && DataContext.AllStrata != null
-                && DataContext.AllSampleGroups != null
-                && DataContext.DeletedCuttingUnits != null
-                && DataContext.DeletedSampleGroups != null
-                && DataContext.DeletedStrata != null
-                && DataContext.DeletedTreeDefaults != null);
-            System.Diagnostics.Debug.Assert(
-                !DataContext.AllCuttingUnits.Contains(null)
-                && !DataContext.AllStrata.Contains(null)
-                && !DataContext.AllSampleGroups.Contains(null)
-                && !DataContext.DeletedCuttingUnits.Contains(null)
-                && !DataContext.DeletedSampleGroups.Contains(null)
-                && !DataContext.DeletedStrata.Contains(null)
-                && !DataContext.DeletedTreeDefaults.Contains(null));
-        }
-
         void OnTreeDefaultsChanged(bool error)
         {
             View.UpdateSampleGroupTDVs(DataContext.AllTreeDefaults);
@@ -581,63 +529,97 @@ namespace CruiseManager.Core.EditDesign
             try
             {
                 DataContext.Sale.Save();
-
-                foreach (CuttingUnitDO unit in DataContext.AllCuttingUnits)
-                {
-                    SaveCuttingUnit(unit);
-                }
-
-                foreach (StratumDO st in DataContext.AllStrata)
-                {
-                    SaveStratum(st);
-                }
-
-                foreach (SampleGroupDO sg in DataContext.AllSampleGroups)
-                {
-                    SaveSampleGroup(sg);
-                }
-
-                foreach (TreeDefaultValueDO tdv in DataContext.AllTreeDefaults)
-                {
-                    tdv.Save();
-                }
-
-                foreach (TreeDefaultValueDO tdv in DataContext.DeletedTreeDefaults)
-                {
-                    Database.Execute("DELETE FROM SampleGroupTreeDefaultValue WHERE TreeDefaultValue_CN = ?", tdv.TreeDefaultValue_CN);
-                    tdv.Delete();
-                }
-
-                foreach (CuttingUnitDO unit in DataContext.DeletedCuttingUnits)
-                {
-                    CuttingUnitDO.RecursiveDelete(unit);
-                }
-
-                foreach (SampleGroupDO sg in DataContext.DeletedSampleGroups)
-                {
-                    SampleGroupDO.RecutsiveDeleteSampleGroup(sg);
-                }
-
-                foreach (StratumDO st in DataContext.DeletedStrata)
-                {
-                    StratumDO.RecursiveDeleteStratum(st);
-                }
+                SaveUnits();
+                SaveStrata();
+                SaveSampleGroups();
+                SaveTreeDefaults();
 
                 Database.CommitTransaction();
 
-                DataContext.DeletedTreeDefaults.Clear();
-                DataContext.DeletedStrata.Clear();
-                DataContext.DeletedCuttingUnits.Clear();
-                DataContext.DeletedSampleGroups.Clear();
-
                 DataContext.HasUnsavedChanges = false;
                 return true;
+            }
+            catch (FMSC.ORM.UniqueConstraintException ex)
+            {
+                Database.RollbackTransaction();
+                throw new UserFacingException("Duplicate Entry Error", ex);
             }
             catch (Exception ex)
             {
                 Database.RollbackTransaction();
                 throw new UserFacingException("Error saving data, please check for errors and try saving again", ex);
             }
+        }
+
+        private void SaveSampleGroups()
+        {
+            foreach (SampleGroupDO sg in DataContext.AllSampleGroups)
+            {
+                if (sg.Code == "<blank>")
+                {
+                    sg.Code = " ";
+                }
+                sg.Save();
+                sg.TreeDefaultValues.Save();
+            }
+
+            foreach (SampleGroupDO sg in DataContext.DeletedSampleGroups)
+            {
+                SampleGroupDO.RecutsiveDeleteSampleGroup(sg);
+            }
+
+            DataContext.DeletedSampleGroups.Clear();
+        }
+
+        private void SaveStrata()
+        {
+            foreach (StratumDO st in DataContext.AllStrata)
+            {
+                bool isNewStratum = !st.IsPersisted;
+                st.Save();
+                st.CuttingUnits.Save();
+
+                if (isNewStratum)
+                {
+                    SetFieldSetup(st, st.DAL);
+                }
+            }
+
+            foreach (StratumDO st in DataContext.DeletedStrata)
+            {
+                StratumDO.RecursiveDeleteStratum(st);
+            }
+            DataContext.DeletedStrata.Clear();
+        }
+
+        private void SaveTreeDefaults()
+        {
+            foreach (TreeDefaultValueDO tdv in DataContext.AllTreeDefaults)
+            {
+                tdv.Save();
+            }
+
+            foreach (TreeDefaultValueDO tdv in DataContext.DeletedTreeDefaults)
+            {
+                Database.Execute("DELETE FROM SampleGroupTreeDefaultValue WHERE TreeDefaultValue_CN = ?", tdv.TreeDefaultValue_CN);
+                tdv.Delete();
+            }
+
+            DataContext.DeletedTreeDefaults.Clear();
+        }
+
+        private void SaveUnits()
+        {
+            foreach (CuttingUnitDO unit in DataContext.AllCuttingUnits)
+            {
+                unit.Save();
+            }
+
+            foreach (CuttingUnitDO unit in DataContext.DeletedCuttingUnits)
+            {
+                CuttingUnitDO.RecursiveDelete(unit);
+            }
+            DataContext.DeletedCuttingUnits.Clear();
         }
 
         #region ISaveHandler members
@@ -650,32 +632,8 @@ namespace CruiseManager.Core.EditDesign
             }
         }
 
-        //public void HandleAppClosing(ref bool cancel)
-        //{
-        //    if (this.DataContext.HasUnsavedChanges)
-        //    {
-        //        var result = this.WindowPresenter.AskYesNoCancel("You Have Unsaved Data, Would You Like To Save Before Closing?", "Save Changes", true);
-        //        if(result == null)//cancel
-        //        {
-        //            cancel = true;
-        //            return;
-        //        }
-        //        if (result == true)//yes
-        //        {
-        //            cancel = !HandleSave();
-        //            return;
-        //        }
-        //        else if(result == false)//no
-        //        {
-        //            return;
-        //        }
-        //    }
-        //}
-
         public bool HandleSave()
         {
-            AssertDataContextValid();//DEBUG only
-
             if (View != null)
             {
                 View.EndEdits();
@@ -696,15 +654,5 @@ namespace CruiseManager.Core.EditDesign
         }
 
         #endregion ISaveHandler members
-
-        #region Presentor Members
-
-        //protected override void OnViewLoad(EventArgs e)
-        //{
-        //    this.View.BindData();
-        //    this.View.BindSetup();
-        //}
-
-        #endregion Presentor Members
     }
 }
