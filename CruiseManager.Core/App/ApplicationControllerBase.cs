@@ -297,7 +297,7 @@ namespace CruiseManager.Core.App
 
         public bool OnActiveViewChanging(IView currentView)
         {
-            var saveHandler = currentView as ISaveHandler;
+            var saveHandler = currentView?.ViewPresenter as ISaveHandler;
             if (saveHandler != null)
             {
                 if (saveHandler.HasChangesToSave)
@@ -312,7 +312,7 @@ namespace CruiseManager.Core.App
                     {
                         try
                         {
-                            saveHandler.HandleSave();
+                            return saveHandler.HandleSave();
                         }
                         catch (Exception e)
                         {
@@ -320,6 +320,7 @@ namespace CruiseManager.Core.App
                             {
                                 throw;
                             }
+                            return false;
                         }
                     }
                     else//continue without saving
