@@ -109,12 +109,12 @@ namespace CruiseManager.WinForms.App
             //AppDomain.CurrentDomain.UnhandledException += FMSC.Utility.ErrorHandling.ErrorHandlers.UnhandledException;
             //Application.ThreadException += FMSC.Utility.ErrorHandling.ErrorHandlers.ThreadException;
 
-#if !DEBUG
+            //#if !DEBUG
             NBug.Settings.UIMode = NBug.Enums.UIMode.Full;
             NBug.Settings.StoragePath = NBug.Enums.StoragePath.WindowsTemp;
             NBug.Settings.Destinations.Add(new NBug.Core.Submission.Tracker.Redmine()
             {
-                ApiKey = "6ea2d886fa7686279b4f8ee0f0ea87190a36218e",
+                ApiKey = "6cf4343091c7509dbf27d6afd84a267189b9d3b9",
                 CustomSubject = "CrashReport",
                 Url = "http://fmsc-projects.herokuapp.com/projects/csm/",
                 ProjectId = "csm",
@@ -124,10 +124,11 @@ namespace CruiseManager.WinForms.App
             });
 
             NBug.Settings.ReleaseMode = true;//only create error reports if debugger not attached
+            NBug.Settings.StopReportingAfter = 60;
 
             AppDomain.CurrentDomain.UnhandledException += NBug.Handler.UnhandledException;
             Application.ThreadException += NBug.Handler.ThreadException;
-#endif
+            //#endif
 
             ApplicationControllerBase applicationController = new ApplicationController(
                 new ViewModule(),
