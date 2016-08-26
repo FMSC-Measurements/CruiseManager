@@ -106,8 +106,28 @@ namespace CruiseManager.WinForms.App
             //Provide event handlers to catch any uncaught exceptions
             //AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
             //FMSC.Utility.ErrorHandling.ErrorHandlers.SendToAddress = "benjaminjcampbell@fs.fes.us";
-            AppDomain.CurrentDomain.UnhandledException += FMSC.Utility.ErrorHandling.ErrorHandlers.UnhandledException;
-            Application.ThreadException += FMSC.Utility.ErrorHandling.ErrorHandlers.ThreadException;
+            //AppDomain.CurrentDomain.UnhandledException += FMSC.Utility.ErrorHandling.ErrorHandlers.UnhandledException;
+            //Application.ThreadException += FMSC.Utility.ErrorHandling.ErrorHandlers.ThreadException;
+
+#if !DEBUG
+            NBug.Settings.UIMode = NBug.Enums.UIMode.Full;
+            NBug.Settings.StoragePath = NBug.Enums.StoragePath.WindowsTemp;
+            NBug.Settings.Destinations.Add(new NBug.Core.Submission.Tracker.Redmine()
+            {
+                ApiKey = "6ea2d886fa7686279b4f8ee0f0ea87190a36218e",
+                CustomSubject = "CrashReport",
+                Url = "http://fmsc-projects.herokuapp.com/projects/csm/",
+                ProjectId = "csm",
+                TrackerId = "5",
+                PriorityId = "1",
+                StatusId = "1"
+            });
+
+            NBug.Settings.ReleaseMode = true;//only create error reports if debugger not attached
+
+            AppDomain.CurrentDomain.UnhandledException += NBug.Handler.UnhandledException;
+            Application.ThreadException += NBug.Handler.ThreadException;
+#endif
 
             ApplicationControllerBase applicationController = new ApplicationController(
                 new ViewModule(),
