@@ -46,26 +46,7 @@ namespace CruiseManager.Core.App
             get { return _activeView; }
             set
             {
-                //if(SaveHandler != null)
-                if (_activeView != null && _activeView.ViewPresenter is ISaveHandler)
-                {
-                    if (SaveHandler.HasChangesToSave)
-                    {
-                        var doSave = _activeView.AskYesNoCancel("Would You Like To Save Changes?", "Save Changes?", null);
-                        if (doSave == null)//user selects cancel
-                        {
-                            return;
-                            //return false;//don't change views
-                        }
-                        else if (doSave == true)
-                        {
-                            SaveHandler.HandleSave();
-                        }
-                        else//continue without saving
-                        { }
-                    }
-                }
-                //this.ActivePresentor = view.ViewPresenter;
+                if (!OnActiveViewChanging(_activeView)) { return; }
                 _activeView = value;
                 this.MainWindow.SetActiveView(_activeView);
             }
@@ -312,6 +293,41 @@ namespace CruiseManager.Core.App
                     throw;
                 }
             }
+        }
+
+        public bool OnActiveViewChanging(IView currentView)
+        {
+            var saveHandler = currentView?.ViewPresenter as ISaveHandler;
+            if (saveHandler != null)
+            {
+                if (saveHandler.HasChangesToSave)
+                {
+                    var doSave = currentView.AskYesNoCancel("Would You Like To Save Changes?", "Save Changes?", null);
+                    if (doSave == null)//user selects cancel
+                    {
+                        return false;
+                        //return false;//don't change views
+                    }
+                    else if (doSave == true)
+                    {
+                        try
+                        {
+                            return saveHandler.HandleSave();
+                        }
+                        catch (Exception e)
+                        {
+                            if (!ExceptionHandler.Handel(e))
+                            {
+                                throw;
+                            }
+                            return false;
+                        }
+                    }
+                    else//continue without saving
+                    { }
+                }
+            }
+            return true;
         }
 
         protected void MainWindow_Closing(object sender, CancelEventArgs e)

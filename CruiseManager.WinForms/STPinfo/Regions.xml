@@ -145,10 +145,10 @@
   <Region RegionNumber="10" Name="Alaska">
     <Forests>
       <Forest State="AK" Name="Chugach" ForestNumber="04" />
-      <Forest State="AK" Name="Tongrass" ForestNumber="05" />
+      <Forest State="AK" Name="Tongass" ForestNumber="05" />
     </Forests>
   </Region>
-  <Region RegionNumber="07" Name="BLM">
+  <Region RegionNumber="07" Name="O&amp;C BLM">
     <Forests>
       <Forest State="??" Name="Unknown BLM Forest" ForestNumber="00" />
     </Forests>
@@ -159,4 +159,4 @@
 	  <Forest State="WA" Name="JBLM" ForestNumber="JBLM" />
     </Forests>
   </Region>
-</ArrayOfRegion>  
+</ArrayOfRegion>  

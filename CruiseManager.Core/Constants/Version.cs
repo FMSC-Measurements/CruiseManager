@@ -2,6 +2,6 @@
 {
     public class Version
     {
-        public const string VersionID = "2016.07.29";
+        public const string VersionID = "2016.09.06";
     }
 }
