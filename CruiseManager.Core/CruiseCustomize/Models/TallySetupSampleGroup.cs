@@ -272,7 +272,10 @@ namespace CruiseManager.Core.CruiseCustomize
                 "AND CountTree.TreeDefaultValue_CN = ?;", this.SampleGroup_CN, tdv.TreeDefaultValue_CN)
                 ?? new TallyPopulation() { Description = Code + "/" + tdv.Species + ((tdv.LiveDead == "D") ? "/D" : "") };
 
-                this.TallyPopulations.Add(tdv.Species, tallyPopulation);
+                if (!this.TallyPopulations.ContainsKey(tdv.Species))
+                {
+                    this.TallyPopulations.Add(tdv.Species, tallyPopulation);
+                }
             }
 
             this._tallieDataLoaded = true;
