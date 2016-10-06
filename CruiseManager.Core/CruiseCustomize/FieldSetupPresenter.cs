@@ -134,10 +134,10 @@ namespace CruiseManager.Core.CruiseCustomize
         public void Save()
         {
             if (_isInitialized == false) { return; }
+            //begin transaction for saving strata and their field set up info
+            this.Database.BeginTransaction();
             try
             {
-                //begin transaction for saving strata and their field set up info
-                this.Database.BeginTransaction();
                 foreach (FieldSetupStratum stratum in this.FieldSetupStrata)
                 {
                     //ensure any changes to stratum are saved
