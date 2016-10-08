@@ -41,11 +41,14 @@ namespace CruiseManager.WinForms
             set
             {
                 if (value == _activeView) { return; }
-                if (UnWireActiveView(_activeView))
+                if (!OnActiveViewChanging(_activeView)) { return; }
+                else
                 {
-                    WireUpActiveView(value);
-                    _activeView = value;
+                    Control cView = (Control)_activeView;
+                    this._contentPanel.Controls.Remove(cView);
                 }
+                _activeView = value;
+                OnActiveViewChanged(_activeView);
             }
         }
 
@@ -104,32 +107,43 @@ namespace CruiseManager.WinForms
             this.ActiveView = view;
         }
 
-        protected bool UnWireActiveView(IView view)
+        protected bool OnActiveViewChanging(IView currentView)
         {
-            if (view == null) { return true; }
-            var saveHandler = view.ViewPresenter as ISaveHandler;
-            if (saveHandler != null && saveHandler.HasChangesToSave)
+            var saveHandler = currentView?.ViewPresenter as ISaveHandler;
+            if (saveHandler != null)
             {
-                var doSave = _activeView.AskYesNoCancel("You Have Unsaved Changes, Would You Like To Save Before Closing?", "Save Changes?", null);
-                if (doSave == null)//user selects cancel
+                if (saveHandler.HasChangesToSave)
                 {
-                    return false;
-                    //return false;//don't change views
+                    var doSave = currentView.AskYesNoCancel("Would You Like To Save Changes?", "Save Changes?", null);
+                    if (doSave == null)//user selects cancel
+                    {
+                        return false;
+                        //return false;//don't change views
+                    }
+                    else if (doSave == true)
+                    {
+                        try
+                        {
+                            return saveHandler.HandleSave();
+                        }
+                        catch (Exception e)
+                        {
+                            if (!ApplicationController.ExceptionHandler.Handel(e))
+                            {
+                                throw;
+                            }
+                            return false;
+                        }
+                    }
+                    else//continue without saving
+                    { }
                 }
-                else if (doSave == true)
-                {
-                    saveHandler.HandleSave();
-                }
-                else//continue without saving
-                { }
             }
 
-            Control cView = (Control)view;
-            this._contentPanel.Controls.Remove(cView);
             return true;
         }
 
-        protected void WireUpActiveView(IView view)
+        protected void OnActiveViewChanged(IView view)
         {
             if (view == null) { this.Controls.Clear(); return; }
 

@@ -273,7 +273,17 @@ namespace CruiseManager.Core.App
             var path = WindowPresenter.AskSaveAsLocation(this.Database.Path);
             if (path != null)
             {
-                this.SaveAs(path);
+                try
+                {
+                    this.SaveAs(path);
+                }
+                catch (Exception ex)
+                {
+                    if (!ExceptionHandler.Handel(ex))
+                    {
+                        throw;
+                    }
+                }
             }
         }
 
