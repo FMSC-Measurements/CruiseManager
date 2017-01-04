@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CruiseManager</RootNamespace>
     <AssemblyName>CruiseManager</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <ApplicationIcon>Resources\cruisetree_setup.ico</ApplicationIcon>
@@ -505,7 +505,9 @@
     <EmbeddedResource Include="WinForms\UserControlContainerView.resx">
       <DependentUpon>UserControlContainerView.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.CuttingUnitDO.datasource" />
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.SampleGroupDO.datasource" />
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.StratumDO.datasource" />
