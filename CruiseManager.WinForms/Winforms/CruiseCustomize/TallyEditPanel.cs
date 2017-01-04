@@ -198,7 +198,6 @@ namespace CruiseManager.WinForms.CruiseCustomize
         {
             var str = Stratum as TallySetupStratum;
             SampleGroups = str?.SampleGroups;
-            _systematicOptCB.Visible = str?.CanSelectSystematic ?? false;
         }
 
         protected void OnTallyModeChanged()
@@ -312,6 +311,5 @@ namespace CruiseManager.WinForms.CruiseCustomize
         }
 
         #endregion Event Handlers
-
     }
 }

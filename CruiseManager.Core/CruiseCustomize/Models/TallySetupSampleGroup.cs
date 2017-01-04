@@ -1,5 +1,6 @@
 ﻿using CruiseDAL.DataObjects;
 using CruiseDAL.Enums;
+using CruiseDAL.Schema;
 using CruiseManager.Core.App;
 using FMSC.ORM.EntityModel;
 using FMSC.ORM.EntityModel.Attributes;
@@ -13,15 +14,11 @@ namespace CruiseManager.Core.CruiseCustomize
     [EntitySource(SourceName = "SampleGroup")]
     public class TallySetupSampleGroup : DataObject_Base
     {
-        bool _hasTallyEdits = false;
+        bool _hasTallyEdits;
         bool? _isTallyModeLocked;
         TallyVM _sgTallie;
-        bool _tallieDataLoaded = false;
+        bool _tallieDataLoaded;
         IList<TreeDefaultValueDO> _treeDefaultValues;
-
-        public TallySetupSampleGroup()
-            : base()
-        { }
 
         #region Persisted Members
 
@@ -64,25 +61,72 @@ namespace CruiseManager.Core.CruiseCustomize
 
         #endregion Persisted Members
 
-        public bool CanEditSampleType
+        public bool CanEditSampleType => !IsTallyModeLocked
+                    && Stratum.Method == CruiseMethods.STR;
+
+        public bool CanTallyBySG => Stratum.Method != CruiseMethods.THREEP;
+
+        public bool CanTallyBySpecies => true;
+
+        public bool CanSelectSystematic =>
+            Stratum.Method == CruiseMethods.STR
+            && !UseClickerTally;
+
+        public bool UseSystematicSampling
         {
             get
             {
-                return !IsTallyModeLocked
-                    && Stratum.Method == CruiseDAL.Schema.CruiseMethods.STR;
+                return SampleSelectorType == CruiseMethods.SYSTEMATIC_SAMPLER_TYPE;
             }
-        }
-
-        public bool CanTallyBySG
-        {
-            get
+            set
             {
-                return (this.Stratum.Method != CruiseDAL.Schema.CruiseMethods.THREEP);
+                if (UseSystematicSampling == value) { return; }
+                if (!CanSelectSystematic) { return; }
+                if (CanEditSampleType)
+                {
+                    SampleSelectorType = (value) ? CruiseMethods.SYSTEMATIC_SAMPLER_TYPE : string.Empty;
+                    NotifyPropertyChanged(nameof(UseSystematicSampling));
+                    NotifyPropertyChanged(nameof(CanSelectClickerTally));
+                    //HasTallyEdits = true;
+                }
+                else
+                {
+                    throw new UserFacingException("Sample Settings are locked on this Sample Group");
+                }
             }
         }
 
-        public bool CanTallyBySpecies
-        { get { return true; } }
+        public bool CanSelectClickerTally =>
+            !UseSystematicSampling
+            && Stratum.Method == CruiseMethods.STR;
+
+        public bool UseClickerTally
+        {
+            get { return TallyMethod.HasFlag(TallyMode.Manual); }
+            set
+            {
+                if (!CanSelectClickerTally && value == true) { return; }
+                if (CanEditSampleType)
+                {
+                    if (value)
+                    {
+                        TallyMethod |= TallyMode.Manual;
+                        SampleSelectorType = null;
+                    }
+                    else
+                    {
+                        TallyMethod &= ~TallyMode.Manual;
+                    }
+
+                    NotifyPropertyChanged(nameof(CanSelectSystematic));
+                    NotifyPropertyChanged(nameof(UseClickerTally));
+                }
+                else
+                {
+                    throw new UserFacingException("Sample Settings are locked on this Sample Group");
+                }
+            }
+        }
 
         public new CruiseDAL.DAL DAL
         {
@@ -90,6 +134,10 @@ namespace CruiseManager.Core.CruiseCustomize
             set { base.DAL = value; }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance has changes
+        /// to associated countTreeRecords and a call to SaveTallies is required
+        /// </summary>
         public bool HasTallyEdits
         {
             get { return _hasTallyEdits; }
@@ -135,29 +183,6 @@ namespace CruiseManager.Core.CruiseCustomize
                         .Query(SampleGroup_CN).ToList();
                 }
                 return _treeDefaultValues;
-            }
-        }
-
-        public bool UseSystematicSampling
-        {
-            get
-            {
-                return SampleSelectorType == CruiseDAL.Schema.CruiseMethods.SYSTEMATIC_SAMPLER_TYPE;
-            }
-            set
-            {
-                if (UseSystematicSampling == value) { return; }
-                if (!Stratum.CanSelectSystematic) { return; }
-                if (CanEditSampleType)
-                {
-                    SampleSelectorType = (value) ? CruiseDAL.Schema.CruiseMethods.SYSTEMATIC_SAMPLER_TYPE : string.Empty;
-                    NotifyPropertyChanged(nameof(UseSystematicSampling));
-                    this.HasTallyEdits = true;
-                }
-                else
-                {
-                    throw new UserFacingException("Sample Settings are locked on this Sample Group");
-                }
             }
         }
 
