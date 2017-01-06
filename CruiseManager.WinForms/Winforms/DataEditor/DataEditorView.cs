@@ -62,9 +62,9 @@ namespace CruiseManager.WinForms.DataEditor
 
             this.Text = "Field Data - " + System.IO.Path.GetFileName(applicationController.Database.Path);
 
-            this._BS_TreeSpecies.DataSource = applicationController.Database.Read<TreeDefaultValueDO>("TreeDefaultValue", null);
+            this._BS_TreeSpecies.DataSource = applicationController.Database.From<TreeDefaultValueDO>().Read();
 
-            this._BS_TreeSampleGroups.DataSource = applicationController.Database.Read<SampleGroupDO>("SampleGroup", null);
+            this._BS_TreeSampleGroups.DataSource = applicationController.Database.From<SampleGroupDO>().Read();
             //ResetViewFilters();
         }
 
@@ -464,8 +464,11 @@ namespace CruiseManager.WinForms.DataEditor
             foreach (TreeVM tree in Trees)
             {
                 tree.PurgeErrorList();
-                if (tree.Stratum.FieldsArray != null
-                && !tree.Validate(tree.Stratum.FieldsArray))
+
+                var treeFields = tree.Stratum.FieldsArray;
+                if (treeFields == null || treeFields.Length == 0) { continue; }
+
+                if (!tree.Validate(tree.Stratum.FieldsArray))
                 {
                     tree.SaveErrors();
                 }
