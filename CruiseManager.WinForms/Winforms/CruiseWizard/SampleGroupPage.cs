@@ -60,7 +60,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             PrimaryProductBindingSource.DataSource = Presenter.ProductCodes;
             SecondaryProductBindingSource.DataSource = Presenter.SecondaryProductCodes.ToList();
             UOMBindingSource.DataSource = Presenter.UOMCodes;
-            TreeDefaultBindingSource.DataSource = Presenter.TreeDefaults;
+            //TreeDefaultBindingSource.DataSource = Presenter.TreeDefaults;
             StratumBindingSource.DataSource = Presenter.Strata;
         }
 
@@ -157,53 +157,45 @@ namespace CruiseManager.WinForms.CruiseWizard
 
         private void SampleGroupBindingSource_CurrentChanged(object sender, EventArgs e)
         {
-            if (CurrentSampleGroup == null)
-            {
-                this.panel3.Enabled = false;
-                TreeDefaultGridView.SelectedItems = null;
-                return;
-            }
-            else
-            {
-                this.panel3.Enabled = true;
-                this.CodeTextBox.TextBox.Focus();
-            }
-            TreeDefaultGridView.SelectedItems = CurrentSampleGroup.TreeDefaultValues;
-        }
+            panel3.Enabled = CurrentSampleGroup != null;
+            UpdateTreeDefaults();
+            TreeDefaultGridView.SelectedItems = CurrentSampleGroup?.TreeDefaultValues;
 
-        public void SetSelectedStratum(StratumDO stratrum)
-        {
-            var index = StratumBindingSource.IndexOf(stratrum);
-            StratumBindingSource.Position = index;
+            if (CurrentSampleGroup != null)
+            {
+                CodeTextBox.TextBox.Focus();
+            }
         }
 
         private void ProductCodeBindingSource_CurrentChanged(object sender, EventArgs e)
         {
-            if (Presenter == null || CurrentSampleGroup == null) { return; }
-            string selectedPP = PrimaryProductComboBox.SelectedValue as string;// get selected primary product
-            var visableTDV = CurrentSampleGroup.TreeDefaultValues.ToList();
+            //UpdateTreeDefaults();
+        }
 
-            visableTDV.AddRange(from tdv in Presenter.TreeDefaults
-                                where visableTDV.Contains(tdv) == false && tdv.PrimaryProduct == selectedPP
-                                select tdv);
-            TreeDefaultBindingSource.DataSource = visableTDV;
+        protected void UpdateTreeDefaults()
+        {
+            if (CurrentSampleGroup == null) { return; }
+            var selectedPP = CurrentSampleGroup.PrimaryProduct;
+
+            TreeDefaultBindingSource.DataSource = Presenter.TreeDefaults.Where(x => x.PrimaryProduct == selectedPP)
+                .Union(CurrentSampleGroup.TreeDefaultValues).ToList();
         }
 
         private void PrimaryProductComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
-            UpdateTDVList();
+            UpdateTreeDefaults();
         }
 
-        protected void UpdateTDVList()
-        {
-            if (PrimaryProductBindingSource.Current == null) { return; }
+        //protected void UpdateTDVList()
+        //{
+        //    if (PrimaryProductBindingSource.Current == null) { return; }
 
-            string productCode = ((ProductCode)PrimaryProductBindingSource.Current).Code;
-            var visableTDV = (from tdv in Presenter.TreeDefaults
-                              where tdv.PrimaryProduct == productCode
-                              select tdv).ToList();
-            TreeDefaultBindingSource.DataSource = visableTDV;
-        }
+        //    string productCode = ((ProductCode)PrimaryProductBindingSource.Current).Code;
+        //    var visableTDV = (from tdv in Presenter.TreeDefaults
+        //                      where tdv.PrimaryProduct == productCode
+        //                      select tdv).ToList();
+        //    TreeDefaultBindingSource.DataSource = visableTDV;
+        //}
 
         private void SampleGroupBindingSource_AddingNew(object sender, AddingNewEventArgs e)
         {
@@ -216,27 +208,12 @@ namespace CruiseManager.WinForms.CruiseWizard
 
         private void _newSubPopBTN_Click(object sender, EventArgs e)
         {
-            //TreeDefaultValueDO newTDV = Presenter.GetNewTreeDefaultValue();
-            //FormAddTreeDefault dialog = new FormAddTreeDefault(Presenter.ProductCodes);
-            //if (dialog.ShowDialog(newTDV) == DialogResult.OK)
-            //{
-            //    newTDV.Save();
-            //    this.Presenter.TreeDefaults.Add(newTDV);
-            //    UpdateTDVList();
-
-            //    int i = this.TreeDefaultBindingSource.IndexOf(newTDV);
-            //    if (i >= 0)
-            //    {
-            //        this.TreeDefaultBindingSource.Position = i;
-            //    }
-            //}
-
             TreeDefaultValueDO newTDV = new TreeDefaultValueDO(this.Presenter.Database);
             newTDV = this.Presenter.WindowPresenter.ShowAddTreeDefault(newTDV);
             if (newTDV != null)
             {
                 this.Presenter.TreeDefaults.Add(newTDV);
-                this.UpdateTDVList();
+                this.UpdateTreeDefaults();
 
                 int i = this.TreeDefaultBindingSource.IndexOf(newTDV);
                 if (i >= 0)
@@ -248,22 +225,6 @@ namespace CruiseManager.WinForms.CruiseWizard
 
         private void _editSubPopBtn_Click(object sender, EventArgs e)
         {
-            //TreeDefaultValueDO tdv = this.TreeDefaultBindingSource.Current as TreeDefaultValueDO;
-            //if (tdv == null) { return; }
-            //TreeDefaultValueDO temp = new TreeDefaultValueDO(tdv);
-            //ApplicationState appState =  ApplicationState.GetHandle();
-            //this.Presenter.WindowPresenter.ShowAddTreeDefult();
-
-            //CruiseManager.Winforms.CruiseWizard.FormAddTreeDefault dialog = new FormAddTreeDefault(SetupService.Instance.GetProductCodes());
-            //if (dialog.ShowDialog(tdv) == DialogResult.OK)
-            //{
-            //    tdv.Save();
-            //}
-            //else
-            //{
-            //    tdv.SetValues(temp);
-            //}
-
             var tdv = this.TreeDefaultBindingSource.Current as TreeDefaultValueDO;
             if (tdv != null)
             {
