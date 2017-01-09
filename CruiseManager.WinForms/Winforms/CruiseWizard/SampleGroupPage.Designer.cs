@@ -556,12 +556,10 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.PrimaryProductComboBox.Size = new System.Drawing.Size(118, 21);
             this.PrimaryProductComboBox.TabIndex = 0;
             this.PrimaryProductComboBox.ValueMember = "Code";
-            this.PrimaryProductComboBox.SelectedValueChanged += new System.EventHandler(this.PrimaryProductComboBox_SelectedValueChanged);
             // 
             // PrimaryProductBindingSource
             // 
             this.PrimaryProductBindingSource.DataSource = typeof(CruiseManager.Core.SetupModels.ProductCode);
-            this.PrimaryProductBindingSource.CurrentChanged += new System.EventHandler(this.ProductCodeBindingSource_CurrentChanged);
             // 
             // panel4
             // 
