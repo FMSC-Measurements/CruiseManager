@@ -96,7 +96,8 @@ namespace CruiseManager.Core.App
             {
                 return new SampleGroupDO[0];
             }
-            return database.Read<SampleGroupDO>("SampleGroup", "WHERE Stratum_CN = ?", st_cn);
+            return database.From<SampleGroupDO>()
+                .Where("Stratum_CN = ?").Read(st_cn).ToList();
         }
     }
 }

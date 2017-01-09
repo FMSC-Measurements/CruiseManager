@@ -45,16 +45,16 @@ namespace CruiseManager.Core.CruiseCustomize
             if (_isInitialized) { return; }
             try
             {
-                TreeDefaults = this.Database.Read<TreeDefaultValueDO>("TreeDefaultValue", null);
-                TreeAudits = this.Database.Read<TreeAuditValueDO>("TreeAuditValue", "Order By Field");
+                TreeDefaults = Database.From<TreeDefaultValueDO>().Read().ToList();
+                TreeAudits = Database.From<TreeAuditValueDO>().OrderBy("Field").Read().ToList();
                 _isInitialized = true;
             }
             catch (Exception ex)
             {
                 throw new NotImplementedException(null, ex);
             }
-            this.View.UpdateTreeAudits();
-            this.View.UpdateTreeDefaults();
+            View.UpdateTreeAudits();
+            View.UpdateTreeDefaults();
         }
 
         public bool HandleSave()

@@ -1728,7 +1728,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn modifiedByDataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn modifiedDateDataGridViewTextBoxColumn2;
         private System.Windows.Forms.Button _deleteSubPopBTN;
-        private System.Windows.Forms.DataGridViewComboBoxColumn monthStrDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn codeDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewComboBoxColumn Method;

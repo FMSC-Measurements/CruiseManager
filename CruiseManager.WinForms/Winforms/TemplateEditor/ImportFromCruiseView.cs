@@ -4,6 +4,7 @@ using CruiseManager.Core.App;
 using CruiseManager.Core.EditTemplate;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CruiseManager.WinForms.TemplateEditor
 {
@@ -59,7 +60,7 @@ namespace CruiseManager.WinForms.TemplateEditor
 
         private void LoadTreeDefaults()
         {
-            this.TreeDefaults = this._copyFromDB.Read<TreeDefaultValueDO>("TreeDefaultValue", null);
+            this.TreeDefaults = this._copyFromDB.From<TreeDefaultValueDO>().Read().ToList();
             this._BS_TDV.DataSource = this.TreeDefaults;
         }
 

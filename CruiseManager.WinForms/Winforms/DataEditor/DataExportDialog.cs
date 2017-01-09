@@ -54,9 +54,8 @@ namespace CruiseManager.WinForms.DataEditor
             this.AllTreeFields.Add(new FieldDiscriptor { Field = "Plot", Header = "Plot Number", Format = "[PlotNumber]", DataType = typeof(TreeVM) });
             this.AllTreeFields.Sort((x, y) => string.Compare(x.Header, y.Header, StringComparison.CurrentCulture));
 
-            List<TreeFieldSetupDO> tf = ApplicationController.Database.Read<TreeFieldSetupDO>("TreeFieldSetup", "GROUP BY Field ORDER BY FieldOrder");
-            TreeFields = (from field in tf
-                          select new FieldDiscriptor(field)).ToList();
+            TreeFields = ApplicationController.Database.From<TreeFieldSetupDO>()
+                .GroupBy("Field").OrderBy("FieldOrder").Read().Select(x => new FieldDiscriptor(x)).ToList();
 
             this.AllTreeFields = this.AllTreeFields.Except(this.TreeFields).ToList();
 
@@ -120,8 +119,6 @@ namespace CruiseManager.WinForms.DataEditor
         }
 
         #endregion CTor
-
-
 
         #region Properties
 
@@ -264,8 +261,6 @@ namespace CruiseManager.WinForms.DataEditor
         }
 
         #endregion Event handlers
-
-
 
         protected string GetFieldText(object data, FieldDiscriptor field)
         {

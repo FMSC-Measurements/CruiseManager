@@ -94,16 +94,17 @@ namespace CruiseManager.Core.EditTemplate
                 try
                 {
                     CruiseMethods = new BindingList<EditTemplateCruiseMethod>();
-                    List<CruiseMethodsDO> methods = this.ApplicationController.Database.Read<CruiseMethodsDO>("CruiseMethods", null);
+                    var methods = ApplicationController.Database.From<CruiseMethodsDO>().Read().ToList();
                     foreach (CruiseMethodsDO method in methods)
                     {
-                        EditTemplateCruiseMethod vm = new EditTemplateCruiseMethod(method);
-                        List<TreeFieldSetupDefaultDO> treeFields = this.ApplicationController.Database.Read<TreeFieldSetupDefaultDO>("TreeFieldSetupDefault", "WHERE Method = ? ORDER BY FieldOrder", method.Code);
+                        var vm = new EditTemplateCruiseMethod(method);
+                        var treeFields = ApplicationController.Database.From<TreeFieldSetupDefaultDO>()
+                            .Where("Method = ?").OrderBy("FieldOrder").Read(method.Code).ToList();
 
                         vm.TreeFields = new BindingList<TreeFieldSetupDefaultDO>(treeFields);
 
-                        List<TreeFieldSetupDefaultDO> unselectedTreeFields = (from tfs in this.TreeFields.Except(treeFields, new TreeFieldDefaultComparer())
-                                                                              select new TreeFieldSetupDefaultDO(tfs)).ToList();
+                        var unselectedTreeFields = (from tfs in this.TreeFields.Except(treeFields, new TreeFieldDefaultComparer())
+                                                    select new TreeFieldSetupDefaultDO(tfs)).ToList();
 
                         vm.UnselectedTreeFields = new BindingList<TreeFieldSetupDefaultDO>(unselectedTreeFields);
 
@@ -120,10 +121,11 @@ namespace CruiseManager.Core.EditTemplate
             {
                 try
                 {
-                    List<LogFieldSetupDefaultDO> logFields = this.ApplicationController.Database.Read<LogFieldSetupDefaultDO>("LogFieldSetupDefault", "ORDER BY FieldOrder");
+                    var logFields = ApplicationController.Database.From<LogFieldSetupDefaultDO>()
+                        .OrderBy("FieldOrder").Read().ToList();
                     SelectedLogFields = new BindingList<LogFieldSetupDefaultDO>(logFields);
-                    List<LogFieldSetupDefaultDO> unselectedLogFields = (from lfs in this.LogFields.Except(logFields, new LogFieldDefaultComparer())
-                                                                        select new LogFieldSetupDefaultDO(lfs)).ToList();
+                    var unselectedLogFields = (from lfs in this.LogFields.Except(logFields, new LogFieldDefaultComparer())
+                                               select new LogFieldSetupDefaultDO(lfs)).ToList();
                     UnselectedLogFields = new BindingList<LogFieldSetupDefaultDO>(unselectedLogFields);
                 }
                 catch
@@ -139,7 +141,7 @@ namespace CruiseManager.Core.EditTemplate
         {
             if (this.TreeDefaultValues == null)
             {
-                List<TreeDefaultValueDO> defaults = this.ApplicationController.Database.Read<TreeDefaultValueDO>("TreeDefaultValue", null);
+                var defaults = ApplicationController.Database.From<TreeDefaultValueDO>().Read().ToList();
                 this.TreeDefaultValues = new FMSC.Utility.Collections.BindingListRedux<TreeDefaultValueDO>(defaults);
             }
 
@@ -160,9 +162,10 @@ namespace CruiseManager.Core.EditTemplate
         {
             if (this.VolumeEQs == null)
             {
-                List<VolumeEquationDO> volumeEQs = this.ApplicationController.Database.Read<VolumeEquationDO>("VolumeEquation", null);
-                this.VolumeEQs = new BindingList<VolumeEquationDO>(volumeEQs);
-                this.View.UpdateVolumeEqs();
+                List<VolumeEquationDO> volumeEQs = ApplicationController.Database.From<VolumeEquationDO>()
+                    .Read().ToList();
+                VolumeEQs = new BindingList<VolumeEquationDO>(volumeEQs);
+                View.UpdateVolumeEqs();
             }
         }
 
@@ -170,7 +173,8 @@ namespace CruiseManager.Core.EditTemplate
         {
             if (this.Reports == null)
             {
-                List<ReportsDO> reports = this.ApplicationController.Database.Read<ReportsDO>("Reports", null);
+                List<ReportsDO> reports = ApplicationController.Database.From<ReportsDO>()
+                    .Read().ToList();
                 this.Reports = new BindingList<ReportsDO>(reports);
                 this.View.UpdateReports();
             }
@@ -180,13 +184,15 @@ namespace CruiseManager.Core.EditTemplate
         {
             if (this.TreeDefaultValues == null)
             {
-                List<TreeDefaultValueDO> defaults = this.ApplicationController.Database.Read<TreeDefaultValueDO>("TreeDefaultValue", null);
+                List<TreeDefaultValueDO> defaults = ApplicationController.Database.From<TreeDefaultValueDO>()
+                    .Read().ToList();
                 this.TreeDefaultValues = new FMSC.Utility.Collections.BindingListRedux<TreeDefaultValueDO>(defaults);
             }
 
             if (TreeAudits == null)
             {
-                this.TreeAudits = this.ApplicationController.Database.Read<TreeAuditValueDO>("TreeAuditValue", "Order By Field");
+                this.TreeAudits = ApplicationController.Database.From<TreeAuditValueDO>().OrderBy("Field")
+                    .Read().ToList();
             }
 
             this.View.UpdateTreeAudit();
@@ -204,12 +210,15 @@ namespace CruiseManager.Core.EditTemplate
 
         public List<TreeFieldSetupDefaultDO> GetSelectedTreeFields(CruiseMethodsDO method)
         {
-            return this.ApplicationController.Database.Read<TreeFieldSetupDefaultDO>("TreeFieldSetupDefault", "WHERE Method = ? ORDER BY FieldOrder", method.Code);
+            return ApplicationController.Database.From<TreeFieldSetupDefaultDO>()
+                .Where("Method = ?").OrderBy("FieldOrder")
+                .Read(method.Code).ToList();
         }
 
         public List<LogFieldSetupDefaultDO> GetSelectedLogFields()
         {
-            return this.ApplicationController.Database.Read<LogFieldSetupDefaultDO>("LogFieldSetupDefault", "ORDER BY FieldOrder");
+            return ApplicationController.Database.From<LogFieldSetupDefaultDO>()
+                .OrderBy("FieldOrder").Read().ToList();
         }
 
         public void Save()

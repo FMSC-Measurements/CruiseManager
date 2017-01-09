@@ -22,9 +22,8 @@ namespace CruiseManager.WinForms.CruiseWizard
         public CruiseWizardView MasterView { get; set; }
         public CruiseWizardPresenter Presenter { get { return MasterView.Presenter; } }
         string _templatePath = null;
+
         #endregion Properties
-
-
 
         #region Initialization Methods
 
@@ -32,26 +31,14 @@ namespace CruiseManager.WinForms.CruiseWizard
         {
             base.OnLoad(e);
             UOMBindingSource.DataSource = Presenter.UOMCodes;
-            this.forestsBindingSource.SuspendBinding();
-            this.RegionForestBindingSource.DataSource = this.Presenter.Regions;
-            this.forestsBindingSource.ResumeBinding();
-            this.SaleDOBindingSource.DataSource = this.Presenter.Sale;
-            //var localFiles = Presenter.LocalTemplateFiles;
-            //SelectTemplateComboBox.DataSource = localFiles;
-            //SelectTemplateComboBox.SelectedIndex = -1;
-
-            //RegionForestBindingSource.DataSource = Presenter.Regions;
+            forestsBindingSource.SuspendBinding();
+            RegionForestBindingSource.DataSource = Presenter.Regions;
+            forestsBindingSource.ResumeBinding();
+            SaleDOBindingSource.DataSource = Presenter.Sale;
         }
-
-        //public void BindData()
-        //{
-        //    errorProvider1.DataSource = SaleDOBindingSource;
-        //    SaleDOBindingSource.DataSource = Presenter.Sale;
-        //}
 
         private void InitializePurposeComboBox()
         {
-            //PurposeComboBox.DataSource = CSM.Utility.Constants.SALE_PURPOSE;
             PurposeComboBox.Items.AddRange(CruiseManager.Core.Constants.Strings.SALE_PURPOSE);
         }
 
@@ -91,9 +78,9 @@ namespace CruiseManager.WinForms.CruiseWizard
 
         public void SetTemplatePathTextBox(string value, bool enable)
         {
-            this._templatePathTB.Text = value;
-            this._templatePathTB.Enabled = enable;
-            this._browseTemplateButton.Enabled = enable;
+            _templatePathTB.Text = value;
+            _templatePathTB.Enabled = enable;
+            _browseTemplateButton.Enabled = enable;
         }
 
         private void _browseTemplateButton_Click(object sender, EventArgs e)
