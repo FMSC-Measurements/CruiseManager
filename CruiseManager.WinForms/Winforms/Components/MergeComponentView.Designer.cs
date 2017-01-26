@@ -31,9 +31,9 @@
             this._contentPanel = new System.Windows.Forms.Panel();
             this._bottomPanel = new System.Windows.Forms.Panel();
             this.@__progressBar = new System.Windows.Forms.ProgressBar();
+            this._progressMessageTB = new System.Windows.Forms.TextBox();
             this._cancelButton = new System.Windows.Forms.Button();
             this._goButton = new System.Windows.Forms.Button();
-            this._progressMessageTB = new System.Windows.Forms.TextBox();
             this._bottomPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -62,8 +62,17 @@
             this.@__progressBar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.@__progressBar.Location = new System.Drawing.Point(75, 0);
             this.@__progressBar.Name = "__progressBar";
-            this.@__progressBar.Size = new System.Drawing.Size(411, 20);
+            this.@__progressBar.Size = new System.Drawing.Size(411, 18);
             this.@__progressBar.TabIndex = 2;
+            // 
+            // _progressMessageTB
+            // 
+            this._progressMessageTB.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this._progressMessageTB.Location = new System.Drawing.Point(75, 18);
+            this._progressMessageTB.Name = "_progressMessageTB";
+            this._progressMessageTB.ReadOnly = true;
+            this._progressMessageTB.Size = new System.Drawing.Size(411, 22);
+            this._progressMessageTB.TabIndex = 3;
             // 
             // _cancelButton
             // 
@@ -87,21 +96,13 @@
             this._goButton.UseVisualStyleBackColor = true;
             this._goButton.Click += new System.EventHandler(this._goButton_Click);
             // 
-            // _progressMessageTB
-            // 
-            this._progressMessageTB.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this._progressMessageTB.Location = new System.Drawing.Point(75, 20);
-            this._progressMessageTB.Name = "_progressMessageTB";
-            this._progressMessageTB.ReadOnly = true;
-            this._progressMessageTB.Size = new System.Drawing.Size(411, 20);
-            this._progressMessageTB.TabIndex = 3;
-            // 
             // MergeComponentView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this._contentPanel);
             this.Controls.Add(this._bottomPanel);
+            this.Font = global::CruiseManager.Properties.Settings.Default.AppFont;
             this.Name = "MergeComponentView";
             this.Size = new System.Drawing.Size(561, 359);
             this._bottomPanel.ResumeLayout(false);

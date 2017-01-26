@@ -73,7 +73,7 @@
             label4.AutoSize = true;
             label4.Location = new System.Drawing.Point(0, 6);
             label4.Name = "label4";
-            label4.Size = new System.Drawing.Size(84, 13);
+            label4.Size = new System.Drawing.Size(94, 13);
             label4.TabIndex = 16;
             label4.Text = "Logging Method";
             label4.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -81,8 +81,8 @@
             // CuttingUnitBindingSource
             // 
             this.CuttingUnitBindingSource.DataSource = typeof(CruiseDAL.DataObjects.CuttingUnitDO);
-            this.CuttingUnitBindingSource.CurrentChanged += new System.EventHandler(this.CuttingUnitBindingSource_CurrentChanged);
             this.CuttingUnitBindingSource.AddingNew += new System.ComponentModel.AddingNewEventHandler(this.CuttingUnitBindingSource_AddingNew);
+            this.CuttingUnitBindingSource.CurrentChanged += new System.EventHandler(this.CuttingUnitBindingSource_CurrentChanged);
             // 
             // PaymentUnitTextBox
             // 
@@ -102,11 +102,11 @@
             // 
             // 
             this.PaymentUnitTextBox.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PaymentUnitTextBox.TextBox.Location = new System.Drawing.Point(100, 6);
+            this.PaymentUnitTextBox.TextBox.Location = new System.Drawing.Point(100, 5);
             this.PaymentUnitTextBox.TextBox.Margin = new System.Windows.Forms.Padding(0);
             this.PaymentUnitTextBox.TextBox.MaxLength = 3;
             this.PaymentUnitTextBox.TextBox.Name = ".TextBox";
-            this.PaymentUnitTextBox.TextBox.Size = new System.Drawing.Size(32, 20);
+            this.PaymentUnitTextBox.TextBox.Size = new System.Drawing.Size(32, 22);
             this.PaymentUnitTextBox.TextBox.TabIndex = 1;
             // 
             // LoggingMethodBindingSource
@@ -131,10 +131,10 @@
             // 
             // 
             this.AreaTextBox.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AreaTextBox.TextBox.Location = new System.Drawing.Point(50, 6);
+            this.AreaTextBox.TextBox.Location = new System.Drawing.Point(50, 5);
             this.AreaTextBox.TextBox.Margin = new System.Windows.Forms.Padding(0);
             this.AreaTextBox.TextBox.Name = ".TextBox";
-            this.AreaTextBox.TextBox.Size = new System.Drawing.Size(62, 20);
+            this.AreaTextBox.TextBox.Size = new System.Drawing.Size(62, 22);
             this.AreaTextBox.TextBox.TabIndex = 1;
             // 
             // CodeTextBox
@@ -156,11 +156,11 @@
             // 
             // 
             this.CodeTextBox.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CodeTextBox.TextBox.Location = new System.Drawing.Point(100, 6);
+            this.CodeTextBox.TextBox.Location = new System.Drawing.Point(100, 3);
             this.CodeTextBox.TextBox.Margin = new System.Windows.Forms.Padding(0);
             this.CodeTextBox.TextBox.MaxLength = 3;
             this.CodeTextBox.TextBox.Name = ".TextBox";
-            this.CodeTextBox.TextBox.Size = new System.Drawing.Size(56, 20);
+            this.CodeTextBox.TextBox.Size = new System.Drawing.Size(56, 22);
             this.CodeTextBox.TextBox.TabIndex = 1;
             // 
             // CuttingUnitsListBox
@@ -245,8 +245,8 @@
             // 
             // panel2
             // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel2.Controls.Add(this.CuttingUnitsListBox);
             this.panel2.Controls.Add(this.bindingNavigator);
@@ -357,11 +357,11 @@
             // 
             // 
             this.DescriptionTextBox.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DescriptionTextBox.TextBox.Location = new System.Drawing.Point(100, 6);
+            this.DescriptionTextBox.TextBox.Location = new System.Drawing.Point(100, 5);
             this.DescriptionTextBox.TextBox.Margin = new System.Windows.Forms.Padding(0);
             this.DescriptionTextBox.TextBox.MaxLength = 25;
             this.DescriptionTextBox.TextBox.Name = ".TextBox";
-            this.DescriptionTextBox.TextBox.Size = new System.Drawing.Size(257, 20);
+            this.DescriptionTextBox.TextBox.Size = new System.Drawing.Size(257, 22);
             this.DescriptionTextBox.TextBox.TabIndex = 1;
             // 
             // panel4
@@ -411,6 +411,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel1);
+            this.Font = global::CruiseManager.Properties.Settings.Default.AppFont;
             this.Name = "CuttingUnitsPage";
             this.Size = new System.Drawing.Size(644, 406);
             ((System.ComponentModel.ISupportInitialize)(this.CuttingUnitBindingSource)).EndInit();

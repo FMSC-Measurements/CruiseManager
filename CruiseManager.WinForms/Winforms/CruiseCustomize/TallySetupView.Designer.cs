@@ -122,7 +122,7 @@
             this.Controls.Add(this._tallyEditContainer);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this._stratum_PNL);
-            this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = global::CruiseManager.Properties.Settings.Default.AppFont;
             this.Name = "TallySetupView";
             this.Size = new System.Drawing.Size(624, 416);
             this._stratum_PNL.ResumeLayout(false);

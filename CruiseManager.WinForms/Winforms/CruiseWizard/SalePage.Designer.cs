@@ -85,7 +85,7 @@
             label4.Location = new System.Drawing.Point(16, 89);
             label4.Name = "label4";
             label4.Padding = new System.Windows.Forms.Padding(0, 4, 0, 4);
-            label4.Size = new System.Drawing.Size(46, 21);
+            label4.Size = new System.Drawing.Size(49, 21);
             label4.TabIndex = 8;
             label4.Text = "Purpose";
             // 
@@ -94,7 +94,7 @@
             label6.AutoSize = true;
             label6.Location = new System.Drawing.Point(16, 119);
             label6.Name = "label6";
-            label6.Size = new System.Drawing.Size(32, 13);
+            label6.Size = new System.Drawing.Size(34, 13);
             label6.TabIndex = 12;
             label6.Text = "UOM";
             // 
@@ -213,7 +213,7 @@
             this._saleName_TB.Location = new System.Drawing.Point(99, 0);
             this._saleName_TB.MaxLength = 25;
             this._saleName_TB.Name = "_saleName_TB";
-            this._saleName_TB.Size = new System.Drawing.Size(76, 20);
+            this._saleName_TB.Size = new System.Drawing.Size(76, 22);
             this._saleName_TB.TabIndex = 1;
             // 
             // panel4
@@ -242,7 +242,7 @@
             this._saleNumber_TB.Location = new System.Drawing.Point(99, 0);
             this._saleNumber_TB.MaxLength = 5;
             this._saleNumber_TB.Name = "_saleNumber_TB";
-            this._saleNumber_TB.Size = new System.Drawing.Size(76, 20);
+            this._saleNumber_TB.Size = new System.Drawing.Size(76, 22);
             this._saleNumber_TB.TabIndex = 1;
             // 
             // _logGradingEnabledCB
@@ -251,7 +251,7 @@
             this._logGradingEnabledCB.DataBindings.Add(new System.Windows.Forms.Binding("Checked", this.SaleDOBindingSource, "LogGradingEnabled", true));
             this._logGradingEnabledCB.Location = new System.Drawing.Point(285, 115);
             this._logGradingEnabledCB.Name = "_logGradingEnabledCB";
-            this._logGradingEnabledCB.Size = new System.Drawing.Size(112, 17);
+            this._logGradingEnabledCB.Size = new System.Drawing.Size(117, 17);
             this._logGradingEnabledCB.TabIndex = 8;
             this._logGradingEnabledCB.Text = "Log Data Enabled";
             this._logGradingEnabledCB.UseVisualStyleBackColor = true;
@@ -262,7 +262,7 @@
             this._districtMTB.Location = new System.Drawing.Point(285, 89);
             this._districtMTB.MaxLength = 2;
             this._districtMTB.Name = "_districtMTB";
-            this._districtMTB.Size = new System.Drawing.Size(30, 20);
+            this._districtMTB.Size = new System.Drawing.Size(30, 22);
             this._districtMTB.TabIndex = 7;
             this._districtMTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this._districtMTB_KeyPress);
             // 
@@ -271,7 +271,7 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(240, 92);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(39, 13);
+            this.label7.Size = new System.Drawing.Size(43, 13);
             this.label7.TabIndex = 14;
             this.label7.Text = "District";
             // 
@@ -303,7 +303,7 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(241, 56);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(36, 13);
+            this.label3.Size = new System.Drawing.Size(39, 13);
             this.label3.TabIndex = 11;
             this.label3.Text = "Forest";
             // 
@@ -326,7 +326,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(238, 25);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(41, 13);
+            this.label2.Size = new System.Drawing.Size(44, 13);
             this.label2.TabIndex = 9;
             this.label2.Text = "Region";
             // 
@@ -366,7 +366,7 @@
             // 
             this._templatePathTB.Location = new System.Drawing.Point(3, 3);
             this._templatePathTB.Name = "_templatePathTB";
-            this._templatePathTB.Size = new System.Drawing.Size(192, 20);
+            this._templatePathTB.Size = new System.Drawing.Size(192, 22);
             this._templatePathTB.TabIndex = 0;
             // 
             // tableLayoutPanel2
@@ -442,6 +442,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel2);
+            this.Font = global::CruiseManager.Properties.Settings.Default.AppFont;
             this.Name = "SalePage";
             this.Size = new System.Drawing.Size(638, 406);
             ((System.ComponentModel.ISupportInitialize)(this.SaleDOBindingSource)).EndInit();

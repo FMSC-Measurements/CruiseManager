@@ -22,39 +22,52 @@ namespace CruiseManager.Core.CruiseCustomize
 
         #region Persisted Members
 
-        TallyMode _tallyMethod;
-
-        [Field(Name = "Code")]
+        [Field(Name = "Code", PersistanceFlags = PersistanceFlags.Never)]
         public virtual String Code { get; set; }
 
-        [PrimaryKeyField(Name = "SampleGroup_CN")]
+        [PrimaryKeyField(Name = "SampleGroup_CN", PersistanceFlags = PersistanceFlags.Never)]
         public Int64? SampleGroup_CN { get; set; }
 
-        [Field(Name = "SampleSelectorState")]
-        public virtual String SampleSelectorState { get; set; }
-
-        [Field(Name = "SampleSelectorType")]
-        public virtual String SampleSelectorType { get; set; }
-
-        [Field(Name = "Stratum_CN")]
+        [Field(Name = "Stratum_CN", PersistanceFlags = PersistanceFlags.Never)]
         public virtual long? Stratum_CN { get; set; }
 
-        [Field(Name = "TallyMethod", PersistanceFlags = PersistanceFlags.OnUpdate)]
+        string _sampleSelectorType;
+
+        [Field(Name = "SampleSelectorType")]
+        public virtual String SampleSelectorType
+        {
+            get { return _sampleSelectorType; }
+            set
+            {
+                if (_sampleSelectorType == value) { return; }
+                _sampleSelectorType = value;
+                NotifyPropertyChanged(nameof(SampleSelectorType));
+            }
+        }
+
+        TallyMode _tallyMethod;
+
+        [Field(Name = "TallyMethod")]
         public virtual CruiseDAL.Enums.TallyMode TallyMethod
         {
             get
             {
                 if (_tallyMethod == TallyMode.Unknown)
                 {
-                    _tallyMethod = GetSampleGroupTallyMode();
+                    TallyMethod = GetSampleGroupTallyMode();
                 }
                 return _tallyMethod;
             }
             set
             {
+                if (_tallyMethod == value) { return; }
                 _tallyMethod = value;
+                base.NotifyPropertyChanged(nameof(TallyMethod));
             }
         }
+
+        //[Field(Name = "SampleSelectorState")]
+        //public virtual String SampleSelectorState { get; set; }
 
         //[Field(Name = "Description")]
         //public virtual String Description { get; set; }
@@ -128,6 +141,21 @@ namespace CruiseManager.Core.CruiseCustomize
             }
         }
 
+        public bool IsTallyModeLocked
+        {
+            get
+            {
+                if (_isTallyModeLocked == null)
+                {
+                    _isTallyModeLocked = DAL.GetRowCount("CountTree", "WHERE SampleGroup_CN = ? AND TreeCount > 0", this.SampleGroup_CN) > 0
+                        && DAL.GetRowCount("Tree", "WHERE SampleGroup_CN = ?", SampleGroup_CN) > 0;
+                }
+                return _isTallyModeLocked.Value;
+
+                //return (TallyMethod & CruiseDAL.Enums.TallyMode.Locked) == CruiseDAL.Enums.TallyMode.Locked;
+            }
+        }
+
         public new CruiseDAL.DAL DAL
         {
             get { return (CruiseDAL.DAL)base.DAL; }
@@ -142,21 +170,6 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             get { return _hasTallyEdits; }
             set { _hasTallyEdits = value; }
-        }
-
-        public bool IsTallyModeLocked
-        {
-            get
-            {
-                if (_isTallyModeLocked == null)
-                {
-                    _isTallyModeLocked = DAL.GetRowCount("CountTree", "WHERE SampleGroup_CN = ? AND TreeCount > 0", this.SampleGroup_CN) > 0
-                        && DAL.GetRowCount("Tree", "WHERE SampleGroup_CN = ?", SampleGroup_CN) > 0;
-                }
-                return _isTallyModeLocked.Value;
-
-                //return (TallyMethod & CruiseDAL.Enums.TallyMode.Locked) == CruiseDAL.Enums.TallyMode.Locked;
-            }
         }
 
         public TallyVM SgTallie
@@ -329,7 +342,7 @@ namespace CruiseManager.Core.CruiseCustomize
             }
             catch (Exception e)
             {
-                errorBuilder.AppendFormat("{2}: failed to setup tallies for SampleGroup({0} ) in Stratum ({1})", Code, Stratum.Code, e.GetType().Name);
+                errorBuilder.Append($"{e.GetType().Name}: failed to setup tallies for SampleGroup({Code} ) in Stratum ({Stratum.Code})");
                 return false;
             }
         }

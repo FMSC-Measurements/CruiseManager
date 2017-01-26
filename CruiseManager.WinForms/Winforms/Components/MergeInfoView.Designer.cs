@@ -39,7 +39,6 @@
             this.PlotCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.StemCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.errorsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            
             this.componentCNDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lastMergeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fullPathDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -143,7 +142,6 @@
             this.errorsDataGridViewTextBoxColumn.HeaderText = "Errors";
             this.errorsDataGridViewTextBoxColumn.Name = "errorsDataGridViewTextBoxColumn";
             this.errorsDataGridViewTextBoxColumn.ReadOnly = true;
-
             // 
             // componentCNDataGridViewTextBoxColumn
             // 
@@ -241,7 +239,7 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(10, 67);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(99, 13);
+            this.label4.Size = new System.Drawing.Size(100, 13);
             this.label4.TabIndex = 4;
             this.label4.Text = "Total Tree Records";
             // 
@@ -250,7 +248,7 @@
             this.@__dateLastMergeLBL.AutoSize = true;
             this.@__dateLastMergeLBL.Location = new System.Drawing.Point(134, 43);
             this.@__dateLastMergeLBL.Name = "__dateLastMergeLBL";
-            this.@__dateLastMergeLBL.Size = new System.Drawing.Size(73, 13);
+            this.@__dateLastMergeLBL.Size = new System.Drawing.Size(71, 13);
             this.@__dateLastMergeLBL.TabIndex = 3;
             this.@__dateLastMergeLBL.Text = "##/##/####";
             // 
@@ -259,7 +257,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(7, 43);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(100, 13);
+            this.label2.Size = new System.Drawing.Size(106, 13);
             this.label2.TabIndex = 2;
             this.label2.Text = "Date Of Last Merge";
             // 
@@ -277,7 +275,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(7, 20);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(120, 13);
+            this.label1.Size = new System.Drawing.Size(133, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Number Of Components";
             // 
@@ -301,6 +299,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel1);
+            this.Font = global::CruiseManager.Properties.Settings.Default.AppFont;
             this.Name = "MergeInfoView";
             this.Size = new System.Drawing.Size(676, 438);
             componentFilesPanel.ResumeLayout(false);

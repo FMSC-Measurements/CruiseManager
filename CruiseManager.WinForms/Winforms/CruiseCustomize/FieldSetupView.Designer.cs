@@ -67,7 +67,7 @@
             label20.Location = new System.Drawing.Point(240, 27);
             label20.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
             label20.Name = "label20";
-            label20.Size = new System.Drawing.Size(84, 13);
+            label20.Size = new System.Drawing.Size(93, 13);
             label20.TabIndex = 4;
             label20.Text = "(0 = Auto Width)";
             // 
@@ -76,7 +76,7 @@
             label13.AutoSize = true;
             label13.Location = new System.Drawing.Point(134, 7);
             label13.Name = "label13";
-            label13.Size = new System.Drawing.Size(106, 13);
+            label13.Size = new System.Drawing.Size(115, 13);
             label13.TabIndex = 2;
             label13.Text = "Width (in Characters)";
             // 
@@ -140,7 +140,7 @@
             this._treeFieldWidthTB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this._BS_TreeField, "Width", true));
             this._treeFieldWidthTB.Location = new System.Drawing.Point(137, 24);
             this._treeFieldWidthTB.Name = "_treeFieldWidthTB";
-            this._treeFieldWidthTB.Size = new System.Drawing.Size(100, 20);
+            this._treeFieldWidthTB.Size = new System.Drawing.Size(100, 22);
             this._treeFieldWidthTB.TabIndex = 3;
             // 
             // _BS_TreeField
@@ -152,7 +152,7 @@
             this._TreeFieldHeadingTB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this._BS_TreeField, "Heading", true));
             this._TreeFieldHeadingTB.Location = new System.Drawing.Point(7, 24);
             this._TreeFieldHeadingTB.Name = "_TreeFieldHeadingTB";
-            this._TreeFieldHeadingTB.Size = new System.Drawing.Size(100, 20);
+            this._TreeFieldHeadingTB.Size = new System.Drawing.Size(100, 22);
             this._TreeFieldHeadingTB.TabIndex = 1;
             // 
             // label5
@@ -160,7 +160,7 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(4, 7);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(47, 13);
+            this.label5.Size = new System.Drawing.Size(51, 13);
             this.label5.TabIndex = 0;
             this.label5.Text = "Heading";
             // 
@@ -210,7 +210,7 @@
             this._logFieldWidthTB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this._BS_LogField, "Width", true));
             this._logFieldWidthTB.Location = new System.Drawing.Point(137, 24);
             this._logFieldWidthTB.Name = "_logFieldWidthTB";
-            this._logFieldWidthTB.Size = new System.Drawing.Size(100, 20);
+            this._logFieldWidthTB.Size = new System.Drawing.Size(100, 22);
             this._logFieldWidthTB.TabIndex = 5;
             // 
             // _BS_LogField
@@ -222,7 +222,7 @@
             this.label14.AutoSize = true;
             this.label14.Location = new System.Drawing.Point(134, 7);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(189, 13);
+            this.label14.Size = new System.Drawing.Size(206, 13);
             this.label14.TabIndex = 4;
             this.label14.Text = "Width (leave empty to use Auto Width)";
             // 
@@ -231,7 +231,7 @@
             this._logFieldHeadingTB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this._BS_LogField, "Heading", true));
             this._logFieldHeadingTB.Location = new System.Drawing.Point(7, 24);
             this._logFieldHeadingTB.Name = "_logFieldHeadingTB";
-            this._logFieldHeadingTB.Size = new System.Drawing.Size(100, 20);
+            this._logFieldHeadingTB.Size = new System.Drawing.Size(100, 22);
             this._logFieldHeadingTB.TabIndex = 1;
             // 
             // label6
@@ -239,7 +239,7 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(4, 7);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(47, 13);
+            this.label6.Size = new System.Drawing.Size(51, 13);
             this.label6.TabIndex = 0;
             this.label6.Text = "Heading";
             // 
@@ -258,9 +258,9 @@
             // 
             this._strataLB.DisplayMember = "FriendlyStr";
             this._strataLB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._strataLB.Location = new System.Drawing.Point(3, 16);
+            this._strataLB.Location = new System.Drawing.Point(3, 18);
             this._strataLB.Name = "_strataLB";
-            this._strataLB.Size = new System.Drawing.Size(128, 427);
+            this._strataLB.Size = new System.Drawing.Size(128, 425);
             this._strataLB.TabIndex = 0;
             this._strataLB.SelectedValueChanged += new System.EventHandler(this._strataLB_SelectedValueChanged);
             // 
@@ -268,6 +268,7 @@
             // 
             this.Controls.Add(this._fieldSetup_Child_TabControl);
             this.Controls.Add(this.groupBox3);
+            this.Font = global::CruiseManager.Properties.Settings.Default.AppFont;
             this.Name = "FieldSetupView";
             this.Size = new System.Drawing.Size(711, 446);
             this._fieldSetup_Child_TabControl.ResumeLayout(false);

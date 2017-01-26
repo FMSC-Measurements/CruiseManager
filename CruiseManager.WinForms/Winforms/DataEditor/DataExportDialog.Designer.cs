@@ -210,7 +210,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(13, 6);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(52, 13);
+            this.label1.Size = new System.Drawing.Size(55, 13);
             this.label1.TabIndex = 6;
             this.label1.Text = "Export As";
             // 
@@ -221,6 +221,7 @@
             this.ClientSize = new System.Drawing.Size(382, 343);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tabControl1);
+            this.Font = global::CruiseManager.Properties.Settings.Default.AppFont;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;

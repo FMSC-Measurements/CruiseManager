@@ -11,6 +11,10 @@ namespace CruiseManager.WinForms
 {
     public partial class UserControlContainerView : UserControlView, IContainerView
     {
+        UserControlContainerView()
+        {
+        }
+
         public UserControlContainerView(ApplicationControllerBase appController)
         {
             this.ApplicationController = appController;

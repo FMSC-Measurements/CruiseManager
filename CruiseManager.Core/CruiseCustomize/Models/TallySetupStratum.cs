@@ -67,12 +67,12 @@ namespace CruiseManager.Core.CruiseCustomize
 
             if (SampleGroups != null)
             {
-                foreach (TallySetupSampleGroup sgVM in SampleGroups)
+                foreach (var sg in SampleGroups)
                 {
-                    sgVM.Save();
-                    if (sgVM.HasTallyEdits == true)
+                    sg.Save();
+                    if (sg.HasTallyEdits == true)
                     {
-                        success = sgVM.SaveTallies(ref errorBuilder) && success;
+                        success = sg.SaveTallies(ref errorBuilder) && success;
                     }
                 }
             }
@@ -91,9 +91,10 @@ namespace CruiseManager.Core.CruiseCustomize
             {
                 foreach (TallySetupSampleGroup sg in SampleGroups)
                 {
-                    if (sg.TallyMethod == TallyMode.Unknown || (sg.TallyMethod & TallyMode.None) == TallyMode.None)
+                    if (sg.TallyMethod == TallyMode.Unknown
+                        || sg.TallyMethod.HasFlag(TallyMode.None))
                     {
-                        errorBuilder.AppendFormat("Sample Group {0} in Stratum {1} needs tally configuration\r\n", sg.Code, Code);
+                        errorBuilder.AppendLine($"Sample Group {sg.Code} in Stratum {Code} needs tally configuration");
                         isValid = false;
                     }
                 }

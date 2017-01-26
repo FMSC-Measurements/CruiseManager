@@ -317,7 +317,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this._GB_topLevelContainer);
             this.Controls.Add(this._sampleGroup_PNL);
-            this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = global::CruiseManager.Properties.Settings.Default.AppFont;
             this.Name = "TallyEditPanel";
             this.Size = new System.Drawing.Size(461, 326);
             ((System.ComponentModel.ISupportInitialize)(this._BS_CurTally)).EndInit();

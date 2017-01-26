@@ -122,40 +122,6 @@ namespace CruiseManager.WinForms.Dashboard
             this._viewNavPanel.ResumeLayout();
         }
 
-        //public bool EnableSave
-        //{
-        //    get
-        //    {
-        //        return this.saveToolStripMenuItem.Enabled;
-        //    }
-        //    set
-        //    {
-        //        this.saveToolStripMenuItem.Enabled = value;
-        //    }
-        //}
-
-        //public bool EnableSaveAs
-        //{
-        //    get
-        //    {
-        //        return this.saveAsToolStripMenuItem.Enabled;
-        //    }
-        //    set
-        //    {
-        //        this.saveAsToolStripMenuItem.Enabled = value;
-        //    }
-        //}
-
-        //public void ShowWaitCursor()
-        //{
-        //    this.Cursor = Cursors.WaitCursor;
-        //}
-
-        //public void ShowDefaultCursor()
-        //{
-        //    this.Cursor = Cursors.Default;
-        //}
-
         public void DockView(UserControl view)
         {
             this.ViewContentPanel.Controls.Clear();

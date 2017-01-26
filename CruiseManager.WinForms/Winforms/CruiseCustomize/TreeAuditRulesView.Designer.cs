@@ -30,10 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.TableLayoutPanel _treeAuditRulesLayout;
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.Label label8;
             System.Windows.Forms.Label label7;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TreeAuditRulesView));
@@ -105,14 +101,6 @@
             this._tdvDGV.AllowUserToAddRows = false;
             this._tdvDGV.AllowUserToResizeRows = false;
             this._tdvDGV.AutoGenerateColumns = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this._tdvDGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this._tdvDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this._tdvDGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.speciesDataGridViewTextBoxColumn1,
@@ -133,14 +121,6 @@
             this.averageZDataGridViewTextBoxColumn1,
             this.referenceHeightPercentDataGridViewTextBoxColumn1});
             this._tdvDGV.DataSource = this._BS_treeDefaults;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this._tdvDGV.DefaultCellStyle = dataGridViewCellStyle2;
             this._tdvDGV.Dock = System.Windows.Forms.DockStyle.Fill;
             this._tdvDGV.Location = new System.Drawing.Point(0, 280);
             this._tdvDGV.Margin = new System.Windows.Forms.Padding(0);
@@ -169,7 +149,7 @@
             this.primaryProductDataGridViewTextBoxColumn1.HeaderText = "PProd";
             this.primaryProductDataGridViewTextBoxColumn1.Name = "primaryProductDataGridViewTextBoxColumn1";
             this.primaryProductDataGridViewTextBoxColumn1.ToolTipText = "Primary Product Code";
-            this.primaryProductDataGridViewTextBoxColumn1.Width = 61;
+            this.primaryProductDataGridViewTextBoxColumn1.Width = 62;
             // 
             // liveDeadDataGridViewTextBoxColumn1
             // 
@@ -178,7 +158,7 @@
             this.liveDeadDataGridViewTextBoxColumn1.HeaderText = "L/D";
             this.liveDeadDataGridViewTextBoxColumn1.Name = "liveDeadDataGridViewTextBoxColumn1";
             this.liveDeadDataGridViewTextBoxColumn1.ToolTipText = "Default Live/Dead Code";
-            this.liveDeadDataGridViewTextBoxColumn1.Width = 51;
+            this.liveDeadDataGridViewTextBoxColumn1.Width = 49;
             // 
             // fIAcodeDataGridViewTextBoxColumn1
             // 
@@ -187,7 +167,7 @@
             this.fIAcodeDataGridViewTextBoxColumn1.HeaderText = "FIAcode";
             this.fIAcodeDataGridViewTextBoxColumn1.Name = "fIAcodeDataGridViewTextBoxColumn1";
             this.fIAcodeDataGridViewTextBoxColumn1.ToolTipText = "Three Digit FIA Species Code";
-            this.fIAcodeDataGridViewTextBoxColumn1.Width = 72;
+            this.fIAcodeDataGridViewTextBoxColumn1.Width = 73;
             // 
             // cullPrimaryDataGridViewTextBoxColumn1
             // 
@@ -196,7 +176,7 @@
             this.cullPrimaryDataGridViewTextBoxColumn1.HeaderText = "CullP";
             this.cullPrimaryDataGridViewTextBoxColumn1.Name = "cullPrimaryDataGridViewTextBoxColumn1";
             this.cullPrimaryDataGridViewTextBoxColumn1.ToolTipText = "Cull Defect Primary Product";
-            this.cullPrimaryDataGridViewTextBoxColumn1.Width = 56;
+            this.cullPrimaryDataGridViewTextBoxColumn1.Width = 58;
             // 
             // hiddenPrimaryDataGridViewTextBoxColumn1
             // 
@@ -205,7 +185,7 @@
             this.hiddenPrimaryDataGridViewTextBoxColumn1.HeaderText = "HiddenP";
             this.hiddenPrimaryDataGridViewTextBoxColumn1.Name = "hiddenPrimaryDataGridViewTextBoxColumn1";
             this.hiddenPrimaryDataGridViewTextBoxColumn1.ToolTipText = "Hidden Defect Primary Product";
-            this.hiddenPrimaryDataGridViewTextBoxColumn1.Width = 73;
+            this.hiddenPrimaryDataGridViewTextBoxColumn1.Width = 76;
             // 
             // cullSecondaryDataGridViewTextBoxColumn1
             // 
@@ -214,7 +194,7 @@
             this.cullSecondaryDataGridViewTextBoxColumn1.HeaderText = "CullS";
             this.cullSecondaryDataGridViewTextBoxColumn1.Name = "cullSecondaryDataGridViewTextBoxColumn1";
             this.cullSecondaryDataGridViewTextBoxColumn1.ToolTipText = "Cull Defect Secondary Product";
-            this.cullSecondaryDataGridViewTextBoxColumn1.Width = 56;
+            this.cullSecondaryDataGridViewTextBoxColumn1.Width = 58;
             // 
             // hiddenSecondaryDataGridViewTextBoxColumn1
             // 
@@ -223,7 +203,7 @@
             this.hiddenSecondaryDataGridViewTextBoxColumn1.HeaderText = "HiddenS";
             this.hiddenSecondaryDataGridViewTextBoxColumn1.Name = "hiddenSecondaryDataGridViewTextBoxColumn1";
             this.hiddenSecondaryDataGridViewTextBoxColumn1.ToolTipText = "Hidden Defect Secondary Product";
-            this.hiddenSecondaryDataGridViewTextBoxColumn1.Width = 73;
+            this.hiddenSecondaryDataGridViewTextBoxColumn1.Width = 76;
             // 
             // recoverableDataGridViewTextBoxColumn1
             // 
@@ -232,7 +212,7 @@
             this.recoverableDataGridViewTextBoxColumn1.HeaderText = "% Rec";
             this.recoverableDataGridViewTextBoxColumn1.Name = "recoverableDataGridViewTextBoxColumn1";
             this.recoverableDataGridViewTextBoxColumn1.ToolTipText = "Percent Recoverable Product";
-            this.recoverableDataGridViewTextBoxColumn1.Width = 63;
+            this.recoverableDataGridViewTextBoxColumn1.Width = 62;
             // 
             // contractSpeciesDataGridViewTextBoxColumn1
             // 
@@ -241,7 +221,7 @@
             this.contractSpeciesDataGridViewTextBoxColumn1.HeaderText = "ContractSp";
             this.contractSpeciesDataGridViewTextBoxColumn1.Name = "contractSpeciesDataGridViewTextBoxColumn1";
             this.contractSpeciesDataGridViewTextBoxColumn1.ToolTipText = "Contract Species Code";
-            this.contractSpeciesDataGridViewTextBoxColumn1.Width = 85;
+            this.contractSpeciesDataGridViewTextBoxColumn1.Width = 89;
             // 
             // treeGradeDataGridViewTextBoxColumn1
             // 
@@ -250,7 +230,7 @@
             this.treeGradeDataGridViewTextBoxColumn1.HeaderText = "Grade";
             this.treeGradeDataGridViewTextBoxColumn1.Name = "treeGradeDataGridViewTextBoxColumn1";
             this.treeGradeDataGridViewTextBoxColumn1.ToolTipText = "Default Tree Grade";
-            this.treeGradeDataGridViewTextBoxColumn1.Width = 61;
+            this.treeGradeDataGridViewTextBoxColumn1.Width = 63;
             // 
             // merchHeightLogLengthDataGridViewTextBoxColumn1
             // 
@@ -259,7 +239,7 @@
             this.merchHeightLogLengthDataGridViewTextBoxColumn1.HeaderText = "MerchHtLL";
             this.merchHeightLogLengthDataGridViewTextBoxColumn1.Name = "merchHeightLogLengthDataGridViewTextBoxColumn1";
             this.merchHeightLogLengthDataGridViewTextBoxColumn1.ToolTipText = "Merchantable Height Log Length (8,16,32)";
-            this.merchHeightLogLengthDataGridViewTextBoxColumn1.Width = 85;
+            this.merchHeightLogLengthDataGridViewTextBoxColumn1.Width = 86;
             // 
             // merchHeightTypeDataGridViewTextBoxColumn1
             // 
@@ -268,7 +248,7 @@
             this.merchHeightTypeDataGridViewTextBoxColumn1.HeaderText = "MerchHtType";
             this.merchHeightTypeDataGridViewTextBoxColumn1.Name = "merchHeightTypeDataGridViewTextBoxColumn1";
             this.merchHeightTypeDataGridViewTextBoxColumn1.ToolTipText = "Merchantable Height Type (L,F)";
-            this.merchHeightTypeDataGridViewTextBoxColumn1.Width = 97;
+            this.merchHeightTypeDataGridViewTextBoxColumn1.Width = 99;
             // 
             // formClassDataGridViewTextBoxColumn1
             // 
@@ -277,7 +257,7 @@
             this.formClassDataGridViewTextBoxColumn1.HeaderText = "FClass";
             this.formClassDataGridViewTextBoxColumn1.Name = "formClassDataGridViewTextBoxColumn1";
             this.formClassDataGridViewTextBoxColumn1.ToolTipText = "Default Form Class";
-            this.formClassDataGridViewTextBoxColumn1.Width = 63;
+            this.formClassDataGridViewTextBoxColumn1.Width = 64;
             // 
             // barkThicknessRatioDataGridViewTextBoxColumn1
             // 
@@ -286,7 +266,7 @@
             this.barkThicknessRatioDataGridViewTextBoxColumn1.HeaderText = "BTR";
             this.barkThicknessRatioDataGridViewTextBoxColumn1.Name = "barkThicknessRatioDataGridViewTextBoxColumn1";
             this.barkThicknessRatioDataGridViewTextBoxColumn1.ToolTipText = "Bark Thickness Ratio";
-            this.barkThicknessRatioDataGridViewTextBoxColumn1.Width = 54;
+            this.barkThicknessRatioDataGridViewTextBoxColumn1.Width = 51;
             // 
             // averageZDataGridViewTextBoxColumn1
             // 
@@ -295,7 +275,7 @@
             this.averageZDataGridViewTextBoxColumn1.HeaderText = "AvgZ";
             this.averageZDataGridViewTextBoxColumn1.Name = "averageZDataGridViewTextBoxColumn1";
             this.averageZDataGridViewTextBoxColumn1.ToolTipText = "Average Z-Score";
-            this.averageZDataGridViewTextBoxColumn1.Width = 58;
+            this.averageZDataGridViewTextBoxColumn1.Width = 57;
             // 
             // referenceHeightPercentDataGridViewTextBoxColumn1
             // 
@@ -304,7 +284,7 @@
             this.referenceHeightPercentDataGridViewTextBoxColumn1.HeaderText = "RefHtPer";
             this.referenceHeightPercentDataGridViewTextBoxColumn1.Name = "referenceHeightPercentDataGridViewTextBoxColumn1";
             this.referenceHeightPercentDataGridViewTextBoxColumn1.ToolTipText = "Reference Height Percent";
-            this.referenceHeightPercentDataGridViewTextBoxColumn1.Width = 76;
+            this.referenceHeightPercentDataGridViewTextBoxColumn1.Width = 77;
             // 
             // _BS_treeDefaults
             // 
@@ -314,28 +294,12 @@
             // 
             this._treeAuditDGV.AllowUserToResizeRows = false;
             this._treeAuditDGV.AutoGenerateColumns = false;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this._treeAuditDGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this._treeAuditDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this._treeAuditDGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.fieldDataGridViewTextBoxColumn,
             this.minDataGridViewTextBoxColumn,
             this.maxDataGridViewTextBoxColumn});
             this._treeAuditDGV.DataSource = this._BS_treeAudits;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this._treeAuditDGV.DefaultCellStyle = dataGridViewCellStyle4;
             this._treeAuditDGV.Dock = System.Windows.Forms.DockStyle.Fill;
             this._treeAuditDGV.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this._treeAuditDGV.Location = new System.Drawing.Point(0, 20);
@@ -479,6 +443,7 @@
             // TreeAuditRulesView
             // 
             this.Controls.Add(_treeAuditRulesLayout);
+            this.Font = global::CruiseManager.Properties.Settings.Default.AppFont;
             this.Name = "TreeAuditRulesView";
             this.Size = new System.Drawing.Size(649, 521);
             _treeAuditRulesLayout.ResumeLayout(false);
