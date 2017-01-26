@@ -33,8 +33,8 @@ namespace CruiseManager.Core.App
         public DAL Database { get; set; }
         public bool InSupervisorMode { get; set; }
 
-        //the current save handler is the active locical component of the program that is
-        //responceable for saving the user's data
+        //the current save handler is the active logical component of the program that is
+        //responsible for saving the user's data
         public ISaveHandler SaveHandler { get { return ActivePresentor as ISaveHandler; } }
 
         //private IPresentor _activePresentor;
@@ -107,7 +107,7 @@ namespace CruiseManager.Core.App
             }
             catch (Exception e)
             {
-                //TODO throw spacific exception indication view could not be created
+                //TODO throw specific exception indication view could not be created
                 throw new NotImplementedException(null, e);
             }
         }
@@ -124,7 +124,7 @@ namespace CruiseManager.Core.App
             }
             catch (Exception e)
             {
-                //TODO throw spacific exception indication view could not be created
+                //TODO throw specific exception indication view could not be created
                 throw new NotImplementedException(null, e);
             }
         }
@@ -175,7 +175,7 @@ namespace CruiseManager.Core.App
             bool hasError = false;
             try
             {
-                //start wait cursor incase this takes a long time
+                //start wait cursor in case this takes a long time
                 this.ActiveView.ShowWaitCursor();
                 switch (System.IO.Path.GetExtension(filePath))
                 {
