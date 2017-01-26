@@ -74,73 +74,6 @@ namespace CruiseManager.Core.CruiseCustomize
 
         #endregion Persisted Members
 
-        public bool CanEditSampleType => !IsTallyModeLocked
-                    && Stratum.Method == CruiseMethods.STR;
-
-        public bool CanTallyBySG => Stratum.Method != CruiseMethods.THREEP;
-
-        public bool CanTallyBySpecies => true;
-
-        public bool CanSelectSystematic =>
-            Stratum.Method == CruiseMethods.STR
-            && !UseClickerTally;
-
-        public bool UseSystematicSampling
-        {
-            get
-            {
-                return SampleSelectorType == CruiseMethods.SYSTEMATIC_SAMPLER_TYPE;
-            }
-            set
-            {
-                if (UseSystematicSampling == value) { return; }
-                if (!CanSelectSystematic) { return; }
-                if (CanEditSampleType)
-                {
-                    SampleSelectorType = (value) ? CruiseMethods.SYSTEMATIC_SAMPLER_TYPE : string.Empty;
-                    NotifyPropertyChanged(nameof(UseSystematicSampling));
-                    NotifyPropertyChanged(nameof(CanSelectClickerTally));
-                    //HasTallyEdits = true;
-                }
-                else
-                {
-                    throw new UserFacingException("Sample Settings are locked on this Sample Group");
-                }
-            }
-        }
-
-        public bool CanSelectClickerTally =>
-            !UseSystematicSampling
-            && Stratum.Method == CruiseMethods.STR;
-
-        public bool UseClickerTally
-        {
-            get { return TallyMethod.HasFlag(TallyMode.Manual); }
-            set
-            {
-                if (!CanSelectClickerTally && value == true) { return; }
-                if (CanEditSampleType)
-                {
-                    if (value)
-                    {
-                        TallyMethod |= TallyMode.Manual;
-                        SampleSelectorType = null;
-                    }
-                    else
-                    {
-                        TallyMethod &= ~TallyMode.Manual;
-                    }
-
-                    NotifyPropertyChanged(nameof(CanSelectSystematic));
-                    NotifyPropertyChanged(nameof(UseClickerTally));
-                }
-                else
-                {
-                    throw new UserFacingException("Sample Settings are locked on this Sample Group");
-                }
-            }
-        }
-
         public bool IsTallyModeLocked
         {
             get
@@ -150,9 +83,58 @@ namespace CruiseManager.Core.CruiseCustomize
                     _isTallyModeLocked = DAL.GetRowCount("CountTree", "WHERE SampleGroup_CN = ? AND TreeCount > 0", this.SampleGroup_CN) > 0
                         && DAL.GetRowCount("Tree", "WHERE SampleGroup_CN = ?", SampleGroup_CN) > 0;
                 }
+
                 return _isTallyModeLocked.Value;
 
                 //return (TallyMethod & CruiseDAL.Enums.TallyMode.Locked) == CruiseDAL.Enums.TallyMode.Locked;
+            }
+        }
+
+        public bool CanEditSampleType => !IsTallyModeLocked
+                    && Stratum.Method == CruiseMethods.STR;
+
+        public bool CanTallyBySG => Stratum.Method != CruiseMethods.THREEP;
+
+        public bool CanTallyBySpecies => true;
+
+        public bool CanSelectSystematic =>
+            !IsTallyModeLocked
+            && !UseClickerTally
+            && Stratum.Method == CruiseMethods.STR;
+
+        public bool UseSystematicSampling
+        {
+            get
+            {
+                return SampleSelectorType == CruiseMethods.SYSTEMATIC_SAMPLER_TYPE;
+            }
+            set
+            {
+                if (!CanEditSampleType) { return; }
+
+                SampleSelectorType = (value) ? CruiseMethods.SYSTEMATIC_SAMPLER_TYPE : string.Empty;
+
+                NotifyPropertyChanged(nameof(UseSystematicSampling));
+                NotifyPropertyChanged(nameof(CanSelectClickerTally));
+            }
+        }
+
+        public bool CanSelectClickerTally =>
+            !IsTallyModeLocked
+            && !UseSystematicSampling
+            && Stratum.Method == CruiseMethods.STR;
+
+        public bool UseClickerTally
+        {
+            get { return SampleSelectorType == CruiseMethods.CLICKER_SAMPLER_TYPE; }
+            set
+            {
+                if (!CanSelectClickerTally) { return; }
+
+                SampleSelectorType = (value) ? CruiseMethods.CLICKER_SAMPLER_TYPE : string.Empty;
+
+                NotifyPropertyChanged(nameof(CanSelectSystematic));
+                NotifyPropertyChanged(nameof(UseClickerTally));
             }
         }
 
