@@ -124,7 +124,7 @@
     <Content Include="AuthoringTests.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CruiseDAL\CruiseDAL\CruiseDAL_FF35.csproj">
+    <ProjectReference Include="..\CruiseDAL\CruiseDAL\CruiseDAL.VS15.csproj">
       <Project>{BAF1842E-F8C5-47A5-94C6-ADABA8A4B3AF}</Project>
       <Name>CruiseDAL_FF35</Name>
     </ProjectReference>

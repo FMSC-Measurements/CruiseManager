@@ -115,7 +115,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>CruiseManager.WinForms.App.ApplicationController</StartupObject>
+    <StartupObject>CruiseManager.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EPPlus, Version=4.0.4.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
@@ -162,6 +162,7 @@
     <Compile Include="CommandModel\BindableCommandExtentions.cs" />
     <Compile Include="CommandModel\ControlCommandBinding.cs" />
     <Compile Include="CommandModel\ToolStripItemCommandBinding.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="WinForms\CruiseCustomize\CustomizeCruiseContainerView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -581,7 +582,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CruiseDAL\CruiseDAL\CruiseDAL_FF35.VS15.csproj">
+    <ProjectReference Include="..\CruiseDAL\CruiseDAL\CruiseDAL.VS15.csproj">
       <Project>{baf1842e-f8c5-47a5-94c6-adaba8a4b3af}</Project>
       <Name>CruiseDAL_FF35.VS15</Name>
     </ProjectReference>
