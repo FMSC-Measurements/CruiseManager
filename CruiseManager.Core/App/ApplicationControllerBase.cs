@@ -30,7 +30,25 @@ namespace CruiseManager.Core.App
 
         #region properties
 
-        public DAL Database { get; set; }
+        DAL _database;
+
+        public DAL Database
+        {
+            get { return _database; }
+            set
+            {
+                if (_database == value) { return; }
+                //OnDatabaseChanging();
+                _database = value;
+                OnDatabaseChanged();
+            }
+        }
+
+        private void OnDatabaseChanged()
+        {
+            SaveCommand.Enabled = this.SaveAsCommand.Enabled = (this.Database != null);
+        }
+
         public bool InSupervisorMode { get; set; }
 
         //the current save handler is the active logical component of the program that is
@@ -245,8 +263,6 @@ namespace CruiseManager.Core.App
                 {
                     WindowPresenter.ShowHomeLayout();
                 }
-
-                this.SaveCommand.Enabled = this.SaveAsCommand.Enabled = (this.Database != null);
             }
         }
 
