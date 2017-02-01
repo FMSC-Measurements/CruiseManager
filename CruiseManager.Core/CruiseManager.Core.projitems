@@ -36,7 +36,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Components\ViewInterfaces\IMergeComponentView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants\SQL.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants\Strings.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Constants\Version.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\FieldSetupPresenter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\LogMatrixPresenter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\Models\FieldSetupStratum.cs" />
