@@ -137,7 +137,7 @@
             this.MethodComboBox.DataSource = this.CruiseMethodBindingSource;
             this.MethodComboBox.Dock = System.Windows.Forms.DockStyle.Right;
             this.MethodComboBox.FormattingEnabled = true;
-            this.MethodComboBox.Location = new System.Drawing.Point(49, 0);
+            this.MethodComboBox.Location = new System.Drawing.Point(68, 0);
             this.MethodComboBox.Name = "MethodComboBox";
             this.MethodComboBox.Size = new System.Drawing.Size(103, 21);
             this.MethodComboBox.TabIndex = 0;
@@ -224,7 +224,7 @@
             this.BAFTextBox.Location = new System.Drawing.Point(0, 31);
             this.BAFTextBox.Margin = new System.Windows.Forms.Padding(0);
             this.BAFTextBox.Name = "BAFTextBox";
-            this.BAFTextBox.Size = new System.Drawing.Size(75, 31);
+            this.BAFTextBox.Size = new System.Drawing.Size(131, 31);
             this.BAFTextBox.TabIndex = 4;
             // 
             // 
@@ -235,7 +235,7 @@
             this.BAFTextBox.TextBox.Margin = new System.Windows.Forms.Padding(0);
             this.BAFTextBox.TextBox.MaxLength = 6;
             this.BAFTextBox.TextBox.Name = ".TextBox";
-            this.BAFTextBox.TextBox.Size = new System.Drawing.Size(25, 22);
+            this.BAFTextBox.TextBox.Size = new System.Drawing.Size(81, 22);
             this.BAFTextBox.TextBox.TabIndex = 1;
             // 
             // FixedPlotSizeTextBox
@@ -249,7 +249,7 @@
             this.FixedPlotSizeTextBox.Location = new System.Drawing.Point(131, 31);
             this.FixedPlotSizeTextBox.Margin = new System.Windows.Forms.Padding(0);
             this.FixedPlotSizeTextBox.Name = "FixedPlotSizeTextBox";
-            this.FixedPlotSizeTextBox.Size = new System.Drawing.Size(132, 31);
+            this.FixedPlotSizeTextBox.Size = new System.Drawing.Size(177, 31);
             this.FixedPlotSizeTextBox.TabIndex = 5;
             // 
             // 
@@ -258,9 +258,9 @@
             this.FixedPlotSizeTextBox.TextBox.Enabled = false;
             this.FixedPlotSizeTextBox.TextBox.Location = new System.Drawing.Point(110, 4);
             this.FixedPlotSizeTextBox.TextBox.Margin = new System.Windows.Forms.Padding(0);
-            this.FixedPlotSizeTextBox.TextBox.MaxLength = 4;
+            this.FixedPlotSizeTextBox.TextBox.MaxLength = 5;
             this.FixedPlotSizeTextBox.TextBox.Name = ".TextBox";
-            this.FixedPlotSizeTextBox.TextBox.Size = new System.Drawing.Size(22, 22);
+            this.FixedPlotSizeTextBox.TextBox.Size = new System.Drawing.Size(67, 22);
             this.FixedPlotSizeTextBox.TextBox.TabIndex = 1;
             // 
             // CuttingUnitBindingSource
@@ -415,7 +415,7 @@
             this.panel4.Controls.Add(this.MethodComboBox);
             this.panel4.Location = new System.Drawing.Point(134, 3);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(152, 24);
+            this.panel4.Size = new System.Drawing.Size(171, 24);
             this.panel4.TabIndex = 2;
             // 
             // panel5
