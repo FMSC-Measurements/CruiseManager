@@ -29,17 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this._logMatrixLayout = new System.Windows.Forms.TableLayoutPanel();
             this.newParameters = new System.Windows.Forms.GroupBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this._deleteLogMatrixBTN = new System.Windows.Forms.Button();
-            this._clearLogMatrixBTN = new System.Windows.Forms.Button();
-            this._addLogMatrixBTN = new System.Windows.Forms.Button();
-            this._BS_LogMatrix = new System.Windows.Forms.BindingSource(this.components);
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel5 = new System.Windows.Forms.Panel();
             this._logMatrixSpeciesCB = new System.Windows.Forms.ComboBox();
@@ -76,17 +67,23 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this._r009RB = new System.Windows.Forms.RadioButton();
             this._r008RB = new System.Windows.Forms.RadioButton();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this._deleteLogMatrixBTN = new System.Windows.Forms.Button();
+            this._clearLogMatrixBTN = new System.Windows.Forms.Button();
+            this._addLogMatrixBTN = new System.Windows.Forms.Button();
+            this._BS_LogMatrix = new System.Windows.Forms.BindingSource(this.components);
             this._logMatrixLayout.SuspendLayout();
             this.newParameters.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._BS_LogMatrix)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._BS_LogMatrix)).BeginInit();
             this.SuspendLayout();
             // 
             // _logMatrixLayout
@@ -120,92 +117,6 @@
             this.newParameters.TabIndex = 3;
             this.newParameters.TabStop = false;
             this.newParameters.Text = "Parameters";
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 343);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            this.dataGridView1.Size = new System.Drawing.Size(649, 151);
-            this.dataGridView1.TabIndex = 4;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this._deleteLogMatrixBTN);
-            this.panel1.Controls.Add(this._clearLogMatrixBTN);
-            this.panel1.Controls.Add(this._addLogMatrixBTN);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 319);
-            this.panel1.Margin = new System.Windows.Forms.Padding(0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(655, 21);
-            this.panel1.TabIndex = 5;
-            // 
-            // _deleteLogMatrixBTN
-            // 
-            this._deleteLogMatrixBTN.Dock = System.Windows.Forms.DockStyle.Right;
-            this._deleteLogMatrixBTN.Location = new System.Drawing.Point(505, 0);
-            this._deleteLogMatrixBTN.Name = "_deleteLogMatrixBTN";
-            this._deleteLogMatrixBTN.Size = new System.Drawing.Size(75, 21);
-            this._deleteLogMatrixBTN.TabIndex = 2;
-            this._deleteLogMatrixBTN.Text = "Delete";
-            this._deleteLogMatrixBTN.UseVisualStyleBackColor = true;
-            this._deleteLogMatrixBTN.Click += new System.EventHandler(this._deleteLogMatrixBTN_Click);
-            // 
-            // _clearLogMatrixBTN
-            // 
-            this._clearLogMatrixBTN.Dock = System.Windows.Forms.DockStyle.Right;
-            this._clearLogMatrixBTN.Location = new System.Drawing.Point(580, 0);
-            this._clearLogMatrixBTN.Name = "_clearLogMatrixBTN";
-            this._clearLogMatrixBTN.Size = new System.Drawing.Size(75, 21);
-            this._clearLogMatrixBTN.TabIndex = 1;
-            this._clearLogMatrixBTN.Text = "Clear All";
-            this._clearLogMatrixBTN.UseVisualStyleBackColor = true;
-            this._clearLogMatrixBTN.Click += new System.EventHandler(this._clearLogMatrixBTN_Click);
-            // 
-            // _addLogMatrixBTN
-            // 
-            this._addLogMatrixBTN.Dock = System.Windows.Forms.DockStyle.Left;
-            this._addLogMatrixBTN.Location = new System.Drawing.Point(0, 0);
-            this._addLogMatrixBTN.Name = "_addLogMatrixBTN";
-            this._addLogMatrixBTN.Size = new System.Drawing.Size(75, 21);
-            this._addLogMatrixBTN.TabIndex = 0;
-            this._addLogMatrixBTN.Text = "Add";
-            this._addLogMatrixBTN.UseVisualStyleBackColor = true;
-            this._addLogMatrixBTN.Click += new System.EventHandler(this._addLogMatrixBTN_Click);
-            // 
-            // _BS_LogMatrix
-            // 
-            this._BS_LogMatrix.DataSource = typeof(CruiseDAL.DataObjects.LogMatrixDO);
-            this._BS_LogMatrix.CurrentChanged += new System.EventHandler(this._BS_LogMatrix_CurrentChanged);
             // 
             // flowLayoutPanel1
             // 
@@ -584,22 +495,82 @@
             this._r008RB.Text = "R008";
             this._r008RB.UseVisualStyleBackColor = true;
             // 
-            // LogMatrixSettingsView
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView1.Location = new System.Drawing.Point(3, 343);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.Size = new System.Drawing.Size(649, 151);
+            this.dataGridView1.TabIndex = 4;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this._deleteLogMatrixBTN);
+            this.panel1.Controls.Add(this._clearLogMatrixBTN);
+            this.panel1.Controls.Add(this._addLogMatrixBTN);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 319);
+            this.panel1.Margin = new System.Windows.Forms.Padding(0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(655, 21);
+            this.panel1.TabIndex = 5;
+            // 
+            // _deleteLogMatrixBTN
+            // 
+            this._deleteLogMatrixBTN.Dock = System.Windows.Forms.DockStyle.Right;
+            this._deleteLogMatrixBTN.Location = new System.Drawing.Point(505, 0);
+            this._deleteLogMatrixBTN.Name = "_deleteLogMatrixBTN";
+            this._deleteLogMatrixBTN.Size = new System.Drawing.Size(75, 21);
+            this._deleteLogMatrixBTN.TabIndex = 2;
+            this._deleteLogMatrixBTN.Text = "Delete";
+            this._deleteLogMatrixBTN.UseVisualStyleBackColor = true;
+            this._deleteLogMatrixBTN.Click += new System.EventHandler(this._deleteLogMatrixBTN_Click);
+            // 
+            // _clearLogMatrixBTN
+            // 
+            this._clearLogMatrixBTN.Dock = System.Windows.Forms.DockStyle.Right;
+            this._clearLogMatrixBTN.Location = new System.Drawing.Point(580, 0);
+            this._clearLogMatrixBTN.Name = "_clearLogMatrixBTN";
+            this._clearLogMatrixBTN.Size = new System.Drawing.Size(75, 21);
+            this._clearLogMatrixBTN.TabIndex = 1;
+            this._clearLogMatrixBTN.Text = "Clear All";
+            this._clearLogMatrixBTN.UseVisualStyleBackColor = true;
+            this._clearLogMatrixBTN.Click += new System.EventHandler(this._clearLogMatrixBTN_Click);
+            // 
+            // _addLogMatrixBTN
+            // 
+            this._addLogMatrixBTN.Dock = System.Windows.Forms.DockStyle.Left;
+            this._addLogMatrixBTN.Location = new System.Drawing.Point(0, 0);
+            this._addLogMatrixBTN.Name = "_addLogMatrixBTN";
+            this._addLogMatrixBTN.Size = new System.Drawing.Size(75, 21);
+            this._addLogMatrixBTN.TabIndex = 0;
+            this._addLogMatrixBTN.Text = "Add";
+            this._addLogMatrixBTN.UseVisualStyleBackColor = true;
+            this._addLogMatrixBTN.Click += new System.EventHandler(this._addLogMatrixBTN_Click);
+            // 
+            // _BS_LogMatrix
+            // 
+            this._BS_LogMatrix.DataSource = typeof(CruiseDAL.DataObjects.LogMatrixDO);
+            this._BS_LogMatrix.CurrentChanged += new System.EventHandler(this._BS_LogMatrix_CurrentChanged);
+            // 
+            // LogMatrixSettingsPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.Controls.Add(this._logMatrixLayout);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Font = global::CruiseManager.Properties.Settings.Default.AppFont;
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MinimumSize = new System.Drawing.Size(628, 280);
-            this.Name = "LogMatrixSettingsView";
+            this.Name = "LogMatrixSettingsPage";
             this.Size = new System.Drawing.Size(655, 497);
             this._logMatrixLayout.ResumeLayout(false);
             this.newParameters.ResumeLayout(false);
             this.newParameters.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this._BS_LogMatrix)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
@@ -611,6 +582,9 @@
             this.panel2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this._BS_LogMatrix)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -94,5 +94,14 @@ namespace CruiseManager.Properties {
                 this["UserRegion"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Segoe UI, 8.25pt")]
+        public global::System.Drawing.Font AppFont {
+            get {
+                return ((global::System.Drawing.Font)(this["AppFont"]));
+            }
+        }
     }
 }

@@ -14,7 +14,7 @@ namespace CruiseManager.Core.Components
             this.ClientTableName = clientTableName;
             this.MergeTableName = "Merge" + this.ClientTableName;
 
-            this.AllClientColumns = masterDB.GetTableInfo(clientTableName);
+            this.AllClientColumns = masterDB.GetTableInfo(clientTableName).ToList();
 
             this.ClientGUIDKeyField = (from ColumnInfo ci in this.AllClientColumns
                                        where ci.Name == this.ClientTableName + "_GUID"

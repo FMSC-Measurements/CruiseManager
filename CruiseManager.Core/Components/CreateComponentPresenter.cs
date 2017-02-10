@@ -8,6 +8,7 @@ using FMSC.ORM.Core.SQL;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace CruiseManager.Core.Components
 {
@@ -194,12 +195,13 @@ namespace CruiseManager.Core.Components
         //inserts Component Records into master
         private static List<ComponentDO> BuildMasterComponentTable(DAL masterDAL, int numComp)
         {
-            string masterFileName = System.IO.Path.GetFileName(masterDAL.Path);
-            List<ComponentDO> compList = new List<ComponentDO>();
+            var masterFileName = System.IO.Path.GetFileName(masterDAL.Path);
+            var compList = new List<ComponentDO>();
             for (int i = 1; i <= numComp; i++)
             {
                 String compFileName = GetCompFileName(masterFileName, i);
-                ComponentDO compInfo = masterDAL.ReadSingleRow<ComponentDO>("Component", "WHERE FileName = ?", compFileName);
+                var compInfo = masterDAL.From<ComponentDO>()
+                    .Where("FileName = ?").Read(compFileName).FirstOrDefault();
                 if (compInfo == null)
                 {
                     compInfo = new ComponentDO(masterDAL);

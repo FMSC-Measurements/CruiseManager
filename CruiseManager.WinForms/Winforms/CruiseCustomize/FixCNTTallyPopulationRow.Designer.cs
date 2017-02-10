@@ -74,7 +74,7 @@
             label4.Location = new System.Drawing.Point(3, 0);
             label4.MinimumSize = new System.Drawing.Size(0, 21);
             label4.Name = "label4";
-            label4.Size = new System.Drawing.Size(21, 21);
+            label4.Size = new System.Drawing.Size(22, 21);
             label4.TabIndex = 0;
             label4.Text = "inc";
             label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -86,7 +86,7 @@
             label3.Location = new System.Drawing.Point(3, 0);
             label3.MinimumSize = new System.Drawing.Size(0, 21);
             label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(23, 21);
+            label3.Size = new System.Drawing.Size(26, 21);
             label3.TabIndex = 0;
             label3.Text = "min";
             label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -98,7 +98,7 @@
             label2.Location = new System.Drawing.Point(3, 0);
             label2.MinimumSize = new System.Drawing.Size(0, 21);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(26, 21);
+            label2.Size = new System.Drawing.Size(27, 21);
             label2.TabIndex = 0;
             label2.Text = "max";
             label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -121,7 +121,7 @@
             this._sp_LBL.Location = new System.Drawing.Point(3, 21);
             this._sp_LBL.MinimumSize = new System.Drawing.Size(0, 21);
             this._sp_LBL.Name = "_sp_LBL";
-            this._sp_LBL.Size = new System.Drawing.Size(32, 21);
+            this._sp_LBL.Size = new System.Drawing.Size(36, 21);
             this._sp_LBL.TabIndex = 1;
             this._sp_LBL.Text = "<Sp>";
             this._sp_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -145,17 +145,17 @@
             this.flowLayoutPanel4.Controls.Add(this._inc_TB);
             this.flowLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Right;
             this.flowLayoutPanel4.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel4.Location = new System.Drawing.Point(54, 0);
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(49, 0);
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
-            this.flowLayoutPanel4.Size = new System.Drawing.Size(77, 45);
+            this.flowLayoutPanel4.Size = new System.Drawing.Size(78, 45);
             this.flowLayoutPanel4.TabIndex = 0;
             // 
             // _inc_TB
             // 
             this._inc_TB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this._BS_tallyPop, "IntervalSize", true));
-            this._inc_TB.Location = new System.Drawing.Point(30, 3);
+            this._inc_TB.Location = new System.Drawing.Point(31, 3);
             this._inc_TB.Name = "_inc_TB";
-            this._inc_TB.Size = new System.Drawing.Size(44, 20);
+            this._inc_TB.Size = new System.Drawing.Size(44, 22);
             this._inc_TB.TabIndex = 0;
             this._inc_TB.Text = "123.4";
             // 
@@ -170,17 +170,17 @@
             this.flowLayoutPanel3.Controls.Add(this._min_TB);
             this.flowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Right;
             this.flowLayoutPanel3.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(131, 0);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(127, 0);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(79, 45);
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(82, 45);
             this.flowLayoutPanel3.TabIndex = 1;
             // 
             // _min_TB
             // 
             this._min_TB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this._BS_tallyPop, "Min", true));
-            this._min_TB.Location = new System.Drawing.Point(32, 3);
+            this._min_TB.Location = new System.Drawing.Point(35, 3);
             this._min_TB.Name = "_min_TB";
-            this._min_TB.Size = new System.Drawing.Size(44, 20);
+            this._min_TB.Size = new System.Drawing.Size(44, 22);
             this._min_TB.TabIndex = 0;
             this._min_TB.Text = "123.4";
             // 
@@ -191,9 +191,9 @@
             this.flowLayoutPanel2.Controls.Add(this._max_CmbB);
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Right;
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(210, 0);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(209, 0);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(95, 45);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(96, 45);
             this.flowLayoutPanel2.TabIndex = 2;
             // 
             // _max_CmbB
@@ -201,7 +201,7 @@
             this._max_CmbB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this._BS_tallyPop, "Max", true));
             this._max_CmbB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this._max_CmbB.FormattingEnabled = true;
-            this._max_CmbB.Location = new System.Drawing.Point(35, 3);
+            this._max_CmbB.Location = new System.Drawing.Point(36, 3);
             this._max_CmbB.Name = "_max_CmbB";
             this._max_CmbB.Size = new System.Drawing.Size(57, 21);
             this._max_CmbB.TabIndex = 0;
@@ -213,6 +213,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.flowLayoutPanel1);
+            this.Font = global::CruiseManager.Properties.Settings.Default.AppFont;
             this.Name = "FixCNTTallyPopulationRow";
             this.Size = new System.Drawing.Size(359, 45);
             this.flowLayoutPanel1.ResumeLayout(false);

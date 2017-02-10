@@ -5,6 +5,7 @@ using CruiseManager.Core.Components.ViewInterfaces;
 using CruiseManager.Core.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CruiseManager.Core.Components
 {
@@ -38,8 +39,8 @@ namespace CruiseManager.Core.Components
             {
                 try
                 {
-                    GlobalsDO info = MasterDB.ReadSingleRow<GlobalsDO>("Globals", "WHERE Block = 'Comp' AND Key = 'ChildComponents'");
-                    return Convert.ToInt32(info.Value);
+                    var value = MasterDB.ReadGlobalValue("Comp", "ChildComponents");
+                    return Convert.ToInt32(value);
                 }
                 catch
                 {
@@ -175,9 +176,9 @@ namespace CruiseManager.Core.Components
         public void FindComponents(string searchDir)
         {
             System.Diagnostics.Debug.Assert(MasterDB != null);
-            this.MissingComponents = new List<ComponentFileVM>();
-            this.ActiveComponents = new List<ComponentFileVM>();
-            this.AllComponents = this.MasterDB.Read<ComponentFileVM>("Component", null);
+            MissingComponents = new List<ComponentFileVM>();
+            ActiveComponents = new List<ComponentFileVM>();
+            AllComponents = this.MasterDB.From<ComponentFileVM>().Read().ToList();
 
             foreach (ComponentFileVM comp in this.AllComponents)
             {
@@ -255,8 +256,8 @@ namespace CruiseManager.Core.Components
             int countSum = 0;
             foreach (ComponentFileVM comp in this.ActiveComponents)
             {
-                CountTreeDO compCount = comp.Database.ReadSingleRow<CountTreeDO>
-                    ("CountTree", masterCopy.CountTree_CN);
+                var compCount = comp.Database.From<CountTreeDO>()
+                    .Where("CountTree_CN = ?").Read(masterCopy.CountTree_CN).FirstOrDefault();
 
                 countSum += (int)compCount.TreeCount;
             }

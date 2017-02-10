@@ -63,7 +63,7 @@
             label1.AutoSize = true;
             label1.Location = new System.Drawing.Point(122, 46);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(45, 13);
+            label1.Size = new System.Drawing.Size(49, 13);
             label1.TabIndex = 4;
             label1.Text = "Version:";
             // 
@@ -72,7 +72,7 @@
             this._versionNumLBL.AutoSize = true;
             this._versionNumLBL.Location = new System.Drawing.Point(173, 46);
             this._versionNumLBL.Name = "_versionNumLBL";
-            this._versionNumLBL.Size = new System.Drawing.Size(75, 13);
+            this._versionNumLBL.Size = new System.Drawing.Size(84, 13);
             this._versionNumLBL.TabIndex = 5;
             this._versionNumLBL.Text = "<versionNum>";
             // 
@@ -97,6 +97,7 @@
             this.Controls.Add(label1);
             this.Controls.Add(label3);
             this.Controls.Add(pictureBox1);
+            this.Font = global::CruiseManager.Properties.Settings.Default.AppFont;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "AboutDialog";
             this.Text = "About";

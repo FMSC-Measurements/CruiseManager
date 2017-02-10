@@ -1,5 +1,6 @@
 ﻿using CruiseDAL.DataObjects;
 using CruiseDAL.Enums;
+using CruiseDAL.Schema;
 using CruiseManager.Core.App;
 using FMSC.ORM.EntityModel;
 using FMSC.ORM.EntityModel.Attributes;
@@ -13,88 +14,65 @@ namespace CruiseManager.Core.CruiseCustomize
     [EntitySource(SourceName = "SampleGroup")]
     public class TallySetupSampleGroup : DataObject_Base
     {
-        bool _hasTallyEdits = false;
+        bool _hasTallyEdits;
         bool? _isTallyModeLocked;
         TallyVM _sgTallie;
-        bool _tallieDataLoaded = false;
+        bool _tallieDataLoaded;
         IList<TreeDefaultValueDO> _treeDefaultValues;
-
-        public TallySetupSampleGroup()
-            : base()
-        { }
 
         #region Persisted Members
 
-        TallyMode _tallyMethod;
-
-        [Field(Name = "Code")]
+        [Field(Name = "Code", PersistanceFlags = PersistanceFlags.Never)]
         public virtual String Code { get; set; }
 
-        [PrimaryKeyField(Name = "SampleGroup_CN")]
+        [PrimaryKeyField(Name = "SampleGroup_CN", PersistanceFlags = PersistanceFlags.Never)]
         public Int64? SampleGroup_CN { get; set; }
 
-        [Field(Name = "SampleSelectorState")]
-        public virtual String SampleSelectorState { get; set; }
-
-        [Field(Name = "SampleSelectorType")]
-        public virtual String SampleSelectorType { get; set; }
-
-        [Field(Name = "Stratum_CN")]
+        [Field(Name = "Stratum_CN", PersistanceFlags = PersistanceFlags.Never)]
         public virtual long? Stratum_CN { get; set; }
 
-        [Field(Name = "TallyMethod", PersistanceFlags = PersistanceFlags.OnUpdate)]
+        string _sampleSelectorType;
+
+        [Field(Name = "SampleSelectorType")]
+        public virtual String SampleSelectorType
+        {
+            get { return _sampleSelectorType; }
+            set
+            {
+                if (_sampleSelectorType == value) { return; }
+                _sampleSelectorType = value;
+                NotifyPropertyChanged(nameof(SampleSelectorType));
+            }
+        }
+
+        TallyMode _tallyMethod;
+
+        [Field(Name = "TallyMethod")]
         public virtual CruiseDAL.Enums.TallyMode TallyMethod
         {
             get
             {
                 if (_tallyMethod == TallyMode.Unknown)
                 {
-                    _tallyMethod = GetSampleGroupTallyMode();
+                    TallyMethod = GetSampleGroupTallyMode();
                 }
                 return _tallyMethod;
             }
             set
             {
+                if (_tallyMethod == value) { return; }
                 _tallyMethod = value;
+                base.NotifyPropertyChanged(nameof(TallyMethod));
             }
         }
+
+        //[Field(Name = "SampleSelectorState")]
+        //public virtual String SampleSelectorState { get; set; }
 
         //[Field(Name = "Description")]
         //public virtual String Description { get; set; }
 
         #endregion Persisted Members
-
-        public bool CanEditSampleType
-        {
-            get
-            {
-                return !IsTallyModeLocked
-                    && Stratum.Method == CruiseDAL.Schema.CruiseMethods.STR;
-            }
-        }
-
-        public bool CanTallyBySG
-        {
-            get
-            {
-                return (this.Stratum.Method != CruiseDAL.Schema.CruiseMethods.THREEP);
-            }
-        }
-
-        public bool CanTallyBySpecies
-        { get { return true; } }
-
-        public new CruiseDAL.DAL DAL
-        {
-            get { return (CruiseDAL.DAL)base.DAL; }
-            set { base.DAL = value; }
-        }
-
-        public bool HasTallyEdits
-        {
-            get { return _hasTallyEdits; }
-            set { _hasTallyEdits = value; }
-        }
 
         public bool IsTallyModeLocked
         {
@@ -105,10 +83,75 @@ namespace CruiseManager.Core.CruiseCustomize
                     _isTallyModeLocked = DAL.GetRowCount("CountTree", "WHERE SampleGroup_CN = ? AND TreeCount > 0", this.SampleGroup_CN) > 0
                         && DAL.GetRowCount("Tree", "WHERE SampleGroup_CN = ?", SampleGroup_CN) > 0;
                 }
+
                 return _isTallyModeLocked.Value;
 
                 //return (TallyMethod & CruiseDAL.Enums.TallyMode.Locked) == CruiseDAL.Enums.TallyMode.Locked;
             }
+        }
+
+        public bool CanEditSampleType => !IsTallyModeLocked
+                    && Stratum.Method == CruiseMethods.STR;
+
+        public bool CanTallyBySG => Stratum.Method != CruiseMethods.THREEP;
+
+        public bool CanTallyBySpecies => true;
+
+        public bool CanSelectSystematic =>
+            !IsTallyModeLocked
+            && !UseClickerTally
+            && Stratum.Method == CruiseMethods.STR;
+
+        public bool UseSystematicSampling
+        {
+            get
+            {
+                return SampleSelectorType == CruiseMethods.SYSTEMATIC_SAMPLER_TYPE;
+            }
+            set
+            {
+                if (!CanEditSampleType) { return; }
+
+                SampleSelectorType = (value) ? CruiseMethods.SYSTEMATIC_SAMPLER_TYPE : string.Empty;
+
+                NotifyPropertyChanged(nameof(UseSystematicSampling));
+                NotifyPropertyChanged(nameof(CanSelectClickerTally));
+            }
+        }
+
+        public bool CanSelectClickerTally =>
+            !IsTallyModeLocked
+            && !UseSystematicSampling
+            && Stratum.Method == CruiseMethods.STR;
+
+        public bool UseClickerTally
+        {
+            get { return SampleSelectorType == CruiseMethods.CLICKER_SAMPLER_TYPE; }
+            set
+            {
+                if (!CanSelectClickerTally) { return; }
+
+                SampleSelectorType = (value) ? CruiseMethods.CLICKER_SAMPLER_TYPE : string.Empty;
+
+                NotifyPropertyChanged(nameof(CanSelectSystematic));
+                NotifyPropertyChanged(nameof(UseClickerTally));
+            }
+        }
+
+        public new CruiseDAL.DAL DAL
+        {
+            get { return (CruiseDAL.DAL)base.DAL; }
+            set { base.DAL = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance has changes
+        /// to associated countTreeRecords and a call to SaveTallies is required
+        /// </summary>
+        public bool HasTallyEdits
+        {
+            get { return _hasTallyEdits; }
+            set { _hasTallyEdits = value; }
         }
 
         public TallyVM SgTallie
@@ -135,29 +178,6 @@ namespace CruiseManager.Core.CruiseCustomize
                         .Query(SampleGroup_CN).ToList();
                 }
                 return _treeDefaultValues;
-            }
-        }
-
-        public bool UseSystematicSampling
-        {
-            get
-            {
-                return SampleSelectorType == CruiseDAL.Schema.CruiseMethods.SYSTEMATIC_SAMPLER_TYPE;
-            }
-            set
-            {
-                if (UseSystematicSampling == value) { return; }
-                if (!Stratum.CanSelectSystematic) { return; }
-                if (CanEditSampleType)
-                {
-                    SampleSelectorType = (value) ? CruiseDAL.Schema.CruiseMethods.SYSTEMATIC_SAMPLER_TYPE : string.Empty;
-                    NotifyPropertyChanged(nameof(UseSystematicSampling));
-                    this.HasTallyEdits = true;
-                }
-                else
-                {
-                    throw new UserFacingException("Sample Settings are locked on this Sample Group");
-                }
             }
         }
 
@@ -304,7 +324,7 @@ namespace CruiseManager.Core.CruiseCustomize
             }
             catch (Exception e)
             {
-                errorBuilder.AppendFormat("{2}: failed to setup tallies for SampleGroup({0} ) in Stratum ({1})", Code, Stratum.Code, e.GetType().Name);
+                errorBuilder.Append($"{e.GetType().Name}: failed to setup tallies for SampleGroup({Code} ) in Stratum ({Stratum.Code})");
                 return false;
             }
         }

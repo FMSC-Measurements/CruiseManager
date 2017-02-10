@@ -1,5 +1,6 @@
 ﻿using CruiseManager.Core.App;
 using System;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace CruiseManager.WinForms
@@ -12,7 +13,7 @@ namespace CruiseManager.WinForms
         {
             ApplicationController = applicationController;
             InitializeComponent();
-            this._versionNumLBL.Text = CruiseManager.Core.Constants.Version.VersionID;
+            this._versionNumLBL.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
 
         private void _login_Click(object sender, EventArgs e)

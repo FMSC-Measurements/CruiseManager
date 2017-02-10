@@ -28,7 +28,59 @@ namespace CruiseManager.WinForms.CruiseWizard
             }
         }
 
-        private SampleGroupDO CurrentSampleGroup { get { return SampleGroupBindingSource.Current as SampleGroupDO; } }
+        #region CurrentSampleGroup
+
+        SampleGroupDO _currentSampleGroup;
+
+        private SampleGroupDO CurrentSampleGroup
+        {
+            get { return _currentSampleGroup; }
+            set
+            {
+                if (_currentSampleGroup == value) { return; }
+                OnCurrentSampleGroupChanging();
+                _currentSampleGroup = value;
+                OnCurrentSampleGroupChanged();
+            }
+        }
+
+        private void OnCurrentSampleGroupChanged()
+        {
+            if (_currentSampleGroup != null)
+            {
+                _currentSampleGroup.PropertyChanged += _currentSampleGroup_PropertyChanged;
+
+                CodeTextBox.TextBox.Focus();
+            }
+
+            panel3.Enabled = CurrentSampleGroup != null;
+            UpdateTreeDefaults();
+            TreeDefaultGridView.SelectedItems = CurrentSampleGroup?.TreeDefaultValues;
+        }
+
+        private void OnCurrentSampleGroupChanging()
+        {
+            if (_currentSampleGroup != null)
+            {
+                _currentSampleGroup.PropertyChanged -= _currentSampleGroup_PropertyChanged;
+            }
+        }
+
+        private void _currentSampleGroup_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(SampleGroupDO.PrimaryProduct))
+            {
+                OnPrimaryProductChanged();
+            }
+        }
+
+        #endregion CurrentSampleGroup
+
+        private void OnPrimaryProductChanged()
+        {
+            CurrentSampleGroup.TreeDefaultValues.Clear();
+            UpdateTreeDefaults();
+        }
 
         #endregion Properties
 
@@ -60,7 +112,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             PrimaryProductBindingSource.DataSource = Presenter.ProductCodes;
             SecondaryProductBindingSource.DataSource = Presenter.SecondaryProductCodes.ToList();
             UOMBindingSource.DataSource = Presenter.UOMCodes;
-            TreeDefaultBindingSource.DataSource = Presenter.TreeDefaults;
+            //TreeDefaultBindingSource.DataSource = Presenter.TreeDefaults;
             StratumBindingSource.DataSource = Presenter.Strata;
         }
 
@@ -104,12 +156,12 @@ namespace CruiseManager.WinForms.CruiseWizard
 
                 if (SampleGroupDO.CanEnableBigBAF(CurrentStratum) == false)
                 {
-                    this._bigBAFTB.TextBox.Text = "0";
-                    this._bigBAFTB.TextBox.Enabled = false;
+                    _bigBAFTB.TextBox.Text = "0";
+                    _bigBAFTB.TextBox.Enabled = false;
                 }
                 else
                 {
-                    this._bigBAFTB.TextBox.Enabled = true;
+                    _bigBAFTB.TextBox.Enabled = true;
                 }
 
                 if (SampleGroupDO.CanEnableFrequency(CurrentStratum) == false)
@@ -157,52 +209,15 @@ namespace CruiseManager.WinForms.CruiseWizard
 
         private void SampleGroupBindingSource_CurrentChanged(object sender, EventArgs e)
         {
-            if (CurrentSampleGroup == null)
-            {
-                this.panel3.Enabled = false;
-                TreeDefaultGridView.SelectedItems = null;
-                return;
-            }
-            else
-            {
-                this.panel3.Enabled = true;
-                this.CodeTextBox.TextBox.Focus();
-            }
-            TreeDefaultGridView.SelectedItems = CurrentSampleGroup.TreeDefaultValues;
+            CurrentSampleGroup = SampleGroupBindingSource.Current as SampleGroupDO;
         }
 
-        public void SetSelectedStratum(StratumDO stratrum)
+        protected void UpdateTreeDefaults()
         {
-            var index = StratumBindingSource.IndexOf(stratrum);
-            StratumBindingSource.Position = index;
-        }
+            if (CurrentSampleGroup == null) { return; }
+            var selectedPP = CurrentSampleGroup.PrimaryProduct;
 
-        private void ProductCodeBindingSource_CurrentChanged(object sender, EventArgs e)
-        {
-            if (Presenter == null || CurrentSampleGroup == null) { return; }
-            string selectedPP = PrimaryProductComboBox.SelectedValue as string;// get selected primary product
-            var visableTDV = CurrentSampleGroup.TreeDefaultValues.ToList();
-
-            visableTDV.AddRange(from tdv in Presenter.TreeDefaults
-                                where visableTDV.Contains(tdv) == false && tdv.PrimaryProduct == selectedPP
-                                select tdv);
-            TreeDefaultBindingSource.DataSource = visableTDV;
-        }
-
-        private void PrimaryProductComboBox_SelectedValueChanged(object sender, EventArgs e)
-        {
-            UpdateTDVList();
-        }
-
-        protected void UpdateTDVList()
-        {
-            if (PrimaryProductBindingSource.Current == null) { return; }
-
-            string productCode = ((ProductCode)PrimaryProductBindingSource.Current).Code;
-            var visableTDV = (from tdv in Presenter.TreeDefaults
-                              where tdv.PrimaryProduct == productCode
-                              select tdv).ToList();
-            TreeDefaultBindingSource.DataSource = visableTDV;
+            TreeDefaultBindingSource.DataSource = Presenter.TreeDefaults.Where(x => x.PrimaryProduct == selectedPP).ToList();
         }
 
         private void SampleGroupBindingSource_AddingNew(object sender, AddingNewEventArgs e)
@@ -216,58 +231,27 @@ namespace CruiseManager.WinForms.CruiseWizard
 
         private void _newSubPopBTN_Click(object sender, EventArgs e)
         {
-            //TreeDefaultValueDO newTDV = Presenter.GetNewTreeDefaultValue();
-            //FormAddTreeDefault dialog = new FormAddTreeDefault(Presenter.ProductCodes);
-            //if (dialog.ShowDialog(newTDV) == DialogResult.OK)
-            //{
-            //    newTDV.Save();
-            //    this.Presenter.TreeDefaults.Add(newTDV);
-            //    UpdateTDVList();
-
-            //    int i = this.TreeDefaultBindingSource.IndexOf(newTDV);
-            //    if (i >= 0)
-            //    {
-            //        this.TreeDefaultBindingSource.Position = i;
-            //    }
-            //}
-
-            TreeDefaultValueDO newTDV = new TreeDefaultValueDO(this.Presenter.Database);
-            newTDV = this.Presenter.WindowPresenter.ShowAddTreeDefault(newTDV);
+            var newTDV = new TreeDefaultValueDO(Presenter.Database);
+            newTDV = Presenter.WindowPresenter.ShowAddTreeDefault(newTDV);
             if (newTDV != null)
             {
-                this.Presenter.TreeDefaults.Add(newTDV);
-                this.UpdateTDVList();
+                Presenter.TreeDefaults.Add(newTDV);
+                UpdateTreeDefaults();
 
-                int i = this.TreeDefaultBindingSource.IndexOf(newTDV);
+                int i = TreeDefaultBindingSource.IndexOf(newTDV);
                 if (i >= 0)
                 {
-                    this.TreeDefaultBindingSource.Position = i;
+                    TreeDefaultBindingSource.Position = i;
                 }
             }
         }
 
         private void _editSubPopBtn_Click(object sender, EventArgs e)
         {
-            //TreeDefaultValueDO tdv = this.TreeDefaultBindingSource.Current as TreeDefaultValueDO;
-            //if (tdv == null) { return; }
-            //TreeDefaultValueDO temp = new TreeDefaultValueDO(tdv);
-            //ApplicationState appState =  ApplicationState.GetHandle();
-            //this.Presenter.WindowPresenter.ShowAddTreeDefult();
-
-            //CruiseManager.Winforms.CruiseWizard.FormAddTreeDefault dialog = new FormAddTreeDefault(SetupService.Instance.GetProductCodes());
-            //if (dialog.ShowDialog(tdv) == DialogResult.OK)
-            //{
-            //    tdv.Save();
-            //}
-            //else
-            //{
-            //    tdv.SetValues(temp);
-            //}
-
-            var tdv = this.TreeDefaultBindingSource.Current as TreeDefaultValueDO;
+            var tdv = TreeDefaultBindingSource.Current as TreeDefaultValueDO;
             if (tdv != null)
             {
-                this.Presenter.WindowPresenter.ShowEditTreeDefault(tdv);
+                Presenter.WindowPresenter.ShowEditTreeDefault(tdv);
             }
         }
 
@@ -278,7 +262,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             if (key == System.Windows.Forms.Keys.F1)
             {
                 SampleGroupBindingSource.AddNew();
-                this.CodeTextBox.TextBox.Focus();
+                CodeTextBox.TextBox.Focus();
                 return true;
             }
             return false;
@@ -288,10 +272,10 @@ namespace CruiseManager.WinForms.CruiseWizard
 
         private void bindingNavigatorDeleteItem_Click(object sender, EventArgs e)
         {
-            SampleGroupDO curSG = this.CurrentSampleGroup;
+            SampleGroupDO curSG = CurrentSampleGroup;
             if (curSG == null) { return; }
-            this.SampleGroupBindingSource.Remove(curSG);
-            this.Presenter.DeleteSampleGroup(curSG);
+            SampleGroupBindingSource.Remove(curSG);
+            Presenter.DeleteSampleGroup(curSG);
         }
     }
 }

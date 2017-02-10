@@ -39,7 +39,6 @@
             this.speciesDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.primaryProductDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.liveDeadDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.chargeableDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fIAcodeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cullPrimaryDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.hiddenPrimaryDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -80,8 +79,6 @@
             // 
             this.tabControl1.Controls.Add(this._treeDefaultPage);
             this.tabControl1.Controls.Add(this._volEqPage);
-            //this.tabControl1.Controls.Add(this.tabPage2); //TODO finish these tab pages
-            //this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -111,7 +108,6 @@
             this.speciesDataGridViewTextBoxColumn,
             this.primaryProductDataGridViewTextBoxColumn,
             this.liveDeadDataGridViewTextBoxColumn,
-            this.chargeableDataGridViewTextBoxColumn,
             this.fIAcodeDataGridViewTextBoxColumn,
             this.cullPrimaryDataGridViewTextBoxColumn,
             this.hiddenPrimaryDataGridViewTextBoxColumn,
@@ -156,7 +152,7 @@
             this.primaryProductDataGridViewTextBoxColumn.Name = "primaryProductDataGridViewTextBoxColumn";
             this.primaryProductDataGridViewTextBoxColumn.ReadOnly = true;
             this.primaryProductDataGridViewTextBoxColumn.ToolTipText = "Primary Product Code";
-            this.primaryProductDataGridViewTextBoxColumn.Width = 61;
+            this.primaryProductDataGridViewTextBoxColumn.Width = 62;
             // 
             // liveDeadDataGridViewTextBoxColumn
             // 
@@ -166,17 +162,7 @@
             this.liveDeadDataGridViewTextBoxColumn.Name = "liveDeadDataGridViewTextBoxColumn";
             this.liveDeadDataGridViewTextBoxColumn.ReadOnly = true;
             this.liveDeadDataGridViewTextBoxColumn.ToolTipText = "Default Live/Dead Code";
-            this.liveDeadDataGridViewTextBoxColumn.Width = 51;
-            // 
-            // chargeableDataGridViewTextBoxColumn
-            // 
-            this.chargeableDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.chargeableDataGridViewTextBoxColumn.DataPropertyName = "Chargeable";
-            this.chargeableDataGridViewTextBoxColumn.HeaderText = "Chargeable";
-            this.chargeableDataGridViewTextBoxColumn.Name = "chargeableDataGridViewTextBoxColumn";
-            this.chargeableDataGridViewTextBoxColumn.ReadOnly = true;
-            this.chargeableDataGridViewTextBoxColumn.ToolTipText = "Yield Component (CL,CD,NL,ND)";
-            this.chargeableDataGridViewTextBoxColumn.Width = 86;
+            this.liveDeadDataGridViewTextBoxColumn.Width = 49;
             // 
             // fIAcodeDataGridViewTextBoxColumn
             // 
@@ -186,7 +172,7 @@
             this.fIAcodeDataGridViewTextBoxColumn.Name = "fIAcodeDataGridViewTextBoxColumn";
             this.fIAcodeDataGridViewTextBoxColumn.ReadOnly = true;
             this.fIAcodeDataGridViewTextBoxColumn.ToolTipText = "Three Digit FIA Species Code";
-            this.fIAcodeDataGridViewTextBoxColumn.Width = 72;
+            this.fIAcodeDataGridViewTextBoxColumn.Width = 73;
             // 
             // cullPrimaryDataGridViewTextBoxColumn
             // 
@@ -196,7 +182,7 @@
             this.cullPrimaryDataGridViewTextBoxColumn.Name = "cullPrimaryDataGridViewTextBoxColumn";
             this.cullPrimaryDataGridViewTextBoxColumn.ReadOnly = true;
             this.cullPrimaryDataGridViewTextBoxColumn.ToolTipText = "Cull Defect Primary Product";
-            this.cullPrimaryDataGridViewTextBoxColumn.Width = 56;
+            this.cullPrimaryDataGridViewTextBoxColumn.Width = 58;
             // 
             // hiddenPrimaryDataGridViewTextBoxColumn
             // 
@@ -206,7 +192,7 @@
             this.hiddenPrimaryDataGridViewTextBoxColumn.Name = "hiddenPrimaryDataGridViewTextBoxColumn";
             this.hiddenPrimaryDataGridViewTextBoxColumn.ReadOnly = true;
             this.hiddenPrimaryDataGridViewTextBoxColumn.ToolTipText = "Hidden Defect Primary Product";
-            this.hiddenPrimaryDataGridViewTextBoxColumn.Width = 73;
+            this.hiddenPrimaryDataGridViewTextBoxColumn.Width = 76;
             // 
             // cullSecondaryDataGridViewTextBoxColumn
             // 
@@ -216,7 +202,7 @@
             this.cullSecondaryDataGridViewTextBoxColumn.Name = "cullSecondaryDataGridViewTextBoxColumn";
             this.cullSecondaryDataGridViewTextBoxColumn.ReadOnly = true;
             this.cullSecondaryDataGridViewTextBoxColumn.ToolTipText = "Cull Defect Secondary Product";
-            this.cullSecondaryDataGridViewTextBoxColumn.Width = 56;
+            this.cullSecondaryDataGridViewTextBoxColumn.Width = 58;
             // 
             // hiddenSecondaryDataGridViewTextBoxColumn
             // 
@@ -226,7 +212,7 @@
             this.hiddenSecondaryDataGridViewTextBoxColumn.Name = "hiddenSecondaryDataGridViewTextBoxColumn";
             this.hiddenSecondaryDataGridViewTextBoxColumn.ReadOnly = true;
             this.hiddenSecondaryDataGridViewTextBoxColumn.ToolTipText = "Hiddent Defect Secondary Product";
-            this.hiddenSecondaryDataGridViewTextBoxColumn.Width = 73;
+            this.hiddenSecondaryDataGridViewTextBoxColumn.Width = 76;
             // 
             // recoverableDataGridViewTextBoxColumn
             // 
@@ -236,7 +222,7 @@
             this.recoverableDataGridViewTextBoxColumn.Name = "recoverableDataGridViewTextBoxColumn";
             this.recoverableDataGridViewTextBoxColumn.ReadOnly = true;
             this.recoverableDataGridViewTextBoxColumn.ToolTipText = "Percent Recoverable Product";
-            this.recoverableDataGridViewTextBoxColumn.Width = 63;
+            this.recoverableDataGridViewTextBoxColumn.Width = 62;
             // 
             // contractSpeciesDataGridViewTextBoxColumn
             // 
@@ -246,7 +232,7 @@
             this.contractSpeciesDataGridViewTextBoxColumn.Name = "contractSpeciesDataGridViewTextBoxColumn";
             this.contractSpeciesDataGridViewTextBoxColumn.ReadOnly = true;
             this.contractSpeciesDataGridViewTextBoxColumn.ToolTipText = "Contract Species Code";
-            this.contractSpeciesDataGridViewTextBoxColumn.Width = 85;
+            this.contractSpeciesDataGridViewTextBoxColumn.Width = 89;
             // 
             // treeGradeDataGridViewTextBoxColumn
             // 
@@ -256,7 +242,7 @@
             this.treeGradeDataGridViewTextBoxColumn.Name = "treeGradeDataGridViewTextBoxColumn";
             this.treeGradeDataGridViewTextBoxColumn.ReadOnly = true;
             this.treeGradeDataGridViewTextBoxColumn.ToolTipText = "Default Tree Grade";
-            this.treeGradeDataGridViewTextBoxColumn.Width = 61;
+            this.treeGradeDataGridViewTextBoxColumn.Width = 63;
             // 
             // merchHeightLogLengthDataGridViewTextBoxColumn
             // 
@@ -266,7 +252,7 @@
             this.merchHeightLogLengthDataGridViewTextBoxColumn.Name = "merchHeightLogLengthDataGridViewTextBoxColumn";
             this.merchHeightLogLengthDataGridViewTextBoxColumn.ReadOnly = true;
             this.merchHeightLogLengthDataGridViewTextBoxColumn.ToolTipText = "Merchantable Height Log Length";
-            this.merchHeightLogLengthDataGridViewTextBoxColumn.Width = 85;
+            this.merchHeightLogLengthDataGridViewTextBoxColumn.Width = 86;
             // 
             // merchHeightTypeDataGridViewTextBoxColumn
             // 
@@ -276,7 +262,7 @@
             this.merchHeightTypeDataGridViewTextBoxColumn.Name = "merchHeightTypeDataGridViewTextBoxColumn";
             this.merchHeightTypeDataGridViewTextBoxColumn.ReadOnly = true;
             this.merchHeightTypeDataGridViewTextBoxColumn.ToolTipText = "Merchantable Height Type";
-            this.merchHeightTypeDataGridViewTextBoxColumn.Width = 117;
+            this.merchHeightTypeDataGridViewTextBoxColumn.Width = 122;
             // 
             // formClassDataGridViewTextBoxColumn
             // 
@@ -286,7 +272,7 @@
             this.formClassDataGridViewTextBoxColumn.Name = "formClassDataGridViewTextBoxColumn";
             this.formClassDataGridViewTextBoxColumn.ReadOnly = true;
             this.formClassDataGridViewTextBoxColumn.ToolTipText = "Default Form Class";
-            this.formClassDataGridViewTextBoxColumn.Width = 63;
+            this.formClassDataGridViewTextBoxColumn.Width = 64;
             // 
             // barkThicknessRatioDataGridViewTextBoxColumn
             // 
@@ -296,7 +282,7 @@
             this.barkThicknessRatioDataGridViewTextBoxColumn.Name = "barkThicknessRatioDataGridViewTextBoxColumn";
             this.barkThicknessRatioDataGridViewTextBoxColumn.ReadOnly = true;
             this.barkThicknessRatioDataGridViewTextBoxColumn.ToolTipText = "Bark Thickness Ratio";
-            this.barkThicknessRatioDataGridViewTextBoxColumn.Width = 54;
+            this.barkThicknessRatioDataGridViewTextBoxColumn.Width = 51;
             // 
             // averageZDataGridViewTextBoxColumn
             // 
@@ -306,7 +292,7 @@
             this.averageZDataGridViewTextBoxColumn.Name = "averageZDataGridViewTextBoxColumn";
             this.averageZDataGridViewTextBoxColumn.ReadOnly = true;
             this.averageZDataGridViewTextBoxColumn.ToolTipText = "Average Z-Score";
-            this.averageZDataGridViewTextBoxColumn.Width = 58;
+            this.averageZDataGridViewTextBoxColumn.Width = 57;
             // 
             // referenceHeightPercentDataGridViewTextBoxColumn
             // 
@@ -316,7 +302,7 @@
             this.referenceHeightPercentDataGridViewTextBoxColumn.Name = "referenceHeightPercentDataGridViewTextBoxColumn";
             this.referenceHeightPercentDataGridViewTextBoxColumn.ReadOnly = true;
             this.referenceHeightPercentDataGridViewTextBoxColumn.ToolTipText = "Reference Height Percent";
-            this.referenceHeightPercentDataGridViewTextBoxColumn.Width = 76;
+            this.referenceHeightPercentDataGridViewTextBoxColumn.Width = 77;
             // 
             // _BS_TDV
             // 
@@ -338,7 +324,7 @@
             this.checkBox1.AutoSize = true;
             this.checkBox1.Location = new System.Drawing.Point(81, 4);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(110, 17);
+            this.checkBox1.Size = new System.Drawing.Size(117, 17);
             this.checkBox1.TabIndex = 1;
             this.checkBox1.Text = "Copy Audit Rules ";
             this.checkBox1.UseVisualStyleBackColor = true;
@@ -371,7 +357,7 @@
             this._importVolEqCB.AutoSize = true;
             this._importVolEqCB.Location = new System.Drawing.Point(7, 7);
             this._importVolEqCB.Name = "_importVolEqCB";
-            this._importVolEqCB.Size = new System.Drawing.Size(143, 17);
+            this._importVolEqCB.Size = new System.Drawing.Size(157, 17);
             this._importVolEqCB.TabIndex = 1;
             this._importVolEqCB.Text = "Import Volume Equations";
             this._importVolEqCB.UseVisualStyleBackColor = true;
@@ -393,7 +379,7 @@
             this._dontReplaceVolEqRB.AutoSize = true;
             this._dontReplaceVolEqRB.Location = new System.Drawing.Point(7, 44);
             this._dontReplaceVolEqRB.Name = "_dontReplaceVolEqRB";
-            this._dontReplaceVolEqRB.Size = new System.Drawing.Size(175, 17);
+            this._dontReplaceVolEqRB.Size = new System.Drawing.Size(184, 17);
             this._dontReplaceVolEqRB.TabIndex = 1;
             this._dontReplaceVolEqRB.Text = "Don\'t Replace Existing Records";
             this._dontReplaceVolEqRB.UseVisualStyleBackColor = true;
@@ -404,7 +390,7 @@
             this._replaceVolEqRB.Checked = true;
             this._replaceVolEqRB.Location = new System.Drawing.Point(7, 20);
             this._replaceVolEqRB.Name = "_replaceVolEqRB";
-            this._replaceVolEqRB.Size = new System.Drawing.Size(189, 17);
+            this._replaceVolEqRB.Size = new System.Drawing.Size(204, 17);
             this._replaceVolEqRB.TabIndex = 0;
             this._replaceVolEqRB.TabStop = true;
             this._replaceVolEqRB.Text = "Relplace existing volume equation ";
@@ -445,6 +431,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tabControl1);
+            this.Font = global::CruiseManager.Properties.Settings.Default.AppFont;
             this.Name = "ImportFromCruiseView";
             this.Size = new System.Drawing.Size(676, 441);
             this.tabControl1.ResumeLayout(false);

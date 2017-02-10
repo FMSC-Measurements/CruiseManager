@@ -177,6 +177,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tabControl1);
+            this.Font = global::CruiseManager.Properties.Settings.Default.AppFont;
             this.Name = "PreMergeReportView";
             this.Size = new System.Drawing.Size(433, 358);
             this.tabControl1.ResumeLayout(false);

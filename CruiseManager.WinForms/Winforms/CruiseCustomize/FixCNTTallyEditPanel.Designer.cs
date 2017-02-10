@@ -74,7 +74,7 @@
             _tallyField_LBL.Dock = System.Windows.Forms.DockStyle.Left;
             _tallyField_LBL.Location = new System.Drawing.Point(3, 0);
             _tallyField_LBL.Name = "_tallyField_LBL";
-            _tallyField_LBL.Size = new System.Drawing.Size(54, 27);
+            _tallyField_LBL.Size = new System.Drawing.Size(57, 27);
             _tallyField_LBL.TabIndex = 1;
             _tallyField_LBL.Text = "Tally Field";
             _tallyField_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -84,7 +84,7 @@
             this._tallyField_CmbB.DataBindings.Add(new System.Windows.Forms.Binding("SelectedItem", this._BS_TallyClass, "Field", true));
             this._tallyField_CmbB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this._tallyField_CmbB.FormattingEnabled = true;
-            this._tallyField_CmbB.Location = new System.Drawing.Point(63, 3);
+            this._tallyField_CmbB.Location = new System.Drawing.Point(66, 3);
             this._tallyField_CmbB.Name = "_tallyField_CmbB";
             this._tallyField_CmbB.Size = new System.Drawing.Size(121, 21);
             this._tallyField_CmbB.TabIndex = 2;
@@ -119,6 +119,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this._lowerPanel);
             this.Controls.Add(_upperPannel);
+            this.Font = global::CruiseManager.Properties.Settings.Default.AppFont;
             this.Name = "FixCNTTallyEditPanel";
             this.Size = new System.Drawing.Size(313, 287);
             _upperPannel.ResumeLayout(false);

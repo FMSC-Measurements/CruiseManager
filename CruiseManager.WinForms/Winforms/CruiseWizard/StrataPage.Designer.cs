@@ -137,7 +137,7 @@
             this.MethodComboBox.DataSource = this.CruiseMethodBindingSource;
             this.MethodComboBox.Dock = System.Windows.Forms.DockStyle.Right;
             this.MethodComboBox.FormattingEnabled = true;
-            this.MethodComboBox.Location = new System.Drawing.Point(49, 0);
+            this.MethodComboBox.Location = new System.Drawing.Point(68, 0);
             this.MethodComboBox.Name = "MethodComboBox";
             this.MethodComboBox.Size = new System.Drawing.Size(103, 21);
             this.MethodComboBox.TabIndex = 0;
@@ -170,11 +170,11 @@
             // 
             // 
             this.CodeTextBox.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CodeTextBox.TextBox.Location = new System.Drawing.Point(80, 5);
+            this.CodeTextBox.TextBox.Location = new System.Drawing.Point(80, 2);
             this.CodeTextBox.TextBox.Margin = new System.Windows.Forms.Padding(0);
             this.CodeTextBox.TextBox.MaxLength = 2;
             this.CodeTextBox.TextBox.Name = ".TextBox";
-            this.CodeTextBox.TextBox.Size = new System.Drawing.Size(51, 20);
+            this.CodeTextBox.TextBox.Size = new System.Drawing.Size(51, 22);
             this.CodeTextBox.TextBox.TabIndex = 1;
             // 
             // label10
@@ -182,7 +182,7 @@
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(3, 6);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(29, 13);
+            this.label10.Size = new System.Drawing.Size(28, 13);
             this.label10.TabIndex = 0;
             this.label10.Text = "Year";
             // 
@@ -191,7 +191,7 @@
             this.label11.AutoSize = true;
             this.label11.Location = new System.Drawing.Point(3, 7);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(43, 13);
+            this.label11.Size = new System.Drawing.Size(48, 13);
             this.label11.TabIndex = 1;
             this.label11.Text = "Method";
             // 
@@ -209,7 +209,7 @@
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(3, 6);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(37, 13);
+            this.label13.Size = new System.Drawing.Size(42, 13);
             this.label13.TabIndex = 0;
             this.label13.Text = "Month";
             // 
@@ -224,18 +224,18 @@
             this.BAFTextBox.Location = new System.Drawing.Point(0, 31);
             this.BAFTextBox.Margin = new System.Windows.Forms.Padding(0);
             this.BAFTextBox.Name = "BAFTextBox";
-            this.BAFTextBox.Size = new System.Drawing.Size(75, 31);
+            this.BAFTextBox.Size = new System.Drawing.Size(131, 31);
             this.BAFTextBox.TabIndex = 4;
             // 
             // 
             // 
             this.BAFTextBox.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.BAFTextBox.TextBox.Enabled = false;
-            this.BAFTextBox.TextBox.Location = new System.Drawing.Point(50, 5);
+            this.BAFTextBox.TextBox.Location = new System.Drawing.Point(50, 4);
             this.BAFTextBox.TextBox.Margin = new System.Windows.Forms.Padding(0);
             this.BAFTextBox.TextBox.MaxLength = 6;
             this.BAFTextBox.TextBox.Name = ".TextBox";
-            this.BAFTextBox.TextBox.Size = new System.Drawing.Size(25, 20);
+            this.BAFTextBox.TextBox.Size = new System.Drawing.Size(81, 22);
             this.BAFTextBox.TextBox.TabIndex = 1;
             // 
             // FixedPlotSizeTextBox
@@ -249,18 +249,18 @@
             this.FixedPlotSizeTextBox.Location = new System.Drawing.Point(131, 31);
             this.FixedPlotSizeTextBox.Margin = new System.Windows.Forms.Padding(0);
             this.FixedPlotSizeTextBox.Name = "FixedPlotSizeTextBox";
-            this.FixedPlotSizeTextBox.Size = new System.Drawing.Size(132, 31);
+            this.FixedPlotSizeTextBox.Size = new System.Drawing.Size(177, 31);
             this.FixedPlotSizeTextBox.TabIndex = 5;
             // 
             // 
             // 
             this.FixedPlotSizeTextBox.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.FixedPlotSizeTextBox.TextBox.Enabled = false;
-            this.FixedPlotSizeTextBox.TextBox.Location = new System.Drawing.Point(110, 5);
+            this.FixedPlotSizeTextBox.TextBox.Location = new System.Drawing.Point(110, 4);
             this.FixedPlotSizeTextBox.TextBox.Margin = new System.Windows.Forms.Padding(0);
-            this.FixedPlotSizeTextBox.TextBox.MaxLength = 4;
+            this.FixedPlotSizeTextBox.TextBox.MaxLength = 5;
             this.FixedPlotSizeTextBox.TextBox.Name = ".TextBox";
-            this.FixedPlotSizeTextBox.TextBox.Size = new System.Drawing.Size(22, 20);
+            this.FixedPlotSizeTextBox.TextBox.Size = new System.Drawing.Size(67, 22);
             this.FixedPlotSizeTextBox.TextBox.TabIndex = 1;
             // 
             // CuttingUnitBindingSource
@@ -415,7 +415,7 @@
             this.panel4.Controls.Add(this.MethodComboBox);
             this.panel4.Location = new System.Drawing.Point(134, 3);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(152, 24);
+            this.panel4.Size = new System.Drawing.Size(171, 24);
             this.panel4.TabIndex = 2;
             // 
             // panel5
@@ -468,11 +468,11 @@
             // 
             // 
             this.sideLabelTextBox1.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sideLabelTextBox1.TextBox.Location = new System.Drawing.Point(100, 5);
+            this.sideLabelTextBox1.TextBox.Location = new System.Drawing.Point(100, 4);
             this.sideLabelTextBox1.TextBox.Margin = new System.Windows.Forms.Padding(0);
             this.sideLabelTextBox1.TextBox.MaxLength = 25;
             this.sideLabelTextBox1.TextBox.Name = ".TextBox";
-            this.sideLabelTextBox1.TextBox.Size = new System.Drawing.Size(200, 20);
+            this.sideLabelTextBox1.TextBox.Size = new System.Drawing.Size(200, 22);
             this.sideLabelTextBox1.TextBox.TabIndex = 1;
             // 
             // panel3
@@ -492,7 +492,7 @@
             this._kzTB.Enabled = false;
             this._kzTB.Location = new System.Drawing.Point(73, 6);
             this._kzTB.Name = "_kzTB";
-            this._kzTB.Size = new System.Drawing.Size(34, 20);
+            this._kzTB.Size = new System.Drawing.Size(34, 22);
             this._kzTB.TabIndex = 1;
             // 
             // label1
@@ -522,11 +522,11 @@
             // 
             // 
             this._SLTB_YealdComponent.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._SLTB_YealdComponent.TextBox.Location = new System.Drawing.Point(100, 5);
+            this._SLTB_YealdComponent.TextBox.Location = new System.Drawing.Point(100, 2);
             this._SLTB_YealdComponent.TextBox.Margin = new System.Windows.Forms.Padding(0);
             this._SLTB_YealdComponent.TextBox.MaxLength = 2;
             this._SLTB_YealdComponent.TextBox.Name = ".TextBox";
-            this._SLTB_YealdComponent.TextBox.Size = new System.Drawing.Size(50, 20);
+            this._SLTB_YealdComponent.TextBox.Size = new System.Drawing.Size(50, 22);
             this._SLTB_YealdComponent.TextBox.TabIndex = 1;
             // 
             // label3
@@ -590,7 +590,7 @@
             this.codeDataGridViewTextBoxColumn.Name = "codeDataGridViewTextBoxColumn";
             this.codeDataGridViewTextBoxColumn.ReadOnly = true;
             this.codeDataGridViewTextBoxColumn.ToolTipText = "Cutting Unit Code";
-            this.codeDataGridViewTextBoxColumn.Width = 57;
+            this.codeDataGridViewTextBoxColumn.Width = 59;
             // 
             // areaDataGridViewTextBoxColumn
             // 
@@ -600,7 +600,7 @@
             this.areaDataGridViewTextBoxColumn.Name = "areaDataGridViewTextBoxColumn";
             this.areaDataGridViewTextBoxColumn.ReadOnly = true;
             this.areaDataGridViewTextBoxColumn.ToolTipText = "Area in Acres";
-            this.areaDataGridViewTextBoxColumn.Width = 54;
+            this.areaDataGridViewTextBoxColumn.Width = 55;
             // 
             // descriptionDataGridViewTextBoxColumn
             // 
@@ -610,7 +610,7 @@
             this.descriptionDataGridViewTextBoxColumn.Name = "descriptionDataGridViewTextBoxColumn";
             this.descriptionDataGridViewTextBoxColumn.ReadOnly = true;
             this.descriptionDataGridViewTextBoxColumn.ToolTipText = "Cutting Unit Description";
-            this.descriptionDataGridViewTextBoxColumn.Width = 85;
+            this.descriptionDataGridViewTextBoxColumn.Width = 91;
             // 
             // loggingMethodDataGridViewTextBoxColumn
             // 
@@ -620,7 +620,7 @@
             this.loggingMethodDataGridViewTextBoxColumn.Name = "loggingMethodDataGridViewTextBoxColumn";
             this.loggingMethodDataGridViewTextBoxColumn.ReadOnly = true;
             this.loggingMethodDataGridViewTextBoxColumn.ToolTipText = "Logging Method Code";
-            this.loggingMethodDataGridViewTextBoxColumn.Width = 74;
+            this.loggingMethodDataGridViewTextBoxColumn.Width = 78;
             // 
             // paymentUnitDataGridViewTextBoxColumn
             // 
@@ -630,7 +630,7 @@
             this.paymentUnitDataGridViewTextBoxColumn.Name = "paymentUnitDataGridViewTextBoxColumn";
             this.paymentUnitDataGridViewTextBoxColumn.ReadOnly = true;
             this.paymentUnitDataGridViewTextBoxColumn.ToolTipText = "Payment Unit Code";
-            this.paymentUnitDataGridViewTextBoxColumn.Width = 92;
+            this.paymentUnitDataGridViewTextBoxColumn.Width = 97;
             // 
             // errorProvider1
             // 
@@ -643,6 +643,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(panel1);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.Font = global::CruiseManager.Properties.Settings.Default.AppFont;
             this.MinimumSize = new System.Drawing.Size(630, 0);
             this.Name = "StrataPage";
             this.Size = new System.Drawing.Size(630, 472);

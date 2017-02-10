@@ -164,7 +164,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.StratumBindingNavigator.Name = "StratumBindingNavigator";
             this.StratumBindingNavigator.PositionItem = null;
             this.StratumBindingNavigator.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.StratumBindingNavigator.Size = new System.Drawing.Size(630, 25);
+            this.StratumBindingNavigator.Size = new System.Drawing.Size(841, 25);
             this.StratumBindingNavigator.TabIndex = 0;
             this.StratumBindingNavigator.Text = "bindingNavigator1";
             // 
@@ -254,17 +254,17 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.panel1.Controls.Add(this.FinishButton);
             this.panel1.Controls.Add(this.CancelButton);
             this.panel1.Controls.Add(this.StrataButton);
-            this.panel1.Location = new System.Drawing.Point(0, 362);
+            this.panel1.Location = new System.Drawing.Point(0, 502);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(626, 45);
+            this.panel1.Size = new System.Drawing.Size(837, 45);
             this.panel1.TabIndex = 0;
             // 
             // FinishButton
             // 
             this.FinishButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.FinishButton.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.FinishButton.Location = new System.Drawing.Point(545, 11);
-            this.FinishButton.Margin = new System.Windows.Forms.Padding(10);
+            this.FinishButton.Location = new System.Drawing.Point(756, 11);
+            this.FinishButton.Margin = new System.Windows.Forms.Padding(10, 10, 10, 10);
             this.FinishButton.Name = "FinishButton";
             this.FinishButton.Size = new System.Drawing.Size(75, 23);
             this.FinishButton.TabIndex = 1;
@@ -372,7 +372,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.SampleGroupListBox.Margin = new System.Windows.Forms.Padding(0);
             this.SampleGroupListBox.Name = "SampleGroupListBox";
             this.SampleGroupListBox.ScrollAlwaysVisible = true;
-            this.SampleGroupListBox.Size = new System.Drawing.Size(156, 299);
+            this.SampleGroupListBox.Size = new System.Drawing.Size(156, 439);
             this.SampleGroupListBox.TabIndex = 1;
             // 
             // panel2
@@ -385,7 +385,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.panel2.Margin = new System.Windows.Forms.Padding(0);
             this.panel2.Name = "panel2";
             this.tableLayoutPanel1.SetRowSpan(this.panel2, 4);
-            this.panel2.Size = new System.Drawing.Size(160, 326);
+            this.panel2.Size = new System.Drawing.Size(160, 466);
             this.panel2.TabIndex = 145;
             // 
             // tableLayoutPanel1
@@ -410,7 +410,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(626, 332);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(837, 472);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // label1
@@ -422,7 +422,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
             this.label1.Padding = new System.Windows.Forms.Padding(5, 3, 0, 0);
-            this.label1.Size = new System.Drawing.Size(457, 20);
+            this.label1.Size = new System.Drawing.Size(668, 20);
             this.label1.TabIndex = 2;
             this.label1.Text = "Sample Group";
             // 
@@ -434,7 +434,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.panel3.Location = new System.Drawing.Point(166, 26);
             this.panel3.Margin = new System.Windows.Forms.Padding(0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(457, 192);
+            this.panel3.Size = new System.Drawing.Size(668, 192);
             this.panel3.TabIndex = 0;
             // 
             // tableLayoutPanel3
@@ -462,7 +462,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(457, 96);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(668, 96);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
             // CodeTextBox
@@ -484,11 +484,11 @@ namespace CruiseManager.WinForms.CruiseWizard
             // 
             // 
             this.CodeTextBox.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CodeTextBox.TextBox.Location = new System.Drawing.Point(75, 6);
+            this.CodeTextBox.TextBox.Location = new System.Drawing.Point(75, 5);
             this.CodeTextBox.TextBox.Margin = new System.Windows.Forms.Padding(0);
             this.CodeTextBox.TextBox.MaxLength = 2;
             this.CodeTextBox.TextBox.Name = ".TextBox";
-            this.CodeTextBox.TextBox.Size = new System.Drawing.Size(34, 20);
+            this.CodeTextBox.TextBox.Size = new System.Drawing.Size(34, 22);
             this.CodeTextBox.TextBox.TabIndex = 1;
             // 
             // panel6
@@ -522,7 +522,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(3, 7);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(98, 13);
+            this.label4.Size = new System.Drawing.Size(103, 13);
             this.label4.TabIndex = 149;
             this.label4.Text = "Secondary Product";
             // 
@@ -541,7 +541,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(3, 8);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(81, 13);
+            this.label3.Size = new System.Drawing.Size(87, 13);
             this.label3.TabIndex = 147;
             this.label3.Text = "Primary Product";
             // 
@@ -556,12 +556,10 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.PrimaryProductComboBox.Size = new System.Drawing.Size(118, 21);
             this.PrimaryProductComboBox.TabIndex = 0;
             this.PrimaryProductComboBox.ValueMember = "Code";
-            this.PrimaryProductComboBox.SelectedValueChanged += new System.EventHandler(this.PrimaryProductComboBox_SelectedValueChanged);
             // 
             // PrimaryProductBindingSource
             // 
             this.PrimaryProductBindingSource.DataSource = typeof(CruiseManager.Core.SetupModels.ProductCode);
-            this.PrimaryProductBindingSource.CurrentChanged += new System.EventHandler(this.ProductCodeBindingSource_CurrentChanged);
             // 
             // panel4
             // 
@@ -578,7 +576,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(3, 6);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(32, 13);
+            this.label2.Size = new System.Drawing.Size(34, 13);
             this.label2.TabIndex = 145;
             this.label2.Text = "UOM";
             // 
@@ -623,7 +621,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.LDTextBox.TextBox.Margin = new System.Windows.Forms.Padding(0);
             this.LDTextBox.TextBox.MaxLength = 1;
             this.LDTextBox.TextBox.Name = ".TextBox";
-            this.LDTextBox.TextBox.Size = new System.Drawing.Size(19, 20);
+            this.LDTextBox.TextBox.Size = new System.Drawing.Size(19, 22);
             this.LDTextBox.TextBox.TabIndex = 1;
             // 
             // _cutLeaveTB
@@ -645,11 +643,11 @@ namespace CruiseManager.WinForms.CruiseWizard
             // 
             // 
             this._cutLeaveTB.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._cutLeaveTB.TextBox.Location = new System.Drawing.Point(90, 6);
+            this._cutLeaveTB.TextBox.Location = new System.Drawing.Point(90, 5);
             this._cutLeaveTB.TextBox.Margin = new System.Windows.Forms.Padding(0);
             this._cutLeaveTB.TextBox.MaxLength = 1;
             this._cutLeaveTB.TextBox.Name = ".TextBox";
-            this._cutLeaveTB.TextBox.Size = new System.Drawing.Size(19, 20);
+            this._cutLeaveTB.TextBox.Size = new System.Drawing.Size(19, 22);
             this._cutLeaveTB.TextBox.TabIndex = 1;
             // 
             // _editCountsButton
@@ -670,7 +668,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this._tallyBySubpopCB.Dock = System.Windows.Forms.DockStyle.Left;
             this._tallyBySubpopCB.Location = new System.Drawing.Point(348, 3);
             this._tallyBySubpopCB.Name = "_tallyBySubpopCB";
-            this._tallyBySubpopCB.Size = new System.Drawing.Size(103, 26);
+            this._tallyBySubpopCB.Size = new System.Drawing.Size(153, 26);
             this._tallyBySubpopCB.TabIndex = 3;
             this._tallyBySubpopCB.Text = "Tally By Sub-populations";
             this._tallyBySubpopCB.UseVisualStyleBackColor = true;
@@ -682,7 +680,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.groupBox1.Location = new System.Drawing.Point(0, 101);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(457, 91);
+            this.groupBox1.Size = new System.Drawing.Size(668, 91);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             // 
@@ -702,12 +700,12 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.tableLayoutPanel2.Controls.Add(this._minKPITB, 4, 0);
             this.tableLayoutPanel2.Controls.Add(this._maxKPITB, 4, 1);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 16);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 18);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(451, 72);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(662, 70);
             this.tableLayoutPanel2.TabIndex = 153;
             // 
             // _FreqTB
@@ -723,16 +721,16 @@ namespace CruiseManager.WinForms.CruiseWizard
             this._FreqTB.Margin = new System.Windows.Forms.Padding(0);
             this._FreqTB.Name = "_FreqTB";
             this._FreqTB.Padding = new System.Windows.Forms.Padding(0, 0, 3, 0);
-            this._FreqTB.Size = new System.Drawing.Size(110, 36);
+            this._FreqTB.Size = new System.Drawing.Size(110, 35);
             this._FreqTB.TabIndex = 0;
             // 
             // 
             // 
             this._FreqTB.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._FreqTB.TextBox.Location = new System.Drawing.Point(70, 5);
+            this._FreqTB.TextBox.Location = new System.Drawing.Point(70, 4);
             this._FreqTB.TextBox.Margin = new System.Windows.Forms.Padding(0);
             this._FreqTB.TextBox.Name = ".TextBox";
-            this._FreqTB.TextBox.Size = new System.Drawing.Size(37, 20);
+            this._FreqTB.TextBox.Size = new System.Drawing.Size(37, 22);
             this._FreqTB.TextBox.TabIndex = 1;
             // 
             // _kzTB
@@ -747,16 +745,16 @@ namespace CruiseManager.WinForms.CruiseWizard
             this._kzTB.Location = new System.Drawing.Point(300, 0);
             this._kzTB.Margin = new System.Windows.Forms.Padding(0);
             this._kzTB.Name = "_kzTB";
-            this._kzTB.Size = new System.Drawing.Size(80, 36);
+            this._kzTB.Size = new System.Drawing.Size(80, 35);
             this._kzTB.TabIndex = 2;
             // 
             // 
             // 
             this._kzTB.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._kzTB.TextBox.Location = new System.Drawing.Point(30, 8);
+            this._kzTB.TextBox.Location = new System.Drawing.Point(30, 6);
             this._kzTB.TextBox.Margin = new System.Windows.Forms.Padding(0);
             this._kzTB.TextBox.Name = ".TextBox";
-            this._kzTB.TextBox.Size = new System.Drawing.Size(50, 20);
+            this._kzTB.TextBox.Size = new System.Drawing.Size(50, 22);
             this._kzTB.TextBox.TabIndex = 1;
             // 
             // _IFreqTB
@@ -772,16 +770,16 @@ namespace CruiseManager.WinForms.CruiseWizard
             this._IFreqTB.Margin = new System.Windows.Forms.Padding(0);
             this._IFreqTB.Name = "_IFreqTB";
             this._IFreqTB.Padding = new System.Windows.Forms.Padding(0, 0, 3, 0);
-            this._IFreqTB.Size = new System.Drawing.Size(110, 36);
+            this._IFreqTB.Size = new System.Drawing.Size(110, 35);
             this._IFreqTB.TabIndex = 1;
             // 
             // 
             // 
             this._IFreqTB.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._IFreqTB.TextBox.Location = new System.Drawing.Point(70, 5);
+            this._IFreqTB.TextBox.Location = new System.Drawing.Point(70, 4);
             this._IFreqTB.TextBox.Margin = new System.Windows.Forms.Padding(0);
             this._IFreqTB.TextBox.Name = ".TextBox";
-            this._IFreqTB.TextBox.Size = new System.Drawing.Size(37, 20);
+            this._IFreqTB.TextBox.Size = new System.Drawing.Size(37, 22);
             this._IFreqTB.TextBox.TabIndex = 1;
             // 
             // _DescriptionTB
@@ -792,21 +790,21 @@ namespace CruiseManager.WinForms.CruiseWizard
             this._DescriptionTB.LabelTextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             this._DescriptionTB.LabelWidth = 100F;
             this._DescriptionTB.LableText = "Description";
-            this._DescriptionTB.Location = new System.Drawing.Point(0, 36);
+            this._DescriptionTB.Location = new System.Drawing.Point(0, 35);
             this._DescriptionTB.Margin = new System.Windows.Forms.Padding(0);
             this._DescriptionTB.Name = "_DescriptionTB";
-            this._DescriptionTB.Size = new System.Drawing.Size(300, 36);
+            this._DescriptionTB.Size = new System.Drawing.Size(300, 35);
             this._DescriptionTB.TabIndex = 1;
             // 
             // 
             // 
             this._DescriptionTB.TextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.SampleGroupBindingSource, "Description", true));
             this._DescriptionTB.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._DescriptionTB.TextBox.Location = new System.Drawing.Point(100, 8);
+            this._DescriptionTB.TextBox.Location = new System.Drawing.Point(100, 6);
             this._DescriptionTB.TextBox.Margin = new System.Windows.Forms.Padding(0);
             this._DescriptionTB.TextBox.MaxLength = 25;
             this._DescriptionTB.TextBox.Name = ".TextBox";
-            this._DescriptionTB.TextBox.Size = new System.Drawing.Size(200, 20);
+            this._DescriptionTB.TextBox.Size = new System.Drawing.Size(200, 22);
             this._DescriptionTB.TextBox.TabIndex = 1;
             // 
             // _bigBAFTB
@@ -820,16 +818,16 @@ namespace CruiseManager.WinForms.CruiseWizard
             this._bigBAFTB.Location = new System.Drawing.Point(220, 0);
             this._bigBAFTB.Margin = new System.Windows.Forms.Padding(0);
             this._bigBAFTB.Name = "_bigBAFTB";
-            this._bigBAFTB.Size = new System.Drawing.Size(80, 36);
+            this._bigBAFTB.Size = new System.Drawing.Size(80, 35);
             this._bigBAFTB.TabIndex = 3;
             // 
             // 
             // 
             this._bigBAFTB.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._bigBAFTB.TextBox.Location = new System.Drawing.Point(50, 8);
+            this._bigBAFTB.TextBox.Location = new System.Drawing.Point(50, 6);
             this._bigBAFTB.TextBox.Margin = new System.Windows.Forms.Padding(0);
             this._bigBAFTB.TextBox.Name = ".TextBox";
-            this._bigBAFTB.TextBox.Size = new System.Drawing.Size(30, 20);
+            this._bigBAFTB.TextBox.Size = new System.Drawing.Size(30, 22);
             this._bigBAFTB.TextBox.TabIndex = 1;
             // 
             // _minKPITB
@@ -843,16 +841,16 @@ namespace CruiseManager.WinForms.CruiseWizard
             this._minKPITB.Location = new System.Drawing.Point(380, 0);
             this._minKPITB.Margin = new System.Windows.Forms.Padding(0);
             this._minKPITB.Name = "_minKPITB";
-            this._minKPITB.Size = new System.Drawing.Size(71, 36);
+            this._minKPITB.Size = new System.Drawing.Size(282, 35);
             this._minKPITB.TabIndex = 4;
             // 
             // 
             // 
             this._minKPITB.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._minKPITB.TextBox.Location = new System.Drawing.Point(35, 5);
+            this._minKPITB.TextBox.Location = new System.Drawing.Point(35, 4);
             this._minKPITB.TextBox.Margin = new System.Windows.Forms.Padding(0);
             this._minKPITB.TextBox.Name = ".TextBox";
-            this._minKPITB.TextBox.Size = new System.Drawing.Size(36, 20);
+            this._minKPITB.TextBox.Size = new System.Drawing.Size(247, 22);
             this._minKPITB.TextBox.TabIndex = 1;
             // 
             // _maxKPITB
@@ -863,19 +861,19 @@ namespace CruiseManager.WinForms.CruiseWizard
             this._maxKPITB.LabelTextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             this._maxKPITB.LabelWidth = 35F;
             this._maxKPITB.LableText = "Max KPI";
-            this._maxKPITB.Location = new System.Drawing.Point(380, 36);
+            this._maxKPITB.Location = new System.Drawing.Point(380, 35);
             this._maxKPITB.Margin = new System.Windows.Forms.Padding(0);
             this._maxKPITB.Name = "_maxKPITB";
-            this._maxKPITB.Size = new System.Drawing.Size(71, 36);
+            this._maxKPITB.Size = new System.Drawing.Size(282, 35);
             this._maxKPITB.TabIndex = 5;
             // 
             // 
             // 
             this._maxKPITB.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._maxKPITB.TextBox.Location = new System.Drawing.Point(35, 5);
+            this._maxKPITB.TextBox.Location = new System.Drawing.Point(35, 4);
             this._maxKPITB.TextBox.Margin = new System.Windows.Forms.Padding(0);
             this._maxKPITB.TextBox.Name = ".TextBox";
-            this._maxKPITB.TextBox.Size = new System.Drawing.Size(36, 20);
+            this._maxKPITB.TextBox.Size = new System.Drawing.Size(247, 22);
             this._maxKPITB.TextBox.TabIndex = 1;
             // 
             // TreeDefaultGridView
@@ -911,7 +909,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.TreeDefaultGridView.RowTemplate.Height = 24;
             this.TreeDefaultGridView.SelectedItems = null;
             this.TreeDefaultGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.TreeDefaultGridView.Size = new System.Drawing.Size(451, 79);
+            this.TreeDefaultGridView.Size = new System.Drawing.Size(662, 219);
             this.TreeDefaultGridView.TabIndex = 0;
             this.TreeDefaultGridView.VirtualMode = true;
             // 
@@ -923,7 +921,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.speciesDataGridViewTextBoxColumn.Name = "speciesDataGridViewTextBoxColumn";
             this.speciesDataGridViewTextBoxColumn.ReadOnly = true;
             this.speciesDataGridViewTextBoxColumn.ToolTipText = "Species Code";
-            this.speciesDataGridViewTextBoxColumn.Width = 77;
+            this.speciesDataGridViewTextBoxColumn.Width = 78;
             // 
             // primaryProductDataGridViewTextBoxColumn
             // 
@@ -933,7 +931,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.primaryProductDataGridViewTextBoxColumn.Name = "primaryProductDataGridViewTextBoxColumn";
             this.primaryProductDataGridViewTextBoxColumn.ReadOnly = true;
             this.primaryProductDataGridViewTextBoxColumn.ToolTipText = "Primary Product Code";
-            this.primaryProductDataGridViewTextBoxColumn.Width = 68;
+            this.primaryProductDataGridViewTextBoxColumn.Width = 70;
             // 
             // liveDeadDataGridViewTextBoxColumn
             // 
@@ -943,7 +941,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.liveDeadDataGridViewTextBoxColumn.Name = "liveDeadDataGridViewTextBoxColumn";
             this.liveDeadDataGridViewTextBoxColumn.ReadOnly = true;
             this.liveDeadDataGridViewTextBoxColumn.ToolTipText = "Default Live/Dead Code";
-            this.liveDeadDataGridViewTextBoxColumn.Width = 58;
+            this.liveDeadDataGridViewTextBoxColumn.Width = 57;
             // 
             // FIAcode
             // 
@@ -953,7 +951,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.FIAcode.Name = "FIAcode";
             this.FIAcode.ReadOnly = true;
             this.FIAcode.ToolTipText = "Three Digit FIA code";
-            this.FIAcode.Width = 72;
+            this.FIAcode.Width = 73;
             // 
             // cullPrimaryDataGridViewTextBoxColumn
             // 
@@ -963,7 +961,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.cullPrimaryDataGridViewTextBoxColumn.Name = "cullPrimaryDataGridViewTextBoxColumn";
             this.cullPrimaryDataGridViewTextBoxColumn.ReadOnly = true;
             this.cullPrimaryDataGridViewTextBoxColumn.ToolTipText = "Cull Defect Percent Primary Product";
-            this.cullPrimaryDataGridViewTextBoxColumn.Width = 56;
+            this.cullPrimaryDataGridViewTextBoxColumn.Width = 58;
             // 
             // hiddenPrimaryDataGridViewTextBoxColumn
             // 
@@ -973,7 +971,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.hiddenPrimaryDataGridViewTextBoxColumn.Name = "hiddenPrimaryDataGridViewTextBoxColumn";
             this.hiddenPrimaryDataGridViewTextBoxColumn.ReadOnly = true;
             this.hiddenPrimaryDataGridViewTextBoxColumn.ToolTipText = "Hidden Defect Percent Primary Product";
-            this.hiddenPrimaryDataGridViewTextBoxColumn.Width = 73;
+            this.hiddenPrimaryDataGridViewTextBoxColumn.Width = 76;
             // 
             // cullSecondaryDataGridViewTextBoxColumn
             // 
@@ -983,7 +981,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.cullSecondaryDataGridViewTextBoxColumn.Name = "cullSecondaryDataGridViewTextBoxColumn";
             this.cullSecondaryDataGridViewTextBoxColumn.ReadOnly = true;
             this.cullSecondaryDataGridViewTextBoxColumn.ToolTipText = "Cull Defect Percent Secondary Product";
-            this.cullSecondaryDataGridViewTextBoxColumn.Width = 56;
+            this.cullSecondaryDataGridViewTextBoxColumn.Width = 58;
             // 
             // hiddenSecondaryDataGridViewTextBoxColumn
             // 
@@ -993,7 +991,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.hiddenSecondaryDataGridViewTextBoxColumn.Name = "hiddenSecondaryDataGridViewTextBoxColumn";
             this.hiddenSecondaryDataGridViewTextBoxColumn.ReadOnly = true;
             this.hiddenSecondaryDataGridViewTextBoxColumn.ToolTipText = "Hidden Defect Percent Secondary Product";
-            this.hiddenSecondaryDataGridViewTextBoxColumn.Width = 73;
+            this.hiddenSecondaryDataGridViewTextBoxColumn.Width = 76;
             // 
             // recoverableDataGridViewTextBoxColumn
             // 
@@ -1003,7 +1001,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.recoverableDataGridViewTextBoxColumn.Name = "recoverableDataGridViewTextBoxColumn";
             this.recoverableDataGridViewTextBoxColumn.ReadOnly = true;
             this.recoverableDataGridViewTextBoxColumn.ToolTipText = "Percent Recoverable Product";
-            this.recoverableDataGridViewTextBoxColumn.Width = 63;
+            this.recoverableDataGridViewTextBoxColumn.Width = 62;
             // 
             // treeGradeDataGridViewTextBoxColumn
             // 
@@ -1013,7 +1011,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.treeGradeDataGridViewTextBoxColumn.Name = "treeGradeDataGridViewTextBoxColumn";
             this.treeGradeDataGridViewTextBoxColumn.ReadOnly = true;
             this.treeGradeDataGridViewTextBoxColumn.ToolTipText = "Default Tree Grade";
-            this.treeGradeDataGridViewTextBoxColumn.Width = 61;
+            this.treeGradeDataGridViewTextBoxColumn.Width = 63;
             // 
             // formClassDataGridViewTextBoxColumn
             // 
@@ -1023,7 +1021,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.formClassDataGridViewTextBoxColumn.Name = "formClassDataGridViewTextBoxColumn";
             this.formClassDataGridViewTextBoxColumn.ReadOnly = true;
             this.formClassDataGridViewTextBoxColumn.ToolTipText = "Default Form Class";
-            this.formClassDataGridViewTextBoxColumn.Width = 63;
+            this.formClassDataGridViewTextBoxColumn.Width = 64;
             // 
             // contractSpeciesDataGridViewTextBoxColumn
             // 
@@ -1033,7 +1031,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.contractSpeciesDataGridViewTextBoxColumn.Name = "contractSpeciesDataGridViewTextBoxColumn";
             this.contractSpeciesDataGridViewTextBoxColumn.ReadOnly = true;
             this.contractSpeciesDataGridViewTextBoxColumn.ToolTipText = "Contract Species Code";
-            this.contractSpeciesDataGridViewTextBoxColumn.Width = 85;
+            this.contractSpeciesDataGridViewTextBoxColumn.Width = 89;
             // 
             // merchHeightLogLengthDataGridViewTextBoxColumn
             // 
@@ -1043,7 +1041,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.merchHeightLogLengthDataGridViewTextBoxColumn.Name = "merchHeightLogLengthDataGridViewTextBoxColumn";
             this.merchHeightLogLengthDataGridViewTextBoxColumn.ReadOnly = true;
             this.merchHeightLogLengthDataGridViewTextBoxColumn.ToolTipText = "Merchantable Height Log Length (8,16,32)";
-            this.merchHeightLogLengthDataGridViewTextBoxColumn.Width = 85;
+            this.merchHeightLogLengthDataGridViewTextBoxColumn.Width = 86;
             // 
             // merchHeightTypeDataGridViewTextBoxColumn
             // 
@@ -1053,7 +1051,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.merchHeightTypeDataGridViewTextBoxColumn.Name = "merchHeightTypeDataGridViewTextBoxColumn";
             this.merchHeightTypeDataGridViewTextBoxColumn.ReadOnly = true;
             this.merchHeightTypeDataGridViewTextBoxColumn.ToolTipText = "Merchantable Height Type (L,F)";
-            this.merchHeightTypeDataGridViewTextBoxColumn.Width = 97;
+            this.merchHeightTypeDataGridViewTextBoxColumn.Width = 99;
             // 
             // barkThicknessRatioDataGridViewTextBoxColumn
             // 
@@ -1063,7 +1061,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.barkThicknessRatioDataGridViewTextBoxColumn.Name = "barkThicknessRatioDataGridViewTextBoxColumn";
             this.barkThicknessRatioDataGridViewTextBoxColumn.ReadOnly = true;
             this.barkThicknessRatioDataGridViewTextBoxColumn.ToolTipText = "Bark Thickness Ratio";
-            this.barkThicknessRatioDataGridViewTextBoxColumn.Width = 54;
+            this.barkThicknessRatioDataGridViewTextBoxColumn.Width = 51;
             // 
             // averageZDataGridViewTextBoxColumn
             // 
@@ -1073,7 +1071,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.averageZDataGridViewTextBoxColumn.Name = "averageZDataGridViewTextBoxColumn";
             this.averageZDataGridViewTextBoxColumn.ReadOnly = true;
             this.averageZDataGridViewTextBoxColumn.ToolTipText = "Average Z-Score";
-            this.averageZDataGridViewTextBoxColumn.Width = 58;
+            this.averageZDataGridViewTextBoxColumn.Width = 57;
             // 
             // referenceHeightPercentDataGridViewTextBoxColumn
             // 
@@ -1083,7 +1081,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.referenceHeightPercentDataGridViewTextBoxColumn.Name = "referenceHeightPercentDataGridViewTextBoxColumn";
             this.referenceHeightPercentDataGridViewTextBoxColumn.ReadOnly = true;
             this.referenceHeightPercentDataGridViewTextBoxColumn.ToolTipText = "Reference Height Percent";
-            this.referenceHeightPercentDataGridViewTextBoxColumn.Width = 76;
+            this.referenceHeightPercentDataGridViewTextBoxColumn.Width = 77;
             // 
             // TreeDefaultBindingSource
             // 
@@ -1099,13 +1097,13 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.panel7.Location = new System.Drawing.Point(166, 221);
             this.panel7.Margin = new System.Windows.Forms.Padding(0);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(457, 20);
+            this.panel7.Size = new System.Drawing.Size(668, 20);
             this.panel7.TabIndex = 147;
             // 
             // _newSubPopBTN
             // 
             this._newSubPopBTN.Dock = System.Windows.Forms.DockStyle.Right;
-            this._newSubPopBTN.Location = new System.Drawing.Point(381, 0);
+            this._newSubPopBTN.Location = new System.Drawing.Point(592, 0);
             this._newSubPopBTN.Name = "_newSubPopBTN";
             this._newSubPopBTN.Size = new System.Drawing.Size(39, 20);
             this._newSubPopBTN.TabIndex = 0;
@@ -1116,7 +1114,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             // _editSubPopBtn
             // 
             this._editSubPopBtn.Dock = System.Windows.Forms.DockStyle.Right;
-            this._editSubPopBtn.Location = new System.Drawing.Point(420, 0);
+            this._editSubPopBtn.Location = new System.Drawing.Point(631, 0);
             this._editSubPopBtn.Name = "_editSubPopBtn";
             this._editSubPopBtn.Size = new System.Drawing.Size(37, 20);
             this._editSubPopBtn.TabIndex = 1;
@@ -1133,7 +1131,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.label14.Margin = new System.Windows.Forms.Padding(0);
             this.label14.Name = "label14";
             this.label14.Padding = new System.Windows.Forms.Padding(5, 3, 0, 0);
-            this.label14.Size = new System.Drawing.Size(76, 16);
+            this.label14.Size = new System.Drawing.Size(79, 16);
             this.label14.TabIndex = 5;
             this.label14.Text = "Tree Defaults";
             // 
@@ -1149,9 +1147,10 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.StratumBindingNavigator);
+            this.Font = global::CruiseManager.Properties.Settings.Default.AppFont;
             this.MinimumSize = new System.Drawing.Size(630, 0);
             this.Name = "SampleGroupPage";
-            this.Size = new System.Drawing.Size(630, 406);
+            this.Size = new System.Drawing.Size(841, 546);
             ((System.ComponentModel.ISupportInitialize)(this.StratumBindingNavigator)).EndInit();
             this.StratumBindingNavigator.ResumeLayout(false);
             this.StratumBindingNavigator.PerformLayout();

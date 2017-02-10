@@ -93,27 +93,30 @@ namespace CruiseManager.Core.CruiseCustomize
 
         protected List<TreeFieldSetupDO> GetSelectedTreeFields(StratumDO stratum)
         {
-            return this.Database.Read<TreeFieldSetupDO>("TreeFieldSetup", "WHERE Stratum_CN = ? ORDER BY FieldOrder", stratum.Stratum_CN);
+            return Database.From<TreeFieldSetupDO>()
+                .Where("Stratum_CN = ?").OrderBy("FieldOrder").Read(stratum.Stratum_CN).ToList();
         }
 
         protected List<TreeFieldSetupDO> GetSelectedTreeFieldsDefault(StratumDO stratum)
         {
-            //select from TreeFieldSetupDefault where method = stratum.method
-            List<TreeFieldSetupDefaultDO> treeFieldDefaults = this.Database.Read<TreeFieldSetupDefaultDO>("TreeFieldSetupDefault", "WHERE Method = ? ORDER BY FieldOrder", stratum.Method);
+            var treeFieldDefaults = Database.From<TreeFieldSetupDefaultDO>()
+                .Where("Method = ?").OrderBy("FieldOrder").Read(stratum.Method);
 
-            List<TreeFieldSetupDO> treeFields = new List<TreeFieldSetupDO>();
+            var treeFields = new List<TreeFieldSetupDO>();
 
             foreach (TreeFieldSetupDefaultDO tfd in treeFieldDefaults)
             {
-                TreeFieldSetupDO tfs = new TreeFieldSetupDO();
-                tfs.Stratum_CN = stratum.Stratum_CN;
-                tfs.Field = tfd.Field;
-                tfs.FieldOrder = tfd.FieldOrder;
-                tfs.ColumnType = tfd.ColumnType;
-                tfs.Heading = tfd.Heading;
-                tfs.Width = tfd.Width;
-                tfs.Format = tfd.Format;
-                tfs.Behavior = tfd.Behavior;
+                var tfs = new TreeFieldSetupDO
+                {
+                    Stratum_CN = stratum.Stratum_CN,
+                    Field = tfd.Field,
+                    FieldOrder = tfd.FieldOrder,
+                    ColumnType = tfd.ColumnType,
+                    Heading = tfd.Heading,
+                    Width = tfd.Width,
+                    Format = tfd.Format,
+                    Behavior = tfd.Behavior
+                };
 
                 treeFields.Add(tfs);
             }
@@ -122,7 +125,8 @@ namespace CruiseManager.Core.CruiseCustomize
 
         protected List<LogFieldSetupDO> GetSelectedLogFields(StratumDO stratum)
         {
-            return this.Database.Read<LogFieldSetupDO>("LogFieldSetup", "WHERE Stratum_CN = ? ORDER BY FieldOrder", stratum.Stratum_CN);
+            return Database.From<LogFieldSetupDO>()
+                .Where("Stratum_CN = ?").OrderBy("FieldOrder").Read(stratum.Stratum_CN).ToList();
         }
 
         public bool HandleSave()

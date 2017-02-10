@@ -203,7 +203,7 @@
             this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBox1.Location = new System.Drawing.Point(128, 3);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(36, 20);
+            this.textBox1.Size = new System.Drawing.Size(36, 22);
             this.textBox1.TabIndex = 0;
             // 
             // label17
@@ -232,7 +232,7 @@
             this._speciesTB.Dock = System.Windows.Forms.DockStyle.Fill;
             this._speciesTB.Location = new System.Drawing.Point(62, 0);
             this._speciesTB.Name = "_speciesTB";
-            this._speciesTB.Size = new System.Drawing.Size(76, 20);
+            this._speciesTB.Size = new System.Drawing.Size(76, 22);
             this._speciesTB.TabIndex = 0;
             // 
             // label1
@@ -294,7 +294,7 @@
             this._LiveDeadTB.Dock = System.Windows.Forms.DockStyle.Fill;
             this._LiveDeadTB.Location = new System.Drawing.Point(56, 0);
             this._LiveDeadTB.Name = "_LiveDeadTB";
-            this._LiveDeadTB.Size = new System.Drawing.Size(108, 20);
+            this._LiveDeadTB.Size = new System.Drawing.Size(108, 22);
             this._LiveDeadTB.TabIndex = 0;
             // 
             // label3
@@ -416,7 +416,7 @@
             this._RecoverableTB.Dock = System.Windows.Forms.DockStyle.Fill;
             this._RecoverableTB.Location = new System.Drawing.Point(72, 3);
             this._RecoverableTB.Name = "_RecoverableTB";
-            this._RecoverableTB.Size = new System.Drawing.Size(66, 20);
+            this._RecoverableTB.Size = new System.Drawing.Size(66, 22);
             this._RecoverableTB.TabIndex = 0;
             // 
             // label8
@@ -456,7 +456,7 @@
             this._contractSpTB.Location = new System.Drawing.Point(104, 3);
             this._contractSpTB.MaxLength = 4;
             this._contractSpTB.Name = "_contractSpTB";
-            this._contractSpTB.Size = new System.Drawing.Size(60, 20);
+            this._contractSpTB.Size = new System.Drawing.Size(60, 22);
             this._contractSpTB.TabIndex = 0;
             // 
             // label10
@@ -487,7 +487,7 @@
             this._treeGradeTB.Dock = System.Windows.Forms.DockStyle.Fill;
             this._treeGradeTB.Location = new System.Drawing.Point(72, 3);
             this._treeGradeTB.Name = "_treeGradeTB";
-            this._treeGradeTB.Size = new System.Drawing.Size(66, 20);
+            this._treeGradeTB.Size = new System.Drawing.Size(66, 22);
             this._treeGradeTB.TabIndex = 0;
             // 
             // label11
@@ -518,7 +518,7 @@
             this._merchHghtLLTB.Dock = System.Windows.Forms.DockStyle.Fill;
             this._merchHghtLLTB.Location = new System.Drawing.Point(128, 3);
             this._merchHghtLLTB.Name = "_merchHghtLLTB";
-            this._merchHghtLLTB.Size = new System.Drawing.Size(69, 20);
+            this._merchHghtLLTB.Size = new System.Drawing.Size(69, 22);
             this._merchHghtLLTB.TabIndex = 0;
             // 
             // label12
@@ -548,7 +548,7 @@
             this._formClassTB.Dock = System.Windows.Forms.DockStyle.Fill;
             this._formClassTB.Location = new System.Drawing.Point(104, 3);
             this._formClassTB.Name = "_formClassTB";
-            this._formClassTB.Size = new System.Drawing.Size(34, 20);
+            this._formClassTB.Size = new System.Drawing.Size(34, 22);
             this._formClassTB.TabIndex = 0;
             // 
             // label13
@@ -579,7 +579,7 @@
             this._BTRTB.Dock = System.Windows.Forms.DockStyle.Fill;
             this._BTRTB.Location = new System.Drawing.Point(128, 3);
             this._BTRTB.Name = "_BTRTB";
-            this._BTRTB.Size = new System.Drawing.Size(36, 20);
+            this._BTRTB.Size = new System.Drawing.Size(36, 22);
             this._BTRTB.TabIndex = 0;
             // 
             // label14
@@ -610,7 +610,7 @@
             this._aveZTB.Dock = System.Windows.Forms.DockStyle.Fill;
             this._aveZTB.Location = new System.Drawing.Point(72, 3);
             this._aveZTB.Name = "_aveZTB";
-            this._aveZTB.Size = new System.Drawing.Size(125, 20);
+            this._aveZTB.Size = new System.Drawing.Size(125, 22);
             this._aveZTB.TabIndex = 0;
             // 
             // label15
@@ -641,7 +641,7 @@
             this._refHghtTB.Dock = System.Windows.Forms.DockStyle.Fill;
             this._refHghtTB.Location = new System.Drawing.Point(104, 3);
             this._refHghtTB.Name = "_refHghtTB";
-            this._refHghtTB.Size = new System.Drawing.Size(34, 20);
+            this._refHghtTB.Size = new System.Drawing.Size(34, 22);
             this._refHghtTB.TabIndex = 0;
             // 
             // label16
@@ -692,7 +692,7 @@
             this._FiaCodeTB.Location = new System.Drawing.Point(54, 0);
             this._FiaCodeTB.Margin = new System.Windows.Forms.Padding(2);
             this._FiaCodeTB.Name = "_FiaCodeTB";
-            this._FiaCodeTB.Size = new System.Drawing.Size(106, 20);
+            this._FiaCodeTB.Size = new System.Drawing.Size(106, 22);
             this._FiaCodeTB.TabIndex = 0;
             // 
             // label18
@@ -712,6 +712,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(499, 255);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.Font = global::CruiseManager.Properties.Settings.Default.AppFont;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "FormAddTreeDefault";
             _cullPPanel.ResumeLayout(false);

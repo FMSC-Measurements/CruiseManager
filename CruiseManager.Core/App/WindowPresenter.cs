@@ -103,7 +103,8 @@ namespace CruiseManager.Core.App
         {
             this.ApplicationController.NavigateTo<IHomeView>();
 
-            this.ApplicationController.MainWindow.Text = "Cruise Manager " + CruiseManager.Core.Constants.Version.VersionID;
+            var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            this.ApplicationController.MainWindow.Text = $"Cruise Manager {version}";
 
             this.ApplicationController.MainWindow.SetNavCommands(new BindableCommand[]
             {

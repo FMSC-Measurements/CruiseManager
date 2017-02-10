@@ -47,8 +47,9 @@
             this._tallyBySGRB = new System.Windows.Forms.RadioButton();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this._sampleGroup_PNL = new System.Windows.Forms.Panel();
-            this._systematicOptCB = new System.Windows.Forms.CheckBox();
+            this._tallyClickerCB = new System.Windows.Forms.CheckBox();
             this._BS_sampleGroups = new System.Windows.Forms.BindingSource(this.components);
+            this._systematicOptCB = new System.Windows.Forms.CheckBox();
             this._sampleGroupCB = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this._BS_CurTally)).BeginInit();
@@ -72,9 +73,9 @@
             this._GB_topLevelContainer.Controls.Add(this._GB_tallyFields);
             this._GB_topLevelContainer.Controls.Add(this.panel1);
             this._GB_topLevelContainer.Dock = System.Windows.Forms.DockStyle.Left;
-            this._GB_topLevelContainer.Location = new System.Drawing.Point(0, 35);
+            this._GB_topLevelContainer.Location = new System.Drawing.Point(0, 58);
             this._GB_topLevelContainer.Name = "_GB_topLevelContainer";
-            this._GB_topLevelContainer.Size = new System.Drawing.Size(336, 291);
+            this._GB_topLevelContainer.Size = new System.Drawing.Size(336, 268);
             this._GB_topLevelContainer.TabIndex = 5;
             this._GB_topLevelContainer.TabStop = false;
             // 
@@ -91,7 +92,7 @@
             this._GB_tallyFields.Location = new System.Drawing.Point(147, 18);
             this._GB_tallyFields.Name = "_GB_tallyFields";
             this._GB_tallyFields.Padding = new System.Windows.Forms.Padding(3, 3, 20, 3);
-            this._GB_tallyFields.Size = new System.Drawing.Size(186, 270);
+            this._GB_tallyFields.Size = new System.Drawing.Size(186, 247);
             this._GB_tallyFields.TabIndex = 7;
             this._GB_tallyFields.TabStop = false;
             // 
@@ -170,7 +171,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(3, 18);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(144, 270);
+            this.panel1.Size = new System.Drawing.Size(144, 247);
             this.panel1.TabIndex = 6;
             // 
             // _speciesGB
@@ -180,7 +181,7 @@
             this._speciesGB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this._speciesGB.Location = new System.Drawing.Point(0, 51);
             this._speciesGB.Name = "_speciesGB";
-            this._speciesGB.Size = new System.Drawing.Size(144, 219);
+            this._speciesGB.Size = new System.Drawing.Size(144, 196);
             this._speciesGB.TabIndex = 6;
             this._speciesGB.TabStop = false;
             this._speciesGB.Text = "Species";
@@ -194,7 +195,7 @@
             this._speciesLB.FormattingEnabled = true;
             this._speciesLB.Location = new System.Drawing.Point(3, 18);
             this._speciesLB.Name = "_speciesLB";
-            this._speciesLB.Size = new System.Drawing.Size(138, 198);
+            this._speciesLB.Size = new System.Drawing.Size(138, 175);
             this._speciesLB.TabIndex = 0;
             // 
             // _BS_SPList
@@ -250,31 +251,46 @@
             // 
             // _sampleGroup_PNL
             // 
+            this._sampleGroup_PNL.Controls.Add(this._tallyClickerCB);
             this._sampleGroup_PNL.Controls.Add(this._systematicOptCB);
             this._sampleGroup_PNL.Controls.Add(this._sampleGroupCB);
             this._sampleGroup_PNL.Controls.Add(this.label10);
             this._sampleGroup_PNL.Dock = System.Windows.Forms.DockStyle.Top;
             this._sampleGroup_PNL.Location = new System.Drawing.Point(0, 0);
             this._sampleGroup_PNL.Name = "_sampleGroup_PNL";
-            this._sampleGroup_PNL.Size = new System.Drawing.Size(461, 35);
+            this._sampleGroup_PNL.Size = new System.Drawing.Size(461, 58);
             this._sampleGroup_PNL.TabIndex = 11;
             // 
-            // _systematicOptCB
+            // _tallyClickerCB
             // 
-            this._systematicOptCB.AutoSize = true;
-            this._systematicOptCB.DataBindings.Add(new System.Windows.Forms.Binding("Checked", this._BS_sampleGroups, "UseSystematicSampling", true));
-            this._systematicOptCB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this._systematicOptCB.Location = new System.Drawing.Point(214, 7);
-            this._systematicOptCB.Name = "_systematicOptCB";
-            this._systematicOptCB.Size = new System.Drawing.Size(149, 17);
-            this._systematicOptCB.TabIndex = 14;
-            this._systematicOptCB.Text = "Use Systematic Sampling";
-            this._systematicOptCB.UseVisualStyleBackColor = true;
+            this._tallyClickerCB.AutoSize = true;
+            this._tallyClickerCB.DataBindings.Add(new System.Windows.Forms.Binding("Checked", this._BS_sampleGroups, "UseClickerTally", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this._tallyClickerCB.DataBindings.Add(new System.Windows.Forms.Binding("Enabled", this._BS_sampleGroups, "CanSelectClickerTally", true, System.Windows.Forms.DataSourceUpdateMode.Never));
+            this._tallyClickerCB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this._tallyClickerCB.Location = new System.Drawing.Point(162, 31);
+            this._tallyClickerCB.Name = "_tallyClickerCB";
+            this._tallyClickerCB.Size = new System.Drawing.Size(175, 17);
+            this._tallyClickerCB.TabIndex = 15;
+            this._tallyClickerCB.Text = "Use Tally Clicker For Sampling";
+            this._tallyClickerCB.UseVisualStyleBackColor = true;
             // 
             // _BS_sampleGroups
             // 
             this._BS_sampleGroups.DataSource = typeof(CruiseManager.Core.CruiseCustomize.TallySetupSampleGroup);
             this._BS_sampleGroups.CurrentChanged += new System.EventHandler(this._BS_sampleGroups_CurrentChanged);
+            // 
+            // _systematicOptCB
+            // 
+            this._systematicOptCB.AutoSize = true;
+            this._systematicOptCB.DataBindings.Add(new System.Windows.Forms.Binding("Checked", this._BS_sampleGroups, "UseSystematicSampling", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this._systematicOptCB.DataBindings.Add(new System.Windows.Forms.Binding("Enabled", this._BS_sampleGroups, "CanSelectSystematic", true, System.Windows.Forms.DataSourceUpdateMode.Never));
+            this._systematicOptCB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this._systematicOptCB.Location = new System.Drawing.Point(6, 30);
+            this._systematicOptCB.Name = "_systematicOptCB";
+            this._systematicOptCB.Size = new System.Drawing.Size(149, 17);
+            this._systematicOptCB.TabIndex = 14;
+            this._systematicOptCB.Text = "Use Systematic Sampling";
+            this._systematicOptCB.UseVisualStyleBackColor = true;
             // 
             // _sampleGroupCB
             // 
@@ -301,7 +317,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this._GB_topLevelContainer);
             this.Controls.Add(this._sampleGroup_PNL);
-            this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = global::CruiseManager.Properties.Settings.Default.AppFont;
             this.Name = "TallyEditPanel";
             this.Size = new System.Drawing.Size(461, 326);
             ((System.ComponentModel.ISupportInitialize)(this._BS_CurTally)).EndInit();
@@ -344,5 +360,6 @@
         private System.Windows.Forms.ComboBox _sampleGroupCB;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.BindingSource _BS_sampleGroups;
+        private System.Windows.Forms.CheckBox _tallyClickerCB;
     }
 }
