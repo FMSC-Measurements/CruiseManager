@@ -1,5 +1,6 @@
 ﻿using CruiseDAL;
 using CruiseManager.Core.FileMaintenance;
+using FMSC.ORM.EntityModel.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -402,16 +403,47 @@ namespace CruiseManager.Core.Components
 
             if (cmdBldr.HasGUIDKey)
             {
-                List<MergeObject> guidMatches = master.Query<MergeObject>(cmdBldr.SelectGUIDMatches);
-                this._workInCurrentJob += guidMatches.Count;
-                string setGuidMatch = "UPDATE " + cmdBldr.MergeTableName + " SET GUIDMatch = ? WHERE MergeRowID = ?;";
-                foreach (MergeObject mRec in guidMatches)
+                Dictionary<Guid, long> rowIDLookUp = new Dictionary<Guid, long>();
+
+                foreach (var pair in master.Query<GuidRowID>($"Select {cmdBldr.ClientGUIDFieldName} AS Guid, {cmdBldr.ClientPrimaryKey.Name} AS RecID FROM main.{cmdBldr.ClientTableName};"))
                 {
-                    CheckWorkerStatus();
-                    master.Execute(setGuidMatch, mRec.GUIDMatch, mRec.MergeRowID);
-                    this.NotifyProgressChanged(this._progressInCurrentJob++, false, null, null);
+                    rowIDLookUp.Add(pair.Guid, pair.RecID);
                 }
+
+                foreach (var mrgRec in master.Query<GuidRowID>($"Select MergeRowID AS RecID, ComponentRowGUID AS Guid FROM {cmdBldr.MergeTableName} WHERE ComponentRowGUID IS NOT NULL;"))
+                {
+                    try
+                    {
+                        if (rowIDLookUp.ContainsKey(mrgRec.Guid))
+                        {
+                            var match = rowIDLookUp[mrgRec.Guid];
+
+                            string setGuidMatch = $"UPDATE {cmdBldr.MergeTableName} SET GUIDMatch = {match} WHERE MergeRowID = {mrgRec.RecID};";
+                            master.Execute(setGuidMatch);
+                        }
+                    }
+                    catch { continue; }
+                }
+
+                //List <MergeObject> guidMatches = master.Query<MergeObject>(cmdBldr.SelectGUIDMatches);
+                //this._workInCurrentJob += guidMatches.Count;
+                //string setGuidMatch = "UPDATE " + cmdBldr.MergeTableName + " SET GUIDMatch = ? WHERE MergeRowID = ?;";
+                //foreach (MergeObject mRec in guidMatches)
+                //{
+                //    CheckWorkerStatus();
+                //    master.Execute(setGuidMatch, mRec.GUIDMatch, mRec.MergeRowID);
+                //    this.NotifyProgressChanged(this._progressInCurrentJob++, false, null, null);
+                //}
             }
+        }
+
+        private class GuidRowID
+        {
+            [Field("Guid")]
+            public Guid Guid { get; set; }
+
+            [Field("RecID")]
+            public long RecID { get; set; }
         }
 
         //private void ProcessMissingRecords(DAL mergeDB, MergeTableCommandBuilder commandBuider)
