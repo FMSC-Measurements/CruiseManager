@@ -234,7 +234,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             Sale = _database.From<SaleVM>().Read().FirstOrDefault() ?? new SaleVM(_database);
             CuttingUnits = new BindingListRedux<CuttingUnitDO>(_database.From<CuttingUnitDO>().Read().ToList());
 
-            CruiseMethods = new List<string>(CruiseMethodsDO.ReadCruiseMethodStr(_database, Sale.Purpose == "Recon"));
+            CruiseMethods = _database.GetCruiseMethods(Sale.Purpose == "Recon");
             //this.CruiseMethods = this._database.Read<CruiseMethod>("CruiseMethods", null);
             TreeDefaults = _database.From<TreeDefaultValueDO>().Read().ToList();
 

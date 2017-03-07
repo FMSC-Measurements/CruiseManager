@@ -118,7 +118,7 @@ namespace CruiseManager.Core.Components
         private ColumnInfo ClientGUIDKeyField { get; set; }
         public ColumnInfo ClientPrimaryKey { get; private set; }
 
-        private string ClientGUIDFieldName
+        public string ClientGUIDFieldName
         {
             get
             {
@@ -463,34 +463,46 @@ namespace CruiseManager.Core.Components
         {
             get
             {
+                string condition;
                 List<string> conditions = new List<string>(3);
 
                 //if (this.DoGUIDMatch)
                 //{
                 //    conditions.Add("GUIDMatch IS NOT NULL");
                 //}
-                if (this.DoKeyMatch)
+                if (DoGUIDMatch)
                 {
-                    conditions.Add("RowIDMatch IS NOT NULL");
+                    condition = " WHERE GUIDMatch IS NOT Null OR RowIDMatch = NaturalMatch";
                 }
-                if (this.DoNaturalMatch)
+                else
                 {
-                    conditions.Add("NaturalMatch IS NOT NULL");
-                }
-                if (this.DoGUIDMatch && this.DoNaturalMatch)
-                {
-                    conditions.Add("(GUIDMatch IS NULL OR GUIDMatch = NaturalMatch)");
-                }
-                if (this.DoGUIDMatch && this.DoKeyMatch)
-                {
-                    conditions.Add("(GUIDMatch IS NULL OR RowIDMatch = GUIDMatch)");
-                }
-                if (this.DoNaturalMatch && this.DoKeyMatch)
-                {
-                    conditions.Add("NaturalMatch = RowIDMatch");
+                    condition = " WHERE (RowIDMatch IS NOT NULL AND RowIDMatch = NaturalMatch)";
                 }
 
-                return " WHERE " + string.Join(" AND ", conditions.ToArray());
+                return condition;
+
+                //if (this.DoKeyMatch)
+                //{
+                //    conditions.Add("RowIDMatch IS NOT NULL");
+                //}
+                //if (this.DoNaturalMatch)
+                //{
+                //    conditions.Add("NaturalMatch IS NOT NULL");
+                //}
+                //if (this.DoGUIDMatch && this.DoNaturalMatch)
+                //{
+                //    conditions.Add("(GUIDMatch IS NULL OR GUIDMatch = NaturalMatch)");
+                //}
+                //if (this.DoGUIDMatch && this.DoKeyMatch)
+                //{
+                //    conditions.Add("(GUIDMatch IS NULL OR RowIDMatch = GUIDMatch)");
+                //}
+                //if (this.DoNaturalMatch && this.DoKeyMatch)
+                //{
+                //    conditions.Add("NaturalMatch = RowIDMatch");
+                //}
+
+                //return " WHERE " + string.Join(" AND ", conditions.ToArray());
             }
         }
 

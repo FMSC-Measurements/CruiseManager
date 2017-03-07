@@ -1,2 +1,0 @@
-The Cruise Manager
-Version 2013.10.30
