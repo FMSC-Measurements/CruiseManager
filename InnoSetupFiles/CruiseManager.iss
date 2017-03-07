@@ -3,20 +3,34 @@
 ; #defines require the ISPP add-on: http://sourceforge.net/projects/ispp/
 #define APP "Cruise Manager"
 ;
-#define VERSION "2017.02.13"
+#define VERSION "2017.03.06"
 ;version format for setup file name
-#define SETUPVERSION "20170213";  
+#define SETUPVERSION "20170306";  
 #define SPECIALTAG ""
 #define BASEURL "http://www.fs.fed.us/fmsc/measure"
 #define ORGANIZATION "U.S. Forest Service, Forest Management Service Center"
 #define EXEName "CruiseManager.exe"
 
 [Setup]
+;value displayed throught the setup. 
+;used as default value for AppId, VersionInfoDescription and VersionInfoProductName 
 AppName={#APP}
-AppMutex={#APP}
+;used to prevent user from installing/uninstalling while app is running
+;requires app code to create a mutex while program is running
+AppMutex=CruiseManager
+;not displayed in ui. used for uninstall registry key and where install detects previouse install settings
+;defaults to AppName
 AppID={#APP}
-AppVerName={#APP} version {#VERSION}
+;used as default value for AppVerName. displayed in version field of app's add/remove entry
+;used to provide major/minor version values in registry entry
 AppVersion={#VERSION}
+;app name plus version number
+;used as title in add/remove programs entry
+;required if AppVersion not provided
+AppVerName={#APP} version {#VERSION}
+
+LicenseFile=..\LICENSE.md
+
 AppPublisher={#ORGANIZATION}
 AppPublisherURL={#BASEURL}
 AppSupportURL={#BASEURL}/support.shtml
@@ -24,26 +38,28 @@ AppUpdatesURL={#BASEURL}/cruising/index.shtml
 
 DefaultDirName={pf32}\FMSC\{#APP}
 DefaultGroupName=FMSC\{#APP}
-;InfoBeforeFile="Intro.txt"
 
-VersionInfoDescription={#APP} Setup
-VersionInfoCompany={#ORGANIZATION}
+;specifies the file version on the setup exe
 VersionInfoVersion={#VERSION}
 
 Compression=lzma
+;causes all files to be compressed together
+;this is less effecent if some files don't need to be installed 
 SolidCompression=yes
 PrivilegesRequired=admin
+;causes installer to notify windows that environment variables have been changed
 ChangesEnvironment=yes
+;notifys windows that file associations have changed when installer exits
 ChangesAssociations=yes
+
+;dont allow program to be installed on network drives
 AllowUNCPath=no
-AllowNoIcons=yes
-ShowLanguageDialog=no
+AllowNetworkDrive=no
+
+
 
 OutputBaseFilename=CruiseManager_Setup_{#SETUPVERSION}
 OutputManifestFile=Setup-Manifest.txt
-
-[Languages]
-Name: english; MessagesFile: compiler:Default.isl
 
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons};
