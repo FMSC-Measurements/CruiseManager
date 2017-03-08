@@ -548,7 +548,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             // 
             // PrimaryProductComboBox
             // 
-            this.PrimaryProductComboBox.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.SampleGroupBindingSource, "PrimaryProduct", true));
+            this.PrimaryProductComboBox.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.SampleGroupBindingSource, "PrimaryProduct", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.PrimaryProductComboBox.DataSource = this.PrimaryProductBindingSource;
             this.PrimaryProductComboBox.DisplayMember = "FriendlyValue";
             this.PrimaryProductComboBox.FormattingEnabled = true;
