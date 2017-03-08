@@ -31,6 +31,19 @@ namespace CruiseManager.WinForms.CruiseWizard
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.Label label2;
+            System.Windows.Forms.Label label3;
+            System.Windows.Forms.Label label4;
+            System.Windows.Forms.Label label5;
+            System.Windows.Forms.Label label6;
+            System.Windows.Forms.Label label7;
+            System.Windows.Forms.Label label8;
+            System.Windows.Forms.Label label9;
+            System.Windows.Forms.Label label10;
+            System.Windows.Forms.Label label11;
+            System.Windows.Forms.Label label12;
+            System.Windows.Forms.Label label13;
+            System.Windows.Forms.Label label15;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SampleGroupPage));
             this.StratumBindingNavigator = new System.Windows.Forms.BindingNavigator(this.components);
             this.StratumBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -61,33 +74,24 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this._FreqTB = new System.Windows.Forms.TextBox();
+            this._IFreqTB = new System.Windows.Forms.TextBox();
+            this._bigBAFTB = new System.Windows.Forms.TextBox();
+            this._kzTB = new System.Windows.Forms.TextBox();
+            this._minKPITB = new System.Windows.Forms.TextBox();
+            this.textBox6 = new System.Windows.Forms.TextBox();
+            this._maxKPITB = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.CodeTextBox = new FMSC.Controls.SideLabelTextBox();
-            this.panel6 = new System.Windows.Forms.Panel();
-            this.SecondaryProductComboBox = new System.Windows.Forms.ComboBox();
-            this.SecondaryProductBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.label4 = new System.Windows.Forms.Label();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
             this.PrimaryProductComboBox = new System.Windows.Forms.ComboBox();
             this.PrimaryProductBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
+            this.SecondaryProductComboBox = new System.Windows.Forms.ComboBox();
+            this.SecondaryProductBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.UOMComboBox = new System.Windows.Forms.ComboBox();
             this.UOMBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.LDTextBox = new FMSC.Controls.SideLabelTextBox();
-            this._cutLeaveTB = new FMSC.Controls.SideLabelTextBox();
-            this._editCountsButton = new System.Windows.Forms.Button();
-            this._tallyBySubpopCB = new System.Windows.Forms.CheckBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this._FreqTB = new FMSC.Controls.SideLabelTextBox();
-            this._kzTB = new FMSC.Controls.SideLabelTextBox();
-            this._IFreqTB = new FMSC.Controls.SideLabelTextBox();
-            this._DescriptionTB = new FMSC.Controls.SideLabelTextBox();
-            this._bigBAFTB = new FMSC.Controls.SideLabelTextBox();
-            this._minKPITB = new FMSC.Controls.SideLabelTextBox();
-            this._maxKPITB = new FMSC.Controls.SideLabelTextBox();
+            this.CodeTextBox = new System.Windows.Forms.TextBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.TreeDefaultGridView = new FMSC.Controls.SelectedItemsGridView();
             this.speciesDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.primaryProductDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -112,6 +116,19 @@ namespace CruiseManager.WinForms.CruiseWizard
             this._editSubPopBtn = new System.Windows.Forms.Button();
             this.label14 = new System.Windows.Forms.Label();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            label2 = new System.Windows.Forms.Label();
+            label3 = new System.Windows.Forms.Label();
+            label4 = new System.Windows.Forms.Label();
+            label5 = new System.Windows.Forms.Label();
+            label6 = new System.Windows.Forms.Label();
+            label7 = new System.Windows.Forms.Label();
+            label8 = new System.Windows.Forms.Label();
+            label9 = new System.Windows.Forms.Label();
+            label10 = new System.Windows.Forms.Label();
+            label11 = new System.Windows.Forms.Label();
+            label12 = new System.Windows.Forms.Label();
+            label13 = new System.Windows.Forms.Label();
+            label15 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.StratumBindingNavigator)).BeginInit();
             this.StratumBindingNavigator.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.StratumBindingSource)).BeginInit();
@@ -122,20 +139,164 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.panel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
-            this.panel6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.SecondaryProductBindingSource)).BeginInit();
-            this.panel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PrimaryProductBindingSource)).BeginInit();
-            this.panel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SecondaryProductBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.UOMBindingSource)).BeginInit();
-            this.groupBox1.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TreeDefaultGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TreeDefaultBindingSource)).BeginInit();
             this.panel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Dock = System.Windows.Forms.DockStyle.Fill;
+            label2.Location = new System.Drawing.Point(180, 64);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(103, 32);
+            label2.TabIndex = 145;
+            label2.Text = "UOM";
+            label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Dock = System.Windows.Forms.DockStyle.Fill;
+            label3.Location = new System.Drawing.Point(180, 0);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(103, 32);
+            label3.TabIndex = 147;
+            label3.Text = "Primary Product";
+            label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Dock = System.Windows.Forms.DockStyle.Fill;
+            label4.Location = new System.Drawing.Point(180, 32);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(103, 32);
+            label4.TabIndex = 149;
+            label4.Text = "Secondary Product";
+            label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Dock = System.Windows.Forms.DockStyle.Fill;
+            label5.Location = new System.Drawing.Point(6, 0);
+            label5.Name = "label5";
+            label5.Size = new System.Drawing.Size(98, 32);
+            label5.TabIndex = 6;
+            label5.Text = "SG Code";
+            label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Dock = System.Windows.Forms.DockStyle.Fill;
+            label6.Location = new System.Drawing.Point(6, 32);
+            label6.Name = "label6";
+            label6.Size = new System.Drawing.Size(98, 32);
+            label6.TabIndex = 7;
+            label6.Text = "Cut/Leave";
+            label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Dock = System.Windows.Forms.DockStyle.Fill;
+            label7.Location = new System.Drawing.Point(6, 64);
+            label7.Name = "label7";
+            label7.Size = new System.Drawing.Size(98, 32);
+            label7.TabIndex = 8;
+            label7.Text = "Default Live/Dead";
+            label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Dock = System.Windows.Forms.DockStyle.Fill;
+            label8.Location = new System.Drawing.Point(3, 0);
+            label8.Name = "label8";
+            label8.Size = new System.Drawing.Size(84, 28);
+            label8.TabIndex = 0;
+            label8.Text = "Sampling Freq.";
+            label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Dock = System.Windows.Forms.DockStyle.Fill;
+            label9.Location = new System.Drawing.Point(133, 0);
+            label9.Name = "label9";
+            label9.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            label9.Size = new System.Drawing.Size(96, 28);
+            label9.TabIndex = 2;
+            label9.Text = "Insurance Freq.";
+            label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Dock = System.Windows.Forms.DockStyle.Fill;
+            label10.Location = new System.Drawing.Point(275, 0);
+            label10.Name = "label10";
+            label10.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            label10.Size = new System.Drawing.Size(57, 28);
+            label10.TabIndex = 4;
+            label10.Text = "Big BAF";
+            label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Dock = System.Windows.Forms.DockStyle.Fill;
+            label11.Location = new System.Drawing.Point(389, 0);
+            label11.Name = "label11";
+            label11.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            label11.Size = new System.Drawing.Size(29, 28);
+            label11.TabIndex = 6;
+            label11.Text = "KZ";
+            label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Dock = System.Windows.Forms.DockStyle.Fill;
+            label12.Location = new System.Drawing.Point(475, 0);
+            label12.Name = "label12";
+            label12.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            label12.Size = new System.Drawing.Size(56, 28);
+            label12.TabIndex = 8;
+            label12.Text = "Min KPI";
+            label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Dock = System.Windows.Forms.DockStyle.Fill;
+            label13.Location = new System.Drawing.Point(3, 28);
+            label13.Name = "label13";
+            label13.Size = new System.Drawing.Size(84, 28);
+            label13.TabIndex = 10;
+            label13.Text = "Description";
+            label13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label15
+            // 
+            label15.AutoSize = true;
+            label15.Dock = System.Windows.Forms.DockStyle.Fill;
+            label15.Location = new System.Drawing.Point(475, 28);
+            label15.Name = "label15";
+            label15.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            label15.Size = new System.Drawing.Size(56, 28);
+            label15.TabIndex = 12;
+            label15.Text = "Max KPI";
+            label15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // StratumBindingNavigator
             // 
@@ -429,31 +590,135 @@ namespace CruiseManager.WinForms.CruiseWizard
             // 
             // panel3
             // 
+            this.panel3.AutoScroll = true;
+            this.panel3.AutoSize = true;
+            this.panel3.Controls.Add(this.tableLayoutPanel4);
             this.panel3.Controls.Add(this.tableLayoutPanel3);
-            this.panel3.Controls.Add(this.groupBox1);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(166, 26);
             this.panel3.Margin = new System.Windows.Forms.Padding(0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(668, 192);
+            this.panel3.Size = new System.Drawing.Size(668, 152);
             this.panel3.TabIndex = 0;
+            // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.AutoSize = true;
+            this.tableLayoutPanel4.ColumnCount = 10;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.Controls.Add(label8, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this._FreqTB, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(label9, 2, 0);
+            this.tableLayoutPanel4.Controls.Add(this._IFreqTB, 3, 0);
+            this.tableLayoutPanel4.Controls.Add(label10, 4, 0);
+            this.tableLayoutPanel4.Controls.Add(this._bigBAFTB, 5, 0);
+            this.tableLayoutPanel4.Controls.Add(label11, 6, 0);
+            this.tableLayoutPanel4.Controls.Add(this._kzTB, 7, 0);
+            this.tableLayoutPanel4.Controls.Add(label12, 8, 0);
+            this.tableLayoutPanel4.Controls.Add(this._minKPITB, 9, 0);
+            this.tableLayoutPanel4.Controls.Add(label13, 0, 1);
+            this.tableLayoutPanel4.Controls.Add(this.textBox6, 1, 1);
+            this.tableLayoutPanel4.Controls.Add(label15, 8, 1);
+            this.tableLayoutPanel4.Controls.Add(this._maxKPITB, 9, 1);
+            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 96);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 2;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(668, 56);
+            this.tableLayoutPanel4.TabIndex = 3;
+            // 
+            // _FreqTB
+            // 
+            this._FreqTB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.SampleGroupBindingSource, "SamplingFrequency", true));
+            this._FreqTB.Location = new System.Drawing.Point(93, 3);
+            this._FreqTB.Name = "_FreqTB";
+            this._FreqTB.Size = new System.Drawing.Size(34, 22);
+            this._FreqTB.TabIndex = 1;
+            // 
+            // _IFreqTB
+            // 
+            this._IFreqTB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.SampleGroupBindingSource, "InsuranceFrequency", true));
+            this._IFreqTB.Location = new System.Drawing.Point(235, 3);
+            this._IFreqTB.Name = "_IFreqTB";
+            this._IFreqTB.Size = new System.Drawing.Size(34, 22);
+            this._IFreqTB.TabIndex = 3;
+            // 
+            // _bigBAFTB
+            // 
+            this._bigBAFTB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.SampleGroupBindingSource, "BigBAF", true));
+            this._bigBAFTB.Location = new System.Drawing.Point(338, 3);
+            this._bigBAFTB.Name = "_bigBAFTB";
+            this._bigBAFTB.Size = new System.Drawing.Size(45, 22);
+            this._bigBAFTB.TabIndex = 5;
+            // 
+            // _kzTB
+            // 
+            this._kzTB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.SampleGroupBindingSource, "KZ", true));
+            this._kzTB.Location = new System.Drawing.Point(424, 3);
+            this._kzTB.Name = "_kzTB";
+            this._kzTB.Size = new System.Drawing.Size(45, 22);
+            this._kzTB.TabIndex = 7;
+            // 
+            // _minKPITB
+            // 
+            this._minKPITB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.SampleGroupBindingSource, "MinKPI", true));
+            this._minKPITB.Location = new System.Drawing.Point(537, 3);
+            this._minKPITB.Name = "_minKPITB";
+            this._minKPITB.Size = new System.Drawing.Size(45, 22);
+            this._minKPITB.TabIndex = 9;
+            // 
+            // textBox6
+            // 
+            this.tableLayoutPanel4.SetColumnSpan(this.textBox6, 4);
+            this.textBox6.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.SampleGroupBindingSource, "Description", true));
+            this.textBox6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox6.Location = new System.Drawing.Point(93, 31);
+            this.textBox6.Name = "textBox6";
+            this.textBox6.Size = new System.Drawing.Size(239, 22);
+            this.textBox6.TabIndex = 11;
+            // 
+            // _maxKPITB
+            // 
+            this._maxKPITB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.SampleGroupBindingSource, "MaxKPI", true));
+            this._maxKPITB.Location = new System.Drawing.Point(537, 31);
+            this._maxKPITB.Name = "_maxKPITB";
+            this._maxKPITB.Size = new System.Drawing.Size(45, 22);
+            this._maxKPITB.TabIndex = 13;
             // 
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.AutoSize = true;
             this.tableLayoutPanel3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel3.ColumnCount = 3;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 112F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 230F));
+            this.tableLayoutPanel3.ColumnCount = 6;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Controls.Add(this.CodeTextBox, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.panel6, 1, 1);
-            this.tableLayoutPanel3.Controls.Add(this.panel5, 1, 0);
-            this.tableLayoutPanel3.Controls.Add(this.panel4, 1, 2);
-            this.tableLayoutPanel3.Controls.Add(this.LDTextBox, 0, 2);
-            this.tableLayoutPanel3.Controls.Add(this._cutLeaveTB, 0, 1);
-            this.tableLayoutPanel3.Controls.Add(this._editCountsButton, 2, 1);
-            this.tableLayoutPanel3.Controls.Add(this._tallyBySubpopCB, 2, 0);
+            this.tableLayoutPanel3.Controls.Add(this.PrimaryProductComboBox, 4, 0);
+            this.tableLayoutPanel3.Controls.Add(this.SecondaryProductComboBox, 4, 1);
+            this.tableLayoutPanel3.Controls.Add(this.UOMComboBox, 4, 2);
+            this.tableLayoutPanel3.Controls.Add(label2, 3, 2);
+            this.tableLayoutPanel3.Controls.Add(label3, 3, 0);
+            this.tableLayoutPanel3.Controls.Add(label4, 3, 1);
+            this.tableLayoutPanel3.Controls.Add(label5, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(label6, 0, 1);
+            this.tableLayoutPanel3.Controls.Add(label7, 0, 2);
+            this.tableLayoutPanel3.Controls.Add(this.CodeTextBox, 1, 0);
+            this.tableLayoutPanel3.Controls.Add(this.comboBox1, 1, 1);
+            this.tableLayoutPanel3.Controls.Add(this.comboBox2, 1, 2);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
@@ -466,95 +731,16 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.tableLayoutPanel3.Size = new System.Drawing.Size(668, 96);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
-            // CodeTextBox
-            // 
-            this.CodeTextBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.CodeTextBox.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this.CodeTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.SampleGroupBindingSource, "Code", true));
-            this.CodeTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CodeTextBox.LabelTextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this.CodeTextBox.LabelWidth = 75F;
-            this.CodeTextBox.LableText = "SG Code";
-            this.CodeTextBox.Location = new System.Drawing.Point(3, 0);
-            this.CodeTextBox.Margin = new System.Windows.Forms.Padding(0);
-            this.CodeTextBox.Name = "CodeTextBox";
-            this.CodeTextBox.Padding = new System.Windows.Forms.Padding(0, 0, 3, 0);
-            this.CodeTextBox.Size = new System.Drawing.Size(112, 32);
-            this.CodeTextBox.TabIndex = 0;
-            // 
-            // 
-            // 
-            this.CodeTextBox.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CodeTextBox.TextBox.Location = new System.Drawing.Point(75, 5);
-            this.CodeTextBox.TextBox.Margin = new System.Windows.Forms.Padding(0);
-            this.CodeTextBox.TextBox.MaxLength = 2;
-            this.CodeTextBox.TextBox.Name = ".TextBox";
-            this.CodeTextBox.TextBox.Size = new System.Drawing.Size(34, 22);
-            this.CodeTextBox.TextBox.TabIndex = 1;
-            // 
-            // panel6
-            // 
-            this.panel6.Controls.Add(this.SecondaryProductComboBox);
-            this.panel6.Controls.Add(this.label4);
-            this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel6.Location = new System.Drawing.Point(118, 35);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(224, 26);
-            this.panel6.TabIndex = 3;
-            // 
-            // SecondaryProductComboBox
-            // 
-            this.SecondaryProductComboBox.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.SampleGroupBindingSource, "SecondaryProduct", true));
-            this.SecondaryProductComboBox.DataSource = this.SecondaryProductBindingSource;
-            this.SecondaryProductComboBox.DisplayMember = "FriendlyValue";
-            this.SecondaryProductComboBox.FormattingEnabled = true;
-            this.SecondaryProductComboBox.Location = new System.Drawing.Point(107, 4);
-            this.SecondaryProductComboBox.Name = "SecondaryProductComboBox";
-            this.SecondaryProductComboBox.Size = new System.Drawing.Size(118, 21);
-            this.SecondaryProductComboBox.TabIndex = 0;
-            this.SecondaryProductComboBox.ValueMember = "Code";
-            // 
-            // SecondaryProductBindingSource
-            // 
-            this.SecondaryProductBindingSource.DataSource = typeof(CruiseManager.Core.SetupModels.ProductCode);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 7);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(103, 13);
-            this.label4.TabIndex = 149;
-            this.label4.Text = "Secondary Product";
-            // 
-            // panel5
-            // 
-            this.panel5.Controls.Add(this.label3);
-            this.panel5.Controls.Add(this.PrimaryProductComboBox);
-            this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel5.Location = new System.Drawing.Point(118, 3);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(224, 26);
-            this.panel5.TabIndex = 1;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 8);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(87, 13);
-            this.label3.TabIndex = 147;
-            this.label3.Text = "Primary Product";
-            // 
             // PrimaryProductComboBox
             // 
             this.PrimaryProductComboBox.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.SampleGroupBindingSource, "PrimaryProduct", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.PrimaryProductComboBox.DataSource = this.PrimaryProductBindingSource;
             this.PrimaryProductComboBox.DisplayMember = "FriendlyValue";
+            this.PrimaryProductComboBox.Dock = System.Windows.Forms.DockStyle.Left;
             this.PrimaryProductComboBox.FormattingEnabled = true;
-            this.PrimaryProductComboBox.Location = new System.Drawing.Point(106, 3);
+            this.PrimaryProductComboBox.Location = new System.Drawing.Point(289, 3);
             this.PrimaryProductComboBox.Name = "PrimaryProductComboBox";
-            this.PrimaryProductComboBox.Size = new System.Drawing.Size(118, 21);
+            this.PrimaryProductComboBox.Size = new System.Drawing.Size(113, 21);
             this.PrimaryProductComboBox.TabIndex = 0;
             this.PrimaryProductComboBox.ValueMember = "Code";
             // 
@@ -562,36 +748,35 @@ namespace CruiseManager.WinForms.CruiseWizard
             // 
             this.PrimaryProductBindingSource.DataSource = typeof(CruiseManager.Core.SetupModels.ProductCode);
             // 
-            // panel4
+            // SecondaryProductComboBox
             // 
-            this.panel4.Controls.Add(this.label2);
-            this.panel4.Controls.Add(this.UOMComboBox);
-            this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(118, 67);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(224, 26);
-            this.panel4.TabIndex = 5;
+            this.SecondaryProductComboBox.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.SampleGroupBindingSource, "SecondaryProduct", true));
+            this.SecondaryProductComboBox.DataSource = this.SecondaryProductBindingSource;
+            this.SecondaryProductComboBox.DisplayMember = "FriendlyValue";
+            this.SecondaryProductComboBox.Dock = System.Windows.Forms.DockStyle.Left;
+            this.SecondaryProductComboBox.FormattingEnabled = true;
+            this.SecondaryProductComboBox.Location = new System.Drawing.Point(289, 35);
+            this.SecondaryProductComboBox.Name = "SecondaryProductComboBox";
+            this.SecondaryProductComboBox.Size = new System.Drawing.Size(113, 21);
+            this.SecondaryProductComboBox.TabIndex = 0;
+            this.SecondaryProductComboBox.ValueMember = "Code";
             // 
-            // label2
+            // SecondaryProductBindingSource
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 6);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(34, 13);
-            this.label2.TabIndex = 145;
-            this.label2.Text = "UOM";
+            this.SecondaryProductBindingSource.DataSource = typeof(CruiseManager.Core.SetupModels.ProductCode);
             // 
             // UOMComboBox
             // 
             this.UOMComboBox.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.SampleGroupBindingSource, "UOM", true));
             this.UOMComboBox.DataSource = this.UOMBindingSource;
             this.UOMComboBox.DisplayMember = "DisplayValue";
+            this.UOMComboBox.Dock = System.Windows.Forms.DockStyle.Left;
             this.UOMComboBox.Enabled = false;
             this.UOMComboBox.FormatString = "[Code] - [FriendlyValue]";
             this.UOMComboBox.FormattingEnabled = true;
-            this.UOMComboBox.Location = new System.Drawing.Point(107, 3);
+            this.UOMComboBox.Location = new System.Drawing.Point(289, 67);
             this.UOMComboBox.Name = "UOMComboBox";
-            this.UOMComboBox.Size = new System.Drawing.Size(117, 21);
+            this.UOMComboBox.Size = new System.Drawing.Size(113, 21);
             this.UOMComboBox.TabIndex = 0;
             this.UOMComboBox.ValueMember = "Code";
             // 
@@ -599,283 +784,39 @@ namespace CruiseManager.WinForms.CruiseWizard
             // 
             this.UOMBindingSource.DataSource = typeof(CruiseManager.Core.SetupModels.UOMCode);
             // 
-            // LDTextBox
+            // CodeTextBox
             // 
-            this.LDTextBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.LDTextBox.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this.LDTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.SampleGroupBindingSource, "DefaultLiveDead", true));
-            this.LDTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LDTextBox.LabelTextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this.LDTextBox.LabelWidth = 90F;
-            this.LDTextBox.LableText = "Default Live/Dead";
-            this.LDTextBox.Location = new System.Drawing.Point(3, 64);
-            this.LDTextBox.Margin = new System.Windows.Forms.Padding(0);
-            this.LDTextBox.Name = "LDTextBox";
-            this.LDTextBox.Padding = new System.Windows.Forms.Padding(0, 0, 3, 0);
-            this.LDTextBox.Size = new System.Drawing.Size(112, 32);
-            this.LDTextBox.TabIndex = 2;
+            this.CodeTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.SampleGroupBindingSource, "Code", true, System.Windows.Forms.DataSourceUpdateMode.OnValidation, null, "D2"));
+            this.CodeTextBox.Location = new System.Drawing.Point(110, 3);
+            this.CodeTextBox.MaxLength = 2;
+            this.CodeTextBox.Name = "CodeTextBox";
+            this.CodeTextBox.Size = new System.Drawing.Size(34, 22);
+            this.CodeTextBox.TabIndex = 9;
             // 
+            // comboBox1
             // 
+            this.comboBox1.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.SampleGroupBindingSource, "CutLeave", true));
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "C",
+            "L"});
+            this.comboBox1.Location = new System.Drawing.Point(110, 35);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(34, 21);
+            this.comboBox1.TabIndex = 10;
             // 
-            this.LDTextBox.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LDTextBox.TextBox.Location = new System.Drawing.Point(90, 3);
-            this.LDTextBox.TextBox.Margin = new System.Windows.Forms.Padding(0);
-            this.LDTextBox.TextBox.MaxLength = 1;
-            this.LDTextBox.TextBox.Name = ".TextBox";
-            this.LDTextBox.TextBox.Size = new System.Drawing.Size(19, 22);
-            this.LDTextBox.TextBox.TabIndex = 1;
+            // comboBox2
             // 
-            // _cutLeaveTB
-            // 
-            this._cutLeaveTB.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this._cutLeaveTB.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this._cutLeaveTB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.SampleGroupBindingSource, "CutLeave", true));
-            this._cutLeaveTB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._cutLeaveTB.LabelTextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this._cutLeaveTB.LabelWidth = 90F;
-            this._cutLeaveTB.LableText = "Cut/Leave";
-            this._cutLeaveTB.Location = new System.Drawing.Point(3, 32);
-            this._cutLeaveTB.Margin = new System.Windows.Forms.Padding(0);
-            this._cutLeaveTB.Name = "_cutLeaveTB";
-            this._cutLeaveTB.Padding = new System.Windows.Forms.Padding(0, 0, 3, 0);
-            this._cutLeaveTB.Size = new System.Drawing.Size(112, 32);
-            this._cutLeaveTB.TabIndex = 1;
-            // 
-            // 
-            // 
-            this._cutLeaveTB.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._cutLeaveTB.TextBox.Location = new System.Drawing.Point(90, 5);
-            this._cutLeaveTB.TextBox.Margin = new System.Windows.Forms.Padding(0);
-            this._cutLeaveTB.TextBox.MaxLength = 1;
-            this._cutLeaveTB.TextBox.Name = ".TextBox";
-            this._cutLeaveTB.TextBox.Size = new System.Drawing.Size(19, 22);
-            this._cutLeaveTB.TextBox.TabIndex = 1;
-            // 
-            // _editCountsButton
-            // 
-            this._editCountsButton.Dock = System.Windows.Forms.DockStyle.Left;
-            this._editCountsButton.Location = new System.Drawing.Point(348, 35);
-            this._editCountsButton.Name = "_editCountsButton";
-            this._editCountsButton.Size = new System.Drawing.Size(75, 26);
-            this._editCountsButton.TabIndex = 4;
-            this._editCountsButton.Text = "Edit Counts";
-            this._editCountsButton.UseVisualStyleBackColor = true;
-            this._editCountsButton.Visible = false;
-            // 
-            // _tallyBySubpopCB
-            // 
-            this._tallyBySubpopCB.AutoSize = true;
-            this._tallyBySubpopCB.DataBindings.Add(new System.Windows.Forms.Binding("Checked", this.SampleGroupBindingSource, "TallyBySubPop", true));
-            this._tallyBySubpopCB.Dock = System.Windows.Forms.DockStyle.Left;
-            this._tallyBySubpopCB.Location = new System.Drawing.Point(348, 3);
-            this._tallyBySubpopCB.Name = "_tallyBySubpopCB";
-            this._tallyBySubpopCB.Size = new System.Drawing.Size(153, 26);
-            this._tallyBySubpopCB.TabIndex = 3;
-            this._tallyBySubpopCB.Text = "Tally By Sub-populations";
-            this._tallyBySubpopCB.UseVisualStyleBackColor = true;
-            this._tallyBySubpopCB.Visible = false;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.tableLayoutPanel2);
-            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox1.Location = new System.Drawing.Point(0, 101);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(668, 91);
-            this.groupBox1.TabIndex = 2;
-            this.groupBox1.TabStop = false;
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 5;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 110F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 110F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this._FreqTB, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this._kzTB, 3, 0);
-            this.tableLayoutPanel2.Controls.Add(this._IFreqTB, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this._DescriptionTB, 0, 1);
-            this.tableLayoutPanel2.Controls.Add(this._bigBAFTB, 2, 0);
-            this.tableLayoutPanel2.Controls.Add(this._minKPITB, 4, 0);
-            this.tableLayoutPanel2.Controls.Add(this._maxKPITB, 4, 1);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 18);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 2;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(662, 70);
-            this.tableLayoutPanel2.TabIndex = 153;
-            // 
-            // _FreqTB
-            // 
-            this._FreqTB.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this._FreqTB.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this._FreqTB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.SampleGroupBindingSource, "SamplingFrequency", true));
-            this._FreqTB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._FreqTB.LabelTextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this._FreqTB.LabelWidth = 70F;
-            this._FreqTB.LableText = "Sampling Frequency";
-            this._FreqTB.Location = new System.Drawing.Point(0, 0);
-            this._FreqTB.Margin = new System.Windows.Forms.Padding(0);
-            this._FreqTB.Name = "_FreqTB";
-            this._FreqTB.Padding = new System.Windows.Forms.Padding(0, 0, 3, 0);
-            this._FreqTB.Size = new System.Drawing.Size(110, 35);
-            this._FreqTB.TabIndex = 0;
-            // 
-            // 
-            // 
-            this._FreqTB.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._FreqTB.TextBox.Location = new System.Drawing.Point(70, 4);
-            this._FreqTB.TextBox.Margin = new System.Windows.Forms.Padding(0);
-            this._FreqTB.TextBox.Name = ".TextBox";
-            this._FreqTB.TextBox.Size = new System.Drawing.Size(37, 22);
-            this._FreqTB.TextBox.TabIndex = 1;
-            // 
-            // _kzTB
-            // 
-            this._kzTB.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this._kzTB.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this._kzTB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.SampleGroupBindingSource, "KZ", true));
-            this._kzTB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._kzTB.LabelTextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this._kzTB.LabelWidth = 30F;
-            this._kzTB.LableText = "KZ";
-            this._kzTB.Location = new System.Drawing.Point(300, 0);
-            this._kzTB.Margin = new System.Windows.Forms.Padding(0);
-            this._kzTB.Name = "_kzTB";
-            this._kzTB.Size = new System.Drawing.Size(80, 35);
-            this._kzTB.TabIndex = 2;
-            // 
-            // 
-            // 
-            this._kzTB.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._kzTB.TextBox.Location = new System.Drawing.Point(30, 6);
-            this._kzTB.TextBox.Margin = new System.Windows.Forms.Padding(0);
-            this._kzTB.TextBox.Name = ".TextBox";
-            this._kzTB.TextBox.Size = new System.Drawing.Size(50, 22);
-            this._kzTB.TextBox.TabIndex = 1;
-            // 
-            // _IFreqTB
-            // 
-            this._IFreqTB.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this._IFreqTB.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this._IFreqTB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.SampleGroupBindingSource, "InsuranceFrequency", true));
-            this._IFreqTB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._IFreqTB.LabelTextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this._IFreqTB.LabelWidth = 70F;
-            this._IFreqTB.LableText = "Insurance Frequency";
-            this._IFreqTB.Location = new System.Drawing.Point(110, 0);
-            this._IFreqTB.Margin = new System.Windows.Forms.Padding(0);
-            this._IFreqTB.Name = "_IFreqTB";
-            this._IFreqTB.Padding = new System.Windows.Forms.Padding(0, 0, 3, 0);
-            this._IFreqTB.Size = new System.Drawing.Size(110, 35);
-            this._IFreqTB.TabIndex = 1;
-            // 
-            // 
-            // 
-            this._IFreqTB.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._IFreqTB.TextBox.Location = new System.Drawing.Point(70, 4);
-            this._IFreqTB.TextBox.Margin = new System.Windows.Forms.Padding(0);
-            this._IFreqTB.TextBox.Name = ".TextBox";
-            this._IFreqTB.TextBox.Size = new System.Drawing.Size(37, 22);
-            this._IFreqTB.TextBox.TabIndex = 1;
-            // 
-            // _DescriptionTB
-            // 
-            this._DescriptionTB.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel2.SetColumnSpan(this._DescriptionTB, 3);
-            this._DescriptionTB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._DescriptionTB.LabelTextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this._DescriptionTB.LabelWidth = 100F;
-            this._DescriptionTB.LableText = "Description";
-            this._DescriptionTB.Location = new System.Drawing.Point(0, 35);
-            this._DescriptionTB.Margin = new System.Windows.Forms.Padding(0);
-            this._DescriptionTB.Name = "_DescriptionTB";
-            this._DescriptionTB.Size = new System.Drawing.Size(300, 35);
-            this._DescriptionTB.TabIndex = 1;
-            // 
-            // 
-            // 
-            this._DescriptionTB.TextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.SampleGroupBindingSource, "Description", true));
-            this._DescriptionTB.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._DescriptionTB.TextBox.Location = new System.Drawing.Point(100, 6);
-            this._DescriptionTB.TextBox.Margin = new System.Windows.Forms.Padding(0);
-            this._DescriptionTB.TextBox.MaxLength = 25;
-            this._DescriptionTB.TextBox.Name = ".TextBox";
-            this._DescriptionTB.TextBox.Size = new System.Drawing.Size(200, 22);
-            this._DescriptionTB.TextBox.TabIndex = 1;
-            // 
-            // _bigBAFTB
-            // 
-            this._bigBAFTB.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this._bigBAFTB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.SampleGroupBindingSource, "BigBAF", true));
-            this._bigBAFTB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._bigBAFTB.LabelTextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this._bigBAFTB.LabelWidth = 50F;
-            this._bigBAFTB.LableText = "BigBAF";
-            this._bigBAFTB.Location = new System.Drawing.Point(220, 0);
-            this._bigBAFTB.Margin = new System.Windows.Forms.Padding(0);
-            this._bigBAFTB.Name = "_bigBAFTB";
-            this._bigBAFTB.Size = new System.Drawing.Size(80, 35);
-            this._bigBAFTB.TabIndex = 3;
-            // 
-            // 
-            // 
-            this._bigBAFTB.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._bigBAFTB.TextBox.Location = new System.Drawing.Point(50, 6);
-            this._bigBAFTB.TextBox.Margin = new System.Windows.Forms.Padding(0);
-            this._bigBAFTB.TextBox.Name = ".TextBox";
-            this._bigBAFTB.TextBox.Size = new System.Drawing.Size(30, 22);
-            this._bigBAFTB.TextBox.TabIndex = 1;
-            // 
-            // _minKPITB
-            // 
-            this._minKPITB.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this._minKPITB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.SampleGroupBindingSource, "MinKPI", true));
-            this._minKPITB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._minKPITB.LabelTextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this._minKPITB.LabelWidth = 35F;
-            this._minKPITB.LableText = "Min KPI";
-            this._minKPITB.Location = new System.Drawing.Point(380, 0);
-            this._minKPITB.Margin = new System.Windows.Forms.Padding(0);
-            this._minKPITB.Name = "_minKPITB";
-            this._minKPITB.Size = new System.Drawing.Size(282, 35);
-            this._minKPITB.TabIndex = 4;
-            // 
-            // 
-            // 
-            this._minKPITB.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._minKPITB.TextBox.Location = new System.Drawing.Point(35, 4);
-            this._minKPITB.TextBox.Margin = new System.Windows.Forms.Padding(0);
-            this._minKPITB.TextBox.Name = ".TextBox";
-            this._minKPITB.TextBox.Size = new System.Drawing.Size(247, 22);
-            this._minKPITB.TextBox.TabIndex = 1;
-            // 
-            // _maxKPITB
-            // 
-            this._maxKPITB.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this._maxKPITB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.SampleGroupBindingSource, "MaxKPI", true));
-            this._maxKPITB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._maxKPITB.LabelTextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this._maxKPITB.LabelWidth = 35F;
-            this._maxKPITB.LableText = "Max KPI";
-            this._maxKPITB.Location = new System.Drawing.Point(380, 35);
-            this._maxKPITB.Margin = new System.Windows.Forms.Padding(0);
-            this._maxKPITB.Name = "_maxKPITB";
-            this._maxKPITB.Size = new System.Drawing.Size(282, 35);
-            this._maxKPITB.TabIndex = 5;
-            // 
-            // 
-            // 
-            this._maxKPITB.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._maxKPITB.TextBox.Location = new System.Drawing.Point(35, 4);
-            this._maxKPITB.TextBox.Margin = new System.Windows.Forms.Padding(0);
-            this._maxKPITB.TextBox.Name = ".TextBox";
-            this._maxKPITB.TextBox.Size = new System.Drawing.Size(247, 22);
-            this._maxKPITB.TextBox.TabIndex = 1;
+            this.comboBox2.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.SampleGroupBindingSource, "DefaultLiveDead", true));
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Items.AddRange(new object[] {
+            "",
+            "L",
+            "D"});
+            this.comboBox2.Location = new System.Drawing.Point(110, 67);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(34, 21);
+            this.comboBox2.TabIndex = 11;
             // 
             // TreeDefaultGridView
             // 
@@ -903,14 +844,14 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.referenceHeightPercentDataGridViewTextBoxColumn});
             this.TreeDefaultGridView.DataSource = this.TreeDefaultBindingSource;
             this.TreeDefaultGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TreeDefaultGridView.Location = new System.Drawing.Point(169, 247);
+            this.TreeDefaultGridView.Location = new System.Drawing.Point(169, 207);
             this.TreeDefaultGridView.Name = "TreeDefaultGridView";
             this.TreeDefaultGridView.ReadOnly = true;
             this.TreeDefaultGridView.RowHeadersVisible = false;
             this.TreeDefaultGridView.RowTemplate.Height = 24;
             this.TreeDefaultGridView.SelectedItems = null;
             this.TreeDefaultGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.TreeDefaultGridView.Size = new System.Drawing.Size(662, 219);
+            this.TreeDefaultGridView.Size = new System.Drawing.Size(662, 259);
             this.TreeDefaultGridView.TabIndex = 0;
             this.TreeDefaultGridView.VirtualMode = true;
             // 
@@ -1095,7 +1036,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.panel7.Controls.Add(this._editSubPopBtn);
             this.panel7.Controls.Add(this.label14);
             this.panel7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel7.Location = new System.Drawing.Point(166, 221);
+            this.panel7.Location = new System.Drawing.Point(166, 181);
             this.panel7.Margin = new System.Windows.Forms.Padding(0);
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(668, 20);
@@ -1168,19 +1109,13 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.tableLayoutPanel1.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel4.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
-            this.panel6.ResumeLayout(false);
-            this.panel6.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.SecondaryProductBindingSource)).EndInit();
-            this.panel5.ResumeLayout(false);
-            this.panel5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PrimaryProductBindingSource)).EndInit();
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SecondaryProductBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.UOMBindingSource)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.TreeDefaultGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.TreeDefaultBindingSource)).EndInit();
             this.panel7.ResumeLayout(false);
@@ -1227,26 +1162,9 @@ namespace CruiseManager.WinForms.CruiseWizard
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private FMSC.Controls.SideLabelTextBox CodeTextBox;
-        private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.ComboBox SecondaryProductComboBox;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox PrimaryProductComboBox;
-        private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox UOMComboBox;
-        private FMSC.Controls.SideLabelTextBox LDTextBox;
-        private FMSC.Controls.SideLabelTextBox _cutLeaveTB;
-        private System.Windows.Forms.Button _editCountsButton;
-        private System.Windows.Forms.CheckBox _tallyBySubpopCB;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private FMSC.Controls.SideLabelTextBox _FreqTB;
-        private FMSC.Controls.SideLabelTextBox _kzTB;
-        private FMSC.Controls.SideLabelTextBox _IFreqTB;
-        private FMSC.Controls.SideLabelTextBox _DescriptionTB;
         private FMSC.Controls.SelectedItemsGridView TreeDefaultGridView;
         private System.Windows.Forms.ToolStripLabel _stratumDiscriptionLBL;
         private System.Windows.Forms.Panel panel7;
@@ -1270,8 +1188,16 @@ namespace CruiseManager.WinForms.CruiseWizard
         private System.Windows.Forms.DataGridViewTextBoxColumn barkThicknessRatioDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn averageZDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn referenceHeightPercentDataGridViewTextBoxColumn;
-        private FMSC.Controls.SideLabelTextBox _bigBAFTB;
-        private FMSC.Controls.SideLabelTextBox _minKPITB;
-        private FMSC.Controls.SideLabelTextBox _maxKPITB;
+        private System.Windows.Forms.TextBox CodeTextBox;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.TextBox _FreqTB;
+        private System.Windows.Forms.TextBox _IFreqTB;
+        private System.Windows.Forms.TextBox _bigBAFTB;
+        private System.Windows.Forms.TextBox _kzTB;
+        private System.Windows.Forms.TextBox _minKPITB;
+        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox _maxKPITB;
     }
 }

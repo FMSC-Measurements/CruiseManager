@@ -50,7 +50,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             {
                 _currentSampleGroup.PropertyChanged += _currentSampleGroup_PropertyChanged;
 
-                CodeTextBox.TextBox.Focus();
+                CodeTextBox.Focus();
             }
 
             panel3.Enabled = CurrentSampleGroup != null;
@@ -156,49 +156,49 @@ namespace CruiseManager.WinForms.CruiseWizard
 
                 if (SampleGroupDO.CanEnableBigBAF(CurrentStratum) == false)
                 {
-                    _bigBAFTB.TextBox.Text = "0";
-                    _bigBAFTB.TextBox.Enabled = false;
+                    _bigBAFTB.Text = "0";
+                    _bigBAFTB.Enabled = false;
                 }
                 else
                 {
-                    _bigBAFTB.TextBox.Enabled = true;
+                    _bigBAFTB.Enabled = true;
                 }
 
                 if (SampleGroupDO.CanEnableFrequency(CurrentStratum) == false)
                 {
-                    _FreqTB.TextBox.Text = "0";
-                    _FreqTB.TextBox.Enabled = false;
+                    _FreqTB.Text = "0";
+                    _FreqTB.Enabled = false;
                 }
                 else
                 {
-                    _FreqTB.TextBox.Enabled = true;
+                    _FreqTB.Enabled = true;
                 }
 
                 if (SampleGroupDO.CanEnableKZ(CurrentStratum) == false)
                 {
-                    _kzTB.TextBox.Text = "0";
-                    _kzTB.TextBox.Enabled = false;
+                    _kzTB.Text = "0";
+                    _kzTB.Enabled = false;
 
-                    _minKPITB.TextBox.Text = "0";
-                    _minKPITB.TextBox.Enabled = false;
+                    _minKPITB.Text = "0";
+                    _minKPITB.Enabled = false;
 
-                    _maxKPITB.TextBox.Text = "0";
-                    _maxKPITB.TextBox.Enabled = false;
+                    _maxKPITB.Text = "0";
+                    _maxKPITB.Enabled = false;
                 }
                 else
                 {
-                    _kzTB.TextBox.Enabled = true;
-                    _minKPITB.TextBox.Enabled = true;
-                    _maxKPITB.TextBox.Enabled = true;
+                    _kzTB.Enabled = true;
+                    _minKPITB.Enabled = true;
+                    _maxKPITB.Enabled = true;
                 }
                 if (SampleGroupDO.CanEnableIFreq(CurrentStratum) == false)
                 {
-                    _IFreqTB.TextBox.Text = "0";
-                    _IFreqTB.TextBox.Enabled = false;
+                    _IFreqTB.Text = "0";
+                    _IFreqTB.Enabled = false;
                 }
                 else
                 {
-                    _IFreqTB.TextBox.Enabled = true;
+                    _IFreqTB.Enabled = true;
                 }
             }
             else
@@ -262,7 +262,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             if (key == System.Windows.Forms.Keys.F1)
             {
                 SampleGroupBindingSource.AddNew();
-                CodeTextBox.TextBox.Focus();
+                CodeTextBox.Focus();
                 return true;
             }
             return false;
