@@ -382,9 +382,9 @@
             this.LogMethComboBox.DataSource = this.LoggingMethodBindingSource;
             this.LogMethComboBox.DisplayMember = "CodePlus";
             this.LogMethComboBox.FormattingEnabled = true;
-            this.LogMethComboBox.Location = new System.Drawing.Point(88, 4);
+            this.LogMethComboBox.Location = new System.Drawing.Point(100, 3);
             this.LogMethComboBox.Name = "LogMethComboBox";
-            this.LogMethComboBox.Size = new System.Drawing.Size(266, 21);
+            this.LogMethComboBox.Size = new System.Drawing.Size(254, 21);
             this.LogMethComboBox.TabIndex = 0;
             this.LogMethComboBox.ValueMember = "Code";
             // 

@@ -264,7 +264,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.FinishButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.FinishButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.FinishButton.Location = new System.Drawing.Point(756, 11);
-            this.FinishButton.Margin = new System.Windows.Forms.Padding(10, 10, 10, 10);
+            this.FinishButton.Margin = new System.Windows.Forms.Padding(10);
             this.FinishButton.Name = "FinishButton";
             this.FinishButton.Size = new System.Drawing.Size(75, 23);
             this.FinishButton.TabIndex = 1;
@@ -285,6 +285,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             // 
             // StrataButton
             // 
+            this.StrataButton.AutoSize = true;
             this.StrataButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.StrataButton.Location = new System.Drawing.Point(10, 12);
             this.StrataButton.Margin = new System.Windows.Forms.Padding(10, 10, 0, 10);
@@ -1156,6 +1157,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.StratumBindingNavigator.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.StratumBindingSource)).EndInit();
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SampleGroupBindingNavigator)).EndInit();
             this.SampleGroupBindingNavigator.ResumeLayout(false);
             this.SampleGroupBindingNavigator.PerformLayout();

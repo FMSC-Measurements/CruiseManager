@@ -106,11 +106,12 @@
             // SampleGroupButton
             // 
             this.SampleGroupButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.SampleGroupButton.AutoSize = true;
             this.SampleGroupButton.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.SampleGroupButton.Location = new System.Drawing.Point(518, 12);
+            this.SampleGroupButton.Location = new System.Drawing.Point(511, 12);
             this.SampleGroupButton.Margin = new System.Windows.Forms.Padding(10);
             this.SampleGroupButton.Name = "SampleGroupButton";
-            this.SampleGroupButton.Size = new System.Drawing.Size(102, 23);
+            this.SampleGroupButton.Size = new System.Drawing.Size(109, 23);
             this.SampleGroupButton.TabIndex = 1;
             this.SampleGroupButton.Text = "Sample Group >>";
             this.SampleGroupButton.UseVisualStyleBackColor = false;
@@ -119,11 +120,12 @@
             // CuttingUnitButton
             // 
             this.CuttingUnitButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.CuttingUnitButton.AutoSize = true;
             this.CuttingUnitButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.CuttingUnitButton.Location = new System.Drawing.Point(10, 12);
             this.CuttingUnitButton.Margin = new System.Windows.Forms.Padding(10);
             this.CuttingUnitButton.Name = "CuttingUnitButton";
-            this.CuttingUnitButton.Size = new System.Drawing.Size(93, 23);
+            this.CuttingUnitButton.Size = new System.Drawing.Size(105, 23);
             this.CuttingUnitButton.TabIndex = 0;
             this.CuttingUnitButton.Text = "<< Cutting Units";
             this.CuttingUnitButton.UseVisualStyleBackColor = false;
@@ -648,6 +650,7 @@
             this.Name = "StrataPage";
             this.Size = new System.Drawing.Size(630, 472);
             panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.StrataBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CruiseMethodBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CuttingUnitBindingSource)).EndInit();
