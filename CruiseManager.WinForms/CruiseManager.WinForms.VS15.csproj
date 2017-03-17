@@ -521,6 +521,7 @@
     <None Include="Properties\DataSources\CruiseManager.Core.CruiseCustomize.FixCNTTallyPopulation.datasource" />
     <None Include="Properties\DataSources\CruiseManager.Core.CruiseCustomize.TallySetupSampleGroup.datasource" />
     <None Include="Properties\DataSources\CruiseManager.Core.CruiseCustomize.TallySetupStratum.datasource" />
+    <None Include="Properties\DataSources\CruiseManager.Core.Models.LogVM.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

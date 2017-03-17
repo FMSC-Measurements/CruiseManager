@@ -40,7 +40,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -48,6 +47,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DataEditorView));
             this._DGV_Errors = new System.Windows.Forms.DataGridView();
             this.tableNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -132,28 +132,6 @@
             this._BS_Trees = new System.Windows.Forms.BindingSource(this.components);
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this._DGV_Logs = new System.Windows.Forms.DataGridView();
-            this.Log_CN = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.logNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.seenDefectDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.percentRecoverableDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.gradeDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.exportGradeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.smallEndDiameterDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.largeEndDiameterDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lengthDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.grossBoardFootDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.netBoardFootDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.grossCubicFootDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.netCubicFootDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.boardFootRemovedDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cubicFootRemovedDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dIBClassDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.barkThicknessDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.createdByDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.createdDateDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.modifiedByDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.modifiedDateDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this._BS_Logs = new System.Windows.Forms.BindingSource(this.components);
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this._DGV_Plots = new System.Windows.Forms.DataGridView();
@@ -193,6 +171,32 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.Log_CN = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CUCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StratumCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PlotNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TreeSpecies = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.logNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.seenDefectDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.percentRecoverableDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.gradeDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.exportGradeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.smallEndDiameterDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.largeEndDiameterDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lengthDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.grossBoardFootDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.netBoardFootDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.grossCubicFootDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.netCubicFootDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.boardFootRemovedDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cubicFootRemovedDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dIBClassDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.barkThicknessDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.createdByDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.createdDateDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.modifiedByDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.modifiedDateDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             label1 = new System.Windows.Forms.Label();
             label5 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
@@ -1168,6 +1172,10 @@
             this._DGV_Logs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Log_CN,
             this.dataGridViewTextBoxColumn1,
+            this.CUCode,
+            this.StratumCode,
+            this.PlotNumber,
+            this.TreeSpecies,
             this.logNumberDataGridViewTextBoxColumn,
             this.seenDefectDataGridViewTextBoxColumn,
             this.percentRecoverableDataGridViewTextBoxColumn,
@@ -1199,201 +1207,9 @@
             this._DGV_Logs.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this._DGV_Logs_CellValueChanged);
             this._DGV_Logs.CellValueNeeded += new System.Windows.Forms.DataGridViewCellValueEventHandler(this._DGV_Logs_CellValueNeeded);
             // 
-            // Log_CN
-            // 
-            this.Log_CN.DataPropertyName = "Log_CN";
-            this.Log_CN.HeaderText = "RecID";
-            this.Log_CN.Name = "Log_CN";
-            this.Log_CN.ReadOnly = true;
-            this.Log_CN.Width = 50;
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.dataGridViewTextBoxColumn1.DataPropertyName = "Tree_CN";
-            this.dataGridViewTextBoxColumn1.HeaderText = "Tree RecID";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            this.dataGridViewTextBoxColumn1.ToolTipText = "Tree Data Reference Number";
-            this.dataGridViewTextBoxColumn1.Width = 85;
-            // 
-            // logNumberDataGridViewTextBoxColumn
-            // 
-            this.logNumberDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.logNumberDataGridViewTextBoxColumn.DataPropertyName = "LogNumber";
-            this.logNumberDataGridViewTextBoxColumn.HeaderText = "Log";
-            this.logNumberDataGridViewTextBoxColumn.Name = "logNumberDataGridViewTextBoxColumn";
-            this.logNumberDataGridViewTextBoxColumn.ToolTipText = "Log Number";
-            this.logNumberDataGridViewTextBoxColumn.Width = 51;
-            // 
-            // seenDefectDataGridViewTextBoxColumn
-            // 
-            this.seenDefectDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.seenDefectDataGridViewTextBoxColumn.DataPropertyName = "SeenDefect";
-            this.seenDefectDataGridViewTextBoxColumn.HeaderText = "Seen Def";
-            this.seenDefectDataGridViewTextBoxColumn.Name = "seenDefectDataGridViewTextBoxColumn";
-            this.seenDefectDataGridViewTextBoxColumn.ToolTipText = "Seen Defect for Log";
-            this.seenDefectDataGridViewTextBoxColumn.Width = 78;
-            // 
-            // percentRecoverableDataGridViewTextBoxColumn
-            // 
-            this.percentRecoverableDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.percentRecoverableDataGridViewTextBoxColumn.DataPropertyName = "PercentRecoverable";
-            this.percentRecoverableDataGridViewTextBoxColumn.HeaderText = "% Rec";
-            this.percentRecoverableDataGridViewTextBoxColumn.Name = "percentRecoverableDataGridViewTextBoxColumn";
-            this.percentRecoverableDataGridViewTextBoxColumn.ToolTipText = "Percent Recoverable";
-            this.percentRecoverableDataGridViewTextBoxColumn.Width = 62;
-            // 
-            // gradeDataGridViewTextBoxColumn1
-            // 
-            this.gradeDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.gradeDataGridViewTextBoxColumn1.DataPropertyName = "Grade";
-            this.gradeDataGridViewTextBoxColumn1.HeaderText = "Grade";
-            this.gradeDataGridViewTextBoxColumn1.Name = "gradeDataGridViewTextBoxColumn1";
-            this.gradeDataGridViewTextBoxColumn1.ToolTipText = "Log Grade";
-            this.gradeDataGridViewTextBoxColumn1.Width = 63;
-            // 
-            // exportGradeDataGridViewTextBoxColumn
-            // 
-            this.exportGradeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.exportGradeDataGridViewTextBoxColumn.DataPropertyName = "ExportGrade";
-            this.exportGradeDataGridViewTextBoxColumn.HeaderText = "Export";
-            this.exportGradeDataGridViewTextBoxColumn.Name = "exportGradeDataGridViewTextBoxColumn";
-            this.exportGradeDataGridViewTextBoxColumn.ToolTipText = "Export Grade";
-            this.exportGradeDataGridViewTextBoxColumn.Width = 65;
-            // 
-            // smallEndDiameterDataGridViewTextBoxColumn
-            // 
-            this.smallEndDiameterDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.smallEndDiameterDataGridViewTextBoxColumn.DataPropertyName = "SmallEndDiameter";
-            this.smallEndDiameterDataGridViewTextBoxColumn.HeaderText = "SED";
-            this.smallEndDiameterDataGridViewTextBoxColumn.Name = "smallEndDiameterDataGridViewTextBoxColumn";
-            this.smallEndDiameterDataGridViewTextBoxColumn.ToolTipText = "Small End Diameter";
-            this.smallEndDiameterDataGridViewTextBoxColumn.Width = 52;
-            // 
-            // largeEndDiameterDataGridViewTextBoxColumn
-            // 
-            this.largeEndDiameterDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.largeEndDiameterDataGridViewTextBoxColumn.DataPropertyName = "LargeEndDiameter";
-            this.largeEndDiameterDataGridViewTextBoxColumn.HeaderText = "LED";
-            this.largeEndDiameterDataGridViewTextBoxColumn.Name = "largeEndDiameterDataGridViewTextBoxColumn";
-            this.largeEndDiameterDataGridViewTextBoxColumn.ToolTipText = "Large End Diameter";
-            this.largeEndDiameterDataGridViewTextBoxColumn.Width = 51;
-            // 
-            // lengthDataGridViewTextBoxColumn
-            // 
-            this.lengthDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.lengthDataGridViewTextBoxColumn.DataPropertyName = "Length";
-            this.lengthDataGridViewTextBoxColumn.HeaderText = "Length";
-            this.lengthDataGridViewTextBoxColumn.Name = "lengthDataGridViewTextBoxColumn";
-            this.lengthDataGridViewTextBoxColumn.ToolTipText = "Log Length";
-            this.lengthDataGridViewTextBoxColumn.Width = 68;
-            // 
-            // grossBoardFootDataGridViewTextBoxColumn
-            // 
-            this.grossBoardFootDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.grossBoardFootDataGridViewTextBoxColumn.DataPropertyName = "GrossBoardFoot";
-            this.grossBoardFootDataGridViewTextBoxColumn.HeaderText = "Gross Bdft";
-            this.grossBoardFootDataGridViewTextBoxColumn.Name = "grossBoardFootDataGridViewTextBoxColumn";
-            this.grossBoardFootDataGridViewTextBoxColumn.ToolTipText = "Gross Board Foot Volume";
-            this.grossBoardFootDataGridViewTextBoxColumn.Width = 86;
-            // 
-            // netBoardFootDataGridViewTextBoxColumn
-            // 
-            this.netBoardFootDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.netBoardFootDataGridViewTextBoxColumn.DataPropertyName = "NetBoardFoot";
-            this.netBoardFootDataGridViewTextBoxColumn.HeaderText = "Net Bdft";
-            this.netBoardFootDataGridViewTextBoxColumn.Name = "netBoardFootDataGridViewTextBoxColumn";
-            this.netBoardFootDataGridViewTextBoxColumn.ToolTipText = "Net Board Foot Volume";
-            this.netBoardFootDataGridViewTextBoxColumn.Width = 75;
-            // 
-            // grossCubicFootDataGridViewTextBoxColumn
-            // 
-            this.grossCubicFootDataGridViewTextBoxColumn.DataPropertyName = "GrossCubicFoot";
-            this.grossCubicFootDataGridViewTextBoxColumn.HeaderText = "Gross Cuft";
-            this.grossCubicFootDataGridViewTextBoxColumn.Name = "grossCubicFootDataGridViewTextBoxColumn";
-            this.grossCubicFootDataGridViewTextBoxColumn.ToolTipText = "Gross Cubic Foot Volume";
-            // 
-            // netCubicFootDataGridViewTextBoxColumn
-            // 
-            this.netCubicFootDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.netCubicFootDataGridViewTextBoxColumn.DataPropertyName = "NetCubicFoot";
-            this.netCubicFootDataGridViewTextBoxColumn.HeaderText = "Net Cuft";
-            this.netCubicFootDataGridViewTextBoxColumn.Name = "netCubicFootDataGridViewTextBoxColumn";
-            this.netCubicFootDataGridViewTextBoxColumn.ToolTipText = "Net Cubic Foot Volume";
-            this.netCubicFootDataGridViewTextBoxColumn.Width = 75;
-            // 
-            // boardFootRemovedDataGridViewTextBoxColumn
-            // 
-            this.boardFootRemovedDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.boardFootRemovedDataGridViewTextBoxColumn.DataPropertyName = "BoardFootRemoved";
-            this.boardFootRemovedDataGridViewTextBoxColumn.HeaderText = "Bdft Rem";
-            this.boardFootRemovedDataGridViewTextBoxColumn.Name = "boardFootRemovedDataGridViewTextBoxColumn";
-            this.boardFootRemovedDataGridViewTextBoxColumn.ToolTipText = "Percent of Board Foot Volume Removed";
-            this.boardFootRemovedDataGridViewTextBoxColumn.Width = 79;
-            // 
-            // cubicFootRemovedDataGridViewTextBoxColumn
-            // 
-            this.cubicFootRemovedDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.cubicFootRemovedDataGridViewTextBoxColumn.DataPropertyName = "CubicFootRemoved";
-            this.cubicFootRemovedDataGridViewTextBoxColumn.HeaderText = "Cuft Rem";
-            this.cubicFootRemovedDataGridViewTextBoxColumn.Name = "cubicFootRemovedDataGridViewTextBoxColumn";
-            this.cubicFootRemovedDataGridViewTextBoxColumn.ToolTipText = "Percent Cubic Foot Volume Removed";
-            this.cubicFootRemovedDataGridViewTextBoxColumn.Width = 79;
-            // 
-            // dIBClassDataGridViewTextBoxColumn
-            // 
-            this.dIBClassDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.dIBClassDataGridViewTextBoxColumn.DataPropertyName = "DIBClass";
-            this.dIBClassDataGridViewTextBoxColumn.HeaderText = "DIBClass";
-            this.dIBClassDataGridViewTextBoxColumn.Name = "dIBClassDataGridViewTextBoxColumn";
-            this.dIBClassDataGridViewTextBoxColumn.ToolTipText = "Diameter Class (inside bark)";
-            this.dIBClassDataGridViewTextBoxColumn.Width = 76;
-            // 
-            // barkThicknessDataGridViewTextBoxColumn
-            // 
-            this.barkThicknessDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.barkThicknessDataGridViewTextBoxColumn.DataPropertyName = "BarkThickness";
-            this.barkThicknessDataGridViewTextBoxColumn.HeaderText = "DBT";
-            this.barkThicknessDataGridViewTextBoxColumn.Name = "barkThicknessDataGridViewTextBoxColumn";
-            this.barkThicknessDataGridViewTextBoxColumn.ToolTipText = "Double Bark Thickness";
-            this.barkThicknessDataGridViewTextBoxColumn.Width = 52;
-            // 
-            // createdByDataGridViewTextBoxColumn1
-            // 
-            this.createdByDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
-            this.createdByDataGridViewTextBoxColumn1.DataPropertyName = "CreatedBy";
-            this.createdByDataGridViewTextBoxColumn1.HeaderText = "CreatedBy";
-            this.createdByDataGridViewTextBoxColumn1.Name = "createdByDataGridViewTextBoxColumn1";
-            this.createdByDataGridViewTextBoxColumn1.ReadOnly = true;
-            this.createdByDataGridViewTextBoxColumn1.Width = 5;
-            // 
-            // createdDateDataGridViewTextBoxColumn1
-            // 
-            this.createdDateDataGridViewTextBoxColumn1.DataPropertyName = "CreatedDate";
-            this.createdDateDataGridViewTextBoxColumn1.HeaderText = "CreatedDate";
-            this.createdDateDataGridViewTextBoxColumn1.Name = "createdDateDataGridViewTextBoxColumn1";
-            this.createdDateDataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
-            // modifiedByDataGridViewTextBoxColumn1
-            // 
-            this.modifiedByDataGridViewTextBoxColumn1.DataPropertyName = "ModifiedBy";
-            this.modifiedByDataGridViewTextBoxColumn1.HeaderText = "ModifiedBy";
-            this.modifiedByDataGridViewTextBoxColumn1.Name = "modifiedByDataGridViewTextBoxColumn1";
-            this.modifiedByDataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
-            // modifiedDateDataGridViewTextBoxColumn1
-            // 
-            this.modifiedDateDataGridViewTextBoxColumn1.DataPropertyName = "ModifiedDate";
-            dataGridViewCellStyle5.Format = "[TreeNumber]";
-            this.modifiedDateDataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle5;
-            this.modifiedDateDataGridViewTextBoxColumn1.HeaderText = "ModifiedDate";
-            this.modifiedDateDataGridViewTextBoxColumn1.Name = "modifiedDateDataGridViewTextBoxColumn1";
-            this.modifiedDateDataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
             // _BS_Logs
             // 
-            this._BS_Logs.DataSource = typeof(CruiseDAL.DataObjects.LogDO);
+            this._BS_Logs.DataSource = typeof(CruiseManager.Core.Models.LogVM);
             // 
             // tabPage3
             // 
@@ -1789,6 +1605,234 @@
             this.exportToolStripMenuItem1.Text = "Export";
             this.exportToolStripMenuItem1.Click += new System.EventHandler(this.exportToolStripMenuItem1_Click);
             // 
+            // Log_CN
+            // 
+            this.Log_CN.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.Log_CN.DataPropertyName = "Log_CN";
+            this.Log_CN.HeaderText = "RecID";
+            this.Log_CN.Name = "Log_CN";
+            this.Log_CN.ReadOnly = true;
+            this.Log_CN.Width = 61;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "Tree_CN";
+            this.dataGridViewTextBoxColumn1.HeaderText = "Tree RecID";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.ToolTipText = "Tree Data Reference Number";
+            this.dataGridViewTextBoxColumn1.Width = 85;
+            // 
+            // CUCode
+            // 
+            this.CUCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.CUCode.DataPropertyName = "CUCode";
+            this.CUCode.HeaderText = "Unit";
+            this.CUCode.Name = "CUCode";
+            this.CUCode.ReadOnly = true;
+            this.CUCode.Width = 54;
+            // 
+            // StratumCode
+            // 
+            this.StratumCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.StratumCode.DataPropertyName = "StratumCode";
+            this.StratumCode.HeaderText = "Stratum";
+            this.StratumCode.Name = "StratumCode";
+            this.StratumCode.ReadOnly = true;
+            this.StratumCode.Width = 72;
+            // 
+            // PlotNumber
+            // 
+            this.PlotNumber.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.PlotNumber.DataPropertyName = "PlotNumber";
+            this.PlotNumber.HeaderText = "Plot";
+            this.PlotNumber.Name = "PlotNumber";
+            this.PlotNumber.ReadOnly = true;
+            this.PlotNumber.Width = 52;
+            // 
+            // TreeSpecies
+            // 
+            this.TreeSpecies.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.TreeSpecies.DataPropertyName = "TreeSpecies";
+            this.TreeSpecies.HeaderText = "Species";
+            this.TreeSpecies.Name = "TreeSpecies";
+            this.TreeSpecies.Width = 70;
+            // 
+            // logNumberDataGridViewTextBoxColumn
+            // 
+            this.logNumberDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.logNumberDataGridViewTextBoxColumn.DataPropertyName = "LogNumber";
+            this.logNumberDataGridViewTextBoxColumn.HeaderText = "Log";
+            this.logNumberDataGridViewTextBoxColumn.Name = "logNumberDataGridViewTextBoxColumn";
+            this.logNumberDataGridViewTextBoxColumn.ToolTipText = "Log Number";
+            this.logNumberDataGridViewTextBoxColumn.Width = 51;
+            // 
+            // seenDefectDataGridViewTextBoxColumn
+            // 
+            this.seenDefectDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.seenDefectDataGridViewTextBoxColumn.DataPropertyName = "SeenDefect";
+            this.seenDefectDataGridViewTextBoxColumn.HeaderText = "Seen Def";
+            this.seenDefectDataGridViewTextBoxColumn.Name = "seenDefectDataGridViewTextBoxColumn";
+            this.seenDefectDataGridViewTextBoxColumn.ToolTipText = "Seen Defect for Log";
+            this.seenDefectDataGridViewTextBoxColumn.Width = 78;
+            // 
+            // percentRecoverableDataGridViewTextBoxColumn
+            // 
+            this.percentRecoverableDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.percentRecoverableDataGridViewTextBoxColumn.DataPropertyName = "PercentRecoverable";
+            this.percentRecoverableDataGridViewTextBoxColumn.HeaderText = "% Rec";
+            this.percentRecoverableDataGridViewTextBoxColumn.Name = "percentRecoverableDataGridViewTextBoxColumn";
+            this.percentRecoverableDataGridViewTextBoxColumn.ToolTipText = "Percent Recoverable";
+            this.percentRecoverableDataGridViewTextBoxColumn.Width = 62;
+            // 
+            // gradeDataGridViewTextBoxColumn1
+            // 
+            this.gradeDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.gradeDataGridViewTextBoxColumn1.DataPropertyName = "Grade";
+            this.gradeDataGridViewTextBoxColumn1.HeaderText = "Grade";
+            this.gradeDataGridViewTextBoxColumn1.Name = "gradeDataGridViewTextBoxColumn1";
+            this.gradeDataGridViewTextBoxColumn1.ToolTipText = "Log Grade";
+            this.gradeDataGridViewTextBoxColumn1.Width = 63;
+            // 
+            // exportGradeDataGridViewTextBoxColumn
+            // 
+            this.exportGradeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.exportGradeDataGridViewTextBoxColumn.DataPropertyName = "ExportGrade";
+            this.exportGradeDataGridViewTextBoxColumn.HeaderText = "Export";
+            this.exportGradeDataGridViewTextBoxColumn.Name = "exportGradeDataGridViewTextBoxColumn";
+            this.exportGradeDataGridViewTextBoxColumn.ToolTipText = "Export Grade";
+            this.exportGradeDataGridViewTextBoxColumn.Width = 65;
+            // 
+            // smallEndDiameterDataGridViewTextBoxColumn
+            // 
+            this.smallEndDiameterDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.smallEndDiameterDataGridViewTextBoxColumn.DataPropertyName = "SmallEndDiameter";
+            this.smallEndDiameterDataGridViewTextBoxColumn.HeaderText = "SED";
+            this.smallEndDiameterDataGridViewTextBoxColumn.Name = "smallEndDiameterDataGridViewTextBoxColumn";
+            this.smallEndDiameterDataGridViewTextBoxColumn.ToolTipText = "Small End Diameter";
+            this.smallEndDiameterDataGridViewTextBoxColumn.Width = 52;
+            // 
+            // largeEndDiameterDataGridViewTextBoxColumn
+            // 
+            this.largeEndDiameterDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.largeEndDiameterDataGridViewTextBoxColumn.DataPropertyName = "LargeEndDiameter";
+            this.largeEndDiameterDataGridViewTextBoxColumn.HeaderText = "LED";
+            this.largeEndDiameterDataGridViewTextBoxColumn.Name = "largeEndDiameterDataGridViewTextBoxColumn";
+            this.largeEndDiameterDataGridViewTextBoxColumn.ToolTipText = "Large End Diameter";
+            this.largeEndDiameterDataGridViewTextBoxColumn.Width = 51;
+            // 
+            // lengthDataGridViewTextBoxColumn
+            // 
+            this.lengthDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.lengthDataGridViewTextBoxColumn.DataPropertyName = "Length";
+            this.lengthDataGridViewTextBoxColumn.HeaderText = "Length";
+            this.lengthDataGridViewTextBoxColumn.Name = "lengthDataGridViewTextBoxColumn";
+            this.lengthDataGridViewTextBoxColumn.ToolTipText = "Log Length";
+            this.lengthDataGridViewTextBoxColumn.Width = 68;
+            // 
+            // grossBoardFootDataGridViewTextBoxColumn
+            // 
+            this.grossBoardFootDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.grossBoardFootDataGridViewTextBoxColumn.DataPropertyName = "GrossBoardFoot";
+            this.grossBoardFootDataGridViewTextBoxColumn.HeaderText = "Gross Bdft";
+            this.grossBoardFootDataGridViewTextBoxColumn.Name = "grossBoardFootDataGridViewTextBoxColumn";
+            this.grossBoardFootDataGridViewTextBoxColumn.ToolTipText = "Gross Board Foot Volume";
+            this.grossBoardFootDataGridViewTextBoxColumn.Width = 86;
+            // 
+            // netBoardFootDataGridViewTextBoxColumn
+            // 
+            this.netBoardFootDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.netBoardFootDataGridViewTextBoxColumn.DataPropertyName = "NetBoardFoot";
+            this.netBoardFootDataGridViewTextBoxColumn.HeaderText = "Net Bdft";
+            this.netBoardFootDataGridViewTextBoxColumn.Name = "netBoardFootDataGridViewTextBoxColumn";
+            this.netBoardFootDataGridViewTextBoxColumn.ToolTipText = "Net Board Foot Volume";
+            this.netBoardFootDataGridViewTextBoxColumn.Width = 75;
+            // 
+            // grossCubicFootDataGridViewTextBoxColumn
+            // 
+            this.grossCubicFootDataGridViewTextBoxColumn.DataPropertyName = "GrossCubicFoot";
+            this.grossCubicFootDataGridViewTextBoxColumn.HeaderText = "Gross Cuft";
+            this.grossCubicFootDataGridViewTextBoxColumn.Name = "grossCubicFootDataGridViewTextBoxColumn";
+            this.grossCubicFootDataGridViewTextBoxColumn.ToolTipText = "Gross Cubic Foot Volume";
+            // 
+            // netCubicFootDataGridViewTextBoxColumn
+            // 
+            this.netCubicFootDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.netCubicFootDataGridViewTextBoxColumn.DataPropertyName = "NetCubicFoot";
+            this.netCubicFootDataGridViewTextBoxColumn.HeaderText = "Net Cuft";
+            this.netCubicFootDataGridViewTextBoxColumn.Name = "netCubicFootDataGridViewTextBoxColumn";
+            this.netCubicFootDataGridViewTextBoxColumn.ToolTipText = "Net Cubic Foot Volume";
+            this.netCubicFootDataGridViewTextBoxColumn.Width = 75;
+            // 
+            // boardFootRemovedDataGridViewTextBoxColumn
+            // 
+            this.boardFootRemovedDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.boardFootRemovedDataGridViewTextBoxColumn.DataPropertyName = "BoardFootRemoved";
+            this.boardFootRemovedDataGridViewTextBoxColumn.HeaderText = "Bdft Rem";
+            this.boardFootRemovedDataGridViewTextBoxColumn.Name = "boardFootRemovedDataGridViewTextBoxColumn";
+            this.boardFootRemovedDataGridViewTextBoxColumn.ToolTipText = "Percent of Board Foot Volume Removed";
+            this.boardFootRemovedDataGridViewTextBoxColumn.Width = 79;
+            // 
+            // cubicFootRemovedDataGridViewTextBoxColumn
+            // 
+            this.cubicFootRemovedDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.cubicFootRemovedDataGridViewTextBoxColumn.DataPropertyName = "CubicFootRemoved";
+            this.cubicFootRemovedDataGridViewTextBoxColumn.HeaderText = "Cuft Rem";
+            this.cubicFootRemovedDataGridViewTextBoxColumn.Name = "cubicFootRemovedDataGridViewTextBoxColumn";
+            this.cubicFootRemovedDataGridViewTextBoxColumn.ToolTipText = "Percent Cubic Foot Volume Removed";
+            this.cubicFootRemovedDataGridViewTextBoxColumn.Width = 79;
+            // 
+            // dIBClassDataGridViewTextBoxColumn
+            // 
+            this.dIBClassDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.dIBClassDataGridViewTextBoxColumn.DataPropertyName = "DIBClass";
+            this.dIBClassDataGridViewTextBoxColumn.HeaderText = "DIBClass";
+            this.dIBClassDataGridViewTextBoxColumn.Name = "dIBClassDataGridViewTextBoxColumn";
+            this.dIBClassDataGridViewTextBoxColumn.ToolTipText = "Diameter Class (inside bark)";
+            this.dIBClassDataGridViewTextBoxColumn.Width = 76;
+            // 
+            // barkThicknessDataGridViewTextBoxColumn
+            // 
+            this.barkThicknessDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.barkThicknessDataGridViewTextBoxColumn.DataPropertyName = "BarkThickness";
+            this.barkThicknessDataGridViewTextBoxColumn.HeaderText = "DBT";
+            this.barkThicknessDataGridViewTextBoxColumn.Name = "barkThicknessDataGridViewTextBoxColumn";
+            this.barkThicknessDataGridViewTextBoxColumn.ToolTipText = "Double Bark Thickness";
+            this.barkThicknessDataGridViewTextBoxColumn.Width = 52;
+            // 
+            // createdByDataGridViewTextBoxColumn1
+            // 
+            this.createdByDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
+            this.createdByDataGridViewTextBoxColumn1.DataPropertyName = "CreatedBy";
+            this.createdByDataGridViewTextBoxColumn1.HeaderText = "CreatedBy";
+            this.createdByDataGridViewTextBoxColumn1.Name = "createdByDataGridViewTextBoxColumn1";
+            this.createdByDataGridViewTextBoxColumn1.ReadOnly = true;
+            this.createdByDataGridViewTextBoxColumn1.Width = 5;
+            // 
+            // createdDateDataGridViewTextBoxColumn1
+            // 
+            this.createdDateDataGridViewTextBoxColumn1.DataPropertyName = "CreatedDate";
+            this.createdDateDataGridViewTextBoxColumn1.HeaderText = "CreatedDate";
+            this.createdDateDataGridViewTextBoxColumn1.Name = "createdDateDataGridViewTextBoxColumn1";
+            this.createdDateDataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // modifiedByDataGridViewTextBoxColumn1
+            // 
+            this.modifiedByDataGridViewTextBoxColumn1.DataPropertyName = "ModifiedBy";
+            this.modifiedByDataGridViewTextBoxColumn1.HeaderText = "ModifiedBy";
+            this.modifiedByDataGridViewTextBoxColumn1.Name = "modifiedByDataGridViewTextBoxColumn1";
+            this.modifiedByDataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // modifiedDateDataGridViewTextBoxColumn1
+            // 
+            this.modifiedDateDataGridViewTextBoxColumn1.DataPropertyName = "ModifiedDate";
+            dataGridViewCellStyle5.Format = "[TreeNumber]";
+            this.modifiedDateDataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle5;
+            this.modifiedDateDataGridViewTextBoxColumn1.HeaderText = "ModifiedDate";
+            this.modifiedDateDataGridViewTextBoxColumn1.Name = "modifiedDateDataGridViewTextBoxColumn1";
+            this.modifiedDateDataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
             // DataEditorView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1942,28 +1986,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn createdDateDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn modifiedByDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn modifiedDateDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Log_CN;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn logNumberDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn seenDefectDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn percentRecoverableDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn gradeDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn exportGradeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn smallEndDiameterDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn largeEndDiameterDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn lengthDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn grossBoardFootDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn netBoardFootDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn grossCubicFootDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn netCubicFootDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn boardFootRemovedDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn cubicFootRemovedDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dIBClassDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn barkThicknessDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn createdByDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn createdDateDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn modifiedByDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn modifiedDateDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Plot_CN;
         private System.Windows.Forms.DataGridViewTextBoxColumn stratumDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn cuttingUnitDataGridViewTextBoxColumn1;
@@ -1992,5 +2014,31 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn createdDateDataGridViewTextBoxColumn3;
         private System.Windows.Forms.DataGridViewTextBoxColumn modifiedByDataGridViewTextBoxColumn3;
         private System.Windows.Forms.DataGridViewTextBoxColumn modifiedDateDataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Log_CN;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CUCode;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StratumCode;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PlotNumber;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TreeSpecies;
+        private System.Windows.Forms.DataGridViewTextBoxColumn logNumberDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn seenDefectDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn percentRecoverableDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn gradeDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn exportGradeDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn smallEndDiameterDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn largeEndDiameterDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn lengthDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn grossBoardFootDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn netBoardFootDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn grossCubicFootDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn netCubicFootDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn boardFootRemovedDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cubicFootRemovedDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dIBClassDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn barkThicknessDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn createdByDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn createdDateDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn modifiedByDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn modifiedDateDataGridViewTextBoxColumn1;
     }
 }

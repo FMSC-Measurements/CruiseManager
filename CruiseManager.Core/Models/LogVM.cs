@@ -7,11 +7,15 @@ namespace CruiseManager.Core.Models
 JOIN CuttingUnit USING (CuttingUnit_CN)
 JOIN Stratum USING (Stratum_CN)
 LEFT JOIN Samplegroup USING (SampleGroup_CN)
-LEFT JOIN Plot USING (Plot_CN)")]
+LEFT JOIN Plot USING (Plot_CN)
+LEFT JOIN TreeDefaultValue USING (TreeDefaultValue_CN)")]
     public class LogVM : CruiseDAL.DataObjects.LogDO
     {
         [Field(SQLExpression = "Tree.TreeNumber", Alias = "TreeNumber", PersistanceFlags = PersistanceFlags.Never)]
         public long TreeNumber { get; set; }
+
+        [Field(SQLExpression = "TreeDefaultValue.Species", Alias = "TreeSpecies", PersistanceFlags = PersistanceFlags.Never)]
+        public string TreeSpecies { get; set; }
 
         [Field(SQLExpression = "CuttingUnit.Code", Alias = "CUCode", PersistanceFlags = PersistanceFlags.Never)]
         public string CUCode { get; set; }
