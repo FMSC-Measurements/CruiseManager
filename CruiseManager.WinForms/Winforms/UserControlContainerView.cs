@@ -11,6 +11,17 @@ namespace CruiseManager.WinForms
 {
     public partial class UserControlContainerView : UserControlView, IContainerView
     {
+        private class LinkButton : Button
+        {
+            public LinkButton()
+            {
+                this.SetStyle(ControlStyles.Selectable, false);
+                this.FlatStyle = FlatStyle.Flat;
+                AutoSize = true;
+            }
+        }
+
+
         UserControlContainerView()
         {
         }
@@ -88,15 +99,6 @@ namespace CruiseManager.WinForms
             Button newButton = new LinkButton();
             cmd.BindTo(newButton);
             return newButton;
-        }
-
-        private class LinkButton : Button
-        {
-            public LinkButton()
-            {
-                this.SetStyle(ControlStyles.Selectable, false);
-                this.FlatStyle = FlatStyle.Flat;
-            }
         }
 
         public void NavigateTo(Type viewType)
