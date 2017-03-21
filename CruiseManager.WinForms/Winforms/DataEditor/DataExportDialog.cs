@@ -66,13 +66,12 @@ namespace CruiseManager.WinForms.DataEditor
             //get list of log fields from setup file
             this.AllLogFields = (from field in setupServ.GetLogFieldSetups()
                                  select new FieldDiscriptor(field)).ToList();
-            //TODO add additional fields for cutting unit code, stratum code, ...
-            this.AllLogFields.Add(new FieldDiscriptor { Field = "CUCode", Header = "Cutting Unit", DataType = typeof(LogVM) });
-            this.AllLogFields.Add(new FieldDiscriptor { Field = "StratumCode", Header = "Stratum", DataType = typeof(LogVM) });
-            this.AllLogFields.Add(new FieldDiscriptor { Field = "SGCode", Header = "Sample Group", DataType = typeof(LogVM) });
-            //this.AllLogFields.Add(new FieldDiscriptor { Field = "TreeDefaultValue", Header = "Default Sp/LD/ProdP", Format = "[Species]/[LiveDead]/[PrimaryProduct]", DataType = typeof(LogDO) });
-            this.AllLogFields.Add(new FieldDiscriptor { Field = "TreeNumber", Header = "Tree Number", DataType = typeof(LogVM) });
-            this.AllLogFields.Add(new FieldDiscriptor { Field = "PlotNumber", Header = "Plot Number", DataType = typeof(LogVM) });
+            this.AllLogFields.Add(new FieldDiscriptor { Field = nameof(LogVM.CUCode), Header = "Cutting Unit", DataType = typeof(LogVM) });
+            this.AllLogFields.Add(new FieldDiscriptor { Field = nameof(LogVM.StratumCode), Header = "Stratum", DataType = typeof(LogVM) });
+            this.AllLogFields.Add(new FieldDiscriptor { Field = nameof(LogVM.SGCode), Header = "Sample Group", DataType = typeof(LogVM) });
+            this.AllLogFields.Add(new FieldDiscriptor { Field = nameof(LogVM.TreeSpecies), Header = "Species", DataType = typeof(LogDO) });
+            this.AllLogFields.Add(new FieldDiscriptor { Field = nameof(LogVM.TreeNumber), Header = "Tree Number", DataType = typeof(LogVM) });
+            this.AllLogFields.Add(new FieldDiscriptor { Field = nameof(LogVM.PlotNumber), Header = "Plot Number", DataType = typeof(LogVM) });
             this.AllLogFields.Sort((x, y) => string.Compare(x.Header, y.Header, StringComparison.CurrentCulture));
             this.LogFields = new List<FieldDiscriptor>();
             this.LogOrderableAddRemoveWidget.DataSource = AllLogFields;
