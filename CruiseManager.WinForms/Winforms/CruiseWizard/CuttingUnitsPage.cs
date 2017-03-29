@@ -22,9 +22,8 @@ namespace CruiseManager.WinForms.CruiseWizard
 
         public CruiseWizardPresenter Presenter { get { return MasterView.Presenter; } }
         public CruiseWizardView MasterView { get; set; }
+
         #endregion Properties
-
-
 
         #region Initialization methods
 
@@ -32,7 +31,7 @@ namespace CruiseManager.WinForms.CruiseWizard
         {
             base.OnLoad(e);
             InitializeBindings();
-            this.CodeTextBox.TextBox.Focus();
+            this.CodeTextBox.Focus();
         }
 
         public void InitializeBindings()
@@ -69,7 +68,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             if (key == System.Windows.Forms.Keys.F1)
             {
                 CuttingUnitBindingSource.AddNew();
-                this.CodeTextBox.TextBox.Focus();
+                this.CodeTextBox.Focus();
                 return true;
             }
             return false;
@@ -87,7 +86,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             else
             {
                 this.tableLayoutPanel2.Enabled = true;
-                this.CodeTextBox.TextBox.Focus();
+                this.CodeTextBox.Focus();
             }
         }
     }

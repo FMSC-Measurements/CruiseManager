@@ -37,26 +37,7 @@ namespace CruiseManager
                 dalPath = args[1];
             }
 
-            //#if !DEBUG
-            NBug.Settings.UIMode = NBug.Enums.UIMode.Full;
-            NBug.Settings.StoragePath = NBug.Enums.StoragePath.WindowsTemp;
-            NBug.Settings.Destinations.Add(new NBug.Core.Submission.Tracker.Redmine()
-            {
-                ApiKey = "6cf4343091c7509dbf27d6afd84a267189b9d3b9",
-                CustomSubject = "CrashReport",
-                Url = "http://fmsc-projects.herokuapp.com/projects/csm/",
-                ProjectId = "csm",
-                TrackerId = "5",
-                PriorityId = "1",
-                StatusId = "1"
-            });
-
-            NBug.Settings.ReleaseMode = true;//only create error reports if debugger not attached
-            NBug.Settings.StopReportingAfter = 60;
-
-            AppDomain.CurrentDomain.UnhandledException += NBug.Handler.UnhandledException;
-            Application.ThreadException += NBug.Handler.ThreadException;
-            //#endif
+            InitializeNBug();
 
             using (ApplicationControllerBase applicationController = new ApplicationController(
                 new ViewModule(),
@@ -71,6 +52,37 @@ namespace CruiseManager
 
             System.Diagnostics.Trace.TraceInformation("Application Ended @{0}", DateTime.Now);
             System.Diagnostics.Trace.Close();
+        }
+
+        static void InitializeNBug()
+        {
+            try
+            {
+                //#if !DEBUG
+                NBug.Settings.UIMode = NBug.Enums.UIMode.Full;
+                NBug.Settings.StoragePath = NBug.Enums.StoragePath.WindowsTemp;
+                NBug.Settings.Destinations.Add(new NBug.Core.Submission.Tracker.Redmine()
+                {
+                    ApiKey = "6cf4343091c7509dbf27d6afd84a267189b9d3b9",
+                    CustomSubject = "CrashReport",
+                    Url = "http://fmsc-projects.herokuapp.com/projects/csm/",
+                    ProjectId = "csm",
+                    TrackerId = "5",
+                    PriorityId = "1",
+                    StatusId = "1"
+                });
+
+                NBug.Settings.ReleaseMode = true;//only create error reports if debugger not attached
+                NBug.Settings.StopReportingAfter = 60;
+
+                AppDomain.CurrentDomain.UnhandledException += NBug.Handler.UnhandledException;
+                Application.ThreadException += NBug.Handler.ThreadException;
+                //#endif
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.Write(e);
+            }
         }
     }
 }

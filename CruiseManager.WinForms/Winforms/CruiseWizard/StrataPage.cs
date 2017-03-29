@@ -98,7 +98,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             {
                 StrataBindingSource.AddNew();
             }
-            this.CodeTextBox.TextBox.Focus();
+            this.CodeTextBox.Focus();
         }
 
         private void StrataBindingSource_AddingNew(object sender, AddingNewEventArgs e)
@@ -117,7 +117,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             else
             {
                 this.tableLayoutPanel2.Enabled = true;
-                this.CodeTextBox.TextBox.Focus();
+                this.CodeTextBox.Focus();
             }
             stratum.CuttingUnits.Populate();
             CuttingUnitGridView.SelectedItems = stratum.CuttingUnits;
@@ -139,33 +139,33 @@ namespace CruiseManager.WinForms.CruiseWizard
             {
                 _kzTB.Enabled = false;
                 _kzTB.Text = "0";
-                BAFTextBox.TextBox.Text = "0";
-                BAFTextBox.TextBox.Enabled = false;
-                FixedPlotSizeTextBox.TextBox.Enabled = true;
+                BAFTextBox.Text = "0";
+                BAFTextBox.Enabled = false;
+                FixedPlotSizeTextBox.Enabled = true;
             }
             else if (method.StartsWith("P", StringComparison.CurrentCultureIgnoreCase))
             {
                 _kzTB.Enabled = false;
                 _kzTB.Text = "0";
-                FixedPlotSizeTextBox.TextBox.Text = "0";
-                BAFTextBox.TextBox.Enabled = true;
-                FixedPlotSizeTextBox.TextBox.Enabled = false;
+                FixedPlotSizeTextBox.Text = "0";
+                BAFTextBox.Enabled = true;
+                FixedPlotSizeTextBox.Enabled = false;
             }
             else if (method == "3PPNT")
             {
                 _kzTB.Enabled = true;
-                FixedPlotSizeTextBox.TextBox.Text = "0";
-                BAFTextBox.TextBox.Enabled = true;
-                FixedPlotSizeTextBox.TextBox.Enabled = false;
+                FixedPlotSizeTextBox.Text = "0";
+                BAFTextBox.Enabled = true;
+                FixedPlotSizeTextBox.Enabled = false;
             }
             else
             {
                 _kzTB.Enabled = false;
                 _kzTB.Text = "0";
-                BAFTextBox.TextBox.Text = "0";
-                FixedPlotSizeTextBox.TextBox.Text = "0";
-                BAFTextBox.TextBox.Enabled = false;
-                FixedPlotSizeTextBox.TextBox.Enabled = false;
+                BAFTextBox.Text = "0";
+                FixedPlotSizeTextBox.Text = "0";
+                BAFTextBox.Enabled = false;
+                FixedPlotSizeTextBox.Enabled = false;
             }
         }
 
@@ -176,7 +176,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             if (key == System.Windows.Forms.Keys.F1)
             {
                 StrataBindingSource.AddNew();
-                this.CodeTextBox.TextBox.Focus();
+                this.CodeTextBox.Focus();
                 return true;
             }
             return false;

@@ -76,7 +76,7 @@ namespace CruiseManager.WinForms
 
         public void ShowMessage(string message)
         {
-            this.ShowMessage(message, null);
+            this.ShowMessage(message, string.Empty);
         }
 
         public void ShowMessage(string message, string caption)
