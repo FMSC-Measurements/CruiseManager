@@ -67,7 +67,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label9.Location = new System.Drawing.Point(225, 0);
+            this.label9.Location = new System.Drawing.Point(3, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(47, 27);
             this.label9.TabIndex = 9;
@@ -90,7 +90,7 @@
             this._strataCB.DataSource = this._BS_strata;
             this._strataCB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this._strataCB.FormattingEnabled = true;
-            this._strataCB.Location = new System.Drawing.Point(98, 3);
+            this._strataCB.Location = new System.Drawing.Point(56, 3);
             this._strataCB.Name = "_strataCB";
             this._strataCB.Size = new System.Drawing.Size(121, 21);
             this._strataCB.TabIndex = 8;
@@ -104,7 +104,7 @@
             // 
             this.label21.AutoSize = true;
             this.label21.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label21.Location = new System.Drawing.Point(3, 0);
+            this.label21.Location = new System.Drawing.Point(183, 0);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(89, 27);
             this.label21.TabIndex = 12;
@@ -119,9 +119,9 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.label21, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label21, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this._strataCB, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.label9, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label9, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this._stratumHKCB, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this._tallyEditContainer, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.richTextBox1, 0, 2);
