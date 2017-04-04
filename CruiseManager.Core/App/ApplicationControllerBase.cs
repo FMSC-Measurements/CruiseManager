@@ -103,10 +103,8 @@ namespace CruiseManager.Core.App
         public IApplicationState AppState { get { return this.Kernel.Get<IApplicationState>(); } }
         public IPlatformHelper PlatformHelper { get { return this.Kernel.Get<IPlatformHelper>(); } }
 
-        protected ApplicationControllerBase(NinjectModule viewModule, NinjectModule coreModule)
+        protected ApplicationControllerBase()
         {
-            this.Kernel = new StandardKernel(viewModule, coreModule);
-
             this.SaveCommand = new BindableActionCommand("Save", this.Save, enabled: false);
             this.SaveAsCommand = new BindableActionCommand("SaveAs", this.SaveAs, enabled: false);
             this.OpenFileCommand = new BindableActionCommand("Open File", this.OpenFile);
@@ -115,6 +113,11 @@ namespace CruiseManager.Core.App
 #if DEBUG
             InSupervisorMode = true;
 #endif
+        }
+
+        protected ApplicationControllerBase(NinjectModule viewModule, NinjectModule coreModule) : this()
+        {
+            this.Kernel = new StandardKernel(viewModule, coreModule);
         }
 
         public IView GetView<T>() where T : IView
