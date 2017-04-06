@@ -17,7 +17,7 @@ namespace CruiseManager.Core.EditDesign
 {
     public class DesignEditorPresentor : Presentor, ISaveHandler
     {
-        public StratumDO _SampleGroups_SelectedStrata;
+        public DesignEditorStratum _SampleGroups_SelectedStrata;
         private DesignEditorStratum _anyStratumOption;
         private CuttingUnitDO _anyUnitOption;
         List<ProductCode> _productCodes;
@@ -54,7 +54,7 @@ namespace CruiseManager.Core.EditDesign
 
         public List<Region> Regions { get; set; }
 
-        public StratumDO SampleGroups_SelectedStrata
+        public DesignEditorStratum SampleGroups_SelectedStrata
         {
             get { return _SampleGroups_SelectedStrata; }
             set
@@ -62,14 +62,14 @@ namespace CruiseManager.Core.EditDesign
                 _SampleGroups_SelectedStrata = value;
                 if (value != null)
                 {
-                    DataContext.SampleGroups = new BindingList<SampleGroupDO>(
+                    DataContext.SampleGroups = new BindingList<DesignEditorSampleGroup>(
                         (from sg in DataContext.AllSampleGroups
                          where sg.Stratum.Stratum_CN == value.Stratum_CN
                          select sg).ToList());
                 }
                 else
                 {
-                    DataContext.SampleGroups = new BindingList<SampleGroupDO>(DataContext.AllSampleGroups);
+                    DataContext.SampleGroups = new BindingList<DesignEditorSampleGroup>(DataContext.AllSampleGroups);
                 }
                 View.UpdateSampleGroups(DataContext.SampleGroups);
             }
@@ -180,7 +180,7 @@ namespace CruiseManager.Core.EditDesign
             DataContext.CuttingUnitFilterSelectionList.Remove(unit);
         }
 
-        public void DeleteSampleGroup(SampleGroupDO sampleGroup)
+        public void DeleteSampleGroup(DesignEditorSampleGroup sampleGroup)
         {
             System.Diagnostics.Debug.Assert(DataContext.SampleGroups != null && DataContext.AllSampleGroups != null);
 
@@ -210,7 +210,7 @@ namespace CruiseManager.Core.EditDesign
             var mySampleGroups = (from sg in DataContext.AllSampleGroups
                                   where sg.Stratum == stratum
                                   select sg).ToList();
-            foreach (SampleGroupDO sg in mySampleGroups)
+            foreach (var sg in mySampleGroups)
             {
                 DataContext.AllSampleGroups.Remove(sg);
             }
@@ -277,7 +277,7 @@ namespace CruiseManager.Core.EditDesign
             return newUnit;
         }
 
-        public SampleGroupDO GetNewSampleGroup()
+        public DesignEditorSampleGroup GetNewSampleGroup()
         {
             System.Diagnostics.Debug.Assert(DataContext.AllSampleGroups != null);
 
@@ -286,7 +286,7 @@ namespace CruiseManager.Core.EditDesign
                 throw new UserFacingException("Please Select Stratum", null);
             }
 
-            var newSampleGroup = new SampleGroupDO(Database);
+            var newSampleGroup = new DesignEditorSampleGroup(Database);
             newSampleGroup.Code = "<blank>";
             newSampleGroup.Stratum = SampleGroups_SelectedStrata;
 
@@ -411,20 +411,13 @@ namespace CruiseManager.Core.EditDesign
                 }
             }
 
-            foreach (SampleGroupDO sg in DataContext.AllSampleGroups)
+            foreach (var sg in DataContext.AllSampleGroups)
             {
-                if (!sg.Validate(CruiseDAL.Schema.SAMPLEGROUP._ALL.Except(new string[] { "Stratum_CN" })))
-                {
-                    errorBuilder.AppendLine(sg.Error);
-                    isValid = false;
-                }
                 string er;
-                if (!SampleGroupDO.ValidateSetup(sg, sg.Stratum, out er))
+                if (!sg.Validate(sg.Stratum, out er))
                 {
                     errorBuilder.AppendLine(er);
-                    isValid = false;
                 }
-                //isValid = sg.ValidatePProdOnTDVs(ref error) && isValid;
             }
 
             foreach (TreeDefaultValueDO tdv in DataContext.AllTreeDefaults)
@@ -492,11 +485,11 @@ namespace CruiseManager.Core.EditDesign
                 DataContext.AllTreeDefaults = new BindingList<TreeDefaultValueDO>(tdvList);
 
                 //initialize sample groups
-                List<SampleGroupDO> sampleGroups = Database.From<SampleGroupDO>()
+                var sampleGroups = Database.From<DesignEditorSampleGroup>()
                     .Read().ToList();
 
-                DataContext.AllSampleGroups = new BindingList<SampleGroupDO>(sampleGroups);
-                DataContext.SampleGroups = new BindingList<SampleGroupDO>(sampleGroups);
+                DataContext.AllSampleGroups = new BindingList<DesignEditorSampleGroup>(sampleGroups);
+                DataContext.SampleGroups = new BindingList<DesignEditorSampleGroup>(sampleGroups);
 
                 foreach (SampleGroupDO sg in DataContext.AllSampleGroups)
                 {
