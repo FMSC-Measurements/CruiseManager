@@ -3,6 +3,7 @@ using CruiseManager.Core.SetupModels;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.ComponentModel;
 
 namespace CruiseManager.WinForms.CruiseWizard
 {
@@ -32,25 +33,23 @@ namespace CruiseManager.WinForms.CruiseWizard
             return this.ShowDialog();
         }
 
-        private void _okBTN_Click(object sender, EventArgs e)
+        protected override void OnClosing(CancelEventArgs e)
         {
-            this._BS_TDV.EndEdit();
-            if (this.TreeDefault.Validate() == true)
-            {
-                this.DialogResult = DialogResult.OK;
-                this.Close();
-            }
-            else
-            {
-                MessageBox.Show(this.TreeDefault.Error);
-            }
-        }
+            base.OnClosing(e);
 
-        private void _cancelBTN_Click(object sender, EventArgs e)
-        {
-            this.TreeDefault.SetValues(this._initialState);
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
+            if (DialogResult == DialogResult.OK)
+            {
+                this._BS_TDV.EndEdit();
+                if (!TreeDefault.Validate() == true)
+                {
+                    MessageBox.Show(this.TreeDefault.Error);
+                    e.Cancel = true;
+                }
+            }
+            else if (DialogResult == DialogResult.Cancel)
+            {
+                this.TreeDefault.SetValues(this._initialState);
+            }
         }
     }
 }
