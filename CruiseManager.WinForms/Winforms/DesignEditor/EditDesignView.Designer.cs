@@ -520,7 +520,7 @@
             // 
             // CuttingUnits_StrataSelectionBindingSource
             // 
-            this.CuttingUnits_StrataSelectionBindingSource.DataSource = typeof(CruiseDAL.DataObjects.StratumDO);
+            this.CuttingUnits_StrataSelectionBindingSource.DataSource = typeof(Core.EditDesign.DesignEditorStratum);
             this.CuttingUnits_StrataSelectionBindingSource.CurrentChanged += new System.EventHandler(this.CuttingUnits_StrataSelectionBindingSource_CurrentChanged);
             // 
             // CuttingUnitDataGridView
@@ -1074,7 +1074,7 @@
             // 
             // SampleGroups_StrataSelectionBindingSource
             // 
-            this.SampleGroups_StrataSelectionBindingSource.DataSource = typeof(CruiseDAL.DataObjects.StratumDO);
+            this.SampleGroups_StrataSelectionBindingSource.DataSource = typeof(Core.EditDesign.DesignEditorStratum);
             this.SampleGroups_StrataSelectionBindingSource.CurrentChanged += new System.EventHandler(this.SampleGroups_StrataSelectionBindingSource_CurrentChanged);
             // 
             // SampleGroups_AddButton
@@ -1308,7 +1308,7 @@
             // 
             // SampleGroupBindingSource
             // 
-            this.SampleGroupBindingSource.DataSource = typeof(CruiseDAL.DataObjects.SampleGroupDO);
+            this.SampleGroupBindingSource.DataSource = typeof(Core.EditDesign.DesignEditorSampleGroup);
             this.SampleGroupBindingSource.CurrentChanged += new System.EventHandler(this.SampleGroupBindingSource_CurrentChanged);
             // 
             // tableLayoutPanel7

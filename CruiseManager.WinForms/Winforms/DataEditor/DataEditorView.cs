@@ -479,7 +479,7 @@ namespace CruiseManager.WinForms.DataEditor
 
         #region read methods
 
-        protected List<TreeVM> ReadTrees(CuttingUnitDO cu, StratumDO st, SampleGroupDO sg, TreeDefaultValueDO tdv)
+        public List<TreeVM> ReadTrees(CuttingUnitDO cu, StratumDO st, SampleGroupDO sg, TreeDefaultValueDO tdv)
         {
             var selectionList = new List<string>();
             var selectionArgs = new List<string>();
@@ -516,7 +516,7 @@ namespace CruiseManager.WinForms.DataEditor
             }
         }
 
-        protected List<LogVM> ReadLogs(CuttingUnitDO cu, StratumDO st, SampleGroupDO sg, TreeDefaultValueDO tdv)
+        public List<LogVM> ReadLogs(CuttingUnitDO cu, StratumDO st, SampleGroupDO sg, TreeDefaultValueDO tdv)
         {
             var selectionList = new List<string>();
             var selectionArgs = new List<string>();
@@ -552,7 +552,7 @@ namespace CruiseManager.WinForms.DataEditor
             }
         }
 
-        protected List<PlotDO> ReadPlots(CuttingUnitDO cu, StratumDO st)
+        public List<PlotDO> ReadPlots(CuttingUnitDO cu, StratumDO st)
         {
             var selectionList = new List<string>();
             var selectionArgs = new List<string>();
@@ -578,7 +578,7 @@ namespace CruiseManager.WinForms.DataEditor
             }
         }
 
-        protected List<CountTreeDO> ReadCounts(CuttingUnitDO cu, StratumDO st, SampleGroupDO sg)
+        public List<CountTreeDO> ReadCounts(CuttingUnitDO cu, StratumDO st, SampleGroupDO sg)
         {
             var selectionList = new List<string>();
             var selectionArgs = new List<string>();

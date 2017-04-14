@@ -56,6 +56,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\ViewInterfaces\ITreeAuditView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditDesign\DesignEditorDataContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditDesign\DesignEditorPresentor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EditDesign\DesignEditorSampleGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditDesign\DesignEditorStratum.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditDesign\ViewInterfaces\IEditDesignView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditFieldData\TypeComparers.cs" />

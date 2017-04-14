@@ -8,7 +8,7 @@ namespace CruiseManager.Core.EditDesign
     {
         private List<CuttingUnitDO> _ToBeDeletedCuttingUnits = new List<CuttingUnitDO>();
         private List<DesignEditorStratum> _ToBeDeletedStrata = new List<DesignEditorStratum>();
-        private List<SampleGroupDO> _ToBeDeletedSampleGroups = new List<SampleGroupDO>();
+        private List<DesignEditorSampleGroup> _ToBeDeletedSampleGroups = new List<DesignEditorSampleGroup>();
         private List<TreeDefaultValueDO> _ToBeDelectedTreeDefaults = new List<TreeDefaultValueDO>();
 
         private bool _hasUnsavedChanges = false;
@@ -35,7 +35,7 @@ namespace CruiseManager.Core.EditDesign
             get { return _Sale; }
             set
             {
-                //remove old proerty changed listener
+                //remove old property changed listener
                 if (_Sale != null && !object.ReferenceEquals(_Sale, value))
                 {
                     _Sale.PropertyChanged -= Sale_PropertyChanged;
@@ -52,8 +52,7 @@ namespace CruiseManager.Core.EditDesign
 
         public BindingList<CuttingUnitDO> CuttingUnits { get; set; }
         public BindingList<DesignEditorStratum> Strata { get; set; }
-        public BindingList<SampleGroupDO> SampleGroups { get; set; }
-        public BindingList<PlotDO> Plots { get; set; }
+        public BindingList<DesignEditorSampleGroup> SampleGroups { get; set; }
 
         public List<CuttingUnitDO> DeletedCuttingUnits
         {
@@ -71,7 +70,7 @@ namespace CruiseManager.Core.EditDesign
             }
         }
 
-        public List<SampleGroupDO> DeletedSampleGroups
+        public List<DesignEditorSampleGroup> DeletedSampleGroups
         {
             get
             {
@@ -127,9 +126,9 @@ namespace CruiseManager.Core.EditDesign
             }
         }
 
-        public BindingList<SampleGroupDO> _AllSampleGroups;
+        public BindingList<DesignEditorSampleGroup> _AllSampleGroups;
 
-        public BindingList<SampleGroupDO> AllSampleGroups
+        public BindingList<DesignEditorSampleGroup> AllSampleGroups
         {
             get { return _AllSampleGroups; }
             set

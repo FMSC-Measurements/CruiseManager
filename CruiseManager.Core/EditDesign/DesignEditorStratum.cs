@@ -31,6 +31,6 @@ namespace CruiseManager.Core.EditDesign
             }
         }
 
-        public List<SampleGroupDO> SampleGroups { get; set; }
+        public List<DesignEditorSampleGroup> SampleGroups { get; set; }
     }
 }

@@ -102,7 +102,7 @@ namespace CruiseManager.WinForms.EditDesign
         private void CuttingUnitDataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             //ignore
-            //it would be nice to beable to handle a situation where the lookup value in a combobox column
+            //it would be nice to be able to handle a situation where the lookup value in a combobox column
             //isn't exactly the same as the cell's value. EX. stored value is "421 " but value in combobox is "421" and causes a data error.
             System.Diagnostics.Debug.WriteLine(e.Exception, "DataGridViewDataError");
         }
@@ -370,7 +370,7 @@ namespace CruiseManager.WinForms.EditDesign
         {
             try
             {
-                var curSG = SampleGroupBindingSource.Current as SampleGroupDO;
+                var curSG = SampleGroupBindingSource.Current as DesignEditorSampleGroup;
                 ViewPresenter.DeleteSampleGroup(curSG);
             }
             catch (Exception ex)
@@ -381,7 +381,7 @@ namespace CruiseManager.WinForms.EditDesign
 
         private void SampleGroups_StrataSelectionBindingSource_CurrentChanged(object sender, EventArgs e)
         {
-            var curStratum = SampleGroups_StrataSelectionBindingSource.Current as StratumDO;
+            var curStratum = SampleGroups_StrataSelectionBindingSource.Current as DesignEditorStratum;
             if (curStratum == null) { return; }
             if (curStratum.Code == "All") { curStratum = null; }
             ViewPresenter.SampleGroups_SelectedStrata = curStratum;
