@@ -9,7 +9,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
     public partial class TallySetupView : CruiseManager.WinForms.UserControlView, ITallySetupView
     {
         private TallySetupStratum_Base _currentStratum;
-        private bool _currentStratumChanging = false;
+        private bool _currentStratumChanging;
         FixCNTTallyEditPanel _myfixCNTTallyEditPanel;
         TallyEditPanel _standardTallyEditPanel;
         private BindingList<String> _stratumHotkeys = new BindingList<string>();

@@ -454,7 +454,7 @@ namespace CruiseManager.Core.App
 
         #region IDisposable Members
 
-        bool _disposed = false;
+        bool _disposed;
 
         public void Dispose()
         {
