@@ -60,7 +60,7 @@
       <Forest State="ID" Name="Sawtooth" ForestNumber="14" />
       <Forest State="ID" Name="Caribou-Targhee" ForestNumber="15" />
       <Forest State="NV" Name="Humboldt-Toiyabe" ForestNumber="17" />
-      <Forest State="UT" Name="Wasatch-Cache-Uinta" ForestNumber="19" />
+      <Forest State="UT" Name="Uinta-Wasatch-Cache" ForestNumber="19" />
     </Forests>
   </Region>
   <Region RegionNumber="05" Name="Pacfic Southwest">
