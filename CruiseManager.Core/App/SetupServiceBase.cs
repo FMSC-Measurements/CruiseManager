@@ -10,15 +10,14 @@ namespace CruiseManager.Core.App
 {
     public abstract class SetupServiceBase
     {
+        public static readonly string SETUP_FILENAME = "STPinfo.setup";
         public static readonly string AUDIT_VALUE_FILE_NAME = @"AuditValues.xml";
         public static readonly string CRUISE_METHOD_FILE_NAME = @"CruiseMethods.xml";
-        public static readonly string DEFAULT_SETUP_PATH = "\\STPinfo.setup";
+        public static readonly string DEFAULT_SETUP_PATH = ".\\";
         public static readonly string LOG_FIELD_FILE_NAME = @"LogFields.xml";
         public static readonly string LOGGING_METHOD_FILE_NAME = @"LoggingMethods.xml";
         public static readonly string PRODUCT_CODE_FILE_NAME = @"ProductCodes.xml";
         public static readonly string REGION_FILE_NAME = "Regions.xml";
-        public static readonly string THREEP_FILE_NAME = @"ThreePCodes.xml";
-        public static readonly string TREE_DEFAULT_FILE_NAME = "TreeDefaults.xml";
         public static readonly string TREE_FIELD_FILE_NAME = @"TreeFields.xml";
         public static readonly string UOM_FILE_NAME = @"UOMCodes.xml";
         //public static SetupService Instance { get; set; }
@@ -39,14 +38,12 @@ namespace CruiseManager.Core.App
         //}
 
         protected SetupServiceBase()
-            : this(DEFAULT_SETUP_PATH)
-        { }
-
-        protected SetupServiceBase(String path)
         {
-            string directory = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            this.Path = directory + path;
-            //Path = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + @"\USDA Forest Service\FMSC\" + path;
+            var codeBaseUri = new Uri(Assembly.GetExecutingAssembly().CodeBase).AbsolutePath;
+            var codeBasePath = Uri.UnescapeDataString(codeBaseUri);
+            var directory = System.IO.Path.GetDirectoryName(codeBasePath);
+
+            Path = codeBasePath = System.IO.Path.Combine(directory, SETUP_FILENAME);
         }
 
         public string Path { get; private set; }
@@ -119,28 +116,6 @@ namespace CruiseManager.Core.App
             }
         }
 
-        public List<ThreePCode> GetThreePCodes()
-        {
-            CheckFileExists();
-            using (Stream stream = new MemoryStream())
-            {
-                ExtractStream(THREEP_FILE_NAME, stream);
-                XmlSerializer s = new XmlSerializer(typeof(List<ThreePCode>));
-                return s.Deserialize(stream) as List<ThreePCode>;
-            }
-        }
-
-        public List<TreeDefaultValueDO> GetTreeDefaults()
-        {
-            CheckFileExists();
-            using (Stream stream = new MemoryStream())
-            {
-                ExtractStream(TREE_DEFAULT_FILE_NAME, stream);
-                XmlSerializer s = new XmlSerializer(typeof(List<TreeDefaultValueDO>));
-                return s.Deserialize(stream) as List<TreeDefaultValueDO>;
-            }
-        }
-
         public List<TreeFieldSetupDO> GetTreeFieldSetups()
         {
             CheckFileExists();
@@ -204,17 +179,6 @@ namespace CruiseManager.Core.App
                 XmlSerializer s = new XmlSerializer(typeof(List<Region>));
                 s.Serialize(stream, regions);
                 SaveStream(REGION_FILE_NAME, stream);
-            }
-        }
-
-        public void SaveTreeDefaults(List<TreeDefaultValueDO> tdvList)
-        {
-            CheckFileExists();
-            using (MemoryStream stream = new MemoryStream())
-            {
-                XmlSerializer s = new XmlSerializer(typeof(List<TreeDefaultValueDO>));
-                s.Serialize(stream, tdvList);
-                SaveStream(TREE_DEFAULT_FILE_NAME, stream);
             }
         }
 
