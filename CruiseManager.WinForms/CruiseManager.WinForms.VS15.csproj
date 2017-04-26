@@ -181,6 +181,9 @@
     <Compile Include="WinForms\CruiseCustomize\FixCNTTallyPopulationRow.Designer.cs">
       <DependentUpon>FixCNTTallyPopulationRow.cs</DependentUpon>
     </Compile>
+    <Compile Include="WinForms\CruiseCustomize\LogAuditRuleView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="WinForms\UserControlContainerView.cs">
       <SubType>UserControl</SubType>
     </Compile>
