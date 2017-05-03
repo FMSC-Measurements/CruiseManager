@@ -49,8 +49,6 @@
             this.bindingNavigator = new System.Windows.Forms.BindingNavigator(this.components);
             this.bindingNavigatorAddNewItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorDeleteItem = new System.Windows.Forms.ToolStripButton();
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -74,6 +72,7 @@
             this.SampleGroupButton = new System.Windows.Forms.Button();
             this.CuttingUnitButton = new System.Windows.Forms.Button();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             label10 = new System.Windows.Forms.Label();
             label11 = new System.Windows.Forms.Label();
             label13 = new System.Windows.Forms.Label();
@@ -154,11 +153,11 @@
             this.StrataListBox.FormatString = "● [Code] - [Method]";
             this.StrataListBox.FormattingEnabled = true;
             this.StrataListBox.IntegralHeight = false;
-            this.StrataListBox.Location = new System.Drawing.Point(0, 62);
+            this.StrataListBox.Location = new System.Drawing.Point(0, 46);
             this.StrataListBox.Margin = new System.Windows.Forms.Padding(0);
             this.StrataListBox.Name = "StrataListBox";
             this.StrataListBox.ScrollAlwaysVisible = true;
-            this.StrataListBox.Size = new System.Drawing.Size(156, 356);
+            this.StrataListBox.Size = new System.Drawing.Size(156, 372);
             this.StrataListBox.TabIndex = 0;
             // 
             // StrataBindingSource
@@ -174,10 +173,8 @@
             this.bindingNavigator.CountItem = null;
             this.bindingNavigator.DeleteItem = this.bindingNavigatorDeleteItem;
             this.bindingNavigator.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.bindingNavigator.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.bindingNavigator.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabel1,
-            this.toolStripSeparator1,
             this.bindingNavigatorAddNewItem,
             this.toolStripSeparator3,
             this.bindingNavigatorDeleteItem,
@@ -191,7 +188,7 @@
             this.bindingNavigator.Name = "bindingNavigator";
             this.bindingNavigator.PositionItem = null;
             this.bindingNavigator.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.bindingNavigator.Size = new System.Drawing.Size(156, 62);
+            this.bindingNavigator.Size = new System.Drawing.Size(156, 46);
             this.bindingNavigator.TabIndex = 1;
             this.bindingNavigator.Text = "bindingNavigator1";
             // 
@@ -201,7 +198,7 @@
             this.bindingNavigatorAddNewItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorAddNewItem.Image")));
             this.bindingNavigatorAddNewItem.Name = "bindingNavigatorAddNewItem";
             this.bindingNavigatorAddNewItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorAddNewItem.Size = new System.Drawing.Size(82, 28);
+            this.bindingNavigatorAddNewItem.Size = new System.Drawing.Size(74, 20);
             this.bindingNavigatorAddNewItem.Text = "Add new";
             // 
             // bindingNavigatorDeleteItem
@@ -209,20 +206,8 @@
             this.bindingNavigatorDeleteItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorDeleteItem.Image")));
             this.bindingNavigatorDeleteItem.Name = "bindingNavigatorDeleteItem";
             this.bindingNavigatorDeleteItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorDeleteItem.Size = new System.Drawing.Size(68, 28);
+            this.bindingNavigatorDeleteItem.Size = new System.Drawing.Size(60, 20);
             this.bindingNavigatorDeleteItem.Text = "Delete";
-            // 
-            // toolStripLabel1
-            // 
-            this.toolStripLabel1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(0, 0);
-            this.toolStripLabel1.Text = "Strata";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 23);
             // 
             // toolStripSeparator3
             // 
@@ -623,6 +608,12 @@
             this.errorProvider1.ContainerControl = this;
             this.errorProvider1.DataSource = this.StrataBindingSource;
             // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(40, 15);
+            this.toolStripLabel1.Text = "Strata:";
+            // 
             // StrataPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -662,8 +653,6 @@
         private System.Windows.Forms.ToolStripButton bindingNavigatorAddNewItem;
         private System.Windows.Forms.ToolStripButton bindingNavigatorDeleteItem;
         private System.Windows.Forms.ListBox StrataListBox;
-        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private FMSC.Controls.SelectedItemsGridView CuttingUnitGridView;
         private FMSC.Controls.YearComboBox YearComboBox;
@@ -684,5 +673,6 @@
         private System.Windows.Forms.TextBox FixedPlotSizeTextBox;
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
     }
 }
