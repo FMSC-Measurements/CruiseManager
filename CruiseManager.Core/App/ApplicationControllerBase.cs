@@ -398,7 +398,7 @@ namespace CruiseManager.Core.App
                 {
                     Nullable<bool> dialogResult = this.ActiveView.AskYesNoCancel(
                         "Partially created cruise file found, would you like to resume?\r\n" +
-                        "Selecting No will discard existing partial cruise.", "?", true);
+                        "Selecting No will discard existing partial cruise.", "Resume?", true);
                     if (dialogResult.HasValue == false)
                     {
                         db = null;
