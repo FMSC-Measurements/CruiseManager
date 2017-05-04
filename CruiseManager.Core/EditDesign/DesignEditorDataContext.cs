@@ -11,7 +11,7 @@ namespace CruiseManager.Core.EditDesign
         private List<DesignEditorSampleGroup> _ToBeDeletedSampleGroups = new List<DesignEditorSampleGroup>();
         private List<TreeDefaultValueDO> _ToBeDelectedTreeDefaults = new List<TreeDefaultValueDO>();
 
-        private bool _hasUnsavedChanges = false;
+        private bool _hasUnsavedChanges;
 
         public bool HasUnsavedChanges
         {

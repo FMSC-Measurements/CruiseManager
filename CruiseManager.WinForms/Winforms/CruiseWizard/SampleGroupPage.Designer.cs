@@ -322,11 +322,11 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.SampleGroupListBox.FormatString = "● [Code]";
             this.SampleGroupListBox.FormattingEnabled = true;
             this.SampleGroupListBox.IntegralHeight = false;
-            this.SampleGroupListBox.Location = new System.Drawing.Point(0, 62);
+            this.SampleGroupListBox.Location = new System.Drawing.Point(0, 41);
             this.SampleGroupListBox.Margin = new System.Windows.Forms.Padding(0);
             this.SampleGroupListBox.Name = "SampleGroupListBox";
             this.SampleGroupListBox.ScrollAlwaysVisible = true;
-            this.SampleGroupListBox.Size = new System.Drawing.Size(156, 338);
+            this.SampleGroupListBox.Size = new System.Drawing.Size(156, 359);
             this.SampleGroupListBox.TabIndex = 1;
             // 
             // SampleGroupBindingSource
@@ -342,7 +342,6 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.SampleGroupBindingNavigator.CountItem = null;
             this.SampleGroupBindingNavigator.DeleteItem = null;
             this.SampleGroupBindingNavigator.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.SampleGroupBindingNavigator.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.SampleGroupBindingNavigator.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabel2,
             this.bindingNavigatorAddNewItem,
@@ -358,7 +357,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.SampleGroupBindingNavigator.Name = "SampleGroupBindingNavigator";
             this.SampleGroupBindingNavigator.PositionItem = null;
             this.SampleGroupBindingNavigator.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.SampleGroupBindingNavigator.Size = new System.Drawing.Size(156, 62);
+            this.SampleGroupBindingNavigator.Size = new System.Drawing.Size(156, 41);
             this.SampleGroupBindingNavigator.TabIndex = 0;
             this.SampleGroupBindingNavigator.Text = "bindingNavigator2";
             // 
@@ -367,15 +366,14 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.bindingNavigatorAddNewItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorAddNewItem.Image")));
             this.bindingNavigatorAddNewItem.Name = "bindingNavigatorAddNewItem";
             this.bindingNavigatorAddNewItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorAddNewItem.Size = new System.Drawing.Size(82, 28);
+            this.bindingNavigatorAddNewItem.Size = new System.Drawing.Size(74, 20);
             this.bindingNavigatorAddNewItem.Text = "Add new";
             // 
             // toolStripLabel2
             // 
-            this.toolStripLabel2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripLabel2.Name = "toolStripLabel2";
-            this.toolStripLabel2.Size = new System.Drawing.Size(0, 0);
-            this.toolStripLabel2.Text = "Sample Groups";
+            this.toolStripLabel2.Size = new System.Drawing.Size(90, 15);
+            this.toolStripLabel2.Text = "Sample Groups:";
             // 
             // toolStripSeparator3
             // 
@@ -387,7 +385,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.bindingNavigatorDeleteItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorDeleteItem.Image")));
             this.bindingNavigatorDeleteItem.Name = "bindingNavigatorDeleteItem";
             this.bindingNavigatorDeleteItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorDeleteItem.Size = new System.Drawing.Size(68, 28);
+            this.bindingNavigatorDeleteItem.Size = new System.Drawing.Size(60, 20);
             this.bindingNavigatorDeleteItem.Text = "Delete";
             this.bindingNavigatorDeleteItem.Click += new System.EventHandler(this.bindingNavigatorDeleteItem_Click);
             // 
@@ -1177,7 +1175,6 @@ namespace CruiseManager.WinForms.CruiseWizard
         private System.Windows.Forms.BindingNavigator SampleGroupBindingNavigator;
         private System.Windows.Forms.ToolStripButton bindingNavigatorAddNewItem;
         private System.Windows.Forms.ToolStripButton bindingNavigatorDeleteItem;
-        private System.Windows.Forms.ToolStripLabel toolStripLabel2;
         private System.Windows.Forms.ListBox SampleGroupListBox;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Button CancelButton;
@@ -1231,5 +1228,6 @@ namespace CruiseManager.WinForms.CruiseWizard
         private System.Windows.Forms.TextBox textBox6;
         private System.Windows.Forms.TextBox _maxKPITB;
         private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel2;
     }
 }

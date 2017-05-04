@@ -45,11 +45,11 @@
             this.TabControl1 = new System.Windows.Forms.TabControl();
             this.SaleInfoTabPage = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this._logGradingEnabledCB = new System.Windows.Forms.CheckBox();
             this._saleForest_CB = new System.Windows.Forms.ComboBox();
             this.forestsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.RegionBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this._saleRegion_CB = new System.Windows.Forms.ComboBox();
+            this._logGradingEnabledCB = new System.Windows.Forms.CheckBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
@@ -200,7 +200,7 @@
             label4.Dock = System.Windows.Forms.DockStyle.Fill;
             label4.Location = new System.Drawing.Point(461, 0);
             label4.Name = "label4";
-            label4.Size = new System.Drawing.Size(94, 46);
+            label4.Size = new System.Drawing.Size(94, 29);
             label4.TabIndex = 2;
             label4.Text = "Filter By Stratum";
             label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -209,9 +209,9 @@
             // 
             label7.AutoSize = true;
             label7.Dock = System.Windows.Forms.DockStyle.Fill;
-            label7.Location = new System.Drawing.Point(199, 0);
+            label7.Location = new System.Drawing.Point(253, 0);
             label7.Name = "label7";
-            label7.Size = new System.Drawing.Size(169, 39);
+            label7.Size = new System.Drawing.Size(115, 29);
             label7.TabIndex = 0;
             label7.Text = "Filter By Cutting Unit";
             label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -222,7 +222,7 @@
             label8.Dock = System.Windows.Forms.DockStyle.Fill;
             label8.Location = new System.Drawing.Point(3, 0);
             label8.Name = "label8";
-            label8.Size = new System.Drawing.Size(60, 39);
+            label8.Size = new System.Drawing.Size(40, 29);
             label8.TabIndex = 2;
             label8.Text = "Strata ";
             label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -243,7 +243,7 @@
             label3.Location = new System.Drawing.Point(3, 0);
             label3.Name = "label3";
             label3.Padding = new System.Windows.Forms.Padding(0, 4, 0, 4);
-            label3.Size = new System.Drawing.Size(109, 34);
+            label3.Size = new System.Drawing.Size(72, 27);
             label3.TabIndex = 0;
             label3.Text = "Region";
             label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -252,10 +252,10 @@
             // 
             label5.AutoSize = true;
             label5.Dock = System.Windows.Forms.DockStyle.Fill;
-            label5.Location = new System.Drawing.Point(3, 34);
+            label5.Location = new System.Drawing.Point(3, 27);
             label5.Name = "label5";
             label5.Padding = new System.Windows.Forms.Padding(0, 4, 0, 4);
-            label5.Size = new System.Drawing.Size(109, 34);
+            label5.Size = new System.Drawing.Size(72, 27);
             label5.TabIndex = 0;
             label5.Text = "Forest";
             label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -264,9 +264,9 @@
             // 
             label9.AutoSize = true;
             label9.Dock = System.Windows.Forms.DockStyle.Fill;
-            label9.Location = new System.Drawing.Point(3, 68);
+            label9.Location = new System.Drawing.Point(3, 54);
             label9.Name = "label9";
-            label9.Size = new System.Drawing.Size(109, 35);
+            label9.Size = new System.Drawing.Size(72, 28);
             label9.TabIndex = 2;
             label9.Text = "District";
             label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -275,9 +275,9 @@
             // 
             label10.AutoSize = true;
             label10.Dock = System.Windows.Forms.DockStyle.Fill;
-            label10.Location = new System.Drawing.Point(3, 103);
+            label10.Location = new System.Drawing.Point(3, 82);
             label10.Name = "label10";
-            label10.Size = new System.Drawing.Size(109, 35);
+            label10.Size = new System.Drawing.Size(72, 28);
             label10.TabIndex = 3;
             label10.Text = "Sale Number";
             label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -286,9 +286,9 @@
             // 
             label11.AutoSize = true;
             label11.Dock = System.Windows.Forms.DockStyle.Fill;
-            label11.Location = new System.Drawing.Point(3, 138);
+            label11.Location = new System.Drawing.Point(3, 110);
             label11.Name = "label11";
-            label11.Size = new System.Drawing.Size(109, 35);
+            label11.Size = new System.Drawing.Size(72, 28);
             label11.TabIndex = 4;
             label11.Text = "Sale Name";
             label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -297,9 +297,9 @@
             // 
             label12.AutoSize = true;
             label12.Dock = System.Windows.Forms.DockStyle.Fill;
-            label12.Location = new System.Drawing.Point(3, 173);
+            label12.Location = new System.Drawing.Point(3, 138);
             label12.Name = "label12";
-            label12.Size = new System.Drawing.Size(109, 34);
+            label12.Size = new System.Drawing.Size(72, 27);
             label12.TabIndex = 5;
             label12.Text = "Purpose";
             label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -310,9 +310,9 @@
             this.SalePurposeComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.SalePurposeComboBox.DataBindings.Add(new System.Windows.Forms.Binding("SelectedItem", this.SaleBindingSource, "Purpose", true));
             this.SalePurposeComboBox.FormattingEnabled = true;
-            this.SalePurposeComboBox.Location = new System.Drawing.Point(118, 176);
+            this.SalePurposeComboBox.Location = new System.Drawing.Point(81, 141);
             this.SalePurposeComboBox.Name = "SalePurposeComboBox";
-            this.SalePurposeComboBox.Size = new System.Drawing.Size(171, 31);
+            this.SalePurposeComboBox.Size = new System.Drawing.Size(171, 21);
             this.SalePurposeComboBox.TabIndex = 0;
             // 
             // TabControl1
@@ -331,10 +331,10 @@
             // SaleInfoTabPage
             // 
             this.SaleInfoTabPage.Controls.Add(this.tableLayoutPanel2);
-            this.SaleInfoTabPage.Location = new System.Drawing.Point(4, 32);
+            this.SaleInfoTabPage.Location = new System.Drawing.Point(4, 22);
             this.SaleInfoTabPage.Name = "SaleInfoTabPage";
             this.SaleInfoTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.SaleInfoTabPage.Size = new System.Drawing.Size(649, 379);
+            this.SaleInfoTabPage.Size = new System.Drawing.Size(726, 493);
             this.SaleInfoTabPage.TabIndex = 4;
             this.SaleInfoTabPage.Text = "Sale Info";
             this.SaleInfoTabPage.UseVisualStyleBackColor = true;
@@ -369,21 +369,8 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(643, 373);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(720, 487);
             this.tableLayoutPanel2.TabIndex = 20;
-            // 
-            // _logGradingEnabledCB
-            // 
-            this._logGradingEnabledCB.AutoSize = true;
-            this.tableLayoutPanel2.SetColumnSpan(this._logGradingEnabledCB, 2);
-            this._logGradingEnabledCB.DataBindings.Add(new System.Windows.Forms.Binding("Checked", this.SaleBindingSource, "LogGradingEnabled", true));
-            this._logGradingEnabledCB.Location = new System.Drawing.Point(10, 217);
-            this._logGradingEnabledCB.Margin = new System.Windows.Forms.Padding(10);
-            this._logGradingEnabledCB.Name = "_logGradingEnabledCB";
-            this._logGradingEnabledCB.Size = new System.Drawing.Size(171, 27);
-            this._logGradingEnabledCB.TabIndex = 19;
-            this._logGradingEnabledCB.Text = "Log Data Enabled";
-            this._logGradingEnabledCB.UseVisualStyleBackColor = true;
             // 
             // _saleForest_CB
             // 
@@ -392,9 +379,9 @@
             this._saleForest_CB.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.SaleBindingSource, "Forest", true));
             this._saleForest_CB.DataSource = this.forestsBindingSource;
             this._saleForest_CB.DisplayMember = "Name";
-            this._saleForest_CB.Location = new System.Drawing.Point(118, 37);
+            this._saleForest_CB.Location = new System.Drawing.Point(81, 30);
             this._saleForest_CB.Name = "_saleForest_CB";
-            this._saleForest_CB.Size = new System.Drawing.Size(171, 31);
+            this._saleForest_CB.Size = new System.Drawing.Size(171, 21);
             this._saleForest_CB.TabIndex = 1;
             this._saleForest_CB.ValueMember = "ForestNumber";
             // 
@@ -414,45 +401,58 @@
             this._saleRegion_CB.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.SaleBindingSource, "Region", true));
             this._saleRegion_CB.DataSource = this.RegionBindingSource;
             this._saleRegion_CB.DisplayMember = "FormatNumberName";
-            this._saleRegion_CB.Location = new System.Drawing.Point(118, 3);
+            this._saleRegion_CB.Location = new System.Drawing.Point(81, 3);
             this._saleRegion_CB.Name = "_saleRegion_CB";
-            this._saleRegion_CB.Size = new System.Drawing.Size(171, 31);
+            this._saleRegion_CB.Size = new System.Drawing.Size(171, 21);
             this._saleRegion_CB.TabIndex = 1;
             this._saleRegion_CB.ValueMember = "RegionNumber";
+            // 
+            // _logGradingEnabledCB
+            // 
+            this._logGradingEnabledCB.AutoSize = true;
+            this.tableLayoutPanel2.SetColumnSpan(this._logGradingEnabledCB, 2);
+            this._logGradingEnabledCB.DataBindings.Add(new System.Windows.Forms.Binding("Checked", this.SaleBindingSource, "LogGradingEnabled", true));
+            this._logGradingEnabledCB.Location = new System.Drawing.Point(10, 175);
+            this._logGradingEnabledCB.Margin = new System.Windows.Forms.Padding(10);
+            this._logGradingEnabledCB.Name = "_logGradingEnabledCB";
+            this._logGradingEnabledCB.Size = new System.Drawing.Size(117, 17);
+            this._logGradingEnabledCB.TabIndex = 19;
+            this._logGradingEnabledCB.Text = "Log Data Enabled";
+            this._logGradingEnabledCB.UseVisualStyleBackColor = true;
             // 
             // textBox1
             // 
             this.textBox1.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.SaleBindingSource, "District", true, System.Windows.Forms.DataSourceUpdateMode.OnValidation, null, "D2"));
-            this.textBox1.Location = new System.Drawing.Point(118, 71);
+            this.textBox1.Location = new System.Drawing.Point(81, 57);
             this.textBox1.MaxLength = 2;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(46, 29);
+            this.textBox1.Size = new System.Drawing.Size(46, 22);
             this.textBox1.TabIndex = 20;
             // 
             // textBox2
             // 
             this.textBox2.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.SaleBindingSource, "SaleNumber", true));
-            this.textBox2.Location = new System.Drawing.Point(118, 106);
+            this.textBox2.Location = new System.Drawing.Point(81, 85);
             this.textBox2.MaxLength = 5;
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 29);
+            this.textBox2.Size = new System.Drawing.Size(100, 22);
             this.textBox2.TabIndex = 21;
             // 
             // textBox3
             // 
             this.textBox3.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.SaleBindingSource, "Name", true));
-            this.textBox3.Location = new System.Drawing.Point(118, 141);
+            this.textBox3.Location = new System.Drawing.Point(81, 113);
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 29);
+            this.textBox3.Size = new System.Drawing.Size(100, 22);
             this.textBox3.TabIndex = 22;
             // 
             // CuttingUnitsTabPage
             // 
             this.CuttingUnitsTabPage.Controls.Add(this.tableLayoutPanel3);
-            this.CuttingUnitsTabPage.Location = new System.Drawing.Point(4, 32);
+            this.CuttingUnitsTabPage.Location = new System.Drawing.Point(4, 22);
             this.CuttingUnitsTabPage.Name = "CuttingUnitsTabPage";
             this.CuttingUnitsTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.CuttingUnitsTabPage.Size = new System.Drawing.Size(726, 483);
+            this.CuttingUnitsTabPage.Size = new System.Drawing.Size(726, 493);
             this.CuttingUnitsTabPage.TabIndex = 0;
             this.CuttingUnitsTabPage.Text = "Cutting Units";
             this.CuttingUnitsTabPage.UseVisualStyleBackColor = true;
@@ -477,7 +477,7 @@
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(720, 477);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(720, 487);
             this.tableLayoutPanel3.TabIndex = 4;
             // 
             // CuttingUnits_DeleteButton
@@ -486,9 +486,9 @@
             this.CuttingUnits_DeleteButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.CuttingUnits_DeleteButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.CuttingUnits_DeleteButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CuttingUnits_DeleteButton.Location = new System.Drawing.Point(60, 3);
+            this.CuttingUnits_DeleteButton.Location = new System.Drawing.Point(47, 3);
             this.CuttingUnits_DeleteButton.Name = "CuttingUnits_DeleteButton";
-            this.CuttingUnits_DeleteButton.Size = new System.Drawing.Size(69, 40);
+            this.CuttingUnits_DeleteButton.Size = new System.Drawing.Size(50, 23);
             this.CuttingUnits_DeleteButton.TabIndex = 5;
             this.CuttingUnits_DeleteButton.Text = "Delete";
             this.CuttingUnits_DeleteButton.UseVisualStyleBackColor = false;
@@ -502,7 +502,7 @@
             this.CuttingUnits_AddButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.CuttingUnits_AddButton.Location = new System.Drawing.Point(3, 3);
             this.CuttingUnits_AddButton.Name = "CuttingUnits_AddButton";
-            this.CuttingUnits_AddButton.Size = new System.Drawing.Size(51, 40);
+            this.CuttingUnits_AddButton.Size = new System.Drawing.Size(38, 23);
             this.CuttingUnits_AddButton.TabIndex = 4;
             this.CuttingUnits_AddButton.Text = "Add";
             this.CuttingUnits_AddButton.UseVisualStyleBackColor = false;
@@ -515,12 +515,12 @@
             this.comboBox3.FormattingEnabled = true;
             this.comboBox3.Location = new System.Drawing.Point(561, 3);
             this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(156, 31);
+            this.comboBox3.Size = new System.Drawing.Size(156, 21);
             this.comboBox3.TabIndex = 3;
             // 
             // CuttingUnits_StrataSelectionBindingSource
             // 
-            this.CuttingUnits_StrataSelectionBindingSource.DataSource = typeof(Core.EditDesign.DesignEditorStratum);
+            this.CuttingUnits_StrataSelectionBindingSource.DataSource = typeof(CruiseManager.Core.EditDesign.DesignEditorStratum);
             this.CuttingUnits_StrataSelectionBindingSource.CurrentChanged += new System.EventHandler(this.CuttingUnits_StrataSelectionBindingSource_CurrentChanged);
             // 
             // CuttingUnitDataGridView
@@ -542,11 +542,11 @@
             this.tableLayoutPanel3.SetColumnSpan(this.CuttingUnitDataGridView, 5);
             this.CuttingUnitDataGridView.DataSource = this.CuttingUnitsBindingSource;
             this.CuttingUnitDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CuttingUnitDataGridView.Location = new System.Drawing.Point(0, 46);
+            this.CuttingUnitDataGridView.Location = new System.Drawing.Point(0, 29);
             this.CuttingUnitDataGridView.Margin = new System.Windows.Forms.Padding(0);
             this.CuttingUnitDataGridView.Name = "CuttingUnitDataGridView";
             this.CuttingUnitDataGridView.RowTemplate.Height = 24;
-            this.CuttingUnitDataGridView.Size = new System.Drawing.Size(720, 431);
+            this.CuttingUnitDataGridView.Size = new System.Drawing.Size(720, 458);
             this.CuttingUnitDataGridView.TabIndex = 3;
             this.CuttingUnitDataGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.CuttingUnitDataGridView_CellEnter);
             this.CuttingUnitDataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.CuttingUnitDataGridView_DataError);
@@ -559,7 +559,7 @@
             this.codeDataGridViewTextBoxColumn.MaxInputLength = 3;
             this.codeDataGridViewTextBoxColumn.Name = "codeDataGridViewTextBoxColumn";
             this.codeDataGridViewTextBoxColumn.ToolTipText = "Cutting Unit Code";
-            this.codeDataGridViewTextBoxColumn.Width = 78;
+            this.codeDataGridViewTextBoxColumn.Width = 54;
             // 
             // areaDataGridViewTextBoxColumn
             // 
@@ -568,7 +568,7 @@
             this.areaDataGridViewTextBoxColumn.HeaderText = "Area";
             this.areaDataGridViewTextBoxColumn.Name = "areaDataGridViewTextBoxColumn";
             this.areaDataGridViewTextBoxColumn.ToolTipText = "Area in Acres";
-            this.areaDataGridViewTextBoxColumn.Width = 81;
+            this.areaDataGridViewTextBoxColumn.Width = 55;
             // 
             // descriptionDataGridViewTextBoxColumn
             // 
@@ -577,7 +577,7 @@
             this.descriptionDataGridViewTextBoxColumn.HeaderText = "Description";
             this.descriptionDataGridViewTextBoxColumn.Name = "descriptionDataGridViewTextBoxColumn";
             this.descriptionDataGridViewTextBoxColumn.ToolTipText = "Cutting Unit Description";
-            this.descriptionDataGridViewTextBoxColumn.Width = 132;
+            this.descriptionDataGridViewTextBoxColumn.Width = 91;
             // 
             // loggingMethodDataGridViewTextBoxColumn
             // 
@@ -591,7 +591,7 @@
             this.loggingMethodDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.loggingMethodDataGridViewTextBoxColumn.ToolTipText = "Logging Method Code";
             this.loggingMethodDataGridViewTextBoxColumn.ValueMember = "Code";
-            this.loggingMethodDataGridViewTextBoxColumn.Width = 114;
+            this.loggingMethodDataGridViewTextBoxColumn.Width = 78;
             // 
             // LoggingMethodBindingSource
             // 
@@ -604,7 +604,7 @@
             this.paymentUnitDataGridViewTextBoxColumn.HeaderText = "PaymentUnit";
             this.paymentUnitDataGridViewTextBoxColumn.Name = "paymentUnitDataGridViewTextBoxColumn";
             this.paymentUnitDataGridViewTextBoxColumn.ToolTipText = "Payment Unit Code";
-            this.paymentUnitDataGridViewTextBoxColumn.Width = 145;
+            this.paymentUnitDataGridViewTextBoxColumn.Width = 97;
             // 
             // createdByDataGridViewTextBoxColumn
             // 
@@ -641,11 +641,11 @@
             // StrataTabPage
             // 
             this.StrataTabPage.Controls.Add(this.splitContainer1);
-            this.StrataTabPage.Location = new System.Drawing.Point(4, 32);
+            this.StrataTabPage.Location = new System.Drawing.Point(4, 22);
             this.StrataTabPage.Margin = new System.Windows.Forms.Padding(0);
             this.StrataTabPage.Name = "StrataTabPage";
             this.StrataTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.StrataTabPage.Size = new System.Drawing.Size(726, 483);
+            this.StrataTabPage.Size = new System.Drawing.Size(726, 493);
             this.StrataTabPage.TabIndex = 1;
             this.StrataTabPage.Text = "Strata";
             this.StrataTabPage.UseVisualStyleBackColor = true;
@@ -663,7 +663,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanel6);
-            this.splitContainer1.Size = new System.Drawing.Size(720, 477);
+            this.splitContainer1.Size = new System.Drawing.Size(720, 487);
             this.splitContainer1.SplitterDistance = 514;
             this.splitContainer1.TabIndex = 7;
             // 
@@ -687,7 +687,7 @@
             this.tableLayoutPanel5.RowCount = 2;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(514, 477);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(514, 487);
             this.tableLayoutPanel5.TabIndex = 0;
             // 
             // Strata_AddButton
@@ -698,7 +698,7 @@
             this.Strata_AddButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Strata_AddButton.Location = new System.Drawing.Point(3, 3);
             this.Strata_AddButton.Name = "Strata_AddButton";
-            this.Strata_AddButton.Size = new System.Drawing.Size(51, 33);
+            this.Strata_AddButton.Size = new System.Drawing.Size(38, 23);
             this.Strata_AddButton.TabIndex = 0;
             this.Strata_AddButton.Text = "Add";
             this.Strata_AddButton.UseVisualStyleBackColor = false;
@@ -710,9 +710,9 @@
             this.Strata_DeleteButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.Strata_DeleteButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.Strata_DeleteButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Strata_DeleteButton.Location = new System.Drawing.Point(60, 3);
+            this.Strata_DeleteButton.Location = new System.Drawing.Point(47, 3);
             this.Strata_DeleteButton.Name = "Strata_DeleteButton";
-            this.Strata_DeleteButton.Size = new System.Drawing.Size(69, 33);
+            this.Strata_DeleteButton.Size = new System.Drawing.Size(50, 23);
             this.Strata_DeleteButton.TabIndex = 1;
             this.Strata_DeleteButton.Text = "Delete";
             this.Strata_DeleteButton.UseVisualStyleBackColor = false;
@@ -726,7 +726,7 @@
             this.comboBox6.Location = new System.Drawing.Point(371, 0);
             this.comboBox6.Margin = new System.Windows.Forms.Padding(0);
             this.comboBox6.Name = "comboBox6";
-            this.comboBox6.Size = new System.Drawing.Size(143, 31);
+            this.comboBox6.Size = new System.Drawing.Size(143, 21);
             this.comboBox6.TabIndex = 2;
             // 
             // Strata_CuttingUnitsSelectionBindingSource
@@ -759,11 +759,11 @@
             this.tableLayoutPanel5.SetColumnSpan(this.StrataDataGridView, 5);
             this.StrataDataGridView.DataSource = this.StrataBindingSource;
             this.StrataDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.StrataDataGridView.Location = new System.Drawing.Point(0, 39);
+            this.StrataDataGridView.Location = new System.Drawing.Point(0, 29);
             this.StrataDataGridView.Margin = new System.Windows.Forms.Padding(0);
             this.StrataDataGridView.Name = "StrataDataGridView";
             this.StrataDataGridView.RowTemplate.Height = 24;
-            this.StrataDataGridView.Size = new System.Drawing.Size(514, 438);
+            this.StrataDataGridView.Size = new System.Drawing.Size(514, 458);
             this.StrataDataGridView.TabIndex = 0;
             this.StrataDataGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.StrataDataGridView_CellEnter);
             this.StrataDataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.StrataDataGridView_DataError);
@@ -776,7 +776,7 @@
             this.codeDataGridViewTextBoxColumn1.MaxInputLength = 2;
             this.codeDataGridViewTextBoxColumn1.Name = "codeDataGridViewTextBoxColumn1";
             this.codeDataGridViewTextBoxColumn1.ToolTipText = "Stratum Code";
-            this.codeDataGridViewTextBoxColumn1.Width = 107;
+            this.codeDataGridViewTextBoxColumn1.Width = 72;
             // 
             // descriptionDataGridViewTextBoxColumn1
             // 
@@ -785,7 +785,7 @@
             this.descriptionDataGridViewTextBoxColumn1.HeaderText = "Description";
             this.descriptionDataGridViewTextBoxColumn1.Name = "descriptionDataGridViewTextBoxColumn1";
             this.descriptionDataGridViewTextBoxColumn1.ToolTipText = "Stratum Description";
-            this.descriptionDataGridViewTextBoxColumn1.Width = 132;
+            this.descriptionDataGridViewTextBoxColumn1.Width = 91;
             // 
             // Method
             // 
@@ -798,7 +798,7 @@
             this.Method.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Method.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.Method.ToolTipText = "Cruising Method";
-            this.Method.Width = 106;
+            this.Method.Width = 73;
             // 
             // cruiseMethodBindingSource
             // 
@@ -811,7 +811,7 @@
             this.basalAreaFactorDataGridViewTextBoxColumn.HeaderText = "BAF";
             this.basalAreaFactorDataGridViewTextBoxColumn.Name = "basalAreaFactorDataGridViewTextBoxColumn";
             this.basalAreaFactorDataGridViewTextBoxColumn.ToolTipText = "Basal Area Factor";
-            this.basalAreaFactorDataGridViewTextBoxColumn.Width = 75;
+            this.basalAreaFactorDataGridViewTextBoxColumn.Width = 52;
             // 
             // fixedPlotSizeDataGridViewTextBoxColumn
             // 
@@ -820,7 +820,7 @@
             this.fixedPlotSizeDataGridViewTextBoxColumn.HeaderText = "Fixed";
             this.fixedPlotSizeDataGridViewTextBoxColumn.Name = "fixedPlotSizeDataGridViewTextBoxColumn";
             this.fixedPlotSizeDataGridViewTextBoxColumn.ToolTipText = "Fixed Plot Size";
-            this.fixedPlotSizeDataGridViewTextBoxColumn.Width = 85;
+            this.fixedPlotSizeDataGridViewTextBoxColumn.Width = 59;
             // 
             // KZ3PPNT
             // 
@@ -829,7 +829,7 @@
             this.KZ3PPNT.HeaderText = "KZ";
             this.KZ3PPNT.Name = "KZ3PPNT";
             this.KZ3PPNT.ToolTipText = "KZ Value for Plot Level Estimates of Volume";
-            this.KZ3PPNT.Width = 66;
+            this.KZ3PPNT.Width = 44;
             // 
             // fBSCodeDataGridViewTextBoxColumn
             // 
@@ -838,7 +838,7 @@
             this.fBSCodeDataGridViewTextBoxColumn.HeaderText = "FBSCode";
             this.fBSCodeDataGridViewTextBoxColumn.Name = "fBSCodeDataGridViewTextBoxColumn";
             this.fBSCodeDataGridViewTextBoxColumn.ToolTipText = "Fall Buck and Scale Code";
-            this.fBSCodeDataGridViewTextBoxColumn.Width = 113;
+            this.fBSCodeDataGridViewTextBoxColumn.Width = 78;
             // 
             // MonthStr
             // 
@@ -866,7 +866,7 @@
             this.yearDataGridViewTextBoxColumn.HeaderText = "Year";
             this.yearDataGridViewTextBoxColumn.Name = "yearDataGridViewTextBoxColumn";
             this.yearDataGridViewTextBoxColumn.ToolTipText = "Year";
-            this.yearDataGridViewTextBoxColumn.Width = 79;
+            this.yearDataGridViewTextBoxColumn.Width = 53;
             // 
             // YieldComponent
             // 
@@ -920,7 +920,7 @@
             this.tableLayoutPanel6.RowCount = 2;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(202, 477);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(202, 487);
             this.tableLayoutPanel6.TabIndex = 0;
             // 
             // label1
@@ -931,7 +931,7 @@
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
             this.label1.Padding = new System.Windows.Forms.Padding(5);
-            this.label1.Size = new System.Drawing.Size(196, 56);
+            this.label1.Size = new System.Drawing.Size(196, 23);
             this.label1.TabIndex = 6;
             this.label1.Text = "Cutting Units (Select to add)";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -950,12 +950,12 @@
             this.paymentUnitDataGridViewTextBoxColumn1});
             this.Strata_CuttingUnitsGridView.DataSource = this.Strata_CuttingUnitBindingSource;
             this.Strata_CuttingUnitsGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Strata_CuttingUnitsGridView.Location = new System.Drawing.Point(3, 59);
+            this.Strata_CuttingUnitsGridView.Location = new System.Drawing.Point(3, 26);
             this.Strata_CuttingUnitsGridView.Name = "Strata_CuttingUnitsGridView";
             this.Strata_CuttingUnitsGridView.RowHeadersVisible = false;
             this.Strata_CuttingUnitsGridView.SelectedItems = null;
             this.Strata_CuttingUnitsGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.Strata_CuttingUnitsGridView.Size = new System.Drawing.Size(196, 415);
+            this.Strata_CuttingUnitsGridView.Size = new System.Drawing.Size(196, 458);
             this.Strata_CuttingUnitsGridView.TabIndex = 7;
             this.Strata_CuttingUnitsGridView.VirtualMode = true;
             this.Strata_CuttingUnitsGridView.SelectionChanging += new FMSC.Controls.SelectionChangingEventHandler(this.Strata_CuttingUnitsGridView_SelectionChanging);
@@ -967,7 +967,7 @@
             this.codeDataGridViewTextBoxColumn3.HeaderText = "Unit";
             this.codeDataGridViewTextBoxColumn3.Name = "codeDataGridViewTextBoxColumn3";
             this.codeDataGridViewTextBoxColumn3.ToolTipText = "Cutting Unit Code";
-            this.codeDataGridViewTextBoxColumn3.Width = 78;
+            this.codeDataGridViewTextBoxColumn3.Width = 54;
             // 
             // areaDataGridViewTextBoxColumn1
             // 
@@ -976,7 +976,7 @@
             this.areaDataGridViewTextBoxColumn1.HeaderText = "Area";
             this.areaDataGridViewTextBoxColumn1.Name = "areaDataGridViewTextBoxColumn1";
             this.areaDataGridViewTextBoxColumn1.ToolTipText = "Area in Acres";
-            this.areaDataGridViewTextBoxColumn1.Width = 81;
+            this.areaDataGridViewTextBoxColumn1.Width = 55;
             // 
             // descriptionDataGridViewTextBoxColumn3
             // 
@@ -985,7 +985,7 @@
             this.descriptionDataGridViewTextBoxColumn3.HeaderText = "Description";
             this.descriptionDataGridViewTextBoxColumn3.Name = "descriptionDataGridViewTextBoxColumn3";
             this.descriptionDataGridViewTextBoxColumn3.ToolTipText = "Cutting Unit Description";
-            this.descriptionDataGridViewTextBoxColumn3.Width = 132;
+            this.descriptionDataGridViewTextBoxColumn3.Width = 91;
             // 
             // loggingMethodDataGridViewTextBoxColumn1
             // 
@@ -994,7 +994,7 @@
             this.loggingMethodDataGridViewTextBoxColumn1.HeaderText = "LogMeth";
             this.loggingMethodDataGridViewTextBoxColumn1.Name = "loggingMethodDataGridViewTextBoxColumn1";
             this.loggingMethodDataGridViewTextBoxColumn1.ToolTipText = "Logging Method Code";
-            this.loggingMethodDataGridViewTextBoxColumn1.Width = 114;
+            this.loggingMethodDataGridViewTextBoxColumn1.Width = 78;
             // 
             // paymentUnitDataGridViewTextBoxColumn1
             // 
@@ -1003,7 +1003,7 @@
             this.paymentUnitDataGridViewTextBoxColumn1.HeaderText = "PayUnit";
             this.paymentUnitDataGridViewTextBoxColumn1.Name = "paymentUnitDataGridViewTextBoxColumn1";
             this.paymentUnitDataGridViewTextBoxColumn1.ToolTipText = "Payment Unit Code";
-            this.paymentUnitDataGridViewTextBoxColumn1.Width = 105;
+            this.paymentUnitDataGridViewTextBoxColumn1.Width = 71;
             // 
             // Strata_CuttingUnitBindingSource
             // 
@@ -1012,10 +1012,10 @@
             // SampleGroupTabPage
             // 
             this.SampleGroupTabPage.Controls.Add(this.splitContainer2);
-            this.SampleGroupTabPage.Location = new System.Drawing.Point(4, 32);
+            this.SampleGroupTabPage.Location = new System.Drawing.Point(4, 22);
             this.SampleGroupTabPage.Name = "SampleGroupTabPage";
             this.SampleGroupTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.SampleGroupTabPage.Size = new System.Drawing.Size(726, 483);
+            this.SampleGroupTabPage.Size = new System.Drawing.Size(726, 493);
             this.SampleGroupTabPage.TabIndex = 2;
             this.SampleGroupTabPage.Text = "Sample Groups";
             this.SampleGroupTabPage.UseVisualStyleBackColor = true;
@@ -1033,7 +1033,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.tableLayoutPanel7);
-            this.splitContainer2.Size = new System.Drawing.Size(720, 477);
+            this.splitContainer2.Size = new System.Drawing.Size(720, 487);
             this.splitContainer2.SplitterDistance = 473;
             this.splitContainer2.TabIndex = 8;
             // 
@@ -1057,7 +1057,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(473, 477);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(473, 487);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // comboBox7
@@ -1066,15 +1066,15 @@
             this.comboBox7.DisplayMember = "Code";
             this.comboBox7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.comboBox7.FormattingEnabled = true;
-            this.comboBox7.Location = new System.Drawing.Point(66, 5);
+            this.comboBox7.Location = new System.Drawing.Point(46, 5);
             this.comboBox7.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.comboBox7.Name = "comboBox7";
-            this.comboBox7.Size = new System.Drawing.Size(121, 31);
+            this.comboBox7.Size = new System.Drawing.Size(121, 21);
             this.comboBox7.TabIndex = 3;
             // 
             // SampleGroups_StrataSelectionBindingSource
             // 
-            this.SampleGroups_StrataSelectionBindingSource.DataSource = typeof(Core.EditDesign.DesignEditorStratum);
+            this.SampleGroups_StrataSelectionBindingSource.DataSource = typeof(CruiseManager.Core.EditDesign.DesignEditorStratum);
             this.SampleGroups_StrataSelectionBindingSource.CurrentChanged += new System.EventHandler(this.SampleGroups_StrataSelectionBindingSource_CurrentChanged);
             // 
             // SampleGroups_AddButton
@@ -1083,10 +1083,10 @@
             this.SampleGroups_AddButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.SampleGroups_AddButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.SampleGroups_AddButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SampleGroups_AddButton.Location = new System.Drawing.Point(192, 3);
+            this.SampleGroups_AddButton.Location = new System.Drawing.Point(172, 3);
             this.SampleGroups_AddButton.Margin = new System.Windows.Forms.Padding(5, 3, 3, 3);
             this.SampleGroups_AddButton.Name = "SampleGroups_AddButton";
-            this.SampleGroups_AddButton.Size = new System.Drawing.Size(51, 33);
+            this.SampleGroups_AddButton.Size = new System.Drawing.Size(38, 23);
             this.SampleGroups_AddButton.TabIndex = 4;
             this.SampleGroups_AddButton.Text = "Add";
             this.SampleGroups_AddButton.UseVisualStyleBackColor = false;
@@ -1098,9 +1098,9 @@
             this.SampleGroups_DeleteButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.SampleGroups_DeleteButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.SampleGroups_DeleteButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SampleGroups_DeleteButton.Location = new System.Drawing.Point(249, 3);
+            this.SampleGroups_DeleteButton.Location = new System.Drawing.Point(216, 3);
             this.SampleGroups_DeleteButton.Name = "SampleGroups_DeleteButton";
-            this.SampleGroups_DeleteButton.Size = new System.Drawing.Size(69, 33);
+            this.SampleGroups_DeleteButton.Size = new System.Drawing.Size(50, 23);
             this.SampleGroups_DeleteButton.TabIndex = 5;
             this.SampleGroups_DeleteButton.Text = "Delete";
             this.SampleGroups_DeleteButton.UseVisualStyleBackColor = false;
@@ -1133,11 +1133,11 @@
             this.tableLayoutPanel1.SetColumnSpan(this.SampleGroupDataGridView, 5);
             this.SampleGroupDataGridView.DataSource = this.SampleGroupBindingSource;
             this.SampleGroupDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SampleGroupDataGridView.Location = new System.Drawing.Point(0, 39);
+            this.SampleGroupDataGridView.Location = new System.Drawing.Point(0, 29);
             this.SampleGroupDataGridView.Margin = new System.Windows.Forms.Padding(0);
             this.SampleGroupDataGridView.Name = "SampleGroupDataGridView";
             this.SampleGroupDataGridView.RowTemplate.Height = 24;
-            this.SampleGroupDataGridView.Size = new System.Drawing.Size(473, 438);
+            this.SampleGroupDataGridView.Size = new System.Drawing.Size(473, 458);
             this.SampleGroupDataGridView.TabIndex = 5;
             this.SampleGroupDataGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.SampleGroupDataGridView_CellEnter);
             this.SampleGroupDataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.SampleGroupDataGridView_CellValueChanged);
@@ -1153,7 +1153,7 @@
             this.stratumDataGridViewTextBoxColumn.Name = "stratumDataGridViewTextBoxColumn";
             this.stratumDataGridViewTextBoxColumn.ReadOnly = true;
             this.stratumDataGridViewTextBoxColumn.ToolTipText = "Stratum Code";
-            this.stratumDataGridViewTextBoxColumn.Width = 107;
+            this.stratumDataGridViewTextBoxColumn.Width = 72;
             // 
             // codeDataGridViewTextBoxColumn2
             // 
@@ -1163,7 +1163,7 @@
             this.codeDataGridViewTextBoxColumn2.MaxInputLength = 2;
             this.codeDataGridViewTextBoxColumn2.Name = "codeDataGridViewTextBoxColumn2";
             this.codeDataGridViewTextBoxColumn2.ToolTipText = "Sample Group Code";
-            this.codeDataGridViewTextBoxColumn2.Width = 67;
+            this.codeDataGridViewTextBoxColumn2.Width = 46;
             // 
             // cutLeaveDataGridViewTextBoxColumn
             // 
@@ -1172,7 +1172,7 @@
             this.cutLeaveDataGridViewTextBoxColumn.HeaderText = "C/L";
             this.cutLeaveDataGridViewTextBoxColumn.Name = "cutLeaveDataGridViewTextBoxColumn";
             this.cutLeaveDataGridViewTextBoxColumn.ToolTipText = "Cut/Leave Code";
-            this.cutLeaveDataGridViewTextBoxColumn.Width = 72;
+            this.cutLeaveDataGridViewTextBoxColumn.Width = 48;
             // 
             // uOMDataGridViewTextBoxColumn
             // 
@@ -1182,7 +1182,7 @@
             this.uOMDataGridViewTextBoxColumn.Name = "uOMDataGridViewTextBoxColumn";
             this.uOMDataGridViewTextBoxColumn.ReadOnly = true;
             this.uOMDataGridViewTextBoxColumn.ToolTipText = "Unit of Measure";
-            this.uOMDataGridViewTextBoxColumn.Width = 86;
+            this.uOMDataGridViewTextBoxColumn.Width = 59;
             // 
             // primaryProductDataGridViewTextBoxColumn
             // 
@@ -1196,7 +1196,7 @@
             this.primaryProductDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.primaryProductDataGridViewTextBoxColumn.ToolTipText = "Primary Product Code";
             this.primaryProductDataGridViewTextBoxColumn.ValueMember = "Code";
-            this.primaryProductDataGridViewTextBoxColumn.Width = 92;
+            this.primaryProductDataGridViewTextBoxColumn.Width = 62;
             // 
             // _BS_ProductTypes
             // 
@@ -1211,7 +1211,9 @@
             this.secondaryProductDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.secondaryProductDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.secondaryProductDataGridViewTextBoxColumn.ToolTipText = "Secondary Product Code";
-            this.secondaryProductDataGridViewTextBoxColumn.Width = 91;
+            this.secondaryProductDataGridViewTextBoxColumn.Width = 62;
+            this.secondaryProductDataGridViewTextBoxColumn.DisplayMember = "FriendlyValue";
+            this.secondaryProductDataGridViewTextBoxColumn.ValueMember = "Code";
             // 
             // biomassProductDataGridViewTextBoxColumn
             // 
@@ -1220,7 +1222,7 @@
             this.biomassProductDataGridViewTextBoxColumn.HeaderText = "BioProd";
             this.biomassProductDataGridViewTextBoxColumn.Name = "biomassProductDataGridViewTextBoxColumn";
             this.biomassProductDataGridViewTextBoxColumn.ToolTipText = "Biomass Product Code";
-            this.biomassProductDataGridViewTextBoxColumn.Width = 106;
+            this.biomassProductDataGridViewTextBoxColumn.Width = 73;
             // 
             // defaultLiveDeadDataGridViewTextBoxColumn
             // 
@@ -1234,7 +1236,7 @@
             this.defaultLiveDeadDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.defaultLiveDeadDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.defaultLiveDeadDataGridViewTextBoxColumn.ToolTipText = "Default Live/Dead Code";
-            this.defaultLiveDeadDataGridViewTextBoxColumn.Width = 73;
+            this.defaultLiveDeadDataGridViewTextBoxColumn.Width = 49;
             // 
             // samplingFrequencyDataGridViewTextBoxColumn
             // 
@@ -1243,7 +1245,7 @@
             this.samplingFrequencyDataGridViewTextBoxColumn.HeaderText = "Freq";
             this.samplingFrequencyDataGridViewTextBoxColumn.Name = "samplingFrequencyDataGridViewTextBoxColumn";
             this.samplingFrequencyDataGridViewTextBoxColumn.ToolTipText = "Sampling Frequency";
-            this.samplingFrequencyDataGridViewTextBoxColumn.Width = 79;
+            this.samplingFrequencyDataGridViewTextBoxColumn.Width = 55;
             // 
             // insuranceFrequencyDataGridViewTextBoxColumn
             // 
@@ -1252,7 +1254,7 @@
             this.insuranceFrequencyDataGridViewTextBoxColumn.HeaderText = "InsFreq";
             this.insuranceFrequencyDataGridViewTextBoxColumn.Name = "insuranceFrequencyDataGridViewTextBoxColumn";
             this.insuranceFrequencyDataGridViewTextBoxColumn.ToolTipText = "Insurance Tree Frequency";
-            this.insuranceFrequencyDataGridViewTextBoxColumn.Width = 101;
+            this.insuranceFrequencyDataGridViewTextBoxColumn.Width = 70;
             // 
             // kZDataGridViewTextBoxColumn
             // 
@@ -1261,7 +1263,7 @@
             this.kZDataGridViewTextBoxColumn.HeaderText = "KZ";
             this.kZDataGridViewTextBoxColumn.Name = "kZDataGridViewTextBoxColumn";
             this.kZDataGridViewTextBoxColumn.ToolTipText = "KZ Value for Tree Volume Estimates";
-            this.kZDataGridViewTextBoxColumn.Width = 66;
+            this.kZDataGridViewTextBoxColumn.Width = 44;
             // 
             // BigBAF
             // 
@@ -1276,7 +1278,7 @@
             this.descriptionDataGridViewTextBoxColumn2.HeaderText = "Description";
             this.descriptionDataGridViewTextBoxColumn2.Name = "descriptionDataGridViewTextBoxColumn2";
             this.descriptionDataGridViewTextBoxColumn2.ToolTipText = "Sample Group Description";
-            this.descriptionDataGridViewTextBoxColumn2.Width = 132;
+            this.descriptionDataGridViewTextBoxColumn2.Width = 91;
             // 
             // createdByDataGridViewTextBoxColumn2
             // 
@@ -1308,7 +1310,7 @@
             // 
             // SampleGroupBindingSource
             // 
-            this.SampleGroupBindingSource.DataSource = typeof(Core.EditDesign.DesignEditorSampleGroup);
+            this.SampleGroupBindingSource.DataSource = typeof(CruiseManager.Core.EditDesign.DesignEditorSampleGroup);
             this.SampleGroupBindingSource.CurrentChanged += new System.EventHandler(this.SampleGroupBindingSource_CurrentChanged);
             // 
             // tableLayoutPanel7
@@ -1332,7 +1334,7 @@
             this.tableLayoutPanel7.RowCount = 2;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(243, 477);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(243, 487);
             this.tableLayoutPanel7.TabIndex = 0;
             // 
             // _addSubPopBTN
@@ -1340,9 +1342,9 @@
             this._addSubPopBTN.AutoSize = true;
             this._addSubPopBTN.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this._addSubPopBTN.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._addSubPopBTN.Location = new System.Drawing.Point(59, 3);
+            this._addSubPopBTN.Location = new System.Drawing.Point(103, 3);
             this._addSubPopBTN.Name = "_addSubPopBTN";
-            this._addSubPopBTN.Size = new System.Drawing.Size(51, 33);
+            this._addSubPopBTN.Size = new System.Drawing.Size(38, 23);
             this._addSubPopBTN.TabIndex = 9;
             this._addSubPopBTN.Text = "Add";
             this._addSubPopBTN.UseVisualStyleBackColor = true;
@@ -1355,7 +1357,7 @@
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label2.Location = new System.Drawing.Point(3, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(115, 39);
+            this.label2.Size = new System.Drawing.Size(77, 29);
             this.label2.TabIndex = 8;
             this.label2.Text = "Tree Defaults ";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1365,9 +1367,9 @@
             this._editSubPopBtn.AutoSize = true;
             this._editSubPopBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this._editSubPopBtn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._editSubPopBtn.Location = new System.Drawing.Point(116, 3);
+            this._editSubPopBtn.Location = new System.Drawing.Point(147, 3);
             this._editSubPopBtn.Name = "_editSubPopBtn";
-            this._editSubPopBtn.Size = new System.Drawing.Size(49, 33);
+            this._editSubPopBtn.Size = new System.Drawing.Size(37, 23);
             this._editSubPopBtn.TabIndex = 10;
             this._editSubPopBtn.Text = "Edit";
             this._editSubPopBtn.UseVisualStyleBackColor = true;
@@ -1378,9 +1380,9 @@
             this._deleteSubPopBTN.AutoSize = true;
             this._deleteSubPopBTN.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this._deleteSubPopBTN.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._deleteSubPopBTN.Location = new System.Drawing.Point(171, 3);
+            this._deleteSubPopBTN.Location = new System.Drawing.Point(190, 3);
             this._deleteSubPopBTN.Name = "_deleteSubPopBTN";
-            this._deleteSubPopBTN.Size = new System.Drawing.Size(69, 33);
+            this._deleteSubPopBTN.Size = new System.Drawing.Size(50, 23);
             this._deleteSubPopBTN.TabIndex = 11;
             this._deleteSubPopBTN.Text = "Delete";
             this._deleteSubPopBTN.UseVisualStyleBackColor = true;
@@ -1399,13 +1401,13 @@
             this.tableLayoutPanel7.SetColumnSpan(this.SampleGroups_TDVGridView, 5);
             this.SampleGroups_TDVGridView.DataSource = this.SampleGroup_TDVBindingSource;
             this.SampleGroups_TDVGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SampleGroups_TDVGridView.Location = new System.Drawing.Point(0, 39);
+            this.SampleGroups_TDVGridView.Location = new System.Drawing.Point(0, 29);
             this.SampleGroups_TDVGridView.Margin = new System.Windows.Forms.Padding(0);
             this.SampleGroups_TDVGridView.Name = "SampleGroups_TDVGridView";
             this.SampleGroups_TDVGridView.RowHeadersVisible = false;
             this.SampleGroups_TDVGridView.SelectedItems = null;
             this.SampleGroups_TDVGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.SampleGroups_TDVGridView.Size = new System.Drawing.Size(243, 438);
+            this.SampleGroups_TDVGridView.Size = new System.Drawing.Size(243, 458);
             this.SampleGroups_TDVGridView.TabIndex = 9;
             this.SampleGroups_TDVGridView.VirtualMode = true;
             this.SampleGroups_TDVGridView.SelectionChanging += new FMSC.Controls.SelectionChangingEventHandler(this.SampleGroups_TDVGridView_SelectionChanging);
@@ -1418,7 +1420,7 @@
             this.speciesDataGridViewTextBoxColumn.Name = "speciesDataGridViewTextBoxColumn";
             this.speciesDataGridViewTextBoxColumn.ReadOnly = true;
             this.speciesDataGridViewTextBoxColumn.ToolTipText = "Species Code";
-            this.speciesDataGridViewTextBoxColumn.Width = 102;
+            this.speciesDataGridViewTextBoxColumn.Width = 70;
             // 
             // primaryProductDataGridViewTextBoxColumn1
             // 
@@ -1428,7 +1430,7 @@
             this.primaryProductDataGridViewTextBoxColumn1.Name = "primaryProductDataGridViewTextBoxColumn1";
             this.primaryProductDataGridViewTextBoxColumn1.ReadOnly = true;
             this.primaryProductDataGridViewTextBoxColumn1.ToolTipText = "Primary Product Code";
-            this.primaryProductDataGridViewTextBoxColumn1.Width = 92;
+            this.primaryProductDataGridViewTextBoxColumn1.Width = 62;
             // 
             // liveDeadDataGridViewTextBoxColumn
             // 
@@ -1438,7 +1440,7 @@
             this.liveDeadDataGridViewTextBoxColumn.Name = "liveDeadDataGridViewTextBoxColumn";
             this.liveDeadDataGridViewTextBoxColumn.ReadOnly = true;
             this.liveDeadDataGridViewTextBoxColumn.ToolTipText = "Default Live/Dead Code";
-            this.liveDeadDataGridViewTextBoxColumn.Width = 73;
+            this.liveDeadDataGridViewTextBoxColumn.Width = 49;
             // 
             // SampleGroup_TDVBindingSource
             // 
@@ -1451,7 +1453,7 @@
             // 
             // EditDesignView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.TabControl1);
             this.Font = global::CruiseManager.Properties.Settings.Default.AppFont;

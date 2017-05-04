@@ -8,6 +8,11 @@ namespace CruiseManager.WinForms.App
     {
         public bool Handel(Exception e)
         {
+            if (e is FMSC.ORM.ReadOnlyException)
+            {
+                MessageBox.Show("File is Read Only");
+                return true;
+            }
             if (e is UserFacingException)
             {
                 //WindowPresenter.Instance.ShowMessage(e.Message, null);

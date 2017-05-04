@@ -41,8 +41,6 @@
             this.bindingNavigator = new System.Windows.Forms.BindingNavigator(this.components);
             this.bindingNavigatorAddNewItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorDeleteItem = new System.Windows.Forms.ToolStripButton();
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -58,6 +56,7 @@
             this.StrataButton = new System.Windows.Forms.Button();
             this.CancelButton = new System.Windows.Forms.Button();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             label4 = new System.Windows.Forms.Label();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
@@ -80,7 +79,7 @@
             label4.Dock = System.Windows.Forms.DockStyle.Fill;
             label4.Location = new System.Drawing.Point(3, 128);
             label4.Name = "label4";
-            label4.Size = new System.Drawing.Size(149, 32);
+            label4.Size = new System.Drawing.Size(101, 32);
             label4.TabIndex = 16;
             label4.Text = "Logging Method";
             label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -91,7 +90,7 @@
             label1.Dock = System.Windows.Forms.DockStyle.Fill;
             label1.Location = new System.Drawing.Point(3, 0);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(149, 32);
+            label1.Size = new System.Drawing.Size(101, 32);
             label1.TabIndex = 4;
             label1.Text = "Cutting Unit Code";
             label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -102,7 +101,7 @@
             label2.Dock = System.Windows.Forms.DockStyle.Fill;
             label2.Location = new System.Drawing.Point(3, 32);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(149, 32);
+            label2.Size = new System.Drawing.Size(101, 32);
             label2.TabIndex = 6;
             label2.Text = "Area";
             label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -113,7 +112,7 @@
             label3.Dock = System.Windows.Forms.DockStyle.Fill;
             label3.Location = new System.Drawing.Point(3, 64);
             label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(149, 32);
+            label3.Size = new System.Drawing.Size(101, 32);
             label3.TabIndex = 7;
             label3.Text = "Description";
             label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -124,7 +123,7 @@
             label5.Dock = System.Windows.Forms.DockStyle.Fill;
             label5.Location = new System.Drawing.Point(3, 96);
             label5.Name = "label5";
-            label5.Size = new System.Drawing.Size(149, 32);
+            label5.Size = new System.Drawing.Size(101, 32);
             label5.TabIndex = 8;
             label5.Text = "Payment Unit";
             label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -146,12 +145,11 @@
             this.CuttingUnitsListBox.FormatString = "● [Code]";
             this.CuttingUnitsListBox.FormattingEnabled = true;
             this.CuttingUnitsListBox.IntegralHeight = false;
-            this.CuttingUnitsListBox.ItemHeight = 23;
-            this.CuttingUnitsListBox.Location = new System.Drawing.Point(0, 32);
+            this.CuttingUnitsListBox.Location = new System.Drawing.Point(0, 60);
             this.CuttingUnitsListBox.Margin = new System.Windows.Forms.Padding(0);
             this.CuttingUnitsListBox.Name = "CuttingUnitsListBox";
             this.CuttingUnitsListBox.ScrollAlwaysVisible = true;
-            this.CuttingUnitsListBox.Size = new System.Drawing.Size(148, 311);
+            this.CuttingUnitsListBox.Size = new System.Drawing.Size(148, 283);
             this.CuttingUnitsListBox.TabIndex = 0;
             // 
             // bindingNavigator
@@ -162,14 +160,13 @@
             this.bindingNavigator.CountItem = null;
             this.bindingNavigator.DeleteItem = this.bindingNavigatorDeleteItem;
             this.bindingNavigator.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.bindingNavigator.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.bindingNavigator.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabel1,
-            this.toolStripSeparator1,
             this.bindingNavigatorAddNewItem,
             this.toolStripSeparator2,
             this.bindingNavigatorDeleteItem,
             this.toolStripSeparator3});
+            this.bindingNavigator.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             this.bindingNavigator.Location = new System.Drawing.Point(0, 0);
             this.bindingNavigator.MoveFirstItem = null;
             this.bindingNavigator.MoveLastItem = null;
@@ -178,7 +175,7 @@
             this.bindingNavigator.Name = "bindingNavigator";
             this.bindingNavigator.PositionItem = null;
             this.bindingNavigator.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.bindingNavigator.Size = new System.Drawing.Size(148, 32);
+            this.bindingNavigator.Size = new System.Drawing.Size(148, 60);
             this.bindingNavigator.TabIndex = 0;
             this.bindingNavigator.Text = "bindingNavigator1";
             // 
@@ -187,7 +184,7 @@
             this.bindingNavigatorAddNewItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorAddNewItem.Image")));
             this.bindingNavigatorAddNewItem.Name = "bindingNavigatorAddNewItem";
             this.bindingNavigatorAddNewItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorAddNewItem.Size = new System.Drawing.Size(111, 29);
+            this.bindingNavigatorAddNewItem.Size = new System.Drawing.Size(74, 20);
             this.bindingNavigatorAddNewItem.Text = "Add new";
             this.bindingNavigatorAddNewItem.ToolTipText = "Add Cutting Unit";
             // 
@@ -196,30 +193,18 @@
             this.bindingNavigatorDeleteItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorDeleteItem.Image")));
             this.bindingNavigatorDeleteItem.Name = "bindingNavigatorDeleteItem";
             this.bindingNavigatorDeleteItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorDeleteItem.Size = new System.Drawing.Size(90, 29);
+            this.bindingNavigatorDeleteItem.Size = new System.Drawing.Size(60, 28);
             this.bindingNavigatorDeleteItem.Text = "Delete";
-            // 
-            // toolStripLabel1
-            // 
-            this.toolStripLabel1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(0, 29);
-            this.toolStripLabel1.Text = "Cutting Units";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 32);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 32);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 31);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 32);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 31);
             // 
             // panel2
             // 
@@ -275,7 +260,7 @@
             this.tableLayoutPanel2.Controls.Add(this.DescriptionTB, 1, 2);
             this.tableLayoutPanel2.Controls.Add(this.PaymentUnitTB, 1, 3);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(158, 32);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(158, 22);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 6;
@@ -285,16 +270,16 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(483, 318);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(483, 328);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // CodeTextBox
             // 
             this.CodeTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.CuttingUnitBindingSource, "Code", true));
-            this.CodeTextBox.Location = new System.Drawing.Point(158, 3);
+            this.CodeTextBox.Location = new System.Drawing.Point(110, 3);
             this.CodeTextBox.MaxLength = 3;
             this.CodeTextBox.Name = "CodeTextBox";
-            this.CodeTextBox.Size = new System.Drawing.Size(41, 29);
+            this.CodeTextBox.Size = new System.Drawing.Size(41, 22);
             this.CodeTextBox.TabIndex = 0;
             // 
             // LogMethComboBox
@@ -307,35 +292,35 @@
             this.LogMethComboBox.DisplayMember = "CodePlus";
             this.LogMethComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.LogMethComboBox.FormattingEnabled = true;
-            this.LogMethComboBox.Location = new System.Drawing.Point(158, 131);
+            this.LogMethComboBox.Location = new System.Drawing.Point(110, 131);
             this.LogMethComboBox.Name = "LogMethComboBox";
-            this.LogMethComboBox.Size = new System.Drawing.Size(254, 31);
+            this.LogMethComboBox.Size = new System.Drawing.Size(254, 21);
             this.LogMethComboBox.TabIndex = 4;
             this.LogMethComboBox.ValueMember = "Code";
             // 
             // AreaTB
             // 
             this.AreaTB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.CuttingUnitBindingSource, "Area", true));
-            this.AreaTB.Location = new System.Drawing.Point(158, 35);
+            this.AreaTB.Location = new System.Drawing.Point(110, 35);
             this.AreaTB.Name = "AreaTB";
-            this.AreaTB.Size = new System.Drawing.Size(41, 29);
+            this.AreaTB.Size = new System.Drawing.Size(41, 22);
             this.AreaTB.TabIndex = 1;
             // 
             // DescriptionTB
             // 
             this.DescriptionTB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.CuttingUnitBindingSource, "Description", true));
-            this.DescriptionTB.Location = new System.Drawing.Point(158, 67);
+            this.DescriptionTB.Location = new System.Drawing.Point(110, 67);
             this.DescriptionTB.Name = "DescriptionTB";
-            this.DescriptionTB.Size = new System.Drawing.Size(245, 29);
+            this.DescriptionTB.Size = new System.Drawing.Size(245, 22);
             this.DescriptionTB.TabIndex = 2;
             // 
             // PaymentUnitTB
             // 
             this.PaymentUnitTB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.CuttingUnitBindingSource, "PaymentUnit", true));
-            this.PaymentUnitTB.Location = new System.Drawing.Point(158, 99);
+            this.PaymentUnitTB.Location = new System.Drawing.Point(110, 99);
             this.PaymentUnitTB.MaxLength = 3;
             this.PaymentUnitTB.Name = "PaymentUnitTB";
-            this.PaymentUnitTB.Size = new System.Drawing.Size(41, 29);
+            this.PaymentUnitTB.Size = new System.Drawing.Size(41, 22);
             this.PaymentUnitTB.TabIndex = 3;
             // 
             // label6
@@ -347,7 +332,7 @@
             this.label6.Margin = new System.Windows.Forms.Padding(0);
             this.label6.Name = "label6";
             this.label6.Padding = new System.Windows.Forms.Padding(5, 3, 0, 0);
-            this.label6.Size = new System.Drawing.Size(483, 26);
+            this.label6.Size = new System.Drawing.Size(483, 16);
             this.label6.TabIndex = 0;
             this.label6.Text = "Cutting Unit";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -382,10 +367,10 @@
             this.StrataButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.StrataButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.StrataButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.StrataButton.Location = new System.Drawing.Point(502, 7);
+            this.StrataButton.Location = new System.Drawing.Point(526, 12);
             this.StrataButton.Margin = new System.Windows.Forms.Padding(0);
             this.StrataButton.Name = "StrataButton";
-            this.StrataButton.Size = new System.Drawing.Size(96, 35);
+            this.StrataButton.Size = new System.Drawing.Size(68, 25);
             this.StrataButton.TabIndex = 0;
             this.StrataButton.Text = "Strata >>";
             this.StrataButton.UseVisualStyleBackColor = false;
@@ -398,10 +383,10 @@
             this.CancelButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.CancelButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.CancelButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CancelButton.Location = new System.Drawing.Point(39, 7);
+            this.CancelButton.Location = new System.Drawing.Point(43, 12);
             this.CancelButton.Margin = new System.Windows.Forms.Padding(0);
             this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new System.Drawing.Size(73, 35);
+            this.CancelButton.Size = new System.Drawing.Size(53, 25);
             this.CancelButton.TabIndex = 1;
             this.CancelButton.Text = "Cancel";
             this.CancelButton.UseVisualStyleBackColor = false;
@@ -412,9 +397,15 @@
             this.errorProvider1.ContainerControl = this;
             this.errorProvider1.DataSource = this.CuttingUnitBindingSource;
             // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(80, 15);
+            this.toolStripLabel1.Text = "Cutting Units:";
+            // 
             // CuttingUnitsPage
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = global::CruiseManager.Properties.Settings.Default.AppFont;
@@ -443,9 +434,7 @@
         private System.Windows.Forms.BindingNavigator bindingNavigator;
         private System.Windows.Forms.ToolStripButton bindingNavigatorAddNewItem;
         private System.Windows.Forms.ToolStripButton bindingNavigatorDeleteItem;
-        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ErrorProvider errorProvider1;
@@ -462,5 +451,6 @@
         private System.Windows.Forms.TextBox PaymentUnitTB;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
     }
 }

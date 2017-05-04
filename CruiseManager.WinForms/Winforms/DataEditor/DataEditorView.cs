@@ -839,7 +839,7 @@ namespace CruiseManager.WinForms.DataEditor
                 tree.Save();
                 return true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 MessageBox.Show("Unable to save tree. Ensure Tree Number, Sample Group and Stratum are valid");
                 //this.HandleNonCriticalException(e, "Unable to save tree. Ensure Tree Number, Sample Group and Stratum are valid");
