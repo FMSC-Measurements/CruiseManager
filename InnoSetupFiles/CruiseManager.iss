@@ -3,9 +3,9 @@
 ; #defines require the ISPP add-on: http://sourceforge.net/projects/ispp/
 #define APP "Cruise Manager"
 ;
-#define VERSION "2017.05.03"
+#define VERSION "2017.05.05"
 ;version format for setup file name
-#define SETUPVERSION "20170503";  
+#define SETUPVERSION "20170505";  
 #define SPECIALTAG ""
 #define BASEURL "http://www.fs.fed.us/fmsc/measure"
 #define ORGANIZATION "U.S. Forest Service, Forest Management Service Center"
