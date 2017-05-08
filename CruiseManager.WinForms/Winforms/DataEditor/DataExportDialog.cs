@@ -591,7 +591,7 @@ namespace CruiseManager.WinForms.DataEditor
             }
 
             private PropertyInfo _propInfo;
-            private bool _isInitialized = false;
+            private bool _isInitialized;
 
             public string Field { get; set; }
             public string Header { get; set; }

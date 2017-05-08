@@ -354,15 +354,8 @@ namespace CruiseManager.Core.EditTemplate
 
         public bool HandleSave()
         {
-            try
-            {
-                this.Save();
-                return true;
-            }
-            catch (Exception e)
-            {
-                throw new NotImplementedException(null, e);
-            }
+            this.Save();
+            return true;
         }
 
         public void HandleAppClosing(ref bool cancel)

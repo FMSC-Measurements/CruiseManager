@@ -55,23 +55,6 @@ namespace CSMTest
             regions.Should().NotBeNullOrEmpty();
         }
 
-        public void GetThreePCodesTest()
-        {
-            var setupServ = new SetupService();
-
-            var threePCodes = setupServ.GetThreePCodes();
-            threePCodes.Should().NotBeNullOrEmpty();
-        }
-
-        [Fact]
-        public void GetTreeDefaultsTest()
-        {
-            var setupServ = new SetupService();
-
-            var treeDefaults = setupServ.GetTreeDefaults();
-            treeDefaults.Should().NotBeNullOrEmpty();
-        }
-
         [Fact]
         public void GetTreeFieldSetupsTest()
         {
@@ -133,17 +116,6 @@ namespace CSMTest
             list.RemoveAt(0);
             setupServ.SaveRegions(list);
             setupServ.GetRegions().Should().HaveSameCount(list);
-        }
-
-        [Fact]
-        public void SaveTreeDefaultsTest()
-        {
-            var setupServ = new SetupService();
-
-            var list = setupServ.GetTreeDefaults();
-            list.RemoveAt(0);
-            setupServ.SaveTreeDefaults(list);
-            setupServ.GetTreeDefaults().Should().HaveSameCount(list);
         }
 
         [Fact]
