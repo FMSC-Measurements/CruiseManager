@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CruiseManager.Core.CruiseCustomize.ViewInterfaces
 {
-    public interface ILogAuditView : IView
+    public interface ILogGradeAuditView : IView
     {
     }
 }

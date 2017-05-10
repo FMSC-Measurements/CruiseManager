@@ -37,7 +37,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Constants\SQL.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants\Strings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\FieldSetupPresenter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\LogAuditRulePresenter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\LogGradeAuditRulePresenter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\LogMatrixPresenter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\Models\FieldSetupStratum.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\Models\FixCNTTallyClass.cs" />
@@ -51,7 +51,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\TreeAuditRulePresenter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\ViewInterfaces\ICruiseCustomizeContainerView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\ViewInterfaces\IFieldSetupView.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\ViewInterfaces\ILogAuditView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\ViewInterfaces\ILogGradeAuditView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\ViewInterfaces\ILogMatrixView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\ViewInterfaces\ITallyEditPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\ViewInterfaces\ITallySetupView.cs" />
