@@ -42,6 +42,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\Models\FieldSetupStratum.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\Models\FixCNTTallyClass.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\Models\FixCNTTallyPopulation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\Models\LogGradeAuditRule.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\Models\TallyPopulation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\Models\TallySetupSampleGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CruiseCustomize\Models\FixCNTTallySetupStratum.cs" />

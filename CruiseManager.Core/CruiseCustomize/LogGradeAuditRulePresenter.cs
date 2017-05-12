@@ -1,16 +1,43 @@
 ﻿using CruiseDAL;
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
+using CruiseManager.Core.CruiseCustomize.Models;
 using CruiseManager.Core.CruiseCustomize.ViewInterfaces;
 using CruiseManager.Core.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
+    public class LogGradeSpecies : List<LogGradeAuditRule>
+    {
+        string _species = string.Empty;
+
+        public string Species
+        {
+            get { return _species; }
+            set
+            {
+                _species = value;
+                OnSpeciesChanged();
+            }
+        }
+
+        private void OnSpeciesChanged()
+        {
+            foreach (var item in this)
+            {
+                item.Species = Species;
+            }
+        }
+
+        public bool IsChanged => this.Any(x => x.IsChanged);
+    }
+
     public class LogAuditRulePresenter : Presentor, ISaveHandler
     {
         bool _isInitialized;
@@ -21,41 +48,57 @@ namespace CruiseManager.Core.CruiseCustomize
             set { base.View = value; }
         }
 
-        public event Action LogGradeAuditsChanged;//raised when the LogAudits property is changed
-
-        public event Action LogGradeAuditsModified;//raised when the log audits collection is modified i.e. Add, Delete
-
         public DAL Database { get { return ApplicationController.Database; } }
 
         #region LogAudits
 
-        ICollection<LogGradeAuditRuleDO> _logGradeAudits;
+        public event Action LogGradeAuditsChanged;//raised when the LogAudits property is changed
 
-        public ICollection<LogGradeAuditRuleDO> LogGradeAudits
-        {
-            get { return _logGradeAudits; }
-            set
-            {
-                _logGradeAudits = value;
-                OnLogGradeAuditsChanged();
-            }
-        }
+        public event Action LogGradeAuditsModified;//raised when the log audits collection is modified i.e. Add, Delete
 
-        private void OnLogGradeAuditsChanged()
-        {
-            LogGradeAuditsChanged?.Invoke();
-        }
+        //ICollection<LogGradeAuditRuleDO> _logGradeAudits;
 
-        private void OnLogAuditsModified()
-        {
-            LogGradeAuditsModified?.Invoke();
-        }
+        //public ICollection<LogGradeAuditRuleDO> LogGradeAudits
+        //{
+        //    get { return _logGradeAudits; }
+        //    set
+        //    {
+        //        _logGradeAudits = value;
+        //        OnLogGradeAuditsChanged();
+        //    }
+        //}
+
+        //private void OnLogGradeAuditsChanged()
+        //{
+        //    LogGradeAuditsChanged?.Invoke();
+        //}
+
+        //private void OnLogAuditsModified()
+        //{
+        //    LogGradeAuditsModified?.Invoke();
+        //}
 
         #endregion LogAudits
 
+        public ICollection<LogGradeSpecies> LogGradeSpecies { get; set; } = new BindingList<LogGradeSpecies>();
+
+        public List<LogGradeAuditRule> DeletedLogGradeAuditRules { get; set; } = new List<LogGradeAuditRule>();
+
+        public IEnumerable<string> SpeciesOptions { get; set; }
+
         public LogAuditRulePresenter(ApplicationControllerBase appController) : base(appController)
         {
-            LogGradeAudits = Database.From<LogGradeAuditRuleDO>().Read().ToList();
+            foreach (var grouping in Database.From<LogGradeAuditRule>().Read().GroupBy(x => x.Species))
+            {
+                var logGradeSp = new LogGradeSpecies() { Species = grouping.Key };
+                logGradeSp.AddRange(grouping);
+
+                LogGradeSpecies.Add(logGradeSp);
+            }
+            var result = Database.ExecuteScalar<String>("SELECT group_concat(Species) FROM (SELECT distinct [Species] FROM TreeDefaultValue ORDER BY Species);");
+            SpeciesOptions = ("," + result).Split(',');
+
+            //LogGradeAudits = Database.From<LogGradeAuditRuleDO>().Read().ToList();
             _isInitialized = true;
         }
 
@@ -66,22 +109,29 @@ namespace CruiseManager.Core.CruiseCustomize
             if (_isInitialized) { return; }
         }
 
-        public LogGradeAuditRuleDO AddLogAudit()
+        public LogGradeAuditRule MakeLogGradeAudit()
         {
-            var newLogAudit = new LogGradeAuditRuleDO(Database);
-            LogGradeAudits.Add(newLogAudit);
-            OnLogAuditsModified();
+            var newLogAudit = new LogGradeAuditRule() { DAL = Database };
             return newLogAudit;
         }
 
-        public void DeleteLogAudit(LogGradeAuditRuleDO value)
+        public void DeleteSpecies(LogGradeSpecies sp)
         {
-            if (value.IsPersisted)
+            if (LogGradeSpecies.Remove(sp))
             {
-                value.Delete();
+                foreach (var lga in sp)
+                {
+                    DeletedLogGradeAuditRules.Add(lga);
+                }
             }
-            LogGradeAudits.Remove(value);
-            OnLogAuditsModified();
+        }
+
+        public void DeleteLogAudit(LogGradeSpecies sp, LogGradeAuditRule value)
+        {
+            if (sp.Remove(value))
+            {
+                DeletedLogGradeAuditRules.Add(value);
+            }
         }
 
         #region ISaveHandler members
@@ -90,16 +140,30 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             get
             {
-                return LogGradeAudits.Any(la => la.IsChanged || la.IsPersisted == false);
+                return LogGradeSpecies.Any(x => x.IsChanged) || DeletedLogGradeAuditRules.Any();
+                //return LogGradeAudits.Any(la => la.IsChanged || la.IsPersisted == false);
             }
         }
 
         public bool HandleSave()
         {
-            foreach (var la in LogGradeAudits)
+            foreach (var la in DeletedLogGradeAuditRules)
             {
-                la.Save();
+                if (la.IsPersisted)
+                {
+                    la.Delete();
+                }
             }
+
+            foreach (var lgs in LogGradeSpecies)
+            {
+                foreach (var la in lgs)
+                {
+                    la.Species = lgs.Species;
+                    la.Save();
+                }
+            }
+
             return true;
         }
 

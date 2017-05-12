@@ -31,7 +31,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
                 { ExceptionHandler = _exceptionHandler },
 
                 new ViewNavigateCommand(this,
-                "Log Audit Rules",
+                "Log Grade Rules",
                 typeof(Core.CruiseCustomize.ViewInterfaces.ILogGradeAuditView))
                 { ExceptionHandler = _exceptionHandler },
 

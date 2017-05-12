@@ -526,6 +526,8 @@
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.TreeDefaultValueDO.datasource" />
     <None Include="Properties\DataSources\CruiseManager.Core.CruiseCustomize.FixCNTTallyClass.datasource" />
     <None Include="Properties\DataSources\CruiseManager.Core.CruiseCustomize.FixCNTTallyPopulation.datasource" />
+    <None Include="Properties\DataSources\CruiseManager.Core.CruiseCustomize.LogGradeSpecies.datasource" />
+    <None Include="Properties\DataSources\CruiseManager.Core.CruiseCustomize.Models.LogGradeAuditRule.datasource" />
     <None Include="Properties\DataSources\CruiseManager.Core.CruiseCustomize.TallySetupSampleGroup.datasource" />
     <None Include="Properties\DataSources\CruiseManager.Core.CruiseCustomize.TallySetupStratum.datasource" />
     <None Include="Properties\DataSources\CruiseManager.Core.Models.LogVM.datasource" />
