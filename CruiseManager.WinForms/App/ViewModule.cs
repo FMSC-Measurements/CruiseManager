@@ -19,6 +19,7 @@ namespace CruiseManager.WinForms.App
             Bind<Core.CruiseCustomize.ViewInterfaces.IFieldSetupView>().To<WinForms.CruiseCustomize.FieldSetupView>();
             Bind<Core.CruiseCustomize.ViewInterfaces.ITallySetupView>().To<WinForms.CruiseCustomize.TallySetupView>();
             Bind<Core.CruiseCustomize.ViewInterfaces.ITreeAuditView>().To<WinForms.CruiseCustomize.TreeAuditRulesView>();
+            Bind<Core.CruiseCustomize.ViewInterfaces.ILogGradeAuditView>().To<CruiseCustomize.LogGradeAuditRuleView>();
             Bind<Core.CruiseCustomize.ViewInterfaces.ILogMatrixView>().To<WinForms.CruiseCustomize.LogMatrixSettingsPage>();
             Bind<Core.CruiseCustomize.ViewInterfaces.ICruiseCustomizeContainerView>().To<WinForms.CruiseCustomize.CustomizeCruiseContainerView>();
 

@@ -6,9 +6,25 @@ namespace CruiseManager.WinForms
 {
     public class UserControlView : UserControl, IView
     {
+        IPresentor _viewPresenter;
+
         public virtual IPresentor ViewPresenter
         {
-            get; protected set;
+            get { return _viewPresenter; }
+            protected set
+            {
+                OnViewPresenterChanging();
+                _viewPresenter = value;
+                OnViewPresenterChanged();
+            }
+        }
+
+        protected virtual void OnViewPresenterChanged()
+        {
+        }
+
+        protected virtual void OnViewPresenterChanging()
+        {
         }
 
         //#region abstract methods

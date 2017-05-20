@@ -181,6 +181,9 @@
     <Compile Include="WinForms\CruiseCustomize\FixCNTTallyPopulationRow.Designer.cs">
       <DependentUpon>FixCNTTallyPopulationRow.cs</DependentUpon>
     </Compile>
+    <Compile Include="WinForms\CruiseCustomize\LogGradeAuditRuleView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="WinForms\UserControlContainerView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -402,6 +405,9 @@
     <EmbeddedResource Include="WinForms\CruiseCustomize\FixCNTTallyPopulationRow.resx">
       <DependentUpon>FixCNTTallyPopulationRow.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\CruiseCustomize\LogGradeAuditRuleView.resx">
+      <DependentUpon>LogGradeAuditRuleView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="WinForms\CruiseCustomize\LogMatrixSettingsPage.resx">
       <DependentUpon>LogMatrixSettingsPage.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -514,11 +520,14 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.CuttingUnitDO.datasource" />
+    <None Include="Properties\DataSources\CruiseDAL.DataObjects.LogGradeAuditRuleDO.datasource" />
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.SampleGroupDO.datasource" />
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.StratumDO.datasource" />
     <None Include="Properties\DataSources\CruiseDAL.DataObjects.TreeDefaultValueDO.datasource" />
     <None Include="Properties\DataSources\CruiseManager.Core.CruiseCustomize.FixCNTTallyClass.datasource" />
     <None Include="Properties\DataSources\CruiseManager.Core.CruiseCustomize.FixCNTTallyPopulation.datasource" />
+    <None Include="Properties\DataSources\CruiseManager.Core.CruiseCustomize.LogGradeSpecies.datasource" />
+    <None Include="Properties\DataSources\CruiseManager.Core.CruiseCustomize.Models.LogGradeAuditRule.datasource" />
     <None Include="Properties\DataSources\CruiseManager.Core.CruiseCustomize.TallySetupSampleGroup.datasource" />
     <None Include="Properties\DataSources\CruiseManager.Core.CruiseCustomize.TallySetupStratum.datasource" />
     <None Include="Properties\DataSources\CruiseManager.Core.Models.LogVM.datasource" />

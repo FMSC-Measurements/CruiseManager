@@ -740,6 +740,16 @@ namespace CruiseManager.WinForms.CruiseWizard
                 {
                     _database.Insert(lf, OnConflictOption.Ignore);
                 }
+
+                foreach (var lga in templateDB.From<LogGradeAuditRuleDO>().Query())
+                {
+                    _database.Insert(lga);
+                }
+
+                foreach (var lm in templateDB.From<LogMatrixDO>().Query())
+                {
+                    _database.Insert(lm, OnConflictOption.Ignore);
+                }
                 _database.CommitTransaction();
             }
             catch
