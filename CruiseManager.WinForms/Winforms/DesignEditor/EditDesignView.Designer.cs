@@ -112,24 +112,7 @@
             this.SampleGroups_AddButton = new System.Windows.Forms.Button();
             this.SampleGroups_DeleteButton = new System.Windows.Forms.Button();
             this.SampleGroupDataGridView = new System.Windows.Forms.DataGridView();
-            this.stratumDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.codeDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cutLeaveDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.uOMDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.primaryProductDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this._BS_ProductTypes = new System.Windows.Forms.BindingSource(this.components);
-            this.secondaryProductDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.biomassProductDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.defaultLiveDeadDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.samplingFrequencyDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.insuranceFrequencyDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.kZDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BigBAF = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.descriptionDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.createdByDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.createdDateDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.modifiedByDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.modifiedDateDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SampleGroupBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this._addSubPopBTN = new System.Windows.Forms.Button();
@@ -142,6 +125,25 @@
             this.liveDeadDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SampleGroup_TDVBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.CuttingUnitErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.stratumDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.codeDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cutLeaveDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.uOMDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.primaryProductDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.secondaryProductDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.biomassProductDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.defaultLiveDeadDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.samplingFrequencyDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.insuranceFrequencyDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.kZDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MinKPI = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MaxKPI = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BigBAF = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.descriptionDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.createdByDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.createdDateDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.modifiedByDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.modifiedDateDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             label4 = new System.Windows.Forms.Label();
             label7 = new System.Windows.Forms.Label();
             label8 = new System.Windows.Forms.Label();
@@ -1124,6 +1126,8 @@
             this.samplingFrequencyDataGridViewTextBoxColumn,
             this.insuranceFrequencyDataGridViewTextBoxColumn,
             this.kZDataGridViewTextBoxColumn,
+            this.MinKPI,
+            this.MaxKPI,
             this.BigBAF,
             this.descriptionDataGridViewTextBoxColumn2,
             this.createdByDataGridViewTextBoxColumn2,
@@ -1143,170 +1147,9 @@
             this.SampleGroupDataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.SampleGroupDataGridView_CellValueChanged);
             this.SampleGroupDataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.SampleGroupDataGridView_DataError);
             // 
-            // stratumDataGridViewTextBoxColumn
-            // 
-            this.stratumDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.stratumDataGridViewTextBoxColumn.DataPropertyName = "Stratum";
-            dataGridViewCellStyle1.Format = "[Code]";
-            this.stratumDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle1;
-            this.stratumDataGridViewTextBoxColumn.HeaderText = "Stratum";
-            this.stratumDataGridViewTextBoxColumn.Name = "stratumDataGridViewTextBoxColumn";
-            this.stratumDataGridViewTextBoxColumn.ReadOnly = true;
-            this.stratumDataGridViewTextBoxColumn.ToolTipText = "Stratum Code";
-            this.stratumDataGridViewTextBoxColumn.Width = 72;
-            // 
-            // codeDataGridViewTextBoxColumn2
-            // 
-            this.codeDataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.codeDataGridViewTextBoxColumn2.DataPropertyName = "Code";
-            this.codeDataGridViewTextBoxColumn2.HeaderText = "SG";
-            this.codeDataGridViewTextBoxColumn2.MaxInputLength = 2;
-            this.codeDataGridViewTextBoxColumn2.Name = "codeDataGridViewTextBoxColumn2";
-            this.codeDataGridViewTextBoxColumn2.ToolTipText = "Sample Group Code";
-            this.codeDataGridViewTextBoxColumn2.Width = 46;
-            // 
-            // cutLeaveDataGridViewTextBoxColumn
-            // 
-            this.cutLeaveDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.cutLeaveDataGridViewTextBoxColumn.DataPropertyName = "CutLeave";
-            this.cutLeaveDataGridViewTextBoxColumn.HeaderText = "C/L";
-            this.cutLeaveDataGridViewTextBoxColumn.Name = "cutLeaveDataGridViewTextBoxColumn";
-            this.cutLeaveDataGridViewTextBoxColumn.ToolTipText = "Cut/Leave Code";
-            this.cutLeaveDataGridViewTextBoxColumn.Width = 48;
-            // 
-            // uOMDataGridViewTextBoxColumn
-            // 
-            this.uOMDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.uOMDataGridViewTextBoxColumn.DataPropertyName = "UOM";
-            this.uOMDataGridViewTextBoxColumn.HeaderText = "UOM";
-            this.uOMDataGridViewTextBoxColumn.Name = "uOMDataGridViewTextBoxColumn";
-            this.uOMDataGridViewTextBoxColumn.ReadOnly = true;
-            this.uOMDataGridViewTextBoxColumn.ToolTipText = "Unit of Measure";
-            this.uOMDataGridViewTextBoxColumn.Width = 59;
-            // 
-            // primaryProductDataGridViewTextBoxColumn
-            // 
-            this.primaryProductDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.primaryProductDataGridViewTextBoxColumn.DataPropertyName = "PrimaryProduct";
-            this.primaryProductDataGridViewTextBoxColumn.DataSource = this._BS_ProductTypes;
-            this.primaryProductDataGridViewTextBoxColumn.DisplayMember = "FriendlyValue";
-            this.primaryProductDataGridViewTextBoxColumn.HeaderText = "PProd";
-            this.primaryProductDataGridViewTextBoxColumn.Name = "primaryProductDataGridViewTextBoxColumn";
-            this.primaryProductDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.primaryProductDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.primaryProductDataGridViewTextBoxColumn.ToolTipText = "Primary Product Code";
-            this.primaryProductDataGridViewTextBoxColumn.ValueMember = "Code";
-            this.primaryProductDataGridViewTextBoxColumn.Width = 62;
-            // 
             // _BS_ProductTypes
             // 
             this._BS_ProductTypes.DataSource = typeof(CruiseManager.Core.SetupModels.ProductCode);
-            // 
-            // secondaryProductDataGridViewTextBoxColumn
-            // 
-            this.secondaryProductDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.secondaryProductDataGridViewTextBoxColumn.DataPropertyName = "SecondaryProduct";
-            this.secondaryProductDataGridViewTextBoxColumn.HeaderText = "SProd";
-            this.secondaryProductDataGridViewTextBoxColumn.Name = "secondaryProductDataGridViewTextBoxColumn";
-            this.secondaryProductDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.secondaryProductDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.secondaryProductDataGridViewTextBoxColumn.ToolTipText = "Secondary Product Code";
-            this.secondaryProductDataGridViewTextBoxColumn.Width = 62;
-            this.secondaryProductDataGridViewTextBoxColumn.DisplayMember = "FriendlyValue";
-            this.secondaryProductDataGridViewTextBoxColumn.ValueMember = "Code";
-            // 
-            // biomassProductDataGridViewTextBoxColumn
-            // 
-            this.biomassProductDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.biomassProductDataGridViewTextBoxColumn.DataPropertyName = "BiomassProduct";
-            this.biomassProductDataGridViewTextBoxColumn.HeaderText = "BioProd";
-            this.biomassProductDataGridViewTextBoxColumn.Name = "biomassProductDataGridViewTextBoxColumn";
-            this.biomassProductDataGridViewTextBoxColumn.ToolTipText = "Biomass Product Code";
-            this.biomassProductDataGridViewTextBoxColumn.Width = 73;
-            // 
-            // defaultLiveDeadDataGridViewTextBoxColumn
-            // 
-            this.defaultLiveDeadDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.defaultLiveDeadDataGridViewTextBoxColumn.DataPropertyName = "DefaultLiveDead";
-            this.defaultLiveDeadDataGridViewTextBoxColumn.HeaderText = "L/D";
-            this.defaultLiveDeadDataGridViewTextBoxColumn.Items.AddRange(new object[] {
-            "L",
-            "D"});
-            this.defaultLiveDeadDataGridViewTextBoxColumn.Name = "defaultLiveDeadDataGridViewTextBoxColumn";
-            this.defaultLiveDeadDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.defaultLiveDeadDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.defaultLiveDeadDataGridViewTextBoxColumn.ToolTipText = "Default Live/Dead Code";
-            this.defaultLiveDeadDataGridViewTextBoxColumn.Width = 49;
-            // 
-            // samplingFrequencyDataGridViewTextBoxColumn
-            // 
-            this.samplingFrequencyDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.samplingFrequencyDataGridViewTextBoxColumn.DataPropertyName = "SamplingFrequency";
-            this.samplingFrequencyDataGridViewTextBoxColumn.HeaderText = "Freq";
-            this.samplingFrequencyDataGridViewTextBoxColumn.Name = "samplingFrequencyDataGridViewTextBoxColumn";
-            this.samplingFrequencyDataGridViewTextBoxColumn.ToolTipText = "Sampling Frequency";
-            this.samplingFrequencyDataGridViewTextBoxColumn.Width = 55;
-            // 
-            // insuranceFrequencyDataGridViewTextBoxColumn
-            // 
-            this.insuranceFrequencyDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.insuranceFrequencyDataGridViewTextBoxColumn.DataPropertyName = "InsuranceFrequency";
-            this.insuranceFrequencyDataGridViewTextBoxColumn.HeaderText = "InsFreq";
-            this.insuranceFrequencyDataGridViewTextBoxColumn.Name = "insuranceFrequencyDataGridViewTextBoxColumn";
-            this.insuranceFrequencyDataGridViewTextBoxColumn.ToolTipText = "Insurance Tree Frequency";
-            this.insuranceFrequencyDataGridViewTextBoxColumn.Width = 70;
-            // 
-            // kZDataGridViewTextBoxColumn
-            // 
-            this.kZDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.kZDataGridViewTextBoxColumn.DataPropertyName = "KZ";
-            this.kZDataGridViewTextBoxColumn.HeaderText = "KZ";
-            this.kZDataGridViewTextBoxColumn.Name = "kZDataGridViewTextBoxColumn";
-            this.kZDataGridViewTextBoxColumn.ToolTipText = "KZ Value for Tree Volume Estimates";
-            this.kZDataGridViewTextBoxColumn.Width = 44;
-            // 
-            // BigBAF
-            // 
-            this.BigBAF.DataPropertyName = "BigBAF";
-            this.BigBAF.HeaderText = "Big BAF";
-            this.BigBAF.Name = "BigBAF";
-            // 
-            // descriptionDataGridViewTextBoxColumn2
-            // 
-            this.descriptionDataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.descriptionDataGridViewTextBoxColumn2.DataPropertyName = "Description";
-            this.descriptionDataGridViewTextBoxColumn2.HeaderText = "Description";
-            this.descriptionDataGridViewTextBoxColumn2.Name = "descriptionDataGridViewTextBoxColumn2";
-            this.descriptionDataGridViewTextBoxColumn2.ToolTipText = "Sample Group Description";
-            this.descriptionDataGridViewTextBoxColumn2.Width = 91;
-            // 
-            // createdByDataGridViewTextBoxColumn2
-            // 
-            this.createdByDataGridViewTextBoxColumn2.DataPropertyName = "CreatedBy";
-            this.createdByDataGridViewTextBoxColumn2.HeaderText = "CreatedBy";
-            this.createdByDataGridViewTextBoxColumn2.Name = "createdByDataGridViewTextBoxColumn2";
-            this.createdByDataGridViewTextBoxColumn2.ReadOnly = true;
-            // 
-            // createdDateDataGridViewTextBoxColumn2
-            // 
-            this.createdDateDataGridViewTextBoxColumn2.DataPropertyName = "CreatedDate";
-            this.createdDateDataGridViewTextBoxColumn2.HeaderText = "CreatedDate";
-            this.createdDateDataGridViewTextBoxColumn2.Name = "createdDateDataGridViewTextBoxColumn2";
-            this.createdDateDataGridViewTextBoxColumn2.ReadOnly = true;
-            // 
-            // modifiedByDataGridViewTextBoxColumn2
-            // 
-            this.modifiedByDataGridViewTextBoxColumn2.DataPropertyName = "ModifiedBy";
-            this.modifiedByDataGridViewTextBoxColumn2.HeaderText = "ModifiedBy";
-            this.modifiedByDataGridViewTextBoxColumn2.Name = "modifiedByDataGridViewTextBoxColumn2";
-            this.modifiedByDataGridViewTextBoxColumn2.ReadOnly = true;
-            // 
-            // modifiedDateDataGridViewTextBoxColumn2
-            // 
-            this.modifiedDateDataGridViewTextBoxColumn2.DataPropertyName = "ModifiedDate";
-            this.modifiedDateDataGridViewTextBoxColumn2.HeaderText = "ModifiedDate";
-            this.modifiedDateDataGridViewTextBoxColumn2.Name = "modifiedDateDataGridViewTextBoxColumn2";
-            this.modifiedDateDataGridViewTextBoxColumn2.ReadOnly = true;
             // 
             // SampleGroupBindingSource
             // 
@@ -1451,6 +1294,177 @@
             this.CuttingUnitErrorProvider.ContainerControl = this;
             this.CuttingUnitErrorProvider.DataSource = this.CuttingUnitsBindingSource;
             // 
+            // stratumDataGridViewTextBoxColumn
+            // 
+            this.stratumDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.stratumDataGridViewTextBoxColumn.DataPropertyName = "Stratum";
+            dataGridViewCellStyle1.Format = "[Code]";
+            this.stratumDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle1;
+            this.stratumDataGridViewTextBoxColumn.HeaderText = "Stratum";
+            this.stratumDataGridViewTextBoxColumn.Name = "stratumDataGridViewTextBoxColumn";
+            this.stratumDataGridViewTextBoxColumn.ReadOnly = true;
+            this.stratumDataGridViewTextBoxColumn.ToolTipText = "Stratum Code";
+            this.stratumDataGridViewTextBoxColumn.Width = 72;
+            // 
+            // codeDataGridViewTextBoxColumn2
+            // 
+            this.codeDataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.codeDataGridViewTextBoxColumn2.DataPropertyName = "Code";
+            this.codeDataGridViewTextBoxColumn2.HeaderText = "SG";
+            this.codeDataGridViewTextBoxColumn2.MaxInputLength = 2;
+            this.codeDataGridViewTextBoxColumn2.Name = "codeDataGridViewTextBoxColumn2";
+            this.codeDataGridViewTextBoxColumn2.ToolTipText = "Sample Group Code";
+            this.codeDataGridViewTextBoxColumn2.Width = 46;
+            // 
+            // cutLeaveDataGridViewTextBoxColumn
+            // 
+            this.cutLeaveDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.cutLeaveDataGridViewTextBoxColumn.DataPropertyName = "CutLeave";
+            this.cutLeaveDataGridViewTextBoxColumn.HeaderText = "C/L";
+            this.cutLeaveDataGridViewTextBoxColumn.Name = "cutLeaveDataGridViewTextBoxColumn";
+            this.cutLeaveDataGridViewTextBoxColumn.ToolTipText = "Cut/Leave Code";
+            this.cutLeaveDataGridViewTextBoxColumn.Width = 48;
+            // 
+            // uOMDataGridViewTextBoxColumn
+            // 
+            this.uOMDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.uOMDataGridViewTextBoxColumn.DataPropertyName = "UOM";
+            this.uOMDataGridViewTextBoxColumn.HeaderText = "UOM";
+            this.uOMDataGridViewTextBoxColumn.Name = "uOMDataGridViewTextBoxColumn";
+            this.uOMDataGridViewTextBoxColumn.ReadOnly = true;
+            this.uOMDataGridViewTextBoxColumn.ToolTipText = "Unit of Measure";
+            this.uOMDataGridViewTextBoxColumn.Width = 59;
+            // 
+            // primaryProductDataGridViewTextBoxColumn
+            // 
+            this.primaryProductDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.primaryProductDataGridViewTextBoxColumn.DataPropertyName = "PrimaryProduct";
+            this.primaryProductDataGridViewTextBoxColumn.DataSource = this._BS_ProductTypes;
+            this.primaryProductDataGridViewTextBoxColumn.DisplayMember = "FriendlyValue";
+            this.primaryProductDataGridViewTextBoxColumn.HeaderText = "PProd";
+            this.primaryProductDataGridViewTextBoxColumn.Name = "primaryProductDataGridViewTextBoxColumn";
+            this.primaryProductDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.primaryProductDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.primaryProductDataGridViewTextBoxColumn.ToolTipText = "Primary Product Code";
+            this.primaryProductDataGridViewTextBoxColumn.ValueMember = "Code";
+            this.primaryProductDataGridViewTextBoxColumn.Width = 62;
+            // 
+            // secondaryProductDataGridViewTextBoxColumn
+            // 
+            this.secondaryProductDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.secondaryProductDataGridViewTextBoxColumn.DataPropertyName = "SecondaryProduct";
+            this.secondaryProductDataGridViewTextBoxColumn.HeaderText = "SProd";
+            this.secondaryProductDataGridViewTextBoxColumn.Name = "secondaryProductDataGridViewTextBoxColumn";
+            this.secondaryProductDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.secondaryProductDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.secondaryProductDataGridViewTextBoxColumn.ToolTipText = "Secondary Product Code";
+            this.secondaryProductDataGridViewTextBoxColumn.Width = 62;
+            // 
+            // biomassProductDataGridViewTextBoxColumn
+            // 
+            this.biomassProductDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.biomassProductDataGridViewTextBoxColumn.DataPropertyName = "BiomassProduct";
+            this.biomassProductDataGridViewTextBoxColumn.HeaderText = "BioProd";
+            this.biomassProductDataGridViewTextBoxColumn.Name = "biomassProductDataGridViewTextBoxColumn";
+            this.biomassProductDataGridViewTextBoxColumn.ToolTipText = "Biomass Product Code";
+            this.biomassProductDataGridViewTextBoxColumn.Width = 73;
+            // 
+            // defaultLiveDeadDataGridViewTextBoxColumn
+            // 
+            this.defaultLiveDeadDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.defaultLiveDeadDataGridViewTextBoxColumn.DataPropertyName = "DefaultLiveDead";
+            this.defaultLiveDeadDataGridViewTextBoxColumn.HeaderText = "L/D";
+            this.defaultLiveDeadDataGridViewTextBoxColumn.Items.AddRange(new object[] {
+            "L",
+            "D"});
+            this.defaultLiveDeadDataGridViewTextBoxColumn.Name = "defaultLiveDeadDataGridViewTextBoxColumn";
+            this.defaultLiveDeadDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.defaultLiveDeadDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.defaultLiveDeadDataGridViewTextBoxColumn.ToolTipText = "Default Live/Dead Code";
+            this.defaultLiveDeadDataGridViewTextBoxColumn.Width = 49;
+            // 
+            // samplingFrequencyDataGridViewTextBoxColumn
+            // 
+            this.samplingFrequencyDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.samplingFrequencyDataGridViewTextBoxColumn.DataPropertyName = "SamplingFrequency";
+            this.samplingFrequencyDataGridViewTextBoxColumn.HeaderText = "Freq";
+            this.samplingFrequencyDataGridViewTextBoxColumn.Name = "samplingFrequencyDataGridViewTextBoxColumn";
+            this.samplingFrequencyDataGridViewTextBoxColumn.ToolTipText = "Sampling Frequency";
+            this.samplingFrequencyDataGridViewTextBoxColumn.Width = 55;
+            // 
+            // insuranceFrequencyDataGridViewTextBoxColumn
+            // 
+            this.insuranceFrequencyDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.insuranceFrequencyDataGridViewTextBoxColumn.DataPropertyName = "InsuranceFrequency";
+            this.insuranceFrequencyDataGridViewTextBoxColumn.HeaderText = "InsFreq";
+            this.insuranceFrequencyDataGridViewTextBoxColumn.Name = "insuranceFrequencyDataGridViewTextBoxColumn";
+            this.insuranceFrequencyDataGridViewTextBoxColumn.ToolTipText = "Insurance Tree Frequency";
+            this.insuranceFrequencyDataGridViewTextBoxColumn.Width = 70;
+            // 
+            // kZDataGridViewTextBoxColumn
+            // 
+            this.kZDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.kZDataGridViewTextBoxColumn.DataPropertyName = "KZ";
+            this.kZDataGridViewTextBoxColumn.HeaderText = "KZ";
+            this.kZDataGridViewTextBoxColumn.Name = "kZDataGridViewTextBoxColumn";
+            this.kZDataGridViewTextBoxColumn.ToolTipText = "KZ Value for Tree Volume Estimates";
+            this.kZDataGridViewTextBoxColumn.Width = 44;
+            // 
+            // MinKPI
+            // 
+            this.MinKPI.DataPropertyName = "MinKPI";
+            this.MinKPI.HeaderText = "MinKPI";
+            this.MinKPI.Name = "MinKPI";
+            // 
+            // MaxKPI
+            // 
+            this.MaxKPI.DataPropertyName = "MaxKPI";
+            this.MaxKPI.HeaderText = "MaxKPI";
+            this.MaxKPI.Name = "MaxKPI";
+            // 
+            // BigBAF
+            // 
+            this.BigBAF.DataPropertyName = "BigBAF";
+            this.BigBAF.HeaderText = "Big BAF";
+            this.BigBAF.Name = "BigBAF";
+            // 
+            // descriptionDataGridViewTextBoxColumn2
+            // 
+            this.descriptionDataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.descriptionDataGridViewTextBoxColumn2.DataPropertyName = "Description";
+            this.descriptionDataGridViewTextBoxColumn2.HeaderText = "Description";
+            this.descriptionDataGridViewTextBoxColumn2.Name = "descriptionDataGridViewTextBoxColumn2";
+            this.descriptionDataGridViewTextBoxColumn2.ToolTipText = "Sample Group Description";
+            this.descriptionDataGridViewTextBoxColumn2.Width = 91;
+            // 
+            // createdByDataGridViewTextBoxColumn2
+            // 
+            this.createdByDataGridViewTextBoxColumn2.DataPropertyName = "CreatedBy";
+            this.createdByDataGridViewTextBoxColumn2.HeaderText = "CreatedBy";
+            this.createdByDataGridViewTextBoxColumn2.Name = "createdByDataGridViewTextBoxColumn2";
+            this.createdByDataGridViewTextBoxColumn2.ReadOnly = true;
+            // 
+            // createdDateDataGridViewTextBoxColumn2
+            // 
+            this.createdDateDataGridViewTextBoxColumn2.DataPropertyName = "CreatedDate";
+            this.createdDateDataGridViewTextBoxColumn2.HeaderText = "CreatedDate";
+            this.createdDateDataGridViewTextBoxColumn2.Name = "createdDateDataGridViewTextBoxColumn2";
+            this.createdDateDataGridViewTextBoxColumn2.ReadOnly = true;
+            // 
+            // modifiedByDataGridViewTextBoxColumn2
+            // 
+            this.modifiedByDataGridViewTextBoxColumn2.DataPropertyName = "ModifiedBy";
+            this.modifiedByDataGridViewTextBoxColumn2.HeaderText = "ModifiedBy";
+            this.modifiedByDataGridViewTextBoxColumn2.Name = "modifiedByDataGridViewTextBoxColumn2";
+            this.modifiedByDataGridViewTextBoxColumn2.ReadOnly = true;
+            // 
+            // modifiedDateDataGridViewTextBoxColumn2
+            // 
+            this.modifiedDateDataGridViewTextBoxColumn2.DataPropertyName = "ModifiedDate";
+            this.modifiedDateDataGridViewTextBoxColumn2.HeaderText = "ModifiedDate";
+            this.modifiedDateDataGridViewTextBoxColumn2.Name = "modifiedDateDataGridViewTextBoxColumn2";
+            this.modifiedDateDataGridViewTextBoxColumn2.ReadOnly = true;
+            // 
             // EditDesignView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1579,23 +1593,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn modifiedByDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn modifiedDateDataGridViewTextBoxColumn;
         private System.Windows.Forms.BindingSource _BS_ProductTypes;
-        private System.Windows.Forms.DataGridViewTextBoxColumn stratumDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn codeDataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn cutLeaveDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn uOMDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewComboBoxColumn primaryProductDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewComboBoxColumn secondaryProductDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn biomassProductDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewComboBoxColumn defaultLiveDeadDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn samplingFrequencyDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn insuranceFrequencyDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn kZDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn BigBAF;
-        private System.Windows.Forms.DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn createdByDataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn createdDateDataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn modifiedByDataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn modifiedDateDataGridViewTextBoxColumn2;
         private System.Windows.Forms.Button _deleteSubPopBTN;
         private System.Windows.Forms.DataGridViewTextBoxColumn codeDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn1;
@@ -1615,5 +1612,24 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn stratumDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn codeDataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cutLeaveDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn uOMDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewComboBoxColumn primaryProductDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewComboBoxColumn secondaryProductDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn biomassProductDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewComboBoxColumn defaultLiveDeadDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn samplingFrequencyDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn insuranceFrequencyDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn kZDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn MinKPI;
+        private System.Windows.Forms.DataGridViewTextBoxColumn MaxKPI;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BigBAF;
+        private System.Windows.Forms.DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn createdByDataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn createdDateDataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn modifiedByDataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn modifiedDateDataGridViewTextBoxColumn2;
     }
 }
