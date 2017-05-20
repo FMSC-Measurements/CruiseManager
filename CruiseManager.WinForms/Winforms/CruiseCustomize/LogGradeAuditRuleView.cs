@@ -96,8 +96,8 @@ namespace CruiseManager.WinForms.CruiseCustomize
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LogGradeAuditRuleView));
             System.Windows.Forms.ToolStripLabel toolStripLabel1;
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LogGradeAuditRuleView));
             this._logAuditsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this._logAuditSpeciesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.speciesBindingNavigator = new System.Windows.Forms.BindingNavigator(this.components);
@@ -113,13 +113,13 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this.logGradeAuditBindingNavigator = new System.Windows.Forms.BindingNavigator(this.components);
             this.logGradeAuditBindingNavigatorAddNewItem = new System.Windows.Forms.ToolStripButton();
             this.logGradeAuditBindingNavigatorDeleteItem = new System.Windows.Forms.ToolStripButton();
+            this.label4 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this._logGradeAuditEditPanel = new System.Windows.Forms.TableLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
             toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             ((System.ComponentModel.ISupportInitialize)(this._logAuditsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._logAuditSpeciesBindingSource)).BeginInit();
@@ -133,6 +133,12 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this.panel3.SuspendLayout();
             this._logGradeAuditEditPanel.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // toolStripLabel1
+            // 
+            toolStripLabel1.Name = "toolStripLabel1";
+            toolStripLabel1.Size = new System.Drawing.Size(49, 22);
+            toolStripLabel1.Text = "Species:";
             // 
             // _logAuditsBindingSource
             // 
@@ -227,15 +233,16 @@ namespace CruiseManager.WinForms.CruiseCustomize
             // 
             // _logGradeAuditSelectPanel
             // 
-            this._logGradeAuditSelectPanel.ColumnCount = 4;
+            this._logGradeAuditSelectPanel.ColumnCount = 5;
             this._logGradeAuditSelectPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this._logGradeAuditSelectPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this._logGradeAuditSelectPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this._logGradeAuditSelectPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 167F));
+            this._logGradeAuditSelectPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 37F));
+            this._logGradeAuditSelectPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this._logGradeAuditSelectPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 170F));
             this._logGradeAuditSelectPanel.Controls.Add(this._speciesOptComboBox, 1, 0);
             this._logGradeAuditSelectPanel.Controls.Add(this.label1, 0, 0);
             this._logGradeAuditSelectPanel.Controls.Add(this.listBox2, 0, 2);
-            this._logGradeAuditSelectPanel.Controls.Add(this.logGradeAuditBindingNavigator, 2, 2);
+            this._logGradeAuditSelectPanel.Controls.Add(this.logGradeAuditBindingNavigator, 3, 2);
             this._logGradeAuditSelectPanel.Controls.Add(this.label4, 0, 1);
             this._logGradeAuditSelectPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._logGradeAuditSelectPanel.Enabled = false;
@@ -254,7 +261,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this._speciesOptComboBox.FormattingEnabled = true;
             this._speciesOptComboBox.Location = new System.Drawing.Point(54, 3);
             this._speciesOptComboBox.Name = "_speciesOptComboBox";
-            this._speciesOptComboBox.Size = new System.Drawing.Size(95, 21);
+            this._speciesOptComboBox.Size = new System.Drawing.Size(72, 21);
             this._speciesOptComboBox.TabIndex = 0;
             // 
             // label1
@@ -270,13 +277,13 @@ namespace CruiseManager.WinForms.CruiseCustomize
             // 
             // listBox2
             // 
-            this._logGradeAuditSelectPanel.SetColumnSpan(this.listBox2, 2);
+            this._logGradeAuditSelectPanel.SetColumnSpan(this.listBox2, 3);
             this.listBox2.DataSource = this._logAuditsBindingSource;
             this.listBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listBox2.FormattingEnabled = true;
             this.listBox2.Location = new System.Drawing.Point(3, 50);
             this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(154, 152);
+            this.listBox2.Size = new System.Drawing.Size(160, 152);
             this.listBox2.TabIndex = 2;
             // 
             // logGradeAuditBindingNavigator
@@ -290,7 +297,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this.logGradeAuditBindingNavigatorAddNewItem,
             this.logGradeAuditBindingNavigatorDeleteItem});
             this.logGradeAuditBindingNavigator.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.VerticalStackWithOverflow;
-            this.logGradeAuditBindingNavigator.Location = new System.Drawing.Point(160, 47);
+            this.logGradeAuditBindingNavigator.Location = new System.Drawing.Point(166, 47);
             this.logGradeAuditBindingNavigator.MoveFirstItem = null;
             this.logGradeAuditBindingNavigator.MoveLastItem = null;
             this.logGradeAuditBindingNavigator.MoveNextItem = null;
@@ -319,6 +326,18 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this.logGradeAuditBindingNavigatorDeleteItem.Size = new System.Drawing.Size(22, 20);
             this.logGradeAuditBindingNavigatorDeleteItem.Text = "Delete";
             this.logGradeAuditBindingNavigatorDeleteItem.Click += new System.EventHandler(this.logGradeAuditBindingNavigatorDeleteItem_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this._logGradeAuditSelectPanel.SetColumnSpan(this.label4, 2);
+            this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label4.Location = new System.Drawing.Point(3, 27);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(123, 20);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "Rule Deffinitions";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // panel3
             // 
@@ -357,9 +376,9 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label2.Location = new System.Drawing.Point(3, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(87, 26);
+            this.label2.Size = new System.Drawing.Size(83, 26);
             this.label2.TabIndex = 0;
-            this.label2.Text = "Max Tree Defect";
+            this.label2.Text = "Max Log Defect";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label3
@@ -368,15 +387,15 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label3.Location = new System.Drawing.Point(3, 26);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(87, 26);
+            this.label3.Size = new System.Drawing.Size(83, 26);
             this.label3.TabIndex = 1;
-            this.label3.Text = "Grades";
+            this.label3.Text = "Log Grades";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // textBox1
             // 
             this.textBox1.DataBindings.Add(new System.Windows.Forms.Binding("Text", this._logAuditsBindingSource, "DefectMax", true));
-            this.textBox1.Location = new System.Drawing.Point(96, 3);
+            this.textBox1.Location = new System.Drawing.Point(92, 3);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 20);
             this.textBox1.TabIndex = 2;
@@ -384,28 +403,10 @@ namespace CruiseManager.WinForms.CruiseCustomize
             // textBox2
             // 
             this.textBox2.DataBindings.Add(new System.Windows.Forms.Binding("Text", this._logAuditsBindingSource, "ValidGrades", true));
-            this.textBox2.Location = new System.Drawing.Point(96, 29);
+            this.textBox2.Location = new System.Drawing.Point(92, 29);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(100, 20);
             this.textBox2.TabIndex = 3;
-            // 
-            // toolStripLabel1
-            // 
-            toolStripLabel1.Name = "toolStripLabel1";
-            toolStripLabel1.Size = new System.Drawing.Size(49, 22);
-            toolStripLabel1.Text = "Species:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this._logGradeAuditSelectPanel.SetColumnSpan(this.label4, 2);
-            this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label4.Location = new System.Drawing.Point(3, 27);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(154, 20);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "Rule Deffinitions";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // LogGradeAuditRuleView
             // 

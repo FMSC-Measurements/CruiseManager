@@ -15,7 +15,7 @@ namespace CruiseManager.Core.CruiseCustomize
 {
     public class LogGradeSpecies : List<LogGradeAuditRule>
     {
-        string _species = string.Empty;
+        string _species = "ANY";
 
         public string Species
         {
@@ -96,7 +96,7 @@ namespace CruiseManager.Core.CruiseCustomize
                 LogGradeSpecies.Add(logGradeSp);
             }
             var result = Database.ExecuteScalar<String>("SELECT group_concat(Species) FROM (SELECT distinct [Species] FROM TreeDefaultValue ORDER BY Species);");
-            SpeciesOptions = ("," + result).Split(',');
+            SpeciesOptions = ("ANY," + result).Split(',');
 
             //LogGradeAudits = Database.From<LogGradeAuditRuleDO>().Read().ToList();
             _isInitialized = true;
