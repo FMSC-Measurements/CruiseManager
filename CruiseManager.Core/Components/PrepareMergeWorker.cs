@@ -1,5 +1,6 @@
 ﻿using CruiseDAL;
 using CruiseManager.Core.FileMaintenance;
+using FMSC.ORM.Core.SQL;
 using FMSC.ORM.EntityModel.Attributes;
 using System;
 using System.Collections.Generic;
@@ -9,12 +10,21 @@ namespace CruiseManager.Core.Components
 {
     public class PrepareMergeWorker : IDisposable, IWorker
     {
+        private class GuidRowID
+        {
+            [Field("Guid")]
+            public Guid Guid { get; set; }
+
+            [Field("RecID")]
+            public long RecID { get; set; }
+        }
+
         public event EventHandler<WorkerProgressChangedEventArgs> ProgressChanged;
 
-        protected DAL MasterDB { get { return this.MergePresenter.MasterDB; } }
-        protected IList<ComponentFileVM> Components { get { return this.MergePresenter.ActiveComponents; } }
+        protected DAL MasterDB => MergePresenter.MasterDB;
+        protected IList<ComponentFileVM> Components => MergePresenter.ActiveComponents;
 
-        private IDictionary<String, MergeTableCommandBuilder> CommandBuilders { get { return this.MergePresenter.CommandBuilders; } }
+        private IDictionary<String, MergeTableCommandBuilder> CommandBuilders => MergePresenter.CommandBuilders;
         public MergeComponentsPresenter MergePresenter { get; set; }
 
         public PrepareMergeWorker(MergeComponentsPresenter mergePresenter)
@@ -29,8 +39,7 @@ namespace CruiseManager.Core.Components
                 throw new InvalidOperationException("Cancel or wait for current job to finish before starting again");
             }
 
-            ThreadStart ts = new ThreadStart(this.DoWork);
-            this._thread = new Thread(ts)
+            this._thread = new Thread(this.DoWork)
             {
                 IsBackground = true,
                 Name = "PrepareMergeWorker"
@@ -38,56 +47,14 @@ namespace CruiseManager.Core.Components
             this._thread.Start();
         }
 
+        /// <summary>
+        /// Called throughout the work flow to determine if work needs to be halted
+        /// </summary>
+        /// <exception cref="CancelWorkerException"></exception>
         private void CheckWorkerStatus()
         {
             if (this.IsCanceled)
             { throw new CancelWorkerException(); }
-        }
-
-        public void DoWork()
-        {
-            this.IsDone = false;
-            this.IsCanceled = false;
-
-            ConsolidateCountTreeScript maintenanceScript = new FileMaintenance.ConsolidateCountTreeScript();
-
-            this.PatchFiles(maintenanceScript);
-
-            this.MakeMergeTables();
-            this.PopulateMergeTables();
-            this.ProcessMergeTables();
-
-            this.IsDone = true;
-            this.NotifyProgressChanged(this._workInCurrentJob, true, "Done", null);
-        }
-
-        //private bool CheckFiles(ConsolidateCountTreeScript maintenanceScript)
-        //{
-        //    bool masterOK = !maintenanceScript.CheckCanExecute(this.MasterDB);
-        //    bool componentsOK = true;
-        //    foreach(ComponentFileVM comp in this.Components)
-        //    {
-        //        bool compOK = !maintenanceScript.CheckCanExecute(comp.Database);
-        //        componentsOK = compOK && componentsOK;
-        //    }
-        //    return masterOK && componentsOK;
-        //}
-
-        private void PatchFiles(ConsolidateCountTreeScript maintenanceScript)
-        {
-            if (maintenanceScript.CheckCanExecute(this.MasterDB))
-            {
-                PostStatus("Applying CountTree Fix To Master");
-                maintenanceScript.Execute(this.MasterDB);
-            }
-            foreach (ComponentFileVM comp in this.Components)
-            {
-                if (maintenanceScript.CheckCanExecute(comp.Database))
-                {
-                    PostStatus("Applying CountTree Fix To " + comp.FileName);
-                    maintenanceScript.Execute(comp.Database);
-                }
-            }
         }
 
         protected void NotifyProgressChanged(int workDone, bool isDone, String message, Exception error)
@@ -108,6 +75,40 @@ namespace CruiseManager.Core.Components
                     Message = message
                 };
                 this.ProgressChanged(this, e);
+            }
+        }
+
+        public void DoWork()
+        {
+            this.IsDone = false;
+            this.IsCanceled = false;
+
+            ConsolidateCountTreeScript maintenanceScript = new FileMaintenance.ConsolidateCountTreeScript();
+
+            this.PatchFiles(maintenanceScript);
+
+            this.MakeMergeTables();
+            this.PopulateMergeTables();
+            this.ProcessMergeTables();
+
+            this.IsDone = true;
+            this.NotifyProgressChanged(this._workInCurrentJob, true, "Done", null);
+        }
+
+        private void PatchFiles(ConsolidateCountTreeScript maintenanceScript)
+        {
+            if (maintenanceScript.CheckCanExecute(this.MasterDB))
+            {
+                PostStatus("Applying CountTree Fix To Master");
+                maintenanceScript.Execute(this.MasterDB);
+            }
+            foreach (ComponentFileVM comp in this.Components)
+            {
+                if (maintenanceScript.CheckCanExecute(comp.Database))
+                {
+                    PostStatus("Applying CountTree Fix To " + comp.FileName);
+                    maintenanceScript.Execute(comp.Database);
+                }
             }
         }
 
@@ -164,11 +165,6 @@ namespace CruiseManager.Core.Components
                     PopulateMergeTable(this.MasterDB, cmdBldr, comp);
                 }
 
-                //PopulateMergeTable(this.MasterDB, this.CommandBuilders["Tree"], comp);
-                //PopulateMergeTable(this.MasterDB, this.CommandBuilders["Log"], comp);
-                //PopulateMergeTable(this.MasterDB, this.CommandBuilders["Stem"], comp);
-                ////PopulateMergeTable(this.MasterDB, this.CommandBuilders["TreeEstimate"], comp);
-                //PopulateMergeTable(this.MasterDB, this.CommandBuilders["Plot"], comp);
                 MasterDB.CommitTransaction();
                 this.NotifyProgressChanged(this._progressInCurrentJob++, false, "Imported Merge Info For Component #" + comp.Component_CN.ToString(), null);
             }
@@ -205,11 +201,7 @@ namespace CruiseManager.Core.Components
                 {
                     ProcessMergeTable(mergeDB, cmdBldr);
                 }
-                //ProcessMergeTable(mergeDB, this.CommandBuilders["Tree"]);
-                //ProcessMergeTable(mergeDB, this.CommandBuilders["Log"]);
-                //ProcessMergeTable(mergeDB, this.CommandBuilders["Stem"]);
-                ////ProcessMergeTable(mergeDB, this.CommandBuilders["TreeEstimate"]);
-                //ProcessMergeTable(mergeDB, this.CommandBuilders["Plot"]);
+
                 mergeDB.CommitTransaction();
             }
             catch
@@ -232,81 +224,17 @@ namespace CruiseManager.Core.Components
 
             IdentifySiblingRecords(mergeDB, commandBuider);
             FindNaturalSiblingMatches(mergeDB, commandBuider);
-            //set match row id on valid matches
 
-            //if (commandBuider.RecordsUniqueAccrossComponents)
-            //{
-            //    ProcessCrossComponentConflicts(mergeDB, commandBuider);
-            //    IdentifySiblingRecords(mergeDB, commandBuider);
-            //}
             if (commandBuider.HasRowVersion)
             {
-                SetMasterRowVersion(mergeDB, commandBuider);
+                SetMasterRowVersion(mergeDB, commandBuider);//master row version is used to determine which file has the changes in the case where the master can update the component.
             }
-            //if (commandBuider.MergeNewFromComponent)
-            //{
-            //    SetIncomingPlaceholder(mergeDB, commandBuider);
-            //}
+
             if (commandBuider.MergeNewFromMaster)
             {
-                ProcessMasterNew(mergeDB, commandBuider);
+                ProcessMasterNew(mergeDB, commandBuider);//add merge records for records that are new on the master side
             }
         }
-
-        //private void ProcessExistingMasterRecordsWithoutGuids(DAL mergeDB, MergeTableCommandBuilder commandBuider)
-        //{
-        //    List<MergeObject> matchs = mergeDB.Query<MergeObject>(
-        //        commandBuider.SelectNaturalAndCNMatches);
-
-        //    this._progressInCurrentJob = 0;
-        //    this._workInCurrentJob = matchs.Count + 1;
-        //    this.NotifyProgressChanged(this._progressInCurrentJob, false, "Processing Records Without GUIDs", null);
-
-        //    String updateCommand = "UPDATE " + commandBuider.MergeTableName + " SET MasterRowID = ?, MasterRowVersion = ?  WHERE MergeRowID = ?;";
-        //    foreach (MergeObject c in matchs)
-        //    {
-        //        CheckWorkerStatus();
-        //        mergeDB.Execute(updateCommand, c.MasterRowID, c.MasterRowVersion, c.MergeRowID);
-        //        this.NotifyProgressChanged(this._progressInCurrentJob++, false, null, null);
-        //    }
-        //}
-
-        //private void ProcessExistingRecords(DAL mergeDB, MergeTableCommandBuilder commandBuider)
-        //{
-        //    //match records in master with records in component and set Master row id
-        //    List<MergeObject> matches = mergeDB.Query<MergeObject>(
-        //        commandBuider.SelectGUIDMatches);
-
-        //    this._progressInCurrentJob = 0;
-        //    this._workInCurrentJob = matches.Count + 1;
-        //    this.NotifyProgressChanged(this._progressInCurrentJob, false, "Processing Existing Records", null);
-
-        //    String updateCommand = String.Format("UPDATE {0} SET MasterRowID = ?, MasterRowVersion = ? WHERE MergeRowID = ?;", commandBuider.MergeTableName);
-        //    foreach (MergeObject item in matches)
-        //    {
-        //        CheckWorkerStatus();
-        //        mergeDB.Execute(updateCommand, item.MasterRowID, item.MasterRowVersion, item.MergeRowID);
-        //        this.NotifyProgressChanged(this._progressInCurrentJob++, false, null, null);
-        //    }
-        //}
-
-        //private void ProcessCrossComponentConflicts(DAL mergeDB, MergeTableCommandBuilder commandBuider)
-        //{
-        //    //check other merge records to see if there are any conflicts with other records being merged
-        //    List<MergeObject> matches = mergeDB.Query<MergeObject>(
-        //       commandBuider.NaturalCrossComponentConflictsCommand);
-
-        //    this._workInCurrentJob += matches.Count;
-        //    this.NotifyProgressChanged(this._progressInCurrentJob, false, "Processing  Cross Component Conflicts", null);
-
-        //    String updateCommand = "UPDATE " + commandBuider.MergeTableName + " SET ComponentConflict = ? WHERE MergeRowID = ?;";
-        //    foreach (MergeObject c in matches)
-        //    {
-        //        CheckWorkerStatus();
-        //        mergeDB.Execute(updateCommand, c.ComponentConflict, c.MergeRowID);
-        //        this.NotifyProgressChanged(this._progressInCurrentJob++, false, null, null);
-        //    }
-        //}
 
         private void FindNaturalSiblingMatches(DAL mergeDB, MergeTableCommandBuilder cmdBldr)
         {
@@ -354,60 +282,49 @@ namespace CruiseManager.Core.Components
             }
         }
 
-        //private void ProcessMasterConflicts(DAL mergeDB, MergeTableCommandBuilder commandBuider)
-        //{
-        //    //check merge records agains master table for conflicts
-        //    List<MergeObject> conflicts = mergeDB.Query<MergeObject>(
-        //        commandBuider.MasterConflicts);
-
-        //    this._progressInCurrentJob = 0;
-        //    this._workInCurrentJob = conflicts.Count + 1;
-        //    this.NotifyProgressChanged(this._progressInCurrentJob, false, "Processing Master Conflicts", null);
-
-        //    String updateCommand = String.Format("UPDATE {0} SET MasterConflict = ? WHERE MergeRowID = ?;", commandBuider.MergeTableName);
-        //    foreach (MergeObject item in conflicts)
-        //    {
-        //        CheckWorkerStatus();
-        //        mergeDB.Execute(updateCommand, item.MasterConflict, item.MergeRowID);
-        //        this.NotifyProgressChanged(this._progressInCurrentJob++, false, null, null);
-        //    }
-        //}
-
         private void ProcessComparisons(DAL master, MergeTableCommandBuilder cmdBldr)
         {
             if (cmdBldr.DoKeyMatch)
             {
-                List<MergeObject> keyMatches = master.Query<MergeObject>(cmdBldr.SelectRowIDMatches);
-                this._workInCurrentJob += keyMatches.Count;
+                CheckWorkerStatus();
+                _workInCurrentJob += 1;
+
                 string setKeyMatch = "UPDATE " + cmdBldr.MergeTableName + " SET RowIDMatch = ? WHERE MergeRowID = ?;";
-                foreach (MergeObject item in keyMatches)
+                foreach (MergeObject item in master.Query<MergeObject>(cmdBldr.SelectRowIDMatches))
                 {
-                    CheckWorkerStatus();
                     master.Execute(setKeyMatch, item.RowIDMatch, item.MergeRowID);
-                    this.NotifyProgressChanged(this._progressInCurrentJob++, false, null, null);
                 }
+
+                this.NotifyProgressChanged(this._progressInCurrentJob++, false, null, null);
             }
 
             if (cmdBldr.DoNaturalMatch)
             {
-                List<MergeObject> natMatches = master.Query<MergeObject>(cmdBldr.SelectNaturalMatches);
-                this._workInCurrentJob += natMatches.Count;
+                CheckWorkerStatus();
+                _workInCurrentJob += 1;
+
                 string setNatMatch = "UPDATE " + cmdBldr.MergeTableName + " SET NaturalMatch = ? WHERE MergeRowID = ?;";
-                foreach (MergeObject mRec in natMatches)
+                foreach (MergeObject mRec in master.Query<MergeObject>(cmdBldr.SelectNaturalMatches))
                 {
-                    CheckWorkerStatus();
                     master.Execute(setNatMatch, mRec.NaturalMatch, mRec.MergeRowID);
-                    this.NotifyProgressChanged(this._progressInCurrentJob++, false, null, null);
                 }
+
+                this.NotifyProgressChanged(this._progressInCurrentJob++, false, null, null);
             }
 
             if (cmdBldr.HasGUIDKey)
             {
-                Dictionary<Guid, long> rowIDLookUp = new Dictionary<Guid, long>();
+                CheckWorkerStatus();
+                _workInCurrentJob += 1;
 
-                foreach (var pair in master.Query<GuidRowID>($"Select {cmdBldr.ClientGUIDFieldName} AS Guid, {cmdBldr.ClientPrimaryKey.Name} AS RecID FROM main.{cmdBldr.ClientTableName};"))
+                Dictionary<Guid, long> rowIDLookUp = new Dictionary<Guid, long>();
+                foreach (var pair in master.Query<GuidRowID>($"Select {cmdBldr.ClientGUIDFieldName} AS Guid, {cmdBldr.ClientPrimaryKey.Name} AS RecID FROM main.{cmdBldr.ClientTableName} WHERE {cmdBldr.ClientGUIDFieldName} IS NOT NULL AND {cmdBldr.ClientGUIDFieldName} NOT LIKE '';"))
                 {
-                    rowIDLookUp.Add(pair.Guid, pair.RecID);
+                    var guid = pair.Guid;
+                    if (guid != Guid.Empty)
+                    {
+                        rowIDLookUp.Add(guid, pair.RecID);
+                    }
                 }
 
                 foreach (var mrgRec in master.Query<GuidRowID>($"Select MergeRowID AS RecID, ComponentRowGUID AS Guid FROM {cmdBldr.MergeTableName} WHERE ComponentRowGUID IS NOT NULL;"))
@@ -425,6 +342,8 @@ namespace CruiseManager.Core.Components
                     catch { continue; }
                 }
 
+                this.NotifyProgressChanged(this._progressInCurrentJob++, false, null, null);
+
                 //List <MergeObject> guidMatches = master.Query<MergeObject>(cmdBldr.SelectGUIDMatches);
                 //this._workInCurrentJob += guidMatches.Count;
                 //string setGuidMatch = "UPDATE " + cmdBldr.MergeTableName + " SET GUIDMatch = ? WHERE MergeRowID = ?;";
@@ -435,15 +354,6 @@ namespace CruiseManager.Core.Components
                 //    this.NotifyProgressChanged(this._progressInCurrentJob++, false, null, null);
                 //}
             }
-        }
-
-        private class GuidRowID
-        {
-            [Field("Guid")]
-            public Guid Guid { get; set; }
-
-            [Field("RecID")]
-            public long RecID { get; set; }
         }
 
         //private void ProcessMissingRecords(DAL mergeDB, MergeTableCommandBuilder commandBuider)
@@ -479,14 +389,6 @@ namespace CruiseManager.Core.Components
                 this.NotifyProgressChanged(this._progressInCurrentJob++, false, null, null);
             }
         }
-
-        //private void ProcessInvalidMatchs(DAL master, MergeTableCommandBuilder cmdBldr)
-        //{
-        //    string setConflict = "UPDATE " + cmdBldr.MergeTableName +
-        //        " SET MatchConflict = 'invalid match' " +
-        //        "WHERE MergeRowID IN (" + cmdBldr.SelectInvalidMatchs +");";
-        //    master.Execute(setConflict);
-        //}
 
         private void IdentifySiblingRecords(DAL master, MergeTableCommandBuilder cmdBldr)
         {
@@ -540,32 +442,13 @@ namespace CruiseManager.Core.Components
             master.Execute(setMasterRowVersion);
         }
 
-        //private void SetIncomingPlaceholder(DAL master, MergeTableCommandBuilder cmdBldr)
-        //{
-        //    List<MergeObject> incomming = master.Query<MergeObject>("SELECT * FROM " + cmdBldr.MergeTableName +
-        //        " WHERE MatchRowID IS NULL AND MatchConflict IS NULL" +
-        //        " GROUP BY " + String.Join(", ", cmdBldr.ClientUniqueFieldNames) +
-        //        " ORDER BY ComponentID;");
-        //    this._workInCurrentJob += incomming.Count;
-
-        //    string setplaceHolder = "UPDATE " + cmdBldr.MergeTableName + " SET IncomingPlaceholder = ? WHERE MergeRowID = ?;";
-        //    long placeHolderCounter = 0;
-        //    foreach (MergeObject mRec in incomming)
-        //    {
-        //        CheckWorkerStatus();
-        //        master.Execute(setplaceHolder, placeHolderCounter++, mRec.MergeRowID);
-        //        this.NotifyProgressChanged(this._progressInCurrentJob++, false, null, null);
-        //    }
-        //}
-
         private void ProcessMasterNew(DAL master, MergeTableCommandBuilder cmdBldr)
         {
             foreach (ComponentFileVM comp in this.Components)
             {
-                List<MergeObject> missingMatches = master.Query<MergeObject>(cmdBldr.SelectMissingMatches(comp));
                 string insertMissingMatch = "INSERT INTO " + cmdBldr.MergeTableName + " (MatchRowID, ComponentID) " +
                     "VALUES (?,?);";
-                foreach (MergeObject mRec in missingMatches)
+                foreach (MergeObject mRec in master.Query<MergeObject>(cmdBldr.SelectMissingMatches(comp)))
                 {
                     master.Execute(insertMissingMatch, mRec.MatchRowID, comp.Component_CN);
                 }

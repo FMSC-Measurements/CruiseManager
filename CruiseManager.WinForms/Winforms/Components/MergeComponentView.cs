@@ -76,7 +76,8 @@ namespace CruiseManager.WinForms.Components
 
         public void HandleProgressChanged(Object sender, WorkerProgressChangedEventArgs e)
         {
-            System.Diagnostics.Debug.Assert(e != null);
+            System.Diagnostics.Debug.Assert(e != null, "HandleProgressChanged eventArgs pram is null");
+            System.Diagnostics.Debug.Assert(sender != null, "HandleProgressChanged sender pram is null");
             if (this.__progressBar.InvokeRequired)
             {
                 this.__progressBar.Invoke(new EventHandler<WorkerProgressChangedEventArgs>(this.HandleProgressChanged), sender, e);

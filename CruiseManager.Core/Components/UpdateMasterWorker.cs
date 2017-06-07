@@ -54,22 +54,11 @@ namespace CruiseManager.Core.Components
     {
         protected static Thread _thread;
 
-        private const string SELECT_TREES = "WHERE Tree_GUID is null OR Tree_GUID = ''";
-        private const string SELECT_PLOTS = "WHERE Plot_GUID IS NULL OR Plot_GUID = ''";
-        private const string SELECT_LOGS = "WHERE Log_GUID IS NULL OR Log_GUID = ''";
-        private const string SELECT_STEMS = "WHERE Stem_GUID IS NULL OR Stem_GUID = ''";
-        private const string SELECT_TREEEST = "WHERE TreeEstimate_GUID IS NULL OR TreeEstimate_GUID = ''";
-
-        //private DAL _master;
-        //private DAL _components;
-
-        //public UpdateMasterWorker(DAL master, DAL[] components)
-        //{
-        //}
-
-        //public void Begin()
-        //{
-        //}
+        private const string SELECT_TREES = "WHERE Tree_GUID is null OR Tree_GUID LIKE ''";
+        private const string SELECT_PLOTS = "WHERE Plot_GUID IS NULL OR Plot_GUID LIKE ''";
+        private const string SELECT_LOGS = "WHERE Log_GUID IS NULL OR Log_GUID LIKE ''";
+        private const string SELECT_STEMS = "WHERE Stem_GUID IS NULL OR Stem_GUID LIKE ''";
+        private const string SELECT_TREEEST = "WHERE TreeEstimate_GUID IS NULL OR TreeEstimate_GUID LIKE ''";
 
         public static bool HasUnassignedGUIDs(DAL db)
         {
@@ -78,69 +67,6 @@ namespace CruiseManager.Core.Components
              || db.GetRowCount("Log", SELECT_LOGS) > 0
              || db.GetRowCount("Stem", SELECT_STEMS) > 0
              || db.GetRowCount("TreeEstimate", SELECT_TREEEST) > 0;
-        }
-
-        public static void DoUpdate(DAL master, DAL[] components)
-        {
-            DAL[] allFiles = new DAL[components.Length + 1];
-            allFiles[0] = master;
-            Array.Copy(components, 0, allFiles, 1, components.Length);
-
-            foreach (DAL db in allFiles)
-            {
-                db.BeginTransaction();
-            }
-            try
-            {
-                foreach (TreeKey tk in master.Query<TreeKey>("SELECT * FROM TREE " + SELECT_TREES + ";"))
-                {
-                    tk.Tree_GUID = Guid.NewGuid();
-                    foreach (DAL db in allFiles)
-                    {
-                        db.Execute("UPDATE Tree SET Tree_GUID = ? WHERE Tree_CN = ?;", tk.Tree_GUID.ToString(), tk.Tree_CN);
-                        db.Execute("UPDATE Log SET Tree_GUID = ? WHERE Tree_CN = ?;", tk.Tree_GUID.ToString(), tk.Tree_CN);
-                        db.Execute("UPDATE Stem SET Tree_GUID = ? WHERE Tree_CN = ?;", tk.Tree_GUID.ToString(), tk.Tree_CN);
-                    }
-                }
-                foreach (PlotKey pk in master.Query<PlotKey>("SELECT * FROM Plot " + SELECT_PLOTS + ";"))
-                {
-                    pk.Plot_GUID = Guid.NewGuid();
-                    foreach (DAL db in allFiles)
-                    {
-                        db.Execute("UPDATE Plot SET Plot_GUID = ? WHERE Plot_CN = ?;", pk.Plot_GUID.ToString(), pk.Plot_CN);
-                        db.Execute("UPDATE Tree SET Plot_GUID = ? WHERE Plot_CN = ?;", pk.Plot_GUID.ToString(), pk.Plot_CN);
-                    }
-                }
-                foreach (LogKey lk in master.Query<LogKey>("SELECT * FROM Log " + SELECT_LOGS + ";"))
-                {
-                    lk.Log_GUID = Guid.NewGuid();
-                    foreach (DAL db in allFiles)
-                    {
-                        db.Execute("UPDATE Log SET Log_GUID = ? WHERE Log_CN = ?;", lk.Log_GUID.ToString(), lk.Log_CN);
-                    }
-                }
-                foreach (TreeEstimateKey tek in master.Query<TreeEstimateKey>("SELECT * FROM TreeEstimate " + SELECT_TREEEST + ";"))
-                {
-                    tek.TreeEstimate_GUID = Guid.NewGuid();
-                    foreach (DAL db in allFiles)
-                    {
-                        db.Execute("UPDATE TreeEstimate SET TreeEstimate_GUID = ? WHERE TreeEstimate_CN = ?", tek.TreeEstimate_GUID.ToString(), tek.TreeEstimate_CN);
-                    }
-                }
-
-                foreach (DAL db in allFiles)
-                {
-                    db.CommitTransaction();
-                }
-            }
-            catch
-            {
-                foreach (DAL db in allFiles)
-                {
-                    db.RollbackTransaction();
-                }
-                throw;
-            }
         }
 
         public static void AssignGuids(DAL db)
