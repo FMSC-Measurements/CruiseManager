@@ -1,13 +1,11 @@
 ﻿using CruiseManager.Core.App;
+using System.ComponentModel;
 
 namespace CruiseManager.Core.ViewModel
 {
-    public interface IPresentor //: IDisposable
+    public interface IPresentor //: INotifyPropertyChanged //: IDisposable
     {
-        //WindowPresenter WindowPresenter { get; }
         ApplicationControllerBase ApplicationController { get; }
-
-        //event EventHandler<PresenterStatusChangedEventArgs> StatusChanged;
 
         IView View { get; set; }
     }

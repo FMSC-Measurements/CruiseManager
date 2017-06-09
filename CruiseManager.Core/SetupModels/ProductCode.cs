@@ -17,5 +17,10 @@ namespace CruiseManager.Core.SetupModels
 
         [XmlAttribute]
         public String FriendlyValue { get; set; }
+
+        public override string ToString()
+        {
+            return Code;
+        }
     }
 }

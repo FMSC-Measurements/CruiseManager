@@ -59,21 +59,21 @@ namespace CruiseManager.Core.App
                 this.ApplicationController.MainWindow.ClearActiveView();
                 this.ApplicationController.MainWindow.Text = System.IO.Path.GetFileName(this.ApplicationController.Database.Path);
 
-                if (this.cruiseLandingNavCommands == null)
+                if (this.cruiseNavCommands == null)
                 {
                     this.InitializeCruiseNavOptions();
                 }
 
-                this.ApplicationController.MainWindow.SetNavCommands(this.cruiseLandingNavCommands);
+                this.ApplicationController.MainWindow.SetNavCommands(this.cruiseNavCommands);
                 this.ShowCustomizeCruiseLayout();
             }
         }
 
-        private BindableCommand[] cruiseLandingNavCommands;
+        private BindableCommand[] cruiseNavCommands;
 
         private void InitializeCruiseNavOptions()
         {
-            this.cruiseLandingNavCommands = new BindableCommand[]
+            this.cruiseNavCommands = new BindableCommand[]
             {
                 new BindableActionCommand( "Design Wizard", this.ShowEditWizard),
                 new ViewNavigateCommand(this.ApplicationController, "Edit Design", typeof(EditDesign.ViewInterfaces.IEditDesignView)),
@@ -120,23 +120,25 @@ namespace CruiseManager.Core.App
 
         public void ShowTemplateLandingLayout()
         {
-            this.ApplicationController.NavigateTo<EditTemplateView>();
-
             this.ApplicationController.MainWindow.Text = System.IO.Path.GetFileName(this.ApplicationController.Database.Path);
 
-            if (templateLandingNavOptions == null)
+            if (templateNavOptions == null)
             {
                 this.InitializeTemplateNavOptions();
             }
-            this.ApplicationController.MainWindow.SetNavCommands(this.templateLandingNavOptions);
+            this.ApplicationController.NavigateTo<EditTemplateView>();
+
+            this.ApplicationController.MainWindow.SetNavCommands(this.templateNavOptions);
         }
 
-        private BindableCommand[] templateLandingNavOptions;
+        private BindableCommand[] templateNavOptions;
 
         private void InitializeTemplateNavOptions()
         {
-            this.templateLandingNavOptions = new BindableCommand[]{
+            this.templateNavOptions = new BindableCommand[]{
+                new ViewNavigateCommand(ApplicationController, "Customize Template", typeof(EditTemplateView)),
                 new BindableActionCommand("Import From Cruise", this.ShowImportTemplate),
+                new ViewNavigateCommand(this.ApplicationController, "Log Audit Rules", typeof(WinForms.CruiseCustomize.LogGradeAuditRuleView)),
                 new BindableActionCommand("Close File", this.ShowHomeLayout )
             };
         }

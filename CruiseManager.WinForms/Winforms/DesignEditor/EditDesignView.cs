@@ -20,6 +20,10 @@ namespace CruiseManager.WinForms.EditDesign
             this.ExceptionHandler = viewPresenter.ApplicationController.ExceptionHandler;
             this.WindowPresenter = windowPresenter;
             InitializeComponent();
+            //win-forms designer keeps removing the these settings so I'm setting them outside InitializeComponent
+            secondaryProductDataGridViewTextBoxColumn.DisplayMember = nameof(Core.SetupModels.ProductCode.FriendlyValue);
+            secondaryProductDataGridViewTextBoxColumn.ValueMember = nameof(Core.SetupModels.ProductCode.Code);
+
             this.SalePurposeComboBox.DataSource = Strings.SALE_PURPOSE;
         }
 
