@@ -168,10 +168,12 @@ namespace CruiseManager.WinForms.CruiseWizard
                 {
                     _FreqTB.Text = "0";
                     _FreqTB.Enabled = false;
+                    _samplingPNL.Visible = false;
                 }
                 else
                 {
                     _FreqTB.Enabled = true;
+                    _samplingPNL.Visible = true;
                 }
 
                 if (SampleGroupDO.CanEnableKZ(CurrentStratum) == false)
@@ -184,12 +186,16 @@ namespace CruiseManager.WinForms.CruiseWizard
 
                     _maxKPITB.Text = "0";
                     _maxKPITB.Enabled = false;
+
+                    _threePSamplingPNL.Visible = false;
                 }
                 else
                 {
                     _kzTB.Enabled = true;
                     _minKPITB.Enabled = true;
                     _maxKPITB.Enabled = true;
+
+                    _threePSamplingPNL.Visible = true;
                 }
                 if (SampleGroupDO.CanEnableIFreq(CurrentStratum) == false)
                 {
