@@ -22,7 +22,7 @@ namespace CruiseManager.WinForms.App
             Bind<Core.CruiseCustomize.ViewInterfaces.ILogGradeAuditView>().To<CruiseCustomize.LogGradeAuditRuleView>();
             Bind<Core.CruiseCustomize.ViewInterfaces.ILogMatrixView>().To<WinForms.CruiseCustomize.LogMatrixSettingsPage>();
             Bind<Core.CruiseCustomize.ViewInterfaces.ITreeDef>().To<WinForms.CruiseCustomize.TreeDefView>();
-            //Bind<Core.CruiseCustomize.ViewInterfaces.IVolumeEq>().To<WinForms.CruiseCustomize.VolumeEqView>();
+            Bind<Core.CruiseCustomize.ViewInterfaces.IVolumeEq>().To<WinForms.CruiseCustomize.VolumeEqView>();
             Bind<Core.CruiseCustomize.ViewInterfaces.IReportsSumm>().To<WinForms.CruiseCustomize.ReportsSummView>();
             Bind<Core.CruiseCustomize.ViewInterfaces.ICruiseCustomizeContainerView>().To<WinForms.CruiseCustomize.CustomizeCruiseContainerView>();
 

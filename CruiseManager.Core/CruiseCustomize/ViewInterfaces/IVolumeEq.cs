@@ -6,7 +6,6 @@ namespace CruiseManager.Core.CruiseCustomize.ViewInterfaces
     {
         new VolumeEqPresenter ViewPresenter { get; set; }
 
-        void UpdateVolumeDefaults();
         void UpdateVolumeEqs();
     }
 }
