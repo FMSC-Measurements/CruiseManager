@@ -73,11 +73,11 @@
             this.titleDataGridViewTextBoxColumn});
             this._reportsDGV.DataSource = this._BS_Reports;
             this._reportsDGV.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._reportsDGV.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this._reportsDGV.Location = new System.Drawing.Point(3, 23);
             this._reportsDGV.Name = "_reportsDGV";
             this._reportsDGV.Size = new System.Drawing.Size(342, 356);
             this._reportsDGV.TabIndex = 8;
-            this._reportsDGV.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this._reportsDGV_CellContentClick);
             // 
             // reportIDDataGridViewTextBoxColumn
             // 

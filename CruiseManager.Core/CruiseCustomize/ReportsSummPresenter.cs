@@ -29,6 +29,7 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             get
             {
+                View.EndEdit();
                 return DefaultReports.Any(x => x.IsChanged
                 || !x.IsPersisted) || DeletedReports.Any();
             }
@@ -60,6 +61,7 @@ namespace CruiseManager.Core.CruiseCustomize
         public bool HandleSave()
         {
             var errorBuilder = new StringBuilder();
+            
             return SaveReports(ref errorBuilder);
         }
 

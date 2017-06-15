@@ -6,5 +6,7 @@ namespace CruiseManager.Core.CruiseCustomize.ViewInterfaces
     {
         new ReportsSummPresenter ViewPresenter { get; set; }
         void UpdateReports();
+
+        void EndEdit();
     }
 }

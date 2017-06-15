@@ -46,9 +46,10 @@ namespace CruiseManager.WinForms.CruiseCustomize
         }
         #endregion Report 
 
-        private void _reportsDGV_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        public void EndEdit()
         {
-            _reportsSelectAllBtn.Select();
+            _reportsDGV.EndEdit();
+
         }
     }
 }
