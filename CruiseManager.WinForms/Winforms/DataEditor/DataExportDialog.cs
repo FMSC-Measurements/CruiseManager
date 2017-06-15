@@ -15,6 +15,10 @@ namespace CruiseManager.WinForms.DataEditor
 {
     public partial class DataExportDialog : Form
     {
+        SetupServiceBase SetupService { get { return ApplicationController.SetupService; } }
+
+        protected ApplicationControllerBase ApplicationController { get; set; }
+
         #region CTor
 
         public DataExportDialog()
@@ -22,9 +26,7 @@ namespace CruiseManager.WinForms.DataEditor
             InitializeComponent();
         }
 
-        protected ApplicationControllerBase ApplicationController { get; set; }
-
-        public DataExportDialog(ApplicationControllerBase applicationController, IList<TreeVM> Trees, IList<LogVM> Logs, IList<PlotDO> Plots, IList<CountTreeDO> Counts)
+        public DataExportDialog(ApplicationControllerBase applicationController, IEnumerable<TreeVM> Trees, IEnumerable<LogVM> Logs, IEnumerable<PlotDO> Plots, IEnumerable<CountTreeDO> Counts)
         {
             ApplicationController = applicationController;
 
@@ -39,14 +41,42 @@ namespace CruiseManager.WinForms.DataEditor
 
         public void SetUpFieldWidgets()
         {
-            var setupServ = ApplicationController.SetupService;
-
             //set up tree field widget
             //get list of tree fields from the setup file
 
-            this.AllTreeFields = (from field in setupServ.GetTreeFieldSetups()
-                                  select new FieldDiscriptor(field)).ToList();
-            //add additional fields for cutting units, stratum, sample groups...
+            AllTreeFields = MakeTreeFieldList();
+
+            TreeFields = ApplicationController.Database.From<TreeFieldSetupDO>()
+                .GroupBy("Field").OrderBy("FieldOrder").Read().Select(x => new FieldDiscriptor(x)).ToList();
+
+            AllTreeFields = this.AllTreeFields.Except(TreeFields).ToList();
+
+            this.TreeFieldOrderableAddRemoveWidget.DataSource = AllTreeFields;
+            this.TreeFieldOrderableAddRemoveWidget.SelectedItemsDataSource = TreeFields;
+
+            //set up log field widget
+            //get list of log fields from setup file
+            this.AllLogFields = MakeLogFieldList();
+
+            this.LogFields = new List<FieldDiscriptor>();
+            this.LogOrderableAddRemoveWidget.DataSource = AllLogFields;
+            this.LogOrderableAddRemoveWidget.SelectedItemsDataSource = LogFields;
+
+            //set up plot field widget
+            this.PlotFieldOrderableAddRemoveWidget.DataSource = AllPlotFields = MakePlotFieldList();
+            this.PlotFieldOrderableAddRemoveWidget.SelectedItemsDataSource = PlotFields = new List<FieldDiscriptor>();
+
+            //set up count field widget
+            this.CountFieldOrderableAddRemoveWidget.DataSource = AllCountFields = MakeCountFiledList();
+            this.CountFieldOrderableAddRemoveWidget.SelectedItemsDataSource = CountFields = new List<FieldDiscriptor>();
+        }
+
+        List<FieldDiscriptor> MakeTreeFieldList()
+        {
+            var list = new List<FieldDiscriptor>();
+
+            list.AddRange(SetupService.GetTreeFieldSetups().Select(x => new FieldDiscriptor(x)));
+
             this.AllTreeFields.Add(new FieldDiscriptor { Field = "CuttingUnit", Header = "Unit", Format = "[Code]", DataType = typeof(TreeVM) });
             //this.AllTreeFields.Add(new FieldDiscriptor { Field = "Stratum", Header = "Stratum", Format = "[Code]", DataType = typeof(TreeVM) });
             //this.AllTreeFields.Add(new FieldDiscriptor { Field = "SampleGroup", Header = "Sample Group", Format = "[Code]", DataType = typeof(TreeVM) });
@@ -54,39 +84,28 @@ namespace CruiseManager.WinForms.DataEditor
             this.AllTreeFields.Add(new FieldDiscriptor { Field = "Plot", Header = "Plot Number", Format = "[PlotNumber]", DataType = typeof(TreeVM) });
             this.AllTreeFields.Sort((x, y) => string.Compare(x.Header, y.Header, StringComparison.CurrentCulture));
 
-            TreeFields = ApplicationController.Database.From<TreeFieldSetupDO>()
-                .GroupBy("Field").OrderBy("FieldOrder").Read().Select(x => new FieldDiscriptor(x)).ToList();
+            return list;
+        }
 
-            this.AllTreeFields = this.AllTreeFields.Except(this.TreeFields).ToList();
+        List<FieldDiscriptor> MakeLogFieldList()
+        {
+            var list = new List<FieldDiscriptor>();
 
-            this.TreeFieldOrderableAddRemoveWidget.DataSource = AllTreeFields;
-            this.TreeFieldOrderableAddRemoveWidget.SelectedItemsDataSource = TreeFields;
-
-            //set up log field widget
-            //get list of log fields from setup file
-            this.AllLogFields = (from field in setupServ.GetLogFieldSetups()
-                                 select new FieldDiscriptor(field)).ToList();
             this.AllLogFields.Add(new FieldDiscriptor { Field = nameof(LogVM.CUCode), Header = "Cutting Unit", DataType = typeof(LogVM) });
             this.AllLogFields.Add(new FieldDiscriptor { Field = nameof(LogVM.StratumCode), Header = "Stratum", DataType = typeof(LogVM) });
             this.AllLogFields.Add(new FieldDiscriptor { Field = nameof(LogVM.SGCode), Header = "Sample Group", DataType = typeof(LogVM) });
-            this.AllLogFields.Add(new FieldDiscriptor { Field = nameof(LogVM.TreeSpecies), Header = "Species", DataType = typeof(LogDO) });
+            this.AllLogFields.Add(new FieldDiscriptor { Field = nameof(LogVM.TreeSpecies), Header = "Species", DataType = typeof(LogVM) });
             this.AllLogFields.Add(new FieldDiscriptor { Field = nameof(LogVM.TreeNumber), Header = "Tree Number", DataType = typeof(LogVM) });
             this.AllLogFields.Add(new FieldDiscriptor { Field = nameof(LogVM.PlotNumber), Header = "Plot Number", DataType = typeof(LogVM) });
             this.AllLogFields.Sort((x, y) => string.Compare(x.Header, y.Header, StringComparison.CurrentCulture));
-            this.LogFields = new List<FieldDiscriptor>();
-            this.LogOrderableAddRemoveWidget.DataSource = AllLogFields;
-            this.LogOrderableAddRemoveWidget.SelectedItemsDataSource = LogFields;
 
-            //set up plot field widget
-            this.PlotFieldOrderableAddRemoveWidget.DataSource = AllPlotFields = makePlotFieldList();
-            this.PlotFieldOrderableAddRemoveWidget.SelectedItemsDataSource = PlotFields = new List<FieldDiscriptor>();
-
-            //set up count field widget
-            this.CountFieldOrderableAddRemoveWidget.DataSource = AllCountFields = makeCountFiledList();
-            this.CountFieldOrderableAddRemoveWidget.SelectedItemsDataSource = CountFields = new List<FieldDiscriptor>();
+            AllLogFields.AddRange(SetupService.GetLogFieldSetups()
+                .OrderBy(x => x.Field)
+                .Select(x => new FieldDiscriptor(x)));
+            return list;
         }
 
-        private List<FieldDiscriptor> makePlotFieldList()
+        List<FieldDiscriptor> MakePlotFieldList()
         {
             return new List<FieldDiscriptor>(new FieldDiscriptor[]
                 {
@@ -104,7 +123,7 @@ namespace CruiseManager.WinForms.DataEditor
                 });
         }
 
-        private List<FieldDiscriptor> makeCountFiledList()
+        List<FieldDiscriptor> MakeCountFiledList()
         {
             return new List<FieldDiscriptor>(new FieldDiscriptor[]
                 {
@@ -137,55 +156,19 @@ namespace CruiseManager.WinForms.DataEditor
 
         private List<FieldDiscriptor> LogFields { get; set; }
 
-        private IList<TreeVM> _trees;
+        public IEnumerable<TreeVM> Trees { get; set; }
 
-        public IList<TreeVM> Trees
-        {
-            get { return _trees; }
-            set
-            {
-                _trees = value;
-            }
-        }
+        public IEnumerable<LogVM> Logs { get; set; }
 
-        private IList<LogVM> _logs;
+        public IEnumerable<PlotDO> Plots { get; set; }
 
-        public IList<LogVM> Logs
-        {
-            get { return _logs; }
-            set
-            {
-                _logs = value;
-            }
-        }
-
-        public IList<PlotDO> _plots;
-
-        public IList<PlotDO> Plots
-        {
-            get { return _plots; }
-            set
-            {
-                _plots = value;
-            }
-        }
-
-        private IList<CountTreeDO> _counts;
-
-        public IList<CountTreeDO> Counts
-        {
-            get { return _counts; }
-            set
-            {
-                _counts = value;
-            }
-        }
+        public IEnumerable<CountTreeDO> Counts { get; set; }
 
         public bool IsExportTreesSelected
         {
             get
             {
-                return this.Trees != null && this.Trees.Count > 0 && this.TreeFields.Count > 0;
+                return this.Trees != null && this.Trees.Count() > 0 && this.TreeFields.Count > 0;
             }
         }
 
@@ -193,7 +176,7 @@ namespace CruiseManager.WinForms.DataEditor
         {
             get
             {
-                return this.Logs != null && this.Logs.Count > 0 && this.LogFields.Count > 0;
+                return this.Logs != null && this.Logs.Count() > 0 && this.LogFields.Count > 0;
             }
         }
 
@@ -201,7 +184,7 @@ namespace CruiseManager.WinForms.DataEditor
         {
             get
             {
-                return this.Plots != null && this.Plots.Count > 0 && this.PlotFields.Count > 0;
+                return this.Plots != null && this.Plots.Count() > 0 && this.PlotFields.Count > 0;
             }
         }
 
@@ -209,19 +192,13 @@ namespace CruiseManager.WinForms.DataEditor
         {
             get
             {
-                return this.Counts != null && this.Counts.Count > 0 && this.CountFields.Count > 0;
+                return this.Counts != null && this.Counts.Count() > 0 && this.CountFields.Count > 0;
             }
         }
 
         #endregion Properties
 
         #region Event handlers
-
-        private void CancelButton_Click(object sender, EventArgs e)
-        {
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
-        }
 
         private void ExportButton_Click(object sender, EventArgs e)
         {
@@ -503,64 +480,52 @@ namespace CruiseManager.WinForms.DataEditor
                 if (IsExportTreesSelected)
                 {
                     treeWorkSheet = excelFile.Workbook.Worksheets.Add("Trees");
-                    //Write header values
-                    for (int i = 0; i < TreeFields.Count; i++)
-                    {
-                        treeWorkSheet.SetValue(1, i + 1, TreeFields[i].Header);
-                    }
 
-                    //create a array of property accessors for all fields
+                    var rowIndex = 1;
+                    //Write header values
+                    treeWorkSheet.SetValues(TreeFields.Select(x => x.Header), rowIndex++);
 
                     //populate rows
-                    for (int i = 0; i < Trees.Count; i++)
+                    foreach (var tree in Trees)
                     {
-                        TreeVM tree = Trees[i];
-                        WriteRow(treeWorkSheet, i + 2, TreeFields, tree);
+                        WriteRow(treeWorkSheet, rowIndex++, TreeFields, tree);
                     }
                 }
                 if (IsExportLogsSelected)
                 {
                     logWorkSheet = excelFile.Workbook.Worksheets.Add("Logs");
 
-                    for (int i = 0; i < LogFields.Count; i++)
-                    {
-                        logWorkSheet.SetValue(1, i + 1, LogFields[i].Header);
-                    }
+                    var rowIndex = 1;
+                    //Write header values
+                    logWorkSheet.SetValues(LogFields.Select(x => x.Header), rowIndex++);
 
-                    for (int i = 0; i < Logs.Count; i++)
+                    foreach (var log in Logs)
                     {
-                        LogDO log = Logs[i];
-                        WriteRow(logWorkSheet, i + 2, LogFields, log);
+                        WriteRow(logWorkSheet, rowIndex++, LogFields, log);
                     }
                 }
                 if (IsExportPlotsSelected)
                 {
                     plotsWorkSheet = excelFile.Workbook.Worksheets.Add("Plots");
 
-                    for (int i = 0; i < PlotFields.Count; i++)
-                    {
-                        plotsWorkSheet.SetValue(1, i + 1, PlotFields[i].Header);
-                    }
+                    var rowIndex = 1;
+                    plotsWorkSheet.SetValues(PlotFields.Select(x => x.Header), rowIndex++);
 
-                    for (int i = 0; i < Plots.Count; i++)
+                    foreach (var plot in Plots)
                     {
-                        PlotDO plot = Plots[i];
-                        WriteRow(plotsWorkSheet, i + 2, PlotFields, plot);
+                        WriteRow(plotsWorkSheet, rowIndex++, PlotFields, plot);
                     }
                 }
                 if (IsExportCountsSelected)
                 {
                     countsWorkSheet = excelFile.Workbook.Worksheets.Add("Counts");
 
-                    for (int i = 0; i < CountFields.Count; i++)
-                    {
-                        countsWorkSheet.SetValue(1, i + 1, CountFields[i].Header);
-                    }
+                    var rowIndex = 1;
+                    countsWorkSheet.SetValues(CountFields.Select(x => x.Header), rowIndex++);
 
-                    for (int i = 0; i < Counts.Count; i++)
+                    foreach (var count in Counts)
                     {
-                        CountTreeDO count = Counts[i];
-                        WriteRow(countsWorkSheet, i + 2, CountFields, count);
+                        WriteRow(countsWorkSheet, rowIndex++, CountFields, count);
                     }
                 }
 
@@ -591,7 +556,6 @@ namespace CruiseManager.WinForms.DataEditor
             }
 
             private PropertyInfo _propInfo;
-            private bool _isInitialized;
 
             public string Field { get; set; }
             public string Header { get; set; }
@@ -600,7 +564,7 @@ namespace CruiseManager.WinForms.DataEditor
             {
                 get
                 {
-                    if (!_isInitialized && !String.IsNullOrEmpty(this.Field))
+                    if (_propInfo == null && !String.IsNullOrEmpty(this.Field))
                     {
                         try
                         {

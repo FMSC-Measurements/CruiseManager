@@ -184,6 +184,7 @@
     <Compile Include="WinForms\CruiseCustomize\LogGradeAuditRuleView.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="WinForms\DataEditor\ExcelWorksheetExtentions.cs" />
     <Compile Include="WinForms\UserControlContainerView.cs">
       <SubType>UserControl</SubType>
     </Compile>
