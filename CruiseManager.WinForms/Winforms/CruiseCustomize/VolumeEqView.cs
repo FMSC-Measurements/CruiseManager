@@ -1,5 +1,4 @@
 ﻿using CruiseDAL.DataObjects;
-using CruiseManager.Core.App;
 using CruiseManager.Core.CruiseCustomize;
 using CruiseManager.Core.CruiseCustomize.ViewInterfaces;
 using CruiseManager.WinForms.CruiseWizard;
@@ -10,15 +9,12 @@ namespace CruiseManager.WinForms.CruiseCustomize
 {
     public partial class VolumeEqView : CruiseManager.WinForms.UserControlView, IVolumeEq
     {
-        public VolumeEqView(WindowPresenter windowPresenter, VolumeEqPresenter viewPresenter)
+        public VolumeEqView(VolumeEqPresenter viewPresenter)
         {
-            WindowPresenter = windowPresenter;
             ViewPresenter = viewPresenter;
             ViewPresenter.View = this;
             InitializeComponent();
         }
-
-        protected WindowPresenter WindowPresenter { get; set; }
 
         public new VolumeEqPresenter ViewPresenter
         {

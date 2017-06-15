@@ -1,5 +1,4 @@
 ﻿using CruiseDAL.DataObjects;
-using CruiseManager.Core.App;
 using CruiseManager.Core.CruiseCustomize;
 using CruiseManager.Core.CruiseCustomize.ViewInterfaces;
 using CruiseManager.WinForms.CruiseWizard;
@@ -10,15 +9,12 @@ namespace CruiseManager.WinForms.CruiseCustomize
 {
     public partial class TreeDefView : CruiseManager.WinForms.UserControlView, ITreeDef
     {
-        public TreeDefView(WindowPresenter windowPresenter, TreeDefPresenter viewPresenter)
+        public TreeDefView(TreeDefPresenter viewPresenter)
         {
-            WindowPresenter = windowPresenter;
             ViewPresenter = viewPresenter;
             ViewPresenter.View = this;
             InitializeComponent();
         }
-
-        protected WindowPresenter WindowPresenter { get; set; }
 
         public new TreeDefPresenter ViewPresenter
         {
@@ -48,6 +44,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
                 this.ShowEditTreeDefault(tdv);
             }
         }
+
         public TreeDefaultValueDO ShowAddTreeDefault()
         {
             TreeDefaultValueDO newTDV = new TreeDefaultValueDO(ViewPresenter.ApplicationController.Database);
@@ -57,7 +54,6 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
         public TreeDefaultValueDO ShowEditTreeDefault(TreeDefaultValueDO tdv)
         {
-
             try
             {
                 using (FormAddTreeDefault dialog = new FormAddTreeDefault(ViewPresenter.ApplicationController.SetupService.GetProductCodes()))
@@ -65,7 +61,8 @@ namespace CruiseManager.WinForms.CruiseCustomize
                     if (dialog.ShowDialog(tdv) == DialogResult.OK)
                     {
                         return tdv;
-                    } else
+                    }
+                    else
                     {
                         return null;
                     }
@@ -76,7 +73,8 @@ namespace CruiseManager.WinForms.CruiseCustomize
                 if (!ViewPresenter.ApplicationController.ExceptionHandler.Handel(ex))
                 {
                     throw;
-                } else
+                }
+                else
                 {
                     return null;
                 }

@@ -255,12 +255,12 @@
             // 
             this._BS_treeDefaults.DataSource = typeof(CruiseDAL.DataObjects.TreeDefaultValueDO);
             // 
-            // TreeDef
+            // TreeDefView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(tableLayoutPanel1);
-            this.Name = "TreeDef";
+            this.Name = "TreeDefView";
             this.Size = new System.Drawing.Size(540, 473);
             panel3.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
