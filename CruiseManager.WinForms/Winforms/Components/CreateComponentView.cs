@@ -9,6 +9,7 @@ namespace CruiseManager.WinForms.Components
         public CreateComponentView(CreateComponentPresenter viewPresenter)
         {
             InitializeComponent();
+            this.@__numCompTB.Maximum = (decimal)Core.Components.CreateComponentPresenter.MAX_COMPONENTS;
 
             this.ViewPresenter = viewPresenter;
             this.ViewPresenter.View = this;

@@ -14,6 +14,7 @@ namespace CruiseManager.Core.Components
 {
     public class CreateComponentPresenter : Presentor
     {
+        public static int MAX_COMPONENTS = 99;
         static int ROWID_SPACING = 200000;
         static int PLOT_ROW_SPACING = 1000;
 
@@ -82,6 +83,8 @@ namespace CruiseManager.Core.Components
 
         protected void MakeComponents(DAL parentDB, int numComponents)
         {
+            numComponents = Math.Min(numComponents, MAX_COMPONENTS);
+
             //start up the progress bar
             int totalSteps = numComponents + 4;
             View.InitializeAndShowProgress(totalSteps);
@@ -92,6 +95,7 @@ namespace CruiseManager.Core.Components
                 //create a master component by creating a copy of the parent
                 parentDB.CopyTo(_masterPath);
                 MasterDAL = new DAL(_masterPath);
+                SetRowIDs(MAX_COMPONENTS + 1, MasterDAL);
 
                 ////clean the master file, any field data from the original file will be removed
                 //ClearFieldData(masterDAL);
@@ -159,12 +163,7 @@ namespace CruiseManager.Core.Components
                 string command = string.Format("UPDATE CountTree Set Component_CN = {0};", compInfo.Component_CN);
                 compDB.Execute(command);
 
-                //Set the starting rowID for each component
-                compDB.SetTableAutoIncrementStart("Tree", GetComponentRowIDStart(compNum));
-                compDB.SetTableAutoIncrementStart("Log", GetComponentRowIDStart(compNum));
-                compDB.SetTableAutoIncrementStart("TreeEstimate", GetComponentRowIDStart(compNum));
-                compDB.SetTableAutoIncrementStart("Stem", GetComponentRowIDStart(compNum));
-                compDB.SetTableAutoIncrementStart("Plot", compNum * PLOT_ROW_SPACING);
+                SetRowIDs(compNum, compDB);
 
                 compDB.Execute("DELETE FROM Globals WHERE Block = 'Comp' AND Key = 'ChildComponents';");
                 compDB.Execute("DELETE FROM Globals WHERE Block = 'Comp' AND Key = 'LastMerge';");
@@ -185,6 +184,16 @@ namespace CruiseManager.Core.Components
             {
                 compDB.Dispose();
             }
+        }
+
+        private static void SetRowIDs(int fileNum, DAL fileDB)
+        {
+            //Set the starting rowID for each component
+            fileDB.SetTableAutoIncrementStart("Tree", GetComponentRowIDStart(fileNum));
+            fileDB.SetTableAutoIncrementStart("Log", GetComponentRowIDStart(fileNum));
+            fileDB.SetTableAutoIncrementStart("TreeEstimate", GetComponentRowIDStart(fileNum));
+            fileDB.SetTableAutoIncrementStart("Stem", GetComponentRowIDStart(fileNum));
+            fileDB.SetTableAutoIncrementStart("Plot", fileNum * PLOT_ROW_SPACING);
         }
 
         //private static void ClearFieldData(DAL database)
