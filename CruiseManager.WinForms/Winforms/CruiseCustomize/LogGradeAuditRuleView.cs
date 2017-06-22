@@ -34,6 +34,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
         private System.Windows.Forms.ToolStripButton logGradeAuditBindingNavigatorAddNewItem;
         private System.Windows.Forms.ToolStripButton logGradeAuditBindingNavigatorDeleteItem;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 
         public new LogAuditRulePresenter ViewPresenter
@@ -61,6 +62,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             var presenter = ViewPresenter;
             if (presenter != null)
             {
+                presenter.View = null;
             }
         }
 
@@ -70,6 +72,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             var presenter = ViewPresenter;
             if (presenter != null)
             {
+                presenter.View = this;
                 _speciesOptComboBox.DataSource = presenter.SpeciesOptions;
 
                 _logAuditSpeciesBindingSource.DataSource = presenter.LogGradeSpecies;
@@ -120,6 +123,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this.label3 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             ((System.ComponentModel.ISupportInitialize)(this._logAuditsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._logAuditSpeciesBindingSource)).BeginInit();
@@ -355,10 +359,11 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this._logGradeAuditEditPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this._logGradeAuditEditPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this._logGradeAuditEditPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this._logGradeAuditEditPanel.Controls.Add(this.label2, 0, 0);
-            this._logGradeAuditEditPanel.Controls.Add(this.label3, 0, 1);
-            this._logGradeAuditEditPanel.Controls.Add(this.textBox1, 1, 0);
-            this._logGradeAuditEditPanel.Controls.Add(this.textBox2, 1, 1);
+            this._logGradeAuditEditPanel.Controls.Add(this.label2, 0, 1);
+            this._logGradeAuditEditPanel.Controls.Add(this.label3, 0, 0);
+            this._logGradeAuditEditPanel.Controls.Add(this.textBox1, 1, 1);
+            this._logGradeAuditEditPanel.Controls.Add(this.textBox2, 1, 0);
+            this._logGradeAuditEditPanel.Controls.Add(this.label5, 2, 0);
             this._logGradeAuditEditPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._logGradeAuditEditPanel.Enabled = false;
             this._logGradeAuditEditPanel.Location = new System.Drawing.Point(0, 0);
@@ -367,6 +372,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this._logGradeAuditEditPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this._logGradeAuditEditPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this._logGradeAuditEditPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this._logGradeAuditEditPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this._logGradeAuditEditPanel.Size = new System.Drawing.Size(349, 220);
             this._logGradeAuditEditPanel.TabIndex = 0;
             //
@@ -374,7 +380,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             //
             this.label2.AutoSize = true;
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.Location = new System.Drawing.Point(3, 0);
+            this.label2.Location = new System.Drawing.Point(3, 26);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(83, 26);
             this.label2.TabIndex = 0;
@@ -385,7 +391,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             //
             this.label3.AutoSize = true;
             this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label3.Location = new System.Drawing.Point(3, 26);
+            this.label3.Location = new System.Drawing.Point(3, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(83, 26);
             this.label3.TabIndex = 1;
@@ -395,7 +401,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             // textBox1
             //
             this.textBox1.DataBindings.Add(new System.Windows.Forms.Binding("Text", this._logAuditsBindingSource, "DefectMax", true));
-            this.textBox1.Location = new System.Drawing.Point(92, 3);
+            this.textBox1.Location = new System.Drawing.Point(92, 29);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 20);
             this.textBox1.TabIndex = 2;
@@ -403,10 +409,21 @@ namespace CruiseManager.WinForms.CruiseCustomize
             // textBox2
             //
             this.textBox2.DataBindings.Add(new System.Windows.Forms.Binding("Text", this._logAuditsBindingSource, "ValidGrades", true));
-            this.textBox2.Location = new System.Drawing.Point(92, 29);
+            this.textBox2.Location = new System.Drawing.Point(92, 3);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(100, 20);
             this.textBox2.TabIndex = 3;
+            //
+            // label5
+            //
+            this.label5.AutoSize = true;
+            this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label5.Location = new System.Drawing.Point(198, 0);
+            this.label5.Name = "label5";
+            this._logGradeAuditEditPanel.SetRowSpan(this.label5, 2);
+            this.label5.Size = new System.Drawing.Size(148, 52);
+            this.label5.TabIndex = 4;
+            this.label5.Text = "Multiple grades allowed, separated by commas";
             //
             // LogGradeAuditRuleView
             //
@@ -449,6 +466,12 @@ namespace CruiseManager.WinForms.CruiseCustomize
         private void _logAuditsBindingSource_AddingNew(object sender, System.ComponentModel.AddingNewEventArgs e)
         {
             e.NewObject = ViewPresenter.MakeLogGradeAudit();
+        }
+
+        public void EndEdit()
+        {
+            _logAuditsBindingSource.EndEdit();
+            _logAuditSpeciesBindingSource.EndEdit();
         }
     }
 }

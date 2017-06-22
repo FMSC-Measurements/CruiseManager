@@ -43,22 +43,28 @@
             label1.AutoSize = true;
             label1.Location = new System.Drawing.Point(3, 0);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(239, 23);
+            label1.Size = new System.Drawing.Size(159, 13);
             label1.TabIndex = 1;
             label1.Text = "Total Number of Components";
             // 
             // __numCompTB
             // 
-            this.@__numCompTB.Location = new System.Drawing.Point(248, 3);
+            this.@__numCompTB.Location = new System.Drawing.Point(168, 3);
+            
             this.@__numCompTB.Name = "__numCompTB";
-            this.@__numCompTB.Size = new System.Drawing.Size(46, 29);
+            this.@__numCompTB.Size = new System.Drawing.Size(46, 22);
             this.@__numCompTB.TabIndex = 0;
+            this.@__numCompTB.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // __makeBtn
             // 
             this.@__makeBtn.AutoSize = true;
             this.tableLayoutPanel1.SetColumnSpan(this.@__makeBtn, 2);
-            this.@__makeBtn.Location = new System.Drawing.Point(3, 38);
+            this.@__makeBtn.Location = new System.Drawing.Point(3, 31);
             this.@__makeBtn.Name = "__makeBtn";
             this.@__makeBtn.Size = new System.Drawing.Size(208, 33);
             this.@__makeBtn.TabIndex = 2;
@@ -69,7 +75,7 @@
             // __progressBar
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.@__progressBar, 2);
-            this.@__progressBar.Location = new System.Drawing.Point(3, 77);
+            this.@__progressBar.Location = new System.Drawing.Point(3, 70);
             this.@__progressBar.Name = "__progressBar";
             this.@__progressBar.Size = new System.Drawing.Size(208, 23);
             this.@__progressBar.TabIndex = 3;
@@ -98,7 +104,7 @@
             // 
             // CreateComponentView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = global::CruiseManager.Properties.Settings.Default.AppFont;
