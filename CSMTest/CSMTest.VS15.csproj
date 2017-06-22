@@ -180,6 +180,25 @@
     <Content Include="TestFiles\testReadData.cruise">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestFiles\Components\Bad\RedSquirt.1.cruise">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Components\Bad\RedSquirt.2.cruise">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Components\Bad\RedSquirt.3.cruise">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Components\Bad\RedSquirt.M.cruise">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="TestFiles\Components\Good\GooseFoote_7_16\Goosefoote.1.cruise" />
+    <None Include="TestFiles\Components\Good\GooseFoote_7_16\Goosefoote.2.cruise" />
+    <None Include="TestFiles\Components\Good\GooseFoote_7_16\Goosefoote.3.cruise" />
+    <None Include="TestFiles\Components\Good\GooseFoote_7_16\Goosefoote.M.cruise" />
+    <None Include="TestFiles\Components\Good\Valentine.1.cruise" />
+    <None Include="TestFiles\Components\Good\Valentine.2.cruise" />
+    <None Include="TestFiles\Components\Good\Valentine.M.cruise" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

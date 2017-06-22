@@ -8,6 +8,7 @@ using CruiseManager.Core.Components;
 using FluentAssertions;
 using Xunit;
 using CruiseManager.Core;
+using System.Reflection;
 
 namespace CSMTest
 {
@@ -15,18 +16,26 @@ namespace CSMTest
     {
         public DAL GetMaster()
         {
-            return new DAL(".\\Components\\Bad\\RedSquirt.M.cruise");
+            var codeBaseUri = new Uri(Assembly.GetExecutingAssembly().CodeBase).AbsolutePath;
+            var codeBasePath = Uri.UnescapeDataString(codeBaseUri);
+            var directory = System.IO.Path.GetDirectoryName(codeBasePath);
+
+            var path = System.IO.Path.Combine(directory, "TestFiles\\Components\\Bad\\RedSquirt.M.cruise");
+
+            return new DAL(path);
         }
 
         [Fact]
         public void InitializeTest()
         {
-            var appController = Mock.Of<ApplicationControllerBase>();
             using (var master = GetMaster())
             {
-                var cmPresenter = new MergeComponentsPresenter(appController);
+                var appControllerMock = Mock.Of<ApplicationControllerBase>();
+                appControllerMock.Database = master;
 
-                cmPresenter.MissingComponents.Count.ShouldBeEquivalentTo(0);
+                var cmPresenter = new MergeComponentsPresenter(appControllerMock);
+
+                cmPresenter.NumComponents.ShouldBeEquivalentTo(3);
             }
         }
 
@@ -54,12 +63,16 @@ namespace CSMTest
         [Fact]
         public void PrepareMergeTest()
         {
-            var appController = Mock.Of<ApplicationControllerBase>();
             using (var master = GetMaster())
             {
+                var appController = Mock.Of<ApplicationControllerBase>();
+                appController.Database = master;
+
                 var cmPresenter = new MergeComponentsPresenter(appController);
 
+                cmPresenter.FindComponents(System.IO.Path.GetDirectoryName(master.Path));
                 cmPresenter.MissingComponents.Count.ShouldBeEquivalentTo(0);
+                cmPresenter.NumComponents.ShouldBeEquivalentTo(3);
 
                 var worker = new PrepareMergeWorker(cmPresenter);
                 worker.ProgressChanged += HandleProgressChanged;
@@ -73,11 +86,16 @@ namespace CSMTest
         [Fact]
         public void PerformMergeTest()
         {
-            var appController = Mock.Of<ApplicationControllerBase>();
             using (var master = GetMaster())
             {
+                var appController = Mock.Of<ApplicationControllerBase>();
+                appController.Database = master;
+
                 var cmPresenter = new MergeComponentsPresenter(appController);
+
+                cmPresenter.FindComponents(System.IO.Path.GetDirectoryName(master.Path));
                 cmPresenter.MissingComponents.Count.ShouldBeEquivalentTo(0);
+                cmPresenter.NumComponents.ShouldBeEquivalentTo(3);
 
                 var worker = new PrepareMergeWorker(cmPresenter);
                 worker.ProgressChanged += HandleProgressChanged;
