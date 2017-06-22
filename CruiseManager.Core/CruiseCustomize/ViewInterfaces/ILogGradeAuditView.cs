@@ -9,5 +9,6 @@ namespace CruiseManager.Core.CruiseCustomize.ViewInterfaces
 {
     public interface ILogGradeAuditView : IView
     {
+        void EndEdit();
     }
 }

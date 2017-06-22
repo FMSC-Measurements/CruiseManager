@@ -62,6 +62,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             var presenter = ViewPresenter;
             if (presenter != null)
             {
+                presenter.View = null;
             }
         }
 
@@ -71,6 +72,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             var presenter = ViewPresenter;
             if (presenter != null)
             {
+                presenter.View = this;
                 _speciesOptComboBox.DataSource = presenter.SpeciesOptions;
 
                 _logAuditSpeciesBindingSource.DataSource = presenter.LogGradeSpecies;
@@ -464,6 +466,12 @@ namespace CruiseManager.WinForms.CruiseCustomize
         private void _logAuditsBindingSource_AddingNew(object sender, System.ComponentModel.AddingNewEventArgs e)
         {
             e.NewObject = ViewPresenter.MakeLogGradeAudit();
+        }
+
+        public void EndEdit()
+        {
+            _logAuditsBindingSource.EndEdit();
+            _logAuditSpeciesBindingSource.EndEdit();
         }
     }
 }
