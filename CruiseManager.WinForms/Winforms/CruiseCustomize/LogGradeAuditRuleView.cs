@@ -34,6 +34,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
         private System.Windows.Forms.ToolStripButton logGradeAuditBindingNavigatorAddNewItem;
         private System.Windows.Forms.ToolStripButton logGradeAuditBindingNavigatorDeleteItem;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 
         public new LogAuditRulePresenter ViewPresenter
@@ -120,6 +121,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this.label3 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             ((System.ComponentModel.ISupportInitialize)(this._logAuditsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._logAuditSpeciesBindingSource)).BeginInit();
@@ -133,26 +135,26 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this.panel3.SuspendLayout();
             this._logGradeAuditEditPanel.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // toolStripLabel1
-            // 
+            //
             toolStripLabel1.Name = "toolStripLabel1";
             toolStripLabel1.Size = new System.Drawing.Size(49, 22);
             toolStripLabel1.Text = "Species:";
-            // 
+            //
             // _logAuditsBindingSource
-            // 
+            //
             this._logAuditsBindingSource.DataSource = typeof(CruiseManager.Core.CruiseCustomize.Models.LogGradeAuditRule);
             this._logAuditsBindingSource.AddingNew += new System.ComponentModel.AddingNewEventHandler(this._logAuditsBindingSource_AddingNew);
             this._logAuditsBindingSource.CurrentChanged += new System.EventHandler(this._logAuditsBindingSource_CurrentChanged);
-            // 
+            //
             // _logAuditSpeciesBindingSource
-            // 
+            //
             this._logAuditSpeciesBindingSource.DataSource = typeof(CruiseManager.Core.CruiseCustomize.LogGradeSpecies);
             this._logAuditSpeciesBindingSource.CurrentChanged += new System.EventHandler(this._logAuditSpeciesBindingSource_CurrentChanged);
-            // 
+            //
             // speciesBindingNavigator
-            // 
+            //
             this.speciesBindingNavigator.AddNewItem = this.speciesBindingNavigatorAddNewItem;
             this.speciesBindingNavigator.BindingSource = this._logAuditSpeciesBindingSource;
             this.speciesBindingNavigator.CountItem = null;
@@ -172,18 +174,18 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this.speciesBindingNavigator.Size = new System.Drawing.Size(115, 25);
             this.speciesBindingNavigator.TabIndex = 1;
             this.speciesBindingNavigator.Text = "bindingNavigator1";
-            // 
+            //
             // speciesBindingNavigatorAddNewItem
-            // 
+            //
             this.speciesBindingNavigatorAddNewItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.speciesBindingNavigatorAddNewItem.Image = ((System.Drawing.Image)(resources.GetObject("speciesBindingNavigatorAddNewItem.Image")));
             this.speciesBindingNavigatorAddNewItem.Name = "speciesBindingNavigatorAddNewItem";
             this.speciesBindingNavigatorAddNewItem.RightToLeftAutoMirrorImage = true;
             this.speciesBindingNavigatorAddNewItem.Size = new System.Drawing.Size(23, 22);
             this.speciesBindingNavigatorAddNewItem.Text = "Add new";
-            // 
+            //
             // speciesBindingNavigatorDeleteItem
-            // 
+            //
             this.speciesBindingNavigatorDeleteItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.speciesBindingNavigatorDeleteItem.Image = ((System.Drawing.Image)(resources.GetObject("speciesBindingNavigatorDeleteItem.Image")));
             this.speciesBindingNavigatorDeleteItem.Name = "speciesBindingNavigatorDeleteItem";
@@ -191,9 +193,9 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this.speciesBindingNavigatorDeleteItem.Size = new System.Drawing.Size(23, 22);
             this.speciesBindingNavigatorDeleteItem.Text = "Delete";
             this.speciesBindingNavigatorDeleteItem.Click += new System.EventHandler(this.speciesBindingNavigatorDeleteItem_Click);
-            // 
+            //
             // tableLayoutPanel1
-            // 
+            //
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.52301F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 74.47699F));
@@ -208,9 +210,9 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(478, 439);
             this.tableLayoutPanel1.TabIndex = 2;
-            // 
+            //
             // panel1
-            // 
+            //
             this.panel1.Controls.Add(this.listBox1);
             this.panel1.Controls.Add(this.speciesBindingNavigator);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -219,9 +221,9 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this.tableLayoutPanel1.SetRowSpan(this.panel1, 2);
             this.panel1.Size = new System.Drawing.Size(115, 433);
             this.panel1.TabIndex = 2;
-            // 
+            //
             // listBox1
-            // 
+            //
             this.listBox1.DataSource = this._logAuditSpeciesBindingSource;
             this.listBox1.DisplayMember = "Species";
             this.listBox1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -230,9 +232,9 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(115, 408);
             this.listBox1.TabIndex = 2;
-            // 
+            //
             // _logGradeAuditSelectPanel
-            // 
+            //
             this._logGradeAuditSelectPanel.ColumnCount = 5;
             this._logGradeAuditSelectPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this._logGradeAuditSelectPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -254,18 +256,18 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this._logGradeAuditSelectPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this._logGradeAuditSelectPanel.Size = new System.Drawing.Size(351, 205);
             this._logGradeAuditSelectPanel.TabIndex = 4;
-            // 
+            //
             // _speciesOptComboBox
-            // 
+            //
             this._speciesOptComboBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this._logAuditSpeciesBindingSource, "Species", true));
             this._speciesOptComboBox.FormattingEnabled = true;
             this._speciesOptComboBox.Location = new System.Drawing.Point(54, 3);
             this._speciesOptComboBox.Name = "_speciesOptComboBox";
             this._speciesOptComboBox.Size = new System.Drawing.Size(72, 21);
             this._speciesOptComboBox.TabIndex = 0;
-            // 
+            //
             // label1
-            // 
+            //
             this.label1.AutoSize = true;
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label1.Location = new System.Drawing.Point(3, 0);
@@ -274,9 +276,9 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this.label1.TabIndex = 1;
             this.label1.Text = "Species";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // listBox2
-            // 
+            //
             this._logGradeAuditSelectPanel.SetColumnSpan(this.listBox2, 3);
             this.listBox2.DataSource = this._logAuditsBindingSource;
             this.listBox2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -285,9 +287,9 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this.listBox2.Name = "listBox2";
             this.listBox2.Size = new System.Drawing.Size(160, 152);
             this.listBox2.TabIndex = 2;
-            // 
+            //
             // logGradeAuditBindingNavigator
-            // 
+            //
             this.logGradeAuditBindingNavigator.AddNewItem = this.logGradeAuditBindingNavigatorAddNewItem;
             this.logGradeAuditBindingNavigator.BindingSource = this._logAuditsBindingSource;
             this.logGradeAuditBindingNavigator.CountItem = null;
@@ -307,18 +309,18 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this.logGradeAuditBindingNavigator.Size = new System.Drawing.Size(24, 48);
             this.logGradeAuditBindingNavigator.TabIndex = 3;
             this.logGradeAuditBindingNavigator.Text = "bindingNavigator2";
-            // 
+            //
             // logGradeAuditBindingNavigatorAddNewItem
-            // 
+            //
             this.logGradeAuditBindingNavigatorAddNewItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.logGradeAuditBindingNavigatorAddNewItem.Image = ((System.Drawing.Image)(resources.GetObject("logGradeAuditBindingNavigatorAddNewItem.Image")));
             this.logGradeAuditBindingNavigatorAddNewItem.Name = "logGradeAuditBindingNavigatorAddNewItem";
             this.logGradeAuditBindingNavigatorAddNewItem.RightToLeftAutoMirrorImage = true;
             this.logGradeAuditBindingNavigatorAddNewItem.Size = new System.Drawing.Size(22, 20);
             this.logGradeAuditBindingNavigatorAddNewItem.Text = "Add new";
-            // 
+            //
             // logGradeAuditBindingNavigatorDeleteItem
-            // 
+            //
             this.logGradeAuditBindingNavigatorDeleteItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.logGradeAuditBindingNavigatorDeleteItem.Image = ((System.Drawing.Image)(resources.GetObject("logGradeAuditBindingNavigatorDeleteItem.Image")));
             this.logGradeAuditBindingNavigatorDeleteItem.Name = "logGradeAuditBindingNavigatorDeleteItem";
@@ -326,9 +328,9 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this.logGradeAuditBindingNavigatorDeleteItem.Size = new System.Drawing.Size(22, 20);
             this.logGradeAuditBindingNavigatorDeleteItem.Text = "Delete";
             this.logGradeAuditBindingNavigatorDeleteItem.Click += new System.EventHandler(this.logGradeAuditBindingNavigatorDeleteItem_Click);
-            // 
+            //
             // label4
-            // 
+            //
             this.label4.AutoSize = true;
             this._logGradeAuditSelectPanel.SetColumnSpan(this.label4, 2);
             this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -338,9 +340,9 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this.label4.TabIndex = 4;
             this.label4.Text = "Rule Definitions";
             this.label4.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            // 
+            //
             // panel3
-            // 
+            //
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel3.Controls.Add(this._logGradeAuditEditPanel);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -348,9 +350,9 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(351, 222);
             this.panel3.TabIndex = 3;
-            // 
+            //
             // _logGradeAuditEditPanel
-            // 
+            //
             this._logGradeAuditEditPanel.ColumnCount = 3;
             this._logGradeAuditEditPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this._logGradeAuditEditPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -359,6 +361,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this._logGradeAuditEditPanel.Controls.Add(this.label3, 0, 0);
             this._logGradeAuditEditPanel.Controls.Add(this.textBox1, 1, 1);
             this._logGradeAuditEditPanel.Controls.Add(this.textBox2, 1, 0);
+            this._logGradeAuditEditPanel.Controls.Add(this.label5, 2, 0);
             this._logGradeAuditEditPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._logGradeAuditEditPanel.Enabled = false;
             this._logGradeAuditEditPanel.Location = new System.Drawing.Point(0, 0);
@@ -370,9 +373,9 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this._logGradeAuditEditPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this._logGradeAuditEditPanel.Size = new System.Drawing.Size(349, 220);
             this._logGradeAuditEditPanel.TabIndex = 0;
-            // 
+            //
             // label2
-            // 
+            //
             this.label2.AutoSize = true;
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label2.Location = new System.Drawing.Point(3, 26);
@@ -381,9 +384,9 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this.label2.TabIndex = 0;
             this.label2.Text = "Max Log Defect";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
+            //
             // label3
-            // 
+            //
             this.label3.AutoSize = true;
             this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label3.Location = new System.Drawing.Point(3, 0);
@@ -392,25 +395,36 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this.label3.TabIndex = 1;
             this.label3.Text = "Log Grades";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
+            //
             // textBox1
-            // 
+            //
             this.textBox1.DataBindings.Add(new System.Windows.Forms.Binding("Text", this._logAuditsBindingSource, "DefectMax", true));
             this.textBox1.Location = new System.Drawing.Point(92, 29);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 20);
             this.textBox1.TabIndex = 2;
-            // 
+            //
             // textBox2
-            // 
+            //
             this.textBox2.DataBindings.Add(new System.Windows.Forms.Binding("Text", this._logAuditsBindingSource, "ValidGrades", true));
             this.textBox2.Location = new System.Drawing.Point(92, 3);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(100, 20);
             this.textBox2.TabIndex = 3;
-            // 
+            //
+            // label5
+            //
+            this.label5.AutoSize = true;
+            this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label5.Location = new System.Drawing.Point(198, 0);
+            this.label5.Name = "label5";
+            this._logGradeAuditEditPanel.SetRowSpan(this.label5, 2);
+            this.label5.Size = new System.Drawing.Size(148, 52);
+            this.label5.TabIndex = 4;
+            this.label5.Text = "Multiple grades allowed, separated by commas";
+            //
             // LogGradeAuditRuleView
-            // 
+            //
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "LogGradeAuditRuleView";
             this.Size = new System.Drawing.Size(478, 439);
@@ -431,7 +445,6 @@ namespace CruiseManager.WinForms.CruiseCustomize
             this._logGradeAuditEditPanel.ResumeLayout(false);
             this._logGradeAuditEditPanel.PerformLayout();
             this.ResumeLayout(false);
-
         }
 
         private void _logAuditSpeciesBindingSource_CurrentChanged(object sender, EventArgs e)
