@@ -63,7 +63,7 @@
       <Forest State="UT" Name="Uinta-Wasatch-Cache" ForestNumber="19" />
     </Forests>
   </Region>
-  <Region RegionNumber="05" Name="Pacfic Southwest">
+  <Region RegionNumber="05" Name="Pacific Southwest">
     <Forests>
       <Forest State="CA" Name="Angeles" ForestNumber="01" />
       <Forest State="CA" Name="Cleveland" ForestNumber="02" />
@@ -85,7 +85,7 @@
 	  <Forest State="CA" Name="Lake Tahoe Basin" ForestNumber="19" />
     </Forests>
   </Region>
-  <Region RegionNumber="06" Name="Pacfic Northwest">
+  <Region RegionNumber="06" Name="Pacific Northwest">
     <Forests>
       <Forest State="OR" Name="Deschutes" ForestNumber="01" />
       <Forest State="OR" Name="Fremont-Winema" ForestNumber="02" />

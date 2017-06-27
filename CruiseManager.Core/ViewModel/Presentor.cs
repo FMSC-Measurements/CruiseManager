@@ -3,15 +3,39 @@ using System;
 
 namespace CruiseManager.Core.ViewModel
 {
-    //public enum PresenterStatus { Ready, Initializing, Working }
-
-    public abstract class Presentor : IPresentor, IDisposable
+    public abstract class Presentor : INPC_Base, IPresentor, IDisposable
     {
-        private IView _view;
-
-        //private PresenterStatus _status = PresenterStatus.Ready;
         //public WindowPresenter WindowPresenter { get; protected set; }
-        public ApplicationControllerBase ApplicationController { get; protected set; }
+
+        #region AppController
+
+        private ApplicationControllerBase _appController;
+
+        public ApplicationControllerBase ApplicationController
+        {
+            get { return _appController; }
+            protected set
+            {
+                OnAppControllerChangeing();
+                _appController = value;
+                OnAppControllerChanged();
+            }
+        }
+
+        protected virtual void OnAppControllerChangeing()
+        {
+        }
+
+        protected virtual void OnAppControllerChanged()
+        {
+            OnPropertyChanged();
+        }
+
+        #endregion AppController
+
+        #region View
+
+        private IView _view;
 
         public IView View
         {
@@ -24,45 +48,6 @@ namespace CruiseManager.Core.ViewModel
                 _view = value;
             }
         }
-
-        public Presentor()
-        {
-        }
-
-        public Presentor(ApplicationControllerBase appController)
-        {
-            this.ApplicationController = appController;
-        }
-
-        //public PresenterStatus Status
-        //{
-        //    get { return _status; }
-        //    protected set
-        //    {
-        //        _status = value;
-        //        OnStatusChanged(value);
-        //    }
-        //}
-
-        //public event EventHandler<PresenterStatusChangedEventArgs> StatusChanged;
-
-        protected virtual void OnViewLoad(EventArgs e)
-        {
-        }
-
-        //protected void OnStatusChanged(PresenterStatus status)
-        //{
-        //    this.OnStatusChanged(new PresenterStatusChangedEventArgs()
-        //    { Status = status });
-        //}
-
-        //protected void OnStatusChanged(PresenterStatusChangedEventArgs e)
-        //{
-        //    if(this.StatusChanged != null)
-        //    {
-        //        this.StatusChanged(this, e);
-        //    }
-        //}
 
         protected virtual void WireupView(IView view)
         {
@@ -79,38 +64,46 @@ namespace CruiseManager.Core.ViewModel
             this.OnViewLoad(e);
         }
 
+        #endregion View
+
+        #region Ctor
+
+        protected Presentor()
+        {
+        }
+
+        public Presentor(ApplicationControllerBase appController) : this()
+        {
+            this.ApplicationController = appController;
+        }
+
+        #endregion Ctor
+
+        protected virtual void OnViewLoad(EventArgs e)
+        {
+        }
+
         #region IDisposable Support
 
-        private bool disposedValue = false; // To detect redundant calls
+        protected bool IsDisposed { get; set; } // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!IsDisposed)
             {
                 if (disposing)
                 {
+                    ApplicationController = null;
                     this.View = null;//unwire and null view
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
-
-                disposedValue = true;
+                IsDisposed = true;
             }
         }
 
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        // ~Presentor() {
-        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-        //   Dispose(false);
-        // }
-
-        // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
             Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
-            // GC.SuppressFinalize(this);
         }
 
         #endregion IDisposable Support

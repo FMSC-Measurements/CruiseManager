@@ -100,6 +100,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\IDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\IDialogDataContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\INavigationService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\INPC_Base.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\IPresentor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\ISaveHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\IView.cs" />

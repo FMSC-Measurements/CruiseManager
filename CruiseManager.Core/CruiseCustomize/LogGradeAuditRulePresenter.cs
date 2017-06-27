@@ -140,6 +140,7 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             get
             {
+                View.EndEdit();
                 return LogGradeSpecies.Any(x => x.IsChanged) || DeletedLogGradeAuditRules.Any();
                 //return LogGradeAudits.Any(la => la.IsChanged || la.IsPersisted == false);
             }
@@ -147,6 +148,7 @@ namespace CruiseManager.Core.CruiseCustomize
 
         public bool HandleSave()
         {
+            View.EndEdit();
             foreach (var la in DeletedLogGradeAuditRules)
             {
                 if (la.IsPersisted)
