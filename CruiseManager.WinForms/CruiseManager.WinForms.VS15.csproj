@@ -181,6 +181,12 @@
     <Compile Include="WinForms\CruiseCustomize\FixCNTTallyPopulationRow.Designer.cs">
       <DependentUpon>FixCNTTallyPopulationRow.cs</DependentUpon>
     </Compile>
+    <Compile Include="WinForms\CruiseCustomize\FormAddVolumeEqs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\CruiseCustomize\FormAddVolumeEqs.Designer.cs">
+      <DependentUpon>FormAddVolumeEqs.cs</DependentUpon>
+    </Compile>
     <Compile Include="WinForms\CruiseCustomize\LogGradeAuditRuleView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -201,12 +207,6 @@
     </Compile>
     <Compile Include="WinForms\CruiseCustomize\VolumeEqView.Designer.cs">
       <DependentUpon>VolumeEqView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="WinForms\CruiseWizard\FormAddVolumeEqs.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WinForms\CruiseWizard\FormAddVolumeEqs.Designer.cs">
-      <DependentUpon>FormAddVolumeEqs.cs</DependentUpon>
     </Compile>
     <Compile Include="WinForms\DataEditor\ExcelWorksheetExtentions.cs" />
     <Compile Include="WinForms\UserControlContainerView.cs">
@@ -430,6 +430,9 @@
     <EmbeddedResource Include="WinForms\CruiseCustomize\FixCNTTallyPopulationRow.resx">
       <DependentUpon>FixCNTTallyPopulationRow.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\CruiseCustomize\FormAddVolumeEqs.resx">
+      <DependentUpon>FormAddVolumeEqs.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="WinForms\CruiseCustomize\LogGradeAuditRuleView.resx">
       <DependentUpon>LogGradeAuditRuleView.cs</DependentUpon>
     </EmbeddedResource>
@@ -466,10 +469,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="WinForms\CruiseWizard\CuttingUnitsPage.resx">
       <DependentUpon>CuttingUnitsPage.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="WinForms\CruiseWizard\FormAddVolumeEqs.resx">
-      <DependentUpon>FormAddVolumeEqs.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="WinForms\CruiseWizard\FormAddTreeDefault.resx">
