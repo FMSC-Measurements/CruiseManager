@@ -39,7 +39,7 @@ namespace CruiseManager.WinForms.DataEditor
             SetUpFieldWidgets();
         }
 
-        public void SetUpFieldWidgets()
+        void SetUpFieldWidgets()
         {
             //set up tree field widget
             //get list of tree fields from the setup file
@@ -56,11 +56,9 @@ namespace CruiseManager.WinForms.DataEditor
 
             //set up log field widget
             //get list of log fields from setup file
-            this.AllLogFields = MakeLogFieldList();
 
-            this.LogFields = new List<FieldDiscriptor>();
-            this.LogOrderableAddRemoveWidget.DataSource = AllLogFields;
-            this.LogOrderableAddRemoveWidget.SelectedItemsDataSource = LogFields;
+            this.LogOrderableAddRemoveWidget.DataSource = AllLogFields = MakeLogFieldList();
+            this.LogOrderableAddRemoveWidget.SelectedItemsDataSource = LogFields = new List<FieldDiscriptor>();
 
             //set up plot field widget
             this.PlotFieldOrderableAddRemoveWidget.DataSource = AllPlotFields = MakePlotFieldList();
@@ -77,12 +75,12 @@ namespace CruiseManager.WinForms.DataEditor
 
             list.AddRange(SetupService.GetTreeFieldSetups().Select(x => new FieldDiscriptor(x)));
 
-            this.AllTreeFields.Add(new FieldDiscriptor { Field = "CuttingUnit", Header = "Unit", Format = "[Code]", DataType = typeof(TreeVM) });
+            list.Add(new FieldDiscriptor { Field = "CuttingUnit", Header = "Unit", Format = "[Code]", DataType = typeof(TreeVM) });
             //this.AllTreeFields.Add(new FieldDiscriptor { Field = "Stratum", Header = "Stratum", Format = "[Code]", DataType = typeof(TreeVM) });
             //this.AllTreeFields.Add(new FieldDiscriptor { Field = "SampleGroup", Header = "Sample Group", Format = "[Code]", DataType = typeof(TreeVM) });
             //this.AllTreeFields.Add(new FieldDiscriptor { Field = "TreeDefaultValue", Header = "Default Sp/LD/ProdP", Format = "[Species]/[LiveDead]/[PrimaryProduct]", DataType = typeof(TreeVM) });
-            this.AllTreeFields.Add(new FieldDiscriptor { Field = "Plot", Header = "Plot Number", Format = "[PlotNumber]", DataType = typeof(TreeVM) });
-            this.AllTreeFields.Sort((x, y) => string.Compare(x.Header, y.Header, StringComparison.CurrentCulture));
+            list.Add(new FieldDiscriptor { Field = "Plot", Header = "Plot Number", Format = "[PlotNumber]", DataType = typeof(TreeVM) });
+            list.Sort((x, y) => string.Compare(x.Header, y.Header, StringComparison.CurrentCulture));
 
             return list;
         }
