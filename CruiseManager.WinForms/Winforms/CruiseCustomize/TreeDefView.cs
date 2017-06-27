@@ -7,18 +7,18 @@ using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.CruiseCustomize
 {
-    public partial class TreeDefView : CruiseManager.WinForms.UserControlView, ITreeDef
+    public partial class TreeDefView : CruiseManager.WinForms.UserControlView, ITreeDefaultsView
     {
-        public TreeDefView(TreeDefPresenter viewPresenter)
+        public TreeDefView(TreeDefaultsPresenter viewPresenter)
         {
             ViewPresenter = viewPresenter;
             ViewPresenter.View = this;
             InitializeComponent();
         }
 
-        public new TreeDefPresenter ViewPresenter
+        public new TreeDefaultsPresenter ViewPresenter
         {
-            get { return (TreeDefPresenter)base.ViewPresenter; }
+            get { return (TreeDefaultsPresenter)base.ViewPresenter; }
             set { base.ViewPresenter = value; }
         }
 

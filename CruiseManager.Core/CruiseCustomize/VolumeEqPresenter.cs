@@ -28,8 +28,8 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             get
             {
-                return VolumeEqs.Any(x => x.IsChanged
-                || !x.IsPersisted) || DeletedVolumeEqs.Any();
+                return VolumeEqs.Any(x => x.IsChanged || !x.IsPersisted)
+                    || DeletedVolumeEqs.Any();
             }
         }
 

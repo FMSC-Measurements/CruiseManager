@@ -1,6 +1,6 @@
 ﻿namespace CruiseManager.WinForms.CruiseCustomize
 {
-    partial class ReportsSummView
+    partial class ReportsView
     {
         /// <summary>
         /// Required designer variable.

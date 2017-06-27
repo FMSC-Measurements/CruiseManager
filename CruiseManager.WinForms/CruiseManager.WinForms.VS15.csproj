@@ -184,11 +184,11 @@
     <Compile Include="WinForms\CruiseCustomize\LogGradeAuditRuleView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="WinForms\CruiseCustomize\ReportsSummView.cs">
+    <Compile Include="WinForms\CruiseCustomize\ReportsView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="WinForms\CruiseCustomize\ReportsSummView.Designer.cs">
-      <DependentUpon>ReportsSummView.cs</DependentUpon>
+    <Compile Include="WinForms\CruiseCustomize\ReportsView.Designer.cs">
+      <DependentUpon>ReportsView.cs</DependentUpon>
     </Compile>
     <Compile Include="WinForms\CruiseCustomize\TreeDefView.cs">
       <SubType>UserControl</SubType>
@@ -436,8 +436,8 @@
       <DependentUpon>LogMatrixSettingsPage.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="WinForms\CruiseCustomize\ReportsSummView.resx">
-      <DependentUpon>ReportsSummView.cs</DependentUpon>
+    <EmbeddedResource Include="WinForms\CruiseCustomize\ReportsView.resx">
+      <DependentUpon>ReportsView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WinForms\CruiseCustomize\TallyEditPanel.resx">
       <DependentUpon>TallyEditPanel.cs</DependentUpon>

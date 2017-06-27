@@ -1,84 +1,80 @@
 ﻿using CruiseDAL;
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
-using CruiseManager.Core.CruiseCustomize.ViewInterfaces;
 using CruiseManager.Core.ViewModel;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    public class ReportsSummPresenter : Presentor, ISaveHandler
+    public class TreeDefaultsPresenter : Presentor, ISaveHandler
     {
         private bool _isInitialized;
 
-        public new ViewInterfaces.IReportsSumm View
+        public new ViewInterfaces.ITreeDefaultsView View
         {
-            get { return (IReportsSumm)base.View; }
+            get { return (ViewInterfaces.ITreeDefaultsView)base.View; }
             set { base.View = value; }
         }
 
         public DAL Database { get { return ApplicationController.Database; } }
-        public BindingList<ReportsDO> DefaultReports { get; set; }
-        public List<ReportsDO> DeletedReports { get; set; }
+        public List<TreeDefaultValueDO> TreeDefaults { get; set; }
+
+        public List<TreeDefaultValueDO> DeletedTreeDefaults { get; set; }
 
         public bool HasChangesToSave
         {
             get
             {
-                View.EndEdit();
-                return DefaultReports.Any(x => x.IsChanged
-                || !x.IsPersisted) || DeletedReports.Any();
+                return TreeDefaults.Any(x => x.IsChanged || !x.IsPersisted)
+                    || DeletedTreeDefaults.Any();
             }
         }
 
-        public ReportsSummPresenter(ApplicationControllerBase appController)
+        public TreeDefaultsPresenter(ApplicationControllerBase appController)
             : base(appController)
         { }
 
         protected override void OnViewLoad(EventArgs e)
         {
             base.OnViewLoad(e);
+
             if (_isInitialized) { return; }
             try
             {
-                List<ReportsDO> reports = ApplicationController.Database.From<ReportsDO>()
-                    .Query().ToList();
-                this.DefaultReports = new BindingList<ReportsDO>(reports);
-                DeletedReports = new List<ReportsDO>();
+                TreeDefaults = Database.From<TreeDefaultValueDO>().Query().ToList();
+                DeletedTreeDefaults = new List<TreeDefaultValueDO>();
                 _isInitialized = true;
             }
             catch (Exception ex)
             {
                 throw new NotImplementedException(null, ex);
             }
-            View.UpdateReports();
+            View.UpdateTreeDefaults();
         }
 
         public bool HandleSave()
         {
             var errorBuilder = new StringBuilder();
-            
-            return SaveReports(ref errorBuilder);
+            return SaveTreeDefaults(ref errorBuilder);
         }
 
-        private bool SaveReports(ref StringBuilder errorBuilder)
+        private bool SaveTreeDefaults(ref StringBuilder errorBuilder)
         {
             if (!_isInitialized) { return true; }
             try
             {
                 this.Database.BeginTransaction();
-                foreach (ReportsDO tdv in DeletedReports)
+                foreach (TreeDefaultValueDO tdv in DeletedTreeDefaults)
                 {
                     if (tdv.IsPersisted)
                     {
                         tdv.Delete();
                     }
                 }
-                foreach (ReportsDO tdv in DefaultReports)
+                foreach (TreeDefaultValueDO tdv in TreeDefaults)
                 {
                     if (tdv.DAL == null)
                     {
@@ -91,7 +87,7 @@ namespace CruiseManager.Core.CruiseCustomize
             }
             catch (Exception ex)
             {
-                errorBuilder.AppendFormat("File save error. Summary reports was not saved. <Error details: {0}>", ex.ToString());
+                errorBuilder.AppendFormat("File save error. Tree Audit Rules was not saved. <Error details: {0}>", ex.ToString());
                 this.Database.RollbackTransaction();
                 return false;
             }

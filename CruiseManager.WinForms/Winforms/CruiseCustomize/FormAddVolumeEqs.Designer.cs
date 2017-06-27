@@ -1,4 +1,4 @@
-﻿namespace CruiseManager.WinForms.CruiseWizard
+﻿namespace CruiseManager.WinForms.CruiseCustomize
 {
     partial class FormAddVolumeEqs
     {
@@ -167,7 +167,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(680, 224);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(706, 221);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // label19
@@ -437,7 +437,7 @@
             // 
             this._cancelBTN.AutoSize = true;
             this._cancelBTN.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this._cancelBTN.Location = new System.Drawing.Point(3, 198);
+            this._cancelBTN.Location = new System.Drawing.Point(3, 195);
             this._cancelBTN.Name = "_cancelBTN";
             this._cancelBTN.Size = new System.Drawing.Size(51, 23);
             this._cancelBTN.TabIndex = 19;
@@ -514,7 +514,7 @@
             // 
             this._okBTN.AutoSize = true;
             this._okBTN.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this._okBTN.Location = new System.Drawing.Point(598, 198);
+            this._okBTN.Location = new System.Drawing.Point(598, 195);
             this._okBTN.Name = "_okBTN";
             this._okBTN.Size = new System.Drawing.Size(32, 23);
             this._okBTN.TabIndex = 18;
@@ -565,7 +565,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(680, 224);
+            this.ClientSize = new System.Drawing.Size(706, 221);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = global::CruiseManager.Properties.Settings.Default.AppFont;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;

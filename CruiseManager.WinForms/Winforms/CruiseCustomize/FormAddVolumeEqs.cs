@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.ComponentModel;
 
-namespace CruiseManager.WinForms.CruiseWizard
+namespace CruiseManager.WinForms.CruiseCustomize
 {
     public partial class FormAddVolumeEqs : Form
     {

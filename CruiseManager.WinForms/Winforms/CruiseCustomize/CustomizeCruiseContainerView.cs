@@ -31,28 +31,13 @@ namespace CruiseManager.WinForms.CruiseCustomize
                 { ExceptionHandler = _exceptionHandler },
 
                 new ViewNavigateCommand(this,
-                "Log Grade Rules",
+                "Log Audit Rules",
                 typeof(Core.CruiseCustomize.ViewInterfaces.ILogGradeAuditView))
                 { ExceptionHandler = _exceptionHandler },
 
                 new ViewNavigateCommand(this,
                 "Log Matrix",
                 typeof(Core.CruiseCustomize.ViewInterfaces.ILogMatrixView))
-                { ExceptionHandler = _exceptionHandler, Enabled = ApplicationController.InSupervisorMode },
-
-                new ViewNavigateCommand(this,
-                "Tree Defaults",
-                typeof(Core.CruiseCustomize.ViewInterfaces.ITreeDef))
-                { ExceptionHandler = _exceptionHandler, Enabled = ApplicationController.InSupervisorMode },
-
-                new ViewNavigateCommand(this,
-                "Volume Equations",
-                typeof(Core.CruiseCustomize.ViewInterfaces.IVolumeEq))
-                { ExceptionHandler = _exceptionHandler, Enabled = ApplicationController.InSupervisorMode },
-
-                new ViewNavigateCommand(this,
-                "Reports",
-                typeof(Core.CruiseCustomize.ViewInterfaces.IReportsSumm))
                 { ExceptionHandler = _exceptionHandler, Enabled = ApplicationController.InSupervisorMode }
             };
         }

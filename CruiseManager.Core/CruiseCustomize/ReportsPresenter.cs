@@ -1,80 +1,83 @@
 ﻿using CruiseDAL;
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
+using CruiseManager.Core.CruiseCustomize.ViewInterfaces;
 using CruiseManager.Core.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    public class TreeDefPresenter : Presentor, ISaveHandler
+    public class ReportsPresenter : Presentor, ISaveHandler
     {
         private bool _isInitialized;
 
-        public new ViewInterfaces.ITreeDef View
+        public new ViewInterfaces.IReportsView View
         {
-            get { return (ViewInterfaces.ITreeDef)base.View; }
+            get { return (IReportsView)base.View; }
             set { base.View = value; }
         }
 
         public DAL Database { get { return ApplicationController.Database; } }
-        public List<TreeDefaultValueDO> TreeDefaults { get; set; }
-
-        public List<TreeDefaultValueDO> DeletedTreeDefaults { get; set; }
+        public List<ReportsDO> Reports { get; set; }
+        public List<ReportsDO> DeletedReports { get; set; }
 
         public bool HasChangesToSave
         {
             get
             {
-                return TreeDefaults.Any(x => x.IsChanged
-                || !x.IsPersisted) || DeletedTreeDefaults.Any();
+                View.EndEdit();
+                return Reports.Any(x => x.IsChanged || !x.IsPersisted)
+                    || DeletedReports.Any();
             }
         }
 
-        public TreeDefPresenter(ApplicationControllerBase appController)
+        public ReportsPresenter(ApplicationControllerBase appController)
             : base(appController)
         { }
 
         protected override void OnViewLoad(EventArgs e)
         {
             base.OnViewLoad(e);
-
             if (_isInitialized) { return; }
             try
             {
-                TreeDefaults = Database.From<TreeDefaultValueDO>().Query().ToList();
-                DeletedTreeDefaults = new List<TreeDefaultValueDO>();
+                this.Reports = ApplicationController.Database.From<ReportsDO>()
+                    .Query().ToList();
+                DeletedReports = new List<ReportsDO>();
                 _isInitialized = true;
             }
             catch (Exception ex)
             {
                 throw new NotImplementedException(null, ex);
             }
-            View.UpdateTreeDefaults();
+            View.UpdateReports();
         }
 
         public bool HandleSave()
         {
             var errorBuilder = new StringBuilder();
-            return SaveTreeDefaults(ref errorBuilder);
+
+            return SaveReports(ref errorBuilder);
         }
 
-        private bool SaveTreeDefaults(ref StringBuilder errorBuilder)
+        private bool SaveReports(ref StringBuilder errorBuilder)
         {
             if (!_isInitialized) { return true; }
             try
             {
                 this.Database.BeginTransaction();
-                foreach (TreeDefaultValueDO tdv in DeletedTreeDefaults)
+                foreach (ReportsDO tdv in DeletedReports)
                 {
                     if (tdv.IsPersisted)
                     {
                         tdv.Delete();
                     }
                 }
-                foreach (TreeDefaultValueDO tdv in TreeDefaults)
+                foreach (ReportsDO tdv in Reports)
                 {
                     if (tdv.DAL == null)
                     {
@@ -87,7 +90,7 @@ namespace CruiseManager.Core.CruiseCustomize
             }
             catch (Exception ex)
             {
-                errorBuilder.AppendFormat("File save error. Tree Audit Rules was not saved. <Error details: {0}>", ex.ToString());
+                errorBuilder.AppendFormat("File save error. Summary reports was not saved. <Error details: {0}>", ex.ToString());
                 this.Database.RollbackTransaction();
                 return false;
             }

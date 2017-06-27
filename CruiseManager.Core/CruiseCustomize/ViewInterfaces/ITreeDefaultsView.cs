@@ -2,10 +2,8 @@
 
 namespace CruiseManager.Core.CruiseCustomize.ViewInterfaces
 {
-    public interface ITreeDef : IView
+    public interface ITreeDefaultsView : IView
     {
-        new TreeDefPresenter ViewPresenter { get; set; }
-
         void UpdateTreeDefaults();
     }
 }

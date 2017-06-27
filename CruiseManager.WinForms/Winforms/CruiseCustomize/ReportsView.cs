@@ -7,18 +7,18 @@ using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.CruiseCustomize
 {
-    public partial class ReportsSummView : CruiseManager.WinForms.UserControlView, IReportsSumm
+    public partial class ReportsView : CruiseManager.WinForms.UserControlView, IReportsView
     {
-        public ReportsSummView(ReportsSummPresenter viewPresenter)
+        public ReportsView(ReportsPresenter viewPresenter)
         {
             ViewPresenter = viewPresenter;
             ViewPresenter.View = this;
             InitializeComponent();
         }
 
-        public new ReportsSummPresenter ViewPresenter
+        public new ReportsPresenter ViewPresenter
         {
-            get { return ((ReportsSummPresenter)base.ViewPresenter); }
+            get { return ((ReportsPresenter)base.ViewPresenter); }
             set { base.ViewPresenter = value; }
         }
 
@@ -26,7 +26,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
         private void _reportsSelectAllBtn_Click(object sender, EventArgs e)
         {
-            foreach (ReportsDO rpt in this.ViewPresenter.DefaultReports)
+            foreach (ReportsDO rpt in this.ViewPresenter.Reports)
             {
                 rpt.Selected = true;
             }
@@ -34,7 +34,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
         private void _reportsClearSltnBTN_Click(object sender, EventArgs e)
         {
-            foreach (ReportsDO rpt in this.ViewPresenter.DefaultReports)
+            foreach (ReportsDO rpt in this.ViewPresenter.Reports)
             {
                 rpt.Selected = false;
             }
@@ -42,14 +42,16 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
         public void UpdateReports()
         {
-            _BS_Reports.DataSource = ViewPresenter.DefaultReports;
+            _BS_Reports.DataSource = ViewPresenter.Reports;
         }
-        #endregion Report 
+
+        #endregion Reports
+
+
 
         public void EndEdit()
         {
             _reportsDGV.EndEdit();
-
         }
     }
 }
