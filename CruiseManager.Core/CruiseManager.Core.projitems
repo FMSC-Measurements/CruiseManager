@@ -74,6 +74,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)FileMaintenance\ConsolidateCountTreeScript.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FileMaintenance\ISimpleSQLScript.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IWorker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\CountVM.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\CuttingUnit.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\LogVM.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\SaleVM.cs" />
