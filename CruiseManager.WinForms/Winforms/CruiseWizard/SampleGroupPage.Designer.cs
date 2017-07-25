@@ -507,7 +507,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             label15.Location = new System.Drawing.Point(89, 28);
             label15.Name = "label15";
             label15.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            label15.Size = new System.Drawing.Size(56, 28);
+            label15.Size = new System.Drawing.Size(56, 30);
             label15.TabIndex = 13;
             label15.Text = "Max KPI";
             label15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
