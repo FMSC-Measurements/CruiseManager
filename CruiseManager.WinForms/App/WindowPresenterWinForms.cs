@@ -106,7 +106,7 @@ namespace CruiseManager.WinForms.App
             bool createSaleFolder = false;
             if (ApplicationController.UserSettings.CreateSaleFolder == null)
             {
-                using (var dialog = new CreateSaleFolerDialog())
+                using (var dialog = new CreateSaleFolderDialog())
                 {
                     createSaleFolder = (dialog.ShowDialog() == DialogResult.Yes);
                     if (dialog.RememberSelection)
@@ -127,6 +127,7 @@ namespace CruiseManager.WinForms.App
                 saveFileDialog.CustomPlaces.Add(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\CruiseFiles");
                 saveFileDialog.InitialDirectory = ApplicationController.UserSettings.CruiseSaveLocation;
                 saveFileDialog.DefaultExt = "cruise";
+                saveFileDialog.FileName = sale.ToString("[SaleNumber][Name]", null);
                 saveFileDialog.Filter = "Cruise files(*.cruise)|*.cruise";
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -136,13 +137,14 @@ namespace CruiseManager.WinForms.App
 
                     if (createSaleFolder)
                     {
-                        dir += sale.ToString("\\[SaleNumber] [Name]\\", null);
+                        dir += sale.ToString("\\[SaleNumber][Name]\\", null);
                         if (!System.IO.Directory.Exists(dir))
                         {
                             System.IO.Directory.CreateDirectory(dir);
                         }
                         return dir + System.IO.Path.GetFileName(saveFileDialog.FileName);
                     }
+                    
                     return saveFileDialog.FileName;
                 }
                 return null;
