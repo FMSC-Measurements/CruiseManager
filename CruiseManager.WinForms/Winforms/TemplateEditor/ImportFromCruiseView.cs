@@ -95,14 +95,22 @@ namespace CruiseManager.WinForms.TemplateEditor
 
         private void _selectAllTDVBTN_Click(object sender, EventArgs e)
         {
-            foreach (TreeDefaultValueDO tdv in this.TreeDefaults)
+            if (this.TreeDefaults.Count > 0)
             {
-                if (!this.TreeDefaultsToCopy.Contains(tdv))
+                foreach (TreeDefaultValueDO tdv in this.TreeDefaults)
                 {
-                    this.TreeDefaultsToCopy.Add(tdv);
+                    if (!this.TreeDefaultsToCopy.Contains(tdv))
+                    {
+                        this.TreeDefaultsToCopy.Add(tdv);
+                    }
                 }
+                this.selectedItemsGridView1.Refresh();
             }
-            this.selectedItemsGridView1.Refresh();
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Tree Default List is empty.");
+            }
+            
         }
     }
 }
