@@ -285,7 +285,7 @@ namespace CruiseManager.WinForms.CruiseWizard
 
                 //only load FIX and PNT Cruise methods for Recon cruises
                 CruiseMethods = _templateDatabase.GetCruiseMethods(Sale.Purpose == "Recon");
-
+                _fileHasTemplate = true;
                 StartAsynCopyTemplate(_templateDatabase);
             }
             catch (Exception)
@@ -479,6 +479,15 @@ namespace CruiseManager.WinForms.CruiseWizard
             ShowCuttingUnits();
         }
 
+        public void ShowSalesPage()
+        {
+            var e = new CancelEventArgs();
+            OnLeavingCuttingUnits(e);
+            if (e.Cancel) { return; }
+
+            View.Display("Sale");
+        }
+
         public void ShowCuttingUnits()
         {
             try
@@ -495,11 +504,22 @@ namespace CruiseManager.WinForms.CruiseWizard
 
         public void ShowStratum()
         {
+            var e = new CancelEventArgs();
+            OnLeavingCuttingUnits(e);
+            if (e.Cancel) { return; }
+
+            View.Display("Strata");
+        }
+        
+        protected void OnLeavingCuttingUnits(CancelEventArgs e)
+        {
             string errorMsg;
             //display error message if strata data invalid
+
             if (AreCuttingUnitsValid(out errorMsg) == false)
             {
                 MessageBox.Show(errorMsg, "Warning", MessageBoxButtons.OK);
+                e.Cancel = true;
                 return;
             }
 
@@ -507,13 +527,18 @@ namespace CruiseManager.WinForms.CruiseWizard
             {
                 SaveCuttingUnits(false);
             }
-            catch
+            catch (FMSC.ORM.UniqueConstraintException)
             {
-                MessageBox.Show("error");
+                MessageBox.Show("Cutting Unit Error: Unit # already exists.");
+                e.Cancel = true;
                 return;
             }
-
-            View.Display("Strata");
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.GetType().Name, "Error");
+                e.Cancel = true;
+                return;
+            }
         }
 
         public void ShowSampleGroups(StratumDO stratum)
@@ -551,8 +576,20 @@ namespace CruiseManager.WinForms.CruiseWizard
         protected bool AreCuttingUnitsValid(out string errorMsg)
         {
             bool allCUValid = true;
-            errorMsg = "Unit Errors Found";
+            errorMsg = "Unit Errors Found, ";
             //check has errors on all cutting units
+
+            var dupUnitCodes = CuttingUnits
+                .GroupBy(unit => unit.Code)
+                .Where(grouping => grouping.Count() > 1)
+                .Select(grouping => grouping.Key);
+
+            if(dupUnitCodes.Count() > 0)
+            {
+                errorMsg += $"Duplicates in Cutting Unit Code(s): {String.Join(", ", dupUnitCodes.ToArray())}";
+                allCUValid = false;
+            }
+
             foreach (CuttingUnitDO cu in CuttingUnits)
             {
                 cu.Validate();              //call validate before we check for errors
