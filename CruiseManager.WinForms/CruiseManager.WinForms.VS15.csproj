@@ -208,6 +208,12 @@
     <Compile Include="WinForms\CruiseCustomize\VolumeEqView.Designer.cs">
       <DependentUpon>VolumeEqView.cs</DependentUpon>
     </Compile>
+    <Compile Include="WinForms\CruiseWizard\CreateSaleFolderDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\CruiseWizard\CreateSaleFolderDialog.Designer.cs">
+      <DependentUpon>CreateSaleFolderDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="WinForms\DataEditor\ExcelWorksheetExtentions.cs" />
     <Compile Include="WinForms\UserControlContainerView.cs">
       <SubType>UserControl</SubType>
@@ -262,12 +268,6 @@
     </Compile>
     <Compile Include="WinForms\CruiseCustomize\TreeAuditRulesView.Designer.cs">
       <DependentUpon>TreeAuditRulesView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="WinForms\CruiseWizard\CreateSaleFolerDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WinForms\CruiseWizard\CreateSaleFolerDialog.Designer.cs">
-      <DependentUpon>CreateSaleFolerDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="WinForms\CruiseWizard\FormAddTreeDefault.cs">
       <SubType>Form</SubType>
@@ -459,9 +459,8 @@
     <EmbeddedResource Include="WinForms\CruiseCustomize\VolumeEqView.resx">
       <DependentUpon>VolumeEqView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="WinForms\CruiseWizard\CreateSaleFolerDialog.resx">
-      <DependentUpon>CreateSaleFolerDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="WinForms\CruiseWizard\CreateSaleFolderDialog.resx">
+      <DependentUpon>CreateSaleFolderDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WinForms\CruiseWizard\CruiseWizardView.resx">
       <DependentUpon>CruiseWizardView.cs</DependentUpon>
