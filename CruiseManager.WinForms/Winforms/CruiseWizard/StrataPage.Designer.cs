@@ -62,7 +62,7 @@
             this.CodeTextBox = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.FixedPlotSizeTextBox = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.textBox5 = new System.Windows.Forms.ComboBox();
             this.CuttingUnitGridView = new FMSC.Controls.SelectedItemsGridView();
             this.codeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.areaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -104,9 +104,9 @@
             // 
             label10.AutoSize = true;
             label10.Dock = System.Windows.Forms.DockStyle.Fill;
-            label10.Location = new System.Drawing.Point(137, 56);
+            label10.Location = new System.Drawing.Point(137, 72);
             label10.Name = "label10";
-            label10.Size = new System.Drawing.Size(80, 28);
+            label10.Size = new System.Drawing.Size(80, 36);
             label10.TabIndex = 0;
             label10.Text = "Year";
             label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -117,7 +117,7 @@
             label11.Dock = System.Windows.Forms.DockStyle.Fill;
             label11.Location = new System.Drawing.Point(137, 0);
             label11.Name = "label11";
-            label11.Size = new System.Drawing.Size(80, 28);
+            label11.Size = new System.Drawing.Size(80, 36);
             label11.TabIndex = 1;
             label11.Text = "Method";
             label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -126,9 +126,9 @@
             // 
             label13.AutoSize = true;
             label13.Dock = System.Windows.Forms.DockStyle.Fill;
-            label13.Location = new System.Drawing.Point(3, 56);
+            label13.Location = new System.Drawing.Point(3, 72);
             label13.Name = "label13";
-            label13.Size = new System.Drawing.Size(77, 28);
+            label13.Size = new System.Drawing.Size(77, 36);
             label13.TabIndex = 0;
             label13.Text = "Month";
             label13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -274,28 +274,28 @@
             this.tableLayoutPanel2.Controls.Add(this.FixedPlotSizeTextBox, 3, 1);
             this.tableLayoutPanel2.Controls.Add(label7, 2, 1);
             this.tableLayoutPanel2.Controls.Add(label10, 2, 2);
-            this.tableLayoutPanel2.Controls.Add(this.textBox5, 5, 2);
             this.tableLayoutPanel2.Controls.Add(label8, 4, 2);
             this.tableLayoutPanel2.Controls.Add(label1, 4, 1);
+            this.tableLayoutPanel2.Controls.Add(this.textBox5, 5, 2);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(163, 19);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 4;
+            this.tableLayoutPanel2.RowCount = 5;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(464, 112);
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(464, 122);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // _kzTB
             // 
             this._kzTB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.StrataBindingSource, "KZ3PPNT", true));
             this._kzTB.Enabled = false;
-            this._kzTB.Location = new System.Drawing.Point(403, 31);
+            this._kzTB.Location = new System.Drawing.Point(403, 39);
             this._kzTB.Name = "_kzTB";
-            this._kzTB.Size = new System.Drawing.Size(34, 22);
+            this._kzTB.Size = new System.Drawing.Size(42, 22);
             this._kzTB.TabIndex = 7;
             // 
             // YearComboBox
@@ -303,7 +303,7 @@
             this.YearComboBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.StrataBindingSource, "Year", true));
             this.YearComboBox.EndYear = 2099;
             this.YearComboBox.FormattingEnabled = true;
-            this.YearComboBox.Location = new System.Drawing.Point(223, 59);
+            this.YearComboBox.Location = new System.Drawing.Point(223, 75);
             this.YearComboBox.Name = "YearComboBox";
             this.YearComboBox.Size = new System.Drawing.Size(50, 21);
             this.YearComboBox.StartYear = 1950;
@@ -314,7 +314,7 @@
             // 
             this.MonthComboBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.StrataBindingSource, "Month", true));
             this.MonthComboBox.FormattingEnabled = true;
-            this.MonthComboBox.Location = new System.Drawing.Point(86, 59);
+            this.MonthComboBox.Location = new System.Drawing.Point(86, 75);
             this.MonthComboBox.Name = "MonthComboBox";
             this.MonthComboBox.Size = new System.Drawing.Size(45, 21);
             this.MonthComboBox.TabIndex = 2;
@@ -340,7 +340,7 @@
             // 
             this.BAFTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.StrataBindingSource, "BasalAreaFactor", true));
             this.BAFTextBox.Enabled = false;
-            this.BAFTextBox.Location = new System.Drawing.Point(86, 31);
+            this.BAFTextBox.Location = new System.Drawing.Point(86, 39);
             this.BAFTextBox.MaxLength = 6;
             this.BAFTextBox.Name = "BAFTextBox";
             this.BAFTextBox.Size = new System.Drawing.Size(45, 22);
@@ -361,7 +361,7 @@
             label2.Dock = System.Windows.Forms.DockStyle.Fill;
             label2.Location = new System.Drawing.Point(3, 0);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(77, 28);
+            label2.Size = new System.Drawing.Size(77, 36);
             label2.TabIndex = 12;
             label2.Text = "Stratum Code";
             label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -370,9 +370,9 @@
             // 
             label5.AutoSize = true;
             label5.Dock = System.Windows.Forms.DockStyle.Fill;
-            label5.Location = new System.Drawing.Point(3, 28);
+            label5.Location = new System.Drawing.Point(3, 36);
             label5.Name = "label5";
-            label5.Size = new System.Drawing.Size(77, 28);
+            label5.Size = new System.Drawing.Size(77, 36);
             label5.TabIndex = 13;
             label5.Text = "BAF";
             label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -382,18 +382,18 @@
             this.tableLayoutPanel2.SetColumnSpan(this.textBox3, 5);
             this.textBox3.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.StrataBindingSource, "Description", true));
             this.textBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox3.Location = new System.Drawing.Point(86, 87);
+            this.textBox3.Location = new System.Drawing.Point(86, 111);
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(375, 22);
+            this.textBox3.Size = new System.Drawing.Size(438, 22);
             this.textBox3.TabIndex = 3;
             // 
             // label6
             // 
             label6.AutoSize = true;
             label6.Dock = System.Windows.Forms.DockStyle.Fill;
-            label6.Location = new System.Drawing.Point(3, 84);
+            label6.Location = new System.Drawing.Point(3, 108);
             label6.Name = "label6";
-            label6.Size = new System.Drawing.Size(77, 28);
+            label6.Size = new System.Drawing.Size(77, 36);
             label6.TabIndex = 15;
             label6.Text = "Description";
             label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -402,7 +402,7 @@
             // 
             this.FixedPlotSizeTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.StrataBindingSource, "FixedPlotSize", true));
             this.FixedPlotSizeTextBox.Enabled = false;
-            this.FixedPlotSizeTextBox.Location = new System.Drawing.Point(223, 31);
+            this.FixedPlotSizeTextBox.Location = new System.Drawing.Point(223, 39);
             this.FixedPlotSizeTextBox.MaxLength = 5;
             this.FixedPlotSizeTextBox.Name = "FixedPlotSizeTextBox";
             this.FixedPlotSizeTextBox.Size = new System.Drawing.Size(35, 22);
@@ -412,29 +412,20 @@
             // 
             label7.AutoSize = true;
             label7.Dock = System.Windows.Forms.DockStyle.Fill;
-            label7.Location = new System.Drawing.Point(137, 28);
+            label7.Location = new System.Drawing.Point(137, 36);
             label7.Name = "label7";
-            label7.Size = new System.Drawing.Size(80, 28);
+            label7.Size = new System.Drawing.Size(80, 36);
             label7.TabIndex = 17;
             label7.Text = "Fixed Plot Size";
             label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // textBox5
-            // 
-            this.textBox5.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.StrataBindingSource, "YieldComponent", true));
-            this.textBox5.Location = new System.Drawing.Point(403, 59);
-            this.textBox5.MaxLength = 2;
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(34, 22);
-            this.textBox5.TabIndex = 8;
             // 
             // label8
             // 
             label8.AutoSize = true;
             label8.Dock = System.Windows.Forms.DockStyle.Fill;
-            label8.Location = new System.Drawing.Point(302, 56);
+            label8.Location = new System.Drawing.Point(302, 72);
             label8.Name = "label8";
-            label8.Size = new System.Drawing.Size(95, 28);
+            label8.Size = new System.Drawing.Size(95, 36);
             label8.TabIndex = 19;
             label8.Text = "Yield Component";
             label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -443,19 +434,33 @@
             // 
             label1.AutoSize = true;
             label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            label1.Location = new System.Drawing.Point(302, 28);
+            label1.Location = new System.Drawing.Point(302, 36);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(95, 28);
+            label1.Size = new System.Drawing.Size(95, 36);
             label1.TabIndex = 0;
             label1.Text = "3PPNT KZ";
             label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // textBox5
+            // 
+            this.textBox5.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.StrataBindingSource, "YieldComponent", true));
+            this.textBox5.FormattingEnabled = true;
+            this.textBox5.Items.AddRange(new object[] {
+            "CL",
+            "CD",
+            "NL",
+            "ND"});
+            this.textBox5.Location = new System.Drawing.Point(403, 75);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(42, 21);
+            this.textBox5.TabIndex = 20;
             // 
             // label3
             // 
             label3.AutoSize = true;
             label3.BackColor = System.Drawing.Color.DarkSeaGreen;
             label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            label3.Location = new System.Drawing.Point(160, 134);
+            label3.Location = new System.Drawing.Point(160, 144);
             label3.Margin = new System.Windows.Forms.Padding(0);
             label3.Name = "label3";
             label3.Padding = new System.Windows.Forms.Padding(5, 3, 0, 0);
@@ -491,7 +496,7 @@
             this.paymentUnitDataGridViewTextBoxColumn});
             this.CuttingUnitGridView.DataSource = this.CuttingUnitBindingSource;
             this.CuttingUnitGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CuttingUnitGridView.Location = new System.Drawing.Point(160, 150);
+            this.CuttingUnitGridView.Location = new System.Drawing.Point(160, 160);
             this.CuttingUnitGridView.Margin = new System.Windows.Forms.Padding(0);
             this.CuttingUnitGridView.Name = "CuttingUnitGridView";
             this.CuttingUnitGridView.ReadOnly = true;
@@ -499,7 +504,7 @@
             this.CuttingUnitGridView.RowTemplate.Height = 24;
             this.CuttingUnitGridView.SelectedItems = null;
             this.CuttingUnitGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.CuttingUnitGridView.Size = new System.Drawing.Size(470, 272);
+            this.CuttingUnitGridView.Size = new System.Drawing.Size(470, 262);
             this.CuttingUnitGridView.TabIndex = 2;
             this.CuttingUnitGridView.VirtualMode = true;
             // 
@@ -672,8 +677,8 @@
         private System.Windows.Forms.TextBox CodeTextBox;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.TextBox FixedPlotSizeTextBox;
-        private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.ComboBox textBox5;
     }
 }
