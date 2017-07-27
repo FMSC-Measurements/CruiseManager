@@ -50,7 +50,10 @@ namespace CruiseManager.Core.CruiseCustomize
             }
             catch (Exception ex)
             {
-                throw new NotImplementedException(null, ex);
+                if (!ApplicationController.ExceptionHandler.Handel(ex))
+                {
+                    throw;
+                }
             }
             View.UpdateTreeDefaults();
         }

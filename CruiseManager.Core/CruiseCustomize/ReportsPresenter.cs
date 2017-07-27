@@ -45,14 +45,17 @@ namespace CruiseManager.Core.CruiseCustomize
             if (_isInitialized) { return; }
             try
             {
+                DeletedReports = new List<ReportsDO>();
                 this.Reports = ApplicationController.Database.From<ReportsDO>()
                     .Query().ToList();
-                DeletedReports = new List<ReportsDO>();
                 _isInitialized = true;
             }
             catch (Exception ex)
             {
-                throw new NotImplementedException(null, ex);
+                if (!ApplicationController.ExceptionHandler.Handel(ex))
+                {
+                    throw;
+                }
             }
             View.UpdateReports();
         }
