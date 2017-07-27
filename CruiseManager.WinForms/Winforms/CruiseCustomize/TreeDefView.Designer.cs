@@ -71,7 +71,7 @@
             panel3.Location = new System.Drawing.Point(0, 0);
             panel3.Margin = new System.Windows.Forms.Padding(0);
             panel3.Name = "panel3";
-            panel3.Size = new System.Drawing.Size(543, 32);
+            panel3.Size = new System.Drawing.Size(801, 32);
             panel3.TabIndex = 3;
             // 
             // _deleteTDVBTN
@@ -116,7 +116,7 @@
             tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            tableLayoutPanel1.Size = new System.Drawing.Size(540, 473);
+            tableLayoutPanel1.Size = new System.Drawing.Size(801, 554);
             tableLayoutPanel1.TabIndex = 1;
             // 
             // _treeDefGrid
@@ -146,7 +146,7 @@
             this._treeDefGrid.Location = new System.Drawing.Point(0, 32);
             this._treeDefGrid.Margin = new System.Windows.Forms.Padding(0);
             this._treeDefGrid.Name = "_treeDefGrid";
-            this._treeDefGrid.Size = new System.Drawing.Size(543, 441);
+            this._treeDefGrid.Size = new System.Drawing.Size(801, 522);
             this._treeDefGrid.TabIndex = 4;
             // 
             // speciesDataGridViewTextBoxColumn
@@ -261,7 +261,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(tableLayoutPanel1);
             this.Name = "TreeDefView";
-            this.Size = new System.Drawing.Size(540, 473);
+            this.Size = new System.Drawing.Size(801, 554);
             panel3.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this._treeDefGrid)).EndInit();
