@@ -1,6 +1,6 @@
 ﻿namespace CruiseManager.WinForms.CruiseWizard
 {
-    partial class CreateSaleFolerDialog
+    partial class CreateSaleFolderDialog
     {
         /// <summary>
         /// Required designer variable.
@@ -62,6 +62,7 @@
             this.button2.TabIndex = 1;
             this.button2.Text = "Yes";
             this.button2.UseVisualStyleBackColor = true;
+
             // 
             // checkBox1
             // 

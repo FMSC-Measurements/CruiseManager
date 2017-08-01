@@ -308,19 +308,17 @@ namespace CruiseManager.Core.App
 
         public void SaveAs(String fileName)
         {
-            try
+            FileAttributes atts = File.GetAttributes(fileName);
+            if ((atts & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+            {
+                System.Windows.Forms.MessageBox.Show("This file is read only.");
+            }
+            else
             {
                 this.Database.CopyAs(fileName, true);
                 //save after copying
                 this.Save();
                 this.MainWindow.Text = System.IO.Path.GetFileName(this.Database.Path);
-            }
-            catch (Exception ex)
-            {
-                if (!this.ExceptionHandler.Handel(ex))
-                {
-                    throw;
-                }
             }
         }
 
