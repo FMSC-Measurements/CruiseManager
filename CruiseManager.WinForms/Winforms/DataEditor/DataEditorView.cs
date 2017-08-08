@@ -588,25 +588,24 @@ namespace CruiseManager.WinForms.DataEditor
             var selectionArgs = new List<string>();
             if (cu != null)
             {
-                selectionList.Add(String.Format("CountTree.{0} = ?", CruiseDAL.Schema.COUNTTREE.CUTTINGUNIT_CN));
-                selectionArgs.Add(cu.CuttingUnit_CN.ToString());
+                selectionList.Add("UnitCode = ?");
+                selectionArgs.Add(cu.Code);
             }
             if (st != null)
             {
-                selectionList.Add(String.Format("SampleGroup.{0} = ?", CruiseDAL.Schema.SAMPLEGROUP.STRATUM_CN));
-                selectionArgs.Add(st.Stratum_CN.ToString());
+                selectionList.Add("StratumCode = ?");
+                selectionArgs.Add(st.Code);
             }
             if (sg != null)
             {
-                selectionList.Add(String.Format("CountTree.{0} = ?", CruiseDAL.Schema.COUNTTREE.SAMPLEGROUP_CN));
-                selectionArgs.Add(sg.SampleGroup_CN.ToString());
+                selectionList.Add("SGCode = ?");
+                selectionArgs.Add(sg.Code);
             }
 
             if (selectionList.Count > 0)
             {
                 var selection = String.Join(" AND ", selectionList.ToArray());
-                return Database.From<CountVM>().Join("SampleGroup", "USING (SampleGroup_CN)")
-                    .Where(selection).Read(selectionArgs.ToArray<object>()).ToList();
+                return Database.From<CountVM>().Where(selection).Read(selectionArgs.ToArray<object>()).ToList();
             }
             else
             {
