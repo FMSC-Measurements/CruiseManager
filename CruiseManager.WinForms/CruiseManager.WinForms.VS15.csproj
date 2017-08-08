@@ -208,10 +208,6 @@
     <Compile Include="WinForms\CruiseCustomize\VolumeEqView.Designer.cs">
       <DependentUpon>VolumeEqView.cs</DependentUpon>
     </Compile>
-    <Compile Include="WinForms\CruiseWizard\FormAddVolumeEqs.cs" />
-    <Compile Include="WinForms\CruiseWizard\FormAddVolumeEqs.Designer.cs">
-      <DependentUpon>FormAddVolumeEqs.cs</DependentUpon>
-    </Compile>
     <Compile Include="WinForms\DataEditor\ExcelWorksheetExtentions.cs" />
     <Compile Include="WinForms\UserControlContainerView.cs">
       <SubType>UserControl</SubType>
@@ -473,10 +469,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="WinForms\CruiseWizard\CuttingUnitsPage.resx">
       <DependentUpon>CuttingUnitsPage.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="WinForms\CruiseWizard\FormAddVolumeEqs.resx">
-      <DependentUpon>FormAddVolumeEqs.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="WinForms\CruiseWizard\FormAddTreeDefault.resx">
