@@ -125,7 +125,7 @@
             this._ContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._BS_Trees = new System.Windows.Forms.BindingSource(this.components);
-            this.label8 = new System.Windows.Forms.Label();
+            this._lbl_treesCount = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this._DGV_Logs = new System.Windows.Forms.DataGridView();
             this.Log_CN = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -155,7 +155,7 @@
             this.modifiedByDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.modifiedDateDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this._BS_Logs = new System.Windows.Forms.BindingSource(this.components);
-            this.label9 = new System.Windows.Forms.Label();
+            this._lbl_logsCount = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this._DGV_Plots = new System.Windows.Forms.DataGridView();
             this.Plot_CN = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -175,7 +175,7 @@
             this.modifiedByDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.modifiedDateDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this._BS_Plots = new System.Windows.Forms.BindingSource(this.components);
-            this.label10 = new System.Windows.Forms.Label();
+            this._lbl_plotsCount = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this._DGV_Counts = new System.Windows.Forms.DataGridView();
             this._BS_Counts = new System.Windows.Forms.BindingSource(this.components);
@@ -558,7 +558,7 @@
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this._DGV_Trees);
-            this.tabPage1.Controls.Add(this.label8);
+            this.tabPage1.Controls.Add(this._lbl_treesCount);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -1150,21 +1150,20 @@
             // _BS_Trees
             // 
             this._BS_Trees.DataSource = typeof(CruiseManager.Core.Models.TreeVM);
-            this._BS_Trees.ListChanged += new System.ComponentModel.ListChangedEventHandler(this._BS_Trees_ListChanged);
             // 
             // label8
             // 
-            this.label8.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label8.Location = new System.Drawing.Point(3, 360);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(568, 17);
-            this.label8.TabIndex = 1;
-            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this._lbl_treesCount.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this._lbl_treesCount.Location = new System.Drawing.Point(3, 360);
+            this._lbl_treesCount.Name = "label8";
+            this._lbl_treesCount.Size = new System.Drawing.Size(568, 17);
+            this._lbl_treesCount.TabIndex = 1;
+            this._lbl_treesCount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this._DGV_Logs);
-            this.tabPage2.Controls.Add(this.label9);
+            this.tabPage2.Controls.Add(this._lbl_logsCount);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -1449,21 +1448,20 @@
             // _BS_Logs
             // 
             this._BS_Logs.DataSource = typeof(CruiseManager.Core.Models.LogVM);
-            this._BS_Logs.ListChanged += new System.ComponentModel.ListChangedEventHandler(this._BS_Logs_ListChanged);
             // 
             // label9
             // 
-            this.label9.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label9.Location = new System.Drawing.Point(3, 360);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(568, 17);
-            this.label9.TabIndex = 2;
-            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this._lbl_logsCount.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this._lbl_logsCount.Location = new System.Drawing.Point(3, 360);
+            this._lbl_logsCount.Name = "label9";
+            this._lbl_logsCount.Size = new System.Drawing.Size(568, 17);
+            this._lbl_logsCount.TabIndex = 2;
+            this._lbl_logsCount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this._DGV_Plots);
-            this.tabPage3.Controls.Add(this.label10);
+            this.tabPage3.Controls.Add(this._lbl_plotsCount);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
@@ -1653,16 +1651,15 @@
             // _BS_Plots
             // 
             this._BS_Plots.DataSource = typeof(CruiseDAL.DataObjects.PlotDO);
-            this._BS_Plots.ListChanged += new System.ComponentModel.ListChangedEventHandler(this._BS_Plots_ListChanged);
             // 
             // label10
             // 
-            this.label10.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label10.Location = new System.Drawing.Point(3, 360);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(568, 17);
-            this.label10.TabIndex = 2;
-            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this._lbl_plotsCount.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this._lbl_plotsCount.Location = new System.Drawing.Point(3, 360);
+            this._lbl_plotsCount.Name = "label10";
+            this._lbl_plotsCount.Size = new System.Drawing.Size(568, 17);
+            this._lbl_plotsCount.TabIndex = 2;
+            this._lbl_plotsCount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tabPage4
             // 
@@ -2041,9 +2038,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn createdDateDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn modifiedByDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn modifiedDateDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label _lbl_treesCount;
+        private System.Windows.Forms.Label _lbl_logsCount;
+        private System.Windows.Forms.Label _lbl_plotsCount;
         private System.Windows.Forms.DataGridViewTextBoxColumn Plot_CN;
         private System.Windows.Forms.DataGridViewTextBoxColumn stratumDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn cuttingUnitDataGridViewTextBoxColumn1;

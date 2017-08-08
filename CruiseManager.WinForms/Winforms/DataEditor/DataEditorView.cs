@@ -14,7 +14,7 @@ namespace CruiseManager.WinForms.DataEditor
 {
     public partial class DataEditorView : Form
     {
-        public string tc, lc, pc;
+        public int _totalTreeCount, _totalLogCount, _totalPlotCount;
         #region Constants
         //place holder objects for "All" filter
         private readonly CuttingUnitDO ANY_OPTION_CUTTINGUNIT =
@@ -66,9 +66,7 @@ namespace CruiseManager.WinForms.DataEditor
             _BS_TreeSampleGroups.DataSource = applicationController.Database.From<SampleGroupDO>().Read().ToList();
             //ResetViewFilters();
             PopulateData();
-            tc = _BS_Trees.Count.ToString();
-            lc = _BS_Logs.Count.ToString();
-            pc = _BS_Plots.Count.ToString();
+            
         }
 
         DAL Database { get { return ApplicationController.Database; } }
@@ -431,22 +429,32 @@ namespace CruiseManager.WinForms.DataEditor
         {
             if (DesignMode == true) { return; }
 
-            PopulateTreeData();
+            //populate tree, log, plot, and count lists with selected unit, stratum, samplegroup, and defaults, if given
+            var treeList = new FMSC.Utility.Collections.SortableBindingList<TreeVM>(ReadTrees(CuttingUnitFilter, StratumFilter, SampleGroupFilter, TreeDefaultValueFilter));
+            treeList.SetPropertyComparer("TreeDefaultValue", new TreeDefaultSpeciesComparer());
+            treeList.SetPropertyComparer("SampleGroup", new SampleGroupCodeComparer());
+            Trees = treeList;
+
             Logs = new FMSC.Utility.Collections.SortableBindingList<LogVM>(ReadLogs(CuttingUnitFilter, StratumFilter, SampleGroupFilter, TreeDefaultValueFilter));
             Plots = new FMSC.Utility.Collections.SortableBindingList<PlotDO>(ReadPlots(CuttingUnitFilter, StratumFilter));
             var countList = new FMSC.Utility.Collections.SortableBindingList<CountVM>(ReadCounts(CuttingUnitFilter, StratumFilter, SampleGroupFilter));
             countList.SetPropertyComparer("Component", new ComponentComparer());
             Counts = countList;
+
+            RefreshRecordCounts();
+
             ValidateData();
         }
 
-        void PopulateTreeData()
+        private void RefreshRecordCounts()
         {
-            //populate tree, log, plot, and count lists with selected unit, stratum, samplegroup, and defaults, if given
-            var treeList = new FMSC.Utility.Collections.SortableBindingList<TreeVM>(ReadTrees(CuttingUnitFilter, StratumFilter, SampleGroupFilter, TreeDefaultValueFilter));
-            treeList.SetPropertyComparer("TreeDefaultValue", new TreeDefaultSpeciesComparer());
-            treeList.SetPropertyComparer("SampleGroup", new SampleGroupCodeComparer());
-            Trees = treeList;      
+            _totalTreeCount = (int)Database.GetRowCount("Tree", String.Empty);
+            _totalLogCount = (int)Database.GetRowCount("Log", String.Empty);
+            _totalPlotCount = (int)Database.GetRowCount("Plot", String.Empty);
+
+            _lbl_logsCount.Text = $"Records: {_BS_Logs.Count} of {_totalLogCount}";
+            _lbl_treesCount.Text = $"Records: {_BS_Trees.Count} of {_totalTreeCount}";
+            _lbl_plotsCount.Text = $"Records: {_BS_Plots.Count} of {_totalPlotCount}";
         }
 
         private void ValidateData()
@@ -681,7 +689,7 @@ namespace CruiseManager.WinForms.DataEditor
             {
                 if (TreeDataDirty)
                 {
-                    PopulateTreeData();
+                    PopulateData();
                     TreeDataDirty = false;
                 }
             }
@@ -1129,19 +1137,19 @@ namespace CruiseManager.WinForms.DataEditor
                 (defaultNo) ? MessageBoxDefaultButton.Button2 : MessageBoxDefaultButton.Button1);
         }
 
-        private void _BS_Logs_ListChanged(object sender, ListChangedEventArgs e)
-        {
-            label9.Text = "Records: " + _BS_Logs.Count.ToString() + " of " + lc;
-        }
+        //private void _BS_Logs_ListChanged(object sender, ListChangedEventArgs e)
+        //{
+        //    _lbl_logsCount.Text = $"Records: {_BS_Logs.Count} of {_totalLogCount}";
+        //}
 
-        private void _BS_Trees_ListChanged(object sender, ListChangedEventArgs e)
-        {
-            label8.Text = "Records: " + _BS_Trees.Count.ToString() + " of " + tc;
-        }
+        //private void _BS_Trees_ListChanged(object sender, ListChangedEventArgs e)
+        //{
+        //    _lbl_treesCount.Text = $"Records: {_BS_Trees.Count} of {_totalTreeCount}";
+        //}
 
-        private void _BS_Plots_ListChanged(object sender, ListChangedEventArgs e)
-        {
-            label10.Text = "Records: " + _BS_Plots.Count.ToString() + " of " + pc;
-        }
+        //private void _BS_Plots_ListChanged(object sender, ListChangedEventArgs e)
+        //{            
+        //    _lbl_plotsCount.Text = $"Records: {_BS_Plots.Count} of {_totalPlotCount}";
+        //}
     }
 }
