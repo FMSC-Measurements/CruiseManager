@@ -63,7 +63,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             {
                 if (!ViewPresenter.ApplicationController.ExceptionHandler.Handel(ex))
                 {
-                    throw ex;
+                    throw;
                 }
                 else
                 {
