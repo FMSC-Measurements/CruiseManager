@@ -2,9 +2,9 @@
 
 namespace CruiseManager.WinForms.CruiseWizard
 {
-    public partial class CreateSaleFolerDialog : Form
+    public partial class CreateSaleFolderDialog : Form
     {
-        public CreateSaleFolerDialog()
+        public CreateSaleFolderDialog()
         {
             InitializeComponent();
         }
@@ -16,5 +16,7 @@ namespace CruiseManager.WinForms.CruiseWizard
                 return this.checkBox1.Checked;
             }
         }
+
+
     }
 }

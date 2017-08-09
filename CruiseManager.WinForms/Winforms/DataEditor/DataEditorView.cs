@@ -14,8 +14,8 @@ namespace CruiseManager.WinForms.DataEditor
 {
     public partial class DataEditorView : Form
     {
+        public int _totalTreeCount, _totalLogCount, _totalPlotCount;
         #region Constants
-
         //place holder objects for "All" filter
         private readonly CuttingUnitDO ANY_OPTION_CUTTINGUNIT =
             new CuttingUnitDO
@@ -54,7 +54,6 @@ namespace CruiseManager.WinForms.DataEditor
         {
             InitializeComponent();
         }
-
         public DataEditorView(WindowPresenter windowPresenter, ApplicationControllerBase applicationController) : this()
         {
             WindowPresenter = windowPresenter;
@@ -66,6 +65,8 @@ namespace CruiseManager.WinForms.DataEditor
 
             _BS_TreeSampleGroups.DataSource = applicationController.Database.From<SampleGroupDO>().Read().ToList();
             //ResetViewFilters();
+            PopulateData();
+            
         }
 
         DAL Database { get { return ApplicationController.Database; } }
@@ -178,9 +179,9 @@ namespace CruiseManager.WinForms.DataEditor
             set { _BS_Plots.DataSource = value; }
         }
 
-        public BindingList<CountTreeDO> Counts
+        public BindingList<CountVM> Counts
         {
-            get { return _BS_Counts.DataSource as BindingList<CountTreeDO>; }
+            get { return _BS_Counts.DataSource as BindingList<CountVM>; }
             set { _BS_Counts.DataSource = value; }
         }
 
@@ -274,6 +275,8 @@ namespace CruiseManager.WinForms.DataEditor
                 PopulateData();
             }
         }
+
+        public static object RowCount { get; private set; }
 
         #endregion filter selections
 
@@ -417,7 +420,6 @@ namespace CruiseManager.WinForms.DataEditor
             _stratumFilter = ANY_OPTION_STRATUM;
             _sampleGroupFilter = ANY_OPTION_SAMPLEGROUP;
             _treeDefaultValueFilter = ANY_OPTION_TREEDEFAULT;
-
             OnCuttingUnitFilterChanged();
             OnStratumFilterChanged();
             PopulateData();
@@ -427,23 +429,32 @@ namespace CruiseManager.WinForms.DataEditor
         {
             if (DesignMode == true) { return; }
 
-            PopulateTreeData();
-            Logs = new FMSC.Utility.Collections.SortableBindingList<LogVM>(ReadLogs(CuttingUnitFilter, StratumFilter, SampleGroupFilter, TreeDefaultValueFilter));
-            Plots = new FMSC.Utility.Collections.SortableBindingList<PlotDO>(ReadPlots(CuttingUnitFilter, StratumFilter));
-            var countList = new FMSC.Utility.Collections.SortableBindingList<CountTreeDO>(ReadCounts(CuttingUnitFilter, StratumFilter, SampleGroupFilter));
-            countList.SetPropertyComparer("Component", new ComponentComparer());
-            Counts = countList;
-
-            ValidateData();
-        }
-
-        void PopulateTreeData()
-        {
             //populate tree, log, plot, and count lists with selected unit, stratum, samplegroup, and defaults, if given
             var treeList = new FMSC.Utility.Collections.SortableBindingList<TreeVM>(ReadTrees(CuttingUnitFilter, StratumFilter, SampleGroupFilter, TreeDefaultValueFilter));
             treeList.SetPropertyComparer("TreeDefaultValue", new TreeDefaultSpeciesComparer());
             treeList.SetPropertyComparer("SampleGroup", new SampleGroupCodeComparer());
             Trees = treeList;
+
+            Logs = new FMSC.Utility.Collections.SortableBindingList<LogVM>(ReadLogs(CuttingUnitFilter, StratumFilter, SampleGroupFilter, TreeDefaultValueFilter));
+            Plots = new FMSC.Utility.Collections.SortableBindingList<PlotDO>(ReadPlots(CuttingUnitFilter, StratumFilter));
+            var countList = new FMSC.Utility.Collections.SortableBindingList<CountVM>(ReadCounts(CuttingUnitFilter, StratumFilter, SampleGroupFilter));
+            countList.SetPropertyComparer("Component", new ComponentComparer());
+            Counts = countList;
+
+            RefreshRecordCounts();
+
+            ValidateData();
+        }
+
+        private void RefreshRecordCounts()
+        {
+            _totalTreeCount = (int)Database.GetRowCount("Tree", String.Empty);
+            _totalLogCount = (int)Database.GetRowCount("Log", String.Empty);
+            _totalPlotCount = (int)Database.GetRowCount("Plot", String.Empty);
+
+            _lbl_logsCount.Text = $"Records: {_BS_Logs.Count} of {_totalLogCount}";
+            _lbl_treesCount.Text = $"Records: {_BS_Trees.Count} of {_totalTreeCount}";
+            _lbl_plotsCount.Text = $"Records: {_BS_Plots.Count} of {_totalPlotCount}";
         }
 
         private void ValidateData()
@@ -451,6 +462,7 @@ namespace CruiseManager.WinForms.DataEditor
             foreach (TreeVM tree in Trees)
             {
                 tree.Validate();
+                
             }
 
             foreach (LogVM log in Logs)
@@ -578,35 +590,34 @@ namespace CruiseManager.WinForms.DataEditor
             }
         }
 
-        public List<CountTreeDO> ReadCounts(CuttingUnitDO cu, StratumDO st, SampleGroupDO sg)
+        public List<CountVM> ReadCounts(CuttingUnitDO cu, StratumDO st, SampleGroupDO sg)
         {
             var selectionList = new List<string>();
             var selectionArgs = new List<string>();
             if (cu != null)
             {
-                selectionList.Add(String.Format("CountTree.{0} = ?", CruiseDAL.Schema.COUNTTREE.CUTTINGUNIT_CN));
-                selectionArgs.Add(cu.CuttingUnit_CN.ToString());
+                selectionList.Add("UnitCode = ?");
+                selectionArgs.Add(cu.Code);
             }
             if (st != null)
             {
-                selectionList.Add(String.Format("SampleGroup.{0} = ?", CruiseDAL.Schema.SAMPLEGROUP.STRATUM_CN));
-                selectionArgs.Add(st.Stratum_CN.ToString());
+                selectionList.Add("StratumCode = ?");
+                selectionArgs.Add(st.Code);
             }
             if (sg != null)
             {
-                selectionList.Add(String.Format("CountTree.{0} = ?", CruiseDAL.Schema.COUNTTREE.SAMPLEGROUP_CN));
-                selectionArgs.Add(sg.SampleGroup_CN.ToString());
+                selectionList.Add("SGCode = ?");
+                selectionArgs.Add(sg.Code);
             }
 
             if (selectionList.Count > 0)
             {
                 var selection = String.Join(" AND ", selectionList.ToArray());
-                return Database.From<CountTreeDO>().Join("SampleGroup", "USING (SampleGroup_CN)")
-                    .Where(selection).Read(selectionArgs.ToArray<object>()).ToList();
+                return Database.From<CountVM>().Where(selection).Read(selectionArgs.ToArray<object>()).ToList();
             }
             else
             {
-                return Database.From<CountTreeDO>().Read().ToList();
+                return Database.From<CountVM>().Read().ToList();
             }
         }
 
@@ -618,7 +629,7 @@ namespace CruiseManager.WinForms.DataEditor
         }
 
         public void DisplayTrees()
-        {
+        {  
             tabControl1.SelectedIndex = 0;
         }
 
@@ -645,7 +656,7 @@ namespace CruiseManager.WinForms.DataEditor
                 case "tree":
                     {
                         record = Database.From<TreeVM>()
-                            .Where("Tree.Tree_CN = ?").Read(rowID).FirstOrDefault();
+                            .Where("Tree.Tree_CN = ?").Read(rowID).FirstOrDefault(); 
                         ResetViewFilters();
                         _BS_Trees.Position = _BS_Trees.IndexOf(record);
                         DisplayTrees();
@@ -673,12 +684,12 @@ namespace CruiseManager.WinForms.DataEditor
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
-        {
+        {                
             if (tabControl1.SelectedTab == tabPage1)
             {
                 if (TreeDataDirty)
                 {
-                    PopulateTreeData();
+                    PopulateData();
                     TreeDataDirty = false;
                 }
             }
@@ -1125,5 +1136,20 @@ namespace CruiseManager.WinForms.DataEditor
                 icon,
                 (defaultNo) ? MessageBoxDefaultButton.Button2 : MessageBoxDefaultButton.Button1);
         }
+
+        //private void _BS_Logs_ListChanged(object sender, ListChangedEventArgs e)
+        //{
+        //    _lbl_logsCount.Text = $"Records: {_BS_Logs.Count} of {_totalLogCount}";
+        //}
+
+        //private void _BS_Trees_ListChanged(object sender, ListChangedEventArgs e)
+        //{
+        //    _lbl_treesCount.Text = $"Records: {_BS_Trees.Count} of {_totalTreeCount}";
+        //}
+
+        //private void _BS_Plots_ListChanged(object sender, ListChangedEventArgs e)
+        //{            
+        //    _lbl_plotsCount.Text = $"Records: {_BS_Plots.Count} of {_totalPlotCount}";
+        //}
     }
 }

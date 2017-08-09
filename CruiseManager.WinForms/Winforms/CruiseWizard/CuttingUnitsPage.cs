@@ -1,10 +1,12 @@
 ﻿using CruiseDAL.DataObjects;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.CruiseWizard
 {
+
     public partial class CuttingUnitsPage : UserControl, IPage
     {
         #region Constructer
@@ -56,6 +58,11 @@ namespace CruiseManager.WinForms.CruiseWizard
 
         #endregion Click Envent
 
+        private void SalesButton_Click(object sender, EventArgs e)
+        {
+            Presenter.ShowSalesPage();
+        }
+
         private void CuttingUnitBindingSource_AddingNew(object sender, AddingNewEventArgs e)
         {
             e.NewObject = Presenter.GetNewCuttingUnit();
@@ -89,5 +96,7 @@ namespace CruiseManager.WinForms.CruiseWizard
                 this.CodeTextBox.Focus();
             }
         }
+
+        
     }
 }
