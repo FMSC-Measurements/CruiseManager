@@ -122,6 +122,10 @@ namespace CruiseManager.WinForms.CruiseWizard
             stratum.CuttingUnits.Populate();
             CuttingUnitGridView.SelectedItems = stratum.CuttingUnits;
         }
+        private void CancelButton_Click(object sender, EventArgs e)
+        {
+            MasterView.Close();
+        }
 
         private void YearComboBox_DropDown(object sender, EventArgs e)
         {

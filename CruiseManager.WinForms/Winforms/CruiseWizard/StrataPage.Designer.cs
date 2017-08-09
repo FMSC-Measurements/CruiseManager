@@ -71,6 +71,7 @@
             this.paymentUnitDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CuttingUnitBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.SampleGroupButton = new System.Windows.Forms.Button();
+            this.CancelButton = new System.Windows.Forms.Button();
             this.CuttingUnitButton = new System.Windows.Forms.Button();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             label10 = new System.Windows.Forms.Label();
@@ -567,12 +568,13 @@
             tableLayoutPanel3.BackColor = System.Drawing.Color.DarkSeaGreen;
             tableLayoutPanel3.ColumnCount = 5;
             tableLayoutPanel1.SetColumnSpan(tableLayoutPanel3, 2);
-            tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 5F));
             tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 90F));
+            tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 77.90221F));
+            tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.35836F));
             tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 5F));
+            tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 5.739426F));
             tableLayoutPanel3.Controls.Add(this.SampleGroupButton, 3, 1);
+            tableLayoutPanel3.Controls.Add(this.CancelButton, 2, 1);
             tableLayoutPanel3.Controls.Add(this.CuttingUnitButton, 1, 1);
             tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             tableLayoutPanel3.Location = new System.Drawing.Point(0, 422);
@@ -590,26 +592,42 @@
             this.SampleGroupButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.SampleGroupButton.AutoSize = true;
             this.SampleGroupButton.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.SampleGroupButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SampleGroupButton.Location = new System.Drawing.Point(497, 12);
+            this.SampleGroupButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.SampleGroupButton.Location = new System.Drawing.Point(481, 13);
             this.SampleGroupButton.Margin = new System.Windows.Forms.Padding(0);
             this.SampleGroupButton.Name = "SampleGroupButton";
-            this.SampleGroupButton.Size = new System.Drawing.Size(111, 25);
+            this.SampleGroupButton.Size = new System.Drawing.Size(118, 23);
             this.SampleGroupButton.TabIndex = 0;
-            this.SampleGroupButton.Text = "Sample Group >>";
+            this.SampleGroupButton.Text = "Sample Groups >>";
             this.SampleGroupButton.UseVisualStyleBackColor = false;
             this.SampleGroupButton.Click += new System.EventHandler(this.SampleGroupButton_Click);
             // 
+            // CancelButton
+            // 
+            this.CancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.CancelButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.CancelButton.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.CancelButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.CancelButton.Location = new System.Drawing.Point(398, 13);
+            this.CancelButton.Margin = new System.Windows.Forms.Padding(0);
+            this.CancelButton.Name = "CancelButton";
+            this.CancelButton.Size = new System.Drawing.Size(83, 23);
+            this.CancelButton.TabIndex = 1;
+            this.CancelButton.Text = "Cancel";
+            this.CancelButton.UseVisualStyleBackColor = false;
+            this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
+            // 
             // CuttingUnitButton
             // 
-            this.CuttingUnitButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.CuttingUnitButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.CuttingUnitButton.AutoSize = true;
             this.CuttingUnitButton.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.CuttingUnitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CuttingUnitButton.Location = new System.Drawing.Point(20, 12);
+            this.CuttingUnitButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.CuttingUnitButton.Location = new System.Drawing.Point(283, 13);
             this.CuttingUnitButton.Margin = new System.Windows.Forms.Padding(0);
             this.CuttingUnitButton.Name = "CuttingUnitButton";
-            this.CuttingUnitButton.Size = new System.Drawing.Size(107, 25);
+            this.CuttingUnitButton.Size = new System.Drawing.Size(115, 23);
             this.CuttingUnitButton.TabIndex = 1;
             this.CuttingUnitButton.Text = "<< Cutting Units";
             this.CuttingUnitButton.UseVisualStyleBackColor = false;
@@ -680,5 +698,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ComboBox yieldCombo;
+        private System.Windows.Forms.Button CancelButton;
     }
 }

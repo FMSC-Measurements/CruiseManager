@@ -48,7 +48,13 @@ namespace CruiseManager.WinForms.CruiseWizard
 
         private void NextButton_Click(object sender, EventArgs e)
         {
+            if (!_templatePathTB.Text.Equals(""))
+            {
+                _templatePathTB.Enabled = false;
+                _browseTemplateButton.Enabled = false;
+            }
             Presenter.HandleSalePageExit(_templatePath);
+             
             //Presenter.Sale.Validate();
             //if (Presenter.Sale.HasErrors())
             //{
