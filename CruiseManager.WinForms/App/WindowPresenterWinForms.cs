@@ -283,6 +283,8 @@ namespace CruiseManager.WinForms.App
 
         public override void ShowEditWizard()
         {
+            if (!ApplicationController.OnActiveViewChanging(ApplicationController.ActiveView)) { return; }
+
             if (ApplicationController.Database.GetRowCount("Tree", null) == 0)
             {
                 SaleDO sale;
@@ -297,7 +299,7 @@ namespace CruiseManager.WinForms.App
 
         public override void ShowDataEditor()
         {
-            ApplicationController.Save();
+            if (!ApplicationController.OnActiveViewChanging(ApplicationController.ActiveView)) { return; }
             using (DataEditorView view = new DataEditorView(this, this.ApplicationController))
             {
                 view.ShowDialog((IWin32Window)this.ApplicationController.MainWindow);

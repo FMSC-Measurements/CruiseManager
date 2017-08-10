@@ -60,13 +60,6 @@ namespace CruiseManager.WinForms.DataEditor
             ApplicationController = applicationController;
 
             Text = "Field Data - " + System.IO.Path.GetFileName(applicationController.Database.Path);
-
-            _BS_TreeSpecies.DataSource = applicationController.Database.From<TreeDefaultValueDO>().Read().ToList();
-
-            _BS_TreeSampleGroups.DataSource = applicationController.Database.From<SampleGroupDO>().Read().ToList();
-            //ResetViewFilters();
-            PopulateData();
-            
         }
 
         DAL Database { get { return ApplicationController.Database; } }
@@ -392,11 +385,23 @@ namespace CruiseManager.WinForms.DataEditor
             Cursor = Cursors.WaitCursor;
             try
             {
+                _BS_TreeSpecies.DataSource = ApplicationController.Database.From<TreeDefaultValueDO>().Read().ToList();
+
+                _BS_TreeSampleGroups.DataSource = ApplicationController.Database.From<SampleGroupDO>().Read().ToList();
+                //PopulateData();
+
                 ResetViewFilters();//initialize filters and load data
 
                 RebuildErrors();
 
                 base.OnLoad(e);
+            }
+            catch (Exception ex)
+            {
+                if (!this.ApplicationController.ExceptionHandler.Handel(ex))
+                {
+                    throw;
+                }
             }
             finally
             {
@@ -429,21 +434,31 @@ namespace CruiseManager.WinForms.DataEditor
         {
             if (DesignMode == true) { return; }
 
-            //populate tree, log, plot, and count lists with selected unit, stratum, samplegroup, and defaults, if given
-            var treeList = new FMSC.Utility.Collections.SortableBindingList<TreeVM>(ReadTrees(CuttingUnitFilter, StratumFilter, SampleGroupFilter, TreeDefaultValueFilter));
-            treeList.SetPropertyComparer("TreeDefaultValue", new TreeDefaultSpeciesComparer());
-            treeList.SetPropertyComparer("SampleGroup", new SampleGroupCodeComparer());
-            Trees = treeList;
+            try
+            {
+                //populate tree, log, plot, and count lists with selected unit, stratum, samplegroup, and defaults, if given
+                var treeList = new FMSC.Utility.Collections.SortableBindingList<TreeVM>(ReadTrees(CuttingUnitFilter, StratumFilter, SampleGroupFilter, TreeDefaultValueFilter));
+                treeList.SetPropertyComparer("TreeDefaultValue", new TreeDefaultSpeciesComparer());
+                treeList.SetPropertyComparer("SampleGroup", new SampleGroupCodeComparer());
+                Trees = treeList;
 
-            Logs = new FMSC.Utility.Collections.SortableBindingList<LogVM>(ReadLogs(CuttingUnitFilter, StratumFilter, SampleGroupFilter, TreeDefaultValueFilter));
-            Plots = new FMSC.Utility.Collections.SortableBindingList<PlotDO>(ReadPlots(CuttingUnitFilter, StratumFilter));
-            var countList = new FMSC.Utility.Collections.SortableBindingList<CountVM>(ReadCounts(CuttingUnitFilter, StratumFilter, SampleGroupFilter));
-            countList.SetPropertyComparer("Component", new ComponentComparer());
-            Counts = countList;
+                Logs = new FMSC.Utility.Collections.SortableBindingList<LogVM>(ReadLogs(CuttingUnitFilter, StratumFilter, SampleGroupFilter, TreeDefaultValueFilter));
+                Plots = new FMSC.Utility.Collections.SortableBindingList<PlotDO>(ReadPlots(CuttingUnitFilter, StratumFilter));
+                var countList = new FMSC.Utility.Collections.SortableBindingList<CountVM>(ReadCounts(CuttingUnitFilter, StratumFilter, SampleGroupFilter));
+                countList.SetPropertyComparer("Component", new ComponentComparer());
+                Counts = countList;
 
-            RefreshRecordCounts();
+                RefreshRecordCounts();
 
-            ValidateData();
+                ValidateData();
+            }
+            catch (Exception ex)
+            {
+                if (!this.ApplicationController.ExceptionHandler.Handel(ex))
+                {
+                    throw;
+                }
+            }
         }
 
         private void RefreshRecordCounts()
@@ -473,20 +488,25 @@ namespace CruiseManager.WinForms.DataEditor
 
         private void RebuildErrors()
         {
-            Database.Execute("DELETE FROM ErrorLog WHERE TableName in ('Tree','Log') AND Suppress = 0;");
-            Database.ClearCache(typeof(ErrorLogDO));
-            foreach (TreeVM tree in Trees)
+            try
             {
-                tree.PurgeErrorList();
-
-                var treeFields = tree.Stratum.FieldsArray;
-                if (treeFields == null || treeFields.Length == 0) { continue; }
-
-                if (!tree.Validate(tree.Stratum.FieldsArray))
+                Database.Execute("DELETE FROM ErrorLog WHERE TableName in ('Tree','Log') AND Suppress = 0;");
+                Database.ClearCache(typeof(ErrorLogDO));
+                foreach (TreeVM tree in Trees)
                 {
-                    tree.SaveErrors();
+                    tree.PurgeErrorList();
+
+                    var treeFields = tree.Stratum.FieldsArray;
+                    if (treeFields == null || treeFields.Length == 0) { continue; }
+
+                    if (!tree.Validate(tree.Stratum.FieldsArray))
+                    {
+                        tree.SaveErrors();
+                    }
                 }
             }
+            catch(FMSC.ORM.ReadOnlyException)
+            { }
         }
 
         #region read methods
