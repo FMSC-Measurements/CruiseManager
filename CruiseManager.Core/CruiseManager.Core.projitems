@@ -92,6 +92,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SetupModels\TreeAudit.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SetupModels\TreeFieldValidator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SetupModels\UOMCode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)System\DictionaryExtentions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)System\DoubleExtentions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)System\FloatExtentions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\EditTemplateView.cs" />
