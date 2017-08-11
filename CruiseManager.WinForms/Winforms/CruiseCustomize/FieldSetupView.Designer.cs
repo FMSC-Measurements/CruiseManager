@@ -120,7 +120,7 @@
             this._treeFieldWidget.Size = new System.Drawing.Size(563, 373);
             this._treeFieldWidget.TabIndex = 0;
             this._treeFieldWidget.ValueMember = null;
-            this._treeFieldWidget.SelectionMoved += new System.EventHandler<FMSC.Controls.ItemMovedEventArgs>(this._treeFieldWidget_SelectionMoved);
+            this._treeFieldWidget.SelectionMoved += new FMSC.Controls.ItemMovedEventHandler(this._treeFieldWidget_SelectionMoved);
             this._treeFieldWidget.SelectionAdded += new FMSC.Controls.SelectionAddedEventHandler(this._treeFieldWidget_SelectionAdded);
             this._treeFieldWidget.SelectedValueChanged += new FMSC.Controls.SelectedValueChangedEventHandler(this._treeFieldWidget_SelectedValueChanged);
             // 
@@ -203,7 +203,7 @@
             this._logFieldWidget.Size = new System.Drawing.Size(563, 373);
             this._logFieldWidget.TabIndex = 0;
             this._logFieldWidget.ValueMember = null;
-            this._logFieldWidget.SelectionMoved += new System.EventHandler<FMSC.Controls.ItemMovedEventArgs>(this._logFieldWidget_SelectionMoved);
+            this._treeFieldWidget.SelectionMoved += new FMSC.Controls.ItemMovedEventHandler(this._treeFieldWidget_SelectionMoved);
             this._logFieldWidget.SelectionAdded += new FMSC.Controls.SelectionAddedEventHandler(this._logFieldWidget_SelectionAdded);
             this._logFieldWidget.SelectedValueChanged += new FMSC.Controls.SelectedValueChangedEventHandler(this._logFieldWidget_SelectedValueChanged);
             // 
