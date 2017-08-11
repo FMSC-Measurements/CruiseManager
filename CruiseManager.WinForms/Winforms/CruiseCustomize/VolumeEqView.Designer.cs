@@ -34,7 +34,6 @@
             this._volEq_add_button = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this._volumeEQsDGV = new System.Windows.Forms.DataGridView();
-            this._BS_VolEquations = new System.Windows.Forms.BindingSource(this.components);
             this.volumeEquationNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.commonSpeciesNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.speciesDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -54,6 +53,7 @@
             this.maxLogLengthPrimaryDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.minMerchLengthDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.modelDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._BS_VolEquations = new System.Windows.Forms.BindingSource(this.components);
             panel6 = new System.Windows.Forms.Panel();
             panel6.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -96,6 +96,7 @@
             // 
             // tableLayoutPanel1
             // 
+            this.tableLayoutPanel1.AutoScroll = true;
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.Controls.Add(this._volumeEQsDGV, 0, 1);
@@ -137,12 +138,9 @@
             this._volumeEQsDGV.Dock = System.Windows.Forms.DockStyle.Fill;
             this._volumeEQsDGV.Location = new System.Drawing.Point(3, 32);
             this._volumeEQsDGV.Name = "_volumeEQsDGV";
+            this._volumeEQsDGV.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this._volumeEQsDGV.Size = new System.Drawing.Size(870, 449);
             this._volumeEQsDGV.TabIndex = 4;
-            // 
-            // _BS_VolEquations
-            // 
-            this._BS_VolEquations.DataSource = typeof(CruiseDAL.DataObjects.VolumeEquationDO);
             // 
             // volumeEquationNumberDataGridViewTextBoxColumn
             // 
@@ -311,6 +309,10 @@
             this.modelDataGridViewTextBoxColumn.Name = "modelDataGridViewTextBoxColumn";
             this.modelDataGridViewTextBoxColumn.ToolTipText = "Volume Model";
             this.modelDataGridViewTextBoxColumn.Width = 61;
+            // 
+            // _BS_VolEquations
+            // 
+            this._BS_VolEquations.DataSource = typeof(CruiseDAL.DataObjects.VolumeEquationDO);
             // 
             // VolumeEqView
             // 

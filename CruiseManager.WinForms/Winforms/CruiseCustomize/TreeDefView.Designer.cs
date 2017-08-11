@@ -106,6 +106,7 @@
             // 
             // tableLayoutPanel1
             // 
+            tableLayoutPanel1.AutoScroll = true;
             tableLayoutPanel1.ColumnCount = 1;
             tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             tableLayoutPanel1.Controls.Add(panel3, 0, 0);
@@ -146,6 +147,7 @@
             this._treeDefGrid.Location = new System.Drawing.Point(0, 32);
             this._treeDefGrid.Margin = new System.Windows.Forms.Padding(0);
             this._treeDefGrid.Name = "_treeDefGrid";
+            this._treeDefGrid.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this._treeDefGrid.Size = new System.Drawing.Size(801, 522);
             this._treeDefGrid.TabIndex = 4;
             // 
