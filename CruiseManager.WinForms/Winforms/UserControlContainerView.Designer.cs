@@ -35,11 +35,11 @@
             // _navLinkPanel
             // 
             this._navLinkPanel.AutoSize = true;
-            this._navLinkPanel.BackColor = System.Drawing.Color.ForestGreen;
+            this._navLinkPanel.BackColor = System.Drawing.Color.White;
             this._navLinkPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this._navLinkPanel.Location = new System.Drawing.Point(0, 0);
             this._navLinkPanel.Name = "_navLinkPanel";
-            this._navLinkPanel.Size = new System.Drawing.Size(575, 0);
+            this._navLinkPanel.Size = new System.Drawing.Size(670, 0);
             this._navLinkPanel.TabIndex = 0;
             // 
             // _contentPanel
@@ -47,7 +47,7 @@
             this._contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._contentPanel.Location = new System.Drawing.Point(0, 0);
             this._contentPanel.Name = "_contentPanel";
-            this._contentPanel.Size = new System.Drawing.Size(575, 390);
+            this._contentPanel.Size = new System.Drawing.Size(670, 422);
             this._contentPanel.TabIndex = 1;
             // 
             // UserControlContainerView
@@ -57,7 +57,7 @@
             this.Controls.Add(this._contentPanel);
             this.Controls.Add(this._navLinkPanel);
             this.Name = "UserControlContainerView";
-            this.Size = new System.Drawing.Size(575, 390);
+            this.Size = new System.Drawing.Size(670, 422);
             this.ResumeLayout(false);
             this.PerformLayout();
 

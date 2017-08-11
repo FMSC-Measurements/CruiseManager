@@ -63,7 +63,7 @@
             // 
             // panel3
             // 
-            panel3.BackColor = System.Drawing.Color.LightSteelBlue;
+            panel3.BackColor = System.Drawing.Color.DarkSeaGreen;
             panel3.Controls.Add(this._deleteTDVBTN);
             panel3.Controls.Add(this._editTDVButton);
             panel3.Controls.Add(this._addTDVButton);

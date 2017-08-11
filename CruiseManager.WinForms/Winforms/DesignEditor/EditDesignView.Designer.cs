@@ -210,6 +210,7 @@
             // label7
             // 
             label7.AutoSize = true;
+            label7.BackColor = System.Drawing.Color.DarkSeaGreen;
             label7.Dock = System.Windows.Forms.DockStyle.Fill;
             label7.Location = new System.Drawing.Point(253, 0);
             label7.Name = "label7";
@@ -461,7 +462,7 @@
             // 
             // tableLayoutPanel3
             // 
-            this.tableLayoutPanel3.BackColor = System.Drawing.Color.ForestGreen;
+            this.tableLayoutPanel3.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.tableLayoutPanel3.ColumnCount = 5;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -671,7 +672,7 @@
             // 
             // tableLayoutPanel5
             // 
-            this.tableLayoutPanel5.BackColor = System.Drawing.Color.ForestGreen;
+            this.tableLayoutPanel5.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.tableLayoutPanel5.ColumnCount = 5;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -797,7 +798,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.ForestGreen;
+            this.label1.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
@@ -910,7 +911,7 @@
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.BackColor = System.Drawing.Color.ForestGreen;
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.tableLayoutPanel1.ColumnCount = 5;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -1199,7 +1200,7 @@
             // tableLayoutPanel7
             // 
             this.tableLayoutPanel7.AutoSize = true;
-            this.tableLayoutPanel7.BackColor = System.Drawing.Color.ForestGreen;
+            this.tableLayoutPanel7.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.tableLayoutPanel7.ColumnCount = 5;
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));

@@ -62,7 +62,6 @@
             this.button2.TabIndex = 1;
             this.button2.Text = "Yes";
             this.button2.UseVisualStyleBackColor = true;
-
             // 
             // checkBox1
             // 
@@ -74,7 +73,7 @@
             this.checkBox1.Text = "Remember Selection";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
-            // CreateSaleFolerDialog
+            // CreateSaleFolderDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -86,7 +85,8 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "CreateSaleFolerDialog";
+            this.Name = "CreateSaleFolderDialog";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.ResumeLayout(false);
             this.PerformLayout();
 

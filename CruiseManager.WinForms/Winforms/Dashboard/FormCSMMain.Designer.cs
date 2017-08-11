@@ -44,6 +44,14 @@
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.indexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.launchInBrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openInPDFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.searchToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             panel1 = new System.Windows.Forms.Panel();
             panel1.SuspendLayout();
             this._leftCommandPanel.SuspendLayout();
@@ -71,6 +79,7 @@
             this._viewContentPanel.Name = "_viewContentPanel";
             this._viewContentPanel.Size = new System.Drawing.Size(673, 477);
             this._viewContentPanel.TabIndex = 2;
+            //this._viewContentPanel.Paint += new System.Windows.Forms.PaintEventHandler(this._viewContentPanel_Paint);
             // 
             // _leftCommandPanel
             // 
@@ -112,7 +121,8 @@
             // menuStrip
             // 
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+            this.fileToolStripMenuItem,
+            this.helpToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
@@ -182,6 +192,63 @@
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.contentToolStripMenuItem,
+            this.indexToolStripMenuItem,
+            this.searchToolStripMenuItem,
+            this.searchToolStripMenuItem1,
+            this.aboutToolStripMenuItem1});
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 19);
+            this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // contentToolStripMenuItem
+            // 
+            this.contentToolStripMenuItem.Name = "contentToolStripMenuItem";
+            this.contentToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.contentToolStripMenuItem.Text = "View Help";
+            // 
+            // indexToolStripMenuItem
+            // 
+            this.indexToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.launchInBrowserToolStripMenuItem,
+            this.openInPDFToolStripMenuItem});
+            this.indexToolStripMenuItem.Name = "indexToolStripMenuItem";
+            this.indexToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.indexToolStripMenuItem.Text = "Set Help Preferences";
+            // 
+            // launchInBrowserToolStripMenuItem
+            // 
+            this.launchInBrowserToolStripMenuItem.Name = "launchInBrowserToolStripMenuItem";
+            this.launchInBrowserToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.launchInBrowserToolStripMenuItem.Text = "Launch in Browser";
+            // 
+            // openInPDFToolStripMenuItem
+            // 
+            this.openInPDFToolStripMenuItem.Name = "openInPDFToolStripMenuItem";
+            this.openInPDFToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.openInPDFToolStripMenuItem.Text = "Open in PDF";
+            // 
+            // searchToolStripMenuItem
+            // 
+            this.searchToolStripMenuItem.Name = "searchToolStripMenuItem";
+            this.searchToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.searchToolStripMenuItem.Text = "Index";
+            // 
+            // searchToolStripMenuItem1
+            // 
+            this.searchToolStripMenuItem1.Name = "searchToolStripMenuItem1";
+            this.searchToolStripMenuItem1.Size = new System.Drawing.Size(190, 22);
+            this.searchToolStripMenuItem1.Text = "Search";
+            // 
+            // aboutToolStripMenuItem1
+            // 
+            this.aboutToolStripMenuItem1.Name = "aboutToolStripMenuItem1";
+            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(190, 22);
+            this.aboutToolStripMenuItem1.Text = "About CruiseManager";
+            // 
             // FormCSMMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
@@ -190,10 +257,12 @@
             this.Controls.Add(panel1);
             this.Controls.Add(this.menuStrip);
             this.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "FormCSMMain";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormCSMMain";
             panel1.ResumeLayout(false);
             this._leftCommandPanel.ResumeLayout(false);
@@ -220,5 +289,13 @@
         private System.Windows.Forms.Panel _leftCommandPanel;
         private System.Windows.Forms.Panel _viewNavPanel;
         private System.Windows.Forms.Panel _userCommandPanel;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem contentToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem indexToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem searchToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem launchInBrowserToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openInPDFToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem searchToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem1;
     }
 }
