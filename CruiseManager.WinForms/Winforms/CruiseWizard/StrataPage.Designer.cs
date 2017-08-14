@@ -72,6 +72,7 @@
             this.CuttingUnitBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.SampleGroupButton = new System.Windows.Forms.Button();
             this.CuttingUnitButton = new System.Windows.Forms.Button();
+            this._btn_cancel = new System.Windows.Forms.Button();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             label10 = new System.Windows.Forms.Label();
             label11 = new System.Windows.Forms.Label();
@@ -565,15 +566,18 @@
             // tableLayoutPanel3
             // 
             tableLayoutPanel3.BackColor = System.Drawing.Color.DarkSeaGreen;
-            tableLayoutPanel3.ColumnCount = 5;
+            tableLayoutPanel3.ColumnCount = 7;
             tableLayoutPanel1.SetColumnSpan(tableLayoutPanel3, 2);
-            tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 5F));
+            tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 90F));
+            tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 5F));
-            tableLayoutPanel3.Controls.Add(this.SampleGroupButton, 3, 1);
+            tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            tableLayoutPanel3.Controls.Add(this.SampleGroupButton, 5, 1);
             tableLayoutPanel3.Controls.Add(this.CuttingUnitButton, 1, 1);
+            tableLayoutPanel3.Controls.Add(this._btn_cancel, 3, 1);
             tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             tableLayoutPanel3.Location = new System.Drawing.Point(0, 422);
             tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
@@ -591,7 +595,7 @@
             this.SampleGroupButton.AutoSize = true;
             this.SampleGroupButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.SampleGroupButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SampleGroupButton.Location = new System.Drawing.Point(497, 12);
+            this.SampleGroupButton.Location = new System.Drawing.Point(489, 12);
             this.SampleGroupButton.Margin = new System.Windows.Forms.Padding(0);
             this.SampleGroupButton.Name = "SampleGroupButton";
             this.SampleGroupButton.Size = new System.Drawing.Size(111, 25);
@@ -606,7 +610,7 @@
             this.CuttingUnitButton.AutoSize = true;
             this.CuttingUnitButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.CuttingUnitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CuttingUnitButton.Location = new System.Drawing.Point(20, 12);
+            this.CuttingUnitButton.Location = new System.Drawing.Point(30, 12);
             this.CuttingUnitButton.Margin = new System.Windows.Forms.Padding(0);
             this.CuttingUnitButton.Name = "CuttingUnitButton";
             this.CuttingUnitButton.Size = new System.Drawing.Size(107, 25);
@@ -614,6 +618,20 @@
             this.CuttingUnitButton.Text = "<< Cutting Units";
             this.CuttingUnitButton.UseVisualStyleBackColor = false;
             this.CuttingUnitButton.Click += new System.EventHandler(this.CuttingUnitButton_Click);
+            // 
+            // _btn_cancel
+            // 
+            this._btn_cancel.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this._btn_cancel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._btn_cancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this._btn_cancel.Location = new System.Drawing.Point(147, 12);
+            this._btn_cancel.Margin = new System.Windows.Forms.Padding(0);
+            this._btn_cancel.Name = "_btn_cancel";
+            this._btn_cancel.Size = new System.Drawing.Size(53, 25);
+            this._btn_cancel.TabIndex = 2;
+            this._btn_cancel.Text = "Cancel";
+            this._btn_cancel.UseVisualStyleBackColor = false;
+            this._btn_cancel.Click += new System.EventHandler(this._btn_cancel_Click);
             // 
             // errorProvider1
             // 
@@ -680,5 +698,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ComboBox yieldCombo;
+        private System.Windows.Forms.Button _btn_cancel;
     }
 }

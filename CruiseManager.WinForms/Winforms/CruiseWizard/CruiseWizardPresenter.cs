@@ -404,7 +404,7 @@ namespace CruiseManager.WinForms.CruiseWizard
         {
             if (!_isFinished)
             {
-                var d = MessageBox.Show("Are you sure you want to exit?", "Warning", MessageBoxButtons.YesNo);
+                var d = MessageBox.Show(View, "Are you sure you want to exit?", "Warning", MessageBoxButtons.YesNo);
                 if (d == DialogResult.Yes)
                 {
                     switch (View.PageHost.CurrentPage.Name)
@@ -457,14 +457,14 @@ namespace CruiseManager.WinForms.CruiseWizard
                 }
                 else if (string.IsNullOrEmpty(templatePath))
                 {
-                    if (MessageBox.Show("No Template selected.\r\nWould you like to continue?", "Continue?", MessageBoxButtons.YesNo) == DialogResult.No)
+                    if (MessageBox.Show(View, "No Template selected.\r\nWould you like to continue?", "Continue?", MessageBoxButtons.YesNo) == DialogResult.No)
                     {
                         return;
                     }
                 }
                 else if (!File.Exists(templatePath))
                 {
-                    if (MessageBox.Show("Template path is invalid.\r\nWould you like to continue?", "Continue?", MessageBoxButtons.YesNo) == DialogResult.No)
+                    if (MessageBox.Show(View, "Template path is invalid.\r\nWould you like to continue?", "Continue?", MessageBoxButtons.YesNo) == DialogResult.No)
                     {
                         return;
                     }
@@ -510,7 +510,7 @@ namespace CruiseManager.WinForms.CruiseWizard
 
             View.Display("Strata");
         }
-        
+
         protected void OnLeavingCuttingUnits(CancelEventArgs e)
         {
             string errorMsg;
@@ -518,7 +518,7 @@ namespace CruiseManager.WinForms.CruiseWizard
 
             if (AreCuttingUnitsValid(out errorMsg) == false)
             {
-                MessageBox.Show(errorMsg, "Warning", MessageBoxButtons.OK);
+                MessageBox.Show(View, errorMsg, "Warning", MessageBoxButtons.OK);
                 e.Cancel = true;
                 return;
             }
@@ -529,13 +529,13 @@ namespace CruiseManager.WinForms.CruiseWizard
             }
             catch (FMSC.ORM.UniqueConstraintException)
             {
-                MessageBox.Show("Cutting Unit Error: Unit # already exists.");
+                MessageBox.Show(View, "Cutting Unit Error: Unit # already exists.");
                 e.Cancel = true;
                 return;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.GetType().Name, "Error");
+                MessageBox.Show(View, ex.GetType().Name, "Error");
                 e.Cancel = true;
                 return;
             }
@@ -546,7 +546,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             string errorMsg;
             if (AreStrataValid(out errorMsg) == false)
             {
-                MessageBox.Show(errorMsg, "Warning", MessageBoxButtons.OK);
+                MessageBox.Show(View, errorMsg, "Warning", MessageBoxButtons.OK);
                 return;
             }
 
@@ -584,7 +584,7 @@ namespace CruiseManager.WinForms.CruiseWizard
                 .Where(grouping => grouping.Count() > 1)
                 .Select(grouping => grouping.Key);
 
-            if(dupUnitCodes.Count() > 0)
+            if (dupUnitCodes.Count() > 0)
             {
                 errorMsg += $"Duplicates in Cutting Unit Code(s): {String.Join(", ", dupUnitCodes.ToArray())}";
                 allCUValid = false;
@@ -824,7 +824,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             string errorMsg;
             if (AllSampleGroupValid(out errorMsg) == false)
             {
-                MessageBox.Show(errorMsg, "Warning", MessageBoxButtons.OK);
+                MessageBox.Show(View, errorMsg, "Warning", MessageBoxButtons.OK);
                 return;
             }
 
