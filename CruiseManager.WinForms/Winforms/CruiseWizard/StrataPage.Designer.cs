@@ -446,11 +446,7 @@
             // 
             this.yieldCombo.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.StrataBindingSource, "YieldComponent", true));
             this.yieldCombo.FormattingEnabled = true;
-            this.yieldCombo.Items.AddRange(new object[] {
-            "CL",
-            "CD",
-            "NL",
-            "ND"});
+            this.yieldCombo.Items.AddRange(Core.Constants.Strings.YIELD_COMPONENT_VALUES);
             this.yieldCombo.Location = new System.Drawing.Point(403, 59);
             this.yieldCombo.Name = "yieldCombo";
             this.yieldCombo.Size = new System.Drawing.Size(42, 21);

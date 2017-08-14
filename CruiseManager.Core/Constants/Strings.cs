@@ -43,6 +43,8 @@ namespace CruiseManager.Core.Constants
             {"Right of Way", "RoW" },
             {"Recon", "Recon" } };
 
+        public static readonly string[] YIELD_COMPONENT_VALUES = new string[] { "CL", "CD", "NL", "ND" };
+
         public enum IndicatorType { Beep, None };
 
         public static readonly string OPEN_CRUISE_FILE_DIALOG_FILTER =

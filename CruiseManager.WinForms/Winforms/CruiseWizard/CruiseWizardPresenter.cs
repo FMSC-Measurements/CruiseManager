@@ -443,7 +443,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             Sale.Validate();
             if (Sale.HasErrors())
             {
-                MessageBox.Show(Sale.Error, "Warning", MessageBoxButtons.OK);
+                MessageBox.Show(View, Sale.Error, "Warning", MessageBoxButtons.OK);
                 return;
             }
 
@@ -835,7 +835,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(View, ex.Message);
                 return;
             }
             finally
