@@ -608,6 +608,12 @@ namespace CruiseManager.WinForms.CruiseWizard
             bool allStValid = true;
             errorMsg = "Strata Errors Found";
 
+            if (Strata.Count() == 0)
+            {
+                errorMsg += "\r\nNo Strata";
+                return false;
+            }
+
             foreach (StratumDO st in Strata)
             {
                 st.Validate();
@@ -651,6 +657,12 @@ namespace CruiseManager.WinForms.CruiseWizard
             foreach (StratumVM st in Strata)
             {
                 IList<SampleGroupDO> sgList = st.SampleGroups;
+
+                if (st.SampleGroups.Count() == 0)
+                {
+                    allSgValid = false;
+                    errorSB.AppendLine($"Stratum {st.Code} has no Sample Groups");
+                }
 
                 foreach (SampleGroupDO sg in sgList)
                 {

@@ -279,7 +279,7 @@
             this.tableLayoutPanel2.Controls.Add(label1, 4, 1);
             this.tableLayoutPanel2.Controls.Add(this.yieldCombo, 5, 2);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(163, 19);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(163, 24);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 5;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
@@ -446,7 +446,11 @@
             // 
             this.yieldCombo.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.StrataBindingSource, "YieldComponent", true));
             this.yieldCombo.FormattingEnabled = true;
-            this.yieldCombo.Items.AddRange(Core.Constants.Strings.YIELD_COMPONENT_VALUES);
+            this.yieldCombo.Items.AddRange(new object[] {
+            "CL",
+            "CD",
+            "NL",
+            "ND"});
             this.yieldCombo.Location = new System.Drawing.Point(403, 59);
             this.yieldCombo.Name = "yieldCombo";
             this.yieldCombo.Size = new System.Drawing.Size(42, 21);
@@ -457,7 +461,7 @@
             label3.AutoSize = true;
             label3.BackColor = System.Drawing.Color.DarkSeaGreen;
             label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            label3.Location = new System.Drawing.Point(160, 144);
+            label3.Location = new System.Drawing.Point(160, 149);
             label3.Margin = new System.Windows.Forms.Padding(0);
             label3.Name = "label3";
             label3.Padding = new System.Windows.Forms.Padding(5, 3, 0, 0);
@@ -471,7 +475,7 @@
             label4.BackColor = System.Drawing.Color.DarkSeaGreen;
             label4.Dock = System.Windows.Forms.DockStyle.Fill;
             label4.Location = new System.Drawing.Point(160, 0);
-            label4.Margin = new System.Windows.Forms.Padding(0);
+            label4.Margin = new System.Windows.Forms.Padding(0, 0, 0, 5);
             label4.Name = "label4";
             label4.Padding = new System.Windows.Forms.Padding(5, 3, 0, 0);
             label4.Size = new System.Drawing.Size(470, 16);
@@ -493,7 +497,7 @@
             this.paymentUnitDataGridViewTextBoxColumn});
             this.CuttingUnitGridView.DataSource = this.CuttingUnitBindingSource;
             this.CuttingUnitGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CuttingUnitGridView.Location = new System.Drawing.Point(160, 160);
+            this.CuttingUnitGridView.Location = new System.Drawing.Point(160, 165);
             this.CuttingUnitGridView.Margin = new System.Windows.Forms.Padding(0);
             this.CuttingUnitGridView.Name = "CuttingUnitGridView";
             this.CuttingUnitGridView.ReadOnly = true;
@@ -501,7 +505,7 @@
             this.CuttingUnitGridView.RowTemplate.Height = 24;
             this.CuttingUnitGridView.SelectedItems = null;
             this.CuttingUnitGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.CuttingUnitGridView.Size = new System.Drawing.Size(470, 262);
+            this.CuttingUnitGridView.Size = new System.Drawing.Size(470, 257);
             this.CuttingUnitGridView.TabIndex = 2;
             this.CuttingUnitGridView.VirtualMode = true;
             // 

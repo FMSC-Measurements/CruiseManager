@@ -209,7 +209,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             }
             else
             {
-                SampleGroupBindingSource.DataSource = null;
+                SampleGroupBindingSource.DataSource = Enumerable.Empty<SampleGroupDO>();
             }
         }
 
