@@ -57,8 +57,8 @@ AllowUNCPath=no
 AllowNetworkDrive=no
 
 
-
-OutputBaseFilename=CruiseManager_Setup_{#SETUPVERSION}
+OutputBaseFilename=CruiseManager_Setup
+;OutputBaseFilename=CruiseManager_Setup_{#SETUPVERSION}
 OutputManifestFile=Setup-Manifest.txt
 
 [Tasks]
