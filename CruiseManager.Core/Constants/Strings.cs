@@ -1,5 +1,6 @@
 ﻿using CruiseDAL.Schema;
 using System;
+using System.Collections.Generic;
 
 namespace CruiseManager.Core.Constants
 {
@@ -35,6 +36,14 @@ namespace CruiseManager.Core.Constants
         public static readonly string[] INDICATOR_TYPES = { "Beep", "None" };
 
         public static readonly String[] SALE_PURPOSE = { "Timber Sale", "Check Cruise", "Right of Way", "Recon", "Other" };
+
+        public static readonly Dictionary<string, string> PURPOSE_SHORT_MAP = new Dictionary<string, string>() {
+            { "Timber Sale", "TS" },
+            {"Check Cruise", "Check" },
+            {"Right of Way", "RoW" },
+            {"Recon", "Recon" } };
+
+        public static readonly string[] YIELD_COMPONENT_VALUES = new string[] { "CL", "CD", "NL", "ND" };
 
         public enum IndicatorType { Beep, None };
 

@@ -106,7 +106,7 @@ namespace CruiseManager.WinForms.App
             bool createSaleFolder = false;
             if (ApplicationController.UserSettings.CreateSaleFolder == null)
             {
-                using (var dialog = new CreateSaleFolerDialog())
+                using (var dialog = new CreateSaleFolderDialog())
                 {
                     createSaleFolder = (dialog.ShowDialog() == DialogResult.Yes);
                     if (dialog.RememberSelection)
@@ -123,10 +123,13 @@ namespace CruiseManager.WinForms.App
 
             using (var saveFileDialog = new System.Windows.Forms.SaveFileDialog())
             {
+                var purposeShort = Strings.PURPOSE_SHORT_MAP.GetValueOrDefault(sale.Purpose, string.Empty);
+
                 saveFileDialog.AutoUpgradeEnabled = true;
                 saveFileDialog.CustomPlaces.Add(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\CruiseFiles");
                 saveFileDialog.InitialDirectory = ApplicationController.UserSettings.CruiseSaveLocation;
                 saveFileDialog.DefaultExt = "cruise";
+                saveFileDialog.FileName = $"{ sale.SaleNumber} {sale.Name} {purposeShort}.cruise";
                 saveFileDialog.Filter = "Cruise files(*.cruise)|*.cruise";
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -136,12 +139,12 @@ namespace CruiseManager.WinForms.App
 
                     if (createSaleFolder)
                     {
-                        dir += sale.ToString("\\[SaleNumber] [Name]\\", null);
+                        dir += $"\\{sale.SaleNumber}{sale.Name}\\";
                         if (!System.IO.Directory.Exists(dir))
                         {
                             System.IO.Directory.CreateDirectory(dir);
                         }
-                        return dir + System.IO.Path.GetFileName(saveFileDialog.FileName);
+                        else { return dir + System.IO.Path.GetFileName(saveFileDialog.FileName); }
                     }
                     return saveFileDialog.FileName;
                 }
@@ -302,7 +305,7 @@ namespace CruiseManager.WinForms.App
             }
         }
 
-        public override void ShowDataExportDialog(IList<TreeVM> Trees, IList<LogVM> Logs, IList<PlotDO> Plots, IList<CountTreeDO> Counts)
+        public override void ShowDataExportDialog(IEnumerable<TreeVM> Trees, IEnumerable<LogVM> Logs, IEnumerable<PlotDO> Plots, IEnumerable<CountVM> Counts)
         {
             using (DataExportDialog dialog = new DataExportDialog(this.ApplicationController, Trees, Logs, Plots, Counts))
             {

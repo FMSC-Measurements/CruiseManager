@@ -308,19 +308,27 @@ namespace CruiseManager.Core.App
 
         public void SaveAs(String fileName)
         {
-            try
+            var fullPath = Path.GetFullPath(fileName);
+
+            FileAttributes atts = File.GetAttributes(fileName);
+            if ((atts & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
             {
-                this.Database.CopyAs(fileName, true);
+                System.Windows.Forms.MessageBox.Show("This file is read only.");
+            }
+            else
+            {
+                //if file path is the same as our current path, skip creating new file and just save
+                if (String.Compare(
+                    Path.GetFullPath(Database.Path),
+                    fullPath,
+                    StringComparison.InvariantCultureIgnoreCase) != 0)
+                {
+                    this.Database.CopyAs(fileName, true);
+                }
+
                 //save after copying
                 this.Save();
                 this.MainWindow.Text = System.IO.Path.GetFileName(this.Database.Path);
-            }
-            catch (Exception ex)
-            {
-                if (!this.ExceptionHandler.Handel(ex))
-                {
-                    throw;
-                }
             }
         }
 

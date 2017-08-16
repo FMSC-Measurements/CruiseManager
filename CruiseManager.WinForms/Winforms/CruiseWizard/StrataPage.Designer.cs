@@ -49,6 +49,7 @@
             this.bindingNavigator = new System.Windows.Forms.BindingNavigator(this.components);
             this.bindingNavigatorAddNewItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorDeleteItem = new System.Windows.Forms.ToolStripButton();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -61,7 +62,7 @@
             this.CodeTextBox = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.FixedPlotSizeTextBox = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.yieldCombo = new System.Windows.Forms.ComboBox();
             this.CuttingUnitGridView = new FMSC.Controls.SelectedItemsGridView();
             this.codeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.areaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -71,8 +72,8 @@
             this.CuttingUnitBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.SampleGroupButton = new System.Windows.Forms.Button();
             this.CuttingUnitButton = new System.Windows.Forms.Button();
+            this._btn_cancel = new System.Windows.Forms.Button();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             label10 = new System.Windows.Forms.Label();
             label11 = new System.Windows.Forms.Label();
             label13 = new System.Windows.Forms.Label();
@@ -209,6 +210,12 @@
             this.bindingNavigatorDeleteItem.Size = new System.Drawing.Size(60, 20);
             this.bindingNavigatorDeleteItem.Text = "Delete";
             // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(40, 15);
+            this.toolStripLabel1.Text = "Strata:";
+            // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
@@ -268,18 +275,19 @@
             this.tableLayoutPanel2.Controls.Add(this.FixedPlotSizeTextBox, 3, 1);
             this.tableLayoutPanel2.Controls.Add(label7, 2, 1);
             this.tableLayoutPanel2.Controls.Add(label10, 2, 2);
-            this.tableLayoutPanel2.Controls.Add(this.textBox5, 5, 2);
             this.tableLayoutPanel2.Controls.Add(label8, 4, 2);
             this.tableLayoutPanel2.Controls.Add(label1, 4, 1);
+            this.tableLayoutPanel2.Controls.Add(this.yieldCombo, 5, 2);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(163, 19);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(163, 24);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 4;
+            this.tableLayoutPanel2.RowCount = 5;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(464, 112);
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(464, 122);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // _kzTB
@@ -288,7 +296,7 @@
             this._kzTB.Enabled = false;
             this._kzTB.Location = new System.Drawing.Point(403, 31);
             this._kzTB.Name = "_kzTB";
-            this._kzTB.Size = new System.Drawing.Size(34, 22);
+            this._kzTB.Size = new System.Drawing.Size(42, 22);
             this._kzTB.TabIndex = 7;
             // 
             // YearComboBox
@@ -377,7 +385,7 @@
             this.textBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBox3.Location = new System.Drawing.Point(86, 87);
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(375, 22);
+            this.textBox3.Size = new System.Drawing.Size(438, 22);
             this.textBox3.TabIndex = 3;
             // 
             // label6
@@ -412,15 +420,6 @@
             label7.Text = "Fixed Plot Size";
             label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // textBox5
-            // 
-            this.textBox5.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.StrataBindingSource, "YieldComponent", true));
-            this.textBox5.Location = new System.Drawing.Point(403, 59);
-            this.textBox5.MaxLength = 2;
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(34, 22);
-            this.textBox5.TabIndex = 8;
-            // 
             // label8
             // 
             label8.AutoSize = true;
@@ -443,12 +442,26 @@
             label1.Text = "3PPNT KZ";
             label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // yieldCombo
+            // 
+            this.yieldCombo.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.StrataBindingSource, "YieldComponent", true));
+            this.yieldCombo.FormattingEnabled = true;
+            this.yieldCombo.Items.AddRange(new object[] {
+            "CL",
+            "CD",
+            "NL",
+            "ND"});
+            this.yieldCombo.Location = new System.Drawing.Point(403, 59);
+            this.yieldCombo.Name = "yieldCombo";
+            this.yieldCombo.Size = new System.Drawing.Size(42, 21);
+            this.yieldCombo.TabIndex = 20;
+            // 
             // label3
             // 
             label3.AutoSize = true;
             label3.BackColor = System.Drawing.Color.DarkSeaGreen;
             label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            label3.Location = new System.Drawing.Point(160, 134);
+            label3.Location = new System.Drawing.Point(160, 149);
             label3.Margin = new System.Windows.Forms.Padding(0);
             label3.Name = "label3";
             label3.Padding = new System.Windows.Forms.Padding(5, 3, 0, 0);
@@ -462,7 +475,7 @@
             label4.BackColor = System.Drawing.Color.DarkSeaGreen;
             label4.Dock = System.Windows.Forms.DockStyle.Fill;
             label4.Location = new System.Drawing.Point(160, 0);
-            label4.Margin = new System.Windows.Forms.Padding(0);
+            label4.Margin = new System.Windows.Forms.Padding(0, 0, 0, 5);
             label4.Name = "label4";
             label4.Padding = new System.Windows.Forms.Padding(5, 3, 0, 0);
             label4.Size = new System.Drawing.Size(470, 16);
@@ -484,7 +497,7 @@
             this.paymentUnitDataGridViewTextBoxColumn});
             this.CuttingUnitGridView.DataSource = this.CuttingUnitBindingSource;
             this.CuttingUnitGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CuttingUnitGridView.Location = new System.Drawing.Point(160, 150);
+            this.CuttingUnitGridView.Location = new System.Drawing.Point(160, 165);
             this.CuttingUnitGridView.Margin = new System.Windows.Forms.Padding(0);
             this.CuttingUnitGridView.Name = "CuttingUnitGridView";
             this.CuttingUnitGridView.ReadOnly = true;
@@ -492,7 +505,7 @@
             this.CuttingUnitGridView.RowTemplate.Height = 24;
             this.CuttingUnitGridView.SelectedItems = null;
             this.CuttingUnitGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.CuttingUnitGridView.Size = new System.Drawing.Size(470, 272);
+            this.CuttingUnitGridView.Size = new System.Drawing.Size(470, 257);
             this.CuttingUnitGridView.TabIndex = 2;
             this.CuttingUnitGridView.VirtualMode = true;
             // 
@@ -553,15 +566,18 @@
             // tableLayoutPanel3
             // 
             tableLayoutPanel3.BackColor = System.Drawing.Color.DarkSeaGreen;
-            tableLayoutPanel3.ColumnCount = 5;
+            tableLayoutPanel3.ColumnCount = 7;
             tableLayoutPanel1.SetColumnSpan(tableLayoutPanel3, 2);
-            tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 5F));
+            tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 90F));
+            tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 5F));
-            tableLayoutPanel3.Controls.Add(this.SampleGroupButton, 3, 1);
+            tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            tableLayoutPanel3.Controls.Add(this.SampleGroupButton, 5, 1);
             tableLayoutPanel3.Controls.Add(this.CuttingUnitButton, 1, 1);
+            tableLayoutPanel3.Controls.Add(this._btn_cancel, 3, 1);
             tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             tableLayoutPanel3.Location = new System.Drawing.Point(0, 422);
             tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
@@ -579,7 +595,7 @@
             this.SampleGroupButton.AutoSize = true;
             this.SampleGroupButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.SampleGroupButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SampleGroupButton.Location = new System.Drawing.Point(497, 12);
+            this.SampleGroupButton.Location = new System.Drawing.Point(489, 12);
             this.SampleGroupButton.Margin = new System.Windows.Forms.Padding(0);
             this.SampleGroupButton.Name = "SampleGroupButton";
             this.SampleGroupButton.Size = new System.Drawing.Size(111, 25);
@@ -594,7 +610,7 @@
             this.CuttingUnitButton.AutoSize = true;
             this.CuttingUnitButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.CuttingUnitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CuttingUnitButton.Location = new System.Drawing.Point(20, 12);
+            this.CuttingUnitButton.Location = new System.Drawing.Point(30, 12);
             this.CuttingUnitButton.Margin = new System.Windows.Forms.Padding(0);
             this.CuttingUnitButton.Name = "CuttingUnitButton";
             this.CuttingUnitButton.Size = new System.Drawing.Size(107, 25);
@@ -603,16 +619,24 @@
             this.CuttingUnitButton.UseVisualStyleBackColor = false;
             this.CuttingUnitButton.Click += new System.EventHandler(this.CuttingUnitButton_Click);
             // 
+            // _btn_cancel
+            // 
+            this._btn_cancel.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this._btn_cancel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._btn_cancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this._btn_cancel.Location = new System.Drawing.Point(147, 12);
+            this._btn_cancel.Margin = new System.Windows.Forms.Padding(0);
+            this._btn_cancel.Name = "_btn_cancel";
+            this._btn_cancel.Size = new System.Drawing.Size(53, 25);
+            this._btn_cancel.TabIndex = 2;
+            this._btn_cancel.Text = "Cancel";
+            this._btn_cancel.UseVisualStyleBackColor = false;
+            this._btn_cancel.Click += new System.EventHandler(this._btn_cancel_Click);
+            // 
             // errorProvider1
             // 
             this.errorProvider1.ContainerControl = this;
             this.errorProvider1.DataSource = this.StrataBindingSource;
-            // 
-            // toolStripLabel1
-            // 
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(40, 15);
-            this.toolStripLabel1.Text = "Strata:";
             // 
             // StrataPage
             // 
@@ -671,8 +695,9 @@
         private System.Windows.Forms.TextBox CodeTextBox;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.TextBox FixedPlotSizeTextBox;
-        private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.ComboBox yieldCombo;
+        private System.Windows.Forms.Button _btn_cancel;
     }
 }

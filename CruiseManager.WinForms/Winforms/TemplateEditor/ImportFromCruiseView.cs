@@ -10,24 +10,50 @@ namespace CruiseManager.WinForms.TemplateEditor
 {
     public partial class ImportFromCruiseView : UserControlView
     {
-        public ImportFromCruiseView(WindowPresenter windowPresenter, TemplateEditViewPresenter viewPresenter)
+        #region CopyFromDatabase
+
+        private DAL _copyFromDB;
+
+        protected DAL CopyFromDB
+        {
+            get { return _copyFromDB; }
+            set
+            {
+                _copyFromDB = value;
+                OnCopyFromDatabaseChanged();
+            }
+        }
+
+        private void OnCopyFromDatabaseChanged()
+        {
+            this._BS_TDV.DataSource = TreeDefaults = CopyFromDB.From<TreeDefaultValueDO>().Read().ToList();
+        }
+
+        #endregion CopyFromDatabase
+
+        protected WindowPresenter WindowPresenter { get; set; }
+
+        public IList<TreeDefaultValueDO> TreeDefaults { get; set; }
+        public List<TreeDefaultValueDO> TreeDefaultsToCopy { get; set; } = new List<TreeDefaultValueDO>();
+
+        public ApplicationControllerBase ApplicationController { get; set; }
+
+        public bool ReplaceExistingVolEq => _replaceVolEqRB.Checked;
+
+        protected ImportFromCruiseView()
         {
             InitializeComponent();
-            this.WindowPresenter = windowPresenter;
-            this.ApplicationController = viewPresenter.ApplicationController;
 
-            //this.UserCommands = new ViewCommand[]{
-            //    ApplicationController.MakeViewCommand("Import", this.Finish ),
-            //    ApplicationController.MakeViewCommand("Cancel", this.WindowPresenter.ShowTemplateLandingLayout)
-            //};
-
-            this.TreeDefaultsToCopy = new List<TreeDefaultValueDO>();
             this.selectedItemsGridView1.SelectedItems = this.TreeDefaultsToCopy;
         }
 
-        public ImportFromCruiseView(string fileName, WindowPresenter windowPresenter, TemplateEditViewPresenter viewPresenter) : this(windowPresenter, viewPresenter)
+        public ImportFromCruiseView(string fileName, WindowPresenter windowPresenter, TemplateEditViewPresenter viewPresenter)
+            : this()
         {
-            this._copyFromDB = new DAL(fileName);
+            this.WindowPresenter = windowPresenter;
+            this.ApplicationController = viewPresenter.ApplicationController;
+
+            this.CopyFromDB = new DAL(fileName);
         }
 
         public new TemplateEditViewPresenter ViewPresenter
@@ -36,35 +62,7 @@ namespace CruiseManager.WinForms.TemplateEditor
             set { base.ViewPresenter = value; }
         }
 
-        protected WindowPresenter WindowPresenter { get; set; }
-        protected ApplicationControllerBase ApplicationController { get; set; }
-        public List<TreeDefaultValueDO> TreeDefaults { get; set; }
-        public List<TreeDefaultValueDO> TreeDefaultsToCopy { get; set; }
-
-        public string FileName
-        {
-            get { return this._copyFromDB.Path; }
-        }
-
-        private DAL _copyFromDB;
-
-        public bool ReplaceExistingVolEq
-        {
-            get { return _replaceVolEqRB.Checked; }
-        }
-
-        private void _importVolEqCB_CheckedChanged(object sender, EventArgs e)
-        {
-            this._volEqOptGB.Enabled = this._importVolEqCB.Checked;
-        }
-
-        private void LoadTreeDefaults()
-        {
-            this.TreeDefaults = this._copyFromDB.From<TreeDefaultValueDO>().Read().ToList();
-            this._BS_TDV.DataSource = this.TreeDefaults;
-        }
-
-        public void Finish()
+        public void DoImport()
         {
             if (this._importVolEqCB.Checked)
             {
@@ -82,15 +80,19 @@ namespace CruiseManager.WinForms.TemplateEditor
                 {
                     this.ApplicationController.Database.RollbackTransaction();
                 }
-
-                //this.ApplicationController.Database.DirectCopy(this._copyFromDB, CruiseDAL.Schema.VOLUMEEQUATION._NAME, null, cOpt);
             }
 
             foreach (TreeDefaultValueDO tdv in TreeDefaultsToCopy)
             {
-                tdv.DAL = this.ApplicationController.Database;
-                tdv.Save(FMSC.ORM.Core.SQL.OnConflictOption.Ignore);
+                ApplicationController.Database.Insert(tdv, (object)null, FMSC.ORM.Core.SQL.OnConflictOption.Ignore);
             }
+        }
+
+        #region event handlers
+
+        private void _importVolEqCB_CheckedChanged(object sender, EventArgs e)
+        {
+            this._volEqOptGB.Enabled = this._importVolEqCB.Checked;
         }
 
         private void _selectAllTDVBTN_Click(object sender, EventArgs e)
@@ -104,5 +106,19 @@ namespace CruiseManager.WinForms.TemplateEditor
             }
             this.selectedItemsGridView1.Refresh();
         }
+
+        private void _btn_import_Click(object sender, EventArgs e)
+        {
+            if (TreeDefaultsToCopy.Count > 0 || _importVolEqCB.Checked == true)
+            {
+                DoImport();
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show(this, "nothing selected");
+            }
+        }
+
+        #endregion event handlers
     }
 }

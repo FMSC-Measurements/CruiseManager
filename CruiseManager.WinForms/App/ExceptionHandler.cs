@@ -13,6 +13,11 @@ namespace CruiseManager.WinForms.App
                 MessageBox.Show("File is Read Only");
                 return true;
             }
+            if (e is System.IO.IOException)
+            {
+                MessageBox.Show($"File Error {e.GetType().Name}");
+                return true;
+            }     
             if (e is UserFacingException)
             {
                 //WindowPresenter.Instance.ShowMessage(e.Message, null);

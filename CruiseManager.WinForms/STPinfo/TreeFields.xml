@@ -163,7 +163,7 @@
     <Width>0.0</Width>
   </TreeFieldSetupDO>
     <TreeFieldSetupDO>
-    <Field>UpperStemDOB</Field>
+    <Field>UpperStemDiameter</Field>
     <FieldOrder>0</FieldOrder>
     <Heading>Upper Stem DOB</Heading>
     <Width>0.0</Width>

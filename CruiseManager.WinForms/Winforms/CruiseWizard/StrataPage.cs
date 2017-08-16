@@ -183,5 +183,10 @@ namespace CruiseManager.WinForms.CruiseWizard
         }
 
         #endregion IPage Members
+
+        private void _btn_cancel_Click(object sender, EventArgs e)
+        {
+            MasterView.Close();
+        }
     }
 }

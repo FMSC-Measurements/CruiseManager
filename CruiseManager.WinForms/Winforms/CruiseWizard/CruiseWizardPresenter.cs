@@ -285,7 +285,7 @@ namespace CruiseManager.WinForms.CruiseWizard
 
                 //only load FIX and PNT Cruise methods for Recon cruises
                 CruiseMethods = _templateDatabase.GetCruiseMethods(Sale.Purpose == "Recon");
-
+                _fileHasTemplate = true;
                 StartAsynCopyTemplate(_templateDatabase);
             }
             catch (Exception)
@@ -404,7 +404,7 @@ namespace CruiseManager.WinForms.CruiseWizard
         {
             if (!_isFinished)
             {
-                var d = MessageBox.Show("Are you sure you want to exit?", "Warning", MessageBoxButtons.YesNo);
+                var d = MessageBox.Show(View, "Are you sure you want to exit?", "Warning", MessageBoxButtons.YesNo);
                 if (d == DialogResult.Yes)
                 {
                     switch (View.PageHost.CurrentPage.Name)
@@ -443,7 +443,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             Sale.Validate();
             if (Sale.HasErrors())
             {
-                MessageBox.Show(Sale.Error, "Warning", MessageBoxButtons.OK);
+                MessageBox.Show(View, Sale.Error, "Warning", MessageBoxButtons.OK);
                 return;
             }
 
@@ -457,14 +457,14 @@ namespace CruiseManager.WinForms.CruiseWizard
                 }
                 else if (string.IsNullOrEmpty(templatePath))
                 {
-                    if (MessageBox.Show("No Template selected.\r\nWould you like to continue?", "Continue?", MessageBoxButtons.YesNo) == DialogResult.No)
+                    if (MessageBox.Show(View, "No Template selected.\r\nWould you like to continue?", "Continue?", MessageBoxButtons.YesNo) == DialogResult.No)
                     {
                         return;
                     }
                 }
                 else if (!File.Exists(templatePath))
                 {
-                    if (MessageBox.Show("Template path is invalid.\r\nWould you like to continue?", "Continue?", MessageBoxButtons.YesNo) == DialogResult.No)
+                    if (MessageBox.Show(View, "Template path is invalid.\r\nWould you like to continue?", "Continue?", MessageBoxButtons.YesNo) == DialogResult.No)
                     {
                         return;
                     }
@@ -477,6 +477,15 @@ namespace CruiseManager.WinForms.CruiseWizard
             }
 
             ShowCuttingUnits();
+        }
+
+        public void ShowSalesPage()
+        {
+            var e = new CancelEventArgs();
+            OnLeavingCuttingUnits(e);
+            if (e.Cancel) { return; }
+
+            View.Display("Sale");
         }
 
         public void ShowCuttingUnits()
@@ -495,11 +504,22 @@ namespace CruiseManager.WinForms.CruiseWizard
 
         public void ShowStratum()
         {
+            var e = new CancelEventArgs();
+            OnLeavingCuttingUnits(e);
+            if (e.Cancel) { return; }
+
+            View.Display("Strata");
+        }
+
+        protected void OnLeavingCuttingUnits(CancelEventArgs e)
+        {
             string errorMsg;
             //display error message if strata data invalid
+
             if (AreCuttingUnitsValid(out errorMsg) == false)
             {
-                MessageBox.Show(errorMsg, "Warning", MessageBoxButtons.OK);
+                MessageBox.Show(View, errorMsg, "Warning", MessageBoxButtons.OK);
+                e.Cancel = true;
                 return;
             }
 
@@ -507,13 +527,18 @@ namespace CruiseManager.WinForms.CruiseWizard
             {
                 SaveCuttingUnits(false);
             }
-            catch
+            catch (FMSC.ORM.UniqueConstraintException)
             {
-                MessageBox.Show("error");
+                MessageBox.Show(View, "Cutting Unit Error: Unit # already exists.");
+                e.Cancel = true;
                 return;
             }
-
-            View.Display("Strata");
+            catch (Exception ex)
+            {
+                MessageBox.Show(View, ex.GetType().Name, "Error");
+                e.Cancel = true;
+                return;
+            }
         }
 
         public void ShowSampleGroups(StratumDO stratum)
@@ -521,7 +546,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             string errorMsg;
             if (AreStrataValid(out errorMsg) == false)
             {
-                MessageBox.Show(errorMsg, "Warning", MessageBoxButtons.OK);
+                MessageBox.Show(View, errorMsg, "Warning", MessageBoxButtons.OK);
                 return;
             }
 
@@ -551,8 +576,20 @@ namespace CruiseManager.WinForms.CruiseWizard
         protected bool AreCuttingUnitsValid(out string errorMsg)
         {
             bool allCUValid = true;
-            errorMsg = "Unit Errors Found";
+            errorMsg = "Unit Errors Found, ";
             //check has errors on all cutting units
+
+            var dupUnitCodes = CuttingUnits
+                .GroupBy(unit => unit.Code)
+                .Where(grouping => grouping.Count() > 1)
+                .Select(grouping => grouping.Key);
+
+            if (dupUnitCodes.Count() > 0)
+            {
+                errorMsg += $"Duplicates in Cutting Unit Code(s): {String.Join(", ", dupUnitCodes.ToArray())}";
+                allCUValid = false;
+            }
+
             foreach (CuttingUnitDO cu in CuttingUnits)
             {
                 cu.Validate();              //call validate before we check for errors
@@ -570,6 +607,12 @@ namespace CruiseManager.WinForms.CruiseWizard
         {
             bool allStValid = true;
             errorMsg = "Strata Errors Found";
+
+            if (Strata.Count() == 0)
+            {
+                errorMsg += "\r\nNo Strata";
+                return false;
+            }
 
             foreach (StratumDO st in Strata)
             {
@@ -614,6 +657,12 @@ namespace CruiseManager.WinForms.CruiseWizard
             foreach (StratumVM st in Strata)
             {
                 IList<SampleGroupDO> sgList = st.SampleGroups;
+
+                if (st.SampleGroups.Count() == 0)
+                {
+                    allSgValid = false;
+                    errorSB.AppendLine($"Stratum {st.Code} has no Sample Groups");
+                }
 
                 foreach (SampleGroupDO sg in sgList)
                 {
@@ -787,7 +836,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             string errorMsg;
             if (AllSampleGroupValid(out errorMsg) == false)
             {
-                MessageBox.Show(errorMsg, "Warning", MessageBoxButtons.OK);
+                MessageBox.Show(View, errorMsg, "Warning", MessageBoxButtons.OK);
                 return;
             }
 
@@ -798,7 +847,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(View, ex.Message);
                 return;
             }
             finally

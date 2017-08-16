@@ -65,6 +65,8 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.label2 = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this._btn_import = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this._treeDefaultPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selectedItemsGridView1)).BeginInit();
@@ -73,6 +75,7 @@
             this._volEqPage.SuspendLayout();
             this._volEqOptGB.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -83,7 +86,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(676, 441);
+            this.tabControl1.Size = new System.Drawing.Size(676, 403);
             this.tabControl1.TabIndex = 0;
             // 
             // _treeDefaultPage
@@ -92,7 +95,7 @@
             this._treeDefaultPage.Controls.Add(this.panel1);
             this._treeDefaultPage.Location = new System.Drawing.Point(4, 22);
             this._treeDefaultPage.Name = "_treeDefaultPage";
-            this._treeDefaultPage.Size = new System.Drawing.Size(668, 415);
+            this._treeDefaultPage.Size = new System.Drawing.Size(668, 377);
             this._treeDefaultPage.TabIndex = 2;
             this._treeDefaultPage.Text = "Tree Defaults";
             this._treeDefaultPage.UseVisualStyleBackColor = true;
@@ -130,7 +133,7 @@
             this.selectedItemsGridView1.RowHeadersVisible = false;
             this.selectedItemsGridView1.SelectedItems = null;
             this.selectedItemsGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.selectedItemsGridView1.Size = new System.Drawing.Size(668, 392);
+            this.selectedItemsGridView1.Size = new System.Drawing.Size(668, 354);
             this.selectedItemsGridView1.TabIndex = 0;
             this.selectedItemsGridView1.VirtualMode = true;
             // 
@@ -347,7 +350,7 @@
             this._volEqPage.Location = new System.Drawing.Point(4, 22);
             this._volEqPage.Name = "_volEqPage";
             this._volEqPage.Padding = new System.Windows.Forms.Padding(3);
-            this._volEqPage.Size = new System.Drawing.Size(668, 415);
+            this._volEqPage.Size = new System.Drawing.Size(668, 377);
             this._volEqPage.TabIndex = 0;
             this._volEqPage.Text = "Volume Equations";
             this._volEqPage.UseVisualStyleBackColor = true;
@@ -426,11 +429,42 @@
             this.tabPage1.Text = "Field Setup";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.tableLayoutPanel1.ColumnCount = 3;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this._btn_import, 1, 1);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 403);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(676, 38);
+            this.tableLayoutPanel1.TabIndex = 2;
+            // 
+            // _btn_import
+            // 
+            this._btn_import.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this._btn_import.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this._btn_import.Location = new System.Drawing.Point(23, 7);
+            this._btn_import.Name = "_btn_import";
+            this._btn_import.Size = new System.Drawing.Size(75, 23);
+            this._btn_import.TabIndex = 0;
+            this._btn_import.Text = "Import";
+            this._btn_import.UseVisualStyleBackColor = false;
+            this._btn_import.Click += new System.EventHandler(this._btn_import_Click);
+            // 
             // ImportFromCruiseView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.tableLayoutPanel1);
             this.Font = global::CruiseManager.Properties.Settings.Default.AppFont;
             this.Name = "ImportFromCruiseView";
             this.Size = new System.Drawing.Size(676, 441);
@@ -446,6 +480,7 @@
             this._volEqOptGB.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -485,5 +520,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn barkThicknessRatioDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn averageZDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn referenceHeightPercentDataGridViewTextBoxColumn;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Button _btn_import;
     }
 }

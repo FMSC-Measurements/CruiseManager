@@ -34,31 +34,31 @@
             this._fieldSetup_Child_TabControl = new System.Windows.Forms.TabControl();
             this._treeField_TabPage = new System.Windows.Forms.TabPage();
             this._treeFieldWidget = new FMSC.Controls.OrderableAddRemoveWidget();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label5 = new System.Windows.Forms.Label();
             this._treeFieldWidthTB = new System.Windows.Forms.TextBox();
             this._BS_TreeField = new System.Windows.Forms.BindingSource(this.components);
             this._TreeFieldHeadingTB = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this._logField_TabPage = new System.Windows.Forms.TabPage();
             this._logFieldWidget = new FMSC.Controls.OrderableAddRemoveWidget();
-            this._logFieldWidthTB = new System.Windows.Forms.TextBox();
-            this._BS_LogField = new System.Windows.Forms.BindingSource(this.components);
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label14 = new System.Windows.Forms.Label();
             this._logFieldHeadingTB = new System.Windows.Forms.TextBox();
+            this._BS_LogField = new System.Windows.Forms.BindingSource(this.components);
+            this._logFieldWidthTB = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this._strataLB = new System.Windows.Forms.ListBox();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             label20 = new System.Windows.Forms.Label();
             label13 = new System.Windows.Forms.Label();
             this._fieldSetup_Child_TabControl.SuspendLayout();
             this._treeField_TabPage.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._BS_TreeField)).BeginInit();
             this._logField_TabPage.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._BS_LogField)).BeginInit();
             this.groupBox3.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // label20
@@ -117,13 +117,46 @@
             this._treeFieldWidget.MinimumSize = new System.Drawing.Size(0, 183);
             this._treeFieldWidget.Name = "_treeFieldWidget";
             this._treeFieldWidget.SelectedItemsDataSource = null;
-            this._treeFieldWidget.SelectedValue = null;
             this._treeFieldWidget.Size = new System.Drawing.Size(563, 373);
             this._treeFieldWidget.TabIndex = 0;
             this._treeFieldWidget.ValueMember = null;
-            this._treeFieldWidget.SelectionMoved += new FMSC.Controls.ItemMovedEventHandler(this._treeFieldWidget_SelectionMoved);
+            this._treeFieldWidget.SelectionMoved += new System.EventHandler<FMSC.Controls.ItemMovedEventArgs>(this._treeFieldWidget_SelectionMoved);
             this._treeFieldWidget.SelectionAdded += new FMSC.Controls.SelectionAddedEventHandler(this._treeFieldWidget_SelectionAdded);
             this._treeFieldWidget.SelectedValueChanged += new FMSC.Controls.SelectedValueChangedEventHandler(this._treeFieldWidget_SelectedValueChanged);
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.AutoSize = true;
+            this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tableLayoutPanel1.ColumnCount = 3;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Controls.Add(label20, 2, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label5, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this._treeFieldWidthTB, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(label13, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this._TreeFieldHeadingTB, 0, 1);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 376);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(563, 41);
+            this.tableLayoutPanel1.TabIndex = 5;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label5.Location = new System.Drawing.Point(3, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(94, 13);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "Heading";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // _treeFieldWidthTB
             // 
@@ -146,17 +179,6 @@
             this._TreeFieldHeadingTB.Size = new System.Drawing.Size(94, 22);
             this._TreeFieldHeadingTB.TabIndex = 1;
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label5.Location = new System.Drawing.Point(3, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(94, 13);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "Heading";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            // 
             // _logField_TabPage
             // 
             this._logField_TabPage.Controls.Add(this._logFieldWidget);
@@ -178,26 +200,32 @@
             this._logFieldWidget.MinimumSize = new System.Drawing.Size(0, 183);
             this._logFieldWidget.Name = "_logFieldWidget";
             this._logFieldWidget.SelectedItemsDataSource = null;
-            this._logFieldWidget.SelectedValue = null;
             this._logFieldWidget.Size = new System.Drawing.Size(563, 373);
             this._logFieldWidget.TabIndex = 0;
             this._logFieldWidget.ValueMember = null;
-            this._logFieldWidget.SelectionMoved += new FMSC.Controls.ItemMovedEventHandler(this._logFieldWidget_SelectionMoved);
+            this._logFieldWidget.SelectionMoved += new System.EventHandler<FMSC.Controls.ItemMovedEventArgs>(this._logFieldWidget_SelectionMoved);
             this._logFieldWidget.SelectionAdded += new FMSC.Controls.SelectionAddedEventHandler(this._logFieldWidget_SelectionAdded);
             this._logFieldWidget.SelectedValueChanged += new FMSC.Controls.SelectedValueChangedEventHandler(this._logFieldWidget_SelectedValueChanged);
             // 
-            // _logFieldWidthTB
+            // tableLayoutPanel2
             // 
-            this._logFieldWidthTB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this._BS_LogField, "Width", true));
-            this._logFieldWidthTB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._logFieldWidthTB.Location = new System.Drawing.Point(103, 16);
-            this._logFieldWidthTB.Name = "_logFieldWidthTB";
-            this._logFieldWidthTB.Size = new System.Drawing.Size(94, 22);
-            this._logFieldWidthTB.TabIndex = 5;
-            // 
-            // _BS_LogField
-            // 
-            this._BS_LogField.DataSource = typeof(CruiseDAL.DataObjects.LogFieldSetupDefaultDO);
+            this.tableLayoutPanel2.AutoSize = true;
+            this.tableLayoutPanel2.ColumnCount = 3;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Controls.Add(this._logFieldHeadingTB, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this._logFieldWidthTB, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.label6, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.label14, 1, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 376);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 2;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(563, 41);
+            this.tableLayoutPanel2.TabIndex = 4;
             // 
             // label14
             // 
@@ -217,6 +245,19 @@
             this._logFieldHeadingTB.Name = "_logFieldHeadingTB";
             this._logFieldHeadingTB.Size = new System.Drawing.Size(94, 22);
             this._logFieldHeadingTB.TabIndex = 1;
+            // 
+            // _BS_LogField
+            // 
+            this._BS_LogField.DataSource = typeof(CruiseDAL.DataObjects.LogFieldSetupDefaultDO);
+            // 
+            // _logFieldWidthTB
+            // 
+            this._logFieldWidthTB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this._BS_LogField, "Width", true));
+            this._logFieldWidthTB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._logFieldWidthTB.Location = new System.Drawing.Point(103, 16);
+            this._logFieldWidthTB.Name = "_logFieldWidthTB";
+            this._logFieldWidthTB.Size = new System.Drawing.Size(94, 22);
+            this._logFieldWidthTB.TabIndex = 5;
             // 
             // label6
             // 
@@ -248,49 +289,6 @@
             this._strataLB.TabIndex = 0;
             this._strataLB.SelectedValueChanged += new System.EventHandler(this._strataLB_SelectedValueChanged);
             // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.AutoSize = true;
-            this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel1.ColumnCount = 3;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Controls.Add(label20, 2, 1);
-            this.tableLayoutPanel1.Controls.Add(this.label5, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this._treeFieldWidthTB, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(label13, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this._TreeFieldHeadingTB, 0, 1);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 376);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(563, 41);
-            this.tableLayoutPanel1.TabIndex = 5;
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.AutoSize = true;
-            this.tableLayoutPanel2.ColumnCount = 3;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this._logFieldHeadingTB, 0, 1);
-            this.tableLayoutPanel2.Controls.Add(this._logFieldWidthTB, 1, 1);
-            this.tableLayoutPanel2.Controls.Add(this.label6, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.label14, 1, 0);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 376);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 2;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(563, 41);
-            this.tableLayoutPanel2.TabIndex = 4;
-            // 
             // FieldSetupView
             // 
             this.Controls.Add(this._fieldSetup_Child_TabControl);
@@ -301,15 +299,15 @@
             this._fieldSetup_Child_TabControl.ResumeLayout(false);
             this._treeField_TabPage.ResumeLayout(false);
             this._treeField_TabPage.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this._BS_TreeField)).EndInit();
             this._logField_TabPage.ResumeLayout(false);
             this._logField_TabPage.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._BS_LogField)).EndInit();
-            this.groupBox3.ResumeLayout(false);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._BS_LogField)).EndInit();
+            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

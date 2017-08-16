@@ -88,7 +88,6 @@
             this.TreeFieldOrderableAddRemoveWidget.MinimumSize = new System.Drawing.Size(0, 183);
             this.TreeFieldOrderableAddRemoveWidget.Name = "TreeFieldOrderableAddRemoveWidget";
             this.TreeFieldOrderableAddRemoveWidget.SelectedItemsDataSource = null;
-            this.TreeFieldOrderableAddRemoveWidget.SelectedValue = null;
             this.TreeFieldOrderableAddRemoveWidget.Size = new System.Drawing.Size(368, 247);
             this.TreeFieldOrderableAddRemoveWidget.TabIndex = 0;
             this.TreeFieldOrderableAddRemoveWidget.ValueMember = null;
@@ -117,7 +116,6 @@
             this.LogOrderableAddRemoveWidget.MinimumSize = new System.Drawing.Size(0, 183);
             this.LogOrderableAddRemoveWidget.Name = "LogOrderableAddRemoveWidget";
             this.LogOrderableAddRemoveWidget.SelectedItemsDataSource = null;
-            this.LogOrderableAddRemoveWidget.SelectedValue = null;
             this.LogOrderableAddRemoveWidget.Size = new System.Drawing.Size(368, 247);
             this.LogOrderableAddRemoveWidget.TabIndex = 0;
             this.LogOrderableAddRemoveWidget.ValueMember = null;
@@ -142,7 +140,6 @@
             this.PlotFieldOrderableAddRemoveWidget.MinimumSize = new System.Drawing.Size(0, 183);
             this.PlotFieldOrderableAddRemoveWidget.Name = "PlotFieldOrderableAddRemoveWidget";
             this.PlotFieldOrderableAddRemoveWidget.SelectedItemsDataSource = null;
-            this.PlotFieldOrderableAddRemoveWidget.SelectedValue = null;
             this.PlotFieldOrderableAddRemoveWidget.Size = new System.Drawing.Size(368, 247);
             this.PlotFieldOrderableAddRemoveWidget.TabIndex = 0;
             this.PlotFieldOrderableAddRemoveWidget.ValueMember = null;
@@ -167,7 +164,6 @@
             this.CountFieldOrderableAddRemoveWidget.MinimumSize = new System.Drawing.Size(0, 183);
             this.CountFieldOrderableAddRemoveWidget.Name = "CountFieldOrderableAddRemoveWidget";
             this.CountFieldOrderableAddRemoveWidget.SelectedItemsDataSource = null;
-            this.CountFieldOrderableAddRemoveWidget.SelectedValue = null;
             this.CountFieldOrderableAddRemoveWidget.Size = new System.Drawing.Size(368, 247);
             this.CountFieldOrderableAddRemoveWidget.TabIndex = 0;
             this.CountFieldOrderableAddRemoveWidget.ValueMember = null;
