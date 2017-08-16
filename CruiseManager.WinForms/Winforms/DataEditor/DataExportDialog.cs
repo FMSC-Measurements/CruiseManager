@@ -26,7 +26,7 @@ namespace CruiseManager.WinForms.DataEditor
             InitializeComponent();
         }
 
-        public DataExportDialog(ApplicationControllerBase applicationController, IEnumerable<TreeVM> Trees, IEnumerable<LogVM> Logs, IEnumerable<PlotDO> Plots, IEnumerable<CountTreeDO> Counts)
+        public DataExportDialog(ApplicationControllerBase applicationController, IEnumerable<TreeVM> Trees, IEnumerable<LogVM> Logs, IEnumerable<PlotDO> Plots, IEnumerable<CountVM> Counts)
         {
             ApplicationController = applicationController;
 
@@ -89,15 +89,15 @@ namespace CruiseManager.WinForms.DataEditor
         {
             var list = new List<FieldDiscriptor>();
 
-            this.AllLogFields.Add(new FieldDiscriptor { Field = nameof(LogVM.CUCode), Header = "Cutting Unit", DataType = typeof(LogVM) });
-            this.AllLogFields.Add(new FieldDiscriptor { Field = nameof(LogVM.StratumCode), Header = "Stratum", DataType = typeof(LogVM) });
-            this.AllLogFields.Add(new FieldDiscriptor { Field = nameof(LogVM.SGCode), Header = "Sample Group", DataType = typeof(LogVM) });
-            this.AllLogFields.Add(new FieldDiscriptor { Field = nameof(LogVM.TreeSpecies), Header = "Species", DataType = typeof(LogVM) });
-            this.AllLogFields.Add(new FieldDiscriptor { Field = nameof(LogVM.TreeNumber), Header = "Tree Number", DataType = typeof(LogVM) });
-            this.AllLogFields.Add(new FieldDiscriptor { Field = nameof(LogVM.PlotNumber), Header = "Plot Number", DataType = typeof(LogVM) });
-            this.AllLogFields.Sort((x, y) => string.Compare(x.Header, y.Header, StringComparison.CurrentCulture));
+            list.Add(new FieldDiscriptor { Field = nameof(LogVM.CUCode), Header = "Cutting Unit", DataType = typeof(LogVM) });
+            list.Add(new FieldDiscriptor { Field = nameof(LogVM.StratumCode), Header = "Stratum", DataType = typeof(LogVM) });
+            list.Add(new FieldDiscriptor { Field = nameof(LogVM.SGCode), Header = "Sample Group", DataType = typeof(LogVM) });
+            list.Add(new FieldDiscriptor { Field = nameof(LogVM.TreeSpecies), Header = "Species", DataType = typeof(LogVM) });
+            list.Add(new FieldDiscriptor { Field = nameof(LogVM.TreeNumber), Header = "Tree Number", DataType = typeof(LogVM) });
+            list.Add(new FieldDiscriptor { Field = nameof(LogVM.PlotNumber), Header = "Plot Number", DataType = typeof(LogVM) });
+            list.Sort((x, y) => string.Compare(x.Header, y.Header, StringComparison.CurrentCulture));
 
-            AllLogFields.AddRange(SetupService.GetLogFieldSetups()
+            list.AddRange(SetupService.GetLogFieldSetups()
                 .OrderBy(x => x.Field)
                 .Select(x => new FieldDiscriptor(x)));
             return list;
@@ -125,12 +125,12 @@ namespace CruiseManager.WinForms.DataEditor
         {
             return new List<FieldDiscriptor>(new FieldDiscriptor[]
                 {
-                    new FieldDiscriptor{ Field = "CuttingUnit", Header = "Cutting Unit", Format = "[Code]", DataType = typeof(CountTreeDO) },
-                    new FieldDiscriptor{ Field = "SampleGroup", Header = "Sample Group", Format = "[Code]", DataType = typeof(CountTreeDO) },
-                    new FieldDiscriptor{ Field = null, Header = "Stratum", DataType = typeof(CountTreeDO)},
-                    new FieldDiscriptor{ Field = "TreeDefaultValue", Header = "Species", Format = "[Species]", DataType = typeof(CountTreeDO)},
-                    new FieldDiscriptor{ Field = "TreeCount", Header = "Tree Count", DataType = typeof(CountTreeDO)},
-                    new FieldDiscriptor{ Field = "SumKPI", Header = "SumKPI", DataType = typeof(CountTreeDO)}
+                    new FieldDiscriptor{ Field = nameof(CountVM.UnitCode), Header = "Cutting Unit", DataType = typeof(CountVM) },
+                    new FieldDiscriptor{ Field = nameof(CountVM.SGCode), Header = "Sample Group", DataType = typeof(CountVM) },
+                    new FieldDiscriptor{ Field = nameof(CountVM.StratumCode), Header = "Stratum", DataType = typeof(CountVM)},
+                    new FieldDiscriptor{ Field = nameof(CountVM.Species), Header = "Species", DataType = typeof(CountVM)},
+                    new FieldDiscriptor{ Field = nameof(CountVM.TreeCount), Header = "Tree Count", DataType = typeof(CountVM)},
+                    new FieldDiscriptor{ Field = nameof(CountVM.SumKPI), Header = "SumKPI", DataType = typeof(CountVM)}
                 });
         }
 
@@ -160,7 +160,7 @@ namespace CruiseManager.WinForms.DataEditor
 
         public IEnumerable<PlotDO> Plots { get; set; }
 
-        public IEnumerable<CountTreeDO> Counts { get; set; }
+        public IEnumerable<CountVM> Counts { get; set; }
 
         public bool IsExportTreesSelected
         {
@@ -248,11 +248,6 @@ namespace CruiseManager.WinForms.DataEditor
 
         protected object GetFieldValue(object data, FieldDiscriptor field)
         {
-            if (field.Header == "Stratum" && data is CountTreeDO)
-            {
-                return ((CountTreeDO)data).SampleGroup.Stratum.Code;
-            }
-
             object obj = field.PropInfo.GetValue(data, null);
             if (obj is IFormattable && !string.IsNullOrEmpty(field.Format))
             {

@@ -40,7 +40,7 @@ namespace CruiseManager.Core.App
 
         public abstract void ShowDataEditor();
 
-        public abstract void ShowDataExportDialog(IEnumerable<TreeVM> Trees, IEnumerable<LogVM> Logs, IEnumerable<PlotDO> Plots, IEnumerable<CountTreeDO> Counts);
+        public abstract void ShowDataExportDialog(IEnumerable<TreeVM> Trees, IEnumerable<LogVM> Logs, IEnumerable<PlotDO> Plots, IEnumerable<CountVM> Counts);
 
         public abstract void ShowEditWizard();
 
