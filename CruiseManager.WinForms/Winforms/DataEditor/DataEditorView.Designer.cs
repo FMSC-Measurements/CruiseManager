@@ -178,11 +178,6 @@
             this._lbl_plotsCount = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this._DGV_Counts = new System.Windows.Forms.DataGridView();
-            this._BS_Counts = new System.Windows.Forms.BindingSource(this.components);
-            this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.CountTree_CN = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cuttingUnitDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -196,6 +191,11 @@
             this.createdDateDataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.modifiedByDataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.modifiedDateDataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._BS_Counts = new System.Windows.Forms.BindingSource(this.components);
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             label1 = new System.Windows.Forms.Label();
             label5 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
@@ -547,7 +547,7 @@
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage5);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -639,7 +639,7 @@
             this._DGV_Trees.Location = new System.Drawing.Point(3, 3);
             this._DGV_Trees.Name = "_DGV_Trees";
             this._DGV_Trees.RowTemplate.Height = 24;
-            this._DGV_Trees.Size = new System.Drawing.Size(568, 357);
+            this._DGV_Trees.Size = new System.Drawing.Size(568, 361);
             this._DGV_Trees.TabIndex = 0;
             this._DGV_Trees.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.TreeDataGrid_CellEnter);
             this._DGV_Trees.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.TreeDataGridView_CellValidating);
@@ -1151,12 +1151,12 @@
             // 
             this._BS_Trees.DataSource = typeof(CruiseManager.Core.Models.TreeVM);
             // 
-            // label8
+            // _lbl_treesCount
             // 
             this._lbl_treesCount.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this._lbl_treesCount.Location = new System.Drawing.Point(3, 360);
-            this._lbl_treesCount.Name = "label8";
-            this._lbl_treesCount.Size = new System.Drawing.Size(568, 17);
+            this._lbl_treesCount.Location = new System.Drawing.Point(3, 364);
+            this._lbl_treesCount.Name = "_lbl_treesCount";
+            this._lbl_treesCount.Size = new System.Drawing.Size(568, 13);
             this._lbl_treesCount.TabIndex = 1;
             this._lbl_treesCount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -1449,11 +1449,11 @@
             // 
             this._BS_Logs.DataSource = typeof(CruiseManager.Core.Models.LogVM);
             // 
-            // label9
+            // _lbl_logsCount
             // 
             this._lbl_logsCount.Dock = System.Windows.Forms.DockStyle.Bottom;
             this._lbl_logsCount.Location = new System.Drawing.Point(3, 360);
-            this._lbl_logsCount.Name = "label9";
+            this._lbl_logsCount.Name = "_lbl_logsCount";
             this._lbl_logsCount.Size = new System.Drawing.Size(568, 17);
             this._lbl_logsCount.TabIndex = 2;
             this._lbl_logsCount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1652,11 +1652,11 @@
             // 
             this._BS_Plots.DataSource = typeof(CruiseDAL.DataObjects.PlotDO);
             // 
-            // label10
+            // _lbl_plotsCount
             // 
             this._lbl_plotsCount.Dock = System.Windows.Forms.DockStyle.Bottom;
             this._lbl_plotsCount.Location = new System.Drawing.Point(3, 360);
-            this._lbl_plotsCount.Name = "label10";
+            this._lbl_plotsCount.Name = "_lbl_plotsCount";
             this._lbl_plotsCount.Size = new System.Drawing.Size(568, 17);
             this._lbl_plotsCount.TabIndex = 2;
             this._lbl_plotsCount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1703,47 +1703,6 @@
             this._DGV_Counts.TabIndex = 0;
             this._DGV_Counts.VirtualMode = true;
             this._DGV_Counts.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this._DGV_Counts_CellValueChanged);
-            // 
-            // _BS_Counts
-            // 
-            this._BS_Counts.DataSource = typeof(CruiseManager.Core.Models.CountVM);
-            // 
-            // tabPage5
-            // 
-            this.tabPage5.Controls.Add(panel2);
-            this.tabPage5.Location = new System.Drawing.Point(4, 22);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(574, 380);
-            this.tabPage5.TabIndex = 4;
-            this.tabPage5.Text = "Errors";
-            this.tabPage5.UseVisualStyleBackColor = true;
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.BackColor = System.Drawing.Color.DarkSeaGreen;
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(777, 24);
-            this.menuStrip1.TabIndex = 1;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // fileToolStripMenuItem
-            // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.exportToolStripMenuItem1});
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem.Text = "File";
-            // 
-            // exportToolStripMenuItem1
-            // 
-            this.exportToolStripMenuItem1.Name = "exportToolStripMenuItem1";
-            this.exportToolStripMenuItem1.Size = new System.Drawing.Size(107, 22);
-            this.exportToolStripMenuItem1.Text = "Export";
-            this.exportToolStripMenuItem1.Click += new System.EventHandler(this.exportToolStripMenuItem1_Click);
             // 
             // CountTree_CN
             // 
@@ -1858,6 +1817,47 @@
             this.modifiedDateDataGridViewTextBoxColumn3.HeaderText = "ModifiedDate";
             this.modifiedDateDataGridViewTextBoxColumn3.Name = "modifiedDateDataGridViewTextBoxColumn3";
             this.modifiedDateDataGridViewTextBoxColumn3.ReadOnly = true;
+            // 
+            // _BS_Counts
+            // 
+            this._BS_Counts.DataSource = typeof(CruiseManager.Core.Models.CountVM);
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(panel2);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(574, 380);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "Errors";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.BackColor = System.Drawing.Color.DarkSeaGreen;
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(777, 24);
+            this.menuStrip1.TabIndex = 1;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exportToolStripMenuItem1});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // exportToolStripMenuItem1
+            // 
+            this.exportToolStripMenuItem1.Name = "exportToolStripMenuItem1";
+            this.exportToolStripMenuItem1.Size = new System.Drawing.Size(107, 22);
+            this.exportToolStripMenuItem1.Text = "Export";
+            this.exportToolStripMenuItem1.Click += new System.EventHandler(this.exportToolStripMenuItem1_Click);
             // 
             // DataEditorView
             // 
