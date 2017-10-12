@@ -178,11 +178,6 @@
             this._lbl_plotsCount = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this._DGV_Counts = new System.Windows.Forms.DataGridView();
-            this._BS_Counts = new System.Windows.Forms.BindingSource(this.components);
-            this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.CountTree_CN = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cuttingUnitDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -196,6 +191,11 @@
             this.createdDateDataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.modifiedByDataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.modifiedDateDataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._BS_Counts = new System.Windows.Forms.BindingSource(this.components);
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             label1 = new System.Windows.Forms.Label();
             label5 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
@@ -257,7 +257,7 @@
             label5.AutoSize = true;
             label5.Location = new System.Drawing.Point(4, 64);
             label5.Name = "label5";
-            label5.Size = new System.Drawing.Size(117, 13);
+            label5.Size = new System.Drawing.Size(116, 13);
             label5.TabIndex = 2;
             label5.Text = "Tree Default / Species";
             // 
@@ -296,7 +296,7 @@
             panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             panel2.Location = new System.Drawing.Point(3, 3);
             panel2.Name = "panel2";
-            panel2.Size = new System.Drawing.Size(568, 374);
+            panel2.Size = new System.Drawing.Size(629, 460);
             panel2.TabIndex = 1;
             // 
             // _DGV_Errors
@@ -319,7 +319,7 @@
             this._DGV_Errors.Location = new System.Drawing.Point(0, 13);
             this._DGV_Errors.Name = "_DGV_Errors";
             this._DGV_Errors.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this._DGV_Errors.Size = new System.Drawing.Size(568, 361);
+            this._DGV_Errors.Size = new System.Drawing.Size(629, 447);
             this._DGV_Errors.TabIndex = 0;
             this._DGV_Errors.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this._DGV_Errors_CellMouseDoubleClick);
             this._DGV_Errors.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this._DGV_Errors_CellValueChanged);
@@ -399,7 +399,7 @@
             label6.Dock = System.Windows.Forms.DockStyle.Top;
             label6.Location = new System.Drawing.Point(0, 0);
             label6.Name = "label6";
-            label6.Size = new System.Drawing.Size(568, 13);
+            label6.Size = new System.Drawing.Size(629, 13);
             label6.TabIndex = 0;
             label6.Text = "Double Click Row To View Data Entry";
             // 
@@ -417,7 +417,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
-            this.splitContainer1.Size = new System.Drawing.Size(777, 406);
+            this.splitContainer1.Size = new System.Drawing.Size(838, 492);
             this.splitContainer1.SplitterDistance = 191;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -434,7 +434,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(191, 406);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(191, 492);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // panel1
@@ -445,7 +445,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 23);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(185, 380);
+            this.panel1.Size = new System.Drawing.Size(185, 466);
             this.panel1.TabIndex = 1;
             // 
             // groupBox2
@@ -547,11 +547,11 @@
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage5);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(582, 406);
+            this.tabControl1.Size = new System.Drawing.Size(643, 492);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -562,7 +562,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(574, 380);
+            this.tabPage1.Size = new System.Drawing.Size(635, 466);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Trees";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -639,7 +639,7 @@
             this._DGV_Trees.Location = new System.Drawing.Point(3, 3);
             this._DGV_Trees.Name = "_DGV_Trees";
             this._DGV_Trees.RowTemplate.Height = 24;
-            this._DGV_Trees.Size = new System.Drawing.Size(568, 357);
+            this._DGV_Trees.Size = new System.Drawing.Size(629, 443);
             this._DGV_Trees.TabIndex = 0;
             this._DGV_Trees.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.TreeDataGrid_CellEnter);
             this._DGV_Trees.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.TreeDataGridView_CellValidating);
@@ -695,7 +695,7 @@
             this.treeNumberDataGridViewTextBoxColumn.HeaderText = "Tree";
             this.treeNumberDataGridViewTextBoxColumn.Name = "treeNumberDataGridViewTextBoxColumn";
             this.treeNumberDataGridViewTextBoxColumn.ToolTipText = "Tree Number";
-            this.treeNumberDataGridViewTextBoxColumn.Width = 53;
+            this.treeNumberDataGridViewTextBoxColumn.Width = 52;
             // 
             // sampleGroupDataGridViewTextBoxColumn
             // 
@@ -771,7 +771,7 @@
             this.totalHeightDataGridViewTextBoxColumn.HeaderText = "Total Ht";
             this.totalHeightDataGridViewTextBoxColumn.Name = "totalHeightDataGridViewTextBoxColumn";
             this.totalHeightDataGridViewTextBoxColumn.ToolTipText = "Total Tree Height";
-            this.totalHeightDataGridViewTextBoxColumn.Width = 72;
+            this.totalHeightDataGridViewTextBoxColumn.Width = 71;
             // 
             // merchHeightPrimaryDataGridViewTextBoxColumn
             // 
@@ -809,7 +809,7 @@
             this.treeDefaultValueDataGridViewTextBoxColumn.HeaderText = "TreeDefaultValue";
             this.treeDefaultValueDataGridViewTextBoxColumn.Name = "treeDefaultValueDataGridViewTextBoxColumn";
             this.treeDefaultValueDataGridViewTextBoxColumn.ToolTipText = "Tree Default Value (Species/LiveDead/Product)";
-            this.treeDefaultValueDataGridViewTextBoxColumn.Width = 120;
+            this.treeDefaultValueDataGridViewTextBoxColumn.Width = 118;
             // 
             // kPIDataGridViewTextBoxColumn
             // 
@@ -906,7 +906,7 @@
             this.topDIBPrimaryDataGridViewTextBoxColumn.HeaderText = "TopD P";
             this.topDIBPrimaryDataGridViewTextBoxColumn.Name = "topDIBPrimaryDataGridViewTextBoxColumn";
             this.topDIBPrimaryDataGridViewTextBoxColumn.ToolTipText = "Minimum Top Diameter Primary Product";
-            this.topDIBPrimaryDataGridViewTextBoxColumn.Width = 68;
+            this.topDIBPrimaryDataGridViewTextBoxColumn.Width = 67;
             // 
             // topDIBSecondaryDataGridViewTextBoxColumn
             // 
@@ -915,7 +915,7 @@
             this.topDIBSecondaryDataGridViewTextBoxColumn.HeaderText = "TopD S";
             this.topDIBSecondaryDataGridViewTextBoxColumn.Name = "topDIBSecondaryDataGridViewTextBoxColumn";
             this.topDIBSecondaryDataGridViewTextBoxColumn.ToolTipText = "Minimum Top Diameter Secondary Product";
-            this.topDIBSecondaryDataGridViewTextBoxColumn.Width = 68;
+            this.topDIBSecondaryDataGridViewTextBoxColumn.Width = 67;
             // 
             // heightToFirstLiveLimbDataGridViewTextBoxColumn
             // 
@@ -993,7 +993,7 @@
             this.voidPercentDataGridViewTextBoxColumn.HeaderText = "Void";
             this.voidPercentDataGridViewTextBoxColumn.Name = "voidPercentDataGridViewTextBoxColumn";
             this.voidPercentDataGridViewTextBoxColumn.ToolTipText = "Void Percent";
-            this.voidPercentDataGridViewTextBoxColumn.Width = 56;
+            this.voidPercentDataGridViewTextBoxColumn.Width = 55;
             // 
             // slopeDataGridViewTextBoxColumn
             // 
@@ -1040,7 +1040,7 @@
             this.treeFactorDataGridViewTextBoxColumn.Name = "treeFactorDataGridViewTextBoxColumn";
             this.treeFactorDataGridViewTextBoxColumn.ReadOnly = true;
             this.treeFactorDataGridViewTextBoxColumn.ToolTipText = "Calculated Tree Factor";
-            this.treeFactorDataGridViewTextBoxColumn.Width = 70;
+            this.treeFactorDataGridViewTextBoxColumn.Width = 69;
             // 
             // pointFactorDataGridViewTextBoxColumn
             // 
@@ -1151,12 +1151,12 @@
             // 
             this._BS_Trees.DataSource = typeof(CruiseManager.Core.Models.TreeVM);
             // 
-            // label8
+            // _lbl_treesCount
             // 
             this._lbl_treesCount.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this._lbl_treesCount.Location = new System.Drawing.Point(3, 360);
-            this._lbl_treesCount.Name = "label8";
-            this._lbl_treesCount.Size = new System.Drawing.Size(568, 17);
+            this._lbl_treesCount.Location = new System.Drawing.Point(3, 446);
+            this._lbl_treesCount.Name = "_lbl_treesCount";
+            this._lbl_treesCount.Size = new System.Drawing.Size(629, 17);
             this._lbl_treesCount.TabIndex = 1;
             this._lbl_treesCount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -1167,7 +1167,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(574, 380);
+            this.tabPage2.Size = new System.Drawing.Size(635, 466);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Logs";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -1212,7 +1212,7 @@
             this._DGV_Logs.Location = new System.Drawing.Point(3, 3);
             this._DGV_Logs.Name = "_DGV_Logs";
             this._DGV_Logs.RowTemplate.Height = 24;
-            this._DGV_Logs.Size = new System.Drawing.Size(568, 357);
+            this._DGV_Logs.Size = new System.Drawing.Size(629, 443);
             this._DGV_Logs.TabIndex = 0;
             this._DGV_Logs.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this._DGV_Logs_CellValueChanged);
             this._DGV_Logs.CellValueNeeded += new System.Windows.Forms.DataGridViewCellValueEventHandler(this._DGV_Logs_CellValueNeeded);
@@ -1234,7 +1234,7 @@
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
             this.dataGridViewTextBoxColumn1.ToolTipText = "Tree Data Reference Number";
-            this.dataGridViewTextBoxColumn1.Width = 85;
+            this.dataGridViewTextBoxColumn1.Width = 84;
             // 
             // CUCode
             // 
@@ -1449,12 +1449,12 @@
             // 
             this._BS_Logs.DataSource = typeof(CruiseManager.Core.Models.LogVM);
             // 
-            // label9
+            // _lbl_logsCount
             // 
             this._lbl_logsCount.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this._lbl_logsCount.Location = new System.Drawing.Point(3, 360);
-            this._lbl_logsCount.Name = "label9";
-            this._lbl_logsCount.Size = new System.Drawing.Size(568, 17);
+            this._lbl_logsCount.Location = new System.Drawing.Point(3, 446);
+            this._lbl_logsCount.Name = "_lbl_logsCount";
+            this._lbl_logsCount.Size = new System.Drawing.Size(629, 17);
             this._lbl_logsCount.TabIndex = 2;
             this._lbl_logsCount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -1465,7 +1465,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(574, 380);
+            this.tabPage3.Size = new System.Drawing.Size(635, 466);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Plots";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -1500,7 +1500,7 @@
             this._DGV_Plots.Location = new System.Drawing.Point(3, 3);
             this._DGV_Plots.Name = "_DGV_Plots";
             this._DGV_Plots.RowTemplate.Height = 24;
-            this._DGV_Plots.Size = new System.Drawing.Size(568, 357);
+            this._DGV_Plots.Size = new System.Drawing.Size(629, 443);
             this._DGV_Plots.TabIndex = 0;
             this._DGV_Plots.VirtualMode = true;
             this._DGV_Plots.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this._DGV_Plots_CellValueChanged);
@@ -1652,12 +1652,12 @@
             // 
             this._BS_Plots.DataSource = typeof(CruiseDAL.DataObjects.PlotDO);
             // 
-            // label10
+            // _lbl_plotsCount
             // 
             this._lbl_plotsCount.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this._lbl_plotsCount.Location = new System.Drawing.Point(3, 360);
-            this._lbl_plotsCount.Name = "label10";
-            this._lbl_plotsCount.Size = new System.Drawing.Size(568, 17);
+            this._lbl_plotsCount.Location = new System.Drawing.Point(3, 446);
+            this._lbl_plotsCount.Name = "_lbl_plotsCount";
+            this._lbl_plotsCount.Size = new System.Drawing.Size(629, 17);
             this._lbl_plotsCount.TabIndex = 2;
             this._lbl_plotsCount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -1667,7 +1667,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(574, 380);
+            this.tabPage4.Size = new System.Drawing.Size(635, 466);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Counts";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -1699,51 +1699,10 @@
             this._DGV_Counts.Location = new System.Drawing.Point(3, 3);
             this._DGV_Counts.Name = "_DGV_Counts";
             this._DGV_Counts.RowTemplate.Height = 24;
-            this._DGV_Counts.Size = new System.Drawing.Size(568, 374);
+            this._DGV_Counts.Size = new System.Drawing.Size(629, 460);
             this._DGV_Counts.TabIndex = 0;
             this._DGV_Counts.VirtualMode = true;
             this._DGV_Counts.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this._DGV_Counts_CellValueChanged);
-            // 
-            // _BS_Counts
-            // 
-            this._BS_Counts.DataSource = typeof(CruiseManager.Core.Models.CountVM);
-            // 
-            // tabPage5
-            // 
-            this.tabPage5.Controls.Add(panel2);
-            this.tabPage5.Location = new System.Drawing.Point(4, 22);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(574, 380);
-            this.tabPage5.TabIndex = 4;
-            this.tabPage5.Text = "Errors";
-            this.tabPage5.UseVisualStyleBackColor = true;
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.BackColor = System.Drawing.Color.DarkSeaGreen;
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(777, 24);
-            this.menuStrip1.TabIndex = 1;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // fileToolStripMenuItem
-            // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.exportToolStripMenuItem1});
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem.Text = "File";
-            // 
-            // exportToolStripMenuItem1
-            // 
-            this.exportToolStripMenuItem1.Name = "exportToolStripMenuItem1";
-            this.exportToolStripMenuItem1.Size = new System.Drawing.Size(107, 22);
-            this.exportToolStripMenuItem1.Text = "Export";
-            this.exportToolStripMenuItem1.Click += new System.EventHandler(this.exportToolStripMenuItem1_Click);
             // 
             // CountTree_CN
             // 
@@ -1859,11 +1818,52 @@
             this.modifiedDateDataGridViewTextBoxColumn3.Name = "modifiedDateDataGridViewTextBoxColumn3";
             this.modifiedDateDataGridViewTextBoxColumn3.ReadOnly = true;
             // 
+            // _BS_Counts
+            // 
+            this._BS_Counts.DataSource = typeof(CruiseManager.Core.Models.CountVM);
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(panel2);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(635, 466);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "Errors";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.BackColor = System.Drawing.Color.DarkSeaGreen;
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(838, 24);
+            this.menuStrip1.TabIndex = 1;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exportToolStripMenuItem1});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // exportToolStripMenuItem1
+            // 
+            this.exportToolStripMenuItem1.Name = "exportToolStripMenuItem1";
+            this.exportToolStripMenuItem1.Size = new System.Drawing.Size(107, 22);
+            this.exportToolStripMenuItem1.Text = "Export";
+            this.exportToolStripMenuItem1.Click += new System.EventHandler(this.exportToolStripMenuItem1_Click);
+            // 
             // DataEditorView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(777, 430);
+            this.ClientSize = new System.Drawing.Size(838, 516);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
             this.Font = global::CruiseManager.Properties.Settings.Default.AppFont;
