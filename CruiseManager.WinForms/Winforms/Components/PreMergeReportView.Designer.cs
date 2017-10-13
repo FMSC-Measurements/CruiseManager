@@ -29,18 +29,16 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this._TH_treeConflicts = new System.Windows.Forms.TabControl();
             this._TH_conflicts = new System.Windows.Forms.TabControl();
             this._TH_additions = new System.Windows.Forms.TabControl();
             this.componentRowIDDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this._TP_treeConflicts = new System.Windows.Forms.TabPage();
-            this.TreeDO = new System.Windows.Forms.BindingSource(this.components);
-            this.tabControl2 = new System.Windows.Forms.TabControl();
             this._TP_conflicts = new System.Windows.Forms.TabPage();
             this._TP_matches = new System.Windows.Forms.TabPage();
             this._TH_matches = new System.Windows.Forms.TabControl();
             this._TP_new = new System.Windows.Forms.TabPage();
+            this.TreeDO = new System.Windows.Forms.BindingSource(this.components);
+            this.tabControl2 = new System.Windows.Forms.TabControl();
             this._BS_treeMatches = new System.Windows.Forms.BindingSource(this.components);
             this._BS_TreeConflicts = new System.Windows.Forms.BindingSource(this.components);
             this._BS_LogConflicts = new System.Windows.Forms.BindingSource(this.components);
@@ -54,20 +52,19 @@
             this.component1 = new System.Windows.Forms.TabPage();
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tabControl1.SuspendLayout();
-            this._TP_treeConflicts.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.TreeDO)).BeginInit();
             this._TP_conflicts.SuspendLayout();
             this._TP_matches.SuspendLayout();
             this._TP_new.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TreeDO)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._BS_treeMatches)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._BS_TreeConflicts)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._BS_LogConflicts)).BeginInit();
@@ -81,15 +78,6 @@
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // _TH_treeConflicts
-            // 
-            this._TH_treeConflicts.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._TH_treeConflicts.Location = new System.Drawing.Point(3, 3);
-            this._TH_treeConflicts.Name = "_TH_treeConflicts";
-            this._TH_treeConflicts.SelectedIndex = 0;
-            this._TH_treeConflicts.Size = new System.Drawing.Size(399, 325);
-            this._TH_treeConflicts.TabIndex = 1;
             // 
             // _TH_conflicts
             // 
@@ -118,7 +106,6 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this._TP_treeConflicts);
             this.tabControl1.Controls.Add(this._TP_conflicts);
             this.tabControl1.Controls.Add(this._TP_matches);
             this.tabControl1.Controls.Add(this._TP_new);
@@ -128,30 +115,6 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(413, 357);
             this.tabControl1.TabIndex = 0;
-            // 
-            // _TP_treeConflicts
-            // 
-            this._TP_treeConflicts.Controls.Add(this._TH_treeConflicts);
-            this._TP_treeConflicts.Location = new System.Drawing.Point(4, 22);
-            this._TP_treeConflicts.Name = "_TP_treeConflicts";
-            this._TP_treeConflicts.Padding = new System.Windows.Forms.Padding(3);
-            this._TP_treeConflicts.Size = new System.Drawing.Size(405, 331);
-            this._TP_treeConflicts.TabIndex = 0;
-            this._TP_treeConflicts.Text = "Conflicts";
-            this._TP_treeConflicts.UseVisualStyleBackColor = true;
-            // 
-            // TreeDO
-            // 
-            this.TreeDO.DataSource = typeof(CruiseDAL.DataObjects.TreeDO);
-            // 
-            // tabControl2
-            // 
-            this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl2.Location = new System.Drawing.Point(3, 3);
-            this.tabControl2.Name = "tabControl2";
-            this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(399, 325);
-            this.tabControl2.TabIndex = 1;
             // 
             // _TP_conflicts
             // 
@@ -196,6 +159,19 @@
             this._TP_new.Text = "Additions";
             this._TP_new.UseVisualStyleBackColor = true;
             this._TP_new.Enter += new System.EventHandler(this._TP_new_Enter);
+            // 
+            // TreeDO
+            // 
+            this.TreeDO.DataSource = typeof(CruiseDAL.DataObjects.TreeDO);
+            // 
+            // tabControl2
+            // 
+            this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl2.Location = new System.Drawing.Point(3, 3);
+            this.tabControl2.Name = "tabControl2";
+            this.tabControl2.SelectedIndex = 0;
+            this.tabControl2.Size = new System.Drawing.Size(399, 325);
+            this.tabControl2.TabIndex = 1;
             // 
             // _BS_treeMatches
             // 
@@ -284,23 +260,14 @@
             this.panel1.Size = new System.Drawing.Size(74, 264);
             this.panel1.TabIndex = 5;
             // 
-            // button1
+            // button4
             // 
-            this.button1.Location = new System.Drawing.Point(17, 89);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(41, 32);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "<";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(17, 140);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(41, 32);
-            this.button2.TabIndex = 1;
-            this.button2.Text = ">";
-            this.button2.UseVisualStyleBackColor = true;
+            this.button4.Location = new System.Drawing.Point(17, 189);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(41, 32);
+            this.button4.TabIndex = 3;
+            this.button4.Text = ">>";
+            this.button4.UseVisualStyleBackColor = true;
             // 
             // button3
             // 
@@ -311,14 +278,23 @@
             this.button3.Text = "<<";
             this.button3.UseVisualStyleBackColor = true;
             // 
-            // button4
+            // button2
             // 
-            this.button4.Location = new System.Drawing.Point(17, 189);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(41, 32);
-            this.button4.TabIndex = 3;
-            this.button4.Text = ">>";
-            this.button4.UseVisualStyleBackColor = true;
+            this.button2.Location = new System.Drawing.Point(17, 140);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(41, 32);
+            this.button2.TabIndex = 1;
+            this.button2.Text = ">";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(17, 89);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(41, 32);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "<";
+            this.button1.UseVisualStyleBackColor = true;
             // 
             // label2
             // 
@@ -326,7 +302,7 @@
             this.label2.Dock = System.Windows.Forms.DockStyle.Top;
             this.label2.Location = new System.Drawing.Point(234, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(162, 25);
+            this.label2.Size = new System.Drawing.Size(162, 13);
             this.label2.TabIndex = 4;
             this.label2.Text = "Component File(s) Tree Numbers";
             // 
@@ -382,11 +358,10 @@
             this.Name = "PreMergeReportView";
             this.Size = new System.Drawing.Size(413, 357);
             this.tabControl1.ResumeLayout(false);
-            this._TP_treeConflicts.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.TreeDO)).EndInit();
             this._TP_conflicts.ResumeLayout(false);
             this._TP_matches.ResumeLayout(false);
             this._TP_new.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.TreeDO)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._BS_treeMatches)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._BS_TreeConflicts)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._BS_LogConflicts)).EndInit();
@@ -413,7 +388,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn componentRowIDDataGridViewTextBoxColumn1;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage _TP_conflicts;
-        private System.Windows.Forms.TabControl _TH_treeConflicts;
         private System.Windows.Forms.TabPage _TP_matches;
         private System.Windows.Forms.TabControl _TH_matches;
         private System.Windows.Forms.BindingSource _BS_treeMatches;
@@ -423,7 +397,6 @@
         private System.Windows.Forms.TabPage _TP_new;
         private System.Windows.Forms.TabControl _TH_conflicts;
         private System.Windows.Forms.TabControl _TH_additions;
-        public System.Windows.Forms.TabPage _TP_treeConflicts;
         private System.Windows.Forms.TabControl tabControl2;
         private System.Windows.Forms.BindingSource TreeDO;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;

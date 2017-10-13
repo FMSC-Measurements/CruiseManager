@@ -24,7 +24,14 @@ IF "%interactive%"=="0" PAUSE
 EXIT /B 1
 )
 
-"C:\Program Files (x86)\Inno Setup 5\iscc" /dAPP_VERSION=%appVer% /F"CruiseManager_Setup_%verStamp%" "./InnoSetupFiles/CruiseManager.iss" 
+SET innoSetupPath="%ProgramFiles(x86)%\Inno Setup 5\ISCC.exe"
+IF NOT EXIST %innoSetupPath% ( 
+	ECHO "inno setup not found"
+	IF "%interactive%"=="0" PAUSE
+	EXIT /B 1)
+	
+
+%innoSetupPath% /dAPP_VERSION=%appVer% /F"CruiseManager_Setup_%verStamp%" "./InnoSetupFiles/CruiseManager.iss" 
 
 ::End Boilderplate
 ::if invoked from windows explorer, pause

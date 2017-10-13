@@ -1,5 +1,7 @@
 ﻿using CruiseManager.Core.App;
+using System;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.App
@@ -26,7 +28,13 @@ namespace CruiseManager.WinForms.App
 
         public static string GetApplicationDirectory()
         {
-            return System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+            var codeBaseUri = new Uri(Assembly.GetExecutingAssembly().CodeBase).AbsolutePath;
+            var codeBasePath = Uri.UnescapeDataString(codeBaseUri);
+            var directory = System.IO.Path.GetDirectoryName(codeBasePath);
+
+            return directory;
+
+            //return System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
         }
     }
 }
