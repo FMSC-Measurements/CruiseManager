@@ -10,7 +10,7 @@ using Xunit;
 using CruiseManager.Core;
 using System.Reflection;
 
-namespace CSMTest
+namespace CruiseManager.Test
 {
     public class MergeComponentsPresenterTest
     {

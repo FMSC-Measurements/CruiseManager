@@ -6,7 +6,7 @@ using Xunit;
 using CruiseManager.WinForms.App;
 using FluentAssertions;
 
-namespace CSMTest
+namespace CruiseManager.Test
 {
     public class SetupServiceTest
     {

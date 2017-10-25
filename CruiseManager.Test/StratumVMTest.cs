@@ -5,7 +5,7 @@ using System.Linq;
 using CruiseDAL;
 using CruiseManager.Core.Models;
 
-namespace CSMTest
+namespace CruiseManager.Test
 {
     public class StratumVMTest
     {

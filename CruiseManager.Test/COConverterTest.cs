@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using Xunit;
 
-namespace CSMTest
+namespace CruiseManager.Test
 {
     public class COConverterTest
     {

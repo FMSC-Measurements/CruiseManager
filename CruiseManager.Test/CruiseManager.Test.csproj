@@ -1,0 +1,80 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="TestFiles\Components\Bad\RedSquirt.1.cruise" />
+    <None Remove="TestFiles\Components\Bad\RedSquirt.2.cruise" />
+    <None Remove="TestFiles\Components\Bad\RedSquirt.3.cruise" />
+    <None Remove="TestFiles\Components\Bad\RedSquirt.M.cruise" />
+    <None Remove="TestFiles\Components\Good\GooseFoote_7_16\Goosefoote.1.cruise" />
+    <None Remove="TestFiles\Components\Good\GooseFoote_7_16\Goosefoote.2.cruise" />
+    <None Remove="TestFiles\Components\Good\GooseFoote_7_16\Goosefoote.3.cruise" />
+    <None Remove="TestFiles\Components\Good\GooseFoote_7_16\Goosefoote.M.cruise" />
+    <None Remove="TestFiles\Components\Good\Valentine.1.cruise" />
+    <None Remove="TestFiles\Components\Good\Valentine.2.cruise" />
+    <None Remove="TestFiles\Components\Good\Valentine.M.cruise" />
+    <None Remove="TestFiles\TESTMETH.crz" />
+    <None Remove="TestFiles\testReadData.cruise" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="TestFiles\Components\Bad\RedSquirt.1.cruise">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Components\Bad\RedSquirt.2.cruise">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Components\Bad\RedSquirt.3.cruise">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Components\Bad\RedSquirt.M.cruise">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Components\Good\GooseFoote_7_16\Goosefoote.1.cruise">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Components\Good\GooseFoote_7_16\Goosefoote.2.cruise">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Components\Good\GooseFoote_7_16\Goosefoote.3.cruise">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Components\Good\GooseFoote_7_16\Goosefoote.M.cruise">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Components\Good\Valentine.1.cruise">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Components\Good\Valentine.2.cruise">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Components\Good\Valentine.M.cruise">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\TESTMETH.crz">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\testReadData.cruise">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="4.19.4" />
+    <PackageReference Include="Moq" Version="4.7.142" />
+    <PackageReference Include="xunit" Version="2.3.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CruiseManager.WinForms\CruiseManager.WinForms.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+
+</Project>
