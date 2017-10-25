@@ -104,7 +104,7 @@
             // 
             // panel5
             // 
-            this.panel5.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.panel5.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.panel5.Controls.Add(this._reportsClearSltnBTN);
             this.panel5.Controls.Add(this._reportsSelectAllBtn);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -136,12 +136,12 @@
             this._reportsSelectAllBtn.UseVisualStyleBackColor = true;
             this._reportsSelectAllBtn.Click += new System.EventHandler(this._reportsSelectAllBtn_Click);
             // 
-            // ReportsSummView
+            // ReportsView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Name = "ReportsSummView";
+            this.Name = "ReportsView";
             this.Size = new System.Drawing.Size(348, 382);
             ((System.ComponentModel.ISupportInitialize)(this._BS_Reports)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);

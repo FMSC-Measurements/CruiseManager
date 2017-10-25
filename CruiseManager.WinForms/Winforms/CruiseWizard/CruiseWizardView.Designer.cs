@@ -57,9 +57,10 @@
             this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(630, 0);
+            this.MinimumSize = new System.Drawing.Size(630, 38);
             this.Name = "CruiseWizardView";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "CruiseWizard";
             this.ResumeLayout(false);
 

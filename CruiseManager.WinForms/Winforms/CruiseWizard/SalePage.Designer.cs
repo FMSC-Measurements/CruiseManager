@@ -58,8 +58,8 @@
             this._browseTemplateButton = new System.Windows.Forms.Button();
             this._templatePathTB = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.NextButton = new System.Windows.Forms.Button();
             this.CancelButton = new System.Windows.Forms.Button();
+            this.NextButton = new System.Windows.Forms.Button();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             label4 = new System.Windows.Forms.Label();
             label6 = new System.Windows.Forms.Label();
@@ -416,13 +416,13 @@
             tableLayoutPanel4.BackColor = System.Drawing.Color.DarkSeaGreen;
             tableLayoutPanel4.ColumnCount = 5;
             tableLayoutPanel2.SetColumnSpan(tableLayoutPanel4, 3);
-            tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 77.90531F));
+            tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.35581F));
             tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 5.738882F));
+            tableLayoutPanel4.Controls.Add(this.CancelButton, 2, 1);
             tableLayoutPanel4.Controls.Add(this.NextButton, 3, 1);
-            tableLayoutPanel4.Controls.Add(this.CancelButton, 1, 1);
             tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             tableLayoutPanel4.Location = new System.Drawing.Point(0, 359);
             tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
@@ -434,37 +434,35 @@
             tableLayoutPanel4.Size = new System.Drawing.Size(638, 47);
             tableLayoutPanel4.TabIndex = 2;
             // 
+            // CancelButton
+            // 
+            this.CancelButton.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.CancelButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CancelButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.CancelButton.Location = new System.Drawing.Point(407, 12);
+            this.CancelButton.Margin = new System.Windows.Forms.Padding(0);
+            this.CancelButton.Name = "CancelButton";
+            this.CancelButton.Size = new System.Drawing.Size(85, 23);
+            this.CancelButton.TabIndex = 1;
+            this.CancelButton.Text = "Cancel";
+            this.CancelButton.UseVisualStyleBackColor = false;
+            this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
+            // 
             // NextButton
             // 
             this.NextButton.AutoSize = true;
             this.NextButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.NextButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.NextButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.NextButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.NextButton.Location = new System.Drawing.Point(501, 11);
+            this.NextButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.NextButton.Location = new System.Drawing.Point(492, 12);
             this.NextButton.Margin = new System.Windows.Forms.Padding(0);
             this.NextButton.Name = "NextButton";
-            this.NextButton.Size = new System.Drawing.Size(107, 25);
+            this.NextButton.Size = new System.Drawing.Size(115, 23);
             this.NextButton.TabIndex = 0;
-            this.NextButton.Text = "Cutting Units >>";
+            this.NextButton.Text = "Cutting Unit(s) >>";
             this.NextButton.UseVisualStyleBackColor = false;
             this.NextButton.Click += new System.EventHandler(this.NextButton_Click);
-            // 
-            // CancelButton
-            // 
-            this.CancelButton.AutoSize = true;
-            this.CancelButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.CancelButton.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.CancelButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CancelButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CancelButton.Location = new System.Drawing.Point(30, 11);
-            this.CancelButton.Margin = new System.Windows.Forms.Padding(0);
-            this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new System.Drawing.Size(53, 25);
-            this.CancelButton.TabIndex = 1;
-            this.CancelButton.Text = "Cancel";
-            this.CancelButton.UseVisualStyleBackColor = false;
-            this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // errorProvider1
             // 
@@ -507,10 +505,7 @@
         private System.Windows.Forms.BindingSource forestsBindingSource;
         public System.Windows.Forms.BindingSource SaleDOBindingSource;
         public System.Windows.Forms.BindingSource RegionForestBindingSource;
-        private System.Windows.Forms.Button CancelButton;
-        private System.Windows.Forms.Button NextButton;
         private System.Windows.Forms.Button _browseTemplateButton;
-        private System.Windows.Forms.TextBox _templatePathTB;
         public System.Windows.Forms.BindingSource UOMBindingSource;
         private System.Windows.Forms.TextBox _districtMTB;
         private System.Windows.Forms.CheckBox _logGradingEnabledCB;
@@ -518,5 +513,8 @@
         private System.Windows.Forms.TextBox _saleName_TB;
         private System.Windows.Forms.ComboBox PurposeComboBox;
         private System.Windows.Forms.ComboBox _uomCB;
+        private System.Windows.Forms.Button CancelButton;
+        private System.Windows.Forms.Button NextButton;
+        private System.Windows.Forms.TextBox _templatePathTB;
     }
 }

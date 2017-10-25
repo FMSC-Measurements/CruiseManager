@@ -160,7 +160,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             // 
             label2.AutoSize = true;
             label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            label2.Location = new System.Drawing.Point(189, 55);
+            label2.Location = new System.Drawing.Point(167, 55);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(103, 27);
             label2.TabIndex = 145;
@@ -171,7 +171,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             // 
             label3.AutoSize = true;
             label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            label3.Location = new System.Drawing.Point(189, 0);
+            label3.Location = new System.Drawing.Point(167, 0);
             label3.Name = "label3";
             label3.Size = new System.Drawing.Size(103, 28);
             label3.TabIndex = 147;
@@ -182,7 +182,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             // 
             label4.AutoSize = true;
             label4.Dock = System.Windows.Forms.DockStyle.Fill;
-            label4.Location = new System.Drawing.Point(189, 28);
+            label4.Location = new System.Drawing.Point(167, 28);
             label4.Name = "label4";
             label4.Size = new System.Drawing.Size(103, 27);
             label4.TabIndex = 149;
@@ -263,11 +263,11 @@ namespace CruiseManager.WinForms.CruiseWizard
             panel2.Controls.Add(this.SampleGroupListBox);
             panel2.Controls.Add(this.SampleGroupBindingNavigator);
             panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            panel2.Location = new System.Drawing.Point(0, 0);
+            panel2.Location = new System.Drawing.Point(3, 3);
             panel2.Margin = new System.Windows.Forms.Padding(0);
             panel2.Name = "panel2";
             this.tableLayoutPanel1.SetRowSpan(panel2, 4);
-            panel2.Size = new System.Drawing.Size(160, 379);
+            panel2.Size = new System.Drawing.Size(160, 370);
             panel2.TabIndex = 145;
             // 
             // SampleGroupListBox
@@ -281,7 +281,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.SampleGroupListBox.Margin = new System.Windows.Forms.Padding(0);
             this.SampleGroupListBox.Name = "SampleGroupListBox";
             this.SampleGroupListBox.ScrollAlwaysVisible = true;
-            this.SampleGroupListBox.Size = new System.Drawing.Size(156, 334);
+            this.SampleGroupListBox.Size = new System.Drawing.Size(156, 325);
             this.SampleGroupListBox.TabIndex = 1;
             // 
             // SampleGroupBindingSource
@@ -356,10 +356,10 @@ namespace CruiseManager.WinForms.CruiseWizard
             panel7.Controls.Add(this._editSubPopBtn);
             panel7.Controls.Add(label14);
             panel7.Dock = System.Windows.Forms.DockStyle.Top;
-            panel7.Location = new System.Drawing.Point(160, 212);
+            panel7.Location = new System.Drawing.Point(166, 221);
             panel7.Margin = new System.Windows.Forms.Padding(0);
             panel7.Name = "panel7";
-            panel7.Size = new System.Drawing.Size(699, 22);
+            panel7.Size = new System.Drawing.Size(463, 22);
             panel7.TabIndex = 147;
             // 
             // _newSubPopBTN
@@ -368,7 +368,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this._newSubPopBTN.BackColor = System.Drawing.SystemColors.Control;
             this._newSubPopBTN.Dock = System.Windows.Forms.DockStyle.Right;
             this._newSubPopBTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this._newSubPopBTN.Location = new System.Drawing.Point(590, 0);
+            this._newSubPopBTN.Location = new System.Drawing.Point(354, 0);
             this._newSubPopBTN.Name = "_newSubPopBTN";
             this._newSubPopBTN.Size = new System.Drawing.Size(58, 22);
             this._newSubPopBTN.TabIndex = 0;
@@ -382,7 +382,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this._editSubPopBtn.BackColor = System.Drawing.SystemColors.Control;
             this._editSubPopBtn.Dock = System.Windows.Forms.DockStyle.Right;
             this._editSubPopBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this._editSubPopBtn.Location = new System.Drawing.Point(648, 0);
+            this._editSubPopBtn.Location = new System.Drawing.Point(412, 0);
             this._editSubPopBtn.Name = "_editSubPopBtn";
             this._editSubPopBtn.Size = new System.Drawing.Size(51, 22);
             this._editSubPopBtn.TabIndex = 1;
@@ -406,27 +406,26 @@ namespace CruiseManager.WinForms.CruiseWizard
             // tableLayoutPanel2
             // 
             tableLayoutPanel2.BackColor = System.Drawing.Color.DarkSeaGreen;
-            tableLayoutPanel2.ColumnCount = 7;
+            tableLayoutPanel2.ColumnCount = 5;
             this.tableLayoutPanel1.SetColumnSpan(tableLayoutPanel2, 2);
-            tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 77.90221F));
+            tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.35836F));
             tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            tableLayoutPanel2.Controls.Add(this.FinishButton, 5, 1);
+            tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 5.739426F));
+            tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            tableLayoutPanel2.Controls.Add(this.FinishButton, 3, 1);
             tableLayoutPanel2.Controls.Add(this.StrataButton, 1, 1);
-            tableLayoutPanel2.Controls.Add(this.CancelButton, 3, 1);
+            tableLayoutPanel2.Controls.Add(this.CancelButton, 2, 1);
             tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            tableLayoutPanel2.Location = new System.Drawing.Point(0, 379);
+            tableLayoutPanel2.Location = new System.Drawing.Point(3, 376);
             tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 3;
             tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            tableLayoutPanel2.Size = new System.Drawing.Size(859, 50);
+            tableLayoutPanel2.Size = new System.Drawing.Size(626, 50);
             tableLayoutPanel2.TabIndex = 148;
             // 
             // FinishButton
@@ -435,11 +434,11 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.FinishButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.FinishButton.BackColor = System.Drawing.SystemColors.Control;
             this.FinishButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.FinishButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.FinishButton.Location = new System.Drawing.Point(779, 12);
+            this.FinishButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.FinishButton.Location = new System.Drawing.Point(540, 13);
             this.FinishButton.Margin = new System.Windows.Forms.Padding(0);
             this.FinishButton.Name = "FinishButton";
-            this.FinishButton.Size = new System.Drawing.Size(50, 25);
+            this.FinishButton.Size = new System.Drawing.Size(52, 23);
             this.FinishButton.TabIndex = 0;
             this.FinishButton.Text = "Finish";
             this.FinishButton.UseVisualStyleBackColor = false;
@@ -447,31 +446,32 @@ namespace CruiseManager.WinForms.CruiseWizard
             // 
             // StrataButton
             // 
+            this.StrataButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.StrataButton.AutoSize = true;
             this.StrataButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.StrataButton.BackColor = System.Drawing.SystemColors.Control;
-            this.StrataButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.StrataButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.StrataButton.Location = new System.Drawing.Point(30, 12);
+            this.StrataButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.StrataButton.Location = new System.Drawing.Point(377, 13);
             this.StrataButton.Margin = new System.Windows.Forms.Padding(0);
             this.StrataButton.Name = "StrataButton";
-            this.StrataButton.Size = new System.Drawing.Size(65, 25);
+            this.StrataButton.Size = new System.Drawing.Size(70, 22);
             this.StrataButton.TabIndex = 1;
-            this.StrataButton.Text = "<<Strata";
+            this.StrataButton.Text = "<< Strata";
             this.StrataButton.UseVisualStyleBackColor = false;
             this.StrataButton.Click += new System.EventHandler(this.StrataButton_Click);
             // 
             // CancelButton
             // 
+            this.CancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.CancelButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.CancelButton.BackColor = System.Drawing.SystemColors.Control;
-            this.CancelButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CancelButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CancelButton.Location = new System.Drawing.Point(105, 12);
+            this.CancelButton.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.CancelButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.CancelButton.Location = new System.Drawing.Point(447, 13);
             this.CancelButton.Margin = new System.Windows.Forms.Padding(0);
             this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new System.Drawing.Size(53, 25);
-            this.CancelButton.TabIndex = 2;
+            this.CancelButton.Size = new System.Drawing.Size(93, 23);
+            this.CancelButton.TabIndex = 1;
             this.CancelButton.Text = "Cancel";
             this.CancelButton.UseVisualStyleBackColor = false;
             this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
@@ -531,10 +531,10 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.panel3.Controls.Add(this._samplingPNL);
             this.panel3.Controls.Add(this.tableLayoutPanel3);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(160, 16);
+            this.panel3.Location = new System.Drawing.Point(166, 22);
             this.panel3.Margin = new System.Windows.Forms.Padding(0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(699, 196);
+            this.panel3.Size = new System.Drawing.Size(463, 196);
             this.panel3.TabIndex = 0;
             // 
             // _threePSamplingPNL
@@ -557,7 +557,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this._threePSamplingPNL.RowCount = 2;
             this._threePSamplingPNL.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this._threePSamplingPNL.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this._threePSamplingPNL.Size = new System.Drawing.Size(699, 58);
+            this._threePSamplingPNL.Size = new System.Drawing.Size(463, 58);
             this._threePSamplingPNL.TabIndex = 14;
             // 
             // _kzTB
@@ -608,7 +608,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this._samplingPNL.RowCount = 1;
             this._samplingPNL.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this._samplingPNL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-            this._samplingPNL.Size = new System.Drawing.Size(699, 28);
+            this._samplingPNL.Size = new System.Drawing.Size(463, 28);
             this._samplingPNL.TabIndex = 3;
             // 
             // _FreqTB
@@ -670,7 +670,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(699, 110);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(463, 110);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
             // textBox6
@@ -680,7 +680,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.textBox6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBox6.Location = new System.Drawing.Point(110, 85);
             this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(301, 22);
+            this.textBox6.Size = new System.Drawing.Size(279, 22);
             this.textBox6.TabIndex = 151;
             // 
             // PrimaryProductComboBox
@@ -690,7 +690,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.PrimaryProductComboBox.DisplayMember = "FriendlyValue";
             this.PrimaryProductComboBox.Dock = System.Windows.Forms.DockStyle.Left;
             this.PrimaryProductComboBox.FormattingEnabled = true;
-            this.PrimaryProductComboBox.Location = new System.Drawing.Point(298, 3);
+            this.PrimaryProductComboBox.Location = new System.Drawing.Point(276, 3);
             this.PrimaryProductComboBox.Name = "PrimaryProductComboBox";
             this.PrimaryProductComboBox.Size = new System.Drawing.Size(113, 21);
             this.PrimaryProductComboBox.TabIndex = 3;
@@ -707,7 +707,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.SecondaryProductComboBox.DisplayMember = "FriendlyValue";
             this.SecondaryProductComboBox.Dock = System.Windows.Forms.DockStyle.Left;
             this.SecondaryProductComboBox.FormattingEnabled = true;
-            this.SecondaryProductComboBox.Location = new System.Drawing.Point(298, 31);
+            this.SecondaryProductComboBox.Location = new System.Drawing.Point(276, 31);
             this.SecondaryProductComboBox.Name = "SecondaryProductComboBox";
             this.SecondaryProductComboBox.Size = new System.Drawing.Size(113, 21);
             this.SecondaryProductComboBox.TabIndex = 4;
@@ -726,7 +726,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.UOMComboBox.Enabled = false;
             this.UOMComboBox.FormatString = "[Code] - [FriendlyValue]";
             this.UOMComboBox.FormattingEnabled = true;
-            this.UOMComboBox.Location = new System.Drawing.Point(298, 58);
+            this.UOMComboBox.Location = new System.Drawing.Point(276, 58);
             this.UOMComboBox.Name = "UOMComboBox";
             this.UOMComboBox.Size = new System.Drawing.Size(113, 21);
             this.UOMComboBox.TabIndex = 5;
@@ -798,7 +798,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.StratumBindingNavigator.Name = "StratumBindingNavigator";
             this.StratumBindingNavigator.PositionItem = null;
             this.StratumBindingNavigator.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.StratumBindingNavigator.Size = new System.Drawing.Size(859, 31);
+            this.StratumBindingNavigator.Size = new System.Drawing.Size(632, 31);
             this.StratumBindingNavigator.TabIndex = 0;
             this.StratumBindingNavigator.Text = "bindingNavigator1";
             // 
@@ -883,6 +883,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.AutoSize = true;
+            this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.InsetDouble;
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -901,7 +902,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(859, 429);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(632, 429);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // label1
@@ -909,11 +910,11 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Location = new System.Drawing.Point(160, 0);
+            this.label1.Location = new System.Drawing.Point(166, 3);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
             this.label1.Padding = new System.Windows.Forms.Padding(5, 3, 0, 0);
-            this.label1.Size = new System.Drawing.Size(699, 16);
+            this.label1.Size = new System.Drawing.Size(463, 16);
             this.label1.TabIndex = 2;
             this.label1.Text = "Sample Group";
             // 
@@ -943,14 +944,14 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.referenceHeightPercentDataGridViewTextBoxColumn});
             this.TreeDefaultGridView.DataSource = this.TreeDefaultBindingSource;
             this.TreeDefaultGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TreeDefaultGridView.Location = new System.Drawing.Point(163, 237);
+            this.TreeDefaultGridView.Location = new System.Drawing.Point(169, 249);
             this.TreeDefaultGridView.Name = "TreeDefaultGridView";
             this.TreeDefaultGridView.ReadOnly = true;
             this.TreeDefaultGridView.RowHeadersVisible = false;
             this.TreeDefaultGridView.RowTemplate.Height = 24;
             this.TreeDefaultGridView.SelectedItems = null;
             this.TreeDefaultGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.TreeDefaultGridView.Size = new System.Drawing.Size(693, 139);
+            this.TreeDefaultGridView.Size = new System.Drawing.Size(457, 121);
             this.TreeDefaultGridView.TabIndex = 0;
             this.TreeDefaultGridView.VirtualMode = true;
             // 
@@ -1142,7 +1143,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             this.Font = global::CruiseManager.Properties.Settings.Default.AppFont;
             this.MinimumSize = new System.Drawing.Size(630, 0);
             this.Name = "SampleGroupPage";
-            this.Size = new System.Drawing.Size(859, 460);
+            this.Size = new System.Drawing.Size(632, 460);
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SampleGroupBindingSource)).EndInit();

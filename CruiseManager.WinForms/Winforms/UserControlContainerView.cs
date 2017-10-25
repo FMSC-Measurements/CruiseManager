@@ -4,6 +4,7 @@ using CruiseManager.Core.ViewModel;
 using CruiseManager.WinForms.CommandModel;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -12,12 +13,19 @@ namespace CruiseManager.WinForms
     public partial class UserControlContainerView : UserControlView, IContainerView
     {
         private class LinkButton : Button
+
         {
             public LinkButton()
             {
-                this.SetStyle(ControlStyles.Selectable, false);
-                this.FlatStyle = FlatStyle.Flat;
-                AutoSize = true;
+                int newSize = 9;
+                this.Font = new Font(this.Font.FontFamily, newSize);
+
+                this.FlatStyle = FlatStyle.System;
+                //this.BackColor = System.Drawing.Color.LightSteelBlue;
+                //this.ForeColor = System.Drawing.Color.White;
+                this.Height = 37;
+                this.Width = 74;
+                AutoSize = false;
             }
         }
 

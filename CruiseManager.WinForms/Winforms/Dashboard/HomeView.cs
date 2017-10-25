@@ -1,5 +1,6 @@
 ﻿using CruiseManager.Core.App;
 using CruiseManager.Core.ViewInterfaces;
+using System.Runtime.InteropServices;
 
 namespace CruiseManager.WinForms.Dashboard
 {
@@ -8,6 +9,8 @@ namespace CruiseManager.WinForms.Dashboard
         public HomeView(ApplicationControllerBase applicationController)
         {
             InitializeComponent();
+            var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            versionNumber.Text = $"v.{version.Major}.{version.Minor:D2}.{version.Build:D2}";
 
             //this.UserCommands = new ViewCommand[]
             //{

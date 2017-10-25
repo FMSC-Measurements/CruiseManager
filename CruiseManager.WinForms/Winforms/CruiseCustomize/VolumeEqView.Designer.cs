@@ -64,7 +64,7 @@
             // panel6
             // 
             panel6.AutoSize = true;
-            panel6.BackColor = System.Drawing.Color.LightSteelBlue;
+            panel6.BackColor = System.Drawing.Color.DarkSeaGreen;
             panel6.Controls.Add(this._volEq_delete_button);
             panel6.Controls.Add(this._volEq_add_button);
             panel6.Dock = System.Windows.Forms.DockStyle.Fill;
