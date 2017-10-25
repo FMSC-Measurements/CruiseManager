@@ -18,5 +18,10 @@ namespace CruiseManager.WinForms.Dashboard
             //    this.ApplicationController.MakeViewCommand("Create New Cruise", this.ApplicationController.CreateNewCruise)
             //};
         }
+
+        private void HomeView_Load(object sender, System.EventArgs e)
+        {
+
+        }
     }
 }
