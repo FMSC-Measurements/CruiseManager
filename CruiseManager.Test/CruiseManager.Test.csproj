@@ -16,6 +16,7 @@
     <None Remove="TestFiles\Components\Good\Valentine.1.cruise" />
     <None Remove="TestFiles\Components\Good\Valentine.2.cruise" />
     <None Remove="TestFiles\Components\Good\Valentine.M.cruise" />
+    <None Remove="TestFiles\MultiTest.2014.10.31.cruise" />
     <None Remove="TestFiles\TESTMETH.crz" />
     <None Remove="TestFiles\testReadData.cruise" />
   </ItemGroup>
@@ -52,6 +53,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\Components\Good\Valentine.M.cruise">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\MultiTest.2014.10.31.cruise">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\TESTMETH.crz">

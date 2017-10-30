@@ -26,6 +26,8 @@ namespace CruiseManager.WinForms.App
             Bind<Core.CruiseCustomize.ViewInterfaces.IReportsView>().To<WinForms.CruiseCustomize.ReportsView>();
             Bind<Core.CruiseCustomize.ViewInterfaces.ICruiseCustomizeContainerView>().To<WinForms.CruiseCustomize.CustomizeCruiseContainerView>();
 
+            Bind<Tvol.CreateTvolView>().ToSelf();
+
             //Bind<MainWindow>().To<FormCSMMain>();
         }
     }

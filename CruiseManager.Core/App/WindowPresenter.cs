@@ -80,7 +80,8 @@ namespace CruiseManager.Core.App
                 new ViewNavigateCommand(this.ApplicationController,"Customize", typeof(Core.CruiseCustomize.ViewInterfaces.ICruiseCustomizeContainerView)),
                 new BindableActionCommand("Field Data", this.ShowDataEditor),
                 new ViewNavigateCommand(this.ApplicationController,"Create Component Files", typeof(Components.ViewInterfaces.ICreateComponentView)),
-                new ViewNavigateCommand(this.ApplicationController,"Merge Component Files", typeof(Components.ViewInterfaces.IMergeComponentView))
+                new ViewNavigateCommand(this.ApplicationController,"Merge Component Files", typeof(Components.ViewInterfaces.IMergeComponentView)),
+                new ViewNavigateCommand(this.ApplicationController, "Create Tvol File", typeof(WinForms.Tvol.CreateTvolView))
             };
         }
 

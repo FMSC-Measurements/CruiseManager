@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CruiseManager</RootNamespace>
     <AssemblyName>CruiseManager</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <ApplicationIcon>Resources\cruisetree_setup.ico</ApplicationIcon>
@@ -126,6 +126,12 @@
     <StartupObject>CruiseManager.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=1.50.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.0\lib\net451\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapper.Contrib, Version=1.50.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.Contrib.1.50.0\lib\net45\Dapper.Contrib.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
       <Private>True</Private>
@@ -149,10 +155,12 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App\ApplicationController.cs" />
@@ -221,6 +229,9 @@
       <DependentUpon>CreateSaleFolderDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="WinForms\DataEditor\ExcelWorksheetExtentions.cs" />
+    <Compile Include="WinForms\Tvol\CreateTvolView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="WinForms\UserControlContainerView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -554,6 +565,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="WinForms\Tvol\CreateTvolView.resx">
+      <DependentUpon>CreateTvolView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="WinForms\UserControlContainerView.resx">
       <DependentUpon>UserControlContainerView.cs</DependentUpon>
     </EmbeddedResource>
@@ -572,6 +586,7 @@
     <None Include="Properties\DataSources\CruiseManager.Core.CruiseCustomize.TallySetupSampleGroup.datasource" />
     <None Include="Properties\DataSources\CruiseManager.Core.CruiseCustomize.TallySetupStratum.datasource" />
     <None Include="Properties\DataSources\CruiseManager.Core.Models.LogVM.datasource" />
+    <None Include="Properties\DataSources\CruiseManager.Core.Tvol.CreateTvolPresenter.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -633,6 +648,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Tvol.Data\source\Tvol.Data\Tvol.Data.csproj">
+      <Project>{f38d73ce-d1dd-48c9-a138-aabd62993ce2}</Project>
+      <Name>Tvol.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CruiseDAL\CruiseDAL\CruiseDAL.VS15.csproj">
       <Project>{baf1842e-f8c5-47a5-94c6-adaba8a4b3af}</Project>
       <Name>CruiseDAL_FF35.VS15</Name>
