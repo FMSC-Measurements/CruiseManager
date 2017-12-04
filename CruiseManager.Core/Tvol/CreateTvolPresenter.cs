@@ -18,10 +18,13 @@ namespace CruiseManager.Core.Tvol
         public string FilePath
         {
             get { return _filePath; }
-            set { SetValue(value, ref _filePath); }
+            set {
+                SetValue(value, ref _filePath);
+                OnPropertyChanged(nameof(CanCreateFile));
+            }
         }
 
-
+        public bool CanCreateFile => !String.IsNullOrWhiteSpace(FilePath);
 
         public CreateTvolPresenter(ApplicationControllerBase app) : base(app)
         {

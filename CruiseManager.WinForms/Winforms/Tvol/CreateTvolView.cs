@@ -88,7 +88,6 @@ namespace CruiseManager.WinForms.Tvol
             this._directory_TB.Name = "_directory_TB";
             this._directory_TB.Size = new System.Drawing.Size(207, 20);
             this._directory_TB.TabIndex = 3;
-            this._directory_TB.TextChanged += new System.EventHandler(this._directory_TB_TextChanged);
             // 
             // __browse_btn
             // 
@@ -152,11 +151,10 @@ namespace CruiseManager.WinForms.Tvol
             set { base.ViewPresenter = value; }
         }
 
-        protected override void OnViewPresenterChanging()
-        {
-            base.OnViewPresenterChanging();
-
-        }
+        //protected override void OnViewPresenterChanging()
+        //{
+        //    base.OnViewPresenterChanging();
+        //}
 
         protected override void OnViewPresenterChanged()
         {
@@ -191,7 +189,7 @@ namespace CruiseManager.WinForms.Tvol
                 if(sfd.ShowDialog() == DialogResult.OK)
                 {
                     ViewPresenter.FilePath = sfd.FileName;
-                    _directory_TB.SelectionStart = Math.Max(_directory_TB.Text.Count() - 1, 0);
+                    _directory_TB.SelectionStart = Math.Max(_directory_TB.Text.Count(), 0);
                 }
             }
         }
@@ -214,11 +212,6 @@ namespace CruiseManager.WinForms.Tvol
                 UseWaitCursor = false;
                 _create_btn.Enabled = true;
             }
-        }
-
-        private void _directory_TB_TextChanged(object sender, EventArgs e)
-        {
-            
         }
     }
 }

@@ -232,6 +232,15 @@
     <Compile Include="WinForms\Tvol\CreateTvolView.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="WinForms\Tvol\EditTvolDataView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\Tvol\EditTvolView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\Tvol\ProcessTvolView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="WinForms\UserControlContainerView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -568,6 +577,15 @@
     <EmbeddedResource Include="WinForms\Tvol\CreateTvolView.resx">
       <DependentUpon>CreateTvolView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\Tvol\EditTvolDataView.resx">
+      <DependentUpon>EditTvolDataView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\Tvol\EditTvolView.resx">
+      <DependentUpon>EditTvolView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\Tvol\ProcessTvolView.resx">
+      <DependentUpon>ProcessTvolView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="WinForms\UserControlContainerView.resx">
       <DependentUpon>UserControlContainerView.cs</DependentUpon>
     </EmbeddedResource>
@@ -587,6 +605,11 @@
     <None Include="Properties\DataSources\CruiseManager.Core.CruiseCustomize.TallySetupStratum.datasource" />
     <None Include="Properties\DataSources\CruiseManager.Core.Models.LogVM.datasource" />
     <None Include="Properties\DataSources\CruiseManager.Core.Tvol.CreateTvolPresenter.datasource" />
+    <None Include="Properties\DataSources\CruiseManager.Core.Tvol.EditTvolDataPresenter.datasource" />
+    <None Include="Properties\DataSources\CruiseManager.Core.Tvol.EditTvolPresenter.datasource" />
+    <None Include="Properties\DataSources\Tvol.Data.Regression.datasource" />
+    <None Include="Properties\DataSources\Tvol.Data.Tree.datasource" />
+    <None Include="Properties\DataSources\Tvol.Data.TreeProfile.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

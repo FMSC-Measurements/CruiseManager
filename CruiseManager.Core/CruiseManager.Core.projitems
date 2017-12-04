@@ -96,6 +96,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)System\DoubleExtentions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)System\FloatExtentions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tvol\CreateTvolPresenter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tvol\EditTvolDataPresenter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tvol\EditTvolPresenter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\EditTemplateView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\IHomeView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\MainWindow.cs" />

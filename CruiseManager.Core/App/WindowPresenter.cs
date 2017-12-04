@@ -133,6 +133,7 @@ namespace CruiseManager.Core.App
         }
 
         private BindableCommand[] templateNavOptions;
+        private BindableCommand[] tvolNavOptions;
 
         private void InitializeTemplateNavOptions()
         {
@@ -143,5 +144,26 @@ namespace CruiseManager.Core.App
                 new BindableActionCommand("Close File", this.ShowHomeLayout )
             };
         }
+
+        public void ShowTvolLandingLayout()
+        {
+            ApplicationController.MainWindow.Text = System.IO.Path.GetFileName(ApplicationController.TVolDatabase.Path);
+
+            ApplicationController.NavigateTo<WinForms.Tvol.EditTvolView>();
+
+            var navOptions = tvolNavOptions = tvolNavOptions ?? MakeTvolNavOptions();
+            ApplicationController.MainWindow.SetNavCommands(tvolNavOptions);
+
+        }
+
+        BindableCommand[] MakeTvolNavOptions()
+        {
+            return new BindableCommand[]
+            {
+                new ViewNavigateCommand(ApplicationController, "Design", typeof(WinForms.Tvol.EditTvolView)),
+                new ViewNavigateCommand(ApplicationController, "Data", typeof(WinForms.Tvol.EditTvolDataView))
+            };
+        }
+
     }
 }
