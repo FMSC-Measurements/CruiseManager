@@ -14,6 +14,7 @@ namespace CruiseManager.Core.Constants
         public const string CRUISE_FILE_EXTENTION = ".cruise";
         public const string CRUISE_TEMPLATE_FILE_EXTENTION = ".cut";
         public const string COMPONET_MASTER_EXTENTION = ".M.cruise";
+        public const string TVOL_FILE_EXTENTION = ".tvol";
 
         public static readonly string TEMP_FILENAME = "~temp.cruise";
 
@@ -48,12 +49,10 @@ namespace CruiseManager.Core.Constants
         public enum IndicatorType { Beep, None };
 
         public static readonly string OPEN_CRUISE_FILE_DIALOG_FILTER =
-            String.Format("All CSM files|*{1};*{3}| {0}(*{1})|*{1}| {2} (*{3})|*{3}| {4} (*{5})|*{5}",
-            Strings.FRIENDLY_CRUISE_FILETYPE_NAME,
-            Strings.CRUISE_FILE_EXTENTION,
-            Strings.FRIENDLY_CRUISE_TEMPLATE_FILETYPE_NAME,
-            Strings.CRUISE_TEMPLATE_FILE_EXTENTION,
-            Strings.FRIENDLY_COMPONENT_MASTER_FILETYPE_NAME,
-            Strings.COMPONET_MASTER_EXTENTION);
+            String.Format("All CSM files|*{0};*{1};*{3}| Cruise File(*{0})|*{0}| Cruise Template File (*{1})|*{1}| Component Master File (*{2})|*{2}| Tvol (*{3})|*{3}",
+            CRUISE_FILE_EXTENTION,
+            CRUISE_TEMPLATE_FILE_EXTENTION,
+            COMPONET_MASTER_EXTENTION,
+            TVOL_FILE_EXTENTION);
     }
 }

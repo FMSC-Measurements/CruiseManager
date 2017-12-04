@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using Tvol.Data;
 
 namespace CruiseManager.Core.App
 {
@@ -30,7 +31,9 @@ namespace CruiseManager.Core.App
 
         #region properties
 
-        DAL _database;
+        #region Database
+
+        private DAL _database;
 
         public DAL Database
         {
@@ -38,9 +41,17 @@ namespace CruiseManager.Core.App
             set
             {
                 if (_database == value) { return; }
-                //OnDatabaseChanging();
+                OnDatabaseChanging();
                 _database = value;
                 OnDatabaseChanged();
+            }
+        }
+
+        private void OnDatabaseChanging()
+        {
+            if (_database != null)
+            {
+                _database.Dispose();
             }
         }
 
@@ -49,13 +60,20 @@ namespace CruiseManager.Core.App
             SaveCommand.Enabled = this.SaveAsCommand.Enabled = (this.Database != null);
         }
 
+        #endregion Database
+
+        private TvolDatabase _tvolDatabase;
+
+        public TvolDatabase TVolDatabase
+        {
+            get { return _tvolDatabase; }
+            set
+            {
+                _tvolDatabase = value;
+            }
+        }
+
         public bool InSupervisorMode { get; set; }
-
-        //the current save handler is the active logical component of the program that is
-        //responsible for saving the user's data
-        public ISaveHandler SaveHandler { get { return ActivePresentor as ISaveHandler; } }
-
-        //private IPresentor _activePresentor;
 
         private IView _activeView;
 
@@ -70,13 +88,11 @@ namespace CruiseManager.Core.App
             }
         }
 
-        protected IPresentor ActivePresentor
-        {
-            get
-            {
-                return _activeView?.ViewPresenter;
-            }
-        }
+        protected IPresentor ActivePresentor => _activeView?.ViewPresenter;
+
+        //the current save handler is the active logical component of the program that is
+        //responsible for saving the user's data
+        protected ISaveHandler SaveHandler => ActivePresentor as ISaveHandler;
 
         private MainWindow _mainWindow;
 
@@ -86,11 +102,8 @@ namespace CruiseManager.Core.App
             set
             {
                 if (_mainWindow != null) { _mainWindow.Dispose(); }
-                if (value != null)
-                {
-                    value.Closing += this.MainWindow_Closing;
-                }
                 _mainWindow = value;
+                if (_mainWindow != null) { _mainWindow.Closing += this.MainWindow_Closing; }
             }
         }
 
@@ -197,8 +210,9 @@ namespace CruiseManager.Core.App
             try
             {
                 //start wait cursor in case this takes a long time
-                this.ActiveView.ShowWaitCursor();
-                switch (System.IO.Path.GetExtension(filePath))
+                //this.ActiveView.ShowWaitCursor();
+                var ext = System.IO.Path.GetExtension(filePath).ToLower();
+                switch (ext)
                 {
                     case Strings.CRUISE_FILE_EXTENTION:
                         {
@@ -223,8 +237,15 @@ namespace CruiseManager.Core.App
                             WindowPresenter.ShowTemplateLandingLayout();
                             break;
                         }
+                    case Strings.TVOL_FILE_EXTENTION:
+                        {
+                            TVolDatabase = new TvolDatabase(filePath);
+                            AppState.AddRecentFile(filePath);
+                            WindowPresenter.ShowTvolLandingLayout();
+                            break;
+                        }
                     default:
-                        this.ActiveView.ShowMessage("Invalid file name", null);
+                        this.ActiveView.ShowMessage("Invalid File Extention", null);
                         return;
                 }
             }
@@ -462,7 +483,7 @@ namespace CruiseManager.Core.App
 
         #region IDisposable Members
 
-        bool _disposed;
+        private bool _disposed;
 
         public void Dispose()
         {
@@ -478,10 +499,7 @@ namespace CruiseManager.Core.App
             }
             if (isDisposing)
             {
-                if (Database != null)
-                {
-                    Database.Dispose();
-                }
+                Database = null;
             }
 
             _disposed = true;
