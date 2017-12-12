@@ -20,7 +20,7 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CruiseManager.Core", "Cruis
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMSC.ORM.VS15", "CruiseDAL\FMSC.ORM\FMSC.ORM.VS15.csproj", "{22432D40-9892-40A6-AA0C-CC8C2FA4BB91}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tvol.Data", "..\Tvol.Data\source\Tvol.Data\Tvol.Data.csproj", "{F38D73CE-D1DD-48C9-A138-AABD62993CE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tvol.Data", "Tvol.Data\source\Tvol.Data\Tvol.Data.csproj", "{F38D73CE-D1DD-48C9-A138-AABD62993CE2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CruiseManager.Test", "CruiseManager.Test\CruiseManager.Test.csproj", "{FE4E6AD4-D4B9-419E-9805-D915E323A0F9}"
 EndProject
