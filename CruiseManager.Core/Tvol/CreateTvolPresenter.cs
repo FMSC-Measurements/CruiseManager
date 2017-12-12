@@ -3,10 +3,7 @@ using CruiseManager.Core.ViewModel;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tvol.Data;
 
 namespace CruiseManager.Core.Tvol
@@ -18,7 +15,8 @@ namespace CruiseManager.Core.Tvol
         public string FilePath
         {
             get { return _filePath; }
-            set {
+            set
+            {
                 SetValue(value, ref _filePath);
                 OnPropertyChanged(nameof(CanCreateFile));
             }
@@ -28,7 +26,6 @@ namespace CruiseManager.Core.Tvol
 
         public CreateTvolPresenter(ApplicationControllerBase app) : base(app)
         {
-
         }
 
         public void CreateFile()
@@ -39,7 +36,7 @@ namespace CruiseManager.Core.Tvol
 
         public static void CreateFile(CruiseDAL.DAL cruiseDB, string path)
         {
-            if(System.IO.File.Exists(path))
+            if (System.IO.File.Exists(path))
             {
                 System.IO.File.Delete(path);
             }
@@ -49,7 +46,7 @@ namespace CruiseManager.Core.Tvol
 
             //var sale = cruiseDB.From<CruiseDAL.DataObjects.SaleDO>().Read().FirstOrDefault();
 
-var readTreeProfilesQuery = @"SELECT 
+            var readTreeProfilesQuery = @"SELECT
 tdv.Species         AS Species,
 sg.PrimaryProduct   AS Product,
 tdv.LiveDead        AS LiveDead
@@ -59,17 +56,18 @@ JOIN SampleGroup AS sg USING (SampleGroup_CN)
 GROUP BY tdv.Species, sg.PrimaryProduct, tdv.LiveDead;";
 
             var readRegressionsQuery =
-@"SELECT 
+@"SELECT
 reg.rSpeices        AS Species,
 reg.rProduct        AS Product,
 reg.rLiveDead       AS LiveDead,
 reg.CoefficientA    AS CoefficientA,
 reg.CoefficientB    AS CoefficientB,
 reg.CoefficientC    AS CoefficientC,
-reg.Rsquared        AS Rsquared,
 reg.RegressModel    AS RegressModel,
 reg.rMinDbh         AS MinDBH,
-reg.rMaxDbh         AS MaxDBH
+reg.rMaxDbh         AS MaxDBH,
+reg.rVolume         AS Volume,
+reg.rVolType        AS VolType
 FROM Regression AS reg;";
 
             using (var cruiseConn = cruiseDB.CreateConnection())
@@ -81,20 +79,40 @@ FROM Regression AS reg;";
 
                 var profiles = cruiseConn.Query<TreeProfile>(readTreeProfilesQuery).ToList();
 
-                foreach(var p in profiles)
+                foreach (var p in profiles)
                 {
                     tvolConn.Insert(p);
                 }
 
                 var regressions = cruiseConn.Query<Regression>(readRegressionsQuery);
 
-                foreach(var reg in regressions)
+                foreach (var r in regressions)
                 {
-                    tvolConn.Insert(reg);
+                    //regression entries coming from cruise file may have multiple species per record
+                    //we need to split out each species into its own regression record
+                    var speciesList = r.Species.Split('/');
+
+                    foreach (var sp in speciesList)
+                    {
+                        var reg = new Regression()
+                        {
+                            Species = sp,
+                            Product = r.Product,
+                            LiveDead = r.LiveDead,
+                            CoefficientA = r.CoefficientA,
+                            CoefficientB = r.CoefficientB,
+                            CoefficientC = r.CoefficientC,
+                            DBHMax = r.DBHMax,
+                            DBHMin = r.DBHMin,
+                            RegressModel = r.RegressModel,
+                            Volume = r.Volume,
+                            VolType = r.VolType
+                        };
+
+                        tvolConn.Insert(reg);
+                    }
                 }
             }
-
-                //var regressions = cruiseDB.Query<Regression>(query);
         }
     }
 }
