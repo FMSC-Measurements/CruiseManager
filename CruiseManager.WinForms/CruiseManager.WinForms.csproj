@@ -671,10 +671,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Tvol.Data\source\Tvol.Data\Tvol.Data.csproj">
-      <Project>{f38d73ce-d1dd-48c9-a138-aabd62993ce2}</Project>
-      <Name>Tvol.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CruiseDAL\CruiseDAL\CruiseDAL.VS15.csproj">
       <Project>{baf1842e-f8c5-47a5-94c6-adaba8a4b3af}</Project>
       <Name>CruiseDAL_FF35.VS15</Name>
@@ -690,6 +686,10 @@
     <ProjectReference Include="..\FMSC.Util\FMSC.Utility\FMSC.Utility.VS15.csproj">
       <Project>{f882e97d-a121-41f6-916f-8fa956f84bcc}</Project>
       <Name>FMSC.Utility.VS15</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tvol.Data\source\Tvol.Data\Tvol.Data.csproj">
+      <Project>{f38d73ce-d1dd-48c9-a138-aabd62993ce2}</Project>
+      <Name>Tvol.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
