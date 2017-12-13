@@ -128,7 +128,7 @@ namespace CruiseManager.WinForms.Tvol
             // 
             // _trees_BS
             // 
-            this._trees_BS.DataSource = typeof(Tvol.Data.Tree);
+            this._trees_BS.DataSource = typeof(Tree);
             // 
             // _add_BTN
             // 
