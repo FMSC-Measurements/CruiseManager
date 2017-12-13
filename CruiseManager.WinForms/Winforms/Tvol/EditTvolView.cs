@@ -16,6 +16,29 @@ namespace CruiseManager.WinForms.Tvol
         protected EditTvolView()
         {
             InitializeComponent();
+
+            _regression_RegressModel_Column.Items.AddRange(new string[]
+            {
+                RegressModel.DEFAULT,
+                RegressModel.LINEAR,
+                RegressModel.LOG,
+                RegressModel.POWER,
+                RegressModel.QUADRATIC
+            });
+
+            _regression_LiveDead_Column.Items.AddRange(new string[]
+            {
+                "",
+                "L",
+                "D",
+            });
+
+            _treeProfile_LiveDead_Column.Items.AddRange(new string[]
+            {
+                "",
+                "L",
+                "D",
+            });
         }
 
         public EditTvolView(EditTvolPresenter presenter) : this()
@@ -37,22 +60,28 @@ namespace CruiseManager.WinForms.Tvol
 
         private void _treeProfile_Add_BTN_Click(object sender, System.EventArgs e)
         {
-
+            ViewPresenter.AddTreeProfile();
         }
 
         private void _treeProfile_Delete_BTN_Click(object sender, System.EventArgs e)
         {
+            var currentTreeProfile = _treeProfiles_BS.Current as TreeProfile;
+            if (currentTreeProfile == null) return;
 
+            ViewPresenter.DeleteTreeProfile(currentTreeProfile);
         }
 
         private void _regression_add_BTN_Click(object sender, System.EventArgs e)
         {
-
+            ViewPresenter.AddRegression();
         }
 
         private void _regression_delete_BTN_Click(object sender, System.EventArgs e)
         {
+            var currentRegression = _regression_BS.Current as Regression;
+            if (currentRegression == null) return;
 
+            ViewPresenter.DeleteRegression(currentRegression);
         }
 
         #region Designer Generated
@@ -75,18 +104,18 @@ namespace CruiseManager.WinForms.Tvol
         private System.ComponentModel.IContainer components;
         private System.Windows.Forms.BindingSource _treeProfiles_BS;
         private System.Windows.Forms.BindingSource _regression_BS;
-        private System.Windows.Forms.DataGridViewTextBoxColumn speciesDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn productDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn liveDeadDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn speciesDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn productDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dBHMinDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dBHMaxDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn regressionModelDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn coefficientADataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn coefficientBDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn coefficientCDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn _treeProfile_Species_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn _treeProfile_Product_Column;
+        private System.Windows.Forms.DataGridViewComboBoxColumn _treeProfile_LiveDead_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn _regression_Species_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn _regression_Product_Column;
+        private System.Windows.Forms.DataGridViewComboBoxColumn _regression_LiveDead_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn _regression_DBHMin_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn _regression_DBHMax_Column;
+        private System.Windows.Forms.DataGridViewComboBoxColumn _regression_RegressModel_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn _regression_CoefficientA_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn _regression_CoefficientB_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn _regression_CoefficientC_Column;
         private System.Windows.Forms.TabPage _regression_tabPage;
 
         private void InitializeComponent()
@@ -106,22 +135,22 @@ namespace CruiseManager.WinForms.Tvol
             this._regression_tabPage = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this._regression_DGV = new System.Windows.Forms.DataGridView();
+            this._regression_BS = new System.Windows.Forms.BindingSource(this.components);
             this._regression_add_BTN = new System.Windows.Forms.Button();
             this._regression_delete_BTN = new System.Windows.Forms.Button();
             this._treeProfiles_BS = new System.Windows.Forms.BindingSource(this.components);
-            this._regression_BS = new System.Windows.Forms.BindingSource(this.components);
-            this.speciesDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.productDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.liveDeadDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.iDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.speciesDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.productDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dBHMinDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dBHMaxDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.regressionModelDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.coefficientADataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.coefficientBDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.coefficientCDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._treeProfile_Species_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._treeProfile_Product_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._treeProfile_LiveDead_Column = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this._regression_Species_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._regression_Product_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._regression_LiveDead_Column = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this._regression_DBHMin_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._regression_DBHMax_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._regression_RegressModel_Column = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this._regression_CoefficientA_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._regression_CoefficientB_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._regression_CoefficientC_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this._tabControl.SuspendLayout();
             this._sale_tabPage.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -132,8 +161,8 @@ namespace CruiseManager.WinForms.Tvol
             this._regression_tabPage.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._regression_DGV)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this._treeProfiles_BS)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._regression_BS)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._treeProfiles_BS)).BeginInit();
             this.SuspendLayout();
             // 
             // _tabControl
@@ -237,12 +266,14 @@ namespace CruiseManager.WinForms.Tvol
             // 
             // _treeProfifle_DGV
             // 
+            this._treeProfifle_DGV.AllowUserToAddRows = false;
+            this._treeProfifle_DGV.AllowUserToDeleteRows = false;
             this._treeProfifle_DGV.AutoGenerateColumns = false;
             this._treeProfifle_DGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this._treeProfifle_DGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.speciesDataGridViewTextBoxColumn,
-            this.productDataGridViewTextBoxColumn,
-            this.liveDeadDataGridViewTextBoxColumn});
+            this._treeProfile_Species_Column,
+            this._treeProfile_Product_Column,
+            this._treeProfile_LiveDead_Column});
             this.tableLayoutPanel2.SetColumnSpan(this._treeProfifle_DGV, 3);
             this._treeProfifle_DGV.DataMember = "TreeProfiles";
             this._treeProfifle_DGV.DataSource = this._viewModel_BS;
@@ -310,18 +341,20 @@ namespace CruiseManager.WinForms.Tvol
             // 
             // _regression_DGV
             // 
+            this._regression_DGV.AllowUserToAddRows = false;
+            this._regression_DGV.AllowUserToDeleteRows = false;
             this._regression_DGV.AutoGenerateColumns = false;
             this._regression_DGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this._regression_DGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.iDDataGridViewTextBoxColumn,
-            this.speciesDataGridViewTextBoxColumn1,
-            this.productDataGridViewTextBoxColumn1,
-            this.dBHMinDataGridViewTextBoxColumn,
-            this.dBHMaxDataGridViewTextBoxColumn,
-            this.regressionModelDataGridViewTextBoxColumn,
-            this.coefficientADataGridViewTextBoxColumn,
-            this.coefficientBDataGridViewTextBoxColumn,
-            this.coefficientCDataGridViewTextBoxColumn});
+            this._regression_Species_Column,
+            this._regression_Product_Column,
+            this._regression_LiveDead_Column,
+            this._regression_DBHMin_Column,
+            this._regression_DBHMax_Column,
+            this._regression_RegressModel_Column,
+            this._regression_CoefficientA_Column,
+            this._regression_CoefficientB_Column,
+            this._regression_CoefficientC_Column});
             this.tableLayoutPanel3.SetColumnSpan(this._regression_DGV, 3);
             this._regression_DGV.DataSource = this._regression_BS;
             this._regression_DGV.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -330,6 +363,11 @@ namespace CruiseManager.WinForms.Tvol
             this._regression_DGV.Name = "_regression_DGV";
             this._regression_DGV.Size = new System.Drawing.Size(500, 381);
             this._regression_DGV.TabIndex = 0;
+            // 
+            // _regression_BS
+            // 
+            this._regression_BS.DataMember = "Regressions";
+            this._regression_BS.DataSource = this._viewModel_BS;
             // 
             // _regression_add_BTN
             // 
@@ -360,83 +398,83 @@ namespace CruiseManager.WinForms.Tvol
             this._treeProfiles_BS.DataMember = "TreeProfiles";
             this._treeProfiles_BS.DataSource = this._viewModel_BS;
             // 
-            // _regression_BS
+            // _treeProfile_Species_Column
             // 
-            this._regression_BS.DataMember = "Regressions";
-            this._regression_BS.DataSource = this._viewModel_BS;
+            this._treeProfile_Species_Column.DataPropertyName = "Species";
+            this._treeProfile_Species_Column.HeaderText = "Species";
+            this._treeProfile_Species_Column.Name = "_treeProfile_Species_Column";
             // 
-            // speciesDataGridViewTextBoxColumn
+            // _treeProfile_Product_Column
             // 
-            this.speciesDataGridViewTextBoxColumn.DataPropertyName = "Species";
-            this.speciesDataGridViewTextBoxColumn.HeaderText = "Species";
-            this.speciesDataGridViewTextBoxColumn.Name = "speciesDataGridViewTextBoxColumn";
+            this._treeProfile_Product_Column.DataPropertyName = "Product";
+            this._treeProfile_Product_Column.HeaderText = "Product";
+            this._treeProfile_Product_Column.Name = "_treeProfile_Product_Column";
             // 
-            // productDataGridViewTextBoxColumn
+            // _treeProfile_LiveDead_Column
             // 
-            this.productDataGridViewTextBoxColumn.DataPropertyName = "Product";
-            this.productDataGridViewTextBoxColumn.HeaderText = "Product";
-            this.productDataGridViewTextBoxColumn.Name = "productDataGridViewTextBoxColumn";
+            this._treeProfile_LiveDead_Column.DataPropertyName = "LiveDead";
+            this._treeProfile_LiveDead_Column.HeaderText = "LiveDead";
+            this._treeProfile_LiveDead_Column.Name = "_treeProfile_LiveDead_Column";
+            this._treeProfile_LiveDead_Column.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this._treeProfile_LiveDead_Column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
-            // liveDeadDataGridViewTextBoxColumn
+            // _regression_Species_Column
             // 
-            this.liveDeadDataGridViewTextBoxColumn.DataPropertyName = "LiveDead";
-            this.liveDeadDataGridViewTextBoxColumn.HeaderText = "LiveDead";
-            this.liveDeadDataGridViewTextBoxColumn.Name = "liveDeadDataGridViewTextBoxColumn";
+            this._regression_Species_Column.DataPropertyName = "Species";
+            this._regression_Species_Column.HeaderText = "Species";
+            this._regression_Species_Column.Name = "_regression_Species_Column";
             // 
-            // iDDataGridViewTextBoxColumn
+            // _regression_Product_Column
             // 
-            this.iDDataGridViewTextBoxColumn.DataPropertyName = "ID";
-            this.iDDataGridViewTextBoxColumn.HeaderText = "ID";
-            this.iDDataGridViewTextBoxColumn.Name = "iDDataGridViewTextBoxColumn";
-            this.iDDataGridViewTextBoxColumn.Visible = false;
+            this._regression_Product_Column.DataPropertyName = "Product";
+            this._regression_Product_Column.HeaderText = "Product";
+            this._regression_Product_Column.Name = "_regression_Product_Column";
             // 
-            // speciesDataGridViewTextBoxColumn1
+            // _regression_LiveDead_Column
             // 
-            this.speciesDataGridViewTextBoxColumn1.DataPropertyName = "Species";
-            this.speciesDataGridViewTextBoxColumn1.HeaderText = "Species";
-            this.speciesDataGridViewTextBoxColumn1.Name = "speciesDataGridViewTextBoxColumn1";
+            this._regression_LiveDead_Column.DataPropertyName = "LiveDead";
+            this._regression_LiveDead_Column.HeaderText = "LiveDead";
+            this._regression_LiveDead_Column.Name = "_regression_LiveDead_Column";
+            this._regression_LiveDead_Column.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this._regression_LiveDead_Column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
-            // productDataGridViewTextBoxColumn1
+            // _regression_DBHMin_Column
             // 
-            this.productDataGridViewTextBoxColumn1.DataPropertyName = "Product";
-            this.productDataGridViewTextBoxColumn1.HeaderText = "Product";
-            this.productDataGridViewTextBoxColumn1.Name = "productDataGridViewTextBoxColumn1";
+            this._regression_DBHMin_Column.DataPropertyName = "DBHMin";
+            this._regression_DBHMin_Column.HeaderText = "DBHMin";
+            this._regression_DBHMin_Column.Name = "_regression_DBHMin_Column";
             // 
-            // dBHMinDataGridViewTextBoxColumn
+            // _regression_DBHMax_Column
             // 
-            this.dBHMinDataGridViewTextBoxColumn.DataPropertyName = "DBHMin";
-            this.dBHMinDataGridViewTextBoxColumn.HeaderText = "DBHMin";
-            this.dBHMinDataGridViewTextBoxColumn.Name = "dBHMinDataGridViewTextBoxColumn";
+            this._regression_DBHMax_Column.DataPropertyName = "DBHMax";
+            this._regression_DBHMax_Column.HeaderText = "DBHMax";
+            this._regression_DBHMax_Column.Name = "_regression_DBHMax_Column";
             // 
-            // dBHMaxDataGridViewTextBoxColumn
+            // _regression_RegressModel_Column
             // 
-            this.dBHMaxDataGridViewTextBoxColumn.DataPropertyName = "DBHMax";
-            this.dBHMaxDataGridViewTextBoxColumn.HeaderText = "DBHMax";
-            this.dBHMaxDataGridViewTextBoxColumn.Name = "dBHMaxDataGridViewTextBoxColumn";
+            this._regression_RegressModel_Column.DataPropertyName = "RegressModel";
+            this._regression_RegressModel_Column.HeaderText = "RegressModel";
+            this._regression_RegressModel_Column.Name = "_regression_RegressModel_Column";
+            this._regression_RegressModel_Column.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this._regression_RegressModel_Column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
-            // regressionModelDataGridViewTextBoxColumn
+            // _regression_CoefficientA_Column
             // 
-            this.regressionModelDataGridViewTextBoxColumn.DataPropertyName = "RegressionModel";
-            this.regressionModelDataGridViewTextBoxColumn.HeaderText = "RegressionModel";
-            this.regressionModelDataGridViewTextBoxColumn.Name = "regressionModelDataGridViewTextBoxColumn";
+            this._regression_CoefficientA_Column.DataPropertyName = "CoefficientA";
+            this._regression_CoefficientA_Column.HeaderText = "CoefficientA";
+            this._regression_CoefficientA_Column.Name = "_regression_CoefficientA_Column";
             // 
-            // coefficientADataGridViewTextBoxColumn
+            // _regression_CoefficientB_Column
             // 
-            this.coefficientADataGridViewTextBoxColumn.DataPropertyName = "CoefficientA";
-            this.coefficientADataGridViewTextBoxColumn.HeaderText = "CoefficientA";
-            this.coefficientADataGridViewTextBoxColumn.Name = "coefficientADataGridViewTextBoxColumn";
+            this._regression_CoefficientB_Column.DataPropertyName = "CoefficientB";
+            this._regression_CoefficientB_Column.HeaderText = "CoefficientB";
+            this._regression_CoefficientB_Column.Name = "_regression_CoefficientB_Column";
             // 
-            // coefficientBDataGridViewTextBoxColumn
+            // _regression_CoefficientC_Column
             // 
-            this.coefficientBDataGridViewTextBoxColumn.DataPropertyName = "CoefficientB";
-            this.coefficientBDataGridViewTextBoxColumn.HeaderText = "CoefficientB";
-            this.coefficientBDataGridViewTextBoxColumn.Name = "coefficientBDataGridViewTextBoxColumn";
-            // 
-            // coefficientCDataGridViewTextBoxColumn
-            // 
-            this.coefficientCDataGridViewTextBoxColumn.DataPropertyName = "CoefficientC";
-            this.coefficientCDataGridViewTextBoxColumn.HeaderText = "CoefficientC";
-            this.coefficientCDataGridViewTextBoxColumn.Name = "coefficientCDataGridViewTextBoxColumn";
+            this._regression_CoefficientC_Column.DataPropertyName = "CoefficientC";
+            this._regression_CoefficientC_Column.HeaderText = "CoefficientC";
+            this._regression_CoefficientC_Column.Name = "_regression_CoefficientC_Column";
             // 
             // EditTvolView
             // 
@@ -456,8 +494,8 @@ namespace CruiseManager.WinForms.Tvol
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this._regression_DGV)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this._treeProfiles_BS)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._regression_BS)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._treeProfiles_BS)).EndInit();
             this.ResumeLayout(false);
 
         }

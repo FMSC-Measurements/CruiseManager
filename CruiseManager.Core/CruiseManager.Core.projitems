@@ -94,6 +94,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SetupModels\UOMCode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)System\DictionaryExtentions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)System\DoubleExtentions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)System\EnumerableExtentions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)System\FloatExtentions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tvol\CreateTvolPresenter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tvol\EditTvolDataPresenter.cs" />

@@ -23,13 +23,27 @@ namespace CruiseManager.WinForms.Tvol
             var vp = ViewPresenter;
             if(vp != null)
             {
+                vp.PropertyChanged += Vp_PropertyChanged;
+
                 _trees_BS.DataSource = vp.Trees;
             }
+        }
+
+        private void Vp_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            
         }
 
         protected EditTvolDataView()
         {
             InitializeComponent();
+
+            liveDeadDataGridViewTextBoxColumn.Items.AddRange(
+                new string[]
+                {
+                    "L",
+                    "D"
+                });
         }
 
         public EditTvolDataView(EditTvolDataPresenter presenter) : this()
@@ -44,12 +58,12 @@ namespace CruiseManager.WinForms.Tvol
         private System.Windows.Forms.BindingSource _viewPresenter_BS;
         private System.ComponentModel.IContainer components;
         private System.Windows.Forms.BindingSource _trees_BS;
+        private System.Windows.Forms.DataGridViewTextBoxColumn profileDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn speciesDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn productDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn liveDeadDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewComboBoxColumn liveDeadDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn dBHDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn heightDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn profileDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridView dataGridView1;
 
         private void InitializeComponent()
@@ -58,15 +72,14 @@ namespace CruiseManager.WinForms.Tvol
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this._trees_BS = new System.Windows.Forms.BindingSource(this.components);
-            this._viewPresenter_BS = new System.Windows.Forms.BindingSource(this.components);
             this._add_BTN = new System.Windows.Forms.Button();
             this._delete_BTN = new System.Windows.Forms.Button();
+            this._viewPresenter_BS = new System.Windows.Forms.BindingSource(this.components);
             this.speciesDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.productDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.liveDeadDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.liveDeadDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dBHDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.heightDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.profileDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._trees_BS)).BeginInit();
@@ -95,6 +108,7 @@ namespace CruiseManager.WinForms.Tvol
             // 
             // dataGridView1
             // 
+            this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AutoGenerateColumns = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -102,8 +116,7 @@ namespace CruiseManager.WinForms.Tvol
             this.productDataGridViewTextBoxColumn,
             this.liveDeadDataGridViewTextBoxColumn,
             this.dBHDataGridViewTextBoxColumn,
-            this.heightDataGridViewTextBoxColumn,
-            this.profileDataGridViewTextBoxColumn});
+            this.heightDataGridViewTextBoxColumn});
             this.tableLayoutPanel1.SetColumnSpan(this.dataGridView1, 3);
             this.dataGridView1.DataSource = this._trees_BS;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -115,11 +128,7 @@ namespace CruiseManager.WinForms.Tvol
             // 
             // _trees_BS
             // 
-            this._trees_BS.DataSource = typeof(Tree);
-            // 
-            // _viewPresenter_BS
-            // 
-            this._viewPresenter_BS.DataSource = typeof(CruiseManager.Core.Tvol.EditTvolDataPresenter);
+            this._trees_BS.DataSource = typeof(Tvol.Data.Tree);
             // 
             // _add_BTN
             // 
@@ -130,6 +139,7 @@ namespace CruiseManager.WinForms.Tvol
             this._add_BTN.TabIndex = 1;
             this._add_BTN.Text = "Add";
             this._add_BTN.UseVisualStyleBackColor = true;
+            this._add_BTN.Click += new System.EventHandler(this._add_BTN_Click);
             // 
             // _delete_BTN
             // 
@@ -140,6 +150,11 @@ namespace CruiseManager.WinForms.Tvol
             this._delete_BTN.TabIndex = 2;
             this._delete_BTN.Text = "Delete";
             this._delete_BTN.UseVisualStyleBackColor = true;
+            this._delete_BTN.Click += new System.EventHandler(this._delete_BTN_Click);
+            // 
+            // _viewPresenter_BS
+            // 
+            this._viewPresenter_BS.DataSource = typeof(CruiseManager.Core.Tvol.EditTvolDataPresenter);
             // 
             // speciesDataGridViewTextBoxColumn
             // 
@@ -158,6 +173,8 @@ namespace CruiseManager.WinForms.Tvol
             this.liveDeadDataGridViewTextBoxColumn.DataPropertyName = "LiveDead";
             this.liveDeadDataGridViewTextBoxColumn.HeaderText = "LiveDead";
             this.liveDeadDataGridViewTextBoxColumn.Name = "liveDeadDataGridViewTextBoxColumn";
+            this.liveDeadDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.liveDeadDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // dBHDataGridViewTextBoxColumn
             // 
@@ -170,12 +187,6 @@ namespace CruiseManager.WinForms.Tvol
             this.heightDataGridViewTextBoxColumn.DataPropertyName = "Height";
             this.heightDataGridViewTextBoxColumn.HeaderText = "Height";
             this.heightDataGridViewTextBoxColumn.Name = "heightDataGridViewTextBoxColumn";
-            // 
-            // profileDataGridViewTextBoxColumn
-            // 
-            this.profileDataGridViewTextBoxColumn.DataPropertyName = "Profile";
-            this.profileDataGridViewTextBoxColumn.HeaderText = "Profile";
-            this.profileDataGridViewTextBoxColumn.Name = "profileDataGridViewTextBoxColumn";
             // 
             // EditTvolDataView
             // 
@@ -192,5 +203,18 @@ namespace CruiseManager.WinForms.Tvol
 
         }
         #endregion
+
+        private void _add_BTN_Click(object sender, EventArgs e)
+        {
+            ViewPresenter.AddTree();
+        }
+
+        private void _delete_BTN_Click(object sender, EventArgs e)
+        {
+            var currTree = _trees_BS.Current as Tree;
+            if (currTree == null) return;
+
+            ViewPresenter.DeleteTree(currTree);
+        }
     }
 }
