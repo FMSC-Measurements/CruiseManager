@@ -198,7 +198,8 @@ namespace CruiseManager.Core.App
             {
                 //start wait cursor in case this takes a long time
                 this.ActiveView.ShowWaitCursor();
-                switch (System.IO.Path.GetExtension(filePath))
+                var extension = System.IO.Path.GetExtension(filePath).ToLowerInvariant();
+                switch (extension)
                 {
                     case Strings.CRUISE_FILE_EXTENTION:
                         {
