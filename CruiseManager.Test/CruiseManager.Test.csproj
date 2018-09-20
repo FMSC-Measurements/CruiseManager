@@ -15,7 +15,7 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\CruiseManager.WinForms\CruiseManager.WinFormsVS17.csproj" />
+    <ProjectReference Include="..\CruiseManager.WinForms\CruiseManager.WinForms.csproj" />
   </ItemGroup>
 
 
