@@ -17,7 +17,8 @@ namespace CruiseManager.Core.App
     {
         internal static readonly TreeDefaultValueDO[] EMPTY_SPECIES_LIST = { };
 
-        public Ninject.StandardKernel Kernel { get; set; }
+        public Ninject.StandardKernel Kernel { get; private set; } = new StandardKernel();
+
 
         #region ViewCommands
 
@@ -105,6 +106,8 @@ namespace CruiseManager.Core.App
 
         protected ApplicationControllerBase()
         {
+            RegisterTypes(Kernel);
+
             this.SaveCommand = new BindableActionCommand("Save", this.Save, enabled: false);
             this.SaveAsCommand = new BindableActionCommand("SaveAs", this.SaveAs, enabled: false);
             this.OpenFileCommand = new BindableActionCommand("Open File", this.OpenFile);
@@ -115,10 +118,7 @@ namespace CruiseManager.Core.App
 #endif
         }
 
-        protected ApplicationControllerBase(NinjectModule viewModule, NinjectModule coreModule) : this()
-        {
-            this.Kernel = new StandardKernel(viewModule, coreModule);
-        }
+        public abstract void RegisterTypes(StandardKernel kernel);
 
         public IView GetView<T>() where T : IView
         {

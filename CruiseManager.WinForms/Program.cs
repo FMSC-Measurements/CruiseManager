@@ -39,9 +39,7 @@ namespace CruiseManager
 
             InitializeNBug();
 
-            using (ApplicationControllerBase applicationController = new ApplicationController(
-                new ViewModule(),
-                new CruiseManagerWinformsModule()))
+            using (ApplicationControllerBase applicationController = new ApplicationController())
             {
                 if (dalPath != null)
                 {
