@@ -1,4 +1,5 @@
-﻿using CruiseDAL;
+﻿using Backpack.SqlBuilder;
+using CruiseDAL;
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
 using CruiseManager.Core.Components.ViewInterfaces;

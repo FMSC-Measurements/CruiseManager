@@ -1,4 +1,5 @@
-﻿using CruiseDAL.DataObjects;
+﻿using Backpack.SqlBuilder;
+using CruiseDAL.DataObjects;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -102,7 +103,7 @@ namespace CruiseManager.Core.CruiseCustomize
             this.HasEdits = true;
         }
 
-        public override void Save(FMSC.ORM.Core.SQL.OnConflictOption option)
+        public override void Save(OnConflictOption option)
         {
             base.Save(option);
             this._hasEdits = false;

@@ -1,14 +1,12 @@
 ﻿using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
-using CruiseManager.Core.Models;
 using CruiseManager.WinForms.DataEditor;
 using FluentAssertions;
 using Moq;
-using System.Collections.Generic;
 using System.IO;
 using Xunit;
 
-namespace CSMTest
+namespace CruiseManager.Test.Winforms
 {
     public class DataEditorViewTest
     {

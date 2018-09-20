@@ -18,7 +18,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)App\IUserSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App\WindowPresenter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CancelWorkerException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collections\BindingListRedux.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\DataObjectCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collections\SortableBindingList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CommandModel\BindableActionCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CommandModel\BindableCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CommandModel\Command.cs" />
@@ -95,6 +97,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)System\DictionaryExtentions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)System\DoubleExtentions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)System\FloatExtentions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\GenericEqualityComparer{t].cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\EditTemplateView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\IHomeView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewInterfaces\MainWindow.cs" />

@@ -1,4 +1,5 @@
-﻿using CruiseDAL;
+﻿using Backpack.SqlBuilder;
+using CruiseDAL;
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
 using CruiseManager.Core.ViewInterfaces;
@@ -271,7 +272,7 @@ namespace CruiseManager.Core.EditTemplate
                 {
                     lfs.DAL = ApplicationController.Database;
                     //lfs.Method = method.CruiseMethod.Code;
-                    lfs.Save(FMSC.ORM.Core.SQL.OnConflictOption.Ignore);
+                    lfs.Save(OnConflictOption.Ignore);
                 }
                 else if (lfs.IsChanged == true)
                 {

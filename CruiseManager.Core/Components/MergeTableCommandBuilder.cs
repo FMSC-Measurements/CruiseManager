@@ -1,5 +1,7 @@
-﻿using CruiseDAL;
+﻿using Backpack.SqlBuilder;
+using CruiseDAL;
 using CruiseDAL.DataObjects;
+using CruiseManager.Core.Util;
 using FMSC.ORM.Core.SQL;
 using System;
 using System.Collections.Generic;
@@ -33,37 +35,37 @@ namespace CruiseManager.Core.Components
         private void InitializeCommonColumns(bool hasGuidKey, bool hasRowVersion)
         {
             List<ColumnInfo> cList = new List<ColumnInfo>();
-            cList.Add(new ColumnInfo() { Name = "MergeRowID", DBType = "INTEGER", IsPK = true });
-            cList.Add(new ColumnInfo() { Name = "ComponentRowID", DBType = "INTEGER" });
-            cList.Add(new ColumnInfo() { Name = "ComponentID", DBType = "INTEGER" });
-            cList.Add(new ColumnInfo() { Name = "NaturalMatch", DBType = "INTEGER" });
-            cList.Add(new ColumnInfo() { Name = "RowIDMatch", DBType = "INTEGER" });
-            cList.Add(new ColumnInfo() { Name = "GUIDMatch", DBType = "INTEGER" });
+            cList.Add(new ColumnInfo() { Name = "MergeRowID", Type = "INTEGER", IsPK = true });
+            cList.Add(new ColumnInfo() { Name = "ComponentRowID", Type = "INTEGER" });
+            cList.Add(new ColumnInfo() { Name = "ComponentID", Type = "INTEGER" });
+            cList.Add(new ColumnInfo() { Name = "NaturalMatch", Type = "INTEGER" });
+            cList.Add(new ColumnInfo() { Name = "RowIDMatch", Type = "INTEGER" });
+            cList.Add(new ColumnInfo() { Name = "GUIDMatch", Type = "INTEGER" });
 
-            cList.Add(new ColumnInfo() { Name = "MatchRowID", DBType = "INTEGER" });
-            cList.Add(new ColumnInfo() { Name = "PartialMatch", DBType = "TEXT" });
+            cList.Add(new ColumnInfo() { Name = "MatchRowID", Type = "INTEGER" });
+            cList.Add(new ColumnInfo() { Name = "PartialMatch", Type = "TEXT" });
 
-            //cList.Add(new ColumnInfo() { Name = "ComponentConflict", DBType = "TEXT" });
-            //cList.Add(new ColumnInfo() { Name = "MatchConflict", DBType = "TEXT" });
-            cList.Add(new ColumnInfo() { Name = "NaturalSiblings", DBType = "TEXT" });
-            cList.Add(new ColumnInfo() { Name = "SiblingRecords", DBType = "TEXT" });
+            //cList.Add(new ColumnInfo() { Name = "ComponentConflict", Type = "TEXT" });
+            //cList.Add(new ColumnInfo() { Name = "MatchConflict", Type = "TEXT" });
+            cList.Add(new ColumnInfo() { Name = "NaturalSiblings", Type = "TEXT" });
+            cList.Add(new ColumnInfo() { Name = "SiblingRecords", Type = "TEXT" });
 
-            //cList.Add(new ColumnInfo() { Name = "MasterConflict", DBType = "TEXT" });
-            cList.Add(new ColumnInfo() { Name = "IsDeleted", DBType = "BOOL", Default = "0" });
+            //cList.Add(new ColumnInfo() { Name = "MasterConflict", Type = "TEXT" });
+            cList.Add(new ColumnInfo() { Name = "IsDeleted", Type = "BOOL", Default = "0" });
 
-            //cList.Add(new ColumnInfo() { Name = "MasterRowID", DBType = "INTEGER" });
+            //cList.Add(new ColumnInfo() { Name = "MasterRowID", Type = "INTEGER" });
 
-            cList.Add(new ColumnInfo() { Name = "CompoundNaturalKey", DBType = "TEXT" });
+            cList.Add(new ColumnInfo() { Name = "CompoundNaturalKey", Type = "TEXT" });
 
             if (hasGuidKey)
             {
-                cList.Add(new ColumnInfo() { Name = "ComponentRowGUID", DBType = "TEXT" });
+                cList.Add(new ColumnInfo() { Name = "ComponentRowGUID", Type = "TEXT" });
             }
 
             if (hasRowVersion)
             {
-                cList.Add(new ColumnInfo() { Name = "ComponentRowVersion", DBType = "INTEGER" });
-                cList.Add(new ColumnInfo() { Name = "MasterRowVersion", DBType = "INTEGER" });
+                cList.Add(new ColumnInfo() { Name = "ComponentRowVersion", Type = "INTEGER" });
+                cList.Add(new ColumnInfo() { Name = "MasterRowVersion", Type = "INTEGER" });
             }
             this.CommonMergeTableColumns = cList;
         }
@@ -193,16 +195,22 @@ namespace CruiseManager.Core.Components
         {
             get
             {
-                //build array of column definitions for our merge table
-                String[] columnDefs = (from ColumnInfo ci in this.AllClientColumns
-                                       where ci.IsPK || this.ClientUniqueFieldNames.Contains(ci.Name)
-                                       select ci.GetColumnDef(false)).Union(
-                                           from ColumnInfo ci in CommonMergeTableColumns
-                                           select ci.GetColumnDef(true)).ToArray();
+                var createTableBuilder = new Backpack.SqlBuilder.CreateTable();
+                createTableBuilder.Columns = AllClientColumns.Where((c) => c.IsPK || ClientUniqueFieldNames.Contains(c.Name))
+                    .Union(CommonMergeTableColumns, new GenericEqualityComparer<ColumnInfo>((c1, c2) => c1.Name == c2.Name)).ToArray();
 
-                string mkTbl = "CREATE TABLE " + this.MergeTableName + "\r\n"
-                    + " (" + String.Join(",\r\n", columnDefs) + ");";
-                return mkTbl;
+                return createTableBuilder.ToString();
+
+                ////build array of column definitions for our merge table
+                //String[] columnDefs = (from ColumnInfo ci in this.AllClientColumns
+                //                       where ci.IsPK || this.ClientUniqueFieldNames.Contains(ci.Name)
+                //                       select ci.GetColumnDef(false)).Union(
+                //                           from ColumnInfo ci in CommonMergeTableColumns
+                //                           select ci.GetColumnDef(true)).ToArray();
+
+                //string mkTbl = "CREATE TABLE " + this.MergeTableName + "\r\n"
+                //    + " (" + String.Join(",\r\n", columnDefs) + ");";
+                //return mkTbl;
             }
         }
 
@@ -481,7 +489,7 @@ namespace CruiseManager.Core.Components
                 "SELECT * FROM " + this.MergeTableName +
                 this.FindNewRecords +
                 " AND ComponentID = ?;";
-            return master.Query<MergeObject>(selectNewRecordsCommand, comp.Component_CN);
+            return master.Query<MergeObject>(selectNewRecordsCommand, new object[] { comp.Component_CN }).ToList();
         }
 
         public List<MergeObject> ListComponentUpdates(DAL master, ComponentFileVM comp)
@@ -490,7 +498,7 @@ namespace CruiseManager.Core.Components
                 this.FindMasterToCompUpdates +
                 " AND ComponentID = ?;";
 
-            return master.Query<MergeObject>(selectPullRecordsCommand, comp.Component_CN);
+            return master.Query<MergeObject>(selectPullRecordsCommand, new object[] { comp.Component_CN }).ToList();
         }
 
         public List<MergeObject> ListMasterUpdates(DAL master, ComponentFileVM comp)
@@ -499,7 +507,7 @@ namespace CruiseManager.Core.Components
                 this.FindCompToMasterUpdates +
                 " AND ComponentID = ?;";
 
-            return master.Query<MergeObject>(selectPullRecordsCommand, comp.Component_CN);
+            return master.Query<MergeObject>(selectPullRecordsCommand, new object[] { comp.Component_CN }).ToList();
         }
 
         public DataObject ReadSingleRow(DAL source, long rowid)

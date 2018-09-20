@@ -4,6 +4,7 @@ using FMSC.ORM.Core.SQL;
 using FMSC.ORM.EntityModel.Attributes;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 namespace CruiseManager.Core.Components
@@ -241,7 +242,7 @@ namespace CruiseManager.Core.Components
             List<MergeObject> naturalSiblings = mergeDB.Query<MergeObject>(
                 "SELECT CompoundNaturalKey, NaturalSiblings FROM (" +
                 "SELECT CompoundNaturalKey, group_concat(MergeRowID, ',') as NaturalSiblings, count(1) as size FROM " + cmdBldr.MergeTableName +
-                " GROUP BY CompoundNaturalKey) WHERE size > 1;");
+                " GROUP BY CompoundNaturalKey) WHERE size > 1;", (object[])null).ToList();
 
             string setNaturalSiblings = "UPDATE " + cmdBldr.MergeTableName + " SET NaturalSiblings = ? WHERE CompoundNaturalKey = ?;";
             foreach (MergeObject groups in naturalSiblings)
@@ -274,7 +275,7 @@ namespace CruiseManager.Core.Components
             string selectPartialMatches = "SELECT MergeRowID, group_concat(PartialMatch, ',') AS PartialMatch FROM ( " +
                 string.Join(" UNION ", matchSources.ToArray()) + " ) GROUP BY MergeRowID;";
 
-            List<MergeObject> partialMatchs = mergeDB.Query<MergeObject>(selectPartialMatches);
+            List<MergeObject> partialMatchs = mergeDB.Query<MergeObject>(selectPartialMatches, (object[])null).ToList();
             string setPartialMatch = "UPDATE " + cmdBldr.MergeTableName + " SET PartialMatch = ? WHERE MergeRowID = ?;";
             foreach (MergeObject mRec in partialMatchs)
             {
@@ -290,7 +291,7 @@ namespace CruiseManager.Core.Components
                 _workInCurrentJob += 1;
 
                 string setKeyMatch = "UPDATE " + cmdBldr.MergeTableName + " SET RowIDMatch = ? WHERE MergeRowID = ?;";
-                foreach (MergeObject item in master.Query<MergeObject>(cmdBldr.SelectRowIDMatches))
+                foreach (MergeObject item in master.Query<MergeObject>(cmdBldr.SelectRowIDMatches, (object[])null).ToList())
                 {
                     master.Execute(setKeyMatch, item.RowIDMatch, item.MergeRowID);
                 }
@@ -304,7 +305,7 @@ namespace CruiseManager.Core.Components
                 _workInCurrentJob += 1;
 
                 string setNatMatch = "UPDATE " + cmdBldr.MergeTableName + " SET NaturalMatch = ? WHERE MergeRowID = ?;";
-                foreach (MergeObject mRec in master.Query<MergeObject>(cmdBldr.SelectNaturalMatches))
+                foreach (MergeObject mRec in master.Query<MergeObject>(cmdBldr.SelectNaturalMatches, (object[])null).ToList())
                 {
                     master.Execute(setNatMatch, mRec.NaturalMatch, mRec.MergeRowID);
                 }
@@ -318,7 +319,7 @@ namespace CruiseManager.Core.Components
                 _workInCurrentJob += 1;
 
                 Dictionary<Guid, long> rowIDLookUp = new Dictionary<Guid, long>();
-                foreach (var pair in master.Query<GuidRowID>($"Select {cmdBldr.ClientGUIDFieldName} AS Guid, {cmdBldr.ClientPrimaryKey.Name} AS RecID FROM main.{cmdBldr.ClientTableName} WHERE {cmdBldr.ClientGUIDFieldName} IS NOT NULL AND {cmdBldr.ClientGUIDFieldName} NOT LIKE '';"))
+                foreach (var pair in master.Query<GuidRowID>($"Select {cmdBldr.ClientGUIDFieldName} AS Guid, {cmdBldr.ClientPrimaryKey.Name} AS RecID FROM main.{cmdBldr.ClientTableName} WHERE {cmdBldr.ClientGUIDFieldName} IS NOT NULL AND {cmdBldr.ClientGUIDFieldName} NOT LIKE '';", (object[])null))
                 {
                     var guid = pair.Guid;
                     if (guid != Guid.Empty)
@@ -327,7 +328,7 @@ namespace CruiseManager.Core.Components
                     }
                 }
 
-                foreach (var mrgRec in master.Query<GuidRowID>($"Select MergeRowID AS RecID, ComponentRowGUID AS Guid FROM {cmdBldr.MergeTableName} WHERE ComponentRowGUID IS NOT NULL;"))
+                foreach (var mrgRec in master.Query<GuidRowID>($"Select MergeRowID AS RecID, ComponentRowGUID AS Guid FROM {cmdBldr.MergeTableName} WHERE ComponentRowGUID IS NOT NULL;", (object[])null))
                 {
                     try
                     {
@@ -377,7 +378,7 @@ namespace CruiseManager.Core.Components
 
         private void ProcessFullMatchs(DAL master, MergeTableCommandBuilder cmdBldr)
         {
-            List<MergeObject> matches = master.Query<MergeObject>(cmdBldr.SelectFullMatches);
+            List<MergeObject> matches = master.Query<MergeObject>(cmdBldr.SelectFullMatches, (object[])null).ToList();
 
             this._workInCurrentJob += matches.Count;
 
@@ -412,7 +413,7 @@ namespace CruiseManager.Core.Components
             string selectSiblings = "SELECT SiblingRecords FROM (SELECT PartialMatch , group_concat(MergeRowID, ',') as SiblingRecords, count(1) as size FROM ( " +
                 string.Join(" UNION ", matchSources.ToArray()) + " )  GROUP BY PartialMatch) where size > 1;";
 
-            List<MergeObject> siblingsGroups = master.Query<MergeObject>(selectSiblings);
+            var siblingsGroups = master.Query<MergeObject>(selectSiblings, (object[])null).ToArray();
             string setSiblingsformat = "UPDATE " + cmdBldr.MergeTableName + " SET SiblingRecords = ifnull(SiblingRecords, '') || ?  WHERE MergeRowID in ({0});";
             foreach (MergeObject mRec in siblingsGroups)
             {
@@ -448,7 +449,7 @@ namespace CruiseManager.Core.Components
             {
                 string insertMissingMatch = "INSERT INTO " + cmdBldr.MergeTableName + " (MatchRowID, ComponentID) " +
                     "VALUES (?,?);";
-                foreach (MergeObject mRec in master.Query<MergeObject>(cmdBldr.SelectMissingMatches(comp)))
+                foreach (MergeObject mRec in master.Query<MergeObject>(cmdBldr.SelectMissingMatches(comp), (object[])null))
                 {
                     master.Execute(insertMissingMatch, mRec.MatchRowID, comp.Component_CN);
                 }

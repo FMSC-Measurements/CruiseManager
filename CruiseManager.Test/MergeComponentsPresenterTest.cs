@@ -1,16 +1,14 @@
 ﻿using CruiseDAL;
-using CruiseDAL.DataObjects;
-using System.Collections.Generic;
-using System;
-using Moq;
+using CruiseManager.Core;
 using CruiseManager.Core.App;
 using CruiseManager.Core.Components;
 using FluentAssertions;
-using Xunit;
-using CruiseManager.Core;
+using Moq;
+using System;
 using System.Reflection;
+using Xunit;
 
-namespace CSMTest
+namespace CruiseManager.Test
 {
     public class MergeComponentsPresenterTest
     {
@@ -113,7 +111,7 @@ namespace CSMTest
             }
         }
 
-        public void HandleProgressChanged(object sender, WorkerProgressChangedEventArgs e)
+        private void HandleProgressChanged(object sender, WorkerProgressChangedEventArgs e)
         {
             //TestContext.WriteLine("{0} done: {1} Tick:", e.ProgressPercentage * 100.0, e.Message);
         }
