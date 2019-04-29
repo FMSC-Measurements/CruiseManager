@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,13 +8,43 @@ using Xunit.Abstractions;
 
 namespace CruiseManager.Test
 {
-    public class TestBase
+    public abstract class TestBase
     {
-        protected ITestOutputHelper Output { get; }
+        protected readonly ITestOutputHelper Output;
+        private string _testTempPath;
 
         public TestBase(ITestOutputHelper output)
         {
             Output = output;
+
+            var testTempPath = TestTempPath;
+            TouchDir(testTempPath);
+        }
+
+        
+
+        public string TestTempPath
+        {
+            get
+            {
+                return _testTempPath ?? (_testTempPath = Path.Combine(Path.GetTempPath(), "TestTemp", this.GetType().FullName));
+            }
+        }
+
+        public void TouchDir(string dir)
+        {
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+        }
+
+        public void CleanUpFile(string path)
+        {
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
         }
     }
 }

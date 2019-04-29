@@ -1,8 +1,8 @@
 ﻿using Backpack.SqlBuilder;
+using Backpack.SqlBuilder.Dialects;
 using CruiseDAL;
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.Util;
-using FMSC.ORM.Core.SQL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -155,7 +155,7 @@ namespace CruiseManager.Core.Components
 
         //public List<ColumnInfo> ForeignKeys { get; private set; }
 
-        public string GetCompoundNaturalKeyExpression(String sqlSourceName)
+        protected string GetCompoundNaturalKeyExpression(String sqlSourceName)
         {
             string formatEpr;
             switch (this.ClientTableName)
@@ -195,11 +195,13 @@ namespace CruiseManager.Core.Components
         {
             get
             {
-                var createTableBuilder = new Backpack.SqlBuilder.CreateTable();
+                var createTableBuilder = new CreateTable(new SqliteDialect());
+                createTableBuilder.TableName = MergeTableName;
                 createTableBuilder.Columns = AllClientColumns.Where((c) => c.IsPK || ClientUniqueFieldNames.Contains(c.Name))
+                    .Select(c => new ColumnInfo(c.Name, c.Type))
                     .Union(CommonMergeTableColumns, new GenericEqualityComparer<ColumnInfo>((c1, c2) => c1.Name == c2.Name)).ToArray();
 
-                return createTableBuilder.ToString();
+                return createTableBuilder.ToString() + ";";
 
                 ////build array of column definitions for our merge table
                 //String[] columnDefs = (from ColumnInfo ci in this.AllClientColumns
@@ -270,20 +272,20 @@ namespace CruiseManager.Core.Components
             }
         }
 
-        public string NaturalCrossComponentConflictsCommand
-        {
-            get
-            {
-                //find records using across components that conflict on natural key
-                return
-                @"SELECT lft.MergeRowID, group_concat( rgt.ComponentRowID || ' in ' || rgt.ComponentID, ', ') AS ComponentConflict " +
-                @"FROM " + this.MergeTableName + " AS lft " +
-                @"INNER JOIN " + this.MergeTableName + " AS rgt " +
-                this.NaturalJoinCondition +
-                @"WHERE lft.MergeRowID != rgt.MergeRowID " +
-                "GROUP BY lft.MergeRowID;";
-            }
-        }
+        //public string NaturalCrossComponentConflictsCommand
+        //{
+        //    get
+        //    {
+        //        //find records using across components that conflict on natural key
+        //        return
+        //        @"SELECT lft.MergeRowID, group_concat( rgt.ComponentRowID || ' in ' || rgt.ComponentID, ', ') AS ComponentConflict " +
+        //        @"FROM " + this.MergeTableName + " AS lft " +
+        //        @"INNER JOIN " + this.MergeTableName + " AS rgt " +
+        //        this.NaturalJoinCondition +
+        //        @"WHERE lft.MergeRowID != rgt.MergeRowID " +
+        //        "GROUP BY lft.MergeRowID;";
+        //    }
+        //}
 
         public string SelectInvalidMatchs => $"SELECT MergeRowID FROM {MergeTableName} {FindInvalidMatchs}";
 
@@ -291,7 +293,7 @@ namespace CruiseManager.Core.Components
                 "SELECT PartialMatch, SiblingRecords FROM (" +
                 " SELECT PartialMatch, group_concat(ComponentRowID || ' in ' || ComponentID, ', ') AS SiblingRecords, count(1) as size" +
                 $" FROM {MergeTableName} WHERE PartialMatch IS NOT NULL" +
-                "GROUP BY PartialMatch)" +
+                " GROUP BY PartialMatch)" +
                 " WHERE size > 1;";
 
         public string SelectMissingMatches(ComponentFileVM comp)
@@ -441,44 +443,52 @@ namespace CruiseManager.Core.Components
 
         public String GetPopulateMergeTableCommand(ComponentFileVM component)
         {
+            return GetPopulateMergeTableCommand((int)component.Component_CN.Value);
+        }
+
+        public String GetPopulateMergeTableCommand(int component_cn)
+        {
             string clientFieldList = string.Empty;
-            var clientFieldName = ClientFieldNames;
-            if (clientFieldName.Count() > 0)
+            var clientFieldNames = ClientFieldNames;
+            if (clientFieldNames.Count() > 0)
             {
                 clientFieldList = ", " + String.Join(", ", this.ClientFieldNames);
             }
 
-            String populateMergetableCMD = String.Format(
-                "INSERT INTO {0} " +
-                "(ComponentRowID{1}, ComponentID{2}{3}, CompoundNaturalKey) " +
-                "SELECT {4}{5}" +
-                ", {6} AS ComponentID{7}{3}, {9} " +
-                "FROM compDB.{8} as compSource;",
-                this.MergeTableName,
-                (this.HasGUIDKey) ? ", ComponentRowGUID" : String.Empty,
-                (this.HasRowVersion) ? ", ComponentRowVersion" : String.Empty,
-                clientFieldList,
-                this.ClientPrimaryKey.Name,
-                (this.HasGUIDKey) ? ", " + this.ClientGUIDFieldName : String.Empty,
-                component.Component_CN.ToString(),
-                (this.HasRowVersion) ? ", RowVersion AS ComponentRowVersion" : String.Empty,
-                this.ClientTableName,
-                this.GetCompoundNaturalKeyExpression("compSource"));
+            String populateMergetableCMD =
+                $"INSERT INTO {MergeTableName} " +
+                "(ComponentRowID" +
+                (HasGUIDKey ? ", ComponentRowGUID" : String.Empty) +
+                ", ComponentID" +
+                (HasRowVersion ? ", ComponentRowVersion" : String.Empty) +
+                clientFieldList +
+                ", CompoundNaturalKey) " +
+                $"SELECT {ClientPrimaryKey.Name}" +
+                (HasGUIDKey ? ", " + this.ClientGUIDFieldName : String.Empty) +
+                $", {component_cn.ToString()} AS ComponentID" +
+                (HasRowVersion ? ", RowVersion AS ComponentRowVersion" : String.Empty) +
+                clientFieldList +
+                $", {GetCompoundNaturalKeyExpression("compSource")} " +
+                $"FROM compDB.{ClientTableName} as compSource;";
 
             return populateMergetableCMD;
         }
 
         public String GetPopulateDeletedRecordsCommand(ComponentFileVM component)
         {
-            String populateDeletedRecordsCMD = String.Format(
-                "INSERT INTO {0} "
-                 + "(ComponentRowID{1}, IsDeleted, ComponentID) "
-                 + "SELECT RecordID{2}, 1 AS IsDeleted, {3} AS ComponentID FROM Util_Tombstone WHERE TableName = '{4}';",
-                this.MergeTableName,
-                (this.HasGUIDKey) ? ", ComponentRowGUID" : String.Empty,
-                (this.HasGUIDKey) ? ", RecordGUID" : String.Empty,
-                component.Component_CN,
-                this.ClientTableName);
+            return GetPopulateDeletedRecordsCommand((int)component.Component_CN.Value);
+        }
+
+        public String GetPopulateDeletedRecordsCommand(int component_cn)
+        {
+            String populateDeletedRecordsCMD =
+                $"INSERT INTO {MergeTableName} "
+                 + "(ComponentRowID " +
+                 (HasGUIDKey ? ", ComponentRowGUID" : String.Empty) +
+                 ", IsDeleted, ComponentID) " +
+                 "SELECT RecordID " +
+                 (this.HasGUIDKey ? ", RecordGUID" : String.Empty) +
+                 $", 1 AS IsDeleted, {component_cn} AS ComponentID FROM Util_Tombstone WHERE TableName = '{ClientTableName}';";
 
             return populateDeletedRecordsCMD;
         }

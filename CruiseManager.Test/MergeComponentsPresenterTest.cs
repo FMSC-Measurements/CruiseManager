@@ -20,7 +20,10 @@ namespace CruiseManager.Test
 
             var path = System.IO.Path.Combine(directory, "TestFiles\\Components\\Bad\\RedSquirt.M.cruise");
 
-            return new DAL(path);
+            var dal = new DAL(path);
+            CruiseDAL.Updater.UpdateMajorVersion(dal);
+
+            return dal;
         }
 
         [Fact]
@@ -33,7 +36,7 @@ namespace CruiseManager.Test
 
                 var cmPresenter = new MergeComponentsPresenter(appControllerMock);
 
-                cmPresenter.NumComponents.ShouldBeEquivalentTo(3);
+                cmPresenter.NumComponents.Should().Be(3);
             }
         }
 
@@ -69,8 +72,8 @@ namespace CruiseManager.Test
                 var cmPresenter = new MergeComponentsPresenter(appController);
 
                 cmPresenter.FindComponents(System.IO.Path.GetDirectoryName(master.Path));
-                cmPresenter.MissingComponents.Count.ShouldBeEquivalentTo(0);
-                cmPresenter.NumComponents.ShouldBeEquivalentTo(3);
+                cmPresenter.MissingComponents.Count.Should().Be(0);
+                cmPresenter.NumComponents.Should().Be(3);
 
                 var worker = new PrepareMergeWorker(cmPresenter);
                 worker.ProgressChanged += HandleProgressChanged;
@@ -92,8 +95,8 @@ namespace CruiseManager.Test
                 var cmPresenter = new MergeComponentsPresenter(appController);
 
                 cmPresenter.FindComponents(System.IO.Path.GetDirectoryName(master.Path));
-                cmPresenter.MissingComponents.Count.ShouldBeEquivalentTo(0);
-                cmPresenter.NumComponents.ShouldBeEquivalentTo(3);
+                cmPresenter.MissingComponents.Count.Should().Be(0);
+                cmPresenter.NumComponents.Should().Be(3);
 
                 var worker = new PrepareMergeWorker(cmPresenter);
                 worker.ProgressChanged += HandleProgressChanged;
