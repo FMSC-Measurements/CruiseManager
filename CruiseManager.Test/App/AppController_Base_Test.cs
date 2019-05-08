@@ -14,7 +14,6 @@ namespace CruiseManager.Test.App
         public AppController_Base_Test(ITestOutputHelper output) : base(output)
         {
             var mock = new Mock<ApplicationControllerBase>();
-            mock.setup
 
             AppControllerMock = mock;
 
