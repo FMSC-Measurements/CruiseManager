@@ -39,15 +39,68 @@ namespace CruiseManager.Core.App
             set
             {
                 if (_database == value) { return; }
-                //OnDatabaseChanging();
-                _database = value;
-                OnDatabaseChanged();
+                if (OnDatabaseChanging(_database, value))
+                {
+                    _database = value;
+                    OnDatabaseChanged();
+                }
             }
         }
 
-        private void OnDatabaseChanged()
+        protected bool OnDatabaseChanging(DAL oldValue, DAL newValue)
         {
-            SaveCommand.Enabled = this.SaveAsCommand.Enabled = (this.Database != null);
+            if(CruiseDAL.Updater.CheckNeedsMajorUpdate(newValue))
+            {
+                var dialogResult = ActiveView.AskYesNoCancel("Cruise file can be updated. Updating this cruise file will allow it to work with FScruiser on Android.\r\n" +
+                    "However, file will no longer open in older versions of Cruise Manager or FScruiser", "Update Cruise File?");
+
+                if(dialogResult.HasValue == false) { return false; }
+                else if (dialogResult.Value == true)
+                {
+                    try
+                    {
+                        CruiseDAL.Updater.UpdateMajorVersion(newValue);
+                    }
+                    catch (FMSC.ORM.IncompatibleSchemaException ex)
+                    {
+                        this.ActiveView.ShowMessage("File is not compatible with this version of Cruise Manager: " + ex.Message);
+                        return false;
+                    }
+                    catch (FMSC.ORM.SQLException ex)
+                    {
+                        this.ActiveView.ShowMessage("Unable to open file : " + ex.GetType().Name);
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        protected void OnDatabaseChanged()
+        {
+            var database = Database;
+            var filePath = database.Path;
+
+            if (database.CruiseFileType.HasFlag(CruiseFileType.Cruise))
+            {
+                String directroy = System.IO.Path.GetDirectoryName(filePath);
+                UserSettings.CruiseSaveLocation = directroy;
+                if (database.HasCruiseErrors(out var errors))
+                {
+                    this.ActiveView.ShowMessage(String.Join("\r\n", errors), null);
+                }
+                WindowPresenter.ShowCruiseLandingLayout();
+            }
+            else if(database.CruiseFileType.HasFlag(CruiseFileType.Template))
+            {
+                String directroy = System.IO.Path.GetDirectoryName(filePath);
+                UserSettings.TemplateSaveLocation = directroy;
+                WindowPresenter.ShowTemplateLandingLayout();
+            }
+
+            AppState.AddRecentFile(filePath);
+            SaveCommand.Enabled = this.SaveAsCommand.Enabled = (database != null);
         }
 
         public bool InSupervisorMode { get; set; }
@@ -180,79 +233,31 @@ namespace CruiseManager.Core.App
 
         protected void InitializeDAL(string path)
         {
-            this.ActiveView.ShowWaitCursor();
+            //start wait cursor in case this takes a long time
+            ActiveView.ShowWaitCursor();
             try
             {
                 Database = new DAL(path);
             }
-            finally
-            {
-                this.ActiveView.ShowDefaultCursor();
-            }
-        }
-
-        public virtual void OpenFile(String filePath)
-        {
-            bool hasError = false;
-            try
-            {
-                //start wait cursor in case this takes a long time
-                this.ActiveView.ShowWaitCursor();
-                var extension = System.IO.Path.GetExtension(filePath).ToLowerInvariant();
-                switch (extension)
-                {
-                    case Strings.CRUISE_FILE_EXTENTION:
-                        {
-                            this.InitializeDAL(filePath);
-                            AppState.AddRecentFile(filePath);
-                            String directroy = System.IO.Path.GetDirectoryName(filePath);
-                            this.UserSettings.CruiseSaveLocation = directroy;
-                            String[] errors;
-                            if (this.Database.HasCruiseErrors(out errors))
-                            {
-                                this.ActiveView.ShowMessage(String.Join("\r\n", errors), null);
-                            }
-                            WindowPresenter.ShowCruiseLandingLayout();
-                            break;
-                        }
-                    case Strings.CRUISE_TEMPLATE_FILE_EXTENTION:
-                        {
-                            this.InitializeDAL(filePath);
-                            AppState.AddRecentFile(filePath);
-                            String directroy = System.IO.Path.GetDirectoryName(filePath);
-                            this.UserSettings.TemplateSaveLocation = directroy;
-                            WindowPresenter.ShowTemplateLandingLayout();
-                            break;
-                        }
-                    default:
-                        this.ActiveView.ShowMessage("Invalid file name", null);
-                        return;
-                }
-            }
             catch (CruiseDAL.DatabaseShareException)
             {
-                hasError = true;
-                this.ActiveView.ShowMessage("File can not be opened in multiple applications");
+                ActiveView.ShowMessage("File can not be opened in multiple applications");
             }
             catch (FMSC.ORM.ReadOnlyException)
             {
-                hasError = true;
-                this.ActiveView.ShowMessage("Unable to open file because it is read only");
+                ActiveView.ShowMessage("Unable to open file because it is read only");
             }
             catch (FMSC.ORM.IncompatibleSchemaException ex)
             {
-                hasError = true;
-                this.ActiveView.ShowMessage("File is not compatible with this version of Cruise Manager: " + ex.Message);
+                ActiveView.ShowMessage("File is not compatible with this version of Cruise Manager: " + ex.Message);
             }
             catch (FMSC.ORM.SQLException ex)
             {
-                hasError = true;
-                this.ActiveView.ShowMessage("Unable to open file : " + ex.GetType().Name);
+                ActiveView.ShowMessage("Unable to open file : " + ex.GetType().Name);
             }
             catch (System.IO.IOException ex)
             {
-                hasError = true;
-                this.ActiveView.ShowMessage("Unable to open file : " + ex.GetType().Name);
+                ActiveView.ShowMessage("Unable to open file : " + ex.GetType().Name);
             }
             catch (System.Exception e)
             {
@@ -263,10 +268,22 @@ namespace CruiseManager.Core.App
             }
             finally
             {
-                if (hasError)
-                {
-                    WindowPresenter.ShowHomeLayout();
-                }
+                ActiveView.ShowDefaultCursor();
+            }
+        }
+
+        public virtual void OpenFile(String filePath)
+        {
+            var extension = System.IO.Path.GetExtension(filePath).ToLowerInvariant();
+
+            if (extension == Strings.CRUISE_FILE_EXTENTION
+                || extension == Strings.CRUISE_TEMPLATE_FILE_EXTENTION)
+            {
+                InitializeDAL(filePath);
+            }
+            else
+            {
+                ActiveView.ShowMessage("Invalid file name", null);
             }
         }
 
