@@ -49,6 +49,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CruiseManager.Core\CruiseManager.Core.csproj" />
     <ProjectReference Include="..\FMSC.Controls\FMSC.Controls\FMSC.Controls.VS15.csproj" />
   </ItemGroup>
 
@@ -57,7 +58,5 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
-  <Import Project="..\CruiseManager.Core\CruiseManager.Core.projitems" Label="Shared" />
 
 </Project>

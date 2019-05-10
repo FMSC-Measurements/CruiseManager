@@ -3,6 +3,14 @@
 		<TargetFramework>net461</TargetFramework>
 		<Platform>Any Cpu</Platform>
   </PropertyGroup>
+	<ItemGroup>
+	  <None Remove="TestFiles\**\*" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Content Include="TestFiles\**\*">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
 
 
   <ItemGroup>

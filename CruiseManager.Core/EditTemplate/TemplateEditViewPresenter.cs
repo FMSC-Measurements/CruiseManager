@@ -16,7 +16,7 @@ namespace CruiseManager.Core.EditTemplate
         private FMSC.Utility.Collections.BindingListRedux<TreeDefaultValueDO> _treeDefaultValues;
         //private List<TreeDefaultValueDO> _toBeDeletedTreeDefaults = new List<TreeDefaultValueDO>();
 
-        public new EditTemplateView View { get; set; }
+        public new IEditTemplateView View { get; set; }
         public DAL Database { get { return ApplicationController.Database; } }
 
         public BindingList<EditTemplateCruiseMethod> CruiseMethods { get; set; }

@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.TemplateEditor
 {
-    public partial class EditTemplateView : UserControlView, Core.ViewInterfaces.EditTemplateView
+    public partial class EditTemplateView : UserControlView, Core.ViewInterfaces.IEditTemplateView
     {
         public EditTemplateView(WindowPresenter windowPresenter, TemplateEditViewPresenter viewPresenter)
         {

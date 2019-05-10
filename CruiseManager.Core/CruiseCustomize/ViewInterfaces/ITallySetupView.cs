@@ -8,6 +8,5 @@ namespace CruiseManager.Core.CruiseCustomize.ViewInterfaces
 
         void UpdateTallySetupView();
 
-        void EndEdits();
     }
 }

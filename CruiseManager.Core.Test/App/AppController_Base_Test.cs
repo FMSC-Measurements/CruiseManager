@@ -1,10 +1,5 @@
 ﻿using CruiseManager.Core.App;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit.Abstractions;
 
 namespace CruiseManager.Test.App
@@ -16,7 +11,6 @@ namespace CruiseManager.Test.App
             var mock = new Mock<ApplicationControllerBase>();
 
             AppControllerMock = mock;
-
         }
 
         public Mock<ApplicationControllerBase> AppControllerMock { get; }

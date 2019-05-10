@@ -2,7 +2,7 @@
 using FluentAssertions;
 using Xunit;
 
-namespace CruiseManager.Test
+namespace CruiseManager.WinForms.Test
 {
     public class SetupServiceTest
     {

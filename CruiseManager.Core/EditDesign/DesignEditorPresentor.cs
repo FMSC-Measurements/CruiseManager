@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 
 namespace CruiseManager.Core.EditDesign
 {
@@ -198,7 +197,7 @@ namespace CruiseManager.Core.EditDesign
         {
             if (!CanEditStratumField(stratum, null))
             {
-                MessageBox.Show("Can not delete stratum because it contains cruise data");
+                View.ShowMessage("Can not delete stratum because it contains cruise data");
                 return;
             }
 
@@ -633,7 +632,7 @@ namespace CruiseManager.Core.EditDesign
             }
 
             StringBuilder validationErrorBuilder = new StringBuilder();
-            bool rtnVal = true;
+            bool rtnVal = true; 
             if (!this.ValidateData(ref validationErrorBuilder))
             {
                 this.View.ShowErrorMessage("Validation Errors Found",

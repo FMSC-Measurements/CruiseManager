@@ -23,6 +23,5 @@ namespace CruiseManager.Core.EditDesign.ViewInterfaces
 
         void BindData();
 
-        void EndEdits();
     }
 }

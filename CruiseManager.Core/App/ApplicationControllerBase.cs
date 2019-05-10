@@ -331,7 +331,7 @@ namespace CruiseManager.Core.App
             FileAttributes atts = File.GetAttributes(fileName);
             if ((atts & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
             {
-                System.Windows.Forms.MessageBox.Show("This file is read only.");
+                ActiveView.ShowMessage("This file is read only.");
             }
             else
             {

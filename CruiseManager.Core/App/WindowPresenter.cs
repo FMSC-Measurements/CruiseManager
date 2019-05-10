@@ -126,7 +126,7 @@ namespace CruiseManager.Core.App
             {
                 this.InitializeTemplateNavOptions();
             }
-            this.ApplicationController.NavigateTo<EditTemplateView>();
+            this.ApplicationController.NavigateTo<IEditTemplateView>();
 
             this.ApplicationController.MainWindow.SetNavCommands(this.templateNavOptions);
         }
@@ -136,9 +136,9 @@ namespace CruiseManager.Core.App
         private void InitializeTemplateNavOptions()
         {
             this.templateNavOptions = new BindableCommand[]{
-                new ViewNavigateCommand(ApplicationController, "Customize Template", typeof(EditTemplateView)),
+                new ViewNavigateCommand(ApplicationController, "Customize Template", typeof(IEditTemplateView)),
                 new BindableActionCommand("Import From Cruise", this.ShowImportTemplate),
-                new ViewNavigateCommand(this.ApplicationController, "Log Audit Rules", typeof(WinForms.CruiseCustomize.LogGradeAuditRuleView)),
+                new ViewNavigateCommand(ApplicationController, "Log Audit Rules", typeof(CruiseCustomize.ViewInterfaces.ILogGradeAuditView)),
                 new BindableActionCommand("Close File", this.ShowHomeLayout )
             };
         }

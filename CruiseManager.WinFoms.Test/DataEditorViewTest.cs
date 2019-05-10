@@ -6,7 +6,7 @@ using Moq;
 using System.IO;
 using Xunit;
 
-namespace CruiseManager.Test.Winforms
+namespace CruiseManager.WinForms.Test
 {
     public class DataEditorViewTest
     {

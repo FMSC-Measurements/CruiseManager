@@ -1,7 +1,6 @@
 ﻿using CruiseDAL;
 using CruiseManager.Core.Components;
 using FluentAssertions;
-using System;
 using System.IO;
 using Xunit;
 using Xunit.Abstractions;
@@ -10,8 +9,6 @@ namespace CruiseManager.Test.Components
 {
     public class MergeTableCommandBuilder_test : TestBase
     {
-
-
         public MergeTableCommandBuilder_test(ITestOutputHelper output) : base(output)
         {
         }
@@ -181,7 +178,6 @@ namespace CruiseManager.Test.Components
         [InlineData("Stem")]
         public void GetPopulateMergeTableCommand(string tableName)
         {
-
             var workingDir = Path.Combine(TestTempPath, tableName);
             TouchDir(workingDir);
 
@@ -206,7 +202,6 @@ namespace CruiseManager.Test.Components
                 masterDatabase.Execute(commandText);
             }
         }
-
 
         [Theory]
         [InlineData("Tree")]

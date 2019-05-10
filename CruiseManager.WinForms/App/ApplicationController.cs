@@ -43,7 +43,7 @@ namespace CruiseManager.WinForms.App
             kernel.Bind<Core.Components.ViewInterfaces.ICreateComponentView>().To<WinForms.Components.CreateComponentView>();
             kernel.Bind<Core.Components.ViewInterfaces.IMergeComponentView>().To<WinForms.Components.MergeComponentView>();
 
-            kernel.Bind<EditTemplateView>().To<WinForms.TemplateEditor.EditTemplateView>();
+            kernel.Bind<IEditTemplateView>().To<WinForms.TemplateEditor.EditTemplateView>();
 
             kernel.Bind<Core.CruiseCustomize.ViewInterfaces.IFieldSetupView>().To<WinForms.CruiseCustomize.FieldSetupView>();
             kernel.Bind<Core.CruiseCustomize.ViewInterfaces.ITallySetupView>().To<WinForms.CruiseCustomize.TallySetupView>();
