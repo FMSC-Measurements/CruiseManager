@@ -1,5 +1,5 @@
 ﻿using Backpack.SqlBuilder;
-using Backpack.SqlBuilder.Dialects;
+using Backpack.SqlBuilder.Sqlite;
 using CruiseDAL;
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.Util;
@@ -195,7 +195,7 @@ namespace CruiseManager.Core.Components
         {
             get
             {
-                var createTableBuilder = new CreateTable(new SqliteDialect());
+                var createTableBuilder = SqlBuilder.CreateTable(new SqliteDialect());
                 createTableBuilder.TableName = MergeTableName;
                 createTableBuilder.Columns = AllClientColumns.Where((c) => c.IsPK || ClientUniqueFieldNames.Contains(c.Name))
                     .Select(c => new ColumnInfo(c.Name, c.Type))

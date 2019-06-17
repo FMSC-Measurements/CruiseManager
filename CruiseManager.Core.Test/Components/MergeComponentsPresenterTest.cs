@@ -21,7 +21,6 @@ namespace CruiseManager.Test
             var path = System.IO.Path.Combine(directory, "TestFiles\\Components\\Bad\\RedSquirt.M.cruise");
 
             var dal = new DAL(path);
-            CruiseDAL.Updater.UpdateMajorVersion(dal);
 
             return dal;
         }
