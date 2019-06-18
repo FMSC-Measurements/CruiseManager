@@ -2,8 +2,10 @@
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
 using CruiseManager.Core.ViewModel;
+using CruiseManager.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
@@ -12,17 +14,18 @@ namespace CruiseManager.Core.CruiseCustomize
     public class VolumeEqPresenter : ViewModel.Presentor, ISaveHandler
     {
         private bool _isInitialized;
+        private BindingList<VolumeEquationDO> _volumeEqs;
 
-        public new ViewInterfaces.IVolumeEq View
+        protected IExceptionHandler ExceptionHandler { get; }
+        public DAL Database { get; }
+        
+        public BindingList<VolumeEquationDO> VolumeEqs
         {
-            get { return (ViewInterfaces.IVolumeEq)base.View; }
-            set { base.View = value; }
+            get => _volumeEqs;
+            set => SetValue(value, ref _volumeEqs);
         }
 
-        public DAL Database { get { return ApplicationController.Database; } }
-        public List<VolumeEquationDO> VolumeEqs { get; set; }
-
-        public List<VolumeEquationDO> DeletedVolumeEqs { get; set; }
+        protected List<VolumeEquationDO> DeletedVolumeEqs { get; set; }
 
         public bool HasChangesToSave
         {
@@ -33,9 +36,11 @@ namespace CruiseManager.Core.CruiseCustomize
             }
         }
 
-        public VolumeEqPresenter(ApplicationControllerBase appController)
-            : base(appController)
-        { }
+        public VolumeEqPresenter(IDatabaseProvider databaseProvider, IExceptionHandler exceptionHandler)
+        {
+            Database = databaseProvider.Database;
+            ExceptionHandler = exceptionHandler;
+        }
 
         protected override void OnViewLoad(EventArgs e)
         {
@@ -44,18 +49,26 @@ namespace CruiseManager.Core.CruiseCustomize
             if (_isInitialized) { return; }
             try
             {
-                VolumeEqs = Database.From<VolumeEquationDO>().Query().ToList();
+                var volumeEquations = Database.From<VolumeEquationDO>().Query().ToList();
                 DeletedVolumeEqs = new List<VolumeEquationDO>();
+                VolumeEqs = volumeEquations;
                 _isInitialized = true;
             }
             catch (Exception ex)
             {
-                if (!ApplicationController.ExceptionHandler.Handel(ex))
+                if (!ExceptionHandler.Handel(ex))
                 {
                     throw;
                 }
-                View.UpdateVolumeEqs();
             }
+        }
+
+        public void DeleteVolumeEquation(VolumeEquationDO volEq)
+        {
+            if(volEq == null) { throw new ArgumentNullException(nameof(volEq)); }
+
+            DeletedVolumeEqs.Add(volEq);
+            VolumeEqs.Remove(volEq);
         }
 
         public bool HandleSave()

@@ -1,6 +1,8 @@
 ﻿using CruiseDAL.DataObjects;
+using CruiseManager.Core.App;
 using CruiseManager.Core.CruiseCustomize;
 using CruiseManager.Core.CruiseCustomize.ViewInterfaces;
+using CruiseManager.Data;
 using CruiseManager.WinForms.CruiseWizard;
 using System;
 using System.Windows.Forms;
@@ -9,12 +11,26 @@ namespace CruiseManager.WinForms.CruiseCustomize
 {
     public partial class VolumeEqView : CruiseManager.WinForms.UserControlView, IVolumeEq
     {
-        public VolumeEqView(VolumeEqPresenter viewPresenter)
+        public VolumeEqView(VolumeEqPresenter viewPresenter, ISetupService setupService, IExceptionHandler exceptionHandler)
         {
+            ExceptionHandler = exceptionHandler;
+            SetupService = setupService;
             ViewPresenter = viewPresenter;
-            ViewPresenter.View = this;
+            viewPresenter.PropertyChanged += ViewPresenter_PropertyChanged;
             InitializeComponent();
         }
+
+        private void ViewPresenter_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            var propertyName = e.PropertyName;
+            if(propertyName == nameof(VolumeEqPresenter.VolumeEqs))
+            {
+                UpdateVolumeEqs();
+            }
+        }
+
+        protected IExceptionHandler ExceptionHandler { get; }
+        protected ISetupService SetupService { get; }
 
         public new VolumeEqPresenter ViewPresenter
         {
@@ -22,7 +38,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             set { base.ViewPresenter = value; }
         }
 
-        public void UpdateVolumeEqs()
+        protected void UpdateVolumeEqs()
         {
             _BS_VolEquations.DataSource = ViewPresenter.VolumeEqs;
         }
@@ -38,7 +54,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
         public VolumeEquationDO ShowAddVolumeEq()
         {
-            VolumeEquationDO newTDV = new VolumeEquationDO(ViewPresenter.ApplicationController.Database);
+            VolumeEquationDO newTDV = new VolumeEquationDO(ViewPresenter.Database);
 
             return this.ShowEditVolumeEq(newTDV);
         }
@@ -47,7 +63,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
         {
             try
             {
-                using (FormAddVolumeEqs dialog = new FormAddVolumeEqs(ViewPresenter.ApplicationController.SetupService.GetProductCodes()))
+                using (FormAddVolumeEqs dialog = new FormAddVolumeEqs(SetupService.GetProductCodes()))
                 {
                     if (dialog.ShowDialog(tdv) == DialogResult.OK)
                     {
@@ -61,7 +77,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             }
             catch (Exception ex)
             {
-                if (!ViewPresenter.ApplicationController.ExceptionHandler.Handel(ex))
+                if (!ExceptionHandler.Handel(ex))
                 {
                     throw;
                 }
@@ -74,10 +90,10 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
         private void _volEq_delete_button_Click(object sender, EventArgs e)
         {
-            VolumeEquationDO tdv = _BS_VolEquations.Current as VolumeEquationDO;
-            if (tdv == null) { return; }
-            ViewPresenter.DeletedVolumeEqs.Add(tdv);
-            _BS_VolEquations.Remove(tdv);
+            VolumeEquationDO volEq = _BS_VolEquations.Current as VolumeEquationDO;
+            if (volEq == null) { return; }
+            ViewPresenter.DeleteVolumeEquation(volEq);
+
         }
     }
 }

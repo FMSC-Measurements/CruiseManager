@@ -4,6 +4,5 @@ namespace CruiseManager.Core.CruiseCustomize.ViewInterfaces
 {
     public interface IVolumeEq : IView
     {
-        void UpdateVolumeEqs();
     }
 }
