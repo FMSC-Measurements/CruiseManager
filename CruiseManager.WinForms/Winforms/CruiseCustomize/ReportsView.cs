@@ -12,8 +12,18 @@ namespace CruiseManager.WinForms.CruiseCustomize
         public ReportsView(ReportsPresenter viewPresenter)
         {
             ViewPresenter = viewPresenter;
+            viewPresenter.PropertyChanged += ViewPresenter_PropertyChanged;
             ViewPresenter.View = this;
             InitializeComponent();
+        }
+
+        private void ViewPresenter_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            var propertyName = e.PropertyName;
+            if (propertyName == nameof(ReportsPresenter.Reports))
+            {
+                UpdateReports();
+            }
         }
 
         public new ReportsPresenter ViewPresenter
@@ -49,7 +59,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
 
 
-        public void EndEdit()
+        public override void EndEdits()
         {
             _reportsDGV.EndEdit();
         }

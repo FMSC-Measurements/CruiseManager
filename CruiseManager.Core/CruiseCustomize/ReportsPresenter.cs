@@ -3,6 +3,8 @@ using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
 using CruiseManager.Core.CruiseCustomize.ViewInterfaces;
 using CruiseManager.Core.ViewModel;
+using CruiseManager.Services;
+using CruiseManager.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,33 +13,37 @@ using System.Text;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    public class ReportsPresenter : Presentor, ISaveHandler
+    public class ReportsPresenter : Presentor, IViewAware, ISaveHandler
     {
         private bool _isInitialized;
+        private List<ReportsDO> _reports;
 
-        public new ViewInterfaces.IReportsView View
+        public IView View { get; set; }
+
+        public DAL Database { get; }
+        public IExceptionHandler ExceptionHandler { get; }
+        public List<ReportsDO> Reports
         {
-            get { return (IReportsView)base.View; }
-            set { base.View = value; }
+            get => _reports;
+            set => SetValue(value, ref _reports);
         }
-
-        public DAL Database { get { return ApplicationController.Database; } }
-        public List<ReportsDO> Reports { get; set; }
-        public List<ReportsDO> DeletedReports { get; set; }
+        protected List<ReportsDO> DeletedReports { get; set; }
 
         public bool HasChangesToSave
         {
             get
             {
-                View.EndEdit();
+                View.EndEdits();
                 return Reports.Any(x => x.IsChanged || !x.IsPersisted)
                     || DeletedReports.Any();
             }
         }
 
-        public ReportsPresenter(ApplicationControllerBase appController)
-            : base(appController)
-        { }
+        public ReportsPresenter(IDatabaseProvider databaseProvider, IExceptionHandler exceptionHandler)
+        {
+            Database = databaseProvider.Database;
+            ExceptionHandler = exceptionHandler;
+        }
 
         protected override void OnViewLoad(EventArgs e)
         {
@@ -46,18 +52,17 @@ namespace CruiseManager.Core.CruiseCustomize
             try
             {
                 DeletedReports = new List<ReportsDO>();
-                this.Reports = ApplicationController.Database.From<ReportsDO>()
+                this.Reports = Database.From<ReportsDO>()
                     .Query().ToList();
                 _isInitialized = true;
             }
             catch (Exception ex)
             {
-                if (!ApplicationController.ExceptionHandler.Handel(ex))
+                if (!ExceptionHandler.Handel(ex))
                 {
                     throw;
                 }
             }
-            View.UpdateReports();
         }
 
         public bool HandleSave()
