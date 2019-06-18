@@ -2,8 +2,10 @@
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
 using CruiseManager.Core.ViewModel;
+using CruiseManager.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
@@ -12,17 +14,18 @@ namespace CruiseManager.Core.CruiseCustomize
     public class TreeDefaultsPresenter : Presentor, ISaveHandler
     {
         private bool _isInitialized;
+        private BindingList<TreeDefaultValueDO> _treeDefaults;
 
-        public new ViewInterfaces.ITreeDefaultsView View
+        public DAL Database { get; }
+        protected IExceptionHandler ExceptionHandler { get; }
+
+        public BindingList<TreeDefaultValueDO> TreeDefaults
         {
-            get { return (ViewInterfaces.ITreeDefaultsView)base.View; }
-            set { base.View = value; }
+            get => _treeDefaults;
+            set => SetValue(value, ref _treeDefaults);
         }
 
-        public DAL Database { get { return ApplicationController.Database; } }
-        public List<TreeDefaultValueDO> TreeDefaults { get; set; }
-
-        public List<TreeDefaultValueDO> DeletedTreeDefaults { get; set; }
+        protected List<TreeDefaultValueDO> DeletedTreeDefaults { get; set; }
 
         public bool HasChangesToSave
         {
@@ -33,9 +36,11 @@ namespace CruiseManager.Core.CruiseCustomize
             }
         }
 
-        public TreeDefaultsPresenter(ApplicationControllerBase appController)
-            : base(appController)
-        { }
+        public TreeDefaultsPresenter(IDatabaseProvider databaseProvider, IExceptionHandler exceptionHandler)
+        {
+            Database = databaseProvider.Database;
+            ExceptionHandler = exceptionHandler;
+        }
 
         protected override void OnViewLoad(EventArgs e)
         {
@@ -44,18 +49,26 @@ namespace CruiseManager.Core.CruiseCustomize
             if (_isInitialized) { return; }
             try
             {
-                TreeDefaults = Database.From<TreeDefaultValueDO>().Query().ToList();
+                var treeDefaults = Database.From<TreeDefaultValueDO>().Query().ToList();
+                
                 DeletedTreeDefaults = new List<TreeDefaultValueDO>();
+                TreeDefaults = new BindingList<TreeDefaultValueDO>(treeDefaults);
                 _isInitialized = true;
             }
             catch (Exception ex)
             {
-                if (!ApplicationController.ExceptionHandler.Handel(ex))
+                if (!ExceptionHandler.Handel(ex))
                 {
                     throw;
                 }
             }
-            View.UpdateTreeDefaults();
+        }
+
+        public void DeleteTreeDefault(TreeDefaultValueDO tdv)
+        {
+            if(tdv == null) { throw new ArgumentNullException(nameof(tdv)); }
+            DeletedTreeDefaults.Add(tdv);
+            TreeDefaults.Remove(tdv);
         }
 
         public bool HandleSave()
