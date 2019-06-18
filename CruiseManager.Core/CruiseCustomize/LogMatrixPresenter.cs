@@ -3,6 +3,7 @@ using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
 using CruiseManager.Core.CruiseCustomize.ViewInterfaces;
 using CruiseManager.Core.ViewModel;
+using CruiseManager.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,14 +14,9 @@ namespace CruiseManager.Core.CruiseCustomize
     public class LogMatrixPresenter : Presentor, ISaveHandler
     {
         bool _isInitialized;
+        private IList<LogMatrixDO> _logMatrix;
 
-        public new ILogMatrixView View
-        {
-            get { return (ILogMatrixView)base.View; }
-            set { base.View = value; }
-        }
-
-        public DAL Database { get { return ApplicationController.Database; } }
+        public DAL Database { get; }
 
         public bool HasChangesToSave
         {
@@ -30,11 +26,15 @@ namespace CruiseManager.Core.CruiseCustomize
             }
         }
 
-        public IList<LogMatrixDO> LogMatrix { get; protected set; }
-
-        public LogMatrixPresenter(ApplicationControllerBase appController)
-            : base(appController)
+        public IList<LogMatrixDO> LogMatrix
         {
+            get => _logMatrix;
+            protected set => SetValue(value, ref _logMatrix);
+        }
+
+        public LogMatrixPresenter(IDatabaseProvider databaseProvider)
+        {
+            Database = databaseProvider.Database;
         }
 
         protected override void OnViewLoad(EventArgs e)
@@ -43,15 +43,15 @@ namespace CruiseManager.Core.CruiseCustomize
 
             try
             {
-                this.LogMatrix = this.Database
+                var logMatrix = this.Database
                     .From<LogMatrixDO>().Query().ToList();
+                this.LogMatrix = logMatrix;
                 _isInitialized = true;
             }
             catch (Exception ex)
             {
                 throw new NotImplementedException(null, ex);
             }
-            this.View.UpdateLogMatrix();
         }
 
         public bool HandleSave()

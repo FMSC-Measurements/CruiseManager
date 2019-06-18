@@ -22,22 +22,33 @@ namespace CruiseManager.WinForms.CruiseCustomize
         public LogMatrixSettingsPage(LogMatrixPresenter presenter)
         {
             ViewPresenter = presenter;
-            ViewPresenter.View = this;
+            presenter.PropertyChanged += Presenter_PropertyChanged;
             InitializeComponent();
 
             //put all the grade checkBoxes in to a nice array
             //, so we can access them with a indexer
-            this.grades = new CheckBox[10];
-            this.grades[0] = this.grade0;
-            this.grades[1] = this.grade1;
-            this.grades[2] = this.grade2;
-            this.grades[3] = this.grade3;
-            this.grades[4] = this.grade4;
-            this.grades[5] = this.grade5;
-            this.grades[6] = this.grade6;
-            this.grades[7] = this.grade7;
-            this.grades[8] = this.grade8;
-            this.grades[9] = this.grade9;
+            this.grades = new CheckBox[10]
+                {
+                    this.grade0,
+                    this.grade1,
+                    this.grade2,
+                    this.grade3,
+                    this.grade4,
+                    this.grade5,
+                    this.grade6,
+                    this.grade7,
+                    this.grade8,
+                    this.grade9,
+                };
+        }
+
+        private void Presenter_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            var propertyName = e.PropertyName;
+            if (propertyName == nameof(LogMatrixPresenter.LogMatrix))
+            {
+                UpdateLogMatrix();
+            }
         }
 
         protected override void OnLoad(EventArgs e)
@@ -65,9 +76,6 @@ namespace CruiseManager.WinForms.CruiseCustomize
             set { this._BS_LogMatrix.DataSource = value; }
         }
 
-        public void EndEdit()
-        {
-        }
 
         public void UpdateLogMatrix()
         {
