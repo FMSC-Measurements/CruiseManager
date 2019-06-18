@@ -19,7 +19,7 @@ namespace CruiseManager.Core.CruiseCustomize
         private List<TreeFieldSetupDO> _treeFields;
         private List<LogFieldSetupDO> _logFields;
 
-        public FieldSetupPresenter(ApplicationControllerBase appController, ISetupService setupService, IDatabaseProvider databaseProvider)
+        public FieldSetupPresenter(ISetupService setupService, IDatabaseProvider databaseProvider)
             : base()
         {
             var database = databaseProvider.Database;
