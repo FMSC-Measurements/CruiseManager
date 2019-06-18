@@ -5,9 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CruiseManager.Core.CruiseCustomize.ViewInterfaces
+namespace CruiseManager.ViewModel
 {
-    public interface ILogGradeAuditView : IView
+    public interface IViewAware
     {
+        IView View { get; set; }
     }
 }

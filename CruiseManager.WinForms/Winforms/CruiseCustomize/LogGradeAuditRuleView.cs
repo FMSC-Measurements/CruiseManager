@@ -3,10 +3,6 @@ using CruiseManager.Core.CruiseCustomize;
 using CruiseManager.Core.CruiseCustomize.Models;
 using CruiseManager.Core.CruiseCustomize.ViewInterfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CruiseManager.WinForms.CruiseCustomize
 {
@@ -468,7 +464,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             e.NewObject = ViewPresenter.MakeLogGradeAudit();
         }
 
-        public void EndEdit()
+        public override void EndEdits()
         {
             _logAuditsBindingSource.EndEdit();
             _logAuditSpeciesBindingSource.EndEdit();
