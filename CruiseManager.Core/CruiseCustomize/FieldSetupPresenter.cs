@@ -20,7 +20,6 @@ namespace CruiseManager.Core.CruiseCustomize
         private List<LogFieldSetupDO> _logFields;
 
         public FieldSetupPresenter(ISetupService setupService, IDatabaseProvider databaseProvider)
-            : base()
         {
             var database = databaseProvider.Database;
             SetupService = setupService;
