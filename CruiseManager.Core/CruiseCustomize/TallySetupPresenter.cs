@@ -1,7 +1,8 @@
 ﻿using CruiseDAL;
-using CruiseManager.Core.App;
 using CruiseManager.Core.Constants;
 using CruiseManager.Core.ViewModel;
+using CruiseManager.Services;
+using CruiseManager.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +10,14 @@ using System.Text;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    public class TallySetupPresenter : Presentor, ISaveHandler
+    public class TallySetupPresenter : Presentor, IViewAware, ISaveHandler
     {
         private bool _isInitialized;
 
-        public new ViewInterfaces.ITallySetupView View
-        {
-            get { return (ViewInterfaces.ITallySetupView)base.View; }
-            set { base.View = value; }
-        }
+        public IView View { get; set; }
 
-        public DAL Database { get { return ApplicationController.Database; } }
-
+        public DAL Database { get; }
+        public IDialogService DialogService { get; }
         public List<TallySetupStratum_Base> TallySetupStrata { get; set; }
 
         public bool HasChangesToSave
@@ -31,9 +28,10 @@ namespace CruiseManager.Core.CruiseCustomize
             }
         }
 
-        public TallySetupPresenter(ApplicationControllerBase appController)
-            : base(appController)
+        public TallySetupPresenter(IDatabaseProvider databaseProvider, IDialogService dialogService)
         {
+            Database = databaseProvider.Database;
+            DialogService = dialogService;
         }
 
         protected override void OnViewLoad(EventArgs e)
@@ -42,7 +40,7 @@ namespace CruiseManager.Core.CruiseCustomize
 
             try
             {
-                TallySetupStrata = new List<TallySetupStratum_Base>();
+                var tallySetupStrata = new List<TallySetupStratum_Base>();
 
                 var standardStata = Database.From<TallySetupStratum>()
                     .Where("Method != '" + CruiseDAL.Schema.CruiseMethods.FIXCNT + "'")
@@ -55,14 +53,16 @@ namespace CruiseManager.Core.CruiseCustomize
                 foreach (var stratum in standardStata)
                 {
                     stratum.Initialize();
-                    TallySetupStrata.Add(stratum);
+                    tallySetupStrata.Add(stratum);
                 }
 
                 foreach (var stratum in fixCNTStrata)
                 {
                     stratum.Initialize();
-                    TallySetupStrata.Add(stratum);
+                    tallySetupStrata.Add(stratum);
                 }
+
+                TallySetupStrata = tallySetupStrata;
 
                 _isInitialized = true;
             }
@@ -70,7 +70,6 @@ namespace CruiseManager.Core.CruiseCustomize
             {
                 throw new NotImplementedException(null, ex);
             }
-            this.View.UpdateTallySetupView();
         }
 
         public bool ValidateStrata(ref StringBuilder errorBuilder)
@@ -137,12 +136,12 @@ namespace CruiseManager.Core.CruiseCustomize
 
             if (!ValidateStrata(ref errorBuilder))
             {
-                this.View.ShowErrorMessage("Validation Errors", errorBuilder.ToString());
+                DialogService.ShowErrorMessage("Validation Errors", errorBuilder.ToString());
                 return false;
             }
             else if (!SaveTallies(ref errorBuilder))
             {
-                this.View.ShowErrorMessage("Save Errors", errorBuilder.ToString());
+                DialogService.ShowErrorMessage("Save Errors", errorBuilder.ToString());
                 return false;
             }
             else

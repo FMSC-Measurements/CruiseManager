@@ -17,8 +17,18 @@ namespace CruiseManager.WinForms.CruiseCustomize
         public TallySetupView(TallySetupPresenter presenter)
         {
             this.ViewPresenter = presenter;
+            presenter.PropertyChanged += Presenter_PropertyChanged;
             presenter.View = this;
             InitializeComponent();
+        }
+
+        private void Presenter_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var propertyName = e.PropertyName;
+            if(propertyName == nameof(TallySetupPresenter.TallySetupStrata))
+            {
+                UpdateTallySetupView();
+            }
         }
 
         [Browsable(false)]
@@ -55,12 +65,12 @@ namespace CruiseManager.WinForms.CruiseCustomize
             }
         }
 
-        public void EndEdits()
+        public override void EndEdits()
         {
             TallyEditPanel.EndEdits();
         }
 
-        public void UpdateTallySetupView()
+        protected void UpdateTallySetupView()
         {
             _BS_strata.DataSource = ViewPresenter.TallySetupStrata;
         }
