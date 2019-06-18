@@ -2,6 +2,7 @@
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
 using CruiseManager.Core.ViewModel;
+using CruiseManager.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,14 +13,10 @@ namespace CruiseManager.Core.CruiseCustomize
     public class TreeAuditRulePresenter : Presentor, ISaveHandler
     {
         bool _isInitialized;
+        private List<TreeAuditValueDO> _treeAudits;
+        private List<TreeDefaultValueDO> _treeDefaults;
 
-        public new ViewInterfaces.ITreeAuditView View
-        {
-            get { return (ViewInterfaces.ITreeAuditView)base.View; }
-            set { base.View = value; }
-        }
-
-        public DAL Database { get { return ApplicationController.Database; } }
+        public DAL Database { get; }
 
         public bool HasChangesToSave
         {
@@ -31,12 +28,22 @@ namespace CruiseManager.Core.CruiseCustomize
             }
         }
 
-        public List<TreeAuditValueDO> TreeAudits { get; set; }
-        public List<TreeDefaultValueDO> TreeDefaults { get; set; }
+        public List<TreeAuditValueDO> TreeAudits
+        {
+            get => _treeAudits;
+            set => SetValue(value, ref _treeAudits);
+        }
 
-        public TreeAuditRulePresenter(ApplicationControllerBase appController)
-            : base(appController)
-        { }
+        public List<TreeDefaultValueDO> TreeDefaults
+        {
+            get => _treeDefaults;
+            set => SetValue(value, ref _treeDefaults);
+        }
+
+        public TreeAuditRulePresenter(IDatabaseProvider databaseProvider)
+        {
+            Database = databaseProvider.Database;
+        }
 
         protected override void OnViewLoad(EventArgs e)
         {
@@ -45,16 +52,18 @@ namespace CruiseManager.Core.CruiseCustomize
             if (_isInitialized) { return; }
             try
             {
-                TreeDefaults = Database.From<TreeDefaultValueDO>().Read().ToList();
-                TreeAudits = Database.From<TreeAuditValueDO>().OrderBy("Field").Read().ToList();
+                var treeDefaults = Database.From<TreeDefaultValueDO>().Read().ToList();
+                var treeAudits = Database.From<TreeAuditValueDO>().OrderBy("Field").Read().ToList();
+
+                TreeDefaults = treeDefaults;
+                TreeAudits = treeAudits;
+
                 _isInitialized = true;
             }
             catch (Exception ex)
             {
                 throw new NotImplementedException(null, ex);
             }
-            View.UpdateTreeAudits();
-            View.UpdateTreeDefaults();
         }
 
         public bool HandleSave()

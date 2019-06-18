@@ -16,8 +16,21 @@ namespace CruiseManager.WinForms.CruiseCustomize
         public TreeAuditRulesView(TreeAuditRulePresenter presenter)
         {
             this.ViewPresenter = presenter;
-            presenter.View = this;
+            presenter.PropertyChanged += Presenter_PropertyChanged;
             InitializeComponent();
+        }
+
+        private void Presenter_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var propertyName = e.PropertyName;
+            if(propertyName == nameof(TreeAuditRulePresenter.TreeAudits))
+            {
+                UpdateTreeAudits();
+            }
+            else if(propertyName == nameof(TreeAuditRulePresenter.TreeDefaults))
+            {
+                UpdateTreeDefaults();
+            }
         }
 
         public new TreeAuditRulePresenter ViewPresenter
@@ -26,12 +39,12 @@ namespace CruiseManager.WinForms.CruiseCustomize
             set { base.ViewPresenter = value; }
         }
 
-        public void UpdateTreeAudits()
+        protected void UpdateTreeAudits()
         {
             _BS_treeAudits.DataSource = ViewPresenter.TreeAudits;
         }
 
-        public void UpdateTreeDefaults()
+        protected void UpdateTreeDefaults()
         {
             _BS_treeDefaults.DataSource = ViewPresenter.TreeDefaults;
         }
