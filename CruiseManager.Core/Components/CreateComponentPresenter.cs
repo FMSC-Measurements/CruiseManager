@@ -5,9 +5,11 @@ using CruiseManager.Core.App;
 using CruiseManager.Core.Components.ViewInterfaces;
 using CruiseManager.Core.Constants;
 using CruiseManager.Core.ViewModel;
+using CruiseManager.Services;
 using FMSC.ORM.Core.SQL;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 
@@ -27,6 +29,8 @@ namespace CruiseManager.Core.Components
         private string _masterPath;
         private bool _doesMasterExist;
         public int NumComponents { get; set; }
+
+        public event ProgressChangedEventHandler ProgressChanged;
 
         private DAL _masterDAL;
 
@@ -51,7 +55,7 @@ namespace CruiseManager.Core.Components
             }
         }
 
-        public DAL ParentDB { get { return ApplicationController.Database; } }
+        public DAL ParentDB { get; }
 
         public new ICreateComponentView View
         {
@@ -59,9 +63,9 @@ namespace CruiseManager.Core.Components
             set { base.View = value; }
         }
 
-        public CreateComponentPresenter(ApplicationControllerBase applicationController)
+        public CreateComponentPresenter(IDatabaseProvider databaseProvider)
         {
-            this.ApplicationController = applicationController;
+            ParentDB = databaseProvider.Database;
 
             InitializeState();
         }
@@ -88,7 +92,8 @@ namespace CruiseManager.Core.Components
 
             //start up the progress bar
             int totalSteps = numComponents + 4;
-            View.InitializeAndShowProgress(totalSteps);
+            var stepCompleated = 0;
+            RaiseProgressChanged(totalSteps, stepCompleated++);
 
             if (!_doesMasterExist)
             {
@@ -102,12 +107,12 @@ namespace CruiseManager.Core.Components
                 //ClearFieldData(masterDAL);
             }
 
-            View.StepProgressBar();/////////////////////////////////////////////////
+            RaiseProgressChanged(totalSteps, stepCompleated++);/////////////////////////////////////////////////
 
             //insert component records into the master file
             List<ComponentDO> componentInfo = BuildMasterComponentTable(MasterDAL, numComponents);
 
-            View.StepProgressBar();/////////////////////////////////////////////////
+            RaiseProgressChanged(totalSteps, stepCompleated++);/////////////////////////////////////////////////
 
             int curCompNum = 1;
             String saveDir = GetSaveDir(MasterDAL.Path);
@@ -120,13 +125,13 @@ namespace CruiseManager.Core.Components
                     CreateComponent(MasterDAL, curCompNum++, comp, compPath);
                 }
 
-                View.StepProgressBar();//////////////////////////////////////////////
+                RaiseProgressChanged(totalSteps, stepCompleated++);//////////////////////////////////////////////
             }
 
             //create count record copies in the master for each component
             MasterDAL.Execute(SQL.MAKE_COUNTS_FOR_COMPONENTS);
 
-            View.StepProgressBar();/////////////////////////////////////////////////
+            RaiseProgressChanged(totalSteps, stepCompleated++);/////////////////////////////////////////////////
 
             //add some meta data to the master
             GlobalsDO lastMergeEntry = new GlobalsDO(MasterDAL)
@@ -145,9 +150,13 @@ namespace CruiseManager.Core.Components
             };
             numCompEntry.Save(OnConflictOption.Replace);
 
-            View.StepProgressBar();/////////////////////////////////////////////////
+            RaiseProgressChanged(totalSteps, stepCompleated++, true);/////////////////////////////////////////////////
+        }
 
-            View.HideProgressBar();
+        void RaiseProgressChanged(int totalSteps, int compleated, bool? done = false)
+        {
+            var percentDone = (compleated * 100) / (totalSteps * 100);
+            ProgressChanged?.Invoke(this, new ProgressChangedEventArgs(percentDone, done));
         }
 
         protected void CreateComponent(DAL masterDAL, int compNum, ComponentDO compInfo, String compPath)

@@ -9,10 +9,22 @@ namespace CruiseManager.WinForms.Components
         public CreateComponentView(CreateComponentPresenter viewPresenter)
         {
             InitializeComponent();
+            __progressBar.Maximum = 100;
             this.@__numCompTB.Maximum = (decimal)Core.Components.CreateComponentPresenter.MAX_COMPONENTS;
+
+            viewPresenter.ProgressChanged += ViewPresenter_ProgressChanged;
 
             this.ViewPresenter = viewPresenter;
             this.ViewPresenter.View = this;
+        }
+
+        private void ViewPresenter_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
+        {
+            var percentDone = e.ProgressPercentage;
+            bool done = (e.UserState as bool?) ?? false;
+
+            __progressBar.Value = percentDone;
+            __progressBar.Visible = !done;
         }
 
         public new CreateComponentPresenter ViewPresenter
@@ -33,24 +45,6 @@ namespace CruiseManager.WinForms.Components
             ViewPresenter.MakeComponents((int)this.__numCompTB.Value);
             this.ShowMessage("Done");
             //MessageBox.Show("Done");
-        }
-
-        public void InitializeAndShowProgress(int numSteps)
-        {
-            this.__progressBar.Maximum = numSteps;
-            this.__progressBar.Step = 1;
-            this.__progressBar.Value = 0;
-            this.__progressBar.Visible = true;
-        }
-
-        public void HideProgressBar()
-        {
-            this.__progressBar.Visible = false;
-        }
-
-        public void StepProgressBar()
-        {
-            this.__progressBar.PerformStep();
         }
 
         public void EndEdits()
