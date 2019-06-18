@@ -15,7 +15,6 @@ namespace CruiseManager.WinForms.Components
             viewPresenter.ProgressChanged += ViewPresenter_ProgressChanged;
 
             this.ViewPresenter = viewPresenter;
-            this.ViewPresenter.View = this;
         }
 
         private void ViewPresenter_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
@@ -47,7 +46,7 @@ namespace CruiseManager.WinForms.Components
             //MessageBox.Show("Done");
         }
 
-        public void EndEdits()
+        public override void EndEdits()
         {
             //nothing to do
         }

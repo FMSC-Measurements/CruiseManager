@@ -57,12 +57,6 @@ namespace CruiseManager.Core.Components
 
         public DAL ParentDB { get; }
 
-        public new ICreateComponentView View
-        {
-            get { return (ICreateComponentView)base.View; }
-            set { base.View = value; }
-        }
-
         public CreateComponentPresenter(IDatabaseProvider databaseProvider)
         {
             ParentDB = databaseProvider.Database;
