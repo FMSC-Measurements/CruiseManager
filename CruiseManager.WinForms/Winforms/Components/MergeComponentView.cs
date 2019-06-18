@@ -25,16 +25,13 @@ namespace CruiseManager.WinForms.Components
             this._contentPanel.Controls.Add(mergeInfoView);
 
             this.ViewPresenter = viewPresenter;
-            this.ViewPresenter.View = this;
+            viewPresenter.ProgressChanged += HandleProgressChanged;
+            viewPresenter.PrepareSuccess += ViewPresenter_PrepareSuccess;
 
             this.HandleWorkerStatusChanged();
         }
 
-        public void UpdateMergeInfoView()
-        {
-            mergeInfoView.UpdateMasterInfo();
-            mergeInfoView.UpdateComponentInfo();
-        }
+        
 
         public void ShowPremergeReport()
         {
@@ -52,7 +49,12 @@ namespace CruiseManager.WinForms.Components
             }
         }
 
-        public void HandleWorkerStatusChanged()
+        private void ViewPresenter_PrepareSuccess(object sender, EventArgs e)
+        {
+            HandleWorkerStatusChanged();
+        }
+
+        protected void HandleWorkerStatusChanged()
         {
             if (this.InvokeRequired)
             {
@@ -74,7 +76,7 @@ namespace CruiseManager.WinForms.Components
             }
         }
 
-        public void HandleProgressChanged(Object sender, WorkerProgressChangedEventArgs e)
+        protected void HandleProgressChanged(Object sender, WorkerProgressChangedEventArgs e)
         {
             System.Diagnostics.Debug.Assert(e != null, "HandleProgressChanged eventArgs pram is null");
             System.Diagnostics.Debug.Assert(sender != null, "HandleProgressChanged sender pram is null");

@@ -8,11 +8,24 @@ namespace CruiseManager.WinForms.Components
     {
         public MergeInfoView(MergeComponentsPresenter viewPresenter)
         {
-            this.ViewPresenter = viewPresenter;
             InitializeComponent();
+            
+            this.ViewPresenter = viewPresenter;
+            viewPresenter.PropertyChanged += ViewPresenter_PropertyChanged;
 
             UpdateMasterInfo();
             UpdateComponentInfo();
+        }
+
+        private void ViewPresenter_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            var propertyName = e.PropertyName;
+            if(propertyName == nameof(MergeComponentsPresenter.NumComponents)
+                || propertyName == nameof(MergeComponentsPresenter.LastMergeDate)
+                || propertyName == nameof(MergeComponentsPresenter.MasterTreeCount))
+            { UpdateMasterInfo(); }
+            else if(propertyName == nameof(MergeComponentsPresenter.AllComponents))
+            { UpdateComponentInfo(); }
         }
 
         public MergeComponentsPresenter ViewPresenter

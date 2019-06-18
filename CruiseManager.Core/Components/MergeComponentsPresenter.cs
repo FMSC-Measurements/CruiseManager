@@ -2,7 +2,9 @@
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
 using CruiseManager.Core.Components.ViewInterfaces;
+using CruiseManager.Core.Services;
 using CruiseManager.Core.ViewModel;
+using CruiseManager.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,20 +16,32 @@ namespace CruiseManager.Core.Components
     /// </summary>
     public class MergeComponentsPresenter : Presentor
     {
+        private List<ComponentFileVM> _allComonents;
+        private List<ComponentFileVM> _missingComponents;
+        private List<ComponentFileVM> _activeComponents;
+
         #region Properties
 
         public Dictionary<String, MergeTableCommandBuilder> CommandBuilders { get; protected set; } = new Dictionary<string, MergeTableCommandBuilder>();
 
-        public new IMergeComponentView View
-        {
-            get { return (IMergeComponentView)base.View; }
-            set { base.View = value; }
-        }
+        public IDialogService DialogService { get; }
 
-        public DAL MasterDB => ApplicationController?.Database;
-        public List<ComponentFileVM> ActiveComponents { get; set; }
-        public List<ComponentFileVM> MissingComponents { get; set; }
-        public List<ComponentFileVM> AllComponents { get; set; }
+        public DAL MasterDB { get; }
+        public List<ComponentFileVM> ActiveComponents
+        {
+            get => _activeComponents;
+            set => SetValue(value, ref _activeComponents);
+        }
+        public List<ComponentFileVM> MissingComponents
+        {
+            get => _missingComponents;
+            set => SetValue(value, ref _missingComponents);
+        }
+        public List<ComponentFileVM> AllComponents
+        {
+            get => _allComonents;
+            set => SetValue(value, ref _allComonents);
+        }
 
         int _numComponents;
 
@@ -95,10 +109,7 @@ namespace CruiseManager.Core.Components
 
         private void CurrentWorker_ProgressChanged(Object sender, WorkerProgressChangedEventArgs e)
         {
-            if (View != null)
-            {
-                View.HandleProgressChanged(sender, e);
-            }
+            ProgressChanged?.Invoke(this, e);
         }
 
         #endregion CurrentWorker
@@ -114,10 +125,16 @@ namespace CruiseManager.Core.Components
 
         #endregion Properties
 
-        public MergeComponentsPresenter(ApplicationControllerBase applicationController)
-            : base(applicationController)
+        public event EventHandler<WorkerProgressChangedEventArgs> ProgressChanged;
+        public event  EventHandler PrepareSuccess;
+        
+
+        public MergeComponentsPresenter(IDialogService dialogService, IDatabaseProvider databaseProvider)
         {
-            Initialize(applicationController.Database);
+            DialogService = dialogService;
+            var database = databaseProvider.Database;
+            MasterDB = database;
+            Initialize(database);
             InitializeMergeTableCommandBuilders();
 
             this.CurrentWorker = new PrepareMergeWorker(this);
@@ -212,26 +229,28 @@ namespace CruiseManager.Core.Components
         public void FindComponents(string searchDir)
         {
             System.Diagnostics.Debug.Assert(MasterDB != null);
-            MissingComponents = new List<ComponentFileVM>();
-            ActiveComponents = new List<ComponentFileVM>();
-            AllComponents = this.MasterDB.From<ComponentFileVM>().Read().ToList();
 
-            foreach (ComponentFileVM comp in this.AllComponents)
+            var missingComponents = new List<ComponentFileVM>();
+            var activeComponents = new List<ComponentFileVM>();
+            var allComponents = MasterDB.From<ComponentFileVM>().Read().ToList();
+
+            foreach (ComponentFileVM comp in allComponents)
             {
                 comp.FullPath = System.IO.Path.Combine(searchDir, comp.FileName);
 
                 if (InitializeComponent(comp))//try to initialize component, if initialization fails add to missing file list
                 {
-                    this.ActiveComponents.Add(comp);
+                    activeComponents.Add(comp);
                 }
                 else
                 {
-                    this.MissingComponents.Add(comp);
+                    missingComponents.Add(comp);
                 }
             }
 
-            if (View != null)
-            { this.View.UpdateMergeInfoView(); }
+            AllComponents = allComponents;
+            ActiveComponents = activeComponents;
+            MissingComponents = missingComponents;
         }
 
         private bool InitializeComponent(ComponentFileVM comp)
@@ -344,15 +363,14 @@ namespace CruiseManager.Core.Components
         {
             if (e.IsDone)
             {
-                View.ShowPremergeReport();
+                PrepareSuccess?.Invoke(this, null);
                 if (GetNumConflicts() == 0)
                 {
                     this.CurrentWorker = new MergeSyncWorker(this);
                 }
                 else
                 {
-                    this.View.ShowMessage("Conflicts/Errors found\r\n Please Resolve Before Continuing", null);
-                    //System.Windows.Forms.MessageBox.Show("Conflicts/Errors found\r\n Please Resolve Before Continuing");
+                    DialogService.ShowMessage("Conflicts/Errors found\r\n Please Resolve Before Continuing", null);
                 }
             }
         }
