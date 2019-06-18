@@ -6,6 +6,9 @@ using CruiseManager.Core.EditDesign.ViewInterfaces;
 using CruiseManager.Core.Models;
 using CruiseManager.Core.SetupModels;
 using CruiseManager.Core.ViewModel;
+using CruiseManager.Data;
+using CruiseManager.Services;
+using CruiseManager.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,28 +17,43 @@ using System.Text;
 
 namespace CruiseManager.Core.EditDesign
 {
-    public class DesignEditorPresentor : Presentor, ISaveHandler
+    public class DesignEditorPresentor : Presentor, IViewAware, ISaveHandler
     {
         public DesignEditorStratum _SampleGroups_SelectedStrata;
         private DesignEditorStratum _anyStratumOption;
         private CuttingUnitDO _anyUnitOption;
         List<ProductCode> _productCodes;
 
-        public DesignEditorPresentor(ApplicationControllerBase applicationController)
+        public DesignEditorPresentor(IDatabaseProvider databaseProvider, ISetupService setupService, IDialogService dialogService, ApplicationControllerBase applicationController)
         {
-            this.ApplicationController = applicationController;
+            Database = databaseProvider.Database;
+            SetupService = setupService;
+            AppController = applicationController;
+            DialogService = dialogService;
         }
 
         public List<string> CruiseMethods { get; set; }
 
-        public DAL Database
-        {
-            get { return ApplicationController.Database; }
-        }
+        protected DAL Database { get; }
+        protected ISetupService SetupService { get; }
+        protected ApplicationControllerBase AppController { get; }
+        protected IDialogService DialogService { get; }
 
-        public DesignEditorDataContext DataContext { get; set; }
+        protected DesignEditorDataContext DataContext { get; set; }
 
-        public bool IsSupervisor { get { return ApplicationController.InSupervisorMode; } }
+        public SaleDO Sale => DataContext.Sale;
+        public IEnumerable<CuttingUnitDO> CuttingUnits => DataContext.CuttingUnits;
+        public IEnumerable<CuttingUnitDO> AllCuttingUnits => DataContext.AllCuttingUnits;
+        public IEnumerable<DesignEditorStratum> Strata => DataContext.Strata;
+        public IEnumerable<DesignEditorStratum> AllStrata => DataContext.AllStrata;
+        public IEnumerable<DesignEditorSampleGroup> SampleGroups => DataContext.SampleGroups;
+        public IEnumerable<TreeDefaultValueDO> TreeDefaults => DataContext.AllTreeDefaults;
+
+        public IEnumerable<CuttingUnitDO> CuttingUnitFilterSelectionList => DataContext.CuttingUnitFilterSelectionList;
+        public IEnumerable<DesignEditorStratum> StrataFilterSelectionList => DataContext.StrataFilterSelectionList;
+
+
+        public bool IsSupervisor { get { return AppController.InSupervisorMode; } }
 
         public List<LoggingMethod> LoggingMethods { get; set; }
 
@@ -45,7 +63,7 @@ namespace CruiseManager.Core.EditDesign
             {
                 if (_productCodes == null)
                 {
-                    _productCodes = ApplicationController.SetupService.GetProductCodes();
+                    _productCodes = SetupService.GetProductCodes();
                 }
                 return _productCodes;
             }
@@ -70,7 +88,7 @@ namespace CruiseManager.Core.EditDesign
                 {
                     DataContext.SampleGroups = new BindingList<DesignEditorSampleGroup>(DataContext.AllSampleGroups);
                 }
-                View.UpdateSampleGroups(DataContext.SampleGroups);
+                OnPropertyChanged(nameof(SampleGroups));
             }
         }
 
@@ -88,13 +106,11 @@ namespace CruiseManager.Core.EditDesign
 
         public List<UOMCode> UOMCodes { get; set; }
 
-        public new IEditDesignView View
+        public IView View { get; set; }
+
+        public void AddTreeDefault(TreeDefaultValueDO tdv)
         {
-            get { return (IEditDesignView)base.View; }
-            set
-            {
-                base.View = value;
-            }
+            DataContext.AllTreeDefaults.Add(tdv);
         }
 
         public void AddCuttingUnit()
@@ -197,7 +213,7 @@ namespace CruiseManager.Core.EditDesign
         {
             if (!CanEditStratumField(stratum, null))
             {
-                View.ShowMessage("Can not delete stratum because it contains cruise data");
+                DialogService.ShowMessage("Can not delete stratum because it contains cruise data");
                 return;
             }
 
@@ -245,7 +261,7 @@ namespace CruiseManager.Core.EditDesign
             {
                 DataContext.CuttingUnits = DataContext.AllCuttingUnits;
             }
-            View.UpdateCuttingUnits(DataContext.CuttingUnits);
+            OnPropertyChanged(nameof(CuttingUnits));
         }
 
         public void FilterStrata(CuttingUnitDO filterBy)
@@ -262,7 +278,7 @@ namespace CruiseManager.Core.EditDesign
             {
                 DataContext.Strata = DataContext.AllStrata;
             }
-            View.UpdateStrata(DataContext.Strata);
+            OnPropertyChanged(nameof(Strata));
         }
 
         public CuttingUnitDO GetNewCuttingUnit()
@@ -357,9 +373,9 @@ namespace CruiseManager.Core.EditDesign
 
         public void LoadSetup()
         {
-            var setupServ = ApplicationController.SetupService;
+            var setupServ = SetupService;
             Regions = setupServ.GetRegions();
-            CruiseMethods = this.ApplicationController.Database.GetCruiseMethods(this.DataContext.Sale.Purpose == "Recon");
+            CruiseMethods = Database.GetCruiseMethods(this.DataContext.Sale.Purpose == "Recon");
             LoggingMethods = setupServ.GetLoggingMethods();
             UOMCodes = setupServ.GetUOMCodes();
         }
@@ -512,7 +528,7 @@ namespace CruiseManager.Core.EditDesign
 
         void OnTreeDefaultsChanged(bool error)
         {
-            View.UpdateSampleGroupTDVs(DataContext.AllTreeDefaults);
+            OnPropertyChanged(nameof(TreeDefaults));
         }
 
         private bool SaveData()
@@ -626,16 +642,13 @@ namespace CruiseManager.Core.EditDesign
 
         public bool HandleSave()
         {
-            if (View != null)
-            {
-                View.EndEdits();
-            }
+            View?.EndEdits();
 
             StringBuilder validationErrorBuilder = new StringBuilder();
             bool rtnVal = true; 
             if (!this.ValidateData(ref validationErrorBuilder))
             {
-                this.View.ShowErrorMessage("Validation Errors Found",
+                DialogService.ShowErrorMessage("Validation Errors Found",
                     validationErrorBuilder.ToString());
                 rtnVal = false;
             }

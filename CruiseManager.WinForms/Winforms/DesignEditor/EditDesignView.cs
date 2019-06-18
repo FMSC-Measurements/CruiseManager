@@ -12,12 +12,13 @@ namespace CruiseManager.WinForms.EditDesign
 {
     public partial class EditDesignView : UserControlView, IEditDesignView
     {
-        public EditDesignView(WindowPresenter windowPresenter, DesignEditorPresentor viewPresenter)
+        public EditDesignView(WindowPresenter windowPresenter, DesignEditorPresentor viewPresenter, IExceptionHandler exceptionHandler)
         {
             this.ViewPresenter = viewPresenter;
+            viewPresenter.PropertyChanged += ViewPresenter_PropertyChanged;
             this.ViewPresenter.View = this;
 
-            this.ExceptionHandler = viewPresenter.ApplicationController.ExceptionHandler;
+            this.ExceptionHandler = exceptionHandler;
             this.WindowPresenter = windowPresenter;
             InitializeComponent();
             //win-forms designer keeps removing the these settings so I'm setting them outside InitializeComponent
@@ -25,6 +26,21 @@ namespace CruiseManager.WinForms.EditDesign
             secondaryProductDataGridViewTextBoxColumn.ValueMember = nameof(Core.SetupModels.ProductCode.Code);
 
             this.SalePurposeComboBox.DataSource = Strings.SALE_PURPOSE;
+        }
+
+        private void ViewPresenter_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            var propertyName = e.PropertyName;
+            var viewModel = ViewPresenter;
+
+            if(propertyName == nameof(DesignEditorPresentor.SampleGroups))
+            { UpdateSampleGroups(viewModel.SampleGroups); }
+            else if(propertyName == nameof(DesignEditorPresentor.Strata))
+            { UpdateStrata(viewModel.Strata); }
+            else if(propertyName == nameof(DesignEditorPresentor.CuttingUnits))
+            { UpdateCuttingUnits(viewModel.CuttingUnits); }
+            else if(propertyName == nameof(DesignEditorPresentor.TreeDefaults))
+            { UpdateSampleGroupTDVs(viewModel.TreeDefaults); }
         }
 
         public new DesignEditorPresentor ViewPresenter
@@ -38,32 +54,35 @@ namespace CruiseManager.WinForms.EditDesign
 
         public void BindData()
         {
-            this.SaleBindingSource.DataSource = ViewPresenter.DataContext.Sale;
+            var viewPresenter = ViewPresenter;
+            this.SaleBindingSource.DataSource = viewPresenter.Sale;
 
-            this.SampleGroup_TDVBindingSource.DataSource = ViewPresenter.DataContext.AllTreeDefaults;
+            this.SampleGroup_TDVBindingSource.DataSource = viewPresenter.TreeDefaults;
 
-            this.CuttingUnitsBindingSource.DataSource = ViewPresenter.DataContext.CuttingUnits;
-            this.StrataBindingSource.DataSource = ViewPresenter.DataContext.Strata;
-            this.SampleGroupBindingSource.DataSource = ViewPresenter.DataContext.SampleGroups;
+            this.CuttingUnitsBindingSource.DataSource = viewPresenter.CuttingUnits;
+            this.StrataBindingSource.DataSource = viewPresenter.Strata;
+            this.SampleGroupBindingSource.DataSource = viewPresenter.SampleGroups;
             //this.PlotBindingSource.DataSource = Presentor.Data.Plots;
 
-            this.CuttingUnits_StrataSelectionBindingSource.DataSource = ViewPresenter.DataContext.StrataFilterSelectionList;
-            this.Strata_CuttingUnitsSelectionBindingSource.DataSource = ViewPresenter.DataContext.CuttingUnitFilterSelectionList;
-            this.SampleGroups_StrataSelectionBindingSource.DataSource = ViewPresenter.DataContext.AllStrata;
+            this.CuttingUnits_StrataSelectionBindingSource.DataSource = viewPresenter.StrataFilterSelectionList;
+            this.Strata_CuttingUnitsSelectionBindingSource.DataSource = viewPresenter.CuttingUnitFilterSelectionList;
+            this.SampleGroups_StrataSelectionBindingSource.DataSource = viewPresenter.AllStrata;
 
-            Strata_CuttingUnitBindingSource.DataSource = ViewPresenter.DataContext.AllCuttingUnits;
+            Strata_CuttingUnitBindingSource.DataSource = viewPresenter.AllCuttingUnits;
         }
 
         public void BindSetup()
         {
-            this.RegionBindingSource.DataSource = ViewPresenter.Regions;
-            this.cruiseMethodBindingSource.DataSource = ViewPresenter.CruiseMethods;
-            this.LoggingMethodBindingSource.DataSource = ViewPresenter.LoggingMethods;
-            this._BS_ProductTypes.DataSource = ViewPresenter.PrimaryProductCodes;
-            secondaryProductDataGridViewTextBoxColumn.DataSource = ViewPresenter.SecondaryProductCodes.ToList();
+            var viewPresenter = ViewPresenter;
+
+            this.RegionBindingSource.DataSource = viewPresenter.Regions;
+            this.cruiseMethodBindingSource.DataSource = viewPresenter.CruiseMethods;
+            this.LoggingMethodBindingSource.DataSource = viewPresenter.LoggingMethods;
+            this._BS_ProductTypes.DataSource = viewPresenter.PrimaryProductCodes;
+            secondaryProductDataGridViewTextBoxColumn.DataSource = viewPresenter.SecondaryProductCodes.ToList();
         }
 
-        public void EndEdits()
+        public override void EndEdits()
         {
             //force focus away from any control that has focus,
             //causing any control that has edited data to commit its data
@@ -255,7 +274,7 @@ namespace CruiseManager.WinForms.EditDesign
             TreeDefaultValueDO newTDV = WindowPresenter.ShowAddTreeDefault();
             if (newTDV != null)
             {
-                this.ViewPresenter.DataContext.AllTreeDefaults.Add(newTDV);
+                ViewPresenter.AddTreeDefault(newTDV);
             }
         }
 
