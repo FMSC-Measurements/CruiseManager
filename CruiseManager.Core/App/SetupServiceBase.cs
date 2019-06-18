@@ -1,5 +1,6 @@
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.SetupModels;
+using CruiseManager.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +9,7 @@ using System.Xml.Serialization;
 
 namespace CruiseManager.Core.App
 {
-    public abstract class SetupServiceBase
+    public abstract class SetupServiceBase : ISetupService
     {
         public static readonly string SETUP_FILENAME = "STPinfo.setup";
         public static readonly string AUDIT_VALUE_FILE_NAME = @"AuditValues.xml";

@@ -3,6 +3,8 @@ using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
 using CruiseManager.Core.Models;
 using CruiseManager.Core.ViewModel;
+using CruiseManager.Data;
+using CruiseManager.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,26 +15,44 @@ namespace CruiseManager.Core.CruiseCustomize
     public class FieldSetupPresenter : Presentor, ISaveHandler
     {
         bool _isInitialized;
+        private List<FieldSetupStratum> _fieldSetupStrata;
+        private List<TreeFieldSetupDO> _treeFields;
+        private List<LogFieldSetupDO> _logFields;
 
-        public FieldSetupPresenter(ApplicationControllerBase appController)
-            : base(appController)
+        public FieldSetupPresenter(ApplicationControllerBase appController, ISetupService setupService, IDatabaseProvider databaseProvider)
+            : base()
         {
-            this.IsLogGradingEnabled = this.Database.From<SaleDO>()
+            var database = databaseProvider.Database;
+            SetupService = setupService;
+
+            this.IsLogGradingEnabled = database.From<SaleDO>()
                 .Query()
                 .FirstOrDefault()?.LogGradingEnabled ?? false;
+
+            Database = database;
         }
 
-        public new ViewInterfaces.IFieldSetupView View
+        public DAL Database { get; }
+        public ISetupService SetupService { get; }
+
+        public List<FieldSetupStratum> FieldSetupStrata
         {
-            get { return (ViewInterfaces.IFieldSetupView)base.View; }
-            set { base.View = value; }
+            get => _fieldSetupStrata;
+            protected set => SetValue(value, ref _fieldSetupStrata);
         }
 
-        public DAL Database { get { return ApplicationController.Database; } }
+        public List<TreeFieldSetupDO> TreeFields
+        {
+            get => _treeFields;
+            protected set => SetValue(value, ref _treeFields);
+        }
 
-        public List<FieldSetupStratum> FieldSetupStrata { get; protected set; }
-        public List<TreeFieldSetupDO> TreeFields { get; protected set; }
-        public List<LogFieldSetupDO> LogFields { get; protected set; }
+        public List<LogFieldSetupDO> LogFields
+        {
+            get => _logFields;
+            protected set => SetValue(value, ref _logFields);
+        }
+
         public bool IsLogGradingEnabled { get; protected set; }
 
         public bool HasChangesToSave
@@ -50,11 +70,12 @@ namespace CruiseManager.Core.CruiseCustomize
             try
             {
                 //initialize list of all tree and log fields
-                this.TreeFields = ApplicationController.SetupService.GetTreeFieldSetups();
-                this.LogFields = ApplicationController.SetupService.GetLogFieldSetups();
+                var treeFields = SetupService.GetTreeFieldSetups();
+                var logFields = SetupService.GetLogFieldSetups();
 
-                this.FieldSetupStrata = this.Database.From<FieldSetupStratum>().Read().ToList();
-                foreach (FieldSetupStratum st in FieldSetupStrata)
+                var fieldSetupStrata = this.Database.From<FieldSetupStratum>().Read().ToList();
+                
+                foreach (FieldSetupStratum st in fieldSetupStrata)
                 {
                     //initialize each stratum object
                     st.SelectedLogFields = new ObservableCollection<LogFieldSetupDO>(GetSelectedLogFields(st));
@@ -76,6 +97,10 @@ namespace CruiseManager.Core.CruiseCustomize
                     st.UnselectedLogFields = unselectedLogFields;
                     st.UnselectedTreeFields = unselectedTreeFields;
                 }
+
+                TreeFields = treeFields;
+                LogFields = logFields;
+                FieldSetupStrata = fieldSetupStrata;
                 _isInitialized = true;
             }
             catch (Exception ex)
@@ -87,8 +112,6 @@ namespace CruiseManager.Core.CruiseCustomize
             {
                 //dal.ExitConnectionHold();
             }
-
-            this.View.UpdateFieldSetupViews();
         }
 
         protected List<TreeFieldSetupDO> GetSelectedTreeFields(StratumDO stratum)

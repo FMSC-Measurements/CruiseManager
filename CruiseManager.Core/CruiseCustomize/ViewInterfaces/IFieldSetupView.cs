@@ -4,8 +4,6 @@ namespace CruiseManager.Core.CruiseCustomize.ViewInterfaces
 {
     public interface IFieldSetupView : IView
     {
-        new FieldSetupPresenter ViewPresenter { get; set; }
-
-        void UpdateFieldSetupViews();
+        //new FieldSetupPresenter ViewPresenter { get; set; }
     }
 }

@@ -9,21 +9,33 @@ namespace CruiseManager.WinForms.CruiseCustomize
     public partial class FieldSetupView : CruiseManager.WinForms.UserControlView, IFieldSetupView
     {
         public FieldSetupView(FieldSetupPresenter presenter)
-        {
-            this.ViewPresenter = presenter;
-            presenter.View = this;
+        {            
             InitializeComponent();
+
+            this.ViewPresenter = presenter;
+            presenter.PropertyChanged += Presenter_PropertyChanged;
         }
 
-        public new FieldSetupPresenter ViewPresenter
+        private void Presenter_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            var propertyName = e.PropertyName;
+            if(propertyName == nameof(FieldSetupPresenter.FieldSetupStrata))
+            {
+                UpdateFieldSetupViews();
+            }
+        }
+
+        protected new FieldSetupPresenter ViewPresenter
         {
             get { return (FieldSetupPresenter)base.ViewPresenter; }
             set { base.ViewPresenter = value; }
         }
 
-        public void UpdateFieldSetupViews()
+        protected void UpdateFieldSetupViews()
         {
-            if (this.ViewPresenter.IsLogGradingEnabled)
+            var viewPresenter = ViewPresenter;
+
+            if (viewPresenter.IsLogGradingEnabled)
             {
                 if (!this._fieldSetup_Child_TabControl.TabPages.Contains(this._logField_TabPage))
                 {
@@ -34,7 +46,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             {
                 this._fieldSetup_Child_TabControl.TabPages.Remove(this._logField_TabPage);
             }
-            _strataLB.DataSource = ViewPresenter.FieldSetupStrata;
+            _strataLB.DataSource = viewPresenter.FieldSetupStrata;
         }
 
         private void _strataLB_SelectedValueChanged(object sender, EventArgs e)
