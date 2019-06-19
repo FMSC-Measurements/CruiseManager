@@ -4,6 +4,8 @@ using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
 using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core.ViewModel;
+using CruiseManager.Data;
+using CruiseManager.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,16 +16,32 @@ namespace CruiseManager.Core.EditTemplate
     public class TemplateEditViewPresenter : Presentor, ISaveHandler
     {
         private FMSC.Utility.Collections.BindingListRedux<TreeDefaultValueDO> _treeDefaultValues;
+        private BindingList<VolumeEquationDO> _volumeEQs;
+        private BindingList<ReportsDO> _reports;
+        private List<TreeAuditValueDO> _treeAudits;
+        private List<TreeFieldSetupDefaultDO> _treeFields;
+        private List<LogFieldSetupDefaultDO> _logFields;
+        private BindingList<LogFieldSetupDefaultDO> _selectedLogFields;
+        private BindingList<LogFieldSetupDefaultDO> _unselectedLogFields;
+        private BindingList<EditTemplateCruiseMethod> _cruiseMethods;
+
         //private List<TreeDefaultValueDO> _toBeDeletedTreeDefaults = new List<TreeDefaultValueDO>();
 
         public new IEditTemplateView View { get; set; }
-        public DAL Database { get { return ApplicationController.Database; } }
 
-        public BindingList<EditTemplateCruiseMethod> CruiseMethods { get; set; }
+        protected DAL Database { get; }
+        protected ISetupService SetupService { get; }
+
+        #region public props
+        public BindingList<EditTemplateCruiseMethod> CruiseMethods
+        {
+            get => _cruiseMethods;
+            set => SetValue(value, ref _cruiseMethods);
+        }
 
         public FMSC.Utility.Collections.BindingListRedux<TreeDefaultValueDO> TreeDefaultValues
         {
-            get { return _treeDefaultValues; }
+            get => _treeDefaultValues;
             set
             {
                 if (value == _treeDefaultValues) { return; }
@@ -35,31 +53,62 @@ namespace CruiseManager.Core.EditTemplate
                 {
                     value.ItemRemoved += this.TreeDefaults_ItemRemoved;
                 }
-                _treeDefaultValues = value;
+                SetValue(value, ref _treeDefaultValues);
             }
         }
 
-        //public BindingList<TallyDO> Tallies {get; set; }
-        public BindingList<VolumeEquationDO> VolumeEQs { get; set; }
-
-        public BindingList<ReportsDO> Reports { get; set; }
-        public List<TreeAuditValueDO> TreeAudits { get; set; }
-
-        public List<TreeFieldSetupDefaultDO> TreeFields { get; set; }
-
-        public List<LogFieldSetupDefaultDO> LogFields { get; set; }
-        public BindingList<LogFieldSetupDefaultDO> SelectedLogFields { get; set; }
-        public BindingList<LogFieldSetupDefaultDO> UnselectedLogFields { get; set; }
-
-        public TemplateEditViewPresenter(ApplicationControllerBase applicationController)
+        public BindingList<VolumeEquationDO> VolumeEQs
         {
-            this.ApplicationController = applicationController;
+            get => _volumeEQs;
+            set => SetValue(value, ref _volumeEQs);
+        }
+
+        public BindingList<ReportsDO> Reports
+        {
+            get => _reports;
+            set => SetValue(value, ref _reports);
+        }
+
+        public List<TreeAuditValueDO> TreeAudits
+        {
+            get => _treeAudits;
+            set => SetValue(value, ref _treeAudits);
+        }
+
+        public List<TreeFieldSetupDefaultDO> TreeFields
+        {
+            get => _treeFields;
+            set => SetValue(value, ref _treeFields);
+        }
+
+        public List<LogFieldSetupDefaultDO> LogFields
+        {
+            get => _logFields;
+            set => SetValue(value, ref _logFields);
+        }
+        public BindingList<LogFieldSetupDefaultDO> SelectedLogFields
+        {
+            get => _selectedLogFields;
+            set => SetValue(value, ref _selectedLogFields);
+        }
+
+        public BindingList<LogFieldSetupDefaultDO> UnselectedLogFields
+        {
+            get => _unselectedLogFields;
+            set => SetValue(value, ref _unselectedLogFields);
+        }
+        #endregion public props
+
+        public TemplateEditViewPresenter(IDatabaseProvider databaseProvider, ISetupService setupService)
+        {
+            Database = databaseProvider.Database;
+            
 
             //read TreeFiedleSetup info from .setup file and convert the data to TreeFieldSetupDefault
             //it may be posible to simplify this task by asking for the data in the form of a TreeFieldSetupDefault object
             //the xmlSerializer may beable to handle this conversion
             this.TreeFields = new List<TreeFieldSetupDefaultDO>();
-            foreach (TreeFieldSetupDO tf in this.ApplicationController.SetupService.GetTreeFieldSetups())
+            foreach (TreeFieldSetupDO tf in setupService.GetTreeFieldSetups())
             {
                 TreeFieldSetupDefaultDO newTF = new TreeFieldSetupDefaultDO();
                 newTF.Field = tf.Field;
@@ -71,7 +120,7 @@ namespace CruiseManager.Core.EditTemplate
                 this.TreeFields.Add(newTF);
             }
             this.LogFields = new List<LogFieldSetupDefaultDO>();
-            foreach (LogFieldSetupDO lf in ApplicationController.SetupService.GetLogFieldSetups())
+            foreach (LogFieldSetupDO lf in setupService.GetLogFieldSetups())
             {
                 LogFieldSetupDefaultDO newLF = new LogFieldSetupDefaultDO();
                 newLF.Field = lf.Field;
@@ -82,10 +131,12 @@ namespace CruiseManager.Core.EditTemplate
 
                 this.LogFields.Add(newLF);
             }
+
+            SetupService = setupService;
         }
 
         /// <summary>
-        /// Handels the initialization of the Field setups, creating a list of cruise methods and
+        /// Called when the Field Setup view is displayed
         /// </summary>
         public void HandleFieldSetupLoad()
         {
@@ -94,12 +145,12 @@ namespace CruiseManager.Core.EditTemplate
             {
                 try
                 {
-                    CruiseMethods = new BindingList<EditTemplateCruiseMethod>();
-                    var methods = ApplicationController.Database.From<CruiseMethodsDO>().Read().ToList();
+                    var cruiseMethods = new BindingList<EditTemplateCruiseMethod>();
+                    var methods = Database.From<CruiseMethodsDO>().Read().ToList();
                     foreach (CruiseMethodsDO method in methods)
                     {
                         var vm = new EditTemplateCruiseMethod(method);
-                        var treeFields = ApplicationController.Database.From<TreeFieldSetupDefaultDO>()
+                        var treeFields = Database.From<TreeFieldSetupDefaultDO>()
                             .Where("Method = ?").OrderBy("FieldOrder").Read(method.Code).ToList();
 
                         vm.TreeFields = new BindingList<TreeFieldSetupDefaultDO>(treeFields);
@@ -109,8 +160,10 @@ namespace CruiseManager.Core.EditTemplate
 
                         vm.UnselectedTreeFields = new BindingList<TreeFieldSetupDefaultDO>(unselectedTreeFields);
 
-                        CruiseMethods.Add(vm);
+                        cruiseMethods.Add(vm);
                     }
+
+                    CruiseMethods = cruiseMethods;
                 }
                 catch
                 {
@@ -122,12 +175,14 @@ namespace CruiseManager.Core.EditTemplate
             {
                 try
                 {
-                    var logFields = ApplicationController.Database.From<LogFieldSetupDefaultDO>()
+                    var logFields = Database.From<LogFieldSetupDefaultDO>()
                         .OrderBy("FieldOrder").Read().ToList();
-                    SelectedLogFields = new BindingList<LogFieldSetupDefaultDO>(logFields);
+                    
                     var unselectedLogFields = (from lfs in this.LogFields.Except(logFields, new LogFieldDefaultComparer())
                                                select new LogFieldSetupDefaultDO(lfs)).ToList();
+
                     UnselectedLogFields = new BindingList<LogFieldSetupDefaultDO>(unselectedLogFields);
+                    SelectedLogFields = new BindingList<LogFieldSetupDefaultDO>(logFields);
                 }
                 catch
                 {
@@ -142,62 +197,87 @@ namespace CruiseManager.Core.EditTemplate
         {
             if (this.TreeDefaultValues == null)
             {
-                var defaults = ApplicationController.Database.From<TreeDefaultValueDO>().Read().ToList();
+                var defaults = Database.From<TreeDefaultValueDO>().Read().ToList();
                 this.TreeDefaultValues = new FMSC.Utility.Collections.BindingListRedux<TreeDefaultValueDO>(defaults);
             }
-
-            this.View.UpdateTreeDefaults();
         }
 
-        //public void HandleTallyLoad()
-        //{
-        //    if (this.Tallies == null)
-        //    {
-        //        List<TallyDO> tallies = this.Controller.Database.Read<TallyDO>("Tally", null);
-        //        this.Tallies = new BindingList<TallyDO>(tallies);
-        //        this.View.UpdateTallySetup();
-        //    }
-        //}
+
+        #region VolumeEQs
 
         public void HandleVolumeEquLoad()
         {
             if (this.VolumeEQs == null)
             {
-                List<VolumeEquationDO> volumeEQs = ApplicationController.Database.From<VolumeEquationDO>()
+                List<VolumeEquationDO> volumeEQs = Database.From<VolumeEquationDO>()
                     .Read().ToList();
                 VolumeEQs = new BindingList<VolumeEquationDO>(volumeEQs);
-                View.UpdateVolumeEqs();
             }
         }
 
+        public void AddVolumeEquation()
+        {
+            VolumeEQs.Add(new VolumeEquationDO(Database));
+        }
+
+        public void DeleteVolumeEquation(VolumeEquationDO volumeEquation)
+        {
+            if(volumeEquation == null) { throw new ArgumentNullException(nameof(volumeEquation)); }
+
+            VolumeEQs.Remove(volumeEquation);
+            volumeEquation.Delete()
+        }
+
+        #endregion VolumeEQs 
+
+        #region reports
         public void HandleReportsLoad()
         {
             if (this.Reports == null)
             {
-                List<ReportsDO> reports = ApplicationController.Database.From<ReportsDO>()
+                List<ReportsDO> reports = Database.From<ReportsDO>()
                     .Read().ToList();
                 this.Reports = new BindingList<ReportsDO>(reports);
-                this.View.UpdateReports();
             }
         }
 
+
+        #endregion reports
+
+        #region TreeAudits
         public void HandleTreeAuditsLoad()
         {
             if (this.TreeDefaultValues == null)
             {
-                List<TreeDefaultValueDO> defaults = ApplicationController.Database.From<TreeDefaultValueDO>()
+                List<TreeDefaultValueDO> defaults = Database.From<TreeDefaultValueDO>()
                     .Read().ToList();
                 this.TreeDefaultValues = new FMSC.Utility.Collections.BindingListRedux<TreeDefaultValueDO>(defaults);
             }
 
             if (TreeAudits == null)
             {
-                this.TreeAudits = ApplicationController.Database.From<TreeAuditValueDO>().OrderBy("Field")
+                this.TreeAudits = Database.From<TreeAuditValueDO>().OrderBy("Field")
                     .Read().ToList();
             }
 
             this.View.UpdateTreeAudit();
         }
+
+        public TreeAuditValueDO MakeTreeAudit()
+        {
+            return new TreeAuditValueDO(Database);
+        }
+
+        public void DeleteTreeAudit(TreeAuditValueDO tav)
+        {
+            if(tav.IsPersisted)
+            {
+                Database.Delete(tav);
+                TreeAudits.Remove(tav);
+            }
+        }
+
+        #endregion TreeAudits
 
         private void TreeDefaults_ItemRemoved(object sender, FMSC.Utility.Collections.ItemRemovedEventArgs e)
         {
@@ -211,14 +291,14 @@ namespace CruiseManager.Core.EditTemplate
 
         public List<TreeFieldSetupDefaultDO> GetSelectedTreeFields(CruiseMethodsDO method)
         {
-            return ApplicationController.Database.From<TreeFieldSetupDefaultDO>()
+            return Database.From<TreeFieldSetupDefaultDO>()
                 .Where("Method = ?").OrderBy("FieldOrder")
                 .Read(method.Code).ToList();
         }
 
         public List<LogFieldSetupDefaultDO> GetSelectedLogFields()
         {
-            return ApplicationController.Database.From<LogFieldSetupDefaultDO>()
+            return Database.From<LogFieldSetupDefaultDO>()
                 .OrderBy("FieldOrder").Read().ToList();
         }
 
@@ -246,7 +326,7 @@ namespace CruiseManager.Core.EditTemplate
                     {
                         if (tfs.DAL == null || tfs.IsPersisted == false)
                         {
-                            tfs.DAL = ApplicationController.Database;
+                            tfs.DAL = Database;
                             tfs.Method = method.CruiseMethod.Code;
                             tfs.Save();
                         }
@@ -270,7 +350,7 @@ namespace CruiseManager.Core.EditTemplate
             {
                 if (lfs.DAL == null || lfs.IsPersisted == false)
                 {
-                    lfs.DAL = ApplicationController.Database;
+                    lfs.DAL = Database;
                     //lfs.Method = method.CruiseMethod.Code;
                     lfs.Save(OnConflictOption.Ignore);
                 }
@@ -286,7 +366,7 @@ namespace CruiseManager.Core.EditTemplate
                 {
                     if (tdv.DAL == null)
                     {
-                        tdv.DAL = this.ApplicationController.Database;
+                        tdv.DAL = Database;
                     }
                     tdv.Save();
                 }
@@ -310,7 +390,7 @@ namespace CruiseManager.Core.EditTemplate
                 {
                     if (volEQ.DAL == null)
                     {
-                        volEQ.DAL = this.ApplicationController.Database;
+                        volEQ.DAL = Database;
                     }
                     volEQ.Save();
                 }
@@ -322,7 +402,7 @@ namespace CruiseManager.Core.EditTemplate
                 {
                     if (report.DAL == null)
                     {
-                        report.DAL = this.ApplicationController.Database;
+                        report.DAL = Database;
                     }
                     report.Save();
                 }
@@ -334,7 +414,7 @@ namespace CruiseManager.Core.EditTemplate
                 {
                     if (tav.DAL == null)
                     {
-                        tav.DAL = this.ApplicationController.Database;
+                        tav.DAL = Database;
                     }
                     tav.Save();
                     tav.TreeDefaultValues.Save();

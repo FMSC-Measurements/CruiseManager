@@ -13,6 +13,7 @@ namespace CruiseManager.WinForms.TemplateEditor
         {
             this.WindowPresenter = windowPresenter;
             this.ViewPresenter = viewPresenter;
+            viewPresenter.PropertyChanged += ViewPresenter_PropertyChanged;
             ViewPresenter.View = this;
 
             //this.UserCommands = new ViewCommand[]{
@@ -21,6 +22,28 @@ namespace CruiseManager.WinForms.TemplateEditor
             //};
 
             InitializeComponent();
+        }
+
+        private void ViewPresenter_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            var propertyName = e.PropertyName;
+
+            if (e.PropertyName == nameof(TemplateEditViewPresenter.VolumeEQs))
+            {
+                UpdateVolumeEqs();
+            }
+            else if (propertyName == nameof(TemplateEditViewPresenter.Reports))
+            { UpdateReports(); }
+            else if (propertyName == nameof(TemplateEditViewPresenter.TreeAudits))
+            {
+                UpdateTreeAudit();
+            }
+            else if (propertyName == nameof(TemplateEditViewPresenter.CruiseMethods))
+            { UpdateCruiseMethods(); }
+            else if (propertyName == nameof(TemplateEditViewPresenter.SelectedLogFields))
+            { UpdateLogFields(); }
+            else if (propertyName == nameof(TemplateEditViewPresenter.TreeDefaultValues))
+            { UpdateTreeDefaults(); }
         }
 
         protected WindowPresenter WindowPresenter { get; set; }
@@ -43,7 +66,7 @@ namespace CruiseManager.WinForms.TemplateEditor
 
         private void _volEq_add_button_Click(object sender, EventArgs e)
         {
-            this._BS_VolEquations.Add(new VolumeEquationDO(this.ViewPresenter.Database));
+            ViewPresenter.AddVolumeEquation();
         }
 
         private void _volEq_delete_button_Click(object sender, EventArgs e)
@@ -51,8 +74,7 @@ namespace CruiseManager.WinForms.TemplateEditor
             VolumeEquationDO obj = this._BS_VolEquations.Current as VolumeEquationDO;
             if (obj != null)
             {
-                obj.Delete();
-                this._BS_VolEquations.Remove(obj);
+                ViewPresenter.DeleteVolumeEquation(obj);
             }
         }
 
@@ -61,7 +83,7 @@ namespace CruiseManager.WinForms.TemplateEditor
             ViewPresenter.HandleVolumeEquLoad();
         }
 
-        public void UpdateVolumeEqs()
+        protected void UpdateVolumeEqs()
         {
             _BS_VolEquations.DataSource = ViewPresenter.VolumeEQs;
         }
@@ -75,16 +97,18 @@ namespace CruiseManager.WinForms.TemplateEditor
 
         #region Tree/Log Field Setup
 
-        public void UpdateFieldSetup()
+        protected void UpdateCruiseMethods()
         {
             if (ViewPresenter.CruiseMethods != null)
             {
                 _BS_CruiseMethods.DataSource = ViewPresenter.CruiseMethods;
             }
+        }
+
+        protected void UpdateLogFields()
+        {
             this._logFieldWidget.SelectedItemsDataSource = ViewPresenter.SelectedLogFields;
             this._logFieldWidget.DataSource = ViewPresenter.UnselectedLogFields;
-            //this._BS_LogField.DataSource = Presenter.SelectedLogFields;
-            //this._BS_TreeField.DataSource = Presenter.TreeFields;
         }
 
         private void _cruiseMethodListBox_VisibleChanged(object sender, EventArgs e)
@@ -164,7 +188,7 @@ namespace CruiseManager.WinForms.TemplateEditor
 
         #region Tree Audits
 
-        public void UpdateTreeAudit()
+        protected void UpdateTreeAudit()
         {
             _BS_TreeDefaults.DataSource = ViewPresenter.TreeDefaultValues;
             _BS_treeAudits.DataSource = ViewPresenter.TreeAudits;
@@ -172,7 +196,7 @@ namespace CruiseManager.WinForms.TemplateEditor
 
         private void _BS_treeAudits_AddingNew(object sender, System.ComponentModel.AddingNewEventArgs e)
         {
-            e.NewObject = new TreeAuditValueDO(this.ViewPresenter.Database);
+            e.NewObject = ViewPresenter.MakeTreeAudit();
         }
 
         private void _BS_treeAudits_CurrentItemChanged(object sender, EventArgs e)
@@ -193,8 +217,7 @@ namespace CruiseManager.WinForms.TemplateEditor
                 TreeAuditValueDO tav = this._BS_treeAudits[e.RowIndex] as TreeAuditValueDO;
                 if (tav != null)
                 {
-                    if (tav.IsPersisted) { tav.Delete(); }
-                    this._BS_treeAudits.Remove(tav);
+                    ViewPresenter.DeleteTreeAudit(tav);
                 }
             }
         }
@@ -315,7 +338,7 @@ namespace CruiseManager.WinForms.TemplateEditor
             ViewPresenter.HandleReportsLoad();
         }
 
-        public void UpdateReports()
+        protected void UpdateReports()
         {
             _BS_Reports.DataSource = ViewPresenter.Reports;
         }
