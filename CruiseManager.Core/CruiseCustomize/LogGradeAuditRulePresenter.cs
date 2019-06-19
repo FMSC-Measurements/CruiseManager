@@ -91,13 +91,6 @@ namespace CruiseManager.Core.CruiseCustomize
             _isInitialized = true;
         }
 
-        protected override void OnViewLoad(EventArgs e)
-        {
-            base.OnViewLoad(e);
-
-            if (_isInitialized) { return; }
-        }
-
         public LogGradeAuditRule MakeLogGradeAudit()
         {
             var newLogAudit = new LogGradeAuditRule() { DAL = Database };

@@ -1,9 +1,8 @@
 ﻿using CruiseDAL;
 using CruiseDAL.DataObjects;
-using CruiseManager.Core.App;
-using CruiseManager.Core.CruiseCustomize.ViewInterfaces;
 using CruiseManager.Core.ViewModel;
 using CruiseManager.Services;
+using CruiseManager.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +10,7 @@ using System.Text;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    public class LogMatrixPresenter : ViewModelBase, ISaveHandler
+    public class LogMatrixPresenter : ViewModelBase, IViewLoadAware, ISaveHandler
     {
         bool _isInitialized;
         private IList<LogMatrixDO> _logMatrix;
@@ -37,10 +36,8 @@ namespace CruiseManager.Core.CruiseCustomize
             Database = databaseProvider.Database;
         }
 
-        protected override void OnViewLoad(EventArgs e)
+        public void OnViewLoad()
         {
-            base.OnViewLoad(e);
-
             try
             {
                 var logMatrix = this.Database

@@ -3,6 +3,7 @@ using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
 using CruiseManager.Core.ViewModel;
 using CruiseManager.Services;
+using CruiseManager.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ using System.Text;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    public class TreeAuditRulePresenter : ViewModelBase, ISaveHandler
+    public class TreeAuditRulePresenter : ViewModelBase, IViewLoadAware, ISaveHandler
     {
         bool _isInitialized;
         private List<TreeAuditValueDO> _treeAudits;
@@ -45,10 +46,8 @@ namespace CruiseManager.Core.CruiseCustomize
             Database = databaseProvider.Database;
         }
 
-        protected override void OnViewLoad(EventArgs e)
+        public void OnViewLoad()
         {
-            base.OnViewLoad(e);
-
             if (_isInitialized) { return; }
             try
             {

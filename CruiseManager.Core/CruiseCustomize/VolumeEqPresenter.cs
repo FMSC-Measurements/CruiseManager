@@ -3,6 +3,7 @@ using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
 using CruiseManager.Core.ViewModel;
 using CruiseManager.Services;
+using CruiseManager.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +12,7 @@ using System.Text;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    public class VolumeEqPresenter : ViewModel.ViewModelBase, ISaveHandler
+    public class VolumeEqPresenter : ViewModel.ViewModelBase, IViewLoadAware, ISaveHandler
     {
         private bool _isInitialized;
         private BindingList<VolumeEquationDO> _volumeEqs;
@@ -42,16 +43,14 @@ namespace CruiseManager.Core.CruiseCustomize
             ExceptionHandler = exceptionHandler;
         }
 
-        protected override void OnViewLoad(EventArgs e)
+        public void OnViewLoad()
         {
-            base.OnViewLoad(e);
-
             if (_isInitialized) { return; }
             try
             {
                 var volumeEquations = Database.From<VolumeEquationDO>().Query().ToList();
                 DeletedVolumeEqs = new List<VolumeEquationDO>();
-                VolumeEqs = volumeEquations;
+                VolumeEqs = new BindingList<VolumeEquationDO>(volumeEquations);
                 _isInitialized = true;
             }
             catch (Exception ex)

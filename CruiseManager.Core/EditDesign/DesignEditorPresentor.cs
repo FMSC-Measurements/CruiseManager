@@ -17,7 +17,7 @@ using System.Text;
 
 namespace CruiseManager.Core.EditDesign
 {
-    public class DesignEditorPresentor : ViewModelBase, IViewAware, ISaveHandler
+    public class DesignEditorPresentor : ViewModelBase, IViewAware, IViewLoadAware, ISaveHandler
     {
         public DesignEditorStratum _SampleGroups_SelectedStrata;
         private DesignEditorStratum _anyStratumOption;
@@ -519,9 +519,8 @@ namespace CruiseManager.Core.EditDesign
             }
         }
 
-        protected override void OnViewLoad(EventArgs e)
+        public void OnViewLoad()
         {
-            base.OnViewLoad(e);
             this.LoadDesignData();
             this.LoadSetup();
         }

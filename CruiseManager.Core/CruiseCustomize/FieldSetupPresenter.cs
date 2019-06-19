@@ -5,6 +5,7 @@ using CruiseManager.Core.Models;
 using CruiseManager.Core.ViewModel;
 using CruiseManager.Data;
 using CruiseManager.Services;
+using CruiseManager.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,7 +13,7 @@ using System.Linq;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    public class FieldSetupPresenter : ViewModelBase, ISaveHandler
+    public class FieldSetupPresenter : ViewModelBase, IViewLoadAware, ISaveHandler
     {
         bool _isInitialized;
         private List<FieldSetupStratum> _fieldSetupStrata;
@@ -62,10 +63,8 @@ namespace CruiseManager.Core.CruiseCustomize
             }
         }
 
-        protected override void OnViewLoad(EventArgs e)
+        public void OnViewLoad()
         {
-            base.OnViewLoad(e);
-
             try
             {
                 //initialize list of all tree and log fields

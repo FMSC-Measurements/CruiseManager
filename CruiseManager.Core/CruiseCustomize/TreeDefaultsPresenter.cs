@@ -3,6 +3,7 @@ using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
 using CruiseManager.Core.ViewModel;
 using CruiseManager.Services;
+using CruiseManager.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +12,7 @@ using System.Text;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    public class TreeDefaultsPresenter : ViewModelBase, ISaveHandler
+    public class TreeDefaultsPresenter : ViewModelBase, IViewLoadAware, ISaveHandler
     {
         private bool _isInitialized;
         private BindingList<TreeDefaultValueDO> _treeDefaults;
@@ -42,10 +43,8 @@ namespace CruiseManager.Core.CruiseCustomize
             ExceptionHandler = exceptionHandler;
         }
 
-        protected override void OnViewLoad(EventArgs e)
+        public void OnViewLoad()
         {
-            base.OnViewLoad(e);
-
             if (_isInitialized) { return; }
             try
             {

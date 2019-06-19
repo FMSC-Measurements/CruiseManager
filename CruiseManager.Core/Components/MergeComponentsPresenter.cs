@@ -5,6 +5,7 @@ using CruiseManager.Core.Components.ViewInterfaces;
 using CruiseManager.Core.Services;
 using CruiseManager.Core.ViewModel;
 using CruiseManager.Services;
+using CruiseManager.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace CruiseManager.Core.Components
     /// <summary>
     /// Drives the view, Loads components and orchestrates the multiple steps in the merging process
     /// </summary>
-    public class MergeComponentsPresenter : ViewModelBase
+    public class MergeComponentsPresenter : ViewModelBase, IViewLoadAware
     {
         private List<ComponentFileVM> _allComonents;
         private List<ComponentFileVM> _missingComponents;
@@ -405,10 +406,8 @@ namespace CruiseManager.Core.Components
 
         #region Presenter Members
 
-        protected override void OnViewLoad(EventArgs e)
+        public void OnViewLoad()
         {
-            base.OnViewLoad(e);
-
             this.FindComponents();
         }
 

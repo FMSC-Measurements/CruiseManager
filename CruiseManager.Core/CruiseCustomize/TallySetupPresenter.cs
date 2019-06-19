@@ -10,7 +10,7 @@ using System.Text;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    public class TallySetupPresenter : ViewModelBase, IViewAware, ISaveHandler
+    public class TallySetupPresenter : ViewModelBase, IViewAware, IViewLoadAware, ISaveHandler
     {
         private bool _isInitialized;
 
@@ -34,10 +34,8 @@ namespace CruiseManager.Core.CruiseCustomize
             DialogService = dialogService;
         }
 
-        protected override void OnViewLoad(EventArgs e)
+        public void OnViewLoad()
         {
-            base.OnViewLoad(e);
-
             try
             {
                 var tallySetupStrata = new List<TallySetupStratum_Base>();

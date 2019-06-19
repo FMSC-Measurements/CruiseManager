@@ -13,7 +13,7 @@ using System.Text;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    public class ReportsPresenter : ViewModelBase, IViewAware, ISaveHandler
+    public class ReportsPresenter : ViewModelBase, IViewAware, IViewLoadAware, ISaveHandler
     {
         private bool _isInitialized;
         private List<ReportsDO> _reports;
@@ -45,9 +45,8 @@ namespace CruiseManager.Core.CruiseCustomize
             ExceptionHandler = exceptionHandler;
         }
 
-        protected override void OnViewLoad(EventArgs e)
+        public void OnViewLoad()
         {
-            base.OnViewLoad(e);
             if (_isInitialized) { return; }
             try
             {

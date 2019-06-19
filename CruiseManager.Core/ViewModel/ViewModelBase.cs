@@ -5,8 +5,16 @@ namespace CruiseManager.Core.ViewModel
 {
     public abstract class ViewModelBase : INPC_Base, IDisposable
     {
+        private string _title;
+
         protected virtual void OnViewLoad(EventArgs e)
         {
+        }
+
+        public string Title
+        {
+            get => _title;
+            set => SetProperty(ref _title, value);
         }
 
         #region IDisposable Support
