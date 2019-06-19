@@ -10,7 +10,7 @@ using System.Text;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    public class TallySetupPresenter : Presentor, IViewAware, ISaveHandler
+    public class TallySetupPresenter : ViewModelBase, IViewAware, ISaveHandler
     {
         private bool _isInitialized;
 

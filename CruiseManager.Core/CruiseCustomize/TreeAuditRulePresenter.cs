@@ -10,7 +10,7 @@ using System.Text;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    public class TreeAuditRulePresenter : Presentor, ISaveHandler
+    public class TreeAuditRulePresenter : ViewModelBase, ISaveHandler
     {
         bool _isInitialized;
         private List<TreeAuditValueDO> _treeAudits;
@@ -31,13 +31,13 @@ namespace CruiseManager.Core.CruiseCustomize
         public List<TreeAuditValueDO> TreeAudits
         {
             get => _treeAudits;
-            set => SetValue(value, ref _treeAudits);
+            set => SetProperty(ref _treeAudits, value);
         }
 
         public List<TreeDefaultValueDO> TreeDefaults
         {
             get => _treeDefaults;
-            set => SetValue(value, ref _treeDefaults);
+            set => SetProperty(ref _treeDefaults, value);
         }
 
         public TreeAuditRulePresenter(IDatabaseProvider databaseProvider)

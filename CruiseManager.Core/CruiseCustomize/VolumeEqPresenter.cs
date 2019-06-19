@@ -11,7 +11,7 @@ using System.Text;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    public class VolumeEqPresenter : ViewModel.Presentor, ISaveHandler
+    public class VolumeEqPresenter : ViewModel.ViewModelBase, ISaveHandler
     {
         private bool _isInitialized;
         private BindingList<VolumeEquationDO> _volumeEqs;
@@ -22,7 +22,7 @@ namespace CruiseManager.Core.CruiseCustomize
         public BindingList<VolumeEquationDO> VolumeEqs
         {
             get => _volumeEqs;
-            set => SetValue(value, ref _volumeEqs);
+            set => SetProperty(ref _volumeEqs, value);
         }
 
         protected List<VolumeEquationDO> DeletedVolumeEqs { get; set; }

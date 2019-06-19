@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    public class LogAuditRulePresenter : Presentor, IViewAware, ISaveHandler
+    public class LogAuditRulePresenter : ViewModelBase, IViewAware, ISaveHandler
     {
         bool _isInitialized;
         private IEnumerable<string> _speciesOptions;
@@ -58,7 +58,7 @@ namespace CruiseManager.Core.CruiseCustomize
         public ICollection<LogGradeSpecies> LogGradeSpecies
         {
             get => _logGradeSpecies;
-            set => SetValue(value, ref _logGradeSpecies);
+            set => SetProperty(ref _logGradeSpecies, value);
         }
 
         protected List<LogGradeAuditRule> DeletedLogGradeAuditRules { get; set; } = new List<LogGradeAuditRule>();
@@ -66,7 +66,7 @@ namespace CruiseManager.Core.CruiseCustomize
         public IEnumerable<string> SpeciesOptions
         {
             get => _speciesOptions;
-            set => SetValue(value, ref _speciesOptions);
+            set => SetProperty(ref _speciesOptions, value);
         }
 
         public LogAuditRulePresenter(IDatabaseProvider databaseProvider) 

@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace CruiseManager.Core.EditTemplate
 {
-    public class TemplateEditViewPresenter : Presentor, ISaveHandler
+    public class TemplateEditViewPresenter : ViewModelBase, ISaveHandler
     {
         private FMSC.Utility.Collections.BindingListRedux<TreeDefaultValueDO> _treeDefaultValues;
         private BindingList<VolumeEquationDO> _volumeEQs;
@@ -34,7 +34,7 @@ namespace CruiseManager.Core.EditTemplate
         public BindingList<EditTemplateCruiseMethod> CruiseMethods
         {
             get => _cruiseMethods;
-            set => SetValue(value, ref _cruiseMethods);
+            set => SetProperty(ref _cruiseMethods, value);
         }
 
         public FMSC.Utility.Collections.BindingListRedux<TreeDefaultValueDO> TreeDefaultValues
@@ -51,49 +51,49 @@ namespace CruiseManager.Core.EditTemplate
                 {
                     value.ItemRemoved += this.TreeDefaults_ItemRemoved;
                 }
-                SetValue(value, ref _treeDefaultValues);
+                SetProperty(ref _treeDefaultValues, value);
             }
         }
 
         public BindingList<VolumeEquationDO> VolumeEQs
         {
             get => _volumeEQs;
-            set => SetValue(value, ref _volumeEQs);
+            set => SetProperty(ref _volumeEQs, value);
         }
 
         public BindingList<ReportsDO> Reports
         {
             get => _reports;
-            set => SetValue(value, ref _reports);
+            set => SetProperty(ref _reports, value);
         }
 
         public List<TreeAuditValueDO> TreeAudits
         {
             get => _treeAudits;
-            set => SetValue(value, ref _treeAudits);
+            set => SetProperty(ref _treeAudits, value);
         }
 
         public List<TreeFieldSetupDefaultDO> TreeFields
         {
             get => _treeFields;
-            set => SetValue(value, ref _treeFields);
+            set => SetProperty(ref _treeFields, value);
         }
 
         public List<LogFieldSetupDefaultDO> LogFields
         {
             get => _logFields;
-            set => SetValue(value, ref _logFields);
+            set => SetProperty(ref _logFields, value);
         }
         public BindingList<LogFieldSetupDefaultDO> SelectedLogFields
         {
             get => _selectedLogFields;
-            set => SetValue(value, ref _selectedLogFields);
+            set => SetProperty(ref _selectedLogFields, value);
         }
 
         public BindingList<LogFieldSetupDefaultDO> UnselectedLogFields
         {
             get => _unselectedLogFields;
-            set => SetValue(value, ref _unselectedLogFields);
+            set => SetProperty(ref _unselectedLogFields, value);
         }
         #endregion public props
 
@@ -221,7 +221,7 @@ namespace CruiseManager.Core.EditTemplate
             if(volumeEquation == null) { throw new ArgumentNullException(nameof(volumeEquation)); }
 
             VolumeEQs.Remove(volumeEquation);
-            volumeEquation.Delete()
+            volumeEquation.Delete();
         }
 
         #endregion VolumeEQs 

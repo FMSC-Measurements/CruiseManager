@@ -13,7 +13,7 @@ using System.Text;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    public class ReportsPresenter : Presentor, IViewAware, ISaveHandler
+    public class ReportsPresenter : ViewModelBase, IViewAware, ISaveHandler
     {
         private bool _isInitialized;
         private List<ReportsDO> _reports;
@@ -25,7 +25,7 @@ namespace CruiseManager.Core.CruiseCustomize
         public List<ReportsDO> Reports
         {
             get => _reports;
-            set => SetValue(value, ref _reports);
+            set => SetProperty(ref _reports, value);
         }
         protected List<ReportsDO> DeletedReports { get; set; }
 

@@ -11,7 +11,7 @@ using System.Text;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    public class LogMatrixPresenter : Presentor, ISaveHandler
+    public class LogMatrixPresenter : ViewModelBase, ISaveHandler
     {
         bool _isInitialized;
         private IList<LogMatrixDO> _logMatrix;
@@ -29,7 +29,7 @@ namespace CruiseManager.Core.CruiseCustomize
         public IList<LogMatrixDO> LogMatrix
         {
             get => _logMatrix;
-            protected set => SetValue(value, ref _logMatrix);
+            protected set => SetProperty(ref _logMatrix, value);
         }
 
         public LogMatrixPresenter(IDatabaseProvider databaseProvider)

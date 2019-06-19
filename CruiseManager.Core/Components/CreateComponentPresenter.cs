@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CruiseManager.Core.Components
 {
-    public class CreateComponentPresenter : Presentor
+    public class CreateComponentPresenter : ViewModelBase
     {
         public static int MAX_COMPONENTS = 99;
         static int ROWID_SPACING = 200000;

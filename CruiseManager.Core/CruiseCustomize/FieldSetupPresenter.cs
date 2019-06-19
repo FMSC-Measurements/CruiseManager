@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    public class FieldSetupPresenter : Presentor, ISaveHandler
+    public class FieldSetupPresenter : ViewModelBase, ISaveHandler
     {
         bool _isInitialized;
         private List<FieldSetupStratum> _fieldSetupStrata;
@@ -37,19 +37,19 @@ namespace CruiseManager.Core.CruiseCustomize
         public List<FieldSetupStratum> FieldSetupStrata
         {
             get => _fieldSetupStrata;
-            protected set => SetValue(value, ref _fieldSetupStrata);
+            protected set => SetProperty(ref _fieldSetupStrata, value);
         }
 
         public List<TreeFieldSetupDO> TreeFields
         {
             get => _treeFields;
-            protected set => SetValue(value, ref _treeFields);
+            protected set => SetProperty(ref _treeFields, value);
         }
 
         public List<LogFieldSetupDO> LogFields
         {
             get => _logFields;
-            protected set => SetValue(value, ref _logFields);
+            protected set => SetProperty(ref _logFields, value);
         }
 
         public bool IsLogGradingEnabled { get; protected set; }

@@ -11,7 +11,7 @@ using System.Text;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    public class TreeDefaultsPresenter : Presentor, ISaveHandler
+    public class TreeDefaultsPresenter : ViewModelBase, ISaveHandler
     {
         private bool _isInitialized;
         private BindingList<TreeDefaultValueDO> _treeDefaults;
@@ -22,7 +22,7 @@ namespace CruiseManager.Core.CruiseCustomize
         public BindingList<TreeDefaultValueDO> TreeDefaults
         {
             get => _treeDefaults;
-            set => SetValue(value, ref _treeDefaults);
+            set => SetProperty(ref _treeDefaults, value);
         }
 
         protected List<TreeDefaultValueDO> DeletedTreeDefaults { get; set; }

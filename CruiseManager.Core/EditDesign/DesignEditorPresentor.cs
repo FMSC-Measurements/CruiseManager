@@ -17,7 +17,7 @@ using System.Text;
 
 namespace CruiseManager.Core.EditDesign
 {
-    public class DesignEditorPresentor : Presentor, IViewAware, ISaveHandler
+    public class DesignEditorPresentor : ViewModelBase, IViewAware, ISaveHandler
     {
         public DesignEditorStratum _SampleGroups_SelectedStrata;
         private DesignEditorStratum _anyStratumOption;
@@ -88,7 +88,7 @@ namespace CruiseManager.Core.EditDesign
                 {
                     DataContext.SampleGroups = new BindingList<DesignEditorSampleGroup>(DataContext.AllSampleGroups);
                 }
-                OnPropertyChanged(nameof(SampleGroups));
+                RaisePropertyChanged(nameof(SampleGroups));
             }
         }
 
@@ -261,7 +261,7 @@ namespace CruiseManager.Core.EditDesign
             {
                 DataContext.CuttingUnits = DataContext.AllCuttingUnits;
             }
-            OnPropertyChanged(nameof(CuttingUnits));
+            RaisePropertyChanged(nameof(CuttingUnits));
         }
 
         public void FilterStrata(CuttingUnitDO filterBy)
@@ -278,7 +278,7 @@ namespace CruiseManager.Core.EditDesign
             {
                 DataContext.Strata = DataContext.AllStrata;
             }
-            OnPropertyChanged(nameof(Strata));
+            RaisePropertyChanged(nameof(Strata));
         }
 
         public CuttingUnitDO GetNewCuttingUnit()
@@ -528,7 +528,7 @@ namespace CruiseManager.Core.EditDesign
 
         void OnTreeDefaultsChanged(bool error)
         {
-            OnPropertyChanged(nameof(TreeDefaults));
+            RaisePropertyChanged(nameof(TreeDefaults));
         }
 
         private bool SaveData()

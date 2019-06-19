@@ -14,7 +14,7 @@ namespace CruiseManager.Core.Components
     /// <summary>
     /// Drives the view, Loads components and orchestrates the multiple steps in the merging process
     /// </summary>
-    public class MergeComponentsPresenter : Presentor
+    public class MergeComponentsPresenter : ViewModelBase
     {
         private List<ComponentFileVM> _allComonents;
         private List<ComponentFileVM> _missingComponents;
@@ -30,17 +30,17 @@ namespace CruiseManager.Core.Components
         public List<ComponentFileVM> ActiveComponents
         {
             get => _activeComponents;
-            set => SetValue(value, ref _activeComponents);
+            set => SetProperty(ref _activeComponents, value);
         }
         public List<ComponentFileVM> MissingComponents
         {
             get => _missingComponents;
-            set => SetValue(value, ref _missingComponents);
+            set => SetProperty(ref _missingComponents, value);
         }
         public List<ComponentFileVM> AllComponents
         {
             get => _allComonents;
-            set => SetValue(value, ref _allComonents);
+            set => SetProperty(ref _allComonents, value);
         }
 
         int _numComponents;
@@ -50,7 +50,7 @@ namespace CruiseManager.Core.Components
             get { return _numComponents; }
             set
             {
-                SetValue(value, ref _numComponents);
+                SetProperty(ref _numComponents, value);
             }
         }
 
@@ -59,7 +59,7 @@ namespace CruiseManager.Core.Components
         public long MasterTreeCount
         {
             get { return _masterTreeCount; }
-            set { SetValue(value, ref _masterTreeCount); }
+            set { SetProperty(ref _masterTreeCount, value); }
         }
 
         private string _lastMergeDate;
@@ -67,7 +67,7 @@ namespace CruiseManager.Core.Components
         public string LastMergeDate
         {
             get { return _lastMergeDate; }
-            set { SetValue(value, ref _lastMergeDate); }
+            set { SetProperty(ref _lastMergeDate, value); }
         }
 
         #region CurrentWorker
