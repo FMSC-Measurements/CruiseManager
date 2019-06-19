@@ -27,8 +27,6 @@ namespace CruiseManager.Core.EditTemplate
 
         //private List<TreeDefaultValueDO> _toBeDeletedTreeDefaults = new List<TreeDefaultValueDO>();
 
-        public new IEditTemplateView View { get; set; }
-
         protected DAL Database { get; }
         protected ISetupService SetupService { get; }
 
@@ -188,8 +186,6 @@ namespace CruiseManager.Core.EditTemplate
                 {
                     this.SelectedLogFields = null;
                 }
-
-                this.View.UpdateFieldSetup();
             }
         }
 
@@ -259,8 +255,6 @@ namespace CruiseManager.Core.EditTemplate
                 this.TreeAudits = Database.From<TreeAuditValueDO>().OrderBy("Field")
                     .Read().ToList();
             }
-
-            this.View.UpdateTreeAudit();
         }
 
         public TreeAuditValueDO MakeTreeAudit()

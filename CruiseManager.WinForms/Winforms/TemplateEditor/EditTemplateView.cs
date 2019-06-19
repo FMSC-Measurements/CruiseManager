@@ -14,7 +14,6 @@ namespace CruiseManager.WinForms.TemplateEditor
             this.WindowPresenter = windowPresenter;
             this.ViewPresenter = viewPresenter;
             viewPresenter.PropertyChanged += ViewPresenter_PropertyChanged;
-            ViewPresenter.View = this;
 
             //this.UserCommands = new ViewCommand[]{
             //    this.ViewPresenter.ApplicationController.MakeViewCommand("Close File", this.ViewPresenter.WindowPresenter.ShowCruiseLandingLayout),
