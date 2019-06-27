@@ -4,6 +4,7 @@ using CruiseManager.Core.CommandModel;
 using CruiseManager.Core.Constants;
 using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core.ViewModel;
+using CruiseManager.Services;
 using Ninject;
 using Ninject.Modules;
 using System;
@@ -13,7 +14,7 @@ using System.IO;
 
 namespace CruiseManager.Core.App
 {
-    public abstract class ApplicationControllerBase : IDisposable, INavigationService
+    public abstract class ApplicationControllerBase : IDisposable//, INavigationService
     {
         internal static readonly TreeDefaultValueDO[] EMPTY_SPECIES_LIST = { };
 
@@ -111,46 +112,25 @@ namespace CruiseManager.Core.App
 
         //private IPresentor _activePresentor;
 
-        private IView _activeView;
 
-        public IView ActiveView
+
+        private IWindow _window;
+
+        public IWindow Window
         {
-            get { return _activeView; }
+            get { return _window; }
             set
             {
-                if (!OnActiveViewChanging(_activeView)) { return; }
-                _activeView = value;
-                this.MainWindow.SetActiveView(_activeView);
+                _window = value;
             }
         }
 
-        protected IPresentor ActivePresentor
-        {
-            get
-            {
-                return _activeView?.ViewPresenter;
-            }
-        }
+        protected INavigationService NavigationService => Window.NavigationService;
 
-        private MainWindow _mainWindow;
-
-        public MainWindow MainWindow
-        {
-            get { return _mainWindow; }
-            set
-            {
-                if (_mainWindow != null) { _mainWindow.Dispose(); }
-                if (value != null)
-                {
-                    value.Closing += this.MainWindow_Closing;
-                }
-                _mainWindow = value;
-            }
-        }
+        protected IDialogService DialogService => Window.DialogService;
 
         #endregion properties
 
-        public WindowPresenter WindowPresenter { get { return this.Kernel.Get<WindowPresenter>(); } }
         public IExceptionHandler ExceptionHandler { get { return this.Kernel.Get<IExceptionHandler>(); } }
         public SetupServiceBase SetupService { get { return this.Kernel.Get<SetupServiceBase>(); } }
         public IUserSettings UserSettings { get { return this.Kernel.Get<IUserSettings>(); } }
@@ -160,6 +140,8 @@ namespace CruiseManager.Core.App
         protected ApplicationControllerBase()
         {
             RegisterTypes(Kernel);
+
+            Window = CreateWindow();
 
             this.SaveCommand = new BindableActionCommand("Save", this.Save, enabled: false);
             this.SaveAsCommand = new BindableActionCommand("SaveAs", this.SaveAs, enabled: false);
@@ -173,47 +155,8 @@ namespace CruiseManager.Core.App
 
         public abstract void RegisterTypes(StandardKernel kernel);
 
-        public IView GetView<T>() where T : IView
-        {
-            try
-            {
-                return this.Kernel.Get<T>();
-            }
-            catch (Exception e)
-            {
-                //TODO throw specific exception indication view could not be created
-                throw new NotImplementedException(null, e);
-            }
-        }
+        public abstract IWindow CreateWindow();
 
-        public IView GetView(Type viewType)
-        {
-            try
-            {
-                return (IView)this.Kernel.Get(viewType);
-            }
-            catch (ActivationException e)
-            {
-                throw new UserFacingException("View Missing", e);
-            }
-            catch (Exception e)
-            {
-                //TODO throw specific exception indication view could not be created
-                throw new NotImplementedException(null, e);
-            }
-        }
-
-        public void NavigateTo<T>() where T : IView
-        {
-            var view = this.GetView<T>();
-            this.ActiveView = view;
-        }
-
-        public void NavigateTo(Type viewType)
-        {
-            var view = this.GetView(viewType);
-            this.ActiveView = view;
-        }
 
         public abstract void Start();
 
@@ -234,7 +177,6 @@ namespace CruiseManager.Core.App
         protected void InitializeDAL(string path)
         {
             //start wait cursor in case this takes a long time
-            ActiveView.ShowWaitCursor();
             try
             {
                 Database = new DAL(path);
@@ -245,19 +187,19 @@ namespace CruiseManager.Core.App
             //}
             catch (FMSC.ORM.ReadOnlyException)
             {
-                ActiveView.ShowMessage("Unable to open file because it is read only");
+                DialogService.ShowMessage("Unable to open file because it is read only");
             }
             catch (FMSC.ORM.IncompatibleSchemaException ex)
             {
-                ActiveView.ShowMessage("File is not compatible with this version of Cruise Manager: " + ex.Message);
+                DialogService.ShowMessage("File is not compatible with this version of Cruise Manager: " + ex.Message);
             }
             catch (FMSC.ORM.SQLException ex)
             {
-                ActiveView.ShowMessage("Unable to open file : " + ex.GetType().Name);
+                DialogService.ShowMessage("Unable to open file : " + ex.GetType().Name);
             }
             catch (System.IO.IOException ex)
             {
-                ActiveView.ShowMessage("Unable to open file : " + ex.GetType().Name);
+                DialogService.ShowMessage("Unable to open file : " + ex.GetType().Name);
             }
             catch (System.Exception e)
             {
@@ -265,10 +207,6 @@ namespace CruiseManager.Core.App
                 {
                     throw;
                 }
-            }
-            finally
-            {
-                ActiveView.ShowDefaultCursor();
             }
         }
 
@@ -350,70 +288,6 @@ namespace CruiseManager.Core.App
             }
         }
 
-        public bool OnActiveViewChanging(IView currentView)
-        {
-            var saveHandler = currentView?.ViewPresenter as ISaveHandler;
-            if (saveHandler != null)
-            {
-                if (saveHandler.HasChangesToSave)
-                {
-                    var doSave = currentView.AskYesNoCancel("Would You Like To Save Changes?", "Save Changes?", null);
-                    if (doSave == null)//user selects cancel
-                    {
-                        return false;
-                        //return false;//don't change views
-                    }
-                    else if (doSave == true)
-                    {
-                        try
-                        {
-                            return saveHandler.HandleSave();
-                        }
-                        catch (Exception e)
-                        {
-                            if (!ExceptionHandler.Handel(e))
-                            {
-                                throw;
-                            }
-                            return false;
-                        }
-                    }
-                    else//continue without saving
-                    { }
-                }
-            }
-            return true;
-        }
-
-        protected void MainWindow_Closing(object sender, CancelEventArgs e)
-        {
-            try
-            {
-                if (this.SaveHandler != null && this.SaveHandler.HasChangesToSave)
-                {
-                    var doSave = this.ActiveView.AskYesNoCancel("You Have Unsaved Changes, Would You Like To Save Before Closing?", "Save Changes?", null);
-                    if (doSave == true)
-                    {
-                        SaveHandler.HandleSave();
-                    }
-                    else if (doSave.HasValue == false)
-                    {
-                        e.Cancel = true;
-                    }
-                    else if (doSave == false)
-                    {
-                        return;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                if (!this.ExceptionHandler.Handel(ex))
-                {
-                    throw;
-                }
-            }
-        }
 
         public DAL GetNewOrUnfinishedCruise()
         {
@@ -454,29 +328,6 @@ namespace CruiseManager.Core.App
                 this.ActiveView.ShowDefaultCursor();
             }
         }
-
-        #region Static Methods
-
-        public static bool HasUnfinishedCruiseFile()
-        {
-            string tempPath = GetTempCruiseLocation();
-            return System.IO.File.Exists(tempPath);
-        }
-
-        public static string GetTempCruiseLocation()
-        {
-            return System.IO.Path.GetDirectoryName(System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)) + "\\" + Strings.TEMP_FILENAME;
-        }
-
-        public List<FileInfo> GetTemplateFiles()
-        {
-            DirectoryInfo tDir = PlatformHelper.GetTemplateFolder();
-            //filter all files ending in .cut
-            List<FileInfo> files = new List<FileInfo>(tDir.GetFiles("*" + Constants.Strings.CRUISE_TEMPLATE_FILE_EXTENTION));
-            return files;
-        }
-
-        #endregion Static Methods
 
         #region IDisposable Members
 

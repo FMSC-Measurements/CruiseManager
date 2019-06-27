@@ -34,8 +34,8 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
         public new VolumeEqPresenter ViewPresenter
         {
-            get { return (VolumeEqPresenter)base.ViewPresenter; }
-            set { base.ViewPresenter = value; }
+            get { return (VolumeEqPresenter)base.ViewModel; }
+            set { base.ViewModel = value; }
         }
 
         protected void UpdateVolumeEqs()

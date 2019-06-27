@@ -49,8 +49,8 @@ namespace CruiseManager.WinForms.TemplateEditor
 
         public new TemplateEditViewPresenter ViewPresenter
         {
-            get { return (TemplateEditViewPresenter)base.ViewPresenter; }
-            set { base.ViewPresenter = value; }
+            get { return (TemplateEditViewPresenter)base.ViewModel; }
+            set { base.ViewModel = value; }
         }
 
         protected TreeDefaultValueDO TreeAudit_CurrentTDV { get; set; }

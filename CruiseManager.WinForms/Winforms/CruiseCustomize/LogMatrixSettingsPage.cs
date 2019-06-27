@@ -15,8 +15,8 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
         public new LogMatrixPresenter ViewPresenter
         {
-            get { return ((LogMatrixPresenter)base.ViewPresenter); }
-            set { base.ViewPresenter = value; }
+            get { return ((LogMatrixPresenter)base.ViewModel); }
+            set { base.ViewModel = value; }
         }
 
         public LogMatrixSettingsPage(LogMatrixPresenter presenter)

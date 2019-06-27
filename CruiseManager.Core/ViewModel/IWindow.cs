@@ -1,19 +1,24 @@
-﻿using System;
+﻿using CruiseManager.Core.CommandModel;
+using CruiseManager.Services;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace CruiseManager.Core.ViewModel
 {
     public interface IWindow : IDisposable
     {
-        string Text { get; set; }
-        bool InvokeRequired { get; }
+        //bool InvokeRequired { get; }
+        //object Invoke(Delegate d);
 
         event CancelEventHandler Closing;
 
-        object Invoke(Delegate d);
+        INavigationService NavigationService { get; }
 
-        //void ShowWaitCursor();
+        IDialogService DialogService { get; }
 
-        //void ShowDefaultCursor();
+        void SetActiveView(IView view);
+
+        void SetNavCommands(IEnumerable<BindableCommand> navCommands);
     }
 }

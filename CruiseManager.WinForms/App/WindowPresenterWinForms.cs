@@ -4,21 +4,52 @@ using CruiseManager.Core.App;
 using CruiseManager.Core.Constants;
 using CruiseManager.Core.EditTemplate;
 using CruiseManager.Core.Models;
+using CruiseManager.Core.Services;
+using CruiseManager.Core.ViewModel;
+using CruiseManager.Data;
+using CruiseManager.Navigation;
+using CruiseManager.Services;
 using CruiseManager.Utility;
 using CruiseManager.WinForms.CruiseWizard;
 using CruiseManager.WinForms.DataEditor;
 using CruiseManager.WinForms.TemplateEditor;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.App
 {
     public class WindowPresenterWinForms : WindowPresenter
     {
-        public WindowPresenterWinForms(ApplicationControllerBase appController)
+        IContainerService Container { get; }
+        IDialogService DialogService { get; }
+        ISetupService SetupService { get; }
+        IUserSettings UserSettings { get; }
+        IExceptionHandler ExceptionHandler { get; }
+        IDatabaseProvider DatabaseProvider { get; }
+
+        public WindowPresenterWinForms(INavigationService navigationService, 
+            IDatabaseProvider databaseProvider,
+            IDialogService dialogService,
+            ISetupService setupService, 
+            IUserSettings userSettings, 
+            IExceptionHandler exceptionHandler, 
+            IWindow window, 
+            IContainerService container)
+            : base(navigationService, window)
         {
-            this.ApplicationController = appController;
+            Container = container;
+            DialogService = dialogService;
+            SetupService = setupService;
+            UserSettings = userSettings;
+            ExceptionHandler = exceptionHandler;
+            DatabaseProvider = databaseProvider;
+        }
+
+        public override void ShowAboutDialog()
+        {
+            NavigationService.ShowDialog(typeof(AboutDialog));
         }
 
         public override string AskSaveAsLocation(string originalPath)
@@ -32,7 +63,7 @@ namespace CruiseManager.WinForms.App
                 Filter = string.Format("*{0}|*{0}", extention)
             })
             {
-                if (sfd.ShowDialog((Form)this.ApplicationController.MainWindow) == DialogResult.OK)
+                if (sfd.ShowDialog((Form)Window) == System.Windows.Forms.DialogResult.OK)
                 {
                     return sfd.FileName;
                 }
@@ -48,7 +79,7 @@ namespace CruiseManager.WinForms.App
             using (OpenFileDialog dialog = new OpenFileDialog()
             {
                 AutoUpgradeEnabled = true,
-                InitialDirectory = this.ApplicationController.UserSettings.CruiseSaveLocation,
+                InitialDirectory = UserSettings.CruiseSaveLocation,
                 Filter = Strings.OPEN_CRUISE_FILE_DIALOG_FILTER
             })
             {
@@ -59,7 +90,7 @@ namespace CruiseManager.WinForms.App
                     dialog.Filter += String.Format("| {0}(*{1})|*{1}", Strings.FRIENDLY_LEGACY_CRUISE_FILETYPE_NAME, Strings.LEGACY_CRUISE_FILE_EXTENTION);
                 }
 
-                if (dialog.ShowDialog((Form)this.ApplicationController.MainWindow) == DialogResult.OK)
+                if (dialog.ShowDialog((Form)Window) == System.Windows.Forms.DialogResult.OK)
                 {
                     return dialog.FileName;
                     //String fileName = dialog.FileName;
@@ -81,16 +112,16 @@ namespace CruiseManager.WinForms.App
                 dialog.AutoUpgradeEnabled = true;
                 dialog.CustomPlaces.Add(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\CruiseFiles");
 
-                dialog.InitialDirectory = ApplicationController.UserSettings.TemplateSaveLocation;
+                dialog.InitialDirectory = UserSettings.TemplateSaveLocation;
 
                 dialog.Multiselect = false;
                 dialog.Filter = String.Format("Template Files ({0})|*{0}", Strings.CRUISE_TEMPLATE_FILE_EXTENTION);
-                if (dialog.ShowDialog() == DialogResult.OK)
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     string filePath = dialog.FileName;
                     string dir = System.IO.Path.GetDirectoryName(filePath);
 
-                    ApplicationController.UserSettings.TemplateSaveLocation = dir;
+                    UserSettings.TemplateSaveLocation = dir;
 
                     return filePath;
                 }
@@ -104,21 +135,15 @@ namespace CruiseManager.WinForms.App
         protected String AskSavePath(SaleDO sale)
         {
             bool createSaleFolder = false;
-            if (ApplicationController.UserSettings.CreateSaleFolder == null)
+            if (UserSettings.CreateSaleFolder == null)
             {
-                using (var dialog = new CreateSaleFolderDialog())
-                {
-                    createSaleFolder = (dialog.ShowDialog() == DialogResult.Yes);
-                    if (dialog.RememberSelection)
-                    {
-                        ApplicationController.UserSettings.CreateSaleFolder = createSaleFolder;
-                        //ApplicationState.GetHandle().Save();
-                    }
-                }
+                NavigationService.ShowDialog(typeof(CreateSaleFolderDialog));
+
+                createSaleFolder = UserSettings.CreateSaleFolder ?? createSaleFolder;
             }
             else
             {
-                createSaleFolder = ApplicationController.UserSettings.CreateSaleFolder.Value;
+                createSaleFolder = UserSettings.CreateSaleFolder.Value;
             }
 
             using (var saveFileDialog = new System.Windows.Forms.SaveFileDialog())
@@ -127,15 +152,15 @@ namespace CruiseManager.WinForms.App
 
                 saveFileDialog.AutoUpgradeEnabled = true;
                 saveFileDialog.CustomPlaces.Add(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\CruiseFiles");
-                saveFileDialog.InitialDirectory = ApplicationController.UserSettings.CruiseSaveLocation;
+                saveFileDialog.InitialDirectory = UserSettings.CruiseSaveLocation;
                 saveFileDialog.DefaultExt = "cruise";
                 saveFileDialog.FileName = $"{ sale.SaleNumber} {sale.Name} {purposeShort}.cruise";
                 saveFileDialog.Filter = "Cruise files(*.cruise)|*.cruise";
-                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     string fileName = saveFileDialog.FileName;
                     string dir = System.IO.Path.GetDirectoryName(fileName);
-                    ApplicationController.UserSettings.CruiseSaveLocation = dir;
+                    UserSettings.CruiseSaveLocation = dir;
 
                     if (createSaleFolder)
                     {
@@ -152,20 +177,14 @@ namespace CruiseManager.WinForms.App
             }
         }
 
-        public override void ShowAboutDialog()
-        {
-            using (AboutDialog dialog = new AboutDialog(this.ApplicationController))
-            {
-                dialog.ShowDialog((IWin32Window)this.ApplicationController.MainWindow);
-            }
-        }
+        
 
         public override TreeDefaultValueDO ShowAddTreeDefault(TreeDefaultValueDO newTDV)
         {
             try
             {
-                FormAddTreeDefault dialog = new FormAddTreeDefault(ApplicationController.SetupService.GetProductCodes());
-                if (dialog.ShowDialog(newTDV) == DialogResult.OK)
+                FormAddTreeDefault dialog = new FormAddTreeDefault(SetupService.GetProductCodes());
+                if (dialog.ShowDialog(newTDV) == System.Windows.Forms.DialogResult.OK)
                 {
                     newTDV.Save();
                     return newTDV;
@@ -177,7 +196,7 @@ namespace CruiseManager.WinForms.App
             }
             catch (Exception ex)
             {
-                if (!this.ApplicationController.ExceptionHandler.Handel(ex))
+                if (!ExceptionHandler.Handel(ex))
                 {
                     throw;
                 }
@@ -190,51 +209,31 @@ namespace CruiseManager.WinForms.App
 
         public override TreeDefaultValueDO ShowAddTreeDefault()
         {
-            TreeDefaultValueDO newTDV = new TreeDefaultValueDO(this.ApplicationController.Database);
+            TreeDefaultValueDO newTDV = new TreeDefaultValueDO(Database);
 
-            return this.ShowAddTreeDefault(newTDV);
+            return this.ShowAddTreeDefault(null);
         }
 
         public override void ShowEditTreeDefault(TreeDefaultValueDO tdv)
         {
-            TreeDefaultValueDO temp = new TreeDefaultValueDO(tdv);
+            var tdvNavParams = (tdv == null) ? null 
+                : new CruiseManagerNavigationParamiters()
+            {
+                Species = tdv.Species,
+                LiveDead = tdv.LiveDead,
+                PrimaryProduct = tdv.PrimaryProduct,
+                };
 
-            try
-            {
-                using (FormAddTreeDefault dialog = new FormAddTreeDefault(this.ApplicationController.SetupService.GetProductCodes()))
-                {
-                    if (dialog.ShowDialog(temp) == DialogResult.OK)
-                    {
-                        try
-                        {
-                            tdv.SetValues(temp);
-                            tdv.Save();
-                        }
-                        catch (FMSC.ORM.UniqueConstraintException ex)
-                        {
-                            throw new UserFacingException("Values Conflict With Existing Tree Default", ex);
-                        }
-                        catch (FMSC.ORM.ConstraintException ex)
-                        {
-                            throw new UserFacingException("Invalid Values", ex);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                if (!this.ApplicationController.ExceptionHandler.Handel(ex))
-                {
-                    throw;
-                }
-            }
+            NavigationService.ShowDialog("EditTreeDefault", tdvNavParams);
+
+            // TODO find a way to pass back new/edited tree default
         }
 
         private bool ShowWizardDialog(DAL database, out SaleDO sale)
         {
             CruiseWizardView view = new CruiseWizardView();
-            CruiseWizardPresenter p = new CruiseWizardPresenter(view, this, this.ApplicationController, database);
-            DialogResult result = view.ShowDialog((IWin32Window)this.ApplicationController.MainWindow);
+            CruiseWizardPresenter p = new CruiseWizardPresenter(view, this, this.NavigationService, database);
+            DialogResult result = view.ShowDialog((IWin32Window)Window);
             sale = p.Sale;
             if (result == DialogResult.OK)
             {
@@ -248,7 +247,18 @@ namespace CruiseManager.WinForms.App
 
         public override void ShowCruiseWizardDialog()
         {
-            DAL tempfile = ApplicationController.GetNewOrUnfinishedCruise();
+            DAL database = null;
+            var databaseProvider = DatabaseProvider;
+            if(databaseProvider.HasIncompleteCruise
+                // TODO START HERE
+                && DialogService.AskYesNoCancel( )
+            {
+                database = databaseProvider.GetIncompleteCruise();
+            }
+            else
+            { database = databaseProvider.GetNewCruiseAsync().Result; }
+
+            DAL tempfile = DatabaseProvider.GetNewOrUnfinishedCruise();
             if (tempfile != null)
             {
                 SaleDO sale;
@@ -270,7 +280,7 @@ namespace CruiseManager.WinForms.App
                         {
                             System.IO.File.Move(tempfile.Path, destPath);
                         }
-                        this.ApplicationController.Database = new DAL(destPath);
+                        this.NavigationService.Database = new DAL(destPath);
                     }
 
                     this.ShowCruiseLandingLayout();
@@ -284,30 +294,30 @@ namespace CruiseManager.WinForms.App
 
         public override void ShowEditWizard()
         {
-            if (ApplicationController.Database.GetRowCount("Tree", null) == 0)
+            if (NavigationService.Database.GetRowCount("Tree", null) == 0)
             {
                 SaleDO sale;
-                this.ShowWizardDialog(this.ApplicationController.Database, out sale);
+                this.ShowWizardDialog(this.NavigationService.Database, out sale);
             }
             else
             {
-                this.ApplicationController.ActiveView.ShowMessage("Can't edit file with tree data in wizard");
+                this.NavigationService.ActiveView.ShowMessage("Can't edit file with tree data in wizard");
                 //MessageBox.Show("Can't edit file with tree data in wizard");
             }
         }
 
         public override void ShowDataEditor()
         {
-            ApplicationController.Save();
-            using (DataEditorView view = new DataEditorView(this, this.ApplicationController))
+            NavigationService.Save();
+            using (DataEditorView view = new DataEditorView(this, this.NavigationService))
             {
-                view.ShowDialog((IWin32Window)this.ApplicationController.MainWindow);
+                view.ShowDialog((IWin32Window)this.NavigationService.MainWindow);
             }
         }
 
         public override void ShowDataExportDialog(IEnumerable<TreeVM> Trees, IEnumerable<LogVM> Logs, IEnumerable<PlotDO> Plots, IEnumerable<CountVM> Counts)
         {
-            using (DataExportDialog dialog = new DataExportDialog(this.ApplicationController, Trees, Logs, Plots, Counts))
+            using (DataExportDialog dialog = new DataExportDialog(this.NavigationService, Trees, Logs, Plots, Counts))
             {
                 //dialog.Owner = DataEditorView; //TODO make data export dialog owned by data editor
                 dialog.ShowDialog();
@@ -322,13 +332,13 @@ namespace CruiseManager.WinForms.App
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 //this.MainWindow.ClearNavPanel();
-                this.ApplicationController.MainWindow.ClearActiveView();
+                this.NavigationService.MainWindow.ClearActiveView();
                 //this.MainWindow.AddNavButton("Finish", this.HandleFinishImportTemplateClick);
                 //this.MainWindow.AddNavButton("Cancel", this.HandleCancelImportTemplateClick);
-                TemplateEditViewPresenter presenter = new TemplateEditViewPresenter(this.ApplicationController);
+                TemplateEditViewPresenter presenter = new TemplateEditViewPresenter(this.NavigationService);
                 ImportFromCruiseView view = new ImportFromCruiseView(dialog.FileName, this, presenter);
 
-                this.ApplicationController.ActiveView = view;
+                this.NavigationService.ActiveView = view;
             }
             // find table to import
             // open dialog box

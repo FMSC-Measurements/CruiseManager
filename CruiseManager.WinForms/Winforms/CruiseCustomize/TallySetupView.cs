@@ -35,8 +35,8 @@ namespace CruiseManager.WinForms.CruiseCustomize
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new TallySetupPresenter ViewPresenter
         {
-            get { return (TallySetupPresenter)base.ViewPresenter; }
-            set { base.ViewPresenter = value; }
+            get { return (TallySetupPresenter)base.ViewModel; }
+            set { base.ViewModel = value; }
         }
 
         [Browsable(false)]

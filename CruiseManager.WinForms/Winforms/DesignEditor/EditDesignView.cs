@@ -45,8 +45,8 @@ namespace CruiseManager.WinForms.EditDesign
 
         public new DesignEditorPresentor ViewPresenter
         {
-            get { return (DesignEditorPresentor)base.ViewPresenter; }
-            set { base.ViewPresenter = value; }
+            get { return (DesignEditorPresentor)base.ViewModel; }
+            set { base.ViewModel = value; }
         }
 
         protected IExceptionHandler ExceptionHandler { get; set; }

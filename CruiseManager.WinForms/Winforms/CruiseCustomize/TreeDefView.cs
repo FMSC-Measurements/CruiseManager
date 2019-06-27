@@ -34,8 +34,8 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
         public new TreeDefaultsPresenter ViewPresenter
         {
-            get { return (TreeDefaultsPresenter)base.ViewPresenter; }
-            set { base.ViewPresenter = value; }
+            get { return (TreeDefaultsPresenter)base.ViewModel; }
+            set { base.ViewModel = value; }
         }
 
         protected void UpdateTreeDefaults()

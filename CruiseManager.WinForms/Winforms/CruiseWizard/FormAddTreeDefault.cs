@@ -4,16 +4,21 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.ComponentModel;
+using CruiseManager.Data;
+using CruiseManager.Services;
+using CruiseDAL;
+using CruiseManager.Navigation;
+using CruiseManager.Core.ViewModel;
+using System.Linq;
 
 namespace CruiseManager.WinForms.CruiseWizard
 {
-    public partial class FormAddTreeDefault : Form
+    [DialogName("EditTreeDefault")]
+    public partial class FormAddTreeDefault : Form, IDialog
     {
-        public FormAddTreeDefault(List<ProductCode> codeList)
-        {
-            InitializeComponent();
-            this._PProdCB.DataSource = codeList;
-        }
+        public DAL Database { get; }
+        private bool _isNewTreeDefault;
+        public CruiseManagerNavigationParamiters NavigationParamiters { get; set; }
 
         public TreeDefaultValueDO TreeDefault
         {
@@ -24,13 +29,35 @@ namespace CruiseManager.WinForms.CruiseWizard
             }
         }
 
-        private TreeDefaultValueDO _initialState = new TreeDefaultValueDO();
-
-        public DialogResult ShowDialog(TreeDefaultValueDO tdv)
+        public FormAddTreeDefault(ISetupService setupService, IDatabaseProvider databaseProvider)
         {
-            this.TreeDefault = tdv;
-            this._initialState.SetValues(tdv);
-            return this.ShowDialog();
+            InitializeComponent();
+
+            Database = databaseProvider.Database;
+            this._PProdCB.DataSource = setupService.GetProductCodes();
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            var species = NavigationParamiters?.Species;
+            var liveDead = NavigationParamiters?.LiveDead;
+            var primaryProd = NavigationParamiters?.PrimaryProduct;
+
+            var tdv = Database.From<TreeDefaultValueDO>()
+                .Where("Species = @p1 AND LiveDead = @p2 AND PrimaryProduct = @p3")
+                .Query(species, liveDead, primaryProd).FirstOrDefault();
+
+            if(tdv == null)
+            {
+                tdv = new TreeDefaultValueDO();
+                _isNewTreeDefault = true;
+            }
+            else
+            { _isNewTreeDefault = false; }
+
+            TreeDefault = tdv;
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -45,11 +72,34 @@ namespace CruiseManager.WinForms.CruiseWizard
                     MessageBox.Show(this.TreeDefault.Error);
                     e.Cancel = true;
                 }
+                else
+                {
+                    try
+                    {
+                        if (_isNewTreeDefault)
+                        {
+                            Database.Insert(TreeDefault);
+                        }
+                        else
+                        {
+                            Database.Update(TreeDefault);
+                        }
+                    }
+                    catch (FMSC.ORM.UniqueConstraintException ex)
+                    {
+                        MessageBox.Show("Values Conflict With Existing Tree Default");
+                    }
+                    catch (FMSC.ORM.ConstraintException ex)
+                    {
+                        MessageBox.Show("Invalid Values");
+                    }
+                }
             }
-            else if (DialogResult == DialogResult.Cancel)
-            {
-                this.TreeDefault.SetValues(this._initialState);
-            }
+        }
+
+        void IDialog.SetNavParams(NavigationParamiters_Base navParams)
+        {
+            NavigationParamiters = (CruiseManagerNavigationParamiters)navParams;
         }
     }
 }

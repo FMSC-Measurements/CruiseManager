@@ -27,8 +27,8 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
         protected new FieldSetupPresenter ViewPresenter
         {
-            get { return (FieldSetupPresenter)base.ViewPresenter; }
-            set { base.ViewPresenter = value; }
+            get { return (FieldSetupPresenter)base.ViewModel; }
+            set { base.ViewModel = value; }
         }
 
         protected void UpdateFieldSetupViews()

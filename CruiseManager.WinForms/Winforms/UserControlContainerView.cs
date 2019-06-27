@@ -32,7 +32,7 @@ namespace CruiseManager.WinForms
             InitializeComponent();
         }
 
-        public override IPresentor ViewPresenter
+        public override IPresentor ViewModel
         {
             get
             {

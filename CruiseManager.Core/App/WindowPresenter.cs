@@ -2,6 +2,9 @@
 using CruiseManager.Core.CommandModel;
 using CruiseManager.Core.Models;
 using CruiseManager.Core.ViewInterfaces;
+using CruiseManager.Core.ViewModel;
+using CruiseManager.Navigation;
+using CruiseManager.Services;
 using System;
 using System.Collections.Generic;
 
@@ -16,10 +19,13 @@ namespace CruiseManager.Core.App
     {
         //public static WindowPresenter Instance { get; set; }
 
-        public ApplicationControllerBase ApplicationController
+        public INavigationService NavigationService { get; }
+        public IWindow Window { get; }
+
+        public WindowPresenter(INavigationService navigationService, IWindow window)
         {
-            get;
-            set;
+            NavigationService = navigationService;
+            Window = window;
         }
 
         public abstract string AskTemplateLocation();
@@ -50,23 +56,14 @@ namespace CruiseManager.Core.App
 
         public void ShowCruiseLandingLayout()
         {
-            if (this.ApplicationController.MainWindow.InvokeRequired)
+            if (this.cruiseNavCommands == null)
             {
-                this.ApplicationController.MainWindow.Invoke((Action)this.ShowCruiseLandingLayout);
+                this.InitializeCruiseNavOptions();
             }
-            else
-            {
-                this.ApplicationController.MainWindow.ClearActiveView();
-                this.ApplicationController.MainWindow.Text = System.IO.Path.GetFileName(this.ApplicationController.Database.Path);
 
-                if (this.cruiseNavCommands == null)
-                {
-                    this.InitializeCruiseNavOptions();
-                }
 
-                this.ApplicationController.MainWindow.SetNavCommands(this.cruiseNavCommands);
-                this.ShowCustomizeCruiseLayout();
-            }
+            this.ShowCustomizeCruiseLayout();
+            Window.SetNavCommands(this.cruiseNavCommands);
         }
 
         private BindableCommand[] cruiseNavCommands;
@@ -76,59 +73,62 @@ namespace CruiseManager.Core.App
             this.cruiseNavCommands = new BindableCommand[]
             {
                 new BindableActionCommand( "Design Wizard", this.ShowEditWizard),
-                new ViewNavigateCommand(this.ApplicationController, "Edit Design", typeof(EditDesign.ViewInterfaces.IEditDesignView)),
-                new ViewNavigateCommand(this.ApplicationController,"Customize", typeof(Core.CruiseCustomize.ViewInterfaces.ICruiseCustomizeContainerView)),
+                new ViewNavigateCommand(this.NavigationService, "Edit Design", typeof(EditDesign.ViewInterfaces.IEditDesignView)),
+                new ViewNavigateCommand(this.NavigationService,"Customize", typeof(Core.CruiseCustomize.ViewInterfaces.ICruiseCustomizeContainerView)),
                 new BindableActionCommand("Field Data", this.ShowDataEditor),
-                new ViewNavigateCommand(this.ApplicationController,"Create Component Files", typeof(Components.ViewInterfaces.ICreateComponentView)),
-                new ViewNavigateCommand(this.ApplicationController,"Merge Component Files", typeof(Components.ViewInterfaces.IMergeComponentView))
+                new ViewNavigateCommand(this.NavigationService,"Create Component Files", typeof(Components.ViewInterfaces.ICreateComponentView)),
+                new ViewNavigateCommand(this.NavigationService,"Merge Component Files", typeof(Components.ViewInterfaces.IMergeComponentView))
             };
         }
 
         public void ShowCreateComponentsLayout()
         {
-            this.ApplicationController.NavigateTo<Components.ViewInterfaces.ICreateComponentView>();
+            this.NavigationService.NavigateTo<Components.ViewInterfaces.ICreateComponentView>();
         }
 
         public void ShowCustomizeCruiseLayout()
         {
-            this.ApplicationController.NavigateTo<Core.CruiseCustomize.ViewInterfaces.ICruiseCustomizeContainerView>();
+            this.NavigationService.NavigateTo<Core.CruiseCustomize.ViewInterfaces.ICruiseCustomizeContainerView>();
         }
 
         public void ShowEditDesign()
         {
-            this.ApplicationController.NavigateTo(typeof(EditDesign.ViewInterfaces.IEditDesignView));
+            this.NavigationService.NavigateTo(typeof(EditDesign.ViewInterfaces.IEditDesignView));
         }
 
         public void ShowHomeLayout()
         {
-            this.ApplicationController.NavigateTo<IHomeView>();
+            this.NavigationService.NavigateTo<IHomeView>();
 
             var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-            this.ApplicationController.MainWindow.Text = $"Cruise Manager {version.Major}.{version.Minor:D2}.{version.Build:D2}";
+            // TODO rewire up 
+            //this.NavigationService.MainWindow.Text = $"Cruise Manager {version.Major}.{version.Minor:D2}.{version.Build:D2}";
 
-            this.ApplicationController.MainWindow.SetNavCommands(new BindableCommand[]
-            {
-                this.ApplicationController.OpenFileCommand,
-                this.ApplicationController.CreateNewCruiseCommand
-            });
+            // TODO
+            //this.NavigationService.MainWindow.SetNavCommands(new BindableCommand[]
+            //{
+            //    this.NavigationService.OpenFileCommand,
+            //    this.NavigationService.CreateNewCruiseCommand
+            //});
         }
 
         public void ShowManageComponentsLayout()
         {
-            this.ApplicationController.NavigateTo<Components.ViewInterfaces.IMergeComponentView>();
+            this.NavigationService.NavigateTo<Components.ViewInterfaces.IMergeComponentView>();
         }
 
         public void ShowTemplateLandingLayout()
         {
-            this.ApplicationController.MainWindow.Text = System.IO.Path.GetFileName(this.ApplicationController.Database.Path);
+            // TODO
+            //this.NavigationService.MainWindow.Text = System.IO.Path.GetFileName(this.NavigationService.Database.Path);
 
             if (templateNavOptions == null)
             {
                 this.InitializeTemplateNavOptions();
             }
-            this.ApplicationController.NavigateTo<IEditTemplateView>();
+            this.NavigationService.NavigateTo<IEditTemplateView>();
 
-            this.ApplicationController.MainWindow.SetNavCommands(this.templateNavOptions);
+            Window.SetNavCommands(this.templateNavOptions);
         }
 
         private BindableCommand[] templateNavOptions;
@@ -136,9 +136,9 @@ namespace CruiseManager.Core.App
         private void InitializeTemplateNavOptions()
         {
             this.templateNavOptions = new BindableCommand[]{
-                new ViewNavigateCommand(ApplicationController, "Customize Template", typeof(IEditTemplateView)),
+                new ViewNavigateCommand(NavigationService, "Customize Template", typeof(IEditTemplateView)),
                 new BindableActionCommand("Import From Cruise", this.ShowImportTemplate),
-                new ViewNavigateCommand(ApplicationController, "Log Audit Rules", typeof(CruiseCustomize.ViewInterfaces.ILogGradeAuditView)),
+                new ViewNavigateCommand(NavigationService, "Log Audit Rules", typeof(CruiseCustomize.ViewInterfaces.ILogGradeAuditView)),
                 new BindableActionCommand("Close File", this.ShowHomeLayout )
             };
         }

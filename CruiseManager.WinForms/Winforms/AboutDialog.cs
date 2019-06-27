@@ -1,4 +1,5 @@
 ﻿using CruiseManager.Core.App;
+using CruiseManager.Services;
 using System;
 using System.Reflection;
 using System.Windows.Forms;
@@ -7,19 +8,18 @@ namespace CruiseManager.WinForms
 {
     public partial class AboutDialog : Form
     {
-        protected ApplicationControllerBase ApplicationController { get; set; }
+        public INavigationService NavigationService { get; }
 
-        public AboutDialog(ApplicationControllerBase applicationController)
+        public AboutDialog(INavigationService navigationService)
         {
-            ApplicationController = applicationController;
+            NavigationService = navigationService;
             InitializeComponent();
             this._versionNumLBL.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
 
         private void _login_Click(object sender, EventArgs e)
         {
-            FormSupervisorLogin view = new FormSupervisorLogin(this.ApplicationController);
-            view.ShowDialog(this);
+            NavigationService.ShowDialog(typeof(FormSupervisorLogin));
         }
     }
 }

@@ -1,5 +1,5 @@
-﻿namespace CruiseManager.Core.App
-{
+﻿namespace CruiseManager.Data
+{ 
     public interface IUserSettings
     {
         bool? CreateSaleFolder { get; set; }

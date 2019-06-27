@@ -9,6 +9,14 @@ namespace CruiseManager.Services
 {
     public interface IDatabaseProvider
     {
+        bool HasIncompleteCruise { get; }
+
+        Task<DAL> GetNewCruiseAsync();
+
+        DAL GetIncompleteCruise();
+
+        void FinalizeNewCruise();
+
         DAL Database { get; }
     }
 }

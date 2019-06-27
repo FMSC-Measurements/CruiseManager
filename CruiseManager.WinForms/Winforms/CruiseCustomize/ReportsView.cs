@@ -28,8 +28,8 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
         public new ReportsPresenter ViewPresenter
         {
-            get { return ((ReportsPresenter)base.ViewPresenter); }
-            set { base.ViewPresenter = value; }
+            get { return ((ReportsPresenter)base.ViewModel); }
+            set { base.ViewModel = value; }
         }
 
         #region Reports

@@ -28,8 +28,8 @@ namespace CruiseManager.WinForms.Components
 
         public new CreateComponentPresenter ViewPresenter
         {
-            get { return (CreateComponentPresenter)base.ViewPresenter; }
-            set { base.ViewPresenter = value; }
+            get { return (CreateComponentPresenter)base.ViewModel; }
+            set { base.ViewModel = value; }
         }
 
         protected override void OnLoad(EventArgs e)

@@ -1,5 +1,6 @@
 ﻿using CruiseManager.Core.App;
 using CruiseManager.Core.Constants;
+using CruiseManager.Data;
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
@@ -8,13 +9,18 @@ namespace CruiseManager.WinForms
 {
     public partial class FormSupervisorLogin : Form
     {
-        public FormSupervisorLogin(ApplicationControllerBase applicationController)
+        IApplicationState ApplicationState { get; }
+
+        protected FormSupervisorLogin()
         {
-            this.ApplicationController = applicationController;
             InitializeComponent();
         }
 
-        protected ApplicationControllerBase ApplicationController { get; set; }
+        public FormSupervisorLogin(IApplicationState applicationState)
+            : this()
+        {
+            ApplicationState = applicationState;
+        }
 
         protected override void OnClosing(CancelEventArgs e)
         {
@@ -27,12 +33,12 @@ namespace CruiseManager.WinForms
             {
                 if (_pwTB.Text == Strings.SUPERVISOR_LOGIN)
                 {
-                    ApplicationController.InSupervisorMode = true;
+                    ApplicationState.InSupervisorMode = true;
                     MessageBox.Show("Success");
                 }
                 else
                 {
-                    ApplicationController.InSupervisorMode = false;
+                    ApplicationState.InSupervisorMode = false;
                     MessageBox.Show("Password invalid");
                 }
             }

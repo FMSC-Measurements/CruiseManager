@@ -1,13 +1,12 @@
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.SetupModels;
-using CruiseManager.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Xml.Serialization;
 
-namespace CruiseManager.Core.App
+namespace CruiseManager.Data
 {
     public abstract class SetupServiceBase : ISetupService
     {

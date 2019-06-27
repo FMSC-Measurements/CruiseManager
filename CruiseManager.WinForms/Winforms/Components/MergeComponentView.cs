@@ -12,8 +12,8 @@ namespace CruiseManager.WinForms.Components
 
         public new MergeComponentsPresenter ViewPresenter
         {
-            get { return (MergeComponentsPresenter)base.ViewPresenter; }
-            set { base.ViewPresenter = value; }
+            get { return (MergeComponentsPresenter)base.ViewModel; }
+            set { base.ViewModel = value; }
         }
 
         public MergeComponentView(MergeComponentsPresenter viewPresenter)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CruiseManager.Navigation;
+using System;
 
 namespace CruiseManager.Core.ViewModel
 {
@@ -9,5 +10,9 @@ namespace CruiseManager.Core.ViewModel
         void ShowWaitCursor();
 
         void ShowDefaultCursor();
+
+        ViewModelBase ViewModel { get; }
+
+        
     }
 }

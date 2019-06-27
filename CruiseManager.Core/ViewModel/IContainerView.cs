@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CruiseManager.Core.ViewModel
 {
-    public interface IContainerView : IView, INavigationService
+    public interface IContainerView : IView//, INavigationService
     {
         ApplicationControllerBase ApplicationController { get; }
 

@@ -1,6 +1,9 @@
-﻿using CruiseDAL.DataObjects;
+﻿using CruiseDAL;
+using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
 using CruiseManager.Core.Models;
+using CruiseManager.Data;
+using CruiseManager.Services;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using OfficeOpenXml;
@@ -15,7 +18,9 @@ namespace CruiseManager.WinForms.DataEditor
 {
     public partial class DataExportDialog : Form
     {
-        SetupServiceBase SetupService { get { return ApplicationController.SetupService; } }
+        ISetupService SetupService { get; }
+        DAL Database { get; }
+        IExceptionHandler ExceptionHandler { get; }
 
         protected ApplicationControllerBase ApplicationController { get; set; }
 
@@ -26,9 +31,11 @@ namespace CruiseManager.WinForms.DataEditor
             InitializeComponent();
         }
 
-        public DataExportDialog(ApplicationControllerBase applicationController, IEnumerable<TreeVM> Trees, IEnumerable<LogVM> Logs, IEnumerable<PlotDO> Plots, IEnumerable<CountVM> Counts)
+        public DataExportDialog(ISetupService setupService, IDatabaseProvider databaseProvider, IExceptionHandler exceptionHandler, IEnumerable<TreeVM> Trees, IEnumerable<LogVM> Logs, IEnumerable<PlotDO> Plots, IEnumerable<CountVM> Counts)
         {
-            ApplicationController = applicationController;
+            SetupService = setupService;
+            Database = databaseProvider.Database;
+            ExceptionHandler = exceptionHandler;
 
             this.InitializeComponent();
             this.Trees = Trees;
@@ -46,7 +53,7 @@ namespace CruiseManager.WinForms.DataEditor
 
             AllTreeFields = MakeTreeFieldList();
 
-            TreeFields = ApplicationController.Database.From<TreeFieldSetupDO>()
+            TreeFields = Database.From<TreeFieldSetupDO>()
                 .GroupBy("Field").OrderBy("FieldOrder").Read().Select(x => new FieldDiscriptor(x)).ToList();
 
             AllTreeFields = this.AllTreeFields.Except(TreeFields).ToList();

@@ -35,10 +35,10 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
         public new LogAuditRulePresenter ViewPresenter
         {
-            get { return (LogAuditRulePresenter)base.ViewPresenter; }
+            get { return (LogAuditRulePresenter)base.ViewModel; }
             set
             {
-                base.ViewPresenter = value;
+                base.ViewModel = value;
             }
         }
 
@@ -52,9 +52,9 @@ namespace CruiseManager.WinForms.CruiseCustomize
             ViewPresenter = presenter;
         }
 
-        protected override void OnViewPresenterChanging()
+        protected override void OnViewModelChanging()
         {
-            base.OnViewPresenterChanging();
+            base.OnViewModelChanging();
             var presenter = ViewPresenter;
             if (presenter != null)
             {
@@ -62,9 +62,9 @@ namespace CruiseManager.WinForms.CruiseCustomize
             }
         }
 
-        protected override void OnViewPresenterChanged()
+        protected override void OnViewModelChanged()
         {
-            base.OnViewPresenterChanged();
+            base.OnViewModelChanged();
             var presenter = ViewPresenter;
             if (presenter != null)
             {

@@ -35,8 +35,8 @@ namespace CruiseManager.WinForms.CruiseCustomize
 
         public new TreeAuditRulePresenter ViewPresenter
         {
-            get { return (TreeAuditRulePresenter)base.ViewPresenter; }
-            set { base.ViewPresenter = value; }
+            get { return (TreeAuditRulePresenter)base.ViewModel; }
+            set { base.ViewModel = value; }
         }
 
         protected void UpdateTreeAudits()

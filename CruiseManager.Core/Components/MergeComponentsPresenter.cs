@@ -404,14 +404,14 @@ namespace CruiseManager.Core.Components
             return error;
         }
 
-        #region Presenter Members
+        #region IViewLoadAware Members
 
         public void OnViewLoad()
         {
             this.FindComponents();
         }
 
-        #endregion Presenter Members
+        #endregion IViewLoadAware Members
 
         #region IDisposable Members
 

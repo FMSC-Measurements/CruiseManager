@@ -1,4 +1,5 @@
 ﻿using CruiseManager.Core.ViewModel;
+using CruiseManager.Services;
 using System;
 
 namespace CruiseManager.Core.CommandModel

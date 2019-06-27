@@ -1,4 +1,5 @@
 ﻿using CruiseManager.Core.App;
+using CruiseManager.Navigation;
 using System;
 
 namespace CruiseManager.Core.ViewModel
@@ -7,15 +8,13 @@ namespace CruiseManager.Core.ViewModel
     {
         private string _title;
 
-        protected virtual void OnViewLoad(EventArgs e)
-        {
-        }
-
         public string Title
         {
             get => _title;
             set => SetProperty(ref _title, value);
         }
+
+        public abstract void SetNavParams(NavigationParamiters_Base navParams);
 
         #region IDisposable Support
 
