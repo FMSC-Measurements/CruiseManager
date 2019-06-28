@@ -4,11 +4,9 @@ VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CruiseManager.WinForms", "CruiseManager.WinForms\CruiseManager.WinForms.csproj", "{B04A1A6B-E039-4159-BC64-2E45851ED21A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMSC.Controls.VS15", "FMSC.Controls\FMSC.Controls\FMSC.Controls.VS15.csproj", "{83CCFC7F-D667-4550-B335-B48C2F67A207}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CruiseManager.Core", "CruiseManager.Core\CruiseManager.Core.csproj", "{5E10A43F-59BD-40D1-987A-2CB00CFAE9F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CruiseManager.Core.Test", "CruiseManager.Core.Test\CruiseManager.Core.Test.csproj", "{68CCC705-DECF-4FBA-8197-20279C038348}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CruiseManager.Core.Test", "CruiseManager.Core.Test\CruiseManager.Core.Test.csproj", "{68CCC705-DECF-4FBA-8197-20279C038348}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CruiseManager.Winforms.Test", "CruiseManager.WinFoms.Test\CruiseManager.Winforms.Test.csproj", "{94E8522E-EA24-44EE-B40E-108595D23A33}"
 EndProject
@@ -28,14 +26,6 @@ Global
 		{B04A1A6B-E039-4159-BC64-2E45851ED21A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B04A1A6B-E039-4159-BC64-2E45851ED21A}.Release|x86.ActiveCfg = Release|Any CPU
 		{B04A1A6B-E039-4159-BC64-2E45851ED21A}.Release|x86.Build.0 = Release|Any CPU
-		{83CCFC7F-D667-4550-B335-B48C2F67A207}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{83CCFC7F-D667-4550-B335-B48C2F67A207}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{83CCFC7F-D667-4550-B335-B48C2F67A207}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{83CCFC7F-D667-4550-B335-B48C2F67A207}.Debug|x86.Build.0 = Debug|Any CPU
-		{83CCFC7F-D667-4550-B335-B48C2F67A207}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{83CCFC7F-D667-4550-B335-B48C2F67A207}.Release|Any CPU.Build.0 = Release|Any CPU
-		{83CCFC7F-D667-4550-B335-B48C2F67A207}.Release|x86.ActiveCfg = Release|Any CPU
-		{83CCFC7F-D667-4550-B335-B48C2F67A207}.Release|x86.Build.0 = Release|Any CPU
 		{5E10A43F-59BD-40D1-987A-2CB00CFAE9F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5E10A43F-59BD-40D1-987A-2CB00CFAE9F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E10A43F-59BD-40D1-987A-2CB00CFAE9F2}.Debug|x86.ActiveCfg = Debug|Any CPU
