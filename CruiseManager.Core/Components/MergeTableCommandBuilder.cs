@@ -1,5 +1,5 @@
 ﻿using Backpack.SqlBuilder;
-using Backpack.SqlBuilder.Dialects;
+using Backpack.SqlBuilder.Sqlite;
 using CruiseDAL;
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.Util;

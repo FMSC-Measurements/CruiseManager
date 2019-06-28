@@ -49,31 +49,6 @@ namespace CruiseManager.Core.App
 
         protected bool OnDatabaseChanging(DAL oldValue, DAL newValue)
         {
-            if(CruiseDAL.Updater.CheckNeedsMajorUpdate(newValue))
-            {
-                var dialogResult = ActiveView.AskYesNoCancel("Cruise file can be updated. Updating this cruise file will allow it to work with FScruiser on Android.\r\n" +
-                    "However, file will no longer open in older versions of Cruise Manager or FScruiser", "Update Cruise File?");
-
-                if(dialogResult.HasValue == false) { return false; }
-                else if (dialogResult.Value == true)
-                {
-                    try
-                    {
-                        CruiseDAL.Updater.UpdateMajorVersion(newValue);
-                    }
-                    catch (FMSC.ORM.IncompatibleSchemaException ex)
-                    {
-                        this.ActiveView.ShowMessage("File is not compatible with this version of Cruise Manager: " + ex.Message);
-                        return false;
-                    }
-                    catch (FMSC.ORM.SQLException ex)
-                    {
-                        this.ActiveView.ShowMessage("Unable to open file : " + ex.GetType().Name);
-                        return false;
-                    }
-                }
-            }
-
             return true;
         }
 
@@ -239,10 +214,10 @@ namespace CruiseManager.Core.App
             {
                 Database = new DAL(path);
             }
-            catch (CruiseDAL.DatabaseShareException)
-            {
-                ActiveView.ShowMessage("File can not be opened in multiple applications");
-            }
+            //catch (CruiseDAL.DatabaseShareException)
+            //{
+            //    ActiveView.ShowMessage("File can not be opened in multiple applications");
+            //}
             catch (FMSC.ORM.ReadOnlyException)
             {
                 ActiveView.ShowMessage("Unable to open file because it is read only");
