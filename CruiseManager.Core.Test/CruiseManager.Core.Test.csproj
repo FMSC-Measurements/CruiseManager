@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup Label="Build Config">
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>netcoreapp31</TargetFramework>
     <Platform>Any Cpu</Platform>
   </PropertyGroup>
   <ItemGroup>
