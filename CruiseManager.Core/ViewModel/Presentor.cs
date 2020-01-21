@@ -9,9 +9,9 @@ namespace CruiseManager.Core.ViewModel
 
         #region AppController
 
-        private ApplicationControllerBase _appController;
+        private IApplicationController _appController;
 
-        public ApplicationControllerBase ApplicationController
+        public IApplicationController ApplicationController
         {
             get { return _appController; }
             protected set
@@ -72,9 +72,9 @@ namespace CruiseManager.Core.ViewModel
         {
         }
 
-        public Presentor(ApplicationControllerBase appController) : this()
+        public Presentor(IApplicationController appController) : this()
         {
-            this.ApplicationController = appController;
+            ApplicationController = appController;
         }
 
         #endregion Ctor

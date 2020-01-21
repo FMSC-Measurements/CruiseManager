@@ -114,7 +114,7 @@ namespace CruiseManager.Core.Components
 
         #endregion Properties
 
-        public MergeComponentsPresenter(ApplicationControllerBase applicationController)
+        public MergeComponentsPresenter(IApplicationController applicationController)
             : base(applicationController)
         {
             Initialize(applicationController.Database);

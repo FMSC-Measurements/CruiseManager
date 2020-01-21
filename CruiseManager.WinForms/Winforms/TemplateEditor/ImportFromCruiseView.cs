@@ -37,7 +37,7 @@ namespace CruiseManager.WinForms.TemplateEditor
         public IList<TreeDefaultValueDO> TreeDefaults { get; set; }
         public List<TreeDefaultValueDO> TreeDefaultsToCopy { get; set; } = new List<TreeDefaultValueDO>();
 
-        public ApplicationControllerBase ApplicationController { get; set; }
+        public IApplicationController ApplicationController { get; set; }
 
         public bool ReplaceExistingVolEq => _replaceVolEqRB.Checked;
 

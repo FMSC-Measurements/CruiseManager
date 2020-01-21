@@ -7,11 +7,16 @@ using Moq;
 using System;
 using System.Reflection;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace CruiseManager.Test
 {
-    public class MergeComponentsPresenterTest
+    public class MergeComponentsPresenterTest : TestBase
     {
+        public MergeComponentsPresenterTest(ITestOutputHelper output) : base(output)
+        {
+        }
+
         public DAL GetMaster()
         {
             var codeBaseUri = new Uri(Assembly.GetExecutingAssembly().CodeBase).AbsolutePath;
@@ -30,10 +35,10 @@ namespace CruiseManager.Test
         {
             using (var master = GetMaster())
             {
-                var appControllerMock = Mock.Of<ApplicationControllerBase>();
-                appControllerMock.Database = master;
+                AppControllerMock.Setup(x => x.Database)
+                .Returns(master);
 
-                var cmPresenter = new MergeComponentsPresenter(appControllerMock);
+                var cmPresenter = new MergeComponentsPresenter(AppController);
 
                 cmPresenter.NumComponents.Should().Be(3);
             }
@@ -65,13 +70,13 @@ namespace CruiseManager.Test
         {
             using (var master = GetMaster())
             {
-                var appController = Mock.Of<ApplicationControllerBase>();
-                appController.Database = master;
+                AppControllerMock.Setup(x => x.Database)
+                .Returns(() => master);
 
-                var cmPresenter = new MergeComponentsPresenter(appController);
+                var cmPresenter = new MergeComponentsPresenter(AppController);
 
                 cmPresenter.FindComponents(System.IO.Path.GetDirectoryName(master.Path));
-                cmPresenter.MissingComponents.Count.Should().Be(0);
+                cmPresenter.MissingComponents.Should().HaveCount(0);
                 cmPresenter.NumComponents.Should().Be(3);
 
                 var worker = new PrepareMergeWorker(cmPresenter);
@@ -88,13 +93,14 @@ namespace CruiseManager.Test
         {
             using (var master = GetMaster())
             {
-                var appController = Mock.Of<ApplicationControllerBase>();
-                appController.Database = master;
+                var appControllerMock = AppControllerMock;
+                appControllerMock.Setup(x => x.Database)
+                .Returns(master);
 
-                var cmPresenter = new MergeComponentsPresenter(appController);
+                var cmPresenter = new MergeComponentsPresenter(appControllerMock.Object);
 
                 cmPresenter.FindComponents(System.IO.Path.GetDirectoryName(master.Path));
-                cmPresenter.MissingComponents.Count.Should().Be(0);
+                cmPresenter.MissingComponents.Should().HaveCount(0);
                 cmPresenter.NumComponents.Should().Be(3);
 
                 var worker = new PrepareMergeWorker(cmPresenter);

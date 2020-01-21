@@ -13,7 +13,7 @@ using System.IO;
 
 namespace CruiseManager.Core.App
 {
-    public abstract class ApplicationControllerBase : IDisposable, INavigationService
+    public abstract class ApplicationControllerBase : IDisposable, IApplicationController
     {
         internal static readonly TreeDefaultValueDO[] EMPTY_SPECIES_LIST = { };
 
@@ -67,7 +67,7 @@ namespace CruiseManager.Core.App
                 }
                 WindowPresenter.ShowCruiseLandingLayout();
             }
-            else if(database.CruiseFileType.HasFlag(CruiseFileType.Template))
+            else if (database.CruiseFileType.HasFlag(CruiseFileType.Template))
             {
                 String directroy = System.IO.Path.GetDirectoryName(filePath);
                 UserSettings.TemplateSaveLocation = directroy;

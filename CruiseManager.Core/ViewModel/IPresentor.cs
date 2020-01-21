@@ -5,7 +5,7 @@ namespace CruiseManager.Core.ViewModel
 {
     public interface IPresentor //: INotifyPropertyChanged //: IDisposable
     {
-        ApplicationControllerBase ApplicationController { get; }
+        IApplicationController ApplicationController { get; }
 
         IView View { get; set; }
     }
