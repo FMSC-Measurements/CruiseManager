@@ -94,7 +94,7 @@ namespace CruiseManager.Core.CruiseCustomize
                 if (_treeDefaultValue == null)
                 {
                     _treeDefaultValue = DAL.From<TreeDefaultValueDO>()
-                        .Where("TreeDefaultValue_CN = ?")
+                        .Where("TreeDefaultValue_CN = @p1")
                         .Query(TreeDefaultValue_CN).FirstOrDefault();
                 }
                 return _treeDefaultValue;

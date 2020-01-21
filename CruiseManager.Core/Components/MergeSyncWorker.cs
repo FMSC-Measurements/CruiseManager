@@ -252,7 +252,7 @@ namespace CruiseManager.Core.Components
             {
                 CheckWorkerStatus();
                 LogDO log = comp.Database.From<LogDO>()
-                    .Where("rowid = ?").Query(mRec.ComponentRowID).FirstOrDefault();
+                    .Where("rowid = @p1").Query(mRec.ComponentRowID).FirstOrDefault();
                 Master.Insert(log, OnConflictOption.Fail);
                 this.ResetComponentRowVersion(comp, mRec.ComponentRowID.Value, cmdBldr);
                 IncrementProgress();
@@ -271,7 +271,7 @@ namespace CruiseManager.Core.Components
             {
                 CheckWorkerStatus();
                 PlotDO plot = comp.Database.From<PlotDO>()
-                    .Where("rowid = ?").Query(mRec.ComponentRowID).FirstOrDefault();
+                    .Where("rowid = @p1").Query(mRec.ComponentRowID).FirstOrDefault();
 
                 Master.Insert(plot, OnConflictOption.Fail);
                 this.ResetComponentRowVersion(comp, mRec.ComponentRowID.Value, cmdBldr);
@@ -290,7 +290,7 @@ namespace CruiseManager.Core.Components
             {
                 CheckWorkerStatus();
                 StemDO stem = comp.Database.From<StemDO>()
-                    .Where("rowid = ?").Query(mRec.ComponentRowID).FirstOrDefault();
+                    .Where("rowid = @p1").Query(mRec.ComponentRowID).FirstOrDefault();
 
                 Master.Insert(stem, OnConflictOption.Fail);
                 this.ResetComponentRowVersion(comp, mRec.ComponentRowID.Value, cmdBldr);
@@ -310,7 +310,7 @@ namespace CruiseManager.Core.Components
             {
                 CheckWorkerStatus();
                 TreeDO tree = comp.Database.From<TreeDO>()
-                    .Where("rowid = ?").Query(mRec.ComponentRowID).FirstOrDefault();
+                    .Where("rowid = @p1").Query(mRec.ComponentRowID).FirstOrDefault();
                 Master.Insert(tree, OnConflictOption.Fail);
                 this.ResetComponentRowVersion(comp, mRec.ComponentRowID.Value, cmdBldr);
                 IncrementProgress();
@@ -331,10 +331,10 @@ namespace CruiseManager.Core.Components
             {
                 CheckWorkerStatus();
                 CountTreeDO match = Master.From<CountTreeDO>()
-                    .Where("SampleGroup_CN = ? " +
-                    "AND ifnull(TreeDefaultValue_CN, 0) = ifnull(?, 0) " +
-                    "AND CuttingUnit_CN = ? " +
-                    "AND Component_CN = ?")
+                    .Where("SampleGroup_CN = @p1 " +
+                    "AND ifnull(TreeDefaultValue_CN, 0) = ifnull(@p2, 0) " +
+                    "AND CuttingUnit_CN = @p3 " +
+                    "AND Component_CN = @p4")
                     .Query(count.SampleGroup_CN,
                     count.TreeDefaultValue_CN,
                     count.CuttingUnit_CN,
@@ -350,7 +350,7 @@ namespace CruiseManager.Core.Components
                 else
                 {
                     TallyDO tally = count.Tally;
-                    TallyDO masterTally = Master.From<TallyDO>().Where("HotKey = ?")
+                    TallyDO masterTally = Master.From<TallyDO>().Where("HotKey = @p1")
                         .Query(tally.Hotkey).FirstOrDefault();
                     if (masterTally == null)
                     {
@@ -379,7 +379,7 @@ namespace CruiseManager.Core.Components
             foreach (SampleGroupDO sg in compSGList)
             {
                 SampleGroupDO match = Master.From<SampleGroupDO>()
-                    .Where("Code = ? AND Stratum_CN = ?")
+                    .Where("Code = @p1 AND Stratum_CN = @p2")
                     .Query(sg.Code, sg.Stratum_CN).FirstOrDefault();
 
                 if (match == null)
@@ -395,7 +395,7 @@ namespace CruiseManager.Core.Components
                 }
                 if (sg.SampleGroup_CN != match.SampleGroup_CN)
                 {
-                    comp.Database.Execute("UPDATE SampleGroup SET SampleGroup_CN = ? WHERE SampleGroup_CN = ?;", match.SampleGroup_CN, sg.SampleGroup_CN);
+                    comp.Database.Execute("UPDATE SampleGroup SET SampleGroup_CN = @p1 WHERE SampleGroup_CN = @p2;", match.SampleGroup_CN, sg.SampleGroup_CN);
                 }
             }
 
@@ -423,7 +423,7 @@ namespace CruiseManager.Core.Components
             {
                 CheckWorkerStatus();
                 TallyDO match = Master.From<TallyDO>()
-                    .Where("HotKey = ? AND Description = ?")
+                    .Where("HotKey = @p1 AND Description = @p2")
                     .Read(tally.Hotkey, tally.Description).FirstOrDefault();
 
                 if (match == null)
@@ -444,11 +444,11 @@ namespace CruiseManager.Core.Components
             {
                 CheckWorkerStatus();
                 bool hasMatch = 0 < Master.GetRowCount("TreeDefaultValue",
-                    "WHERE Species = ? AND PrimaryProduct = ? AND LiveDead = ?",
+                    "WHERE Species = @p1 AND PrimaryProduct = @p2 AND LiveDead = @p3",
                     tdv.Species, tdv.PrimaryProduct, tdv.LiveDead);
                 if (!hasMatch)
                 {
-                    if (Master.GetRowCount("TreeDefaultValue", "WHERE TreeDefaultValue_CN = ?", tdv.TreeDefaultValue_CN) == 0)
+                    if (Master.GetRowCount("TreeDefaultValue", "WHERE TreeDefaultValue_CN = @p1", tdv.TreeDefaultValue_CN) == 0)
                     {
                         Master.Insert(tdv, OnConflictOption.Fail);
                     }
@@ -550,7 +550,7 @@ namespace CruiseManager.Core.Components
                 CheckWorkerStatus();
                 long matchRowid = mRec.MatchRowID.Value;
                 LogDO log = comp.Database.From<LogDO>()
-                    .Where("Log_CN = ?")
+                    .Where("Log_CN = @p1")
                     .Read(mRec.ComponentRowID).FirstOrDefault();
                 Master.Update(log, matchRowid, OnConflictOption.Fail);
                 this.ResetRowVersion(comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
@@ -570,7 +570,7 @@ namespace CruiseManager.Core.Components
                 CheckWorkerStatus();
                 long matchRowid = mRec.MatchRowID.Value;
                 var plot = comp.Database.From<PlotDO>()
-                    .Where("Plot_CN = ?").Read(mRec.ComponentRowID).FirstOrDefault();
+                    .Where("Plot_CN = @p1").Read(mRec.ComponentRowID).FirstOrDefault();
 
                 Master.Update(plot, matchRowid, OnConflictOption.Fail);
                 this.ResetRowVersion(comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
@@ -591,7 +591,7 @@ namespace CruiseManager.Core.Components
                 CheckWorkerStatus();
                 long matchRowid = mRec.MatchRowID.Value;
                 StemDO stem = comp.Database.From<StemDO>()
-                    .Where("Stem_CN = ?")
+                    .Where("Stem_CN = @p1")
                     .Read(mRec.ComponentRowID).FirstOrDefault();
 
                 Master.Update(stem, matchRowid, OnConflictOption.Fail);
@@ -612,7 +612,7 @@ namespace CruiseManager.Core.Components
             {
                 CheckWorkerStatus();
                 long matchRowid = mRec.MatchRowID.Value;
-                TreeDO tree = comp.Database.From<TreeDO>().Where("rowid = ?")
+                TreeDO tree = comp.Database.From<TreeDO>().Where("rowid = @p1")
                     .Query(mRec.ComponentRowID).FirstOrDefault();
                 Master.Update(tree, matchRowid, OnConflictOption.Fail);
                 this.ResetRowVersion(comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
@@ -636,7 +636,7 @@ namespace CruiseManager.Core.Components
                 CheckWorkerStatus();
                 long matchRowid = mRec.MatchRowID.Value;
                 LogDO log = Master.From<LogDO>()
-                    .Where("Log_CN = ?").Read(matchRowid).FirstOrDefault();
+                    .Where("Log_CN = @p1").Read(matchRowid).FirstOrDefault();
 
                 comp.Database.Update(log, mRec.ComponentRowID.Value, OnConflictOption.Fail);
                 this.ResetRowVersion(comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
@@ -655,7 +655,7 @@ namespace CruiseManager.Core.Components
                 CheckWorkerStatus();
                 long matchRowid = mRec.MatchRowID.Value;
                 PlotDO plot = Master.From<PlotDO>()
-                    .Where("Plot_CN = ?").Read(matchRowid).FirstOrDefault();
+                    .Where("Plot_CN = @p1").Read(matchRowid).FirstOrDefault();
 
                 comp.Database.Update(plot, mRec.ComponentRowID.Value, OnConflictOption.Fail);
                 this.ResetRowVersion(comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
@@ -675,7 +675,7 @@ namespace CruiseManager.Core.Components
                 CheckWorkerStatus();
                 long matchRowid = mRec.MatchRowID.Value;
                 StemDO stem = Master.From<StemDO>()
-                    .Where("Stem_CN = ?").Read(matchRowid).FirstOrDefault();
+                    .Where("Stem_CN = @p1").Read(matchRowid).FirstOrDefault();
 
                 comp.Database.Update(stem, mRec.ComponentRowID.Value, OnConflictOption.Fail);
                 this.ResetRowVersion(comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
@@ -694,7 +694,7 @@ namespace CruiseManager.Core.Components
             {
                 CheckWorkerStatus();
                 long matchRowid = mRec.MatchRowID.Value;
-                TreeDO tree = Master.From<TreeDO>().Where("Tree_CN = ?")
+                TreeDO tree = Master.From<TreeDO>().Where("Tree_CN = @p1")
                     .Read(matchRowid).FirstOrDefault();
                 //TODO need to handle condition where MasterRowID is different from ComponentRowID
                 comp.Database.Update(tree, mRec.ComponentRowID.Value, OnConflictOption.Fail);
@@ -708,12 +708,12 @@ namespace CruiseManager.Core.Components
 
         private void ResetComponentRowVersion(ComponentFileVM comp, long componentRowID, MergeTableCommandBuilder commBldr)
         {
-            comp.Database.Execute("UPDATE " + commBldr.ClientTableName + " SET RowVersion = 0 WHERE RowID = ?;", componentRowID);
+            comp.Database.Execute("UPDATE " + commBldr.ClientTableName + " SET RowVersion = 0 WHERE RowID = @p1;", componentRowID);
         }
 
         private void ResetRowVersion(ComponentFileVM comp, long masterRowID, long componentRowID, MergeTableCommandBuilder commBldr)
         {
-            Master.Execute("UPDATE " + commBldr.ClientTableName + " SET RowVersion = 0 WHERE RowID = ?;", masterRowID);
+            Master.Execute("UPDATE " + commBldr.ClientTableName + " SET RowVersion = 0 WHERE RowID = @p1;", masterRowID);
             ResetComponentRowVersion(comp, componentRowID, commBldr);
         }
 

@@ -242,7 +242,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             foreach (StratumVM stratum in stList)
             {
                 stratum.CuttingUnits.Populate();
-                var sgList = _database.From<SampleGroupDO>().Where("Stratum_CN = ?").Read(stratum.Stratum_CN).ToList();
+                var sgList = _database.From<SampleGroupDO>().Where("Stratum_CN = @p1").Read(stratum.Stratum_CN).ToList();
                 foreach (SampleGroupDO sg in sgList)
                 {
                     sg.TreeDefaultValues.Populate();

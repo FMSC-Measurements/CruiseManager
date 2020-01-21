@@ -498,7 +498,7 @@ namespace CruiseManager.Core.Components
             string selectNewRecordsCommand =
                 "SELECT * FROM " + this.MergeTableName +
                 this.FindNewRecords +
-                " AND ComponentID = ?;";
+                " AND ComponentID = @p1;";
             return master.Query<MergeObject>(selectNewRecordsCommand, new object[] { comp.Component_CN }).ToList();
         }
 
@@ -506,7 +506,7 @@ namespace CruiseManager.Core.Components
         {
             string selectPullRecordsCommand = "SELECT * FROM " + this.MergeTableName +
                 this.FindMasterToCompUpdates +
-                " AND ComponentID = ?;";
+                " AND ComponentID = @p1;";
 
             return master.Query<MergeObject>(selectPullRecordsCommand, new object[] { comp.Component_CN }).ToList();
         }
@@ -515,7 +515,7 @@ namespace CruiseManager.Core.Components
         {
             string selectPullRecordsCommand = "SELECT * FROM " + this.MergeTableName +
                 this.FindCompToMasterUpdates +
-                " AND ComponentID = ?;";
+                " AND ComponentID = @p1;";
 
             return master.Query<MergeObject>(selectPullRecordsCommand, new object[] { comp.Component_CN }).ToList();
         }
@@ -526,47 +526,47 @@ namespace CruiseManager.Core.Components
             {
                 case "Tree":
                     {
-                        return source.From<TreeDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
+                        return source.From<TreeDO>().Where("rowid = @p1").Query(rowid).FirstOrDefault();
                     }
                 case "Log":
                     {
-                        return source.From<LogDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
+                        return source.From<LogDO>().Where("rowid = @p1").Query(rowid).FirstOrDefault();
                     }
                 case "Stem":
                     {
-                        return source.From<StemDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
+                        return source.From<StemDO>().Where("rowid = @p1").Query(rowid).FirstOrDefault();
                     }
                 case "Plot":
                     {
-                        return source.From<PlotDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
+                        return source.From<PlotDO>().Where("rowid = @p1").Query(rowid).FirstOrDefault();
                     }
                 case "CountTree":
                     {
-                        return source.From<CountTreeDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
+                        return source.From<CountTreeDO>().Where("rowid = @p1").Query(rowid).FirstOrDefault();
                     }
                 case "CuttingUnit":
                     {
-                        return source.From<CuttingUnitDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
+                        return source.From<CuttingUnitDO>().Where("rowid = @p1").Query(rowid).FirstOrDefault();
                     }
                 case "Stratum":
                     {
-                        return source.From<StratumDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
+                        return source.From<StratumDO>().Where("rowid = @p1").Query(rowid).FirstOrDefault();
                     }
                 case "CuttingUnitStratum":
                     {
-                        return source.From<CuttingUnitStratumDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
+                        return source.From<CuttingUnitStratumDO>().Where("rowid = @p1").Query(rowid).FirstOrDefault();
                     }
                 case "SampleGroup":
                     {
-                        return source.From<SampleGroupDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
+                        return source.From<SampleGroupDO>().Where("rowid = @p1").Query(rowid).FirstOrDefault();
                     }
                 case "SampleGroupTreeDefaultValue":
                     {
-                        return source.From<SampleGroupTreeDefaultValueDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
+                        return source.From<SampleGroupTreeDefaultValueDO>().Where("rowid = @p1").Query(rowid).FirstOrDefault();
                     }
                 case "TreeDefaultValue":
                     {
-                        return source.From<TreeDefaultValueDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
+                        return source.From<TreeDefaultValueDO>().Where("rowid = @p1").Query(rowid).FirstOrDefault();
                     }
                 default:
                     {

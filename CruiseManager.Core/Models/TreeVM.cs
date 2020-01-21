@@ -43,7 +43,7 @@ namespace CruiseManager.Core.Models
         public override StratumDO GetStratum()
         {
             if (DAL == null) { return null; }
-            return DAL.From<StratumVM>().Where("Stratum_CN = ?").Read(Stratum_CN).FirstOrDefault();
+            return DAL.From<StratumVM>().Where("Stratum_CN = @p1").Read(Stratum_CN).FirstOrDefault();
         }
 
         public new StratumVM Stratum

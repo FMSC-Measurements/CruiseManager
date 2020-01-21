@@ -14,7 +14,7 @@ namespace CruiseManager.Core.CruiseCustomize
                 if (_tallyClass == null)
                 {
                     _tallyClass = DAL.From<FixCNTTallyClass>()
-                        .Where("Stratum_CN = ?")
+                        .Where("Stratum_CN = @p1")
                         .Query(Stratum_CN)
                         .FirstOrDefault()
                         ?? new FixCNTTallyClass()
@@ -46,7 +46,7 @@ namespace CruiseManager.Core.CruiseCustomize
             if (SampleGroups != null) { return; }//if we have already created initialized this stratum,
 
             SampleGroups = DAL.From<TallySetupSampleGroup>()
-                .Where("Stratum_CN = ?").Read(Stratum_CN).ToList();
+                .Where("Stratum_CN = @p1").Read(Stratum_CN).ToList();
             foreach (TallySetupSampleGroup sg in SampleGroups)
             {
                 sg.Stratum = this;

@@ -112,8 +112,8 @@ namespace CruiseManager.Core.EditDesign
         public bool CanDeleteTreeDefault(TreeDefaultValueDO tdv)
         {
             if (tdv.IsPersisted == false) { return true; }
-            bool hasTreeCounts = this.Database.GetRowCount("CountTree", "WHERE TreeCount > 0 AND TreeDefaultValue_CN = ?", tdv.TreeDefaultValue_CN) > 0;
-            bool hasTrees = this.Database.GetRowCount("Tree", "WHERE TreeDefaultValue_CN = ?", tdv.TreeDefaultValue_CN) > 0;
+            bool hasTreeCounts = this.Database.GetRowCount("CountTree", "WHERE TreeCount > 0 AND TreeDefaultValue_CN = @p1", tdv.TreeDefaultValue_CN) > 0;
+            bool hasTrees = this.Database.GetRowCount("Tree", "WHERE TreeDefaultValue_CN = @p1", tdv.TreeDefaultValue_CN) > 0;
             return !(hasTreeCounts || hasTrees);
         }
 
@@ -158,8 +158,8 @@ namespace CruiseManager.Core.EditDesign
         public bool CanRemoveTreeDefault(SampleGroupDO sampleGroup, TreeDefaultValueDO tdv)
         {
             if (sampleGroup.IsPersisted == false || tdv.IsPersisted == false) { return true; }
-            bool hasTreeCounts = this.Database.GetRowCount("CountTree", "WHERE TreeCount > 0 AND TreeDefaultValue_CN = ? AND SampleGroup_CN = ?", tdv.TreeDefaultValue_CN, sampleGroup.SampleGroup_CN) > 0;
-            bool hasTrees = this.Database.GetRowCount("Tree", "WHERE TreeDefaultValue_CN = ? AND SampleGroup_CN = ?", tdv.TreeDefaultValue_CN, sampleGroup.SampleGroup_CN) > 0;
+            bool hasTreeCounts = this.Database.GetRowCount("CountTree", "WHERE TreeCount > 0 AND TreeDefaultValue_CN = @p1 AND SampleGroup_CN = @p2", tdv.TreeDefaultValue_CN, sampleGroup.SampleGroup_CN) > 0;
+            bool hasTrees = this.Database.GetRowCount("Tree", "WHERE TreeDefaultValue_CN = @p1 AND SampleGroup_CN = @p2", tdv.TreeDefaultValue_CN, sampleGroup.SampleGroup_CN) > 0;
             return !(hasTreeCounts || hasTrees);
         }
 
@@ -337,22 +337,22 @@ namespace CruiseManager.Core.EditDesign
         public bool HasCruiseData(CuttingUnitDO unit)
         {
             if (unit.CuttingUnit_CN == null) { return false; }
-            return (Database.GetRowCount("Tree", "WHERE CuttingUnit_CN = ?", unit.CuttingUnit_CN.Value) > 0)
-                || (Database.GetRowCount("CountTree", "WHERE CuttingUnit_CN = ? AND TreeCount > 0", unit.CuttingUnit_CN.Value) > 0);
+            return (Database.GetRowCount("Tree", "WHERE CuttingUnit_CN = @p1", unit.CuttingUnit_CN.Value) > 0)
+                || (Database.GetRowCount("CountTree", "WHERE CuttingUnit_CN = @p1 AND TreeCount > 0", unit.CuttingUnit_CN.Value) > 0);
         }
 
         public bool HasCruiseData(StratumDO stratum)
         {
             if (stratum.Stratum_CN == null) { return false; }
-            return (Database.GetRowCount("Tree", "WHERE Stratum_CN = ?", stratum.Stratum_CN.Value) > 0)
-                || (Database.GetRowCount("CountTree", "JOIN SampleGroup USING (SampleGroup_CN) WHERE Stratum_CN = ? AND TreeCount > 0", stratum.Stratum_CN.Value) > 0);
+            return (Database.GetRowCount("Tree", "WHERE Stratum_CN = @p1", stratum.Stratum_CN.Value) > 0)
+                || (Database.GetRowCount("CountTree", "JOIN SampleGroup USING (SampleGroup_CN) WHERE Stratum_CN = @p1 AND TreeCount > 0", stratum.Stratum_CN.Value) > 0);
         }
 
         public bool HasCruiseData(SampleGroupDO sg)
         {
             if (sg.SampleGroup_CN == null) { return false; }
-            return (Database.GetRowCount("Tree", "WHERE SampleGroup_CN = ?", sg.SampleGroup_CN.Value) > 0)
-                || (Database.GetRowCount("CountTree", "WHERE SampleGroup_CN = ? AND TreeCount > 0", sg.SampleGroup_CN.Value) > 0);
+            return (Database.GetRowCount("Tree", "WHERE SampleGroup_CN = @p1", sg.SampleGroup_CN.Value) > 0)
+                || (Database.GetRowCount("CountTree", "WHERE SampleGroup_CN = @p1 AND TreeCount > 0", sg.SampleGroup_CN.Value) > 0);
         }
 
         public void LoadSetup()
@@ -593,7 +593,7 @@ namespace CruiseManager.Core.EditDesign
 
             foreach (TreeDefaultValueDO tdv in DataContext.DeletedTreeDefaults)
             {
-                Database.Execute("DELETE FROM SampleGroupTreeDefaultValue WHERE TreeDefaultValue_CN = ?", tdv.TreeDefaultValue_CN);
+                Database.Execute("DELETE FROM SampleGroupTreeDefaultValue WHERE TreeDefaultValue_CN = @p1", tdv.TreeDefaultValue_CN);
                 tdv.Delete();
             }
 

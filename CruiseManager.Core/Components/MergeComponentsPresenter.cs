@@ -295,7 +295,7 @@ namespace CruiseManager.Core.Components
             foreach (ComponentFileVM comp in this.ActiveComponents)
             {
                 var compCount = comp.Database.From<CountTreeDO>()
-                    .Where("CountTree_CN = ?").Read(masterCopy.CountTree_CN).FirstOrDefault();
+                    .Where("CountTree_CN = @p1").Read(masterCopy.CountTree_CN).FirstOrDefault();
 
                 countSum += (int)compCount.TreeCount;
             }

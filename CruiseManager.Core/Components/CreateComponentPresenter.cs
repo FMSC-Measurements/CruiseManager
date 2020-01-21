@@ -211,7 +211,7 @@ namespace CruiseManager.Core.Components
             {
                 String compFileName = GetCompFileName(masterFileName, i);
                 var compInfo = masterDAL.From<ComponentDO>()
-                    .Where("FileName = ?").Read(compFileName).FirstOrDefault();
+                    .Where("FileName = @p1").Read(compFileName).FirstOrDefault();
                 if (compInfo == null)
                 {
                     compInfo = new ComponentDO(masterDAL);

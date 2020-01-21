@@ -94,13 +94,13 @@ namespace CruiseManager.Core.CruiseCustomize
         protected List<TreeFieldSetupDO> GetSelectedTreeFields(StratumDO stratum)
         {
             return Database.From<TreeFieldSetupDO>()
-                .Where("Stratum_CN = ?").OrderBy("FieldOrder").Read(stratum.Stratum_CN).ToList();
+                .Where("Stratum_CN = @p1").OrderBy("FieldOrder").Read(stratum.Stratum_CN).ToList();
         }
 
         protected List<TreeFieldSetupDO> GetSelectedTreeFieldsDefault(StratumDO stratum)
         {
             var treeFieldDefaults = Database.From<TreeFieldSetupDefaultDO>()
-                .Where("Method = ?").OrderBy("FieldOrder").Read(stratum.Method);
+                .Where("Method = @p1").OrderBy("FieldOrder").Read(stratum.Method);
 
             var treeFields = new List<TreeFieldSetupDO>();
 
@@ -126,7 +126,7 @@ namespace CruiseManager.Core.CruiseCustomize
         protected List<LogFieldSetupDO> GetSelectedLogFields(StratumDO stratum)
         {
             return Database.From<LogFieldSetupDO>()
-                .Where("Stratum_CN = ?").OrderBy("FieldOrder").Read(stratum.Stratum_CN).ToList();
+                .Where("Stratum_CN = @p1").OrderBy("FieldOrder").Read(stratum.Stratum_CN).ToList();
         }
 
         public bool HandleSave()

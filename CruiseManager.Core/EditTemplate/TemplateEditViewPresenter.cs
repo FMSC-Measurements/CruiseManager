@@ -100,7 +100,7 @@ namespace CruiseManager.Core.EditTemplate
                     {
                         var vm = new EditTemplateCruiseMethod(method);
                         var treeFields = ApplicationController.Database.From<TreeFieldSetupDefaultDO>()
-                            .Where("Method = ?").OrderBy("FieldOrder").Read(method.Code).ToList();
+                            .Where("Method = @p1").OrderBy("FieldOrder").Read(method.Code).ToList();
 
                         vm.TreeFields = new BindingList<TreeFieldSetupDefaultDO>(treeFields);
 
@@ -212,7 +212,7 @@ namespace CruiseManager.Core.EditTemplate
         public List<TreeFieldSetupDefaultDO> GetSelectedTreeFields(CruiseMethodsDO method)
         {
             return ApplicationController.Database.From<TreeFieldSetupDefaultDO>()
-                .Where("Method = ?").OrderBy("FieldOrder")
+                .Where("Method = @p1").OrderBy("FieldOrder")
                 .Read(method.Code).ToList();
         }
 

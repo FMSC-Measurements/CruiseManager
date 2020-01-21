@@ -60,10 +60,10 @@ namespace CruiseManager.Core.App
             if (tree == null) { return EMPTY_SPECIES_LIST; }
             if (tree.Stratum == null)
             {
-                if (database.GetRowCount("CuttingUnitStratum", "WHERE CuttingUnit_CN = ?", tree.CuttingUnit_CN) == 1)
+                if (database.GetRowCount("CuttingUnitStratum", "WHERE CuttingUnit_CN = @p1", tree.CuttingUnit_CN) == 1)
                 {
                     tree.Stratum = database.From<StratumVM>()
-                        .Join("CuttingUnitStratum", "USING (Stratum_CN)").Where("CuttingUnit_CN = ?")
+                        .Join("CuttingUnitStratum", "USING (Stratum_CN)").Where("CuttingUnit_CN = @p1")
                         .Read(tree.CuttingUnit_CN).FirstOrDefault();
                 }
                 else
@@ -74,10 +74,10 @@ namespace CruiseManager.Core.App
 
             if (tree.SampleGroup == null)
             {
-                if (database.GetRowCount("SampleGroup", "WHERE Stratum_CN = ?", tree.Stratum_CN) == 1)
+                if (database.GetRowCount("SampleGroup", "WHERE Stratum_CN = @p1", tree.Stratum_CN) == 1)
                 {
                     tree.SampleGroup = database.From<SampleGroupDO>()
-                        .Where("Stratum_CN = ?").Read(tree.Stratum_CN).FirstOrDefault();
+                        .Where("Stratum_CN = @p1").Read(tree.Stratum_CN).FirstOrDefault();
                 }
                 if (tree.SampleGroup == null)
                 {
@@ -87,7 +87,7 @@ namespace CruiseManager.Core.App
 
             return database.From<TreeDefaultValueDO>()
                 .Join("SampleGroupTreeDefaultValue", "USING (TreeDefaultValue_CN)")
-                .Where("SampleGroup_CN = ?").Read(tree.SampleGroup_CN).ToArray();
+                .Where("SampleGroup_CN = @p1").Read(tree.SampleGroup_CN).ToArray();
         }
 
         public static object GetSampleGroupsByStratum(this DAL database, long? st_cn)
@@ -97,7 +97,7 @@ namespace CruiseManager.Core.App
                 return new SampleGroupDO[0];
             }
             return database.From<SampleGroupDO>()
-                .Where("Stratum_CN = ?").Read(st_cn).ToList();
+                .Where("Stratum_CN = @p1").Read(st_cn).ToList();
         }
     }
 }

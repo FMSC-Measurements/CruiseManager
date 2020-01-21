@@ -80,8 +80,8 @@ namespace CruiseManager.Core.CruiseCustomize
             {
                 if (_isTallyModeLocked == null)
                 {
-                    _isTallyModeLocked = DAL.GetRowCount("CountTree", "WHERE SampleGroup_CN = ? AND TreeCount > 0", this.SampleGroup_CN) > 0
-                        && DAL.GetRowCount("Tree", "WHERE SampleGroup_CN = ?", SampleGroup_CN) > 0;
+                    _isTallyModeLocked = DAL.GetRowCount("CountTree", "WHERE SampleGroup_CN = @p1 AND TreeCount > 0", this.SampleGroup_CN) > 0
+                        && DAL.GetRowCount("Tree", "WHERE SampleGroup_CN = @p1", SampleGroup_CN) > 0;
                 }
 
                 return _isTallyModeLocked.Value;
@@ -174,7 +174,7 @@ namespace CruiseManager.Core.CruiseCustomize
                 {
                     _treeDefaultValues = DAL.From<TreeDefaultValueDO>()
                         .Join("SampleGroupTreeDefaultValue", "USING (TreeDefaultValue_CN)")
-                        .Where("SampleGroup_CN = ?")
+                        .Where("SampleGroup_CN = @p1")
                         .Query(SampleGroup_CN).ToList();
                 }
                 return _treeDefaultValues;
@@ -184,7 +184,7 @@ namespace CruiseManager.Core.CruiseCustomize
         public TallyMode GetSampleGroupTallyMode()
         {
             TallyMode mode = TallyMode.Unknown;
-            if (DAL.GetRowCount("CountTree", "WHERE SampleGroup_CN = ?", SampleGroup_CN) == 0)
+            if (DAL.GetRowCount("CountTree", "WHERE SampleGroup_CN = @p1", SampleGroup_CN) == 0)
             {
                 if (Stratum.Method == CruiseDAL.Schema.CruiseMethods.STR)
                 {
@@ -199,13 +199,13 @@ namespace CruiseManager.Core.CruiseCustomize
             }
 
             if (DAL.GetRowCount("CountTree",
-                "WHERE SampleGroup_CN = ? AND ifnull(TreeDefaultValue_CN, 0) == 0",
+                "WHERE SampleGroup_CN = @p1 AND ifnull(TreeDefaultValue_CN, 0) == 0",
                 SampleGroup_CN) > 0)
             {
                 mode = mode | TallyMode.BySampleGroup;
             }
             if (DAL.GetRowCount("CountTree",
-                "WHERE SampleGroup_CN = ? AND TreeDefaultValue_CN NOT NULL AND TreeDefaultValue_CN > 0",
+                "WHERE SampleGroup_CN = @p1 AND TreeDefaultValue_CN NOT NULL AND TreeDefaultValue_CN > 0",
                 this.SampleGroup_CN) > 0)
             {
                 mode = mode | TallyMode.BySpecies;
@@ -245,14 +245,14 @@ namespace CruiseManager.Core.CruiseCustomize
             //initialize a tally entity for use with tally by sample group
             TallyVM sgTally = DAL.From<TallyVM>()
                 .Join("CountTree", "USING (Tally_CN)")
-                .Where("SampleGroup_CN = ? AND ifnull(TreeDefaultValue_CN, 0) = 0")
+                .Where("SampleGroup_CN = @p1 AND ifnull(TreeDefaultValue_CN, 0) = 0")
                 .Query(SampleGroup_CN).FirstOrDefault();
 
             TallyPopulation sgTallyPopulation = DAL.QuerySingleRecord<TallyPopulation>("SELECT SampleGroup_CN, TreeDefaultValue_CN, Tally.HotKey as HotKey, Tally.Description as Description " +
                 "FROM CountTree " +
                 "JOIN Tally USING (Tally_CN) " +
                 "WHERE CountTree.Tally_CN = Tally.Tally_CN " +
-                "AND CountTree.SampleGroup_CN = ? " +
+                "AND CountTree.SampleGroup_CN = @p1 " +
                 "AND ifnull(CountTree.TreeDefaultValue_CN, 0) = 0;", this.SampleGroup_CN)
                 ?? new TallyPopulation() { Description = Code };
 
@@ -272,7 +272,7 @@ namespace CruiseManager.Core.CruiseCustomize
             {
                 TallyVM tally = DAL.From<TallyVM>()
                     .Join("CountTree", "USING (Tally_CN)")
-                    .Where("SampleGroup_CN = ? AND TreeDefaultValue_CN = ?")
+                    .Where("SampleGroup_CN = @p1 AND TreeDefaultValue_CN = @p2")
                     .Query(this.SampleGroup_CN, tdv.TreeDefaultValue_CN)
                     .FirstOrDefault();
 
@@ -288,8 +288,8 @@ namespace CruiseManager.Core.CruiseCustomize
                 "FROM CountTree " +
                 "JOIN Tally USING (Tally_CN) " +
                 "WHERE CountTree.Tally_CN = Tally.Tally_CN " +
-                "AND CountTree.SampleGroup_CN = ? " +
-                "AND CountTree.TreeDefaultValue_CN = ?;", this.SampleGroup_CN, tdv.TreeDefaultValue_CN)
+                "AND CountTree.SampleGroup_CN = @p1 " +
+                "AND CountTree.TreeDefaultValue_CN = @p2;", this.SampleGroup_CN, tdv.TreeDefaultValue_CN)
                 ?? new TallyPopulation() { Description = Code + "/" + tdv.Species + ((tdv.LiveDead == "D") ? "/D" : "") };
 
                 if (!this.TallyPopulations.ContainsKey(tdv.Species))
@@ -342,7 +342,7 @@ namespace CruiseManager.Core.CruiseCustomize
                 if (!IsTallyModeLocked)
                 {
                     //remove any possible tally by species records
-                    string command = "DELETE FROM CountTree WHERE SampleGroup_CN = ? AND ifnull(TreeDefaultValue_CN, 0) != 0;";
+                    string command = "DELETE FROM CountTree WHERE SampleGroup_CN = @p1 AND ifnull(TreeDefaultValue_CN, 0) != 0;";
                     DAL.Execute(command, SampleGroup_CN);
 
                     string user = DAL.User;
@@ -356,7 +356,7 @@ namespace CruiseManager.Core.CruiseCustomize
                     DAL.Execute(makeCountsCommand);
                 }
                 TallyVM tally = DAL.From<TallyVM>()
-                    .Where("Description = ? AND HotKey = ?")
+                    .Where("Description = @p1 AND HotKey = @p2")
                     .Query(SgTallie.Description, SgTallie.Hotkey)
                     .FirstOrDefault();
 
@@ -395,7 +395,7 @@ namespace CruiseManager.Core.CruiseCustomize
                 if (!IsTallyModeLocked)
                 {
                     //remove any preexisting tally by sg entries
-                    string command = "DELETE FROM CountTree WHERE SampleGroup_CN = ? AND ifnull(TreeDefaultValue_CN, 0) = 0;";
+                    string command = "DELETE FROM CountTree WHERE SampleGroup_CN = @p1 AND ifnull(TreeDefaultValue_CN, 0) = 0;";
                     DAL.Execute(command, SampleGroup_CN);
 
                     string user = DAL.User;
@@ -414,7 +414,7 @@ namespace CruiseManager.Core.CruiseCustomize
                 foreach (KeyValuePair<TreeDefaultValueDO, TallyVM> pair in Tallies)
                 {
                     TallyVM tally = DAL.From<TallyVM>()
-                        .Where("Description = ? AND HotKey = ?")
+                        .Where("Description = @p1 AND HotKey = @p2")
                         .Query(pair.Value.Description, pair.Value.Hotkey)
                         .FirstOrDefault();
 
