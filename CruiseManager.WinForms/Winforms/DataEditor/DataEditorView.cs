@@ -709,12 +709,10 @@ namespace CruiseManager.WinForms.DataEditor
 
         protected void HandleTreeValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            TreeVM tree = null;
-            try
-            {
-                tree = _BS_Trees[e.RowIndex] as TreeVM;
-            }
-            catch (ArgumentOutOfRangeException) { return; }//ignore possible out of bound exceptions
+            var rowIndex = e.RowIndex;
+            if(rowIndex < 0 || rowIndex >= _BS_Trees.Count) { return; }
+
+            TreeVM tree = _BS_Trees[e.RowIndex] as TreeVM;
 
             if (tree == null) { return; }
 
@@ -747,8 +745,10 @@ namespace CruiseManager.WinForms.DataEditor
 
         protected void TreeDataGrid_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
+            var rowIndex = e.RowIndex;
+            if (rowIndex < 0 || rowIndex >= _BS_Trees.Count) { return; }
+
             var curTree = _BS_Trees[e.RowIndex] as TreeVM;
-            if (curTree == null) { return; }
 
             var cell = _DGV_Trees[e.ColumnIndex, e.RowIndex] as DataGridViewComboBoxCell;
             if (cell == null) { return; }
