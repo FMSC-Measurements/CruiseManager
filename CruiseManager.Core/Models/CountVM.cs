@@ -2,7 +2,7 @@
 
 namespace CruiseManager.Core.Models
 {
-    [EntitySource(SourceName = "CountTree",
+    [EntitySource("CountTree",
         JoinCommands = 
         @"JOIN CuttingUnit USING (CuttingUnit_CN)
 JOIN Samplegroup USING (SampleGroup_CN)
@@ -30,6 +30,7 @@ LEFT JOIN Component as comp USING (Component_CN)")]
         [Field(SQLExpression = "tdv.PrimaryProduct", Alias = "Product", PersistanceFlags = PersistanceFlags.Never)]
         public string Product { get; set; }
 
+        [IgnoreField]
         public string LiveDead { get; set; }
 
         public string SpeciesProd => (string.IsNullOrEmpty(Species)) ? "N/A" : $"{Species}|{Product}|{LiveDead}";

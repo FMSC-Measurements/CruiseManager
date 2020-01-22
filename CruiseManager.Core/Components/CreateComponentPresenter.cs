@@ -215,7 +215,7 @@ namespace CruiseManager.Core.Components
                 if (compInfo == null)
                 {
                     compInfo = new ComponentDO(masterDAL);
-                    compInfo.GUID = Guid.NewGuid().ToString();
+                    compInfo.GUID = Guid.NewGuid();
                     compInfo.FileName = compFileName;
                     compInfo.Save();
                 }

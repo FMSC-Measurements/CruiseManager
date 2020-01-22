@@ -74,6 +74,7 @@ namespace CruiseManager.Core.CruiseCustomize
 
         #endregion Persisted Members
 
+        [IgnoreField]
         public bool IsTallyModeLocked
         {
             get
@@ -102,6 +103,7 @@ namespace CruiseManager.Core.CruiseCustomize
             && !UseClickerTally
             && Stratum.Method == CruiseMethods.STR;
 
+        [IgnoreField]
         public bool UseSystematicSampling
         {
             get
@@ -124,6 +126,7 @@ namespace CruiseManager.Core.CruiseCustomize
             && !UseSystematicSampling
             && Stratum.Method == CruiseMethods.STR;
 
+        [IgnoreField]
         public bool UseClickerTally
         {
             get { return SampleSelectorType == CruiseMethods.CLICKER_SAMPLER_TYPE; }
@@ -148,6 +151,7 @@ namespace CruiseManager.Core.CruiseCustomize
         /// Gets or sets a value indicating whether this instance has changes
         /// to associated countTreeRecords and a call to SaveTallies is required
         /// </summary>
+        [IgnoreField]
         public bool HasTallyEdits
         {
             get { return _hasTallyEdits; }

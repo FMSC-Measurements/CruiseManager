@@ -39,6 +39,7 @@ namespace CruiseManager.Core.CruiseCustomize
 
         private IList<FixCNTTallyPopulation> _tallyPopulations;
 
+        [IgnoreField]
         public string Errors { get; set; }
 
         public bool HasChangesToSave

@@ -13,6 +13,7 @@ namespace CruiseManager.Core.Models
         private string _fields;
         private string[] _fieldsArray;
 
+        [IgnoreField]
         public IList<SampleGroupDO> SampleGroups { get; set; }
 
         [Field(Alias = "Fields", PersistanceFlags = PersistanceFlags.Never)]
@@ -27,6 +28,7 @@ namespace CruiseManager.Core.Models
             }
         }
 
+        [IgnoreField]
         public string[] FieldsArray
         {
             get

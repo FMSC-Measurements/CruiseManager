@@ -73,6 +73,7 @@ namespace CruiseManager.Core.CruiseCustomize
 
         #endregion Persisted Members
 
+        [IgnoreField]
         public string Errors { get; set; }
 
         public bool HasChangesToSave

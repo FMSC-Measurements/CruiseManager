@@ -19,12 +19,12 @@
   </PropertyGroup>
 
   <!--Required for System.Data.Sqlite See: https://stackoverflow.com/questions/32639630/sqlite-interop-dll-files-does-not-copy-to-project-output-path-when-required-by-r/32639631#32639631-->
-  <PropertyGroup>
+  <!--<PropertyGroup>
     <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
     <CopySQLiteInteropFiles>false</CopySQLiteInteropFiles>
     <CleanSQLiteInteropFiles>false</CleanSQLiteInteropFiles>
     <CollectSQLiteInteropFiles>false</CollectSQLiteInteropFiles>
-  </PropertyGroup>
+  </PropertyGroup>-->
 
   <ItemGroup>
     <PackageReference Include="DotNetZip" Version="1.13.5" />
@@ -34,7 +34,6 @@
     <PackageReference Include="iTextSharp" Version="5.5.13.1" />
     <PackageReference Include="NBug" Version="1.2.2" />
     <PackageReference Include="Ninject" Version="3.3.4" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.110" />
   </ItemGroup>
 
   <ItemGroup>

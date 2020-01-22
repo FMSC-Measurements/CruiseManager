@@ -1,5 +1,6 @@
 ﻿using CruiseDAL;
 using CruiseDAL.DataObjects;
+using FMSC.ORM.EntityModel.Attributes;
 using System;
 
 namespace CruiseManager.Core.Models
@@ -18,6 +19,7 @@ namespace CruiseManager.Core.Models
             : base(sale)
         { }
 
+        [IgnoreField]
         public int? DistrictNum
         {
             get

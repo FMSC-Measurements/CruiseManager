@@ -1,5 +1,6 @@
 ﻿using Backpack.SqlBuilder;
 using CruiseDAL.DataObjects;
+using FMSC.ORM.EntityModel.Attributes;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -46,6 +47,7 @@ namespace CruiseManager.Core.CruiseCustomize
         public List<TreeFieldSetupDO> UnselectedTreeFields { get; set; }
         public List<LogFieldSetupDO> UnselectedLogFields { get; set; }
 
+        [IgnoreField]
         public bool HasEdits
         {
             get

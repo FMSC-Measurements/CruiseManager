@@ -6,6 +6,7 @@ using CruiseManager.Core.EditDesign.ViewInterfaces;
 using CruiseManager.Core.Models;
 using CruiseManager.Core.SetupModels;
 using CruiseManager.Core.ViewModel;
+using FMSC.ORM.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -364,7 +365,7 @@ namespace CruiseManager.Core.EditDesign
             UOMCodes = setupServ.GetUOMCodes();
         }
 
-        public void SetFieldSetup(StratumDO stratum, DAL database)
+        public void SetFieldSetup(StratumDO stratum, Datastore database)
         {
             string setTreeFieldCommand = String.Format("INSERT INTO TreeFieldSetup (Stratum_CN, Field, FieldOrder, ColumnType, Heading, Width, Format, Behavior) " +
             "Select {0} as Stratum_CN, Field, FieldOrder, ColumnType, Heading, Width, Format, Behavior " +

@@ -1,5 +1,6 @@
 ﻿using CruiseDAL;
 using CruiseDAL.DataObjects;
+using FMSC.ORM.EntityModel.Attributes;
 using System.Collections.Generic;
 
 namespace CruiseManager.Core.EditDesign
@@ -18,6 +19,7 @@ namespace CruiseManager.Core.EditDesign
         {
         }
 
+        [IgnoreField]
         public string MonthStr
         {
             get { return this.Month.ToString("D"); }
