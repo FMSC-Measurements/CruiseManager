@@ -1,4 +1,5 @@
 ﻿using CruiseManager.Core.App;
+using Microsoft.AppCenter.Crashes;
 using System;
 using System.Windows.Forms;
 
@@ -8,6 +9,8 @@ namespace CruiseManager.WinForms.App
     {
         public bool Handel(Exception e)
         {
+            Crashes.TrackError(e);
+
             if (e is FMSC.ORM.ReadOnlyException)
             {
                 MessageBox.Show("File is Read Only");

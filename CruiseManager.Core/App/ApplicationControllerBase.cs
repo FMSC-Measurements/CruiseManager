@@ -4,6 +4,7 @@ using CruiseManager.Core.CommandModel;
 using CruiseManager.Core.Constants;
 using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core.ViewModel;
+using Microsoft.AppCenter.Analytics;
 using Ninject;
 using Ninject.Modules;
 using System;
@@ -54,6 +55,8 @@ namespace CruiseManager.Core.App
 
         protected void OnDatabaseChanged()
         {
+            Analytics.TrackEvent(nameof(OnDatabaseChanged));
+
             var database = Database;
             var filePath = database.Path;
 
@@ -249,6 +252,11 @@ namespace CruiseManager.Core.App
 
         public virtual void OpenFile(String filePath)
         {
+            Analytics.TrackEvent(nameof(OpenFile), new Dictionary<string, string>
+            {
+                {"filePath", filePath }
+            });
+
             var extension = System.IO.Path.GetExtension(filePath).ToLowerInvariant();
 
             if (extension == Strings.CRUISE_FILE_EXTENTION
@@ -328,6 +336,13 @@ namespace CruiseManager.Core.App
         public bool OnActiveViewChanging(IView currentView)
         {
             var saveHandler = currentView?.ViewPresenter as ISaveHandler;
+
+            Analytics.TrackEvent(nameof(OnActiveViewChanging), new Dictionary<string, string>
+            {
+                {"hasSaveHandler", (saveHandler != null).ToString() },
+                {"hasChangesToSave", saveHandler?.HasChangesToSave.ToString() ?? "n/a"  },
+            });
+
             if (saveHandler != null)
             {
                 if (saveHandler.HasChangesToSave)
