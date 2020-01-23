@@ -48,7 +48,8 @@
   <Target Name="ZipSTPinfo" AfterTargets="Build">
     <ZipDirectory
       SourceDirectory="$(MSBuildProjectDirectory)\STPinfo"
-      DestinationFile="$(OutputPath)\STPinfo.setup" />
+      DestinationFile="$(OutputPath)\STPinfo.setup"
+      Overwrite="true"/>
   </Target>
 
   <!--<ItemGroup>
