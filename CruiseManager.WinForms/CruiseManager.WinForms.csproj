@@ -11,7 +11,7 @@
 
   <PropertyGroup Label="Build Config">
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net451</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <Platform>Any Cpu</Platform>
     <StartupObject>$(RootNamespace).Program</StartupObject>
@@ -44,12 +44,24 @@
   <ItemGroup>
     <ProjectReference Include="..\CruiseManager.Core\CruiseManager.Core.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
   
   <Target Name="ZipSTPinfo" AfterTargets="Build">
-    <ZipDirectory
-      SourceDirectory="$(MSBuildProjectDirectory)\STPinfo"
-      DestinationFile="$(OutputPath)\STPinfo.setup"
-      Overwrite="true"/>
+    <ZipDirectory SourceDirectory="$(MSBuildProjectDirectory)\STPinfo" DestinationFile="$(OutputPath)\STPinfo.setup" Overwrite="true" />
   </Target>
 
   <!--<ItemGroup>
