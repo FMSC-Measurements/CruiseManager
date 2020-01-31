@@ -3,7 +3,7 @@
   <PropertyGroup Label="Assembily Info">
     <AssemblyName>CruiseManager</AssemblyName>
     <RootNamespace>CruiseManager</RootNamespace>
-    <Version>2017.10.16</Version>
+    <Version>2020.01.30</Version>
     <Copyright>CC0 Public Domain</Copyright>
     <Company>USDA Forest Service</Company>
     <Authors>Ben Campbell</Authors>
