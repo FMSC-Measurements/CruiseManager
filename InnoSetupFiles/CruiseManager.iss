@@ -70,12 +70,12 @@ Name: associateCutFileTypes; Description: "Associate Cruise Template (.cut) File
 
 [Files]
 ; need to update the paths below after the solution files and folders are updated.
-Source: "..\CruiseManager.WinForms\bin\Release\CruiseManager.exe"; DestDir: {app}; Flags: ignoreversion;
-Source: "..\CruiseManager.WinForms\bin\Release\CruiseManager.exe.config"; DestDir: {app}; Flags: ignoreversion;
-Source: "..\CruiseManager.WinForms\bin\Release\*.dll"; DestDir: {app}; Flags: ignoreversion;
-Source: "..\CruiseManager.WinForms\bin\Release\STPinfo.setup"; DestDir: {app}; Flags: ignoreversion;
-Source: "..\CruiseManager.WinForms\bin\Release\x64\*.dll"; DestDir: {app}\x64; Flags: ignoreversion;
-Source: "..\CruiseManager.WinForms\bin\Release\x86\*.dll"; DestDir: {app}\x86; Flags: ignoreversion;
+Source: "..\CruiseManager.WinForms\bin\Release\net451\CruiseManager.exe"; DestDir: {app}; Flags: ignoreversion;
+Source: "..\CruiseManager.WinForms\bin\Release\net451\CruiseManager.exe.config"; DestDir: {app}; Flags: ignoreversion;
+Source: "..\CruiseManager.WinForms\bin\Release\net451\*.dll"; DestDir: {app}; Flags: ignoreversion;
+Source: "..\CruiseManager.WinForms\bin\Release\net451\STPinfo.setup"; DestDir: {app}; Flags: ignoreversion;
+Source: "..\CruiseManager.WinForms\bin\Release\net451\x64\*.dll"; DestDir: {app}\x64; Flags: ignoreversion;
+Source: "..\CruiseManager.WinForms\bin\Release\net451\x86\*.dll"; DestDir: {app}\x86; Flags: ignoreversion;
 Source: "..\Documentation\CruiseManagerUserGuide.docx";DestName: CruiseManagerUserGuide_{#SETUPVERSION}.docx; DestDir: {app}; Flags: ignoreversion
 Source: "..\Template Files\*.cut"; DestDir: {userdocs}\CruiseFiles\Templates; Flags: ignoreversion; Tasks: overwriteTemplates;
 Source: "..\Template Files\*.cut"; DestDir: {userdocs}\CruiseFiles\Templates; Flags: onlyifdoesntexist; Tasks: not overwriteTemplates;

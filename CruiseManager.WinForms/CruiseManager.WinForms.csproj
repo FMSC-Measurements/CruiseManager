@@ -13,7 +13,6 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net451</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
-    <Platform>Any Cpu</Platform>
     <StartupObject>$(RootNamespace).Program</StartupObject>
     <ApplicationIcon>Resources\cruisetree_setup.ico</ApplicationIcon>
   </PropertyGroup>
