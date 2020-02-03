@@ -358,7 +358,7 @@ namespace CruiseManager.WinForms.DataEditor
                 CuttingUnits = StratumFilter.CuttingUnits.ToList();
                 //load sample group selection list with all sample groups in stratum
                 SampleGroups = Database.From<SampleGroupDO>()
-                    .Where("Stratum_CN = ?").Read(StratumFilter.Stratum_CN).ToList();
+                    .Where("Stratum_CN = @p1").Read(StratumFilter.Stratum_CN).ToList();
                 //and enable ability to select sample group and tree default
                 CanSelectSampleGroup = true;
                 CanSelectTreeDefaultValue = true;
@@ -495,24 +495,25 @@ namespace CruiseManager.WinForms.DataEditor
         {
             var selectionList = new List<string>();
             var selectionArgs = new List<string>();
+            var pIndex = 1;
             if (cu != null)
             {
-                selectionList.Add(CruiseDAL.Schema.TREE.CUTTINGUNIT_CN + " = ?");
+                selectionList.Add($"{CruiseDAL.Schema.TREE.CUTTINGUNIT_CN} = @p{pIndex++}");
                 selectionArgs.Add(cu.CuttingUnit_CN.ToString());
             }
             if (st != null)
             {
-                selectionList.Add("Tree." + CruiseDAL.Schema.TREE.STRATUM_CN + " = ?");
+                selectionList.Add($"Tree.{CruiseDAL.Schema.TREE.STRATUM_CN} = @p{pIndex++}");
                 selectionArgs.Add(st.Stratum_CN.ToString());
             }
             if (sg != null)
             {
-                selectionList.Add(CruiseDAL.Schema.TREE.SAMPLEGROUP_CN + " = ?");
+                selectionList.Add($"{CruiseDAL.Schema.TREE.SAMPLEGROUP_CN} = @p{pIndex++}");
                 selectionArgs.Add(sg.SampleGroup_CN.ToString());
             }
             if (tdv != null)
             {
-                selectionList.Add(CruiseDAL.Schema.TREE.TREEDEFAULTVALUE_CN + " = ?");
+                selectionList.Add($"{CruiseDAL.Schema.TREE.TREEDEFAULTVALUE_CN} = @p{pIndex++}");
                 selectionArgs.Add(tdv.TreeDefaultValue_CN.ToString());
             }
 
@@ -532,24 +533,25 @@ namespace CruiseManager.WinForms.DataEditor
         {
             var selectionList = new List<string>();
             var selectionArgs = new List<string>();
+            var pIndex = 1;
             if (cu != null)
             {
-                selectionList.Add(String.Format("Tree.{0} = ?", CruiseDAL.Schema.TREE.CUTTINGUNIT_CN));
+                selectionList.Add($"Tree.{CruiseDAL.Schema.TREE.CUTTINGUNIT_CN} = @p{pIndex++}");
                 selectionArgs.Add(cu.CuttingUnit_CN.ToString());
             }
             if (st != null)
             {
-                selectionList.Add(String.Format("Tree.{0} = ?", CruiseDAL.Schema.TREE.STRATUM_CN));
+                selectionList.Add($"Tree.{CruiseDAL.Schema.TREE.STRATUM_CN} = @p{pIndex++}");
                 selectionArgs.Add(st.Stratum_CN.ToString());
             }
             if (sg != null)
             {
-                selectionList.Add(String.Format("Tree.{0} = ?", CruiseDAL.Schema.TREE.SAMPLEGROUP_CN));
+                selectionList.Add($"Tree.{CruiseDAL.Schema.TREE.SAMPLEGROUP_CN} = @p{pIndex++}");
                 selectionArgs.Add(sg.SampleGroup_CN.ToString());
             }
             if (tdv != null)
             {
-                selectionList.Add(String.Format("Tree.{0} = ?", CruiseDAL.Schema.TREE.TREEDEFAULTVALUE_CN));
+                selectionList.Add($"Tree.{CruiseDAL.Schema.TREE.TREEDEFAULTVALUE_CN} = @p{pIndex++}");
                 selectionArgs.Add(tdv.TreeDefaultValue_CN.ToString());
             }
             if (selectionList.Count > 0)
@@ -568,14 +570,15 @@ namespace CruiseManager.WinForms.DataEditor
         {
             var selectionList = new List<string>();
             var selectionArgs = new List<string>();
+            var pIndex = 1;
             if (cu != null)
             {
-                selectionList.Add(String.Format("{0} = ?", CruiseDAL.Schema.TREE.CUTTINGUNIT_CN));
+                selectionList.Add($"{CruiseDAL.Schema.TREE.CUTTINGUNIT_CN} = @p{pIndex++}");
                 selectionArgs.Add(cu.CuttingUnit_CN.ToString());
             }
             if (st != null)
             {
-                selectionList.Add(String.Format("{0} = ?", CruiseDAL.Schema.TREE.STRATUM_CN));
+                selectionList.Add($"{0} = @p{pIndex++}");
                 selectionArgs.Add(st.Stratum_CN.ToString());
             }
 
@@ -594,19 +597,20 @@ namespace CruiseManager.WinForms.DataEditor
         {
             var selectionList = new List<string>();
             var selectionArgs = new List<string>();
+            var pIndex = 1;
             if (cu != null)
             {
-                selectionList.Add("UnitCode = ?");
+                selectionList.Add($"UnitCode = @p{pIndex++}");
                 selectionArgs.Add(cu.Code);
             }
             if (st != null)
             {
-                selectionList.Add("StratumCode = ?");
+                selectionList.Add($"StratumCode = @p{pIndex++}");
                 selectionArgs.Add(st.Code);
             }
             if (sg != null)
             {
-                selectionList.Add("SGCode = ?");
+                selectionList.Add($"SGCode = @p{pIndex++}");
                 selectionArgs.Add(sg.Code);
             }
 
@@ -656,7 +660,7 @@ namespace CruiseManager.WinForms.DataEditor
                 case "tree":
                     {
                         record = Database.From<TreeVM>()
-                            .Where("Tree.Tree_CN = ?").Read(rowID).FirstOrDefault(); 
+                            .Where("Tree.Tree_CN = @p1").Read(rowID).FirstOrDefault(); 
                         ResetViewFilters();
                         _BS_Trees.Position = _BS_Trees.IndexOf(record);
                         DisplayTrees();
@@ -664,7 +668,7 @@ namespace CruiseManager.WinForms.DataEditor
                     }
                 case "log":
                     {
-                        record = Database.From<LogDO>().Where("Log.Log_CN = ?")
+                        record = Database.From<LogDO>().Where("Log.Log_CN = @p1")
                             .Read(rowID).FirstOrDefault();
                         ResetViewFilters();
                         _BS_Logs.Position = _BS_Logs.IndexOf(record);
@@ -674,7 +678,7 @@ namespace CruiseManager.WinForms.DataEditor
                 case "plot":
                     {
                         record = Database.From<PlotDO>()
-                            .Where("Plot.Plot_CN = ?").Read(rowID).FirstOrDefault();
+                            .Where("Plot.Plot_CN = @p1").Read(rowID).FirstOrDefault();
                         ResetViewFilters();
                         _BS_Plots.Position = _BS_Plots.IndexOf(record);
                         DisplayPlots();
@@ -705,12 +709,10 @@ namespace CruiseManager.WinForms.DataEditor
 
         protected void HandleTreeValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            TreeVM tree = null;
-            try
-            {
-                tree = _BS_Trees[e.RowIndex] as TreeVM;
-            }
-            catch (ArgumentOutOfRangeException) { return; }//ignore possible out of bound exceptions
+            var rowIndex = e.RowIndex;
+            if(rowIndex < 0 || rowIndex >= _BS_Trees.Count) { return; }
+
+            TreeVM tree = _BS_Trees[e.RowIndex] as TreeVM;
 
             if (tree == null) { return; }
 
@@ -743,8 +745,10 @@ namespace CruiseManager.WinForms.DataEditor
 
         protected void TreeDataGrid_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
+            var rowIndex = e.RowIndex;
+            if (rowIndex < 0 || rowIndex >= _BS_Trees.Count) { return; }
+
             var curTree = _BS_Trees[e.RowIndex] as TreeVM;
-            if (curTree == null) { return; }
 
             var cell = _DGV_Trees[e.ColumnIndex, e.RowIndex] as DataGridViewComboBoxCell;
             if (cell == null) { return; }

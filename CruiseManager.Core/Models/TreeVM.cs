@@ -9,6 +9,7 @@ namespace CruiseManager.Core.Models
         JoinCommands = "JOIN Stratum USING (Stratum_CN) JOIN CuttingUnit USING (CuttingUnit_CN) LEFT JOIN SampleGroup USING (SampleGroup_CN)")]
     public class TreeVM : TreeDO
     {
+        [IgnoreField]
         public long? PlotNumber
         {
             get
@@ -43,7 +44,7 @@ namespace CruiseManager.Core.Models
         public override StratumDO GetStratum()
         {
             if (DAL == null) { return null; }
-            return DAL.From<StratumVM>().Where("Stratum_CN = ?").Read(Stratum_CN).FirstOrDefault();
+            return DAL.From<StratumVM>().Where("Stratum_CN = @p1").Read(Stratum_CN).FirstOrDefault();
         }
 
         public new StratumVM Stratum

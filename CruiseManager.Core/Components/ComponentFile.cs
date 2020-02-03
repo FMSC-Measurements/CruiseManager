@@ -1,5 +1,6 @@
 ﻿using CruiseDAL;
 using CruiseDAL.DataObjects;
+using FMSC.ORM.EntityModel.Attributes;
 using System;
 
 namespace CruiseManager.Core.Components
@@ -7,17 +8,22 @@ namespace CruiseManager.Core.Components
     public class ComponentFileVM : ComponentDO
     {
         //public String FileName { get; set; }
+        [IgnoreField]
         public String FullPath { get; set; }
 
+        [IgnoreField]
         public DAL Database { get; set; }
 
+        [IgnoreField]
         public String DBAlias { get; set; }
 
         //public int Edits { get; set; }
         //public string LastMod { get; set; }
         //public int Warnings { get; set; }
+        [IgnoreField]
         public string Errors { get; set; }
 
+        [IgnoreField]
         public long? TreeCount
         {
             get
@@ -30,6 +36,7 @@ namespace CruiseManager.Core.Components
             }
         }
 
+        [IgnoreField]
         public long? LogCount
         {
             get
@@ -42,6 +49,7 @@ namespace CruiseManager.Core.Components
             }
         }
 
+        [IgnoreField]
         public long? PlotCount
         {
             get
@@ -54,6 +62,7 @@ namespace CruiseManager.Core.Components
             }
         }
 
+        [IgnoreField]
         public long? StemCount
         {
             get

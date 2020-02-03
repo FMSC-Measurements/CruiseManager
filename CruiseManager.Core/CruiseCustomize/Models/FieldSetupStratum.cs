@@ -1,4 +1,6 @@
-﻿using CruiseDAL.DataObjects;
+﻿using Backpack.SqlBuilder;
+using CruiseDAL.DataObjects;
+using FMSC.ORM.EntityModel.Attributes;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -45,6 +47,7 @@ namespace CruiseManager.Core.CruiseCustomize
         public List<TreeFieldSetupDO> UnselectedTreeFields { get; set; }
         public List<LogFieldSetupDO> UnselectedLogFields { get; set; }
 
+        [IgnoreField]
         public bool HasEdits
         {
             get
@@ -63,7 +66,7 @@ namespace CruiseManager.Core.CruiseCustomize
 
         public IEnumerable<TreeFieldSetupDO> GetSelectedTreeFields()
         {
-            return this.DAL.From<TreeFieldSetupDO>().Where("Stratum_CN = ?")
+            return this.DAL.From<TreeFieldSetupDO>().Where("Stratum_CN = @p1")
                 .OrderBy("FieldOrder").Query(Stratum_CN);
         }
 
@@ -71,7 +74,7 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             //select from TreeFieldSetupDefault where method = stratum.method
             var treeFieldDefaults = this.DAL.From<TreeFieldSetupDefaultDO>()
-                .Where("Method = ?")
+                .Where("Method = @p1")
                 .OrderBy("FieldOrder")
                 .Query(Method);
 
@@ -93,7 +96,7 @@ namespace CruiseManager.Core.CruiseCustomize
 
         public IEnumerable<LogFieldSetupDO> GetSelectedLogFields()
         {
-            return this.DAL.From<LogFieldSetupDO>().Where("Stratum_CN = ?")
+            return this.DAL.From<LogFieldSetupDO>().Where("Stratum_CN = @p1")
                 .OrderBy("FieldOrder").Query(Stratum_CN);
         }
 
@@ -102,7 +105,7 @@ namespace CruiseManager.Core.CruiseCustomize
             this.HasEdits = true;
         }
 
-        public override void Save(FMSC.ORM.Core.SQL.OnConflictOption option)
+        public override void Save(OnConflictOption option)
         {
             base.Save(option);
             this._hasEdits = false;

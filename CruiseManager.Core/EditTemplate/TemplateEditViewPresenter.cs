@@ -1,4 +1,5 @@
-﻿using CruiseDAL;
+﻿using Backpack.SqlBuilder;
+using CruiseDAL;
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
 using CruiseManager.Core.ViewInterfaces;
@@ -15,7 +16,7 @@ namespace CruiseManager.Core.EditTemplate
         private FMSC.Utility.Collections.BindingListRedux<TreeDefaultValueDO> _treeDefaultValues;
         //private List<TreeDefaultValueDO> _toBeDeletedTreeDefaults = new List<TreeDefaultValueDO>();
 
-        public new EditTemplateView View { get; set; }
+        public new IEditTemplateView View { get; set; }
         public DAL Database { get { return ApplicationController.Database; } }
 
         public BindingList<EditTemplateCruiseMethod> CruiseMethods { get; set; }
@@ -99,7 +100,7 @@ namespace CruiseManager.Core.EditTemplate
                     {
                         var vm = new EditTemplateCruiseMethod(method);
                         var treeFields = ApplicationController.Database.From<TreeFieldSetupDefaultDO>()
-                            .Where("Method = ?").OrderBy("FieldOrder").Read(method.Code).ToList();
+                            .Where("Method = @p1").OrderBy("FieldOrder").Read(method.Code).ToList();
 
                         vm.TreeFields = new BindingList<TreeFieldSetupDefaultDO>(treeFields);
 
@@ -211,7 +212,7 @@ namespace CruiseManager.Core.EditTemplate
         public List<TreeFieldSetupDefaultDO> GetSelectedTreeFields(CruiseMethodsDO method)
         {
             return ApplicationController.Database.From<TreeFieldSetupDefaultDO>()
-                .Where("Method = ?").OrderBy("FieldOrder")
+                .Where("Method = @p1").OrderBy("FieldOrder")
                 .Read(method.Code).ToList();
         }
 
@@ -271,7 +272,7 @@ namespace CruiseManager.Core.EditTemplate
                 {
                     lfs.DAL = ApplicationController.Database;
                     //lfs.Method = method.CruiseMethod.Code;
-                    lfs.Save(FMSC.ORM.Core.SQL.OnConflictOption.Ignore);
+                    lfs.Save(OnConflictOption.Ignore);
                 }
                 else if (lfs.IsChanged == true)
                 {

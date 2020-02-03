@@ -39,6 +39,7 @@ namespace CruiseManager.Core.CruiseCustomize
 
         private IList<FixCNTTallyPopulation> _tallyPopulations;
 
+        [IgnoreField]
         public string Errors { get; set; }
 
         public bool HasChangesToSave
@@ -87,20 +88,20 @@ namespace CruiseManager.Core.CruiseCustomize
             var list = new List<FixCNTTallyPopulation>();
 
             var sampleGroups = DAL.From<SampleGroupDO>()
-                .Where("Stratum_CN = ?")
+                .Where("Stratum_CN = @p1")
                 .Query(Stratum_CN);
 
             foreach (var sg in sampleGroups)
             {
                 var treeDefaults = DAL.From<TreeDefaultValueDO>()
                     .Join("SampleGroupTreeDefaultValue", "USING (TreeDefaultValue_CN)")
-                    .Where("SampleGroup_CN = ?")
+                    .Where("SampleGroup_CN = @p1")
                     .Query(sg.SampleGroup_CN);
 
                 foreach (var tdv in treeDefaults)
                 {
                     var pop = DAL.From<FixCNTTallyPopulation>()
-                        .Where("SampleGroup_CN = ? AND TreeDefaultValue_CN = ?")
+                        .Where("SampleGroup_CN = @p1 AND TreeDefaultValue_CN = @p2")
                         .Query(sg.SampleGroup_CN, tdv.TreeDefaultValue_CN).FirstOrDefault();
 
                     if (pop == null)

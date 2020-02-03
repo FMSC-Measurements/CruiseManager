@@ -73,6 +73,7 @@ namespace CruiseManager.Core.CruiseCustomize
 
         #endregion Persisted Members
 
+        [IgnoreField]
         public string Errors { get; set; }
 
         public bool HasChangesToSave
@@ -94,7 +95,7 @@ namespace CruiseManager.Core.CruiseCustomize
                 if (_treeDefaultValue == null)
                 {
                     _treeDefaultValue = DAL.From<TreeDefaultValueDO>()
-                        .Where("TreeDefaultValue_CN = ?")
+                        .Where("TreeDefaultValue_CN = @p1")
                         .Query(TreeDefaultValue_CN).FirstOrDefault();
                 }
                 return _treeDefaultValue;

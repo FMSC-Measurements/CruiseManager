@@ -4,6 +4,7 @@ using CruiseManager.Core.CommandModel;
 using CruiseManager.Core.Constants;
 using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core.ViewModel;
+using Microsoft.AppCenter.Analytics;
 using Ninject;
 using Ninject.Modules;
 using System;
@@ -13,11 +14,12 @@ using System.IO;
 
 namespace CruiseManager.Core.App
 {
-    public abstract class ApplicationControllerBase : IDisposable, INavigationService
+    public abstract class ApplicationControllerBase : IDisposable, IApplicationController
     {
         internal static readonly TreeDefaultValueDO[] EMPTY_SPECIES_LIST = { };
 
-        public Ninject.StandardKernel Kernel { get; set; }
+        public Ninject.StandardKernel Kernel { get; private set; } = new StandardKernel();
+
 
         #region ViewCommands
 
@@ -38,15 +40,45 @@ namespace CruiseManager.Core.App
             set
             {
                 if (_database == value) { return; }
-                //OnDatabaseChanging();
-                _database = value;
-                OnDatabaseChanged();
+                if (OnDatabaseChanging(_database, value))
+                {
+                    _database = value;
+                    OnDatabaseChanged();
+                }
             }
         }
 
-        private void OnDatabaseChanged()
+        protected bool OnDatabaseChanging(DAL oldValue, DAL newValue)
         {
-            SaveCommand.Enabled = this.SaveAsCommand.Enabled = (this.Database != null);
+            return true;
+        }
+
+        protected void OnDatabaseChanged()
+        {
+            Analytics.TrackEvent(nameof(OnDatabaseChanged));
+
+            var database = Database;
+            var filePath = database.Path;
+
+            if (database.CruiseFileType.HasFlag(CruiseFileType.Cruise))
+            {
+                String directroy = System.IO.Path.GetDirectoryName(filePath);
+                UserSettings.CruiseSaveLocation = directroy;
+                if (database.HasCruiseErrors(out var errors))
+                {
+                    this.ActiveView.ShowMessage(String.Join("\r\n", errors), null);
+                }
+                WindowPresenter.ShowCruiseLandingLayout();
+            }
+            else if (database.CruiseFileType.HasFlag(CruiseFileType.Template))
+            {
+                String directroy = System.IO.Path.GetDirectoryName(filePath);
+                UserSettings.TemplateSaveLocation = directroy;
+                WindowPresenter.ShowTemplateLandingLayout();
+            }
+
+            AppState.AddRecentFile(filePath);
+            SaveCommand.Enabled = this.SaveAsCommand.Enabled = (database != null);
         }
 
         public bool InSupervisorMode { get; set; }
@@ -105,6 +137,8 @@ namespace CruiseManager.Core.App
 
         protected ApplicationControllerBase()
         {
+            RegisterTypes(Kernel);
+
             this.SaveCommand = new BindableActionCommand("Save", this.Save, enabled: false);
             this.SaveAsCommand = new BindableActionCommand("SaveAs", this.SaveAs, enabled: false);
             this.OpenFileCommand = new BindableActionCommand("Open File", this.OpenFile);
@@ -115,10 +149,7 @@ namespace CruiseManager.Core.App
 #endif
         }
 
-        protected ApplicationControllerBase(NinjectModule viewModule, NinjectModule coreModule) : this()
-        {
-            this.Kernel = new StandardKernel(viewModule, coreModule);
-        }
+        public abstract void RegisterTypes(StandardKernel kernel);
 
         public IView GetView<T>() where T : IView
         {
@@ -180,78 +211,31 @@ namespace CruiseManager.Core.App
 
         protected void InitializeDAL(string path)
         {
-            this.ActiveView.ShowWaitCursor();
+            //start wait cursor in case this takes a long time
+            ActiveView.ShowWaitCursor();
             try
             {
                 Database = new DAL(path);
             }
-            finally
-            {
-                this.ActiveView.ShowDefaultCursor();
-            }
-        }
-
-        public virtual void OpenFile(String filePath)
-        {
-            bool hasError = false;
-            try
-            {
-                //start wait cursor in case this takes a long time
-                this.ActiveView.ShowWaitCursor();
-                switch (System.IO.Path.GetExtension(filePath))
-                {
-                    case Strings.CRUISE_FILE_EXTENTION:
-                        {
-                            this.InitializeDAL(filePath);
-                            AppState.AddRecentFile(filePath);
-                            String directroy = System.IO.Path.GetDirectoryName(filePath);
-                            this.UserSettings.CruiseSaveLocation = directroy;
-                            String[] errors;
-                            if (this.Database.HasCruiseErrors(out errors))
-                            {
-                                this.ActiveView.ShowMessage(String.Join("\r\n", errors), null);
-                            }
-                            WindowPresenter.ShowCruiseLandingLayout();
-                            break;
-                        }
-                    case Strings.CRUISE_TEMPLATE_FILE_EXTENTION:
-                        {
-                            this.InitializeDAL(filePath);
-                            AppState.AddRecentFile(filePath);
-                            String directroy = System.IO.Path.GetDirectoryName(filePath);
-                            this.UserSettings.TemplateSaveLocation = directroy;
-                            WindowPresenter.ShowTemplateLandingLayout();
-                            break;
-                        }
-                    default:
-                        this.ActiveView.ShowMessage("Invalid file name", null);
-                        return;
-                }
-            }
-            catch (CruiseDAL.DatabaseShareException)
-            {
-                hasError = true;
-                this.ActiveView.ShowMessage("File can not be opened in multiple applications");
-            }
+            //catch (CruiseDAL.DatabaseShareException)
+            //{
+            //    ActiveView.ShowMessage("File can not be opened in multiple applications");
+            //}
             catch (FMSC.ORM.ReadOnlyException)
             {
-                hasError = true;
-                this.ActiveView.ShowMessage("Unable to open file because it is read only");
+                ActiveView.ShowMessage("Unable to open file because it is read only");
             }
             catch (FMSC.ORM.IncompatibleSchemaException ex)
             {
-                hasError = true;
-                this.ActiveView.ShowMessage("File is not compatible with this version of Cruise Manager: " + ex.Message);
+                ActiveView.ShowMessage("File is not compatible with this version of Cruise Manager: " + ex.Message);
             }
             catch (FMSC.ORM.SQLException ex)
             {
-                hasError = true;
-                this.ActiveView.ShowMessage("Unable to open file : " + ex.GetType().Name);
+                ActiveView.ShowMessage("Unable to open file : " + ex.GetType().Name);
             }
             catch (System.IO.IOException ex)
             {
-                hasError = true;
-                this.ActiveView.ShowMessage("Unable to open file : " + ex.GetType().Name);
+                ActiveView.ShowMessage("Unable to open file : " + ex.GetType().Name);
             }
             catch (System.Exception e)
             {
@@ -262,10 +246,27 @@ namespace CruiseManager.Core.App
             }
             finally
             {
-                if (hasError)
-                {
-                    WindowPresenter.ShowHomeLayout();
-                }
+                ActiveView.ShowDefaultCursor();
+            }
+        }
+
+        public virtual void OpenFile(String filePath)
+        {
+            Analytics.TrackEvent(nameof(OpenFile), new Dictionary<string, string>
+            {
+                {"filePath", filePath }
+            });
+
+            var extension = System.IO.Path.GetExtension(filePath).ToLowerInvariant();
+
+            if (extension == Strings.CRUISE_FILE_EXTENTION
+                || extension == Strings.CRUISE_TEMPLATE_FILE_EXTENTION)
+            {
+                InitializeDAL(filePath);
+            }
+            else
+            {
+                ActiveView.ShowMessage("Invalid file name", null);
             }
         }
 
@@ -313,7 +314,7 @@ namespace CruiseManager.Core.App
             FileAttributes atts = File.GetAttributes(fileName);
             if ((atts & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
             {
-                System.Windows.Forms.MessageBox.Show("This file is read only.");
+                ActiveView.ShowMessage("This file is read only.");
             }
             else
             {
@@ -335,6 +336,13 @@ namespace CruiseManager.Core.App
         public bool OnActiveViewChanging(IView currentView)
         {
             var saveHandler = currentView?.ViewPresenter as ISaveHandler;
+
+            Analytics.TrackEvent(nameof(OnActiveViewChanging), new Dictionary<string, string>
+            {
+                {"hasSaveHandler", (saveHandler != null).ToString() },
+                {"hasChangesToSave", saveHandler?.HasChangesToSave.ToString() ?? "n/a"  },
+            });
+
             if (saveHandler != null)
             {
                 if (saveHandler.HasChangesToSave)

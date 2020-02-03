@@ -1,9 +1,9 @@
-﻿using CruiseDAL;
+﻿using Backpack.SqlBuilder;
+using CruiseDAL;
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
 using CruiseManager.Core.Models;
 using CruiseManager.Core.SetupModels;
-using FMSC.ORM.Core.SQL;
 using FMSC.Utility.Collections;
 using System;
 using System.Collections.Generic;
@@ -242,7 +242,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             foreach (StratumVM stratum in stList)
             {
                 stratum.CuttingUnits.Populate();
-                var sgList = _database.From<SampleGroupDO>().Where("Stratum_CN = ?").Read(stratum.Stratum_CN).ToList();
+                var sgList = _database.From<SampleGroupDO>().Where("Stratum_CN = @p1").Read(stratum.Stratum_CN).ToList();
                 foreach (SampleGroupDO sg in sgList)
                 {
                     sg.TreeDefaultValues.Populate();

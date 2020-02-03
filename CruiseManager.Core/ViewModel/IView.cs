@@ -11,6 +11,8 @@ namespace CruiseManager.Core.ViewModel
 
         event EventHandler Load;
 
+        void EndEdits();
+
         void ShowMessage(String message);
 
         void ShowMessage(String message, String caption);

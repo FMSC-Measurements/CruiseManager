@@ -2,7 +2,7 @@
 
 namespace CruiseManager.Core.ViewInterfaces
 {
-    public interface EditTemplateView : IView
+    public interface IEditTemplateView : IView
     {
         void UpdateVolumeEqs();
 

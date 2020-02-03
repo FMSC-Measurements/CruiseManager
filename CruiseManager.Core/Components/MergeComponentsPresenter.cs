@@ -114,7 +114,7 @@ namespace CruiseManager.Core.Components
 
         #endregion Properties
 
-        public MergeComponentsPresenter(ApplicationControllerBase applicationController)
+        public MergeComponentsPresenter(IApplicationController applicationController)
             : base(applicationController)
         {
             Initialize(applicationController.Database);
@@ -295,7 +295,7 @@ namespace CruiseManager.Core.Components
             foreach (ComponentFileVM comp in this.ActiveComponents)
             {
                 var compCount = comp.Database.From<CountTreeDO>()
-                    .Where("CountTree_CN = ?").Read(masterCopy.CountTree_CN).FirstOrDefault();
+                    .Where("CountTree_CN = @p1").Read(masterCopy.CountTree_CN).FirstOrDefault();
 
                 countSum += (int)compCount.TreeCount;
             }
@@ -311,22 +311,22 @@ namespace CruiseManager.Core.Components
 
         public List<MergeObject> ListConflicts(MergeTableCommandBuilder cmdBldr)
         {
-            return this.MasterDB.Query<MergeObject>("SELECT * FROM " + cmdBldr.MergeTableName + cmdBldr.FindConflictsFilter + ";");
+            return this.MasterDB.Query<MergeObject>("SELECT * FROM " + cmdBldr.MergeTableName + cmdBldr.FindConflictsFilter + ";", (object[])null).ToList();
         }
 
         public List<MergeObject> ListMatches(MergeTableCommandBuilder cmdBldr)
         {
-            return this.MasterDB.Query<MergeObject>("SELECT * FROM " + cmdBldr.MergeTableName + " WHERE " + cmdBldr.FindMatchesBase + ";");
+            return this.MasterDB.Query<MergeObject>("SELECT * FROM " + cmdBldr.MergeTableName + " WHERE " + cmdBldr.FindMatchesBase + ";", (object[])null).ToList();
         }
 
         public List<MergeObject> ListNew(MergeTableCommandBuilder cmdBldr)
         {
-            return this.MasterDB.Query<MergeObject>("SELECT * FROM " + cmdBldr.MergeTableName + cmdBldr.FindNewRecords + ";");
+            return this.MasterDB.Query<MergeObject>("SELECT * FROM " + cmdBldr.MergeTableName + cmdBldr.FindNewRecords + ";", (object[])null).ToList();
         }
 
         public List<MergeObject> ListDeleted(MergeTableCommandBuilder cmdBldr)
         {
-            return this.MasterDB.Query<MergeObject>("SELECT * FROM " + cmdBldr.MergeTableName + " WHERE IsDeleted = 1;");
+            return this.MasterDB.Query<MergeObject>("SELECT * FROM " + cmdBldr.MergeTableName + " WHERE IsDeleted = 1;", (object[])null).ToList();
         }
 
         public int GetNumConflicts()

@@ -1,12 +1,8 @@
-﻿using System.Collections.Generic;
-using CruiseDAL.DataObjects;
-using System.IO;
-using System;
-using Xunit;
-using CruiseManager.WinForms.App;
+﻿using CruiseManager.WinForms.App;
 using FluentAssertions;
+using Xunit;
 
-namespace CSMTest
+namespace CruiseManager.WinForms.Test
 {
     public class SetupServiceTest
     {

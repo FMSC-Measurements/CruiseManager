@@ -1,11 +1,9 @@
 ﻿using CruiseManager.Utility;
 using FluentAssertions;
-using System;
-using System.Diagnostics;
 using System.IO;
 using Xunit;
 
-namespace CSMTest
+namespace CruiseManager.Test
 {
     public class COConverterTest
     {
@@ -14,7 +12,6 @@ namespace CSMTest
 
         public COConverterTest()
         {
-
         }
 
         [Fact]

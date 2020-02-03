@@ -11,7 +11,7 @@ namespace CruiseManager.Core.Components
         public long? Tree_CN { get; set; }
 
         [Field(Name = CruiseDAL.Schema.TREE.TREE_GUID)]
-        public Guid Tree_GUID { get; set; }
+        public string Tree_GUID { get; set; }
     }
 
     public class PlotKey
@@ -20,7 +20,7 @@ namespace CruiseManager.Core.Components
         public long? Plot_CN { get; set; }
 
         [Field(Name = CruiseDAL.Schema.PLOT.PLOT_GUID)]
-        public Guid Plot_GUID { get; set; }
+        public string Plot_GUID { get; set; }
     }
 
     public class LogKey
@@ -29,7 +29,7 @@ namespace CruiseManager.Core.Components
         public long? Log_CN { get; set; }
 
         [Field(Name = CruiseDAL.Schema.LOG.LOG_GUID)]
-        public Guid Log_GUID { get; set; }
+        public string Log_GUID { get; set; }
     }
 
     public class StemKey
@@ -38,7 +38,7 @@ namespace CruiseManager.Core.Components
         public long? Stem_CN { get; set; }
 
         [Field(Name = CruiseDAL.Schema.STEM.STEM_GUID)]
-        public Guid Stem_GUID { get; set; }
+        public string Stem_GUID { get; set; }
     }
 
     public class TreeEstimateKey
@@ -47,7 +47,7 @@ namespace CruiseManager.Core.Components
         public long? TreeEstimate_CN { get; set; }
 
         [Field(Name = CruiseDAL.Schema.TREEESTIMATE.TREEESTIMATE_GUID)]
-        public Guid TreeEstimate_GUID { get; set; }
+        public string TreeEstimate_GUID { get; set; }
     }
 
     public class UpdateMasterWorker
@@ -74,28 +74,28 @@ namespace CruiseManager.Core.Components
             db.BeginTransaction();
             try
             {
-                foreach (TreeKey tk in db.Query<TreeKey>("SELECT * FROM Tree " + SELECT_TREES + ";"))
+                foreach (TreeKey tk in db.Query<TreeKey>($"SELECT * FROM Tree {SELECT_TREES};", (object[])null))
                 {
-                    tk.Tree_GUID = Guid.NewGuid();
-                    db.Execute("UPDATE Tree SET Tree_GUID = ? WHERE Tree_CN = ?;", tk.Tree_GUID.ToString(), tk.Tree_CN);
+                    tk.Tree_GUID = Guid.NewGuid().ToString();
+                    db.Execute("UPDATE Tree SET Tree_GUID = @p1 WHERE Tree_CN = @p2;", tk.Tree_GUID.ToString(), tk.Tree_CN);
                     //db.Execute("UPDATE Log SET Tree_GUID = ? WHERE Tree_CN = ?;", tk.Tree_GUID.ToString(), tk.Tree_CN);
                     //db.Execute("UPDATE Stem SET Tree_GUID = ? WHERE Tree_CN = ?;", tk.Tree_GUID.ToString(), tk.Tree_CN);
                 }
-                foreach (PlotKey pk in db.Query<PlotKey>("SELECT * FROM Plot " + SELECT_PLOTS + ";"))
+                foreach (PlotKey pk in db.Query<PlotKey>($"SELECT * FROM Plot {SELECT_PLOTS};", (object[])null))
                 {
-                    pk.Plot_GUID = Guid.NewGuid();
-                    db.Execute("UPDATE Plot SET Plot_GUID = ? WHERE Plot_CN = ?;", pk.Plot_GUID.ToString(), pk.Plot_CN);
+                    pk.Plot_GUID = Guid.NewGuid().ToString();
+                    db.Execute("UPDATE Plot SET Plot_GUID = @p1 WHERE Plot_CN = @p2;", pk.Plot_GUID.ToString(), pk.Plot_CN);
                     //db.Execute("UPDATE Tree SET Plot_GUID = ? WHERE Plot_CN = ?;", pk.Plot_GUID.ToString(), pk.Plot_CN);
                 }
-                foreach (LogKey lk in db.Query<LogKey>("SELECT * FROM Log " + SELECT_LOGS + ";"))
+                foreach (LogKey lk in db.Query<LogKey>("SELECT * FROM Log " + SELECT_LOGS + ";", (object[])null))
                 {
-                    lk.Log_GUID = Guid.NewGuid();
-                    db.Execute("UPDATE Log SET Log_GUID = ? WHERE Log_CN = ?;", lk.Log_GUID.ToString(), lk.Log_CN);
+                    lk.Log_GUID = Guid.NewGuid().ToString();
+                    db.Execute("UPDATE Log SET Log_GUID = @p1 WHERE Log_CN = @p2;", lk.Log_GUID.ToString(), lk.Log_CN);
                 }
-                foreach (TreeEstimateKey tek in db.Query<TreeEstimateKey>("SELECT * FROM TreeEstimate " + SELECT_TREEEST + ";"))
+                foreach (TreeEstimateKey tek in db.Query<TreeEstimateKey>($"SELECT * FROM TreeEstimate {SELECT_TREEEST};", (object[])null))
                 {
-                    tek.TreeEstimate_GUID = Guid.NewGuid();
-                    db.Execute("UPDATE TreeEstimate SET TreeEstimate_GUID = ? WHERE TreeEstimate_CN = ?", tek.TreeEstimate_GUID.ToString(), tek.TreeEstimate_CN);
+                    tek.TreeEstimate_GUID = Guid.NewGuid().ToString();
+                    db.Execute("UPDATE TreeEstimate SET TreeEstimate_GUID = @p1 WHERE TreeEstimate_CN = @p2", tek.TreeEstimate_GUID.ToString(), tek.TreeEstimate_CN);
                 }
 
                 db.CommitTransaction();

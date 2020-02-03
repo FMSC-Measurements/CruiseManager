@@ -1,6 +1,8 @@
-﻿using CruiseDAL;
+﻿using Backpack.SqlBuilder;
+using Backpack.SqlBuilder.Sqlite;
+using CruiseDAL;
 using CruiseDAL.DataObjects;
-using FMSC.ORM.Core.SQL;
+using CruiseManager.Core.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,37 +35,37 @@ namespace CruiseManager.Core.Components
         private void InitializeCommonColumns(bool hasGuidKey, bool hasRowVersion)
         {
             List<ColumnInfo> cList = new List<ColumnInfo>();
-            cList.Add(new ColumnInfo() { Name = "MergeRowID", DBType = "INTEGER", IsPK = true });
-            cList.Add(new ColumnInfo() { Name = "ComponentRowID", DBType = "INTEGER" });
-            cList.Add(new ColumnInfo() { Name = "ComponentID", DBType = "INTEGER" });
-            cList.Add(new ColumnInfo() { Name = "NaturalMatch", DBType = "INTEGER" });
-            cList.Add(new ColumnInfo() { Name = "RowIDMatch", DBType = "INTEGER" });
-            cList.Add(new ColumnInfo() { Name = "GUIDMatch", DBType = "INTEGER" });
+            cList.Add(new ColumnInfo() { Name = "MergeRowID", Type = "INTEGER", IsPK = true });
+            cList.Add(new ColumnInfo() { Name = "ComponentRowID", Type = "INTEGER" });
+            cList.Add(new ColumnInfo() { Name = "ComponentID", Type = "INTEGER" });
+            cList.Add(new ColumnInfo() { Name = "NaturalMatch", Type = "INTEGER" });
+            cList.Add(new ColumnInfo() { Name = "RowIDMatch", Type = "INTEGER" });
+            cList.Add(new ColumnInfo() { Name = "GUIDMatch", Type = "INTEGER" });
 
-            cList.Add(new ColumnInfo() { Name = "MatchRowID", DBType = "INTEGER" });
-            cList.Add(new ColumnInfo() { Name = "PartialMatch", DBType = "TEXT" });
+            cList.Add(new ColumnInfo() { Name = "MatchRowID", Type = "INTEGER" });
+            cList.Add(new ColumnInfo() { Name = "PartialMatch", Type = "TEXT" });
 
-            //cList.Add(new ColumnInfo() { Name = "ComponentConflict", DBType = "TEXT" });
-            //cList.Add(new ColumnInfo() { Name = "MatchConflict", DBType = "TEXT" });
-            cList.Add(new ColumnInfo() { Name = "NaturalSiblings", DBType = "TEXT" });
-            cList.Add(new ColumnInfo() { Name = "SiblingRecords", DBType = "TEXT" });
+            //cList.Add(new ColumnInfo() { Name = "ComponentConflict", Type = "TEXT" });
+            //cList.Add(new ColumnInfo() { Name = "MatchConflict", Type = "TEXT" });
+            cList.Add(new ColumnInfo() { Name = "NaturalSiblings", Type = "TEXT" });
+            cList.Add(new ColumnInfo() { Name = "SiblingRecords", Type = "TEXT" });
 
-            //cList.Add(new ColumnInfo() { Name = "MasterConflict", DBType = "TEXT" });
-            cList.Add(new ColumnInfo() { Name = "IsDeleted", DBType = "BOOL", Default = "0" });
+            //cList.Add(new ColumnInfo() { Name = "MasterConflict", Type = "TEXT" });
+            cList.Add(new ColumnInfo() { Name = "IsDeleted", Type = "BOOL", Default = "0" });
 
-            //cList.Add(new ColumnInfo() { Name = "MasterRowID", DBType = "INTEGER" });
+            //cList.Add(new ColumnInfo() { Name = "MasterRowID", Type = "INTEGER" });
 
-            cList.Add(new ColumnInfo() { Name = "CompoundNaturalKey", DBType = "TEXT" });
+            cList.Add(new ColumnInfo() { Name = "CompoundNaturalKey", Type = "TEXT" });
 
             if (hasGuidKey)
             {
-                cList.Add(new ColumnInfo() { Name = "ComponentRowGUID", DBType = "TEXT" });
+                cList.Add(new ColumnInfo() { Name = "ComponentRowGUID", Type = "TEXT" });
             }
 
             if (hasRowVersion)
             {
-                cList.Add(new ColumnInfo() { Name = "ComponentRowVersion", DBType = "INTEGER" });
-                cList.Add(new ColumnInfo() { Name = "MasterRowVersion", DBType = "INTEGER" });
+                cList.Add(new ColumnInfo() { Name = "ComponentRowVersion", Type = "INTEGER" });
+                cList.Add(new ColumnInfo() { Name = "MasterRowVersion", Type = "INTEGER" });
             }
             this.CommonMergeTableColumns = cList;
         }
@@ -153,7 +155,7 @@ namespace CruiseManager.Core.Components
 
         //public List<ColumnInfo> ForeignKeys { get; private set; }
 
-        public string GetCompoundNaturalKeyExpression(String sqlSourceName)
+        protected string GetCompoundNaturalKeyExpression(String sqlSourceName)
         {
             string formatEpr;
             switch (this.ClientTableName)
@@ -193,16 +195,24 @@ namespace CruiseManager.Core.Components
         {
             get
             {
-                //build array of column definitions for our merge table
-                String[] columnDefs = (from ColumnInfo ci in this.AllClientColumns
-                                       where ci.IsPK || this.ClientUniqueFieldNames.Contains(ci.Name)
-                                       select ci.GetColumnDef(false)).Union(
-                                           from ColumnInfo ci in CommonMergeTableColumns
-                                           select ci.GetColumnDef(true)).ToArray();
+                var createTableBuilder = new CreateTable(new SqliteDialect());
+                createTableBuilder.TableName = MergeTableName;
+                createTableBuilder.Columns = AllClientColumns.Where((c) => c.IsPK || ClientUniqueFieldNames.Contains(c.Name))
+                    .Select(c => new ColumnInfo(c.Name, c.Type))
+                    .Union(CommonMergeTableColumns, new GenericEqualityComparer<ColumnInfo>((c1, c2) => c1.Name == c2.Name)).ToArray();
 
-                string mkTbl = "CREATE TABLE " + this.MergeTableName + "\r\n"
-                    + " (" + String.Join(",\r\n", columnDefs) + ");";
-                return mkTbl;
+                return createTableBuilder.ToString() + ";";
+
+                ////build array of column definitions for our merge table
+                //String[] columnDefs = (from ColumnInfo ci in this.AllClientColumns
+                //                       where ci.IsPK || this.ClientUniqueFieldNames.Contains(ci.Name)
+                //                       select ci.GetColumnDef(false)).Union(
+                //                           from ColumnInfo ci in CommonMergeTableColumns
+                //                           select ci.GetColumnDef(true)).ToArray();
+
+                //string mkTbl = "CREATE TABLE " + this.MergeTableName + "\r\n"
+                //    + " (" + String.Join(",\r\n", columnDefs) + ");";
+                //return mkTbl;
             }
         }
 
@@ -262,20 +272,20 @@ namespace CruiseManager.Core.Components
             }
         }
 
-        public string NaturalCrossComponentConflictsCommand
-        {
-            get
-            {
-                //find records using across components that conflict on natural key
-                return
-                @"SELECT lft.MergeRowID, group_concat( rgt.ComponentRowID || ' in ' || rgt.ComponentID, ', ') AS ComponentConflict " +
-                @"FROM " + this.MergeTableName + " AS lft " +
-                @"INNER JOIN " + this.MergeTableName + " AS rgt " +
-                this.NaturalJoinCondition +
-                @"WHERE lft.MergeRowID != rgt.MergeRowID " +
-                "GROUP BY lft.MergeRowID;";
-            }
-        }
+        //public string NaturalCrossComponentConflictsCommand
+        //{
+        //    get
+        //    {
+        //        //find records using across components that conflict on natural key
+        //        return
+        //        @"SELECT lft.MergeRowID, group_concat( rgt.ComponentRowID || ' in ' || rgt.ComponentID, ', ') AS ComponentConflict " +
+        //        @"FROM " + this.MergeTableName + " AS lft " +
+        //        @"INNER JOIN " + this.MergeTableName + " AS rgt " +
+        //        this.NaturalJoinCondition +
+        //        @"WHERE lft.MergeRowID != rgt.MergeRowID " +
+        //        "GROUP BY lft.MergeRowID;";
+        //    }
+        //}
 
         public string SelectInvalidMatchs => $"SELECT MergeRowID FROM {MergeTableName} {FindInvalidMatchs}";
 
@@ -283,7 +293,7 @@ namespace CruiseManager.Core.Components
                 "SELECT PartialMatch, SiblingRecords FROM (" +
                 " SELECT PartialMatch, group_concat(ComponentRowID || ' in ' || ComponentID, ', ') AS SiblingRecords, count(1) as size" +
                 $" FROM {MergeTableName} WHERE PartialMatch IS NOT NULL" +
-                "GROUP BY PartialMatch)" +
+                " GROUP BY PartialMatch)" +
                 " WHERE size > 1;";
 
         public string SelectMissingMatches(ComponentFileVM comp)
@@ -433,44 +443,52 @@ namespace CruiseManager.Core.Components
 
         public String GetPopulateMergeTableCommand(ComponentFileVM component)
         {
+            return GetPopulateMergeTableCommand((int)component.Component_CN.Value);
+        }
+
+        public String GetPopulateMergeTableCommand(int component_cn)
+        {
             string clientFieldList = string.Empty;
-            var clientFieldName = ClientFieldNames;
-            if (clientFieldName.Count() > 0)
+            var clientFieldNames = ClientFieldNames;
+            if (clientFieldNames.Count() > 0)
             {
                 clientFieldList = ", " + String.Join(", ", this.ClientFieldNames);
             }
 
-            String populateMergetableCMD = String.Format(
-                "INSERT INTO {0} " +
-                "(ComponentRowID{1}, ComponentID{2}{3}, CompoundNaturalKey) " +
-                "SELECT {4}{5}" +
-                ", {6} AS ComponentID{7}{3}, {9} " +
-                "FROM compDB.{8} as compSource;",
-                this.MergeTableName,
-                (this.HasGUIDKey) ? ", ComponentRowGUID" : String.Empty,
-                (this.HasRowVersion) ? ", ComponentRowVersion" : String.Empty,
-                clientFieldList,
-                this.ClientPrimaryKey.Name,
-                (this.HasGUIDKey) ? ", " + this.ClientGUIDFieldName : String.Empty,
-                component.Component_CN.ToString(),
-                (this.HasRowVersion) ? ", RowVersion AS ComponentRowVersion" : String.Empty,
-                this.ClientTableName,
-                this.GetCompoundNaturalKeyExpression("compSource"));
+            String populateMergetableCMD =
+                $"INSERT INTO {MergeTableName} " +
+                "(ComponentRowID" +
+                (HasGUIDKey ? ", ComponentRowGUID" : String.Empty) +
+                ", ComponentID" +
+                (HasRowVersion ? ", ComponentRowVersion" : String.Empty) +
+                clientFieldList +
+                ", CompoundNaturalKey) " +
+                $"SELECT {ClientPrimaryKey.Name}" +
+                (HasGUIDKey ? ", " + this.ClientGUIDFieldName : String.Empty) +
+                $", {component_cn.ToString()} AS ComponentID" +
+                (HasRowVersion ? ", RowVersion AS ComponentRowVersion" : String.Empty) +
+                clientFieldList +
+                $", {GetCompoundNaturalKeyExpression("compSource")} " +
+                $"FROM compDB.{ClientTableName} as compSource;";
 
             return populateMergetableCMD;
         }
 
         public String GetPopulateDeletedRecordsCommand(ComponentFileVM component)
         {
-            String populateDeletedRecordsCMD = String.Format(
-                "INSERT INTO {0} "
-                 + "(ComponentRowID{1}, IsDeleted, ComponentID) "
-                 + "SELECT RecordID{2}, 1 AS IsDeleted, {3} AS ComponentID FROM Util_Tombstone WHERE TableName = '{4}';",
-                this.MergeTableName,
-                (this.HasGUIDKey) ? ", ComponentRowGUID" : String.Empty,
-                (this.HasGUIDKey) ? ", RecordGUID" : String.Empty,
-                component.Component_CN,
-                this.ClientTableName);
+            return GetPopulateDeletedRecordsCommand((int)component.Component_CN.Value);
+        }
+
+        public String GetPopulateDeletedRecordsCommand(int component_cn)
+        {
+            String populateDeletedRecordsCMD =
+                $"INSERT INTO {MergeTableName} "
+                 + "(ComponentRowID " +
+                 (HasGUIDKey ? ", ComponentRowGUID" : String.Empty) +
+                 ", IsDeleted, ComponentID) " +
+                 "SELECT RecordID " +
+                 (this.HasGUIDKey ? ", RecordGUID" : String.Empty) +
+                 $", 1 AS IsDeleted, {component_cn} AS ComponentID FROM Util_Tombstone WHERE TableName = '{ClientTableName}';";
 
             return populateDeletedRecordsCMD;
         }
@@ -480,26 +498,26 @@ namespace CruiseManager.Core.Components
             string selectNewRecordsCommand =
                 "SELECT * FROM " + this.MergeTableName +
                 this.FindNewRecords +
-                " AND ComponentID = ?;";
-            return master.Query<MergeObject>(selectNewRecordsCommand, comp.Component_CN);
+                " AND ComponentID = @p1;";
+            return master.Query<MergeObject>(selectNewRecordsCommand, new object[] { comp.Component_CN }).ToList();
         }
 
         public List<MergeObject> ListComponentUpdates(DAL master, ComponentFileVM comp)
         {
             string selectPullRecordsCommand = "SELECT * FROM " + this.MergeTableName +
                 this.FindMasterToCompUpdates +
-                " AND ComponentID = ?;";
+                " AND ComponentID = @p1;";
 
-            return master.Query<MergeObject>(selectPullRecordsCommand, comp.Component_CN);
+            return master.Query<MergeObject>(selectPullRecordsCommand, new object[] { comp.Component_CN }).ToList();
         }
 
         public List<MergeObject> ListMasterUpdates(DAL master, ComponentFileVM comp)
         {
             string selectPullRecordsCommand = "SELECT * FROM " + this.MergeTableName +
                 this.FindCompToMasterUpdates +
-                " AND ComponentID = ?;";
+                " AND ComponentID = @p1;";
 
-            return master.Query<MergeObject>(selectPullRecordsCommand, comp.Component_CN);
+            return master.Query<MergeObject>(selectPullRecordsCommand, new object[] { comp.Component_CN }).ToList();
         }
 
         public DataObject ReadSingleRow(DAL source, long rowid)
@@ -508,47 +526,47 @@ namespace CruiseManager.Core.Components
             {
                 case "Tree":
                     {
-                        return source.From<TreeDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
+                        return source.From<TreeDO>().Where("rowid = @p1").Query(rowid).FirstOrDefault();
                     }
                 case "Log":
                     {
-                        return source.From<LogDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
+                        return source.From<LogDO>().Where("rowid = @p1").Query(rowid).FirstOrDefault();
                     }
                 case "Stem":
                     {
-                        return source.From<StemDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
+                        return source.From<StemDO>().Where("rowid = @p1").Query(rowid).FirstOrDefault();
                     }
                 case "Plot":
                     {
-                        return source.From<PlotDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
+                        return source.From<PlotDO>().Where("rowid = @p1").Query(rowid).FirstOrDefault();
                     }
                 case "CountTree":
                     {
-                        return source.From<CountTreeDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
+                        return source.From<CountTreeDO>().Where("rowid = @p1").Query(rowid).FirstOrDefault();
                     }
                 case "CuttingUnit":
                     {
-                        return source.From<CuttingUnitDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
+                        return source.From<CuttingUnitDO>().Where("rowid = @p1").Query(rowid).FirstOrDefault();
                     }
                 case "Stratum":
                     {
-                        return source.From<StratumDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
+                        return source.From<StratumDO>().Where("rowid = @p1").Query(rowid).FirstOrDefault();
                     }
                 case "CuttingUnitStratum":
                     {
-                        return source.From<CuttingUnitStratumDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
+                        return source.From<CuttingUnitStratumDO>().Where("rowid = @p1").Query(rowid).FirstOrDefault();
                     }
                 case "SampleGroup":
                     {
-                        return source.From<SampleGroupDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
+                        return source.From<SampleGroupDO>().Where("rowid = @p1").Query(rowid).FirstOrDefault();
                     }
                 case "SampleGroupTreeDefaultValue":
                     {
-                        return source.From<SampleGroupTreeDefaultValueDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
+                        return source.From<SampleGroupTreeDefaultValueDO>().Where("rowid = @p1").Query(rowid).FirstOrDefault();
                     }
                 case "TreeDefaultValue":
                     {
-                        return source.From<TreeDefaultValueDO>().Where("rowid = ?").Query(rowid).FirstOrDefault();
+                        return source.From<TreeDefaultValueDO>().Where("rowid = @p1").Query(rowid).FirstOrDefault();
                     }
                 default:
                     {

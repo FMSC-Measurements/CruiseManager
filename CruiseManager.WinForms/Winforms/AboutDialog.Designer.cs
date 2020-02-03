@@ -48,6 +48,7 @@
             pictureBox1.Size = new System.Drawing.Size(100, 100);
             pictureBox1.TabIndex = 1;
             pictureBox1.TabStop = false;
+            pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // label3
             // 
@@ -63,7 +64,7 @@
             label1.AutoSize = true;
             label1.Location = new System.Drawing.Point(122, 46);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(49, 13);
+            label1.Size = new System.Drawing.Size(70, 23);
             label1.TabIndex = 4;
             label1.Text = "Version:";
             // 
@@ -72,7 +73,7 @@
             this._versionNumLBL.AutoSize = true;
             this._versionNumLBL.Location = new System.Drawing.Point(173, 46);
             this._versionNumLBL.Name = "_versionNumLBL";
-            this._versionNumLBL.Size = new System.Drawing.Size(84, 13);
+            this._versionNumLBL.Size = new System.Drawing.Size(126, 23);
             this._versionNumLBL.TabIndex = 5;
             this._versionNumLBL.Text = "<versionNum>";
             // 
@@ -88,7 +89,7 @@
             // 
             // AboutDialog
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(375, 213);

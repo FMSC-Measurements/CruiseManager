@@ -85,6 +85,7 @@ namespace CruiseManager.Core.CruiseCustomize
 
         public List<TallySetupSampleGroup> SampleGroups { get; set; }
 
+        [IgnoreField]
         public string Errors { get; set; }
 
         //called when the view is initialized, for each stratum

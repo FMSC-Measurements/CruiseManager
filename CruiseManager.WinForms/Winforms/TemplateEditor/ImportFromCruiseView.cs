@@ -1,4 +1,5 @@
-﻿using CruiseDAL;
+﻿using Backpack.SqlBuilder;
+using CruiseDAL;
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
 using CruiseManager.Core.EditTemplate;
@@ -36,7 +37,7 @@ namespace CruiseManager.WinForms.TemplateEditor
         public IList<TreeDefaultValueDO> TreeDefaults { get; set; }
         public List<TreeDefaultValueDO> TreeDefaultsToCopy { get; set; } = new List<TreeDefaultValueDO>();
 
-        public ApplicationControllerBase ApplicationController { get; set; }
+        public IApplicationController ApplicationController { get; set; }
 
         public bool ReplaceExistingVolEq => _replaceVolEqRB.Checked;
 
@@ -66,13 +67,13 @@ namespace CruiseManager.WinForms.TemplateEditor
         {
             if (this._importVolEqCB.Checked)
             {
-                var cOpt = (this.ReplaceExistingVolEq == true) ? FMSC.ORM.Core.SQL.OnConflictOption.Replace : FMSC.ORM.Core.SQL.OnConflictOption.Ignore;
+                var cOpt = (this.ReplaceExistingVolEq == true) ? OnConflictOption.Replace : OnConflictOption.Ignore;
                 this.ApplicationController.Database.BeginTransaction();
                 try
                 {
                     foreach (var volEq in _copyFromDB.From<VolumeEquationDO>().Query())
                     {
-                        this.ApplicationController.Database.Insert(volEq, null, FMSC.ORM.Core.SQL.OnConflictOption.Ignore);
+                        this.ApplicationController.Database.Insert(volEq, null, OnConflictOption.Ignore);
                     }
                     this.ApplicationController.Database.CommitTransaction();
                 }
@@ -84,7 +85,7 @@ namespace CruiseManager.WinForms.TemplateEditor
 
             foreach (TreeDefaultValueDO tdv in TreeDefaultsToCopy)
             {
-                ApplicationController.Database.Insert(tdv, (object)null, FMSC.ORM.Core.SQL.OnConflictOption.Ignore);
+                ApplicationController.Database.Insert(tdv, (object)null, OnConflictOption.Ignore);
             }
         }
 

@@ -1,19 +1,22 @@
 ﻿using CruiseDAL;
-using CruiseDAL.DataObjects;
-using System.Collections.Generic;
-using System;
-using Moq;
+using CruiseManager.Core;
 using CruiseManager.Core.App;
 using CruiseManager.Core.Components;
 using FluentAssertions;
-using Xunit;
-using CruiseManager.Core;
+using Moq;
+using System;
 using System.Reflection;
+using Xunit;
+using Xunit.Abstractions;
 
-namespace CSMTest
+namespace CruiseManager.Test
 {
-    public class MergeComponentsPresenterTest
+    public class MergeComponentsPresenterTest : TestBase
     {
+        public MergeComponentsPresenterTest(ITestOutputHelper output) : base(output)
+        {
+        }
+
         public DAL GetMaster()
         {
             var codeBaseUri = new Uri(Assembly.GetExecutingAssembly().CodeBase).AbsolutePath;
@@ -22,7 +25,9 @@ namespace CSMTest
 
             var path = System.IO.Path.Combine(directory, "TestFiles\\Components\\Bad\\RedSquirt.M.cruise");
 
-            return new DAL(path);
+            var dal = new DAL(path);
+
+            return dal;
         }
 
         [Fact]
@@ -30,12 +35,12 @@ namespace CSMTest
         {
             using (var master = GetMaster())
             {
-                var appControllerMock = Mock.Of<ApplicationControllerBase>();
-                appControllerMock.Database = master;
+                AppControllerMock.Setup(x => x.Database)
+                .Returns(master);
 
-                var cmPresenter = new MergeComponentsPresenter(appControllerMock);
+                var cmPresenter = new MergeComponentsPresenter(AppController);
 
-                cmPresenter.NumComponents.ShouldBeEquivalentTo(3);
+                cmPresenter.NumComponents.Should().Be(3);
             }
         }
 
@@ -65,14 +70,14 @@ namespace CSMTest
         {
             using (var master = GetMaster())
             {
-                var appController = Mock.Of<ApplicationControllerBase>();
-                appController.Database = master;
+                AppControllerMock.Setup(x => x.Database)
+                .Returns(() => master);
 
-                var cmPresenter = new MergeComponentsPresenter(appController);
+                var cmPresenter = new MergeComponentsPresenter(AppController);
 
                 cmPresenter.FindComponents(System.IO.Path.GetDirectoryName(master.Path));
-                cmPresenter.MissingComponents.Count.ShouldBeEquivalentTo(0);
-                cmPresenter.NumComponents.ShouldBeEquivalentTo(3);
+                cmPresenter.MissingComponents.Should().HaveCount(0);
+                cmPresenter.NumComponents.Should().Be(3);
 
                 var worker = new PrepareMergeWorker(cmPresenter);
                 worker.ProgressChanged += HandleProgressChanged;
@@ -88,14 +93,15 @@ namespace CSMTest
         {
             using (var master = GetMaster())
             {
-                var appController = Mock.Of<ApplicationControllerBase>();
-                appController.Database = master;
+                var appControllerMock = AppControllerMock;
+                appControllerMock.Setup(x => x.Database)
+                .Returns(master);
 
-                var cmPresenter = new MergeComponentsPresenter(appController);
+                var cmPresenter = new MergeComponentsPresenter(appControllerMock.Object);
 
                 cmPresenter.FindComponents(System.IO.Path.GetDirectoryName(master.Path));
-                cmPresenter.MissingComponents.Count.ShouldBeEquivalentTo(0);
-                cmPresenter.NumComponents.ShouldBeEquivalentTo(3);
+                cmPresenter.MissingComponents.Should().HaveCount(0);
+                cmPresenter.NumComponents.Should().Be(3);
 
                 var worker = new PrepareMergeWorker(cmPresenter);
                 worker.ProgressChanged += HandleProgressChanged;
@@ -113,7 +119,7 @@ namespace CSMTest
             }
         }
 
-        public void HandleProgressChanged(object sender, WorkerProgressChangedEventArgs e)
+        private void HandleProgressChanged(object sender, WorkerProgressChangedEventArgs e)
         {
             //TestContext.WriteLine("{0} done: {1} Tick:", e.ProgressPercentage * 100.0, e.Message);
         }

@@ -27,10 +27,10 @@ namespace CruiseManager.WinForms
         {
         }
 
-        //#region abstract methods
-        //public virtual void EndEdits()
-        //{ }
-        //#endregion
+        #region abstract methods
+        public virtual void EndEdits()
+        { }
+        #endregion
 
         #region message box methods
 

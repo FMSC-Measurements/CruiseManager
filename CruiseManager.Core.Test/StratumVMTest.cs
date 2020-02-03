@@ -1,11 +1,7 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using CruiseDAL;
+﻿using CruiseDAL;
 using CruiseManager.Core.Models;
 
-namespace CSMTest
+namespace CruiseManager.Test
 {
     public class StratumVMTest
     {
