@@ -26,16 +26,8 @@
     <PackageReference Include="xunit" Version="2.4.1" />
   </ItemGroup>
 
-  <!--Required for System.Data.Sqlite See: https://stackoverflow.com/questions/32639630/sqlite-interop-dll-files-does-not-copy-to-project-output-path-when-required-by-r/32639631#32639631-->
-  <!--<PropertyGroup>
-    <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
-    <CopySQLiteInteropFiles>false</CopySQLiteInteropFiles>
-    <CleanSQLiteInteropFiles>false</CleanSQLiteInteropFiles>
-    <CollectSQLiteInteropFiles>false</CollectSQLiteInteropFiles>
-  </PropertyGroup>-->
-
   <ItemGroup>
-    <ProjectReference Include="..\CruiseManager.Core\CruiseManager.Core.csproj" />
+    <ProjectReference Include="..\CruiseManager.Core\CruiseManager.Core.csproj" PrivateAssets="none"/>
   </ItemGroup>
 
 </Project>

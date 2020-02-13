@@ -73,7 +73,7 @@ Name: associateCutFileTypes; Description: "Associate Cruise Template (.cut) File
 Source: "..\CruiseManager.WinForms\bin\Release\net451\CruiseManager.exe"; DestDir: {app}; Flags: ignoreversion;
 Source: "..\CruiseManager.WinForms\bin\Release\net451\CruiseManager.exe.config"; DestDir: {app}; Flags: ignoreversion;
 Source: "..\CruiseManager.WinForms\bin\Release\net451\*.dll"; DestDir: {app}; Flags: ignoreversion;
-Source: "..\CruiseManager.WinForms\bin\Release\net451\STPinfo.setup"; DestDir: {app}; Flags: ignoreversion;
+Source: "..\CruiseManager.WinForms\bin\Release\net451\STPinfo\*.xml"; DestDir: {app}; Flags: ignoreversion;
 Source: "..\CruiseManager.WinForms\bin\Release\net451\x64\*.dll"; DestDir: {app}\x64; Flags: ignoreversion;
 Source: "..\CruiseManager.WinForms\bin\Release\net451\x86\*.dll"; DestDir: {app}\x86; Flags: ignoreversion;
 Source: "..\Documentation\CruiseManagerUserGuide.docx";DestName: CruiseManagerUserGuide_{#SETUPVERSION}.docx; DestDir: {app}; Flags: ignoreversion

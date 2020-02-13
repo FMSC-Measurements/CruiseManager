@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup Label="Build Config">
-		<TargetFramework>net451</TargetFramework>
-		<Platform>Any Cpu</Platform>
+		<TargetFramework>net452</TargetFramework>
   </PropertyGroup>
 	<ItemGroup>
 	  <None Remove="TestFiles\**\*" />

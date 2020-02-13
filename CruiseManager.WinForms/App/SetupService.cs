@@ -1,41 +1,29 @@
 ﻿using CruiseManager.Core.App;
-using Ionic.Zip;
+using System;
 using System.IO;
+using System.Reflection;
 
 namespace CruiseManager.WinForms.App
 {
     public class SetupService : SetupServiceBase
     {
-        public SetupService() : base()
-        { }
+        public string STPinfoDir { get; }
 
-        protected override void ExtractStream(string fileName, Stream stream)
+        public SetupService() : base()
         {
-            using (ZipFile zip = ZipFile.Read(Path))
-            {
-                if (zip.ContainsEntry(fileName) == false) { return; }
-                ZipEntry entry = zip[fileName];
-                entry.Extract(stream);
-                stream.Position = 0;   // HACK for some reason the position is set to the end
-            }
+            var codeBaseUri = new Uri(Assembly.GetExecutingAssembly().CodeBase).AbsolutePath;
+            var codeBasePath = Uri.UnescapeDataString(codeBaseUri);
+            var directory = System.IO.Path.GetDirectoryName(codeBasePath);
+
+            STPinfoDir = System.IO.Path.Combine(directory, "STPinfo");
         }
 
-        protected override void SaveStream(string fileName, MemoryStream stream)
+        protected override Stream GetStream(string fileName)
         {
-            using (ZipFile zip = ZipFile.Read(Path))
-            {
-                stream.Position = 0;
-                var buff = stream.GetBuffer();
-                if (zip.ContainsEntry(fileName) == false)
-                {
-                    zip.AddEntry(fileName, buff);
-                }
-                else
-                {
-                    zip.UpdateEntry(fileName, buff);
-                }
-                zip.Save();
-            }
+            var path = Path.Combine(STPinfoDir, fileName);
+            var stream = System.IO.File.OpenRead(path);
+            stream.Position = 0;
+            return stream;
         }
     }
 }
