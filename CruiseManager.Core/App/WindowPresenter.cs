@@ -16,7 +16,7 @@ namespace CruiseManager.Core.App
     {
         //public static WindowPresenter Instance { get; set; }
 
-        public ApplicationControllerBase ApplicationController
+        public IApplicationController ApplicationController
         {
             get;
             set;

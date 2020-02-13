@@ -34,7 +34,7 @@ namespace CruiseManager.Core.CruiseCustomize
         public List<TreeAuditValueDO> TreeAudits { get; set; }
         public List<TreeDefaultValueDO> TreeDefaults { get; set; }
 
-        public TreeAuditRulePresenter(ApplicationControllerBase appController)
+        public TreeAuditRulePresenter(IApplicationController appController)
             : base(appController)
         { }
 

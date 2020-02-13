@@ -8,11 +8,11 @@ namespace CruiseManager.Test.App
     {
         public AppController_Base_Test(ITestOutputHelper output) : base(output)
         {
-            var mock = new Mock<ApplicationControllerBase>();
+            var mock = new Mock<IApplicationController>();
 
             AppControllerMock = mock;
         }
 
-        public Mock<ApplicationControllerBase> AppControllerMock { get; }
+        public Mock<IApplicationController> AppControllerMock { get; }
     }
 }

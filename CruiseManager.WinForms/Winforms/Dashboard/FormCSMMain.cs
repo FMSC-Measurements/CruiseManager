@@ -14,7 +14,7 @@ namespace CruiseManager.WinForms.Dashboard
 {
     public partial class FormCSMMain : Form, MainWindow
     {
-        public FormCSMMain(ApplicationControllerBase applicationController)
+        public FormCSMMain(IApplicationController applicationController)
         {
             this.ApplicationController = applicationController;
             InitializeComponent();
@@ -28,7 +28,7 @@ namespace CruiseManager.WinForms.Dashboard
             _aboutClickCommand.BindTo(this.aboutToolStripMenuItem);
         }
 
-        protected ApplicationControllerBase ApplicationController { get; set; }
+        protected IApplicationController ApplicationController { get; set; }
 
         protected Panel ViewContentPanel { get { return this._viewContentPanel; } }
         protected Panel ViewNavPanel { get { return this._viewNavPanel; } }

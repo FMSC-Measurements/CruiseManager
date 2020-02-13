@@ -35,7 +35,7 @@ namespace CruiseManager.Core.CruiseCustomize
             }
         }
 
-        public ReportsPresenter(ApplicationControllerBase appController)
+        public ReportsPresenter(IApplicationController appController)
             : base(appController)
         { }
 

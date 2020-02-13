@@ -59,7 +59,7 @@ namespace CruiseManager.Core.Components
             set { base.View = value; }
         }
 
-        public CreateComponentPresenter(ApplicationControllerBase applicationController)
+        public CreateComponentPresenter(IApplicationController applicationController)
         {
             this.ApplicationController = applicationController;
 

@@ -5,7 +5,7 @@ namespace CruiseManager.WinForms.Dashboard
 {
     public partial class HomeView : UserControlView, IHomeView
     {
-        public HomeView(ApplicationControllerBase applicationController)
+        public HomeView(IApplicationController applicationController)
         {
             InitializeComponent();
 

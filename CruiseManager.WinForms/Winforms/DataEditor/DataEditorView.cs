@@ -54,7 +54,7 @@ namespace CruiseManager.WinForms.DataEditor
         {
             InitializeComponent();
         }
-        public DataEditorView(WindowPresenter windowPresenter, ApplicationControllerBase applicationController) : this()
+        public DataEditorView(WindowPresenter windowPresenter, IApplicationController applicationController) : this()
         {
             WindowPresenter = windowPresenter;
             ApplicationController = applicationController;
@@ -71,7 +71,7 @@ namespace CruiseManager.WinForms.DataEditor
 
         DAL Database { get { return ApplicationController.Database; } }
         WindowPresenter WindowPresenter { get; set; }
-        ApplicationControllerBase ApplicationController { get; set; }
+        IApplicationController ApplicationController { get; set; }
 
         bool SuppressUpdates { get; set; }
 

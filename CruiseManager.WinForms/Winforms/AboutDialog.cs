@@ -9,9 +9,9 @@ namespace CruiseManager.WinForms
     public partial class AboutDialog : Form
     {
         int _clickCount = 0;
-        protected ApplicationControllerBase ApplicationController { get; set; }
+        protected IApplicationController ApplicationController { get; set; }
 
-        public AboutDialog(ApplicationControllerBase applicationController)
+        public AboutDialog(IApplicationController applicationController)
         {
             ApplicationController = applicationController;
             InitializeComponent();

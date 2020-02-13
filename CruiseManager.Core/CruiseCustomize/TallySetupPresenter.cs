@@ -31,7 +31,7 @@ namespace CruiseManager.Core.CruiseCustomize
             }
         }
 
-        public TallySetupPresenter(ApplicationControllerBase appController)
+        public TallySetupPresenter(IApplicationController appController)
             : base(appController)
         {
         }

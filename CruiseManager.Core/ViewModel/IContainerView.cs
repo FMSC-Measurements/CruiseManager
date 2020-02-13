@@ -6,7 +6,7 @@ namespace CruiseManager.Core.ViewModel
 {
     public interface IContainerView : IView, INavigationService
     {
-        ApplicationControllerBase ApplicationController { get; }
+        IApplicationController ApplicationController { get; }
 
         IEnumerable<ViewNavigateCommand> ViewLinks { get; }
 

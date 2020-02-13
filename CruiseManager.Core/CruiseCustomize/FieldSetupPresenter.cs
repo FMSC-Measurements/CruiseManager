@@ -14,7 +14,7 @@ namespace CruiseManager.Core.CruiseCustomize
     {
         bool _isInitialized;
 
-        public FieldSetupPresenter(ApplicationControllerBase appController)
+        public FieldSetupPresenter(IApplicationController appController)
             : base(appController)
         {
             this.IsLogGradingEnabled = this.Database.From<SaleDO>()
