@@ -157,7 +157,10 @@ namespace CruiseManager.Core.Components
 
         private void PopulateMergeTables(ComponentFileVM comp)
         {
-            MasterDB.AttachDB(comp.Database, "compDB"); //may throw exception
+            var compNumber = comp.Component_CN;
+            var compAslis = $"compDB";
+
+            MasterDB.AttachDB(comp.Database, compAslis); //may throw exception
             MasterDB.BeginTransaction();
             try
             {
@@ -167,7 +170,7 @@ namespace CruiseManager.Core.Components
                 }
 
                 MasterDB.CommitTransaction();
-                this.NotifyProgressChanged(this._progressInCurrentJob++, false, "Imported Merge Info For Component #" + comp.Component_CN.ToString(), null);
+                this.NotifyProgressChanged(this._progressInCurrentJob++, false, "Imported Merge Info For Component #" + compNumber, null);
             }
             catch
             {
@@ -176,7 +179,7 @@ namespace CruiseManager.Core.Components
             }
             finally
             {
-                MasterDB.DetachDB("compDB");
+                MasterDB.DetachDB(compAslis);
             }
         }
 

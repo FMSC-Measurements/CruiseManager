@@ -441,11 +441,6 @@ namespace CruiseManager.Core.Components
                     "AND ComponentConflict IS NULL " +
                     "AND ifnull(IsDeleted, 0) = 0 ";
 
-        public String GetPopulateMergeTableCommand(ComponentFileVM component)
-        {
-            return GetPopulateMergeTableCommand((int)component.Component_CN.Value);
-        }
-
         public String GetPopulateMergeTableCommand(int component_cn)
         {
             string clientFieldList = string.Empty;
@@ -472,11 +467,6 @@ namespace CruiseManager.Core.Components
                 $"FROM compDB.{ClientTableName} as compSource;";
 
             return populateMergetableCMD;
-        }
-
-        public String GetPopulateDeletedRecordsCommand(ComponentFileVM component)
-        {
-            return GetPopulateDeletedRecordsCommand((int)component.Component_CN.Value);
         }
 
         public String GetPopulateDeletedRecordsCommand(int component_cn)
