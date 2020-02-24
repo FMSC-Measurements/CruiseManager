@@ -187,8 +187,10 @@ namespace CruiseManager.Core.Components
         {
             CheckWorkerStatus();
 
-            masterDB.Execute(table.GetPopulateMergeTableCommand(comp));
-            masterDB.Execute(table.GetPopulateDeletedRecordsCommand(comp));
+            var comp_CN = (int)comp.Component_CN.Value;
+
+            masterDB.Execute(table.GetPopulateMergeTableCommand(comp_CN));
+            masterDB.Execute(table.GetPopulateDeletedRecordsCommand(comp_CN));
         }
 
         public void ProcessMergeTables()
@@ -294,10 +296,10 @@ namespace CruiseManager.Core.Components
                 CheckWorkerStatus();
                 _workInCurrentJob += 1;
 
-                string setKeyMatch = "UPDATE " + cmdBldr.MergeTableName + " SET RowIDMatch = @p1 WHERE MergeRowID = @p2;";
                 foreach (MergeObject item in master.Query<MergeObject>(cmdBldr.SelectRowIDMatches, (object[])null).ToList())
                 {
-                    master.Execute(setKeyMatch, item.RowIDMatch, item.MergeRowID);
+                    master.Execute($"UPDATE {cmdBldr.MergeTableName} SET RowIDMatch = @p1 WHERE MergeRowID = @p2;", 
+                        item.RowIDMatch, item.MergeRowID);
                 }
 
                 this.NotifyProgressChanged(this._progressInCurrentJob++, false, null, null);
@@ -308,10 +310,10 @@ namespace CruiseManager.Core.Components
                 CheckWorkerStatus();
                 _workInCurrentJob += 1;
 
-                string setNatMatch = "UPDATE " + cmdBldr.MergeTableName + " SET NaturalMatch = @p1 WHERE MergeRowID = @p2;";
                 foreach (MergeObject mRec in master.Query<MergeObject>(cmdBldr.SelectNaturalMatches, (object[])null).ToList())
                 {
-                    master.Execute(setNatMatch, mRec.NaturalMatch, mRec.MergeRowID);
+                    master.Execute($"UPDATE {cmdBldr.MergeTableName} SET NaturalMatch = @p1 WHERE MergeRowID = @p2;", 
+                        mRec.NaturalMatch, mRec.MergeRowID);
                 }
 
                 this.NotifyProgressChanged(this._progressInCurrentJob++, false, null, null);
