@@ -3,9 +3,9 @@
 ; #defines require the ISPP add-on: http://sourceforge.net/projects/ispp/
 #define APP "Cruise Manager"
 ;
-#define VERSION "2020.01.31"
+#define VERSION "2020.02.28"
 ;version format for setup file name
-#define SETUPVERSION "20200131";  
+#define SETUPVERSION "20200228";  
 #define SPECIALTAG ""
 #define BASEURL "http://www.fs.fed.us/fmsc/measure"
 #define ORGANIZATION "U.S. Forest Service, Forest Management Service Center"
@@ -73,7 +73,7 @@ Name: associateCutFileTypes; Description: "Associate Cruise Template (.cut) File
 Source: "..\CruiseManager.WinForms\bin\Release\net461\CruiseManager.exe"; DestDir: {app}; Flags: ignoreversion;
 Source: "..\CruiseManager.WinForms\bin\Release\net461\CruiseManager.exe.config"; DestDir: {app}; Flags: ignoreversion;
 Source: "..\CruiseManager.WinForms\bin\Release\net461\*.dll"; DestDir: {app}; Flags: ignoreversion;
-Source: "..\CruiseManager.WinForms\bin\Release\net461\STPinfo\*.xml"; DestDir: {app}; Flags: ignoreversion;
+Source: "..\CruiseManager.WinForms\bin\Release\net461\STPinfo\*.xml"; DestDir: {app}\STPinfo; Flags: ignoreversion;
 Source: "..\CruiseManager.WinForms\bin\Release\net461\x64\*.dll"; DestDir: {app}\x64; Flags: ignoreversion;
 Source: "..\CruiseManager.WinForms\bin\Release\net461\x86\*.dll"; DestDir: {app}\x86; Flags: ignoreversion;
 Source: "..\CruiseManager.WinForms\bin\Release\net461\runtimes\win-x64\native\*.dll"; DestDir: {app}\runtimes\win-x64\native; Flags: ignoreversion;
