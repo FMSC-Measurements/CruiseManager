@@ -1,0 +1,20 @@
+<Project>
+  <PropertyGroup Label="Properties">
+    <Version>2020.02.28</Version>
+    
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <TargetFramework>net461</TargetFramework>
+
+    <CruiseManagerVersion>2.5.1</CruiseManagerVersion>
+
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package Info">
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Authors>Benjamin Campbell</Authors>
+    <PackageProjectUrl>https://github.com/FMSC-Measurements/CruiseDAL</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/FMSC-Measurements/CruiseDAL.git</RepositoryUrl>
+  </PropertyGroup>
+  
+</Project>

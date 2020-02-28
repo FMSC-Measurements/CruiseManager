@@ -2,17 +2,14 @@
 
   <PropertyGroup Label="Assembily Info">
     <AssemblyName>CruiseManager</AssemblyName>
-    <RootNamespace>CruiseManager</RootNamespace>
-    <Version>2020.01.30</Version>
+    <RootNamespace>CruiseManager</RootNamespace>    
     <Copyright>CC0 Public Domain</Copyright>
     <Company>USDA Forest Service</Company>
     <Authors>Ben Campbell</Authors>
   </PropertyGroup>
 
   <PropertyGroup Label="Build Config">
-    <OutputType>WinExe</OutputType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <TargetFramework>net461</TargetFramework>
+    <OutputType>WinExe</OutputType>    
     <UseWindowsForms>true</UseWindowsForms>
     <StartupObject>$(RootNamespace).Program</StartupObject>
     <ApplicationIcon>Resources\cruisetree_setup.ico</ApplicationIcon>
