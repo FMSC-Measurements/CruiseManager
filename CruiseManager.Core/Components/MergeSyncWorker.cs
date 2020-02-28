@@ -99,7 +99,8 @@ namespace CruiseManager.Core.Components
                 PushNewSampleGroups(comp);
                 PushTreeDefaultInserts(comp);
                 PushSampleGroupTreeDefaultInserts(comp);
-                //TODO push tally table changes
+                PushNewCountTrees(comp);
+                //TODO push count tree table changes
             }
         }
 
@@ -467,6 +468,64 @@ namespace CruiseManager.Core.Components
         #endregion pull new design records
 
         #region push new design records
+
+        public void PushNewCountTrees(ComponentFileVM comp)
+        {
+            StartJob("Push New Count Tree Records");
+
+            var countTrees = Master.Query<CountTreeDO>("SELECT * FROM main.CountTree WHERE Component_CN IS NULL;").ToArray();
+
+            foreach(var ct in countTrees)
+            {
+                var match = Master.Query<CountTreeDO>(
+                    $"SELECT * FROM {comp.DBAlias}.CountTree " +
+                        "WHERE CuttingUnit_CN = @p1 " +
+                        "AND SampleGroup_CN = @p2 " +
+                        "AND ifnull(TreeDefaultValue_CN, 0) == ifnull(@p3, 0);", 
+                    ct.CuttingUnit_CN, ct.SampleGroup_CN, ct.TreeDefaultValue_CN)
+                    .FirstOrDefault();
+
+                if(match == null)
+                {
+                    // see if component has matching tally record
+                    var tallyMatch = Master.Query<TallyDO>($"SELECT * FROM {comp.DBAlias}.Tally WHERE Tally_CN = @p1;", ct.Tally_CN).FirstOrDefault();
+
+                    if(tallyMatch == null)
+                    {
+                        // get the full tally record from the master
+                        var masterTally = Master.Query<TallyDO>("SELECT * FROM main.Tally WHERE Tally_CN = @p1;", ct.Tally_CN).FirstOrDefault();
+
+                        // insert tally record into the component
+                        Master.Execute2($"INSERT INTO {comp.DBAlias}.Tally ( " +
+                            "Tally_CN, Description, HotKey, IndicatorType, IndicatorValue " +
+                            ") VALUES (" +
+                            "@Tally_CN, @Description, @Hotkey, @IndicatorType, @IndicatorValue);",
+                            new
+                            {
+                                masterTally.Tally_CN,
+                                masterTally.Description,
+                                masterTally.Hotkey,
+                                masterTally.IndicatorType,
+                                masterTally.IndicatorValue,
+                            });
+                    }
+
+                    // insert the count tree record into the component
+                    Master.Execute2($"INSERT INTO {comp.DBAlias}.CountTree " +
+                        $"(CuttingUnit_CN, SampleGroup_CN, TreeDefaultValue_CN, Tally_CN, Component_CN) " +
+                        $"VALUES " +
+                        $"(@CuttingUnit_CN, @SampleGroup_CN, @TreeDefaultValue_CN, @Tally_CN, @Component_CN);",
+                        new
+                        {
+                            ct.CuttingUnit_CN,
+                            ct.SampleGroup_CN,
+                            ct.TreeDefaultValue_CN,
+                            ct.Tally_CN,
+                            comp.Component_CN,
+                        });
+                }
+            }
+        }
 
         public void PushNewSampleGroups(ComponentFileVM comp)
         {
