@@ -54,7 +54,8 @@ namespace CruiseManager.WinForms.DataEditor
         {
             InitializeComponent();
         }
-        public DataEditorView(WindowPresenter windowPresenter, ApplicationControllerBase applicationController) : this()
+
+        public DataEditorView(WindowPresenter windowPresenter, IApplicationController applicationController) : this()
         {
             WindowPresenter = windowPresenter;
             ApplicationController = applicationController;
@@ -71,7 +72,7 @@ namespace CruiseManager.WinForms.DataEditor
 
         DAL Database { get { return ApplicationController.Database; } }
         WindowPresenter WindowPresenter { get; set; }
-        ApplicationControllerBase ApplicationController { get; set; }
+        IApplicationController ApplicationController { get; set; }
 
         bool SuppressUpdates { get; set; }
 
@@ -1068,7 +1069,7 @@ namespace CruiseManager.WinForms.DataEditor
                 {
                     DataGridViewRow row = dgv.Rows[rowIndex];
                     var dataType = row.DataBoundItem.GetType();
-                    if (dataType.IsAssignableFrom(typeof(TreeVM)))
+                    if (typeof(TreeVM).IsAssignableFrom(dataType))
                     {
                         var tree = row.DataBoundItem as TreeVM;
                         if (TryDeleteTree(tree))
@@ -1076,7 +1077,7 @@ namespace CruiseManager.WinForms.DataEditor
                             dgv.Rows.RemoveAt(rowIndex);
                         }
                     }
-                    else if (dataType.IsAssignableFrom(typeof(LogDO)))
+                    else if (typeof(LogDO).IsAssignableFrom(dataType))
                     {
                         var log = row.DataBoundItem as LogDO;
                         if (TryDeleteLog(log))
@@ -1084,7 +1085,7 @@ namespace CruiseManager.WinForms.DataEditor
                             dgv.Rows.RemoveAt(rowIndex);
                         }
                     }
-                    else if (dataType.IsAssignableFrom(typeof(PlotDO)))
+                    else if (typeof(PlotDO).IsAssignableFrom(dataType))
                     {
                         var plot = row.DataBoundItem as PlotDO;
                         if (TryDeletePlot(plot))

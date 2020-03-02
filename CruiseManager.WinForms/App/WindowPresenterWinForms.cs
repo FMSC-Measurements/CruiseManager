@@ -16,7 +16,7 @@ namespace CruiseManager.WinForms.App
 {
     public class WindowPresenterWinForms : WindowPresenter
     {
-        public WindowPresenterWinForms(ApplicationControllerBase appController)
+        public WindowPresenterWinForms(IApplicationController appController)
         {
             this.ApplicationController = appController;
         }

@@ -33,7 +33,7 @@ namespace CruiseManager.Core.CruiseCustomize
             }
         }
 
-        public TreeDefaultsPresenter(ApplicationControllerBase appController)
+        public TreeDefaultsPresenter(IApplicationController appController)
             : base(appController)
         { }
 

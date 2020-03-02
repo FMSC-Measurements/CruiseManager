@@ -3,10 +3,10 @@
 ; #defines require the ISPP add-on: http://sourceforge.net/projects/ispp/
 #define APP "Cruise Manager"
 ;
-#define VERSION "2020.01.31"
+#define VERSION "2020.03.02"
 ;version format for setup file name
-#define SETUPVERSION "20200131";  
-#define SPECIALTAG ""
+#define SETUPVERSION "20200302";  
+#define SPECIALTAG "pre"
 #define BASEURL "http://www.fs.fed.us/fmsc/measure"
 #define ORGANIZATION "U.S. Forest Service, Forest Management Service Center"
 #define EXEName "CruiseManager.exe"
@@ -70,12 +70,14 @@ Name: associateCutFileTypes; Description: "Associate Cruise Template (.cut) File
 
 [Files]
 ; need to update the paths below after the solution files and folders are updated.
-Source: "..\CruiseManager.WinForms\bin\Release\net451\CruiseManager.exe"; DestDir: {app}; Flags: ignoreversion;
-Source: "..\CruiseManager.WinForms\bin\Release\net451\CruiseManager.exe.config"; DestDir: {app}; Flags: ignoreversion;
-Source: "..\CruiseManager.WinForms\bin\Release\net451\*.dll"; DestDir: {app}; Flags: ignoreversion;
-Source: "..\CruiseManager.WinForms\bin\Release\net451\STPinfo.setup"; DestDir: {app}; Flags: ignoreversion;
-Source: "..\CruiseManager.WinForms\bin\Release\net451\x64\*.dll"; DestDir: {app}\x64; Flags: ignoreversion;
-Source: "..\CruiseManager.WinForms\bin\Release\net451\x86\*.dll"; DestDir: {app}\x86; Flags: ignoreversion;
+Source: "..\CruiseManager.WinForms\bin\Release\net461\CruiseManager.exe"; DestDir: {app}; Flags: ignoreversion;
+Source: "..\CruiseManager.WinForms\bin\Release\net461\CruiseManager.exe.config"; DestDir: {app}; Flags: ignoreversion;
+Source: "..\CruiseManager.WinForms\bin\Release\net461\*.dll"; DestDir: {app}; Flags: ignoreversion;
+Source: "..\CruiseManager.WinForms\bin\Release\net461\STPinfo\*.xml"; DestDir: {app}\STPinfo; Flags: ignoreversion;
+Source: "..\CruiseManager.WinForms\bin\Release\net461\x64\*.dll"; DestDir: {app}\x64; Flags: ignoreversion;
+Source: "..\CruiseManager.WinForms\bin\Release\net461\x86\*.dll"; DestDir: {app}\x86; Flags: ignoreversion;
+Source: "..\CruiseManager.WinForms\bin\Release\net461\runtimes\win-x64\native\*.dll"; DestDir: {app}\runtimes\win-x64\native; Flags: ignoreversion;
+Source: "..\CruiseManager.WinForms\bin\Release\net461\runtimes\win-x86\native\*.dll"; DestDir: {app}\runtimes\win-x86\native; Flags: ignoreversion;
 Source: "..\Documentation\CruiseManagerUserGuide.docx";DestName: CruiseManagerUserGuide_{#SETUPVERSION}.docx; DestDir: {app}; Flags: ignoreversion
 Source: "..\Template Files\*.cut"; DestDir: {userdocs}\CruiseFiles\Templates; Flags: ignoreversion; Tasks: overwriteTemplates;
 Source: "..\Template Files\*.cut"; DestDir: {userdocs}\CruiseFiles\Templates; Flags: onlyifdoesntexist; Tasks: not overwriteTemplates;

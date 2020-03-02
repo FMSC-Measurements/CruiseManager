@@ -17,7 +17,7 @@ namespace CruiseManager.WinForms.DataEditor
     {
         SetupServiceBase SetupService { get { return ApplicationController.SetupService; } }
 
-        protected ApplicationControllerBase ApplicationController { get; set; }
+        protected IApplicationController ApplicationController { get; set; }
 
         #region CTor
 
@@ -26,7 +26,7 @@ namespace CruiseManager.WinForms.DataEditor
             InitializeComponent();
         }
 
-        public DataExportDialog(ApplicationControllerBase applicationController, IEnumerable<TreeVM> Trees, IEnumerable<LogVM> Logs, IEnumerable<PlotDO> Plots, IEnumerable<CountVM> Counts)
+        public DataExportDialog(IApplicationController applicationController, IEnumerable<TreeVM> Trees, IEnumerable<LogVM> Logs, IEnumerable<PlotDO> Plots, IEnumerable<CountVM> Counts)
         {
             ApplicationController = applicationController;
 

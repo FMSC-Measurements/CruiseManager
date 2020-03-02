@@ -33,7 +33,7 @@ namespace CruiseManager.Core.CruiseCustomize
             }
         }
 
-        public VolumeEqPresenter(ApplicationControllerBase appController)
+        public VolumeEqPresenter(IApplicationController appController)
             : base(appController)
         { }
 

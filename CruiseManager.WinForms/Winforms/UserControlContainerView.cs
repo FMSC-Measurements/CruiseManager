@@ -26,7 +26,7 @@ namespace CruiseManager.WinForms
         {
         }
 
-        public UserControlContainerView(ApplicationControllerBase appController)
+        public UserControlContainerView(IApplicationController appController)
         {
             this.ApplicationController = appController;
             InitializeComponent();
@@ -67,7 +67,7 @@ namespace CruiseManager.WinForms
             }
         }
 
-        public ApplicationControllerBase ApplicationController
+        public IApplicationController ApplicationController
         {
             get; protected set;
         }

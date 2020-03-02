@@ -22,7 +22,7 @@ namespace CruiseManager.Core.EditDesign
         private CuttingUnitDO _anyUnitOption;
         List<ProductCode> _productCodes;
 
-        public DesignEditorPresentor(ApplicationControllerBase applicationController)
+        public DesignEditorPresentor(IApplicationController applicationController)
         {
             this.ApplicationController = applicationController;
         }

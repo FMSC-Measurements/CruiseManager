@@ -51,7 +51,7 @@ namespace CruiseManager.Core.EditTemplate
         public BindingList<LogFieldSetupDefaultDO> SelectedLogFields { get; set; }
         public BindingList<LogFieldSetupDefaultDO> UnselectedLogFields { get; set; }
 
-        public TemplateEditViewPresenter(ApplicationControllerBase applicationController)
+        public TemplateEditViewPresenter(IApplicationController applicationController)
         {
             this.ApplicationController = applicationController;
 

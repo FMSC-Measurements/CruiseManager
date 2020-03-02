@@ -9,7 +9,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
     {
         ExceptionHandler _exceptionHandler = new ExceptionHandler();
 
-        public CustomizeCruiseContainerView(ApplicationControllerBase appController) : base(appController)
+        public CustomizeCruiseContainerView(IApplicationController appController) : base(appController)
         {
             InitializeComponent();
 

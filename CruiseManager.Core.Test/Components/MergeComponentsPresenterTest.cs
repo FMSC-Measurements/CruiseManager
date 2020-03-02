@@ -9,7 +9,7 @@ using System.Reflection;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace CruiseManager.Test
+namespace CruiseManager.Test.Components
 {
     public class MergeComponentsPresenterTest : TestBase
     {
@@ -17,30 +17,39 @@ namespace CruiseManager.Test
         {
         }
 
-        public DAL GetMaster()
+        const string REDSQUIRT_MASTER = "Bad\\RedSquirt.M.cruise";
+        const string VALENTINE_MASTER = "Good\\Valentine.M.cruise";
+        const string GOOSEFOOTE_MASTER = "Good\\GooseFoote_7_16\\GooseFoote.M.cruise";
+        const string TESTMERGENEWCOUNTS_MASTER = "Good\\testMergeNewCounts\\testMergeNewCounts.M.cruise";
+
+        public DAL GetMaster(string masterPath)
         {
             var codeBaseUri = new Uri(Assembly.GetExecutingAssembly().CodeBase).AbsolutePath;
             var codeBasePath = Uri.UnescapeDataString(codeBaseUri);
             var directory = System.IO.Path.GetDirectoryName(codeBasePath);
 
-            var path = System.IO.Path.Combine(directory, "TestFiles\\Components\\Bad\\RedSquirt.M.cruise");
+            var path = System.IO.Path.Combine(directory, "TestFiles\\Components\\", masterPath);
 
             var dal = new DAL(path);
 
             return dal;
         }
 
-        [Fact]
-        public void InitializeTest()
+        [Theory]
+        [InlineData(REDSQUIRT_MASTER, 3)]
+        [InlineData(VALENTINE_MASTER, 2)]
+        [InlineData(GOOSEFOOTE_MASTER, 3)]
+        [InlineData(TESTMERGENEWCOUNTS_MASTER, 2)]
+        public void InitializeTest(string masterPath, int numComps)
         {
-            using (var master = GetMaster())
+            using (var master = GetMaster(masterPath))
             {
                 AppControllerMock.Setup(x => x.Database)
                 .Returns(master);
 
                 var cmPresenter = new MergeComponentsPresenter(AppController);
 
-                cmPresenter.NumComponents.Should().Be(3);
+                cmPresenter.NumComponents.Should().Be(numComps);
             }
         }
 
@@ -65,10 +74,14 @@ namespace CruiseManager.Test
 
         //}
 
-        [Fact]
-        public void PrepareMergeTest()
+        [Theory]
+        [InlineData(REDSQUIRT_MASTER, 3)]
+        [InlineData(VALENTINE_MASTER, 2)]
+        [InlineData(GOOSEFOOTE_MASTER, 3)]
+        [InlineData(TESTMERGENEWCOUNTS_MASTER, 2)]
+        public void PrepareMergeTest(string masterPath, int numComps)
         {
-            using (var master = GetMaster())
+            using (var master = GetMaster(masterPath))
             {
                 AppControllerMock.Setup(x => x.Database)
                 .Returns(() => master);
@@ -77,7 +90,7 @@ namespace CruiseManager.Test
 
                 cmPresenter.FindComponents(System.IO.Path.GetDirectoryName(master.Path));
                 cmPresenter.MissingComponents.Should().HaveCount(0);
-                cmPresenter.NumComponents.Should().Be(3);
+                cmPresenter.NumComponents.Should().Be(numComps);
 
                 var worker = new PrepareMergeWorker(cmPresenter);
                 worker.ProgressChanged += HandleProgressChanged;
@@ -88,10 +101,14 @@ namespace CruiseManager.Test
             }
         }
 
-        [Fact]
-        public void PerformMergeTest()
+        [Theory]
+        [InlineData(REDSQUIRT_MASTER, 3)]
+        [InlineData(VALENTINE_MASTER, 2)]
+        [InlineData(GOOSEFOOTE_MASTER, 3)]
+        [InlineData(TESTMERGENEWCOUNTS_MASTER, 2)]
+        public void PerformMergeTest(string masterPath, int numComps)
         {
-            using (var master = GetMaster())
+            using (var master = GetMaster(masterPath))
             {
                 var appControllerMock = AppControllerMock;
                 appControllerMock.Setup(x => x.Database)
@@ -101,7 +118,7 @@ namespace CruiseManager.Test
 
                 cmPresenter.FindComponents(System.IO.Path.GetDirectoryName(master.Path));
                 cmPresenter.MissingComponents.Should().HaveCount(0);
-                cmPresenter.NumComponents.Should().Be(3);
+                cmPresenter.NumComponents.Should().Be(numComps);
 
                 var worker = new PrepareMergeWorker(cmPresenter);
                 worker.ProgressChanged += HandleProgressChanged;
@@ -121,7 +138,7 @@ namespace CruiseManager.Test
 
         private void HandleProgressChanged(object sender, WorkerProgressChangedEventArgs e)
         {
-            //TestContext.WriteLine("{0} done: {1} Tick:", e.ProgressPercentage * 100.0, e.Message);
+            Output.WriteLine($"{e.ProgressPercentage * 100.0} done: {e.Message} Tick:");
         }
     }
 }

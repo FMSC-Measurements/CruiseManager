@@ -20,41 +20,18 @@ namespace CruiseManager.Core.App
         public static readonly string REGION_FILE_NAME = "Regions.xml";
         public static readonly string TREE_FIELD_FILE_NAME = @"TreeFields.xml";
         public static readonly string UOM_FILE_NAME = @"UOMCodes.xml";
-        //public static SetupService Instance { get; set; }
-
-        //public static SetupService GetHandle()
-        //{
-        //    if (_instance != null)
-        //    {
-        //        return _instance;
-        //    }
-        //    throw new InvalidOperationException();
-        //}
-
-        //public static void Initialize(SetupService instance)
-        //{
-        //    System.Diagnostics.Debug.Assert(instance != null);
-        //    _instance = instance;
-        //}
-
         protected SetupServiceBase()
         {
-            var codeBaseUri = new Uri(Assembly.GetExecutingAssembly().CodeBase).AbsolutePath;
-            var codeBasePath = Uri.UnescapeDataString(codeBaseUri);
-            var directory = System.IO.Path.GetDirectoryName(codeBasePath);
-
-            Path = codeBasePath = System.IO.Path.Combine(directory, SETUP_FILENAME);
+            
         }
 
-        public string Path { get; private set; }
+        
 
         public List<CruiseMethod> GetCruiseMethods()
         {
             List<CruiseMethod> list = null;
-            CheckFileExists();
-            using (Stream stream = new MemoryStream())
+            using (Stream stream = GetStream(CRUISE_METHOD_FILE_NAME))
             {
-                ExtractStream(CRUISE_METHOD_FILE_NAME, stream);
                 XmlSerializer s = new XmlSerializer(typeof(List<CruiseMethod>));
                 list = s.Deserialize(stream) as List<CruiseMethod>;
             }
@@ -67,10 +44,8 @@ namespace CruiseManager.Core.App
 
         public List<LogFieldSetupDO> GetLogFieldSetups()
         {
-            CheckFileExists();
-            using (Stream stream = new MemoryStream())
+            using (var stream = GetStream(LOG_FIELD_FILE_NAME))
             {
-                ExtractStream(LOG_FIELD_FILE_NAME, stream);
                 XmlSerializer s = new XmlSerializer(typeof(List<LogFieldSetupDO>));
                 return s.Deserialize(stream) as List<LogFieldSetupDO>;
             }
@@ -78,10 +53,8 @@ namespace CruiseManager.Core.App
 
         public List<LoggingMethod> GetLoggingMethods()
         {
-            CheckFileExists();
-            using (Stream stream = new MemoryStream())
+            using (var stream = GetStream(LOGGING_METHOD_FILE_NAME))
             {
-                ExtractStream(LOGGING_METHOD_FILE_NAME, stream);
                 XmlSerializer s = new XmlSerializer(typeof(List<LoggingMethod>));
                 return s.Deserialize(stream) as List<LoggingMethod>;
             }
@@ -89,10 +62,8 @@ namespace CruiseManager.Core.App
 
         public List<ProductCode> GetProductCodes()
         {
-            CheckFileExists();
-            using (Stream stream = new MemoryStream())
+            using (var stream = GetStream(PRODUCT_CODE_FILE_NAME))
             {
-                ExtractStream(PRODUCT_CODE_FILE_NAME, stream);
                 XmlSerializer s = new XmlSerializer(typeof(List<ProductCode>));
                 return s.Deserialize(stream) as List<ProductCode>;
             }
@@ -100,10 +71,8 @@ namespace CruiseManager.Core.App
 
         public List<Region> GetRegions()
         {
-            CheckFileExists();
-            using (Stream stream = new MemoryStream())
+            using (var stream = GetStream(REGION_FILE_NAME))
             {
-                ExtractStream(REGION_FILE_NAME, stream);
                 XmlSerializer s = new XmlSerializer(typeof(List<Region>));
                 try
                 {
@@ -118,10 +87,8 @@ namespace CruiseManager.Core.App
 
         public List<TreeFieldSetupDO> GetTreeFieldSetups()
         {
-            CheckFileExists();
-            using (Stream stream = new MemoryStream())
+            using (var stream = GetStream(TREE_FIELD_FILE_NAME))
             {
-                ExtractStream(TREE_FIELD_FILE_NAME, stream);
                 XmlSerializer s = new XmlSerializer(typeof(List<TreeFieldSetupDO>));
                 return s.Deserialize(stream) as List<TreeFieldSetupDO>;
             }
@@ -129,80 +96,13 @@ namespace CruiseManager.Core.App
 
         public List<UOMCode> GetUOMCodes()
         {
-            CheckFileExists();
-            using (Stream stream = new MemoryStream())
+            using (var stream = GetStream(UOM_FILE_NAME))
             {
-                ExtractStream(UOM_FILE_NAME, stream);
                 XmlSerializer s = new XmlSerializer(typeof(List<UOMCode>));
                 return s.Deserialize(stream) as List<UOMCode>;
             }
         }
 
-        public void SaveCruiseMethods(List<CruiseMethod> CruiseMethods)
-        {
-            CheckFileExists();
-            using (MemoryStream stream = new MemoryStream())
-            {
-                XmlSerializer s = new XmlSerializer(typeof(List<CruiseMethod>));
-                s.Serialize(stream, CruiseMethods);
-                SaveStream(CRUISE_METHOD_FILE_NAME, stream);
-            }
-        }
-
-        public void SaveLoggingMethods(List<LoggingMethod> lMeths)
-        {
-            CheckFileExists();
-            using (MemoryStream stream = new MemoryStream())
-            {
-                XmlSerializer s = new XmlSerializer(typeof(List<LoggingMethod>));
-                s.Serialize(stream, lMeths);
-                SaveStream(LOGGING_METHOD_FILE_NAME, stream);
-            }
-        }
-
-        public void SaveProductCodes(List<ProductCode> pCodes)
-        {
-            CheckFileExists();
-            using (MemoryStream stream = new MemoryStream())
-            {
-                XmlSerializer s = new XmlSerializer(typeof(List<ProductCode>));
-                s.Serialize(stream, pCodes);
-                SaveStream(PRODUCT_CODE_FILE_NAME, stream);
-            }
-        }
-
-        public void SaveRegions(List<Region> regions)
-        {
-            CheckFileExists();
-            using (MemoryStream stream = new MemoryStream())
-            {
-                XmlSerializer s = new XmlSerializer(typeof(List<Region>));
-                s.Serialize(stream, regions);
-                SaveStream(REGION_FILE_NAME, stream);
-            }
-        }
-
-        public void SaveUOMCodes(List<UOMCode> uomCodes)
-        {
-            CheckFileExists();
-            using (MemoryStream stream = new MemoryStream())
-            {
-                XmlSerializer s = new XmlSerializer(typeof(List<UOMCode>));
-                s.Serialize(stream, uomCodes);
-                SaveStream(UOM_FILE_NAME, stream);
-            }
-        }
-
-        protected void CheckFileExists()
-        {
-            if (!System.IO.File.Exists(Path))
-            {
-                throw new System.IO.IOException("Unable to locate file @ " + Path);
-            }
-        }
-
-        protected abstract void ExtractStream(string fileName, Stream stream);
-
-        protected abstract void SaveStream(string fileName, MemoryStream stream);
+        protected abstract Stream GetStream(string fileName);
     }
 }

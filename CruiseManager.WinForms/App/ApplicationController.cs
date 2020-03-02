@@ -28,7 +28,7 @@ namespace CruiseManager.WinForms.App
 
         public override void RegisterTypes(StandardKernel kernel)
         {
-            kernel.Bind<ApplicationControllerBase>().ToConstant<ApplicationController>(this);
+            kernel.Bind<IApplicationController>().ToConstant<ApplicationController>(this);
 
             kernel.Bind<IUserSettings>().To<UserSettings>().InSingletonScope();
             kernel.Bind<SetupServiceBase>().To<SetupService>().InSingletonScope();

@@ -32,7 +32,7 @@ namespace CruiseManager.Core.CruiseCustomize
 
         public IList<LogMatrixDO> LogMatrix { get; protected set; }
 
-        public LogMatrixPresenter(ApplicationControllerBase appController)
+        public LogMatrixPresenter(IApplicationController appController)
             : base(appController)
         {
         }

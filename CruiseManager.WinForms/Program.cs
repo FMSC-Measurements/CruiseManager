@@ -52,7 +52,7 @@ namespace CruiseManager
                                typeof(Analytics), typeof(Crashes));
 #endif
 
-            using (ApplicationControllerBase applicationController = new ApplicationController())
+            using (var applicationController = new ApplicationController())
             {
                 if (dalPath != null)
                 {

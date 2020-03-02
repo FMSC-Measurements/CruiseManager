@@ -86,7 +86,7 @@ namespace CruiseManager.Core.CruiseCustomize
 
         public IEnumerable<string> SpeciesOptions { get; set; }
 
-        public LogAuditRulePresenter(ApplicationControllerBase appController) : base(appController)
+        public LogAuditRulePresenter(IApplicationController appController) : base(appController)
         {
             foreach (var grouping in Database.From<LogGradeAuditRule>().Read().GroupBy(x => x.Species))
             {
