@@ -5,7 +5,7 @@ using CruiseManager.Core.App;
 using CruiseManager.Core.Components.ViewInterfaces;
 using CruiseManager.Core.Constants;
 using CruiseManager.Core.ViewModel;
-using FMSC.ORM.Core.SQL;
+using Microsoft.AppCenter.Analytics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,8 +16,8 @@ namespace CruiseManager.Core.Components
     public class CreateComponentPresenter : Presentor
     {
         public static int MAX_COMPONENTS = 99;
-        static int ROWID_SPACING = 200000;
-        static int PLOT_ROW_SPACING = 1000;
+        private static int ROWID_SPACING = 200000;
+        private static int PLOT_ROW_SPACING = 1000;
 
         //private int _progressPercentage = 0;
         //private bool _showProgress = false;
@@ -108,6 +108,7 @@ namespace CruiseManager.Core.Components
             List<ComponentDO> componentInfo = BuildMasterComponentTable(MasterDAL, numComponents);
 
             View.StepProgressBar();/////////////////////////////////////////////////
+            int componentsCreated = 0;
 
             int curCompNum = 1;
             String saveDir = GetSaveDir(MasterDAL.Path);
@@ -118,6 +119,7 @@ namespace CruiseManager.Core.Components
                 if (!File.Exists(compPath))
                 {
                     CreateComponent(MasterDAL, curCompNum++, comp, compPath);
+                    componentsCreated++;
                 }
 
                 View.StepProgressBar();//////////////////////////////////////////////
@@ -146,6 +148,12 @@ namespace CruiseManager.Core.Components
             numCompEntry.Save(OnConflictOption.Replace);
 
             View.StepProgressBar();/////////////////////////////////////////////////
+
+            Analytics.TrackEvent(AnalyticsEvents.COMPONENTS_CREATE, new Dictionary<string, string>()
+            {
+                {nameof(numComponents), numComponents.ToString() },
+                {nameof(componentsCreated), componentsCreated.ToString() },
+            });
 
             View.HideProgressBar();
         }
