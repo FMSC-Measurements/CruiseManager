@@ -2,6 +2,8 @@
 using CruiseDAL;
 using CruiseDAL.DataObjects;
 using FMSC.ORM.Core.SQL;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -964,16 +966,26 @@ namespace CruiseManager.Core.Components
         {
             try
             {
+                Analytics.TrackEvent(AnalyticsEvents.MERGE_START,
+                    new Dictionary<string, string>()
+                    {
+                        {"numComponents", Components.Count.ToString() },
+                    });
+
                 this.SyncDesign();
                 this.SyncFieldData();
+                Analytics.TrackEvent(AnalyticsEvents.MERGE_DONE);
             }
             catch (CancelWorkerException e)
             {
+                Analytics.TrackEvent(AnalyticsEvents.MERGE_CANCEL);
                 this.NotifyProgressChanged(0, false, "Canceleled", e);
                 throw;
             }
             catch (Exception e)
             {
+                Analytics.TrackEvent(AnalyticsEvents.MERGE_FAIL);
+                Crashes.TrackError(e);
                 this.NotifyProgressChanged(0, false, "Error:" + e.Message, e);
                 throw;
             }

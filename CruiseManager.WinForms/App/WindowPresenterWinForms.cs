@@ -8,6 +8,7 @@ using CruiseManager.Utility;
 using CruiseManager.WinForms.CruiseWizard;
 using CruiseManager.WinForms.DataEditor;
 using CruiseManager.WinForms.TemplateEditor;
+using Microsoft.AppCenter.Analytics;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -287,6 +288,7 @@ namespace CruiseManager.WinForms.App
             if (ApplicationController.Database.GetRowCount("Tree", null) == 0)
             {
                 SaleDO sale;
+                Analytics.TrackEvent(AnalyticsEvents.FEATURE_EDITCRUISEWIZARD);
                 this.ShowWizardDialog(this.ApplicationController.Database, out sale);
             }
             else
@@ -307,6 +309,7 @@ namespace CruiseManager.WinForms.App
 
         public override void ShowDataExportDialog(IEnumerable<TreeVM> Trees, IEnumerable<LogVM> Logs, IEnumerable<PlotDO> Plots, IEnumerable<CountVM> Counts)
         {
+            Analytics.TrackEvent(AnalyticsEvents.FEATURE_DATAEXPORT);
             using (DataExportDialog dialog = new DataExportDialog(this.ApplicationController, Trees, Logs, Plots, Counts))
             {
                 //dialog.Owner = DataEditorView; //TODO make data export dialog owned by data editor

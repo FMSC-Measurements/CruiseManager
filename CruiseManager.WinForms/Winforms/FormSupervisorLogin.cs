@@ -1,5 +1,6 @@
 ﻿using CruiseManager.Core.App;
 using CruiseManager.Core.Constants;
+using Microsoft.AppCenter.Analytics;
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
@@ -28,11 +29,13 @@ namespace CruiseManager.WinForms
                 if (_pwTB.Text == Strings.SUPERVISOR_LOGIN)
                 {
                     ApplicationController.InSupervisorMode = true;
+                    Analytics.TrackEvent(AnalyticsEvents.SUPERVISORLOGIN_SUCCESS);
                     MessageBox.Show("Success");
                 }
                 else
                 {
                     ApplicationController.InSupervisorMode = false;
+                    Analytics.TrackEvent(AnalyticsEvents.SUPERVISORLOGIN_FAIL);
                     MessageBox.Show("Password invalid");
                 }
             }
