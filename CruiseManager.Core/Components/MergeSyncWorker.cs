@@ -14,54 +14,57 @@ namespace CruiseManager.Core.Components
 {
     /*
  *
-- push cutting unit inserts : TBT
-- push cutting unit updates : N
-- push stratum inserts : TBT
-- push stratum updates : N
-- push new cutting unit/stratm mappings : TBT
-- push removed cutting unit/stratm mappings : TBT
-- push samplegroups inserts : TBT
-- push samplegroup updates : N
-- pull samplegroups inserts : TBT
-- pull samplegroup updates : N
-- match samplegroups : N
-- push tree defaults inserts : TBT
-- push tree default updates : N
-- pull tree defaults inserts : TBT
-- pull tree default updates : N
-- match new tree defaults : N
-- push new tree default/sg mappings : TBT
-- push removed tree default/sg mappings : N
-- pull new tree default/sg mappings : TBT
+ * Y = implemented, N = not implimented, NP =  not planned
+ * - push cutting unit inserts : Y
+ * - push cutting unit updates : N
+ * - push stratum inserts : Y
+ * - push stratum updates : N
+ * - push new cutting unit/stratm mappings : Y
+ * - push removed cutting unit/stratm mappings : Y
+ * - push samplegroups inserts : Y
+ * - push samplegroup updates : N
+ * - pull samplegroups inserts : Y
+ * - pull samplegroup updates : N
+ * - match samplegroups : N
+ * - push tree defaults inserts : Y
+ * - push tree default updates : N
+ * - pull tree defaults inserts : Y
+ * - pull tree default updates : N
+ * - match new tree defaults : N
+ * - push new tree default/sg mappings : Y
+ * - push removed tree default/sg mappings : N
+ * - pull new tree default/sg mappings : Y
 
-- pull count tree inserts : TBT
-- pull count tree updates : TBT
-- push count tree inserts : NP
-- push count tree updates : NP
+ * - pull count tree inserts : Y
+ * - pull count tree updates : Y
+ * - push count tree inserts : NP
+ * - push count tree updates : NP
 
-- pull plot inserts : TBT
-- pull plot updates : TBT
-- push plot inserts : NP
-- push plot updates : TBT
+ * - pull plot inserts : Y
+ * - pull plot updates : Y
+ * - push plot inserts : NP
+ * - push plot updates : Y
 
-- pull tree inserts : TBT
-- pull tree updates : TBT
-- push tree inserts : NP
-- push tree updates : TBT
+ * - pull tree inserts : Y
+ * - pull tree updates : Y
+ * - push tree inserts : NP
+ * - push tree updates : Y
 
-- pull stem inserts : TBT
-- pull stem updates : TBT
-- push stem inserts : NP
-- push stem updates : TBT
+ * - pull stem inserts : Y
+ * - pull stem updates : Y
+ * - push stem inserts : NP
+ * - push stem updates : Y
 
-- pull lot inserts : TBT
-- pull log updates : TBT
-- push log inserts : NP
-- push log updates : TBT
+ * - pull lot inserts : Y
+ * - pull log updates : Y
+ * - push log inserts : NP
+ * - push log updates : Y
  * */
 
     public class MergeSyncWorker : IWorker
     {
+        int BATCH_SIZE = 9;
+
         public MergeSyncWorker(MergeComponentsPresenter controller)
         {
             this.MergePresenter = controller;
@@ -79,31 +82,41 @@ namespace CruiseManager.Core.Components
 
         #region core
 
-        public void PullDesignChanges()
+        public void PullDesignChanges(IEnumerable<ComponentFileVM> components)
         {
-            foreach (ComponentFileVM comp in Components)
+            foreach (var comp in components)
             {
-                PullTreeDefaultInserts(comp);
-                PullNewSampleGroups(comp);
-                PullNewSampleGroupTreeDefaults(comp);
-                PullNewTallyTable(comp);
-                PullCountTreeChanges(comp);
+                PullDesignChanges(comp);
             }
         }
 
-        public void PushDesignChanges()
+        private void PullDesignChanges(ComponentFileVM comp)
         {
-            foreach (ComponentFileVM comp in Components)
+            PullTreeDefaultInserts(comp);
+            PullNewSampleGroups(comp);
+            PullNewSampleGroupTreeDefaults(comp);
+            PullNewTallyTable(comp);
+            PullCountTreeChanges(comp);
+        }
+
+        public void PushDesignChanges(IEnumerable<ComponentFileVM> components)
+        {
+            foreach (var comp in components)
             {
-                PushNewUnitRecords(comp);
-                PushNewStratumRecords(comp);
-                PushUnitStratumChanges(comp);
-                PushNewSampleGroups(comp);
-                PushTreeDefaultInserts(comp);
-                PushSampleGroupTreeDefaultInserts(comp);
-                PushNewCountTrees(comp);
-                //TODO push count tree table changes
+                PushDesignChanges(comp);
             }
+        }
+
+        public void PushDesignChanges(ComponentFileVM comp)
+        {
+            PushNewUnitRecords(comp);
+            PushNewStratumRecords(comp);
+            PushUnitStratumChanges(comp);
+            PushNewSampleGroups(comp);
+            PushTreeDefaultInserts(comp);
+            PushSampleGroupTreeDefaultInserts(comp);
+            PushNewCountTrees(comp);
+            //TODO push count tree table changes
         }
 
         public void SyncFieldData()
@@ -157,22 +170,43 @@ namespace CruiseManager.Core.Components
 
         private void SyncDesign()
         {
-            AttachAll();
-            Master.BeginTransaction();
-            try
+            var components = Components;
+            foreach(var comp in components)
             {
-                PullDesignChanges();
-                PushDesignChanges();
-                Master.CommitTransaction();
+                AttachComponent(comp);
+                Master.BeginTransaction();
+                try
+                {
+                    PullDesignChanges(comp);
+                    Master.CommitTransaction();
+                }
+                catch
+                {
+                    Master.RollbackTransaction();
+                }
+                finally
+                {
+                    DetachComponent(comp);
+                }
             }
-            catch
+
+            foreach(var comp in components)
             {
-                Master.RollbackTransaction();
-                throw;
-            }
-            finally
-            {
-                DetachAll();
+                AttachComponent(comp);
+                Master.BeginTransaction();
+                try
+                {
+                    PushDesignChanges(comp);
+                    Master.CommitTransaction();
+                }
+                catch
+                {
+                    Master.RollbackTransaction();
+                }
+                finally
+                {
+                    DetachComponent(comp);
+                }
             }
         }
 
@@ -180,22 +214,16 @@ namespace CruiseManager.Core.Components
 
         #region transaction and attach
 
-        private void AttachAll()
+        private void AttachComponent(ComponentFileVM comp)
         {
-            foreach (ComponentFileVM comp in this.Components)
-            {
-                string alias = "comp" + comp.Component_CN.Value.ToString();
-                comp.DBAlias = alias;
-                Master.AttachDB(comp.Database, alias);
-            }
+            string alias = "comp" + comp.Component_CN.Value.ToString();
+            comp.DBAlias = alias;
+            Master.AttachDB(comp.Database, alias);
         }
 
-        private void DetachAll()
+        private void DetachComponent(ComponentFileVM comp)
         {
-            foreach (ComponentFileVM comp in this.Components)
-            {
-                Master.DetachDB(comp.DBAlias);
-            }
+            Master.DetachDB(comp.DBAlias);
         }
 
         private void CancelTransactionAll()

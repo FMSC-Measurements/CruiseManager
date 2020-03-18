@@ -21,6 +21,7 @@ namespace CruiseManager.Test.Components
         const string VALENTINE_MASTER = "Good\\Valentine.M.cruise";
         const string GOOSEFOOTE_MASTER = "Good\\GooseFoote_7_16\\GooseFoote.M.cruise";
         const string TESTMERGENEWCOUNTS_MASTER = "Good\\testMergeNewCounts\\testMergeNewCounts.M.cruise";
+        const string TESTMAXCOMPONENTS_MASTER = "Good\\testMaxComponents\\12345 testMergeMaxComponents TS.M.cruise";
 
         public DAL GetMaster(string masterPath)
         {
@@ -106,6 +107,7 @@ namespace CruiseManager.Test.Components
         [InlineData(VALENTINE_MASTER, 2)]
         [InlineData(GOOSEFOOTE_MASTER, 3)]
         [InlineData(TESTMERGENEWCOUNTS_MASTER, 2)]
+        [InlineData(TESTMAXCOMPONENTS_MASTER, 21)]
         public void PerformMergeTest(string masterPath, int numComps)
         {
             using (var master = GetMaster(masterPath))
@@ -130,10 +132,16 @@ namespace CruiseManager.Test.Components
                 var syncWorker = new MergeSyncWorker(cmPresenter);
                 syncWorker.ProgressChanged += HandleProgressChanged;
 
-                syncWorker.BeginWork();
+                syncWorker.DoWork();
 
                 syncWorker.Wait();
             }
+        }
+
+        
+        public void PerformMergeTest_overTen(string masterPath, int numComps)
+        {
+
         }
 
         private void HandleProgressChanged(object sender, WorkerProgressChangedEventArgs e)
