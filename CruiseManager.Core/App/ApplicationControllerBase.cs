@@ -254,7 +254,7 @@ namespace CruiseManager.Core.App
         {
             Analytics.TrackEvent(nameof(OpenFile), new Dictionary<string, string>
             {
-                {"filePath", filePath }
+                {"filePath", Path.GetFileName(filePath) }
             });
 
             var extension = System.IO.Path.GetExtension(filePath).ToLowerInvariant();
@@ -311,8 +311,8 @@ namespace CruiseManager.Core.App
         {
             var fullPath = Path.GetFullPath(fileName);
 
-            FileAttributes atts = File.GetAttributes(fileName);
-            if ((atts & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+            if (File.Exists(fullPath) 
+                && (File.GetAttributes(fullPath) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
             {
                 ActiveView.ShowMessage("This file is read only.");
             }
@@ -324,11 +324,12 @@ namespace CruiseManager.Core.App
                     fullPath,
                     StringComparison.InvariantCultureIgnoreCase) != 0)
                 {
-                    this.Database.CopyAs(fileName, true);
+                    Database.CopyAs(fileName, true);
                 }
 
                 //save after copying
                 this.Save();
+                AppState.AddRecentFile(fullPath);
                 this.MainWindow.Text = System.IO.Path.GetFileName(this.Database.Path);
             }
         }
