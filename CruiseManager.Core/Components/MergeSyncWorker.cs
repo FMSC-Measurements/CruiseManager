@@ -1,7 +1,6 @@
 ﻿using Backpack.SqlBuilder;
 using CruiseDAL;
 using CruiseDAL.DataObjects;
-using FMSC.ORM.Core.SQL;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using System;
@@ -63,8 +62,6 @@ namespace CruiseManager.Core.Components
 
     public class MergeSyncWorker : IWorker
     {
-        int BATCH_SIZE = 9;
-
         public MergeSyncWorker(MergeComponentsPresenter controller)
         {
             this.MergePresenter = controller;
@@ -171,7 +168,7 @@ namespace CruiseManager.Core.Components
         private void SyncDesign()
         {
             var components = Components;
-            foreach(var comp in components)
+            foreach (var comp in components)
             {
                 AttachComponent(comp);
                 Master.BeginTransaction();
@@ -190,7 +187,7 @@ namespace CruiseManager.Core.Components
                 }
             }
 
-            foreach(var comp in components)
+            foreach (var comp in components)
             {
                 AttachComponent(comp);
                 Master.BeginTransaction();
@@ -354,14 +351,43 @@ namespace CruiseManager.Core.Components
 
         #region pull new design records
 
-        public void PullCountTreeChanges(ComponentFileVM comp)
+        public void PullNewTallyTable(ComponentFileVM comp)
         {
-            StartJob("Add New CountTree Records");
-            var compCounts = comp.Database.From<CountTreeDO>().Query();
-            foreach (CountTreeDO count in compCounts)
+            StartJob("Add New Tally Records");
+            var compTallies = comp.Database.From<TallyDO>().Read();
+
+            foreach (TallyDO tally in compTallies)
             {
                 CheckWorkerStatus();
-                CountTreeDO match = Master.From<CountTreeDO>()
+                TallyDO match = Master.From<TallyDO>()
+                    .Where("HotKey = @p1 AND Description = @p2")
+                    .Read(tally.Hotkey, tally.Description).FirstOrDefault();
+
+                if (match == null)
+                {
+                    match = new TallyDO(Master);
+                    match.Hotkey = tally.Hotkey;
+                    match.Description = tally.Description;
+                    match.Save();
+                }
+            }
+        }
+
+        public void PullCountTreeChanges(ComponentFileVM comp)
+        {
+            var master = Master;
+            var compDB = comp.Database;
+
+            StartJob("Add New CountTree Records");
+            var compCounts = compDB.From<CountTreeDO>().Query();
+            foreach (CountTreeDO count in compCounts)
+            {
+                var compTally = compDB.From<TallyDO>().Where("Tally_CN = @p1")
+                    .Query(count.Tally_CN).FirstOrDefault();
+
+                CheckWorkerStatus();
+                // try to read component count tree record from master
+                CountTreeDO match = master.From<CountTreeDO>()
                     .Where("SampleGroup_CN = @p1 " +
                     "AND ifnull(TreeDefaultValue_CN, 0) = ifnull(@p2, 0) " +
                     "AND CuttingUnit_CN = @p3 " +
@@ -374,29 +400,83 @@ namespace CruiseManager.Core.Components
 
                 if (match != null)
                 {
+                    // update component count tree data
                     match.TreeCount = count.TreeCount;
                     match.SumKPI = count.SumKPI;
                     match.Save();
                 }
                 else
                 {
+                    // attempt to create a component count tree record in the master
+
+                    // see if tally table entry exists matching the description and hotkey
                     TallyDO tally = count.Tally;
-                    TallyDO masterTally = Master.From<TallyDO>().Where("HotKey = @p1")
-                        .Query(tally.Hotkey).FirstOrDefault();
+                    TallyDO masterTally = master.From<TallyDO>().Where("Description = @p1 AND HotKey = @p2")
+                        .Query(tally.Description, tally.Hotkey).FirstOrDefault();
+
+                    // if not create one
                     if (masterTally == null)
                     {
-                        //TODO unsupported
+                        masterTally = new TallyDO()
+                        {
+                            Description = tally.Description,
+                            Hotkey = tally.Hotkey,
+                        };
+                        master.Insert(masterTally);
                     }
-                    else
-                    {
-                        count.Tally_CN = masterTally.Tally_CN;
-                    }
+
+                    count.Tally_CN = masterTally.Tally_CN;
+
                     if (count.Component_CN == null)
                     {
                         count.Component_CN = comp.Component_CN;
                         //Master.Execute("UPDATE " + comp.DBAlias + ".CountTree Set Component_CN = ? WHERE CountTree_CN = ?;", comp.Component_CN, count.CountTree_CN);
                     }
-                    Master.Insert(count, null, OnConflictOption.Fail);
+                    master.Insert(count, null, OnConflictOption.Fail);
+                }
+
+                // see if there is a master count tree record match our count tree record
+                // is is important because it is posible to add populations in fscruiser
+                // and if a new tally setup was done to the component but not the master
+                // we will need a master count tree record to push the new tally setup out to the other components
+                var masterMatch = master.From<CountTreeDO>()
+                    .Where("SampleGroup_CN = @p1 " +
+                    "AND ifnull(TreeDefaultValue_CN, 0) = ifnull(@p2, 0) " +
+                    "AND CuttingUnit_CN = @p3 " +
+                    "AND Component_CN IS NULL")
+                    .Query(count.SampleGroup_CN,
+                    count.TreeDefaultValue_CN,
+                    count.CuttingUnit_CN).FirstOrDefault();
+
+                if (masterMatch == null)
+                {
+                    TallyDO tally = count.Tally;
+                    TallyDO masterTally = master.From<TallyDO>().Where("Description = @p1 AND HotKey = @p2")
+                        .Query(tally.Description, tally.Hotkey).FirstOrDefault();
+
+                    if (masterTally == null)
+                    {
+                        masterTally = new TallyDO()
+                        {
+                            Description = tally.Description,
+                            Hotkey = tally.Hotkey,
+                        };
+                        master.Insert(masterTally);
+                    }
+
+                    masterMatch = new CountTreeDO()
+                    {
+                        Component_CN = null,
+                        TreeCount = 0,
+                        SumKPI = 0,
+
+                        CuttingUnit_CN = count.CuttingUnit_CN,
+                        SampleGroup_CN = count.SampleGroup_CN,
+                        TreeDefaultValue_CN = count.TreeDefaultValue_CN,
+                        Tally_CN = masterTally.Tally_CN,
+                    };
+
+                    master.Insert(masterMatch, null, OnConflictOption.Fail);
                 }
             }
             EndJob();
@@ -445,28 +525,6 @@ namespace CruiseManager.Core.Components
             EndJob();
         }
 
-        public void PullNewTallyTable(ComponentFileVM comp)
-        {
-            StartJob("Add New CountTree Records");
-            var compTallies = comp.Database.From<TallyDO>().Read();
-
-            foreach (TallyDO tally in compTallies)
-            {
-                CheckWorkerStatus();
-                TallyDO match = Master.From<TallyDO>()
-                    .Where("HotKey = @p1 AND Description = @p2")
-                    .Read(tally.Hotkey, tally.Description).FirstOrDefault();
-
-                if (match == null)
-                {
-                    match = new TallyDO(Master);
-                    match.Hotkey = tally.Hotkey;
-                    match.Description = tally.Description;
-                    match.Save();
-                }
-            }
-        }
-
         public void PullTreeDefaultInserts(ComponentFileVM comp)
         {
             StartJob("Pull TreeDefault Inserts");
@@ -505,22 +563,22 @@ namespace CruiseManager.Core.Components
 
             var countTrees = Master.Query<CountTreeDO>("SELECT * FROM main.CountTree WHERE Component_CN IS NULL;").ToArray();
 
-            foreach(var ct in countTrees)
+            foreach (var ct in countTrees)
             {
                 var match = Master.Query<CountTreeDO>(
                     $"SELECT * FROM {comp.DBAlias}.CountTree " +
                         "WHERE CuttingUnit_CN = @p1 " +
                         "AND SampleGroup_CN = @p2 " +
-                        "AND ifnull(TreeDefaultValue_CN, 0) == ifnull(@p3, 0);", 
+                        "AND ifnull(TreeDefaultValue_CN, 0) == ifnull(@p3, 0);",
                     ct.CuttingUnit_CN, ct.SampleGroup_CN, ct.TreeDefaultValue_CN)
                     .FirstOrDefault();
 
-                if(match == null)
+                if (match == null)
                 {
                     // see if component has matching tally record
                     var tallyMatch = Master.Query<TallyDO>($"SELECT * FROM {comp.DBAlias}.Tally WHERE Tally_CN = @p1;", ct.Tally_CN).FirstOrDefault();
 
-                    if(tallyMatch == null)
+                    if (tallyMatch == null)
                     {
                         // get the full tally record from the master
                         var masterTally = Master.Query<TallyDO>("SELECT * FROM main.Tally WHERE Tally_CN = @p1;", ct.Tally_CN).FirstOrDefault();

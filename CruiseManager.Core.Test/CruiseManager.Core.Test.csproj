@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CruiseManager.Core\CruiseManager.Core.csproj" PrivateAssets="none"/>
+    <ProjectReference Include="..\CruiseManager.Core\CruiseManager.Core.csproj"/>
   </ItemGroup>
 
 </Project>
