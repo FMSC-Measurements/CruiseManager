@@ -484,33 +484,69 @@ namespace CruiseManager.Core.Components
 
         public void PullNewSampleGroups(ComponentFileVM comp)
         {
+            var master = Master;
             StartJob("Add New Sample Groups");
 
-            var compSGList = comp.Database.From<SampleGroupDO>().Query();
+            var compSGList = comp.Database.From<SampleGroupDO>().Query().ToArray();
             foreach (SampleGroupDO sg in compSGList)
             {
-                SampleGroupDO match = Master.From<SampleGroupDO>()
+                SampleGroupDO match = master.From<SampleGroupDO>()
                     .Where("Code = @p1 AND Stratum_CN = @p2")
                     .Query(sg.Code, sg.Stratum_CN).FirstOrDefault();
 
                 if (match == null)
                 {
-                    SampleGroupDO newSG = new SampleGroupDO(Master);
+
+                    SampleGroupDO newSG = new SampleGroupDO(master);
                     newSG.SuspendEvents();
                     newSG.SetValues(sg);
                     newSG.Stratum_CN = sg.Stratum_CN;
                     newSG.ResumeEvents();
 
-                    newSG.Save();
+                    master.Insert(newSG);
                     match = newSG;
                 }
                 if (sg.SampleGroup_CN != match.SampleGroup_CN)
                 {
-                    comp.Database.Execute("UPDATE SampleGroup SET SampleGroup_CN = @p1 WHERE SampleGroup_CN = @p2;", match.SampleGroup_CN, sg.SampleGroup_CN);
+                    var compAlias = comp.DBAlias;
+                    var matchSG_CN = match.SampleGroup_CN.Value;
+                    var compSG_CN = sg.SampleGroup_CN.Value;
+
+                    // check comp and see if it has a SG with a confilcting CN
+                    if(master.ExecuteScalar<int>($"SELECT count(*) FROM {compAlias}.SampleGroup WHERE SampleGroup_CN = @p1;", matchSG_CN) 
+                        > 0)
+                    {
+                        // movie the conflicting comp SG to a new CN
+                        var newSG_CN = master.ExecuteScalar<int>($"SELECT seq + 1 FROM {compAlias}.sqlite_sequence WHERE name = 'SampleGroup';");
+
+                        var toMoveSG = compSGList.FirstOrDefault(x => x.SampleGroup_CN == newSG_CN);
+                        if(toMoveSG != null)
+                        {
+                            toMoveSG.SampleGroup_CN = newSG_CN;
+                        }
+
+                        MoveSg(master, compAlias, matchSG_CN, newSG_CN);
+                    }
+
+                    MoveSg(master, compAlias, compSG_CN, matchSG_CN);
+
+                    // need to update sg_cn all over the place too
                 }
             }
 
             EndJob();
+
+            void MoveSg(DAL database, string dbAlias, long fromSG_CN, long toSG_CN)
+            {
+                database.Execute(
+$@"UPDATE {dbAlias}.SampleGroup SET SampleGroup_CN = @p1 WHERE SampleGroup_CN = @p2;
+UPDATE {dbAlias}.SampleGroupTreeDefaultValue SET SampleGroup_CN = @p1 WHERE SampleGroup_CN = @p2;
+UPDATE {dbAlias}.CountTree SET SampleGroup_CN = @p1 WHERE SampleGroup_CN = @p2;
+UPDATE {dbAlias}.Tree SET SampleGroup_CN = @p1 WHERE SampleGroup_CN = @p2;
+UPDATE {dbAlias}.SamplerState SET SampleGroup_CN = @p1 WHERE SampleGroup_CN = @p2;
+UPDATE {dbAlias}.FixCNTTallyPopulation SET SampleGroup_CN = @p1 WHERE SampleGroup_CN = @p2;", toSG_CN, fromSG_CN);
+
+            }
         }
 
         public void PullNewSampleGroupTreeDefaults(ComponentFileVM comp)
@@ -527,30 +563,62 @@ namespace CruiseManager.Core.Components
 
         public void PullTreeDefaultInserts(ComponentFileVM comp)
         {
+            var master = Master;
+
             StartJob("Pull TreeDefault Inserts");
-            var compTreeDefaults = comp.Database.From<TreeDefaultValueDO>().Query();
+            var compTreeDefaults = comp.Database.From<TreeDefaultValueDO>().Query().ToArray();
             foreach (TreeDefaultValueDO tdv in compTreeDefaults)
             {
                 CheckWorkerStatus();
-                bool hasMatch = 0 < Master.GetRowCount("TreeDefaultValue",
-                    "WHERE Species = @p1 AND PrimaryProduct = @p2 AND LiveDead = @p3",
-                    tdv.Species, tdv.PrimaryProduct, tdv.LiveDead);
-                if (!hasMatch)
+
+                var match = master.From<TreeDefaultValueDO>().Where("Species = @p1 AND PrimaryProduct = @p2 AND LiveDead = @p3")
+                    .Query(tdv.Species, tdv.PrimaryProduct, tdv.LiveDead).FirstOrDefault();
+
+                if(match == null)
                 {
-                    if (Master.GetRowCount("TreeDefaultValue", "WHERE TreeDefaultValue_CN = @p1", tdv.TreeDefaultValue_CN) == 0)
+                    var newTDV = new TreeDefaultValueDO(master);
+                    newTDV.SetValues(tdv);
+                    master.Insert(tdv, OnConflictOption.Fail);
+
+                    match = newTDV;
+                }
+
+                if(tdv.TreeDefaultValue_CN != match.TreeDefaultValue_CN)
+                {
+                    var compAlias = comp.DBAlias;
+                    var matchTDV_CN = match.TreeDefaultValue_CN.Value;
+                    var compTDB_CN = tdv.TreeDefaultValue_CN.Value;
+
+                    if (master.ExecuteScalar<int>($"SELECT count(*) FROM {compAlias}.TreeDefaultValue WHERE TreeDefaultValue_CN = @p1;", matchTDV_CN)
+                        > 0)
                     {
-                        Master.Insert(tdv, OnConflictOption.Fail);
+                        // movie the conflicting comp TDV to a new CN
+                        var newTDV_CN = master.ExecuteScalar<int>($"SELECT seq + 1 FROM {compAlias}.sqlite_sequence WHERE name = 'SampleGroup';");
+
+                        var toMoveTDV = compTreeDefaults.FirstOrDefault(x => x.TreeDefaultValue_CN == newTDV_CN);
+                        if (toMoveTDV != null)
+                        {
+                            toMoveTDV.TreeDefaultValue_CN = newTDV_CN;
+                        }
+
+                        MoveTDV(master, compAlias, matchTDV_CN, newTDV_CN);
                     }
-                    else
-                    {
-                        throw new NotImplementedException("TreeDefaultValue row conflict condition not implemented");
-                        //Master.Insert(tdv, false, OnConflictOption.Fail);
-                        //tdv.Save();
-                    }
+
+                    MoveTDV(master, compAlias, compTDB_CN, matchTDV_CN);
                 }
             }
 
             EndJob();
+
+            void MoveTDV(DAL database, string dbAlias, long fromTDV_CN, long toTDV_CN)
+            {
+                database.Execute(
+$@"UPDATE {dbAlias}.TreeDefaultValue SET TreeDefaultValue_CN = @p1 WHERE TreeDefaultValue_CN = @p2;
+UPDATE {dbAlias}.SampleGroupTreeDefaultValue SET TreeDefaultValue_CN = @p1 WHERE TreeDefaultValue_CN = @p2;
+UPDATE {dbAlias}.CountTree SET TreeDefaultValue_CN = @p1 WHERE TreeDefaultValue_CN = @p2;
+UPDATE {dbAlias}.Tree SET TreeDefaultValue_CN = @p1 WHERE TreeDefaultValue_CN = @p2;
+UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeDefaultValue_CN = @p2;", toTDV_CN, fromTDV_CN);
+            }
         }
 
         #endregion pull new design records
