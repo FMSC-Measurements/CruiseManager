@@ -206,7 +206,10 @@ namespace CruiseManager.Core.EditTemplate
         private void TreeDefaults_ItemRemoved(object sender, FMSC.Utility.Collections.ItemRemovedEventArgs e)
         {
             var rTDV = e.Item as TreeDefaultValueDO;
-            rTDV?.Delete();
+            if (rTDV != null && rTDV.IsPersisted)
+            {
+                rTDV.Delete();
+            }
         }
 
         public List<TreeFieldSetupDefaultDO> GetSelectedTreeFields(CruiseMethodsDO method)
