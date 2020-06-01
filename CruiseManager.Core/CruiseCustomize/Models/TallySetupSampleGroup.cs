@@ -252,12 +252,12 @@ namespace CruiseManager.Core.CruiseCustomize
                 .Where("SampleGroup_CN = @p1 AND ifnull(TreeDefaultValue_CN, 0) = 0")
                 .Query(SampleGroup_CN).FirstOrDefault();
 
-            TallyPopulation sgTallyPopulation = DAL.QuerySingleRecord<TallyPopulation>("SELECT SampleGroup_CN, TreeDefaultValue_CN, Tally.HotKey as HotKey, Tally.Description as Description " +
+            TallyPopulation sgTallyPopulation = DAL.Query<TallyPopulation>("SELECT SampleGroup_CN, TreeDefaultValue_CN, Tally.HotKey as HotKey, Tally.Description as Description " +
                 "FROM CountTree " +
                 "JOIN Tally USING (Tally_CN) " +
                 "WHERE CountTree.Tally_CN = Tally.Tally_CN " +
                 "AND CountTree.SampleGroup_CN = @p1 " +
-                "AND ifnull(CountTree.TreeDefaultValue_CN, 0) = 0;", this.SampleGroup_CN)
+                "AND ifnull(CountTree.TreeDefaultValue_CN, 0) = 0;", this.SampleGroup_CN).FirstOrDefault()
                 ?? new TallyPopulation() { Description = Code };
 
             this.TallyPopulations.Add("", sgTallyPopulation);
@@ -288,12 +288,12 @@ namespace CruiseManager.Core.CruiseCustomize
                 tally.Validate();
                 this.Tallies.Add(tdv, tally);
 
-                TallyPopulation tallyPopulation = DAL.QuerySingleRecord<TallyPopulation>("SELECT SampleGroup_CN, TreeDefaultValue_CN, tally.HotKey, tally.Description " +
+                TallyPopulation tallyPopulation = DAL.Query<TallyPopulation>("SELECT SampleGroup_CN, TreeDefaultValue_CN, tally.HotKey, tally.Description " +
                 "FROM CountTree " +
                 "JOIN Tally USING (Tally_CN) " +
                 "WHERE CountTree.Tally_CN = Tally.Tally_CN " +
                 "AND CountTree.SampleGroup_CN = @p1 " +
-                "AND CountTree.TreeDefaultValue_CN = @p2;", this.SampleGroup_CN, tdv.TreeDefaultValue_CN)
+                "AND CountTree.TreeDefaultValue_CN = @p2;", this.SampleGroup_CN, tdv.TreeDefaultValue_CN).FirstOrDefault()
                 ?? new TallyPopulation() { Description = Code + "/" + tdv.Species + ((tdv.LiveDead == "D") ? "/D" : "") };
 
                 if (!this.TallyPopulations.ContainsKey(tdv.Species))
