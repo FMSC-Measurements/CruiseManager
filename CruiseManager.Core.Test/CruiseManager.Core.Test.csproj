@@ -4,17 +4,19 @@
     <Platform>Any Cpu</Platform>
     <UserSecretsId>5fd8872d-7e52-4edf-8cbd-9e4bd85a492a</UserSecretsId>
   </PropertyGroup>
+  
   <ItemGroup>
     <None Remove="TestFiles\**\*" />
   </ItemGroup>
+  
   <ItemGroup>
     <Content Include="TestFiles\**\*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
-
   <ItemGroup>
+    <PackageReference Include="CruiseDAL.V2.Models" Version="2.7.0.62" />
     <PackageReference Include="Moq" Version="4.13.1" />
     <PackageReference Include="xunit.analyzers" Version="0.10.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
@@ -29,5 +31,4 @@
   <ItemGroup>
     <ProjectReference Include="..\CruiseManager.Core\CruiseManager.Core.csproj"/>
   </ItemGroup>
-
 </Project>

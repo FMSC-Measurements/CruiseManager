@@ -41,6 +41,18 @@ namespace CruiseManager.Test
             }
         }
 
+        public string GetCleanFile(string fileName)
+        {
+            var filePath = Path.Combine(TestTempPath, fileName);
+
+            if(File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+
+            return filePath;
+        }
+
         public void TouchDir(string dir)
         {
             if (!Directory.Exists(dir))

@@ -14,9 +14,6 @@ namespace CruiseManager.Core.Components
         [IgnoreField]
         public DAL Database { get; set; }
 
-        [IgnoreField]
-        public String DBAlias { get; set; }
-
         //public int Edits { get; set; }
         //public string LastMod { get; set; }
         //public int Warnings { get; set; }

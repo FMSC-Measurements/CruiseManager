@@ -1,6 +1,7 @@
 ﻿using Backpack.SqlBuilder;
 using CruiseDAL;
 using CruiseDAL.DataObjects;
+using FMSC.ORM.EntityModel.Support;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using System;
@@ -62,9 +63,19 @@ namespace CruiseManager.Core.Components
 
     public class MergeSyncWorker : IWorker
     {
+        public MergeSyncWorker(DAL master, IEnumerable<ComponentFileVM> comps, IDictionary<String, MergeTableCommandBuilder> commandBuilders)
+        {
+            CommandBuilders = commandBuilders;
+            this.Master = master;
+            this.Components = comps;
+
+            System.Diagnostics.Debug.Assert(this.Master != null);
+            System.Diagnostics.Debug.Assert(this.Components != null);
+        }
+
         public MergeSyncWorker(MergeComponentsPresenter controller)
         {
-            this.MergePresenter = controller;
+            CommandBuilders = controller.CommandBuilders;
             this.Master = controller.MasterDB;
             this.Components = controller.ActiveComponents;
 
@@ -72,48 +83,122 @@ namespace CruiseManager.Core.Components
             System.Diagnostics.Debug.Assert(this.Components != null);
         }
 
-        public IList<ComponentFileVM> Components { get; private set; }
+        public const string COMP_ALIAS = "comp";
+
+        public IEnumerable<ComponentFileVM> Components { get; private set; }
         public DAL Master { get; private set; }
         public MergeComponentsPresenter MergePresenter { get; set; }
-        private IDictionary<String, MergeTableCommandBuilder> CommandBuilders { get { return this.MergePresenter.CommandBuilders; } }
+        private IDictionary<String, MergeTableCommandBuilder> CommandBuilders { get; set; }
+
+        #region move methods
+
+        private void MoveUnit(DAL database, string dbAlias, long fromUnit_CN, long toUnit_CN)
+        {
+            database.Execute(
+$@"UPDATE {dbAlias}.CuttingUnit SET CuttingUnit_CN = @p1 WHERE CuttingUnit_CN = @p2;
+UPDATE {dbAlias}.CuttingUnitStratum SET CuttingUnit_CN = @p1 WHERE CuttingUnit_CN = @p2;
+UPDATE {dbAlias}.Plot SET CuttingUnit_CN = @p1 WHERE CuttingUnit_CN = @p2;
+UPDATE {dbAlias}.Tree SET CuttingUnit_CN = @p1 WHERE CuttingUnit_CN = @p2;
+UPDATE {dbAlias}.CountTree SET CuttingUnit_CN = @p1 WHERE CuttingUnit_CN = @p2;", toUnit_CN, fromUnit_CN);
+        }
+
+        private void MoveSt(DAL database, string dbAlias, long fromSt_CN, long toSt_CN)
+        {
+            database.Execute(
+$@"UPDATE {dbAlias}.Stratum SET Stratum_CN = @p1 WHERE Stratum_CN = @p2;
+UPDATE {dbAlias}.SampleGroup SET Stratum_CN = @p1 WHERE Stratum_CN = @p2;
+UPDATE {dbAlias}.Plot SET Stratum_CN = @p1 WHERE Stratum_CN = @p2;
+UPDATE {dbAlias}.CuttingUnitStratum SET Stratum_CN = @p1 WHERE Stratum_CN = @p2;
+UPDATE {dbAlias}.Tree SET Stratum_CN = @p1 WHERE Stratum_CN = @p2;
+UPDATE {dbAlias}.FixCNTTallyClass SET Stratum_CN = @p1 WHERE Stratum_CN = @p2;
+UPDATE {dbAlias}.StratumStats SET Stratum_CN = @p1 WHERE Stratum_CN = @p2;", toSt_CN, fromSt_CN);
+        }
+
+        private void MoveSg(DAL database, string dbAlias, long fromSG_CN, long toSG_CN)
+        {
+            database.Execute(
+$@"UPDATE {dbAlias}.SampleGroup SET SampleGroup_CN = @p1 WHERE SampleGroup_CN = @p2;
+UPDATE {dbAlias}.SampleGroupTreeDefaultValue SET SampleGroup_CN = @p1 WHERE SampleGroup_CN = @p2;
+UPDATE {dbAlias}.CountTree SET SampleGroup_CN = @p1 WHERE SampleGroup_CN = @p2;
+UPDATE {dbAlias}.Tree SET SampleGroup_CN = @p1 WHERE SampleGroup_CN = @p2;
+UPDATE {dbAlias}.SamplerState SET SampleGroup_CN = @p1 WHERE SampleGroup_CN = @p2;
+UPDATE {dbAlias}.FixCNTTallyPopulation SET SampleGroup_CN = @p1 WHERE SampleGroup_CN = @p2;", toSG_CN, fromSG_CN);
+        }
+
+        public void MoveTDV(DAL database, string dbAlias, long fromTDV_CN, long toTDV_CN)
+        {
+            database.Execute(
+$@"UPDATE {dbAlias}.TreeDefaultValue SET TreeDefaultValue_CN = @p1 WHERE TreeDefaultValue_CN = @p2;
+UPDATE {dbAlias}.SampleGroupTreeDefaultValue SET TreeDefaultValue_CN = @p1 WHERE TreeDefaultValue_CN = @p2;
+UPDATE {dbAlias}.CountTree SET TreeDefaultValue_CN = @p1 WHERE TreeDefaultValue_CN = @p2;
+UPDATE {dbAlias}.Tree SET TreeDefaultValue_CN = @p1 WHERE TreeDefaultValue_CN = @p2;
+UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeDefaultValue_CN = @p2;", toTDV_CN, fromTDV_CN);
+        }
+
+        #endregion move methods
 
         #region core
 
-        public void PullDesignChanges(IEnumerable<ComponentFileVM> components)
+        public void SyncDesign()
         {
+            var components = Components;
             foreach (var comp in components)
             {
-                PullDesignChanges(comp);
+                AttachComponent(comp.Database);
+                Master.BeginTransaction();
+                try
+                {
+                    PullDesignChanges(comp);
+                    Master.CommitTransaction();
+                }
+                catch
+                {
+                    Master.RollbackTransaction();
+                }
+                finally
+                {
+                    DetachComponent();
+                }
+            }
+
+            foreach (var comp in components)
+            {
+                AttachComponent(comp.Database);
+                Master.BeginTransaction();
+                try
+                {
+                    PushDesignChanges(comp);
+                    Master.CommitTransaction();
+                }
+                catch
+                {
+                    Master.RollbackTransaction();
+                }
+                finally
+                {
+                    DetachComponent();
+                }
             }
         }
 
         private void PullDesignChanges(ComponentFileVM comp)
         {
-            PullTreeDefaultInserts(comp);
-            PullNewSampleGroups(comp);
-            PullNewSampleGroupTreeDefaults(comp);
-            PullNewTallyTable(comp);
-            PullCountTreeChanges(comp);
-        }
-
-        public void PushDesignChanges(IEnumerable<ComponentFileVM> components)
-        {
-            foreach (var comp in components)
-            {
-                PushDesignChanges(comp);
-            }
+            PullTreeDefaultInserts();
+            PullSampleGroup();
+            PullSampleGroupTreeDefault();
+            PullTally();
+            PullCountTree(comp.Component_CN.Value);
         }
 
         public void PushDesignChanges(ComponentFileVM comp)
         {
-            PushNewUnitRecords(comp);
-            PushNewStratumRecords(comp);
-            PushUnitStratumChanges(comp);
-            PushNewSampleGroups(comp);
-            PushTreeDefaultInserts(comp);
-            PushSampleGroupTreeDefaultInserts(comp);
-            PushNewCountTrees(comp);
-            //TODO push count tree table changes
+            PushCuttingUnit();
+            PushStratum();
+            PushCuttingUnitStratum();
+            PushSampleGroup();
+            PushTreeDefault();
+            PushSampleGroupTreeDefault();
+            PushCountTrees(comp.Component_CN.Value);
         }
 
         public void SyncFieldData()
@@ -138,7 +223,7 @@ namespace CruiseManager.Core.Components
 
         public void UpdateComponents()
         {
-            foreach (ComponentFileVM comp in Components)
+            foreach (var comp in Components)
             {
                 PushComponentPlotUpdates(comp);
                 PushComponentTreeUpdates(comp);
@@ -149,7 +234,7 @@ namespace CruiseManager.Core.Components
 
         public void UpdateMaster()
         {
-            foreach (ComponentFileVM comp in Components)
+            foreach (var comp in Components)
             {
                 PullNewPlotRecords(comp);
                 PullMasterPlotUpdates(comp);
@@ -165,68 +250,26 @@ namespace CruiseManager.Core.Components
             }
         }
 
-        private void SyncDesign()
-        {
-            var components = Components;
-            foreach (var comp in components)
-            {
-                AttachComponent(comp);
-                Master.BeginTransaction();
-                try
-                {
-                    PullDesignChanges(comp);
-                    Master.CommitTransaction();
-                }
-                catch
-                {
-                    Master.RollbackTransaction();
-                }
-                finally
-                {
-                    DetachComponent(comp);
-                }
-            }
-
-            foreach (var comp in components)
-            {
-                AttachComponent(comp);
-                Master.BeginTransaction();
-                try
-                {
-                    PushDesignChanges(comp);
-                    Master.CommitTransaction();
-                }
-                catch
-                {
-                    Master.RollbackTransaction();
-                }
-                finally
-                {
-                    DetachComponent(comp);
-                }
-            }
-        }
+        
 
         #endregion core
 
         #region transaction and attach
 
-        private void AttachComponent(ComponentFileVM comp)
+        public void AttachComponent(DAL comp)
         {
-            string alias = "comp" + comp.Component_CN.Value.ToString();
-            comp.DBAlias = alias;
-            Master.AttachDB(comp.Database, alias);
+            Master.AttachDB(comp, COMP_ALIAS);
         }
 
-        private void DetachComponent(ComponentFileVM comp)
+        public void DetachComponent()
         {
-            Master.DetachDB(comp.DBAlias);
+            Master.DetachDB(COMP_ALIAS);
         }
 
         private void CancelTransactionAll()
         {
             this.Master.RollbackTransaction();
-            foreach (ComponentFileVM comp in this.Components)
+            foreach (var comp in this.Components)
             {
                 comp.Database.RollbackTransaction();
             }
@@ -235,7 +278,7 @@ namespace CruiseManager.Core.Components
         private void EndTransactionAll()
         {
             Master.CommitTransaction();
-            foreach (ComponentFileVM comp in this.Components)
+            foreach (var comp in this.Components)
             {
                 comp.Database.CommitTransaction();
             }
@@ -244,7 +287,7 @@ namespace CruiseManager.Core.Components
         private void StartTransactionAll()
         {
             this.Master.BeginTransaction();
-            foreach (ComponentFileVM comp in this.Components)
+            foreach (var comp in this.Components)
             {
                 comp.Database.BeginTransaction();
             }
@@ -263,8 +306,8 @@ namespace CruiseManager.Core.Components
             {
                 CheckWorkerStatus();
                 DataObject newFromComp = cmdBldr.ReadSingleRow(comp.Database, mRec.ComponentRowID.Value);
-                Master.Insert(newFromComp, OnConflictOption.Fail);
-                this.ResetComponentRowVersion(comp, mRec.ComponentRowID.Value, cmdBldr);
+                Master.Insert(newFromComp, option: OnConflictOption.Fail);
+                this.ResetComponentRowVersion(comp.Database, mRec.ComponentRowID.Value, cmdBldr);
             }
 
             EndJob();
@@ -272,6 +315,7 @@ namespace CruiseManager.Core.Components
 
         public void PullNewLogRecords(ComponentFileVM comp)
         {
+            var compDB = comp.Database;
             StartJob("Add New Logs");
             MergeTableCommandBuilder cmdBldr = this.CommandBuilders["Log"];
             List<MergeObject> mergeRecords = cmdBldr.ListNewRecords(Master, comp);
@@ -279,10 +323,10 @@ namespace CruiseManager.Core.Components
             foreach (MergeObject mRec in mergeRecords)
             {
                 CheckWorkerStatus();
-                LogDO log = comp.Database.From<LogDO>()
+                LogDO log = compDB.From<LogDO>()
                     .Where("rowid = @p1").Query(mRec.ComponentRowID).FirstOrDefault();
-                Master.Insert(log, OnConflictOption.Fail);
-                this.ResetComponentRowVersion(comp, mRec.ComponentRowID.Value, cmdBldr);
+                Master.Insert(log, option: OnConflictOption.Fail);
+                this.ResetComponentRowVersion(compDB, mRec.ComponentRowID.Value, cmdBldr);
                 IncrementProgress();
             }
 
@@ -301,8 +345,8 @@ namespace CruiseManager.Core.Components
                 PlotDO plot = comp.Database.From<PlotDO>()
                     .Where("rowid = @p1").Query(mRec.ComponentRowID).FirstOrDefault();
 
-                Master.Insert(plot, OnConflictOption.Fail);
-                this.ResetComponentRowVersion(comp, mRec.ComponentRowID.Value, cmdBldr);
+                Master.Insert(plot, option: OnConflictOption.Fail);
+                this.ResetComponentRowVersion(comp.Database, mRec.ComponentRowID.Value, cmdBldr);
                 IncrementProgress();
             }
             EndJob();
@@ -320,8 +364,8 @@ namespace CruiseManager.Core.Components
                 StemDO stem = comp.Database.From<StemDO>()
                     .Where("rowid = @p1").Query(mRec.ComponentRowID).FirstOrDefault();
 
-                Master.Insert(stem, OnConflictOption.Fail);
-                this.ResetComponentRowVersion(comp, mRec.ComponentRowID.Value, cmdBldr);
+                Master.Insert(stem, option: OnConflictOption.Fail);
+                this.ResetComponentRowVersion(comp.Database, mRec.ComponentRowID.Value, cmdBldr);
                 IncrementProgress();
             }
 
@@ -339,8 +383,8 @@ namespace CruiseManager.Core.Components
                 CheckWorkerStatus();
                 TreeDO tree = comp.Database.From<TreeDO>()
                     .Where("rowid = @p1").Query(mRec.ComponentRowID).FirstOrDefault();
-                Master.Insert(tree, OnConflictOption.Fail);
-                this.ResetComponentRowVersion(comp, mRec.ComponentRowID.Value, cmdBldr);
+                Master.Insert(tree, option: OnConflictOption.Fail);
+                this.ResetComponentRowVersion(comp.Database, mRec.ComponentRowID.Value, cmdBldr);
                 IncrementProgress();
             }
 
@@ -351,38 +395,41 @@ namespace CruiseManager.Core.Components
 
         #region pull new design records
 
-        public void PullNewTallyTable(ComponentFileVM comp)
+        public void PullTally()
         {
-            StartJob("Add New Tally Records");
-            var compTallies = comp.Database.From<TallyDO>().Read();
+            var master = Master;
+            StartJob("Pull Tally");
+            var compTallies = master.From<TallyDO>(new TableOrSubQuery($"{COMP_ALIAS}.Tally")).Query();
 
             foreach (TallyDO tally in compTallies)
             {
                 CheckWorkerStatus();
-                TallyDO match = Master.From<TallyDO>()
+                TallyDO match = master.From<TallyDO>()
                     .Where("HotKey = @p1 AND Description = @p2")
-                    .Read(tally.Hotkey, tally.Description).FirstOrDefault();
+                    .Query(tally.Hotkey, tally.Description).FirstOrDefault();
 
                 if (match == null)
                 {
-                    match = new TallyDO(Master);
-                    match.Hotkey = tally.Hotkey;
-                    match.Description = tally.Description;
-                    match.Save();
+                    match = new TallyDO()
+                    {
+                        Hotkey = tally.Hotkey,
+                        Description = tally.Description,
+                    };
+                    master.Insert(match);
                 }
             }
         }
 
-        public void PullCountTreeChanges(ComponentFileVM comp)
+        public void PullCountTree(long component_cn)
         {
             var master = Master;
-            var compDB = comp.Database;
 
-            StartJob("Add New CountTree Records");
-            var compCounts = compDB.From<CountTreeDO>().Query();
+            StartJob("Pull CountTree");
+            var compCounts = master.From<CountTreeDO>(new TableOrSubQuery($"{COMP_ALIAS}.CountTree")).Query();
             foreach (CountTreeDO count in compCounts)
             {
-                var compTally = compDB.From<TallyDO>().Where("Tally_CN = @p1")
+                var compTally = master.From<TallyDO>(new TableOrSubQuery($"{COMP_ALIAS}.Tally"))
+                    .Where("Tally_CN = @p1")
                     .Query(count.Tally_CN).FirstOrDefault();
 
                 CheckWorkerStatus();
@@ -395,7 +442,7 @@ namespace CruiseManager.Core.Components
                     .Query(count.SampleGroup_CN,
                     count.TreeDefaultValue_CN,
                     count.CuttingUnit_CN,
-                    comp.Component_CN).FirstOrDefault();
+                    component_cn).FirstOrDefault();
                 //use component cn from component record because component cn is not set when record is created by FScruiser
 
                 if (match != null)
@@ -410,7 +457,8 @@ namespace CruiseManager.Core.Components
                     // attempt to create a component count tree record in the master
 
                     // see if tally table entry exists matching the description and hotkey
-                    TallyDO tally = count.Tally;
+                    TallyDO tally = master.Query<TallyDO>($"SELECT * FROM {COMP_ALIAS}.Tally WHERE Tally_CN = {count.Tally_CN};").FirstOrDefault();
+
                     TallyDO masterTally = master.From<TallyDO>().Where("Description = @p1 AND HotKey = @p2")
                         .Query(tally.Description, tally.Hotkey).FirstOrDefault();
 
@@ -423,16 +471,21 @@ namespace CruiseManager.Core.Components
                             Hotkey = tally.Hotkey,
                         };
                         master.Insert(masterTally);
+                        PostStatus($"Tally added :{masterTally.Tally_CN}");
                     }
 
-                    count.Tally_CN = masterTally.Tally_CN;
-
-                    if (count.Component_CN == null)
+                    var newCount = new CountTreeDO()
                     {
-                        count.Component_CN = comp.Component_CN;
-                        //Master.Execute("UPDATE " + comp.DBAlias + ".CountTree Set Component_CN = ? WHERE CountTree_CN = ?;", comp.Component_CN, count.CountTree_CN);
-                    }
-                    master.Insert(count, null, OnConflictOption.Fail);
+                        CuttingUnit_CN = count.CuttingUnit_CN,
+                        SampleGroup_CN = count.SampleGroup_CN,
+                        TreeDefaultValue_CN = count.TreeDefaultValue_CN,
+                        SumKPI = count.SumKPI,
+                        TreeCount = count.TreeCount,
+                        Component_CN = count.Component_CN ?? component_cn,
+                        Tally_CN = masterTally.Tally_CN,
+                    };
+                    master.Insert(newCount, option: OnConflictOption.Fail);
+                    PostStatus($"CountTree added :{newCount.CountTree_CN}");
                 }
 
                 // see if there is a master count tree record match our count tree record
@@ -450,7 +503,8 @@ namespace CruiseManager.Core.Components
 
                 if (masterMatch == null)
                 {
-                    TallyDO tally = count.Tally;
+                    TallyDO tally = master.Query<TallyDO>($"SELECT * FROM {COMP_ALIAS}.Tally WHERE Tally_CN = {count.Tally_CN};").FirstOrDefault();
+
                     TallyDO masterTally = master.From<TallyDO>().Where("Description = @p1 AND HotKey = @p2")
                         .Query(tally.Description, tally.Hotkey).FirstOrDefault();
 
@@ -462,6 +516,7 @@ namespace CruiseManager.Core.Components
                             Hotkey = tally.Hotkey,
                         };
                         master.Insert(masterTally);
+                        PostStatus($"Tally added :{masterTally.Tally_CN}");
                     }
 
                     masterMatch = new CountTreeDO()
@@ -476,18 +531,20 @@ namespace CruiseManager.Core.Components
                         Tally_CN = masterTally.Tally_CN,
                     };
 
-                    master.Insert(masterMatch, null, OnConflictOption.Fail);
+                    master.Insert(masterMatch, option: OnConflictOption.Fail, keyValue: null);
+                    PostStatus($"Master CountTree added :{masterMatch.CountTree_CN}");
                 }
             }
             EndJob();
         }
 
-        public void PullNewSampleGroups(ComponentFileVM comp)
+        public void PullSampleGroup()
         {
             var master = Master;
-            StartJob("Add New Sample Groups");
+            StartJob("Pull SampleGroup");
 
-            var compSGList = comp.Database.From<SampleGroupDO>().Query().ToArray();
+            var compSGList = master.From<SampleGroupDO>(new TableOrSubQuery(COMP_ALIAS + ".SampleGroup"))
+                .Query().ToArray();
             foreach (SampleGroupDO sg in compSGList)
             {
                 SampleGroupDO match = master.From<SampleGroupDO>()
@@ -496,77 +553,88 @@ namespace CruiseManager.Core.Components
 
                 if (match == null)
                 {
+                    var newSG = new SampleGroupDO()
+                    {
+                        Code = sg.Code,
+                        Stratum_CN = sg.Stratum_CN,
+                        BigBAF = sg.BigBAF,
+                        BiomassProduct = sg.BiomassProduct,
+                        CreatedBy = sg.CreatedBy,
+                        CreatedDate = sg.CreatedDate,
+                        CutLeave = sg.CutLeave,
+                        DefaultLiveDead =sg.DefaultLiveDead,
+                        Description = sg.Description,
+                        InsuranceFrequency = sg.InsuranceFrequency,
+                        KZ = sg.KZ,
+                        MaxKPI = sg.MaxKPI,
+                        MinKPI = sg.MinKPI,
+                        PrimaryProduct = sg.PrimaryProduct,
+                        SampleSelectorType = sg.SampleSelectorType,
+                        SamplingFrequency = sg.SamplingFrequency,
+                        SecondaryProduct = sg.SecondaryProduct,
+                        SmallFPS = sg.SmallFPS,
+                        TallyMethod = sg.TallyMethod,
+                        UOM  = sg.UOM,
+                    };
 
-                    SampleGroupDO newSG = new SampleGroupDO(master);
-                    newSG.SuspendEvents();
-                    newSG.SetValues(sg);
-                    newSG.Stratum_CN = sg.Stratum_CN;
-                    newSG.ResumeEvents();
+                    var newSG_CN = (master.ExecuteScalar<int>($"SELECT count(*) FROM SampleGroup WHERE SampleGroup_CN = @p1;", sg.SampleGroup_CN) == 0)
+                        ? sg.SampleGroup_CN
+                        : (long?)null;
 
-                    master.Insert(newSG);
+                    master.Insert(newSG, keyValue: newSG_CN);
                     match = newSG;
+                    PostStatus($"Sample Group added :{newSG.SampleGroup_CN}");
                 }
                 if (sg.SampleGroup_CN != match.SampleGroup_CN)
                 {
-                    var compAlias = comp.DBAlias;
                     var matchSG_CN = match.SampleGroup_CN.Value;
                     var compSG_CN = sg.SampleGroup_CN.Value;
 
-                    // check comp and see if it has a SG with a confilcting CN
-                    if(master.ExecuteScalar<int>($"SELECT count(*) FROM {compAlias}.SampleGroup WHERE SampleGroup_CN = @p1;", matchSG_CN) 
+                    // check comp and if there already has a SG with the CN of our match
+                    if (master.ExecuteScalar<int>($"SELECT count(*) FROM {COMP_ALIAS}.SampleGroup WHERE SampleGroup_CN = @p1;", matchSG_CN)
                         > 0)
                     {
-                        // movie the conflicting comp SG to a new CN
-                        var newSG_CN = master.ExecuteScalar<int>($"SELECT seq + 1 FROM {compAlias}.sqlite_sequence WHERE name = 'SampleGroup';");
+                        // to resolve the CN conflict we are going to move the conflicting record to the end of our table
+                        var newSG_CN = master.ExecuteScalar<int>($"SELECT seq + 1 FROM {COMP_ALIAS}.sqlite_sequence WHERE name = 'SampleGroup';");
 
-                        var toMoveSG = compSGList.FirstOrDefault(x => x.SampleGroup_CN == newSG_CN);
-                        if(toMoveSG != null)
-                        {
-                            toMoveSG.SampleGroup_CN = newSG_CN;
-                        }
+                        // we also need to find the DO of the sample group we are displacing 
+                        // so that we can update its CN value to the new CN
+                        var toMoveSG = compSGList.Single(x => x.SampleGroup_CN == matchSG_CN);
+                        toMoveSG.SampleGroup_CN = newSG_CN;
 
-                        MoveSg(master, compAlias, matchSG_CN, newSG_CN);
+                        MoveSg(master, COMP_ALIAS, matchSG_CN, newSG_CN);
+                        PostStatus($"Sample Group swap :{matchSG_CN} -> {newSG_CN}");
                     }
 
-                    MoveSg(master, compAlias, compSG_CN, matchSG_CN);
-
-                    // need to update sg_cn all over the place too
+                    // finaly move the comp SG CN value to match the master
+                    MoveSg(master, COMP_ALIAS, compSG_CN, matchSG_CN);
+                    PostStatus($"Sample Group mismatch resolved :{compSG_CN} -> {matchSG_CN}");
                 }
             }
 
             EndJob();
-
-            void MoveSg(DAL database, string dbAlias, long fromSG_CN, long toSG_CN)
-            {
-                database.Execute(
-$@"UPDATE {dbAlias}.SampleGroup SET SampleGroup_CN = @p1 WHERE SampleGroup_CN = @p2;
-UPDATE {dbAlias}.SampleGroupTreeDefaultValue SET SampleGroup_CN = @p1 WHERE SampleGroup_CN = @p2;
-UPDATE {dbAlias}.CountTree SET SampleGroup_CN = @p1 WHERE SampleGroup_CN = @p2;
-UPDATE {dbAlias}.Tree SET SampleGroup_CN = @p1 WHERE SampleGroup_CN = @p2;
-UPDATE {dbAlias}.SamplerState SET SampleGroup_CN = @p1 WHERE SampleGroup_CN = @p2;
-UPDATE {dbAlias}.FixCNTTallyPopulation SET SampleGroup_CN = @p1 WHERE SampleGroup_CN = @p2;", toSG_CN, fromSG_CN);
-
-            }
         }
 
-        public void PullNewSampleGroupTreeDefaults(ComponentFileVM comp)
+        public void PullSampleGroupTreeDefault()
         {
-            StartJob("Update Sample Group Species Mappings");
+            StartJob("Pull SampleGroupTreeDefault");
 
             int? rowsAffected = Master.Execute("INSERT OR IGNORE INTO main.SampleGroupTreeDefaultValue " +
-                "SELECT * FROM " + comp.DBAlias + ".SampleGroupTreeDefaultValue;");
+                "SELECT * FROM " + COMP_ALIAS + ".SampleGroupTreeDefaultValue;");
 
             PostStatus(rowsAffected.GetValueOrDefault(0).ToString() + " Rows Affected");
 
             EndJob();
         }
 
-        public void PullTreeDefaultInserts(ComponentFileVM comp)
+        public void PullTreeDefaultInserts()
         {
             var master = Master;
 
-            StartJob("Pull TreeDefault Inserts");
-            var compTreeDefaults = comp.Database.From<TreeDefaultValueDO>().Query().ToArray();
+            StartJob("Pull TreeDefault");
+            var compTreeDefaults = master.From<TreeDefaultValueDO>(new TableOrSubQuery(COMP_ALIAS + ".TreeDefaultValue"))
+                .Query().ToArray();
+
             foreach (TreeDefaultValueDO tdv in compTreeDefaults)
             {
                 CheckWorkerStatus();
@@ -574,176 +642,376 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET SampleGroup_CN = @p1 WHERE SampleGrou
                 var match = master.From<TreeDefaultValueDO>().Where("Species = @p1 AND PrimaryProduct = @p2 AND LiveDead = @p3")
                     .Query(tdv.Species, tdv.PrimaryProduct, tdv.LiveDead).FirstOrDefault();
 
-                if(match == null)
+                if (match == null)
                 {
                     var newTDV = new TreeDefaultValueDO(master);
                     newTDV.SetValues(tdv);
-                    master.Insert(tdv, OnConflictOption.Fail);
+                    master.Insert(newTDV, option: OnConflictOption.Fail);
 
                     match = newTDV;
+                    PostStatus($"TDV added :{newTDV.TreeDefaultValue_CN}");
                 }
 
-                if(tdv.TreeDefaultValue_CN != match.TreeDefaultValue_CN)
+                if (tdv.TreeDefaultValue_CN != match.TreeDefaultValue_CN)
                 {
-                    var compAlias = comp.DBAlias;
                     var matchTDV_CN = match.TreeDefaultValue_CN.Value;
                     var compTDB_CN = tdv.TreeDefaultValue_CN.Value;
 
-                    if (master.ExecuteScalar<int>($"SELECT count(*) FROM {compAlias}.TreeDefaultValue WHERE TreeDefaultValue_CN = @p1;", matchTDV_CN)
+                    if (master.ExecuteScalar<int>($"SELECT count(*) FROM {COMP_ALIAS}.TreeDefaultValue WHERE TreeDefaultValue_CN = @p1;", matchTDV_CN)
                         > 0)
                     {
-                        // movie the conflicting comp TDV to a new CN
-                        var newTDV_CN = master.ExecuteScalar<int>($"SELECT seq + 1 FROM {compAlias}.sqlite_sequence WHERE name = 'SampleGroup';");
+                        // move the conflicting comp TDV to a new CN
+                        var newTDV_CN = master.ExecuteScalar<int>($"SELECT seq + 1 FROM {COMP_ALIAS}.sqlite_sequence WHERE name = 'TreeDefaultValue';");
 
-                        var toMoveTDV = compTreeDefaults.FirstOrDefault(x => x.TreeDefaultValue_CN == newTDV_CN);
+                        var toMoveTDV = compTreeDefaults.FirstOrDefault(x => x.TreeDefaultValue_CN == matchTDV_CN);
                         if (toMoveTDV != null)
                         {
                             toMoveTDV.TreeDefaultValue_CN = newTDV_CN;
                         }
 
-                        MoveTDV(master, compAlias, matchTDV_CN, newTDV_CN);
+                        MoveTDV(master, COMP_ALIAS, matchTDV_CN, newTDV_CN);
+                        PostStatus($"TDV swap :{matchTDV_CN} -> {newTDV_CN}");
                     }
 
-                    MoveTDV(master, compAlias, compTDB_CN, matchTDV_CN);
+                    // move component tdv to match the master tdv
+                    MoveTDV(master, COMP_ALIAS, compTDB_CN, matchTDV_CN);
+                    PostStatus($"TDV mismatch resolved :{compTDB_CN} -> {matchTDV_CN}");
                 }
             }
 
             EndJob();
-
-            void MoveTDV(DAL database, string dbAlias, long fromTDV_CN, long toTDV_CN)
-            {
-                database.Execute(
-$@"UPDATE {dbAlias}.TreeDefaultValue SET TreeDefaultValue_CN = @p1 WHERE TreeDefaultValue_CN = @p2;
-UPDATE {dbAlias}.SampleGroupTreeDefaultValue SET TreeDefaultValue_CN = @p1 WHERE TreeDefaultValue_CN = @p2;
-UPDATE {dbAlias}.CountTree SET TreeDefaultValue_CN = @p1 WHERE TreeDefaultValue_CN = @p2;
-UPDATE {dbAlias}.Tree SET TreeDefaultValue_CN = @p1 WHERE TreeDefaultValue_CN = @p2;
-UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeDefaultValue_CN = @p2;", toTDV_CN, fromTDV_CN);
-            }
         }
 
         #endregion pull new design records
 
         #region push new design records
 
-        public void PushNewCountTrees(ComponentFileVM comp)
+        public void PushCountTrees(long component_cn)
         {
-            StartJob("Push New Count Tree Records");
+            StartJob("Push Count Tree");
 
-            var countTrees = Master.Query<CountTreeDO>("SELECT * FROM main.CountTree WHERE Component_CN IS NULL;").ToArray();
-
+            var master = Master;
+            var countTrees = master.Query<CountTreeDO>("SELECT * FROM main.CountTree WHERE Component_CN IS NULL;").ToArray();
             foreach (var ct in countTrees)
             {
-                var match = Master.Query<CountTreeDO>(
-                    $"SELECT * FROM {comp.DBAlias}.CountTree " +
-                        "WHERE CuttingUnit_CN = @p1 " +
-                        "AND SampleGroup_CN = @p2 " +
-                        "AND ifnull(TreeDefaultValue_CN, 0) == ifnull(@p3, 0);",
-                    ct.CuttingUnit_CN, ct.SampleGroup_CN, ct.TreeDefaultValue_CN)
+                var mastCN = ct.CountTree_CN;
+
+                var match = master.From<CountTreeDO>(new TableOrSubQuery($"{COMP_ALIAS}.CountTree"))
+                    .Where("CuttingUnit_CN = @p1 AND SampleGroup_CN = @p2 AND ifnull(TreeDefaultValue_CN, 0) == ifnull(@p3, 0)")
+                    .Query(ct.CuttingUnit_CN, ct.SampleGroup_CN, ct.TreeDefaultValue_CN)
                     .FirstOrDefault();
 
                 if (match == null)
                 {
                     // see if component has matching tally record
-                    var tallyMatch = Master.Query<TallyDO>($"SELECT * FROM {comp.DBAlias}.Tally WHERE Tally_CN = @p1;", ct.Tally_CN).FirstOrDefault();
+                    var tallyMatch = master.Query<TallyDO>($"SELECT * FROM {COMP_ALIAS}.Tally WHERE Tally_CN = @p1;", ct.Tally_CN).FirstOrDefault();
 
                     if (tallyMatch == null)
                     {
                         // get the full tally record from the master
-                        var masterTally = Master.Query<TallyDO>("SELECT * FROM main.Tally WHERE Tally_CN = @p1;", ct.Tally_CN).FirstOrDefault();
+                        var masterTally = master.Query<TallyDO>("SELECT * FROM main.Tally WHERE Tally_CN = @p1;", ct.Tally_CN).FirstOrDefault();
 
                         // insert tally record into the component
-                        Master.Execute2($"INSERT INTO {comp.DBAlias}.Tally ( " +
-                            "Tally_CN, Description, HotKey, IndicatorType, IndicatorValue " +
-                            ") VALUES (" +
-                            "@Tally_CN, @Description, @Hotkey, @IndicatorType, @IndicatorValue);",
-                            new
-                            {
-                                masterTally.Tally_CN,
-                                masterTally.Description,
-                                masterTally.Hotkey,
-                                masterTally.IndicatorType,
-                                masterTally.IndicatorValue,
-                            });
+                        var newTally = new TallyDO()
+                        {
+                            Description = masterTally.Description,
+                            Hotkey = masterTally.Hotkey,
+                        };
+
+                        var tally_CN = master.Insert(newTally, tableName: $"{COMP_ALIAS}.Tally");
+                        tallyMatch = newTally;
+
+                        PostStatus($"Tally added :{tally_CN}");
                     }
 
+                    var newCt = new CountTreeDO()
+                    {
+                        CuttingUnit_CN = ct.CuttingUnit_CN,
+                        SampleGroup_CN = ct.SampleGroup_CN,
+                        TreeDefaultValue_CN = ct.TreeDefaultValue_CN,
+                        Tally_CN = tallyMatch.Tally_CN,
+                        Component_CN = component_cn,
+                    };
+
                     // insert the count tree record into the component
-                    Master.Execute2($"INSERT INTO {comp.DBAlias}.CountTree " +
-                        $"(CuttingUnit_CN, SampleGroup_CN, TreeDefaultValue_CN, Tally_CN, Component_CN) " +
-                        $"VALUES " +
-                        $"(@CuttingUnit_CN, @SampleGroup_CN, @TreeDefaultValue_CN, @Tally_CN, @Component_CN);",
-                        new
-                        {
-                            ct.CuttingUnit_CN,
-                            ct.SampleGroup_CN,
-                            ct.TreeDefaultValue_CN,
-                            ct.Tally_CN,
-                            comp.Component_CN,
-                        });
+                    var newCt_cn = master.Insert(newCt, tableName: $"{COMP_ALIAS}.CountTree");
+                    PostStatus($"CountTree added :{newCt_cn}");
+
                 }
             }
-        }
-
-        public void PushNewSampleGroups(ComponentFileVM comp)
-        {
-            StartJob("Push New SampleGroup Records");
-
-            int? rowsAffected = Master.Execute("INSERT OR IGNORE INTO " + comp.DBAlias + ".SampleGroup " +
-                "SELECT * FROM main.SampleGroup;");
-
-            PostStatus(rowsAffected.GetValueOrDefault(0).ToString() + " Rows Affected");
             EndJob();
         }
 
-        public void PushNewStratumRecords(ComponentFileVM comp)
+        public void PushSampleGroup()
         {
-            StartJob("Add New Strata");
+            var compAlias = COMP_ALIAS;
+            var master = Master;
+            var compSGEntDisc = new EntityDescription(typeof(SampleGroupDO));
+            compSGEntDisc.Source = new TableOrSubQuery($"{compAlias}.SampleGroup");
 
-            int? rowsAffected = Master.Execute("INSERT OR IGNORE INTO " + comp.DBAlias + ".Stratum " +
-                "SELECT * FROM main.Stratum;");
+            StartJob("Push SampleGroups");
 
-            PostStatus(rowsAffected.GetValueOrDefault(0).ToString() + " Rows Affected");
+            var sampleGroups = master.From<SampleGroupDO>().Query().ToArray();
+            foreach (var sg in sampleGroups)
+            {
+                var mastCN = sg.SampleGroup_CN;
+
+                var match = master.From<SampleGroupDO>(new TableOrSubQuery($"{compAlias}.SampleGroup"))
+                    .Where("Code = @p1 AND Stratum_CN = @p2").Query(sg.Code, sg.Stratum_CN).FirstOrDefault();
+
+                if (match == null)
+                {
+                    var newSG = new SampleGroupDO()
+                    {
+                        Code = sg.Code,
+                        Stratum_CN = sg.Stratum_CN,
+                        BigBAF = sg.BigBAF,
+                        BiomassProduct = sg.BiomassProduct,
+                        CreatedBy = sg.CreatedBy, 
+                        CreatedDate = sg.CreatedDate,
+                        CutLeave = sg.CutLeave,
+                        DefaultLiveDead = sg.DefaultLiveDead,
+                        Description = sg.Description,
+                        InsuranceFrequency = sg.InsuranceFrequency,
+                        KZ = sg.KZ,
+                        MaxKPI = sg.MaxKPI,
+                        MinKPI = sg.MinKPI,
+                        PrimaryProduct = sg.PrimaryProduct,
+                        SampleSelectorType = sg.SampleSelectorType,
+                        SamplingFrequency = sg.SamplingFrequency,
+                        SecondaryProduct = sg.SecondaryProduct,
+                        SmallFPS = sg.SmallFPS,
+                        TallyMethod = sg.TallyMethod,
+                        UOM = sg.UOM,
+                    };
+
+                    var sg_cn = (master.ExecuteScalar<int>($"SELECT count(*) FROM {COMP_ALIAS}.SampleGroup WHERE SampleGroup_CN = @p1", mastCN) == 0)
+                        ? mastCN
+                        : (long?)null;
+
+                    var newSG_CN = master.Insert(newSG, tableName: $"{compAlias}.SampleGroup", keyValue: sg_cn);
+                    match = newSG;
+                    PostStatus($"SampleGroup added :{newSG_CN}");
+                }
+
+                var matchCN = match.SampleGroup_CN;
+                if(matchCN != mastCN)
+                {
+                    if(master.ExecuteScalar<int>($"SELECT count(*) FROM {COMP_ALIAS}.SampleGroup WHERE SampleGroup_CN = @p1", mastCN) > 0)
+                    {
+                        var nextSg_CN = master.ExecuteScalar<long>($"SELECT seq + 1 FROM {COMP_ALIAS}.sqlite_sequence WHERE name = 'SampleGroup';");
+
+                        MoveSg(master, COMP_ALIAS, mastCN.Value, nextSg_CN);
+                        PostStatus($"SampleGroup swap :{mastCN} => {nextSg_CN}");
+                    }
+
+                    MoveSg(master, COMP_ALIAS, matchCN.Value, mastCN.Value);
+                    PostStatus($"SampleGroup mismatch resolved :{matchCN} => {mastCN}");
+                }
+            }
 
             EndJob();
         }
 
-        public void PushNewUnitRecords(ComponentFileVM comp)
+        public void PushStratum()
         {
-            StartJob("Add New Units");
+            StartJob("Push Strata");
+            var master = Master;
+            var strata = master.From<StratumDO>().Query().ToArray();
 
-            int? rowsAffected = Master.Execute("INSERT OR IGNORE INTO " + comp.DBAlias + ".CuttingUnit " +
-                "SELECT * FROM main.CuttingUnit;");
+            foreach(var st in strata)
+            {
+                var mastCN = st.Stratum_CN;
+                var match = master.Query<StratumDO>($"SELECT * FROM {COMP_ALIAS}.Stratum WHERE Code = @p1;", st.Code).FirstOrDefault();
+
+                if(match == null)
+                {
+                    var newSt = new StratumDO()
+                    {
+                        Code = st.Code,
+                        BasalAreaFactor = st.BasalAreaFactor,
+                        CreatedBy = st.CreatedBy,
+                        CreatedDate = st.CreatedDate,
+                        Description = st.Description,
+                        FBSCode = st.FBSCode,
+                        FixedPlotSize = st.FixedPlotSize,
+                        Hotkey = st.Hotkey,
+                        KZ3PPNT = st.KZ3PPNT,
+                        Method = st.Method,
+                        Month = st.Month,
+                        SamplingFrequency = st.SamplingFrequency,
+                        VolumeFactor = st.VolumeFactor,
+                        Year = st.Year,
+                        YieldComponent = st.YieldComponent,
+                    };
+
+                    // if we can try to give the stratum the same cn value otherwise we will fix it later
+                    var st_cn = (master.ExecuteScalar<int>($"SELECT count(*) FROM {COMP_ALIAS}.Stratum WHERE Stratum_CN = @p1", mastCN) == 0)
+                        ? mastCN
+                        : (long?)null;
+                    master.Insert(newSt, $"{COMP_ALIAS}.Stratum", keyValue: st_cn);
+                    match = newSt;
+
+                    PostStatus($"Stratum added :{st_cn}");
+                }
+
+                var matchCN = match.Stratum_CN;
+                if(match.Stratum_CN != mastCN)
+                {
+                    if (master.ExecuteScalar<int>($"SELECT count(*) FROM {COMP_ALIAS}.Stratum WHERE Stratum_CN = @p1", st.Stratum_CN) > 0)
+                    {
+                        var nextSt_CN = master.ExecuteScalar<long>($"SELECT seq + 1 FROM {COMP_ALIAS}.sqlite_sequence WHERE name = 'Stratum';");
+
+                        MoveSt(master, COMP_ALIAS, mastCN.Value, nextSt_CN);
+                        PostStatus($"Stratum swap :{mastCN} => {nextSt_CN}");
+                    }
+
+                    MoveSt(master, COMP_ALIAS, matchCN.Value, mastCN.Value);
+                    PostStatus($"Stratum mismatch resolved :{matchCN} => {mastCN}");
+                }
+            }
 
             EndJob();
         }
 
-        public void PushSampleGroupTreeDefaultInserts(ComponentFileVM comp)
+        public void PushCuttingUnit()
         {
-            StartJob("Push SampleGroupTreeDefault Inserts");
+            StartJob("Push Units");
 
-            int? rowsAffected = Master.Execute("INSERT OR IGNORE INTO " + comp.DBAlias + ".SampleGroupTreeDefaultValue " +
+            var master = Master;
+            var units = master.From<CuttingUnitDO>().Query();
+            foreach(var unit in units)
+            {
+                var mastCN = unit.CuttingUnit_CN;
+                var match = master.From<CuttingUnitDO>(new TableOrSubQuery($"{COMP_ALIAS}.CuttingUnit"))
+                    .Where("Code = @p1").Query(unit.Code).FirstOrDefault();
+
+                if(match == null)
+                {
+                    var newUnit = new CuttingUnitDO()
+                    {
+                        Code = unit.Code,
+                        Area = unit.Area,
+                        CreatedBy = unit.CreatedBy,
+                        CreatedDate = unit.CreatedDate,
+                        Description = unit.Description,
+                        LoggingMethod = unit.LoggingMethod,
+                        PaymentUnit = unit.PaymentUnit,
+                        Rx = unit.Rx,
+                    };
+
+                    var unit_CN = (master.ExecuteScalar<int>($"SELECT count(*) FROM {COMP_ALIAS}.CuttingUnit WHERE CuttingUnit_CN = @p1;", mastCN) == 0)
+                        ? mastCN
+                        : (long?)null;
+
+                    master.Insert(newUnit, tableName: $"{COMP_ALIAS}.CuttingUnit", keyValue: unit_CN);
+
+                    match = newUnit;
+                    PostStatus($"Unit added :{unit_CN}");
+                }
+
+                var matchCN = match.CuttingUnit_CN;
+                if(matchCN != mastCN)
+                {
+                    if(master.ExecuteScalar<int>($"SELECT count(*) FROM {COMP_ALIAS}.CuttingUnit WHERE CuttingUnit_CN = @p1;", mastCN) > 0)
+                    {
+                        var nextCu_CN = master.ExecuteScalar<long>($"SELECT seq + 1 FROM {COMP_ALIAS}.sqlite_sequence WHERE name = 'CuttingUnit';");
+
+                        MoveUnit(master, COMP_ALIAS, mastCN.Value, nextCu_CN);
+                        PostStatus($"Unit swap :{mastCN} -> {nextCu_CN}");
+                    }
+                    MoveUnit(master, COMP_ALIAS, matchCN.Value, mastCN.Value);
+                    PostStatus($"Unit mismatch resolved :{matchCN} -> {mastCN}");
+                }
+            }
+
+            EndJob();
+        }
+
+        public void PushSampleGroupTreeDefault()
+        {
+            StartJob("Push SampleGroupTreeDefault");
+
+            int? rowsAffected = Master.Execute("INSERT OR IGNORE INTO " + COMP_ALIAS + ".SampleGroupTreeDefaultValue " +
                 "SELECT * FROM main.SampleGroupTreeDefaultValue;");
 
             PostStatus(rowsAffected.GetValueOrDefault(0).ToString() + " Rows Affected");
             EndJob();
         }
 
-        public void PushTreeDefaultInserts(ComponentFileVM comp)
+        public void PushTreeDefault()
         {
-            StartJob("Push TreeDefaultValue Inserts");
+            StartJob("Push TreeDefaultValue");
 
-            int? rowsAffected = Master.Execute("INSERT OR IGNORE INTO " + comp.DBAlias + ".TreeDefaultValue " +
-                "SELECT * FROM main.TreeDefaultValue;");
+            var master = Master;
+            var tdvs = master.From<TreeDefaultValueDO>().Query();
 
-            PostStatus(rowsAffected.GetValueOrDefault(0).ToString() + " Rows Affected");
+            foreach (var tdv in tdvs)
+            {
+                var mastCN = tdv.TreeDefaultValue_CN.Value;
+                var match = master.From<TreeDefaultValueDO>(new TableOrSubQuery($"{COMP_ALIAS}.TreeDefaultValue"))
+                    .Where("Species = @p1 AND PrimaryProduct = @p2 AND LiveDead = @p3")
+                    .Query(tdv.Species, tdv.PrimaryProduct, tdv.LiveDead).FirstOrDefault();
+
+                if(match == null)
+                {
+                    var newTDV = new TreeDefaultValueDO()
+                    {
+                        Species = tdv.Species,
+                        PrimaryProduct = tdv.PrimaryProduct,
+                        LiveDead = tdv.LiveDead,
+                        AverageZ = tdv.AverageZ,
+                        BarkThicknessRatio = tdv.BarkThicknessRatio,
+                        ContractSpecies = tdv.ContractSpecies,
+                        CreatedBy = tdv.CreatedBy,
+                        CreatedDate = tdv.CreatedDate,
+                        CullPrimary = tdv.CullPrimary,
+                        CullSecondary = tdv.CullSecondary,
+                        FIAcode = tdv.FIAcode,
+                        FormClass = tdv.FormClass,
+                        HiddenPrimary = tdv.HiddenPrimary,
+                        HiddenSecondary = tdv.HiddenSecondary,
+                        MerchHeightLogLength = tdv.MerchHeightLogLength,
+                        MerchHeightType = tdv.MerchHeightType,
+                        Recoverable = tdv.Recoverable,
+                        ReferenceHeightPercent = tdv.ReferenceHeightPercent,
+                        TreeGrade = tdv.TreeGrade,
+                    };
+
+                    var tdv_CN = (master.ExecuteScalar<int>($"SELECT count(*) FROM {COMP_ALIAS}.TreeDefaultValue WHERE TreeDefaultValue_CN = @p1;", mastCN) == 0)
+                        ? tdv.TreeDefaultValue_CN
+                        : (long?)null;
+
+                    master.Insert(newTDV, tableName: $"{COMP_ALIAS}.TreeDefaultValue", keyValue: tdv_CN);
+                    match = newTDV;
+                    PostStatus($"TDV added :{tdv_CN}");
+                }
+
+                var matchCN = match.TreeDefaultValue_CN.Value;
+                if (matchCN != mastCN)
+                {
+                    if (master.ExecuteScalar<int>($"SELECT count(*) FROM {COMP_ALIAS}.TreeDefaultValue WHERE TreeDefaultValue_CN = @p1;", tdv.TreeDefaultValue_CN) > 0)
+                    {
+                        var nextTDV_CN = master.ExecuteScalar<long>($"SELECT seq + 1 FROM {COMP_ALIAS}.sqlite_sequence WHERE name = 'TreeDefaultValue';");
+
+                        MoveTDV(master, COMP_ALIAS, mastCN, nextTDV_CN);
+                        PostStatus($"TDV swap :{mastCN} -> {nextTDV_CN}");
+                    }
+
+                    MoveTDV(master, COMP_ALIAS, matchCN, mastCN);
+                    PostStatus($"TDV missmatch resolved :{matchCN} -> {mastCN}");
+                }
+            }
+
             EndJob();
         }
 
-        public void PushUnitStratumChanges(ComponentFileVM comp)
+        public void PushCuttingUnitStratum()
         {
-            StartJob("Update Component Unit Strata Mappings");
+            StartJob("Push ComponentUnitStrata");
 
-            int? rowsAffected = Master.Execute("DELETE FROM " + comp.DBAlias + ".CuttingUnitStratum; " +
-                "INSERT OR IGNORE INTO " + comp.DBAlias + ".CuttingUnitStratum " +
+            int? rowsAffected = Master.Execute("DELETE FROM " + COMP_ALIAS + ".CuttingUnitStratum; " +
+                "INSERT OR IGNORE INTO " + COMP_ALIAS + ".CuttingUnitStratum " +
                 "SELECT * FROM main.CuttingUnitStratum;");
 
             PostStatus(rowsAffected.GetValueOrDefault(0).ToString() + " Rows Affected");
@@ -767,7 +1035,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                 LogDO log = comp.Database.From<LogDO>()
                     .Where("Log_CN = @p1")
                     .Read(mRec.ComponentRowID).FirstOrDefault();
-                Master.Update(log, matchRowid, OnConflictOption.Fail);
+                Master.Update(log, keyValue: matchRowid, option: OnConflictOption.Fail);
                 this.ResetRowVersion(comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
                 IncrementProgress();
             }
@@ -787,7 +1055,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                 var plot = comp.Database.From<PlotDO>()
                     .Where("Plot_CN = @p1").Read(mRec.ComponentRowID).FirstOrDefault();
 
-                Master.Update(plot, matchRowid, OnConflictOption.Fail);
+                Master.Update(plot, keyValue: matchRowid, option: OnConflictOption.Fail);
                 this.ResetRowVersion(comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
                 IncrementProgress();
             }
@@ -809,7 +1077,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                     .Where("Stem_CN = @p1")
                     .Read(mRec.ComponentRowID).FirstOrDefault();
 
-                Master.Update(stem, matchRowid, OnConflictOption.Fail);
+                Master.Update(stem, keyValue: matchRowid, option: OnConflictOption.Fail);
                 this.ResetRowVersion(comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
                 IncrementProgress();
             }
@@ -829,7 +1097,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                 long matchRowid = mRec.MatchRowID.Value;
                 TreeDO tree = comp.Database.From<TreeDO>().Where("rowid = @p1")
                     .Query(mRec.ComponentRowID).FirstOrDefault();
-                Master.Update(tree, matchRowid, OnConflictOption.Fail);
+                Master.Update(tree, keyValue: matchRowid, option: OnConflictOption.Fail);
                 this.ResetRowVersion(comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
                 IncrementProgress();
             }
@@ -853,7 +1121,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                 LogDO log = Master.From<LogDO>()
                     .Where("Log_CN = @p1").Read(matchRowid).FirstOrDefault();
 
-                comp.Database.Update(log, mRec.ComponentRowID.Value, OnConflictOption.Fail);
+                comp.Database.Update(log, keyValue: mRec.ComponentRowID.Value, option: OnConflictOption.Fail);
                 this.ResetRowVersion(comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
                 IncrementProgress();
             }
@@ -872,7 +1140,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                 PlotDO plot = Master.From<PlotDO>()
                     .Where("Plot_CN = @p1").Read(matchRowid).FirstOrDefault();
 
-                comp.Database.Update(plot, mRec.ComponentRowID.Value, OnConflictOption.Fail);
+                comp.Database.Update(plot, keyValue: mRec.ComponentRowID.Value, option: OnConflictOption.Fail);
                 this.ResetRowVersion(comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
                 IncrementProgress();
             }
@@ -892,7 +1160,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                 StemDO stem = Master.From<StemDO>()
                     .Where("Stem_CN = @p1").Read(matchRowid).FirstOrDefault();
 
-                comp.Database.Update(stem, mRec.ComponentRowID.Value, OnConflictOption.Fail);
+                comp.Database.Update(stem, keyValue: mRec.ComponentRowID.Value, option: OnConflictOption.Fail);
                 this.ResetRowVersion(comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
                 IncrementProgress();
             }
@@ -912,7 +1180,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                 TreeDO tree = Master.From<TreeDO>().Where("Tree_CN = @p1")
                     .Read(matchRowid).FirstOrDefault();
                 //TODO need to handle condition where MasterRowID is different from ComponentRowID
-                comp.Database.Update(tree, mRec.ComponentRowID.Value, OnConflictOption.Fail);
+                comp.Database.Update(tree, keyValue: mRec.ComponentRowID.Value, option: OnConflictOption.Fail);
                 this.ResetRowVersion(comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
                 IncrementProgress();
             }
@@ -921,15 +1189,15 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
 
         #endregion push field data updates
 
-        private void ResetComponentRowVersion(ComponentFileVM comp, long componentRowID, MergeTableCommandBuilder commBldr)
+        private void ResetComponentRowVersion(DAL comp, long componentRowID, MergeTableCommandBuilder commBldr)
         {
-            comp.Database.Execute("UPDATE " + commBldr.ClientTableName + " SET RowVersion = 0 WHERE RowID = @p1;", componentRowID);
+            comp.Execute("UPDATE " + commBldr.ClientTableName + " SET RowVersion = 0 WHERE RowID = @p1;", componentRowID);
         }
 
         private void ResetRowVersion(ComponentFileVM comp, long masterRowID, long componentRowID, MergeTableCommandBuilder commBldr)
         {
             Master.Execute("UPDATE " + commBldr.ClientTableName + " SET RowVersion = 0 WHERE RowID = @p1;", masterRowID);
-            ResetComponentRowVersion(comp, componentRowID, commBldr);
+            ResetComponentRowVersion(comp.Database, componentRowID, commBldr);
         }
 
         #region Calculate work
@@ -1123,7 +1391,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                 Analytics.TrackEvent(AnalyticsEvents.MERGE_START,
                     new Dictionary<string, string>()
                     {
-                        {"numComponents", Components.Count.ToString() },
+                        {"numComponents", Components.Count().ToString() },
                     });
 
                 this.SyncDesign();
