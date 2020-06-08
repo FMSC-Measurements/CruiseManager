@@ -746,22 +746,22 @@ namespace CruiseManager.WinForms.CruiseWizard
             {
                 foreach (TreeDefaultValueDO tdv in templateDB.From<TreeDefaultValueDO>().Query())
                 {
-                    _database.Insert(tdv, OnConflictOption.Replace);
+                    _database.Insert(tdv, option: OnConflictOption.Replace);
                 }
 
                 foreach (TreeAuditValueDO tav in templateDB.From<TreeAuditValueDO>().Query())
                 {
-                    _database.Insert(tav, OnConflictOption.Replace);
+                    _database.Insert(tav, option: OnConflictOption.Replace);
                 }
 
                 foreach (TreeDefaultValueTreeAuditValueDO map in templateDB.From<TreeDefaultValueTreeAuditValueDO>().Query())
                 {
-                    _database.Insert(map, OnConflictOption.Replace);
+                    _database.Insert(map, option: OnConflictOption.Replace);
                 }
 
                 foreach (ReportsDO rpt in templateDB.From<ReportsDO>().Query())
                 {
-                    _database.Insert(rpt, OnConflictOption.Replace);
+                    _database.Insert(rpt, option: OnConflictOption.Replace);
                 }
 
                 var crusemethods = templateDB.From<CruiseMethodsDO>();
@@ -772,22 +772,22 @@ namespace CruiseManager.WinForms.CruiseWizard
 
                 foreach (CruiseMethodsDO cm in crusemethods.Query())
                 {
-                    _database.Insert(cm, OnConflictOption.Ignore);
+                    _database.Insert(cm, option: OnConflictOption.Ignore);
                 }
 
                 foreach (VolumeEquationDO ve in templateDB.From<VolumeEquationDO>().Query())
                 {
-                    _database.Insert(ve, OnConflictOption.Ignore);
+                    _database.Insert(ve, option: OnConflictOption.Ignore);
                 }
 
                 foreach (TreeFieldSetupDefaultDO tf in templateDB.From<TreeFieldSetupDefaultDO>().Query())
                 {
-                    _database.Insert(tf, OnConflictOption.Ignore);
+                    _database.Insert(tf, option: OnConflictOption.Ignore);
                 }
 
                 foreach (LogFieldSetupDefaultDO lf in templateDB.From<LogFieldSetupDefaultDO>().Query())
                 {
-                    _database.Insert(lf, OnConflictOption.Ignore);
+                    _database.Insert(lf, option: OnConflictOption.Ignore);
                 }
 
                 foreach (var lga in templateDB.From<LogGradeAuditRuleDO>().Query())
@@ -797,7 +797,7 @@ namespace CruiseManager.WinForms.CruiseWizard
 
                 foreach (var lm in templateDB.From<LogMatrixDO>().Query())
                 {
-                    _database.Insert(lm, OnConflictOption.Ignore);
+                    _database.Insert(lm, option: OnConflictOption.Ignore);
                 }
                 _database.CommitTransaction();
             }
