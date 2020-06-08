@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace CruiseManager.Core.Components
@@ -183,7 +184,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
 
         private void PullDesignChanges(ComponentFileVM comp)
         {
-            PullTreeDefaultInserts();
+            PullTreeDefault();
             PullSampleGroup();
             PullSampleGroupTreeDefault();
             PullTally();
@@ -250,8 +251,6 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
             }
         }
 
-        
-
         #endregion core
 
         #region transaction and attach
@@ -310,13 +309,13 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                 this.ResetComponentRowVersion(comp.Database, mRec.ComponentRowID.Value, cmdBldr);
             }
 
-            EndJob();
+            EndJob("Pull New From " + cmdBldr.ClientTableName);
         }
 
         public void PullNewLogRecords(ComponentFileVM comp)
         {
             var compDB = comp.Database;
-            StartJob("Add New Logs");
+            StartJob();
             MergeTableCommandBuilder cmdBldr = this.CommandBuilders["Log"];
             List<MergeObject> mergeRecords = cmdBldr.ListNewRecords(Master, comp);
 
@@ -335,7 +334,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
 
         public void PullNewPlotRecords(ComponentFileVM comp)
         {
-            StartJob("Add Plots");
+            StartJob();
             MergeTableCommandBuilder cmdBldr = this.CommandBuilders["Plot"];
             List<MergeObject> mergeRecords = cmdBldr.ListNewRecords(Master, comp);
 
@@ -354,7 +353,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
 
         public void PullNewStemRecords(ComponentFileVM comp)
         {
-            StartJob("Add New Stems");
+            StartJob();
             MergeTableCommandBuilder cmdBldr = this.CommandBuilders["Stem"];
             List<MergeObject> mergeRecords = cmdBldr.ListNewRecords(Master, comp);
 
@@ -374,7 +373,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
 
         public void PullNewTreeRecords(ComponentFileVM comp)
         {
-            StartJob("Add New Trees");
+            StartJob();
             MergeTableCommandBuilder cmdBldr = this.CommandBuilders["Tree"];
             List<MergeObject> mergeRecords = cmdBldr.ListNewRecords(Master, comp);
 
@@ -398,7 +397,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
         public void PullTally()
         {
             var master = Master;
-            StartJob("Pull Tally");
+            StartJob();
             var compTallies = master.From<TallyDO>(new TableOrSubQuery($"{COMP_ALIAS}.Tally")).Query();
 
             foreach (TallyDO tally in compTallies)
@@ -424,7 +423,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
         {
             var master = Master;
 
-            StartJob("Pull CountTree");
+            StartJob();
             var compCounts = master.From<CountTreeDO>(new TableOrSubQuery($"{COMP_ALIAS}.CountTree")).Query();
             foreach (CountTreeDO count in compCounts)
             {
@@ -450,7 +449,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                     // update component count tree data
                     match.TreeCount = count.TreeCount;
                     match.SumKPI = count.SumKPI;
-                    match.Save();
+                    master.Update(match);
                 }
                 else
                 {
@@ -541,7 +540,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
         public void PullSampleGroup()
         {
             var master = Master;
-            StartJob("Pull SampleGroup");
+            StartJob();
 
             var compSGList = master.From<SampleGroupDO>(new TableOrSubQuery(COMP_ALIAS + ".SampleGroup"))
                 .Query().ToArray();
@@ -617,7 +616,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
 
         public void PullSampleGroupTreeDefault()
         {
-            StartJob("Pull SampleGroupTreeDefault");
+            StartJob();
 
             int? rowsAffected = Master.Execute("INSERT OR IGNORE INTO main.SampleGroupTreeDefaultValue " +
                 "SELECT * FROM " + COMP_ALIAS + ".SampleGroupTreeDefaultValue;");
@@ -627,11 +626,11 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
             EndJob();
         }
 
-        public void PullTreeDefaultInserts()
+        public void PullTreeDefault()
         {
             var master = Master;
 
-            StartJob("Pull TreeDefault");
+            StartJob();
             var compTreeDefaults = master.From<TreeDefaultValueDO>(new TableOrSubQuery(COMP_ALIAS + ".TreeDefaultValue"))
                 .Query().ToArray();
 
@@ -688,7 +687,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
 
         public void PushCountTrees(long component_cn)
         {
-            StartJob("Push Count Tree");
+            StartJob();
 
             var master = Master;
             var countTrees = master.Query<CountTreeDO>("SELECT * FROM main.CountTree WHERE Component_CN IS NULL;").ToArray();
@@ -749,7 +748,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
             var compSGEntDisc = new EntityDescription(typeof(SampleGroupDO));
             compSGEntDisc.Source = new TableOrSubQuery($"{compAlias}.SampleGroup");
 
-            StartJob("Push SampleGroups");
+            StartJob();
 
             var sampleGroups = master.From<SampleGroupDO>().Query().ToArray();
             foreach (var sg in sampleGroups)
@@ -815,7 +814,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
 
         public void PushStratum()
         {
-            StartJob("Push Strata");
+            StartJob();
             var master = Master;
             var strata = master.From<StratumDO>().Query().ToArray();
 
@@ -876,7 +875,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
 
         public void PushCuttingUnit()
         {
-            StartJob("Push Units");
+            StartJob();
 
             var master = Master;
             var units = master.From<CuttingUnitDO>().Query();
@@ -930,7 +929,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
 
         public void PushSampleGroupTreeDefault()
         {
-            StartJob("Push SampleGroupTreeDefault");
+            StartJob();
 
             int? rowsAffected = Master.Execute("INSERT OR IGNORE INTO " + COMP_ALIAS + ".SampleGroupTreeDefaultValue " +
                 "SELECT * FROM main.SampleGroupTreeDefaultValue;");
@@ -941,7 +940,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
 
         public void PushTreeDefault()
         {
-            StartJob("Push TreeDefaultValue");
+            StartJob();
 
             var master = Master;
             var tdvs = master.From<TreeDefaultValueDO>().Query();
@@ -1008,7 +1007,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
 
         public void PushCuttingUnitStratum()
         {
-            StartJob("Push ComponentUnitStrata");
+            StartJob();
 
             int? rowsAffected = Master.Execute("DELETE FROM " + COMP_ALIAS + ".CuttingUnitStratum; " +
                 "INSERT OR IGNORE INTO " + COMP_ALIAS + ".CuttingUnitStratum " +
@@ -1024,7 +1023,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
 
         public void PullMasterLogUpdates(ComponentFileVM comp)
         {
-            StartJob("Update Master Logs");
+            StartJob();
             MergeTableCommandBuilder cmdBldr = this.CommandBuilders["Log"];
             List<MergeObject> pullList = cmdBldr.ListMasterUpdates(Master, comp);
 
@@ -1045,7 +1044,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
 
         public void PullMasterPlotUpdates(ComponentFileVM comp)
         {
-            StartJob("Update Master Plots");
+            StartJob();
             MergeTableCommandBuilder cmdBldr = this.CommandBuilders["Plot"];
             List<MergeObject> pullList = cmdBldr.ListMasterUpdates(Master, comp);
             foreach (MergeObject mRec in pullList)
@@ -1065,7 +1064,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
 
         public void PullMasterStemUpdates(ComponentFileVM comp)
         {
-            StartJob("Update Master Stems");
+            StartJob();
             MergeTableCommandBuilder cmdBldr = this.CommandBuilders["Stem"];
             List<MergeObject> pullList = cmdBldr.ListMasterUpdates(Master, comp);
 
@@ -1087,7 +1086,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
 
         public void PullMasterTreeUpdates(ComponentFileVM comp)
         {
-            StartJob("Update Master Trees");
+            StartJob();
             MergeTableCommandBuilder cmdBldr = this.CommandBuilders["Tree"];
             List<MergeObject> pullList = cmdBldr.ListMasterUpdates(Master, comp);
 
@@ -1111,7 +1110,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
 
         public void PushComponentLogUpdates(ComponentFileVM comp)
         {
-            StartJob("Update Component Logs");
+            StartJob();
             MergeTableCommandBuilder cmdBldr = this.CommandBuilders["Log"];
             List<MergeObject> pushList = cmdBldr.ListComponentUpdates(Master, comp);
             foreach (MergeObject mRec in pushList)
@@ -1130,7 +1129,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
 
         public void PushComponentPlotUpdates(ComponentFileVM comp)
         {
-            StartJob("Update Component Plots");
+            StartJob();
             MergeTableCommandBuilder cmdBldr = this.CommandBuilders["Plot"];
             List<MergeObject> pushList = cmdBldr.ListComponentUpdates(Master, comp);
             foreach (MergeObject mRec in pushList)
@@ -1150,7 +1149,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
 
         public void PushComponentStemUpdates(ComponentFileVM comp)
         {
-            StartJob("Update Component Stems");
+            StartJob();
             MergeTableCommandBuilder cmdBldr = this.CommandBuilders["Stem"];
             List<MergeObject> pushList = cmdBldr.ListComponentUpdates(Master, comp);
             foreach (MergeObject mRec in pushList)
@@ -1170,7 +1169,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
 
         public void PushComponentTreeUpdates(ComponentFileVM comp)
         {
-            StartJob("Update Component Trees");
+            StartJob();
             MergeTableCommandBuilder cmdBldr = this.CommandBuilders["Tree"];
             List<MergeObject> pushList = cmdBldr.ListComponentUpdates(Master, comp);
             foreach (MergeObject mRec in pushList)
@@ -1273,26 +1272,23 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
 
         #region Job Mgmt
 
-        private string _currentJobName;
         //private Stopwatch _stopwatch;
 
-        private void EndJob()
+        private void EndJob([CallerMemberName] string name = "")
         {
             //if (_stopwatch != null)
             //{
             //    _stopwatch.Stop();
             //    Debug.WriteLine("Ended job component " + _currentJobName + " in " + _stopwatch.ElapsedMilliseconds + "mSec");
             //}
-            this.PostStatus(_currentJobName + ": done");
-            _currentJobName = null;
+            this.PostStatus(name + ": done");
         }
 
-        private void StartJob(string name)
+        private void StartJob([CallerMemberName] string name = "")
         {
             //if (_stopwatch != null) { _stopwatch.Stop(); }
             //_stopwatch = Stopwatch.StartNew();
-            _currentJobName = name;
-            this.PostStatus(name);
+            this.PostStatus("Starting" + name);
             Debug.WriteLine("Started job component " + name);
         }
 
