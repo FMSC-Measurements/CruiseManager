@@ -184,10 +184,8 @@ namespace CruiseManager.Test.Components
                 var comp2CtCount = comp2.Database.ExecuteScalar<int>("SELECT count(*) FROM CountTree;");
                 var masterCtCount = master.ExecuteScalar<int>("SELECT count(*) FROM CountTree WHERE Component_CN IS NULL;");
 
-                comp2CtCount.Should().Be(comp1CtCount);
                 masterCtCount.Should().Be(comp1CtCount);
-
-
+                comp2CtCount.Should().Be(comp1CtCount);
             }
         }
         
