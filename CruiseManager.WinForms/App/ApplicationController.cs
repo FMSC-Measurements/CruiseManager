@@ -2,6 +2,7 @@
 using CruiseManager.Core.Constants;
 using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Utility;
+using CruiseManager.WinForms.Components;
 using CruiseManager.WinForms.Dashboard;
 using CruiseManager.WinForms.EditDesign;
 using Ninject;
@@ -42,6 +43,7 @@ namespace CruiseManager.WinForms.App
             kernel.Bind<Core.EditDesign.ViewInterfaces.IEditDesignView>().To<EditDesignView>();
             kernel.Bind<Core.Components.ViewInterfaces.ICreateComponentView>().To<WinForms.Components.CreateComponentView>();
             kernel.Bind<Core.Components.ViewInterfaces.IMergeComponentView>().To<WinForms.Components.MergeComponentView>();
+            kernel.Bind<PreMergeReportView>().To<PreMergeReportView>();
 
             kernel.Bind<IEditTemplateView>().To<WinForms.TemplateEditor.EditTemplateView>();
 

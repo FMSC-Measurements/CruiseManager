@@ -83,7 +83,6 @@
             this._cancelButton.TabIndex = 1;
             this._cancelButton.Text = "Cancel";
             this._cancelButton.UseVisualStyleBackColor = true;
-            this._cancelButton.Click += new System.EventHandler(this._cancelButton_Click);
             // 
             // _goButton
             // 
@@ -94,7 +93,6 @@
             this._goButton.TabIndex = 0;
             this._goButton.Text = "Action";
             this._goButton.UseVisualStyleBackColor = true;
-            this._goButton.Click += new System.EventHandler(this._goButton_Click);
             // 
             // MergeComponentView
             // 

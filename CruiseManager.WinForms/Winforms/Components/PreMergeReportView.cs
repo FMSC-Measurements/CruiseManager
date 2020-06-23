@@ -8,126 +8,64 @@ namespace CruiseManager.WinForms.Components
 {
     public partial class PreMergeReportView : UserControl
     {
-        private class ViewDataLink
+        private MergeComponentsPresenter _viewModel;
+
+        public IEnumerable<PreMergeTableReport> Reports { get; }
+
+        public PreMergeReportView(MergeComponentsPresenter viewModel)
         {
-            public ViewDataLink(MergeTableCommandBuilder bldr)
-            {
-                this.CmdBldr = bldr;
-            }
-
-            public MergeTableCommandBuilder CmdBldr;
-            public DataGridView ConflictsDGV;
-            public DataGridView MatchDGV;
-            public DataGridView NewDGV;
-
-            //public DataGridView DeletedDGV;
-            public BindingSource ConflictsDataSource;
-
-            public BindingSource MatchDataSource;
-            public BindingSource NewDataSource;
-            //public BindingSource DeletedDataSource;
-        }
-
-        public PreMergeReportView(MergeComponentsPresenter viewPresenter)
-        {
-            this.ViewPresenter = viewPresenter;
             InitializeComponent();
-
-            InitializeTableByTableViews();
+            ViewModel = viewModel;
+            
+            var reports = viewModel.GetPreMergeReports();
+            InitializeReportTabs(reports);
         }
 
-        List<ViewDataLink> _viewDataLinks;
-
-        MergeComponentsPresenter ViewPresenter { get; set; }
-
-        public DataGridViewColumn[] BuildDGVColumns()
+        protected MergeComponentsPresenter ViewModel 
         {
-            DataGridViewColumn[] cols = {
-                new DataGridViewTextBoxColumn(){ DataPropertyName = "MergeRowID", HeaderText = "Merge Track ID", ReadOnly = true },
-                new DataGridViewTextBoxColumn(){ DataPropertyName = "SiblingRecords", HeaderText = "SiblingRecords", ReadOnly = true },
-                new DataGridViewTextBoxColumn(){ DataPropertyName = "NaturalSiblings", HeaderText = "NaturalSiblings", ReadOnly = true },
-                new DataGridViewTextBoxColumn(){ DataPropertyName = "MatchRowID", HeaderText = "Full Match", ReadOnly = true },
-                new DataGridViewTextBoxColumn(){ DataPropertyName = "PartialMatch", HeaderText = "PartialMatch", ReadOnly = true },
-                new DataGridViewTextBoxColumn(){ DataPropertyName = "ComponentRowID", HeaderText = "Component Row ID", ReadOnly = true },
-                new DataGridViewTextBoxColumn(){ DataPropertyName = "ComponentID", HeaderText = "Component File Number", ReadOnly = true},
-                new DataGridViewTextBoxColumn(){ DataPropertyName = "GUIDMatch", HeaderText = "GUIDMatch", ReadOnly = true},
-                new DataGridViewTextBoxColumn(){ DataPropertyName = "RowIDMatch", HeaderText = "RowIDMatch", ReadOnly = true},
-                new DataGridViewTextBoxColumn(){ DataPropertyName = "NaturalMatch", HeaderText = "NaturalMatch", ReadOnly = true},
-                new DataGridViewTextBoxColumn(){ DataPropertyName = "MasterRowVersion", HeaderText = "MasterRowVersion", ReadOnly = true},
-                new DataGridViewTextBoxColumn(){ DataPropertyName = "ComponentRowVersion", HeaderText = "ComponentRowVersion", ReadOnly = true},
-                //new DataGridViewTextBoxColumn(){ DataPropertyName = "ComponentConflict", HeaderText = "ComponentConflict", ReadOnly = true},
-                //new DataGridViewTextBoxColumn(){ DataPropertyName = "ComponentConflictFileID", HeaderText = "ComponentConflictFileID", ReadOnly = true},
-                //new DataGridViewTextBoxColumn(){ DataPropertyName = "MatchConflict", HeaderText = "MatchConflict", ReadOnly = true}
-            };
-            return cols;
+            get => _viewModel;
+            set
+            {
+                if(_viewModel !=  null)
+                { OnViewModelChangeing(_viewModel); }
+                _viewModel = value;
+                if(value != null)
+                { OnViewModelChanged(value); }
+            }
         }
 
-        public void InitializeTableByTableViews()
+        private void OnViewModelChangeing(MergeComponentsPresenter oldVM)
         {
-            _viewDataLinks = (from MergeTableCommandBuilder bldr in ViewPresenter.CommandBuilders.Values
-                              select new ViewDataLink(bldr)).ToList();
+            oldVM.PropertyChanged -= ViewModel_PropertyChanged;
+            oldVM.MergeLog.LogChanged -= MergeLog_LogChanged;
+        }
 
-            foreach (ViewDataLink thing in _viewDataLinks)
+        private void OnViewModelChanged(MergeComponentsPresenter newVM)
+        {
+            newVM.MergeLog.LogChanged += MergeLog_LogChanged;
+            newVM.PropertyChanged += ViewModel_PropertyChanged;
+
+            _goButton.Enabled = newVM.CanMerge;
+
+        }
+
+        private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            
+        }
+
+        private void MergeLog_LogChanged(object sender, string e)
+        {
+            _progressMessageTB.Text = e;
+        }
+
+        protected void InitializeReportTabs(IEnumerable<PreMergeTableReport> reports)
+        {
+            foreach(var report in reports)
             {
-                TabPage tp = new TabPage(Text = thing.CmdBldr.ClientTableName);
-                tp.SuspendLayout();
+                var tableTabHost = new TabControl();
 
-                thing.ConflictsDataSource = new BindingSource(typeof(MergeObject), (string)null);
-
-                thing.ConflictsDGV = new DataGridView()
-                {
-                    AllowUserToAddRows = false,
-                    AllowUserToDeleteRows = false,
-                    AllowUserToOrderColumns = false,
-                    AllowUserToResizeColumns = false,
-                    AllowUserToResizeRows = false,
-                    AutoGenerateColumns = false,
-                    Dock = DockStyle.Fill
-                };
-                thing.ConflictsDGV.DataSource = thing.ConflictsDataSource;
-
-                thing.ConflictsDGV.Columns.AddRange(BuildDGVColumns());
-
-                tp.Controls.Add(thing.ConflictsDGV);
-
-                _TH_conflicts.TabPages.Add(tp);
-                tp.ResumeLayout();
-            }
-
-            foreach (ViewDataLink thing in _viewDataLinks)
-            {
-                TabPage tp = new TabPage(Text = thing.CmdBldr.ClientTableName);
-                tp.SuspendLayout();
-
-                thing.MatchDataSource = new BindingSource(typeof(MergeObject), (string)null);
-
-                thing.MatchDGV = new DataGridView()
-                {
-                    AllowUserToAddRows = false,
-                    AllowUserToDeleteRows = false,
-                    AllowUserToOrderColumns = false,
-                    AllowUserToResizeColumns = false,
-                    AllowUserToResizeRows = false,
-                    AutoGenerateColumns = false,
-                    Dock = DockStyle.Fill
-                };
-                thing.MatchDGV.DataSource = thing.MatchDataSource;
-                thing.MatchDGV.Columns.AddRange(BuildDGVColumns());
-
-                tp.Controls.Add(thing.MatchDGV);
-
-                _TH_matches.TabPages.Add(tp);
-                tp.ResumeLayout();
-            }
-
-            foreach (ViewDataLink thing in _viewDataLinks)
-            {
-                TabPage tp = new TabPage(Text = thing.CmdBldr.ClientTableName);
-                tp.SuspendLayout();
-
-                thing.NewDataSource = new BindingSource(typeof(MergeObject), (string)null);
-
-                thing.NewDGV = new DataGridView()
+                var errorsDGV = new DataGridView()
                 {
                     AllowUserToAddRows = false,
                     AllowUserToDeleteRows = false,
@@ -136,15 +74,136 @@ namespace CruiseManager.WinForms.Components
                     AllowUserToResizeRows = false,
                     AutoGenerateColumns = false,
                     Dock = DockStyle.Fill,
-                    DataSource = thing.NewDataSource
+                    DataSource = report.Errors,
                 };
-                thing.NewDGV.Columns.AddRange(BuildDGVColumns());
+                errorsDGV.Columns.AddRange(BuildDGVColumns());
 
-                tp.Controls.Add(thing.NewDGV);
+                var errorsPage = new TabPage() { Text = "Errors" };
+                errorsPage.Controls.Add(errorsDGV);
+                tableTabHost.TabPages.Add(errorsPage);
 
-                _TH_additions.TabPages.Add(tp);
-                tp.ResumeLayout();
+                var matchesDGV = new DataGridView()
+                {
+                    AllowUserToAddRows = false,
+                    AllowUserToDeleteRows = false,
+                    AllowUserToOrderColumns = false,
+                    AllowUserToResizeColumns = false,
+                    AllowUserToResizeRows = false,
+                    AutoGenerateColumns = false,
+                    Dock = DockStyle.Fill,
+                    DataSource = report.Matches,
+                };
+                matchesDGV.Columns.AddRange(BuildDGVColumns());
+
+                var matchesPage = new TabPage() { Text = "Matches" };
+                matchesPage.Controls.Add(matchesDGV);
+                tableTabHost.TabPages.Add(matchesPage);
+
+                var additionsDGV = new DataGridView()
+                {
+                    AllowUserToAddRows = false,
+                    AllowUserToDeleteRows = false,
+                    AllowUserToOrderColumns = false,
+                    AllowUserToResizeColumns = false,
+                    AllowUserToResizeRows = false,
+                    AutoGenerateColumns = false,
+                    Dock = DockStyle.Fill,
+                    DataSource = report.Additions,
+                };
+                additionsDGV.Columns.AddRange(BuildDGVColumns());
+
+                var additionsPage = new TabPage() { Text = "Additions" };
+                additionsPage.Controls.Add(additionsDGV);
+                tableTabHost.TabPages.Add(additionsPage);
+
+                var tablePage = new TabPage() { Text = report.TableName, };
+                tablePage.Controls.Add(tableTabHost);
+                tabControl1.TabPages.Add(tablePage);
             }
+
+
+
+            //_viewDataLinks = (from MergeTableCommandBuilder bldr in ViewPresenter.CommandBuilders.Values
+            //                  select new ViewDataLink(bldr)).ToList();
+
+            //foreach (ViewDataLink thing in _viewDataLinks)
+            //{
+            //    TabPage tp = new TabPage(Text = thing.CmdBldr.ClientTableName);
+            //    tp.SuspendLayout();
+
+            //    thing.ConflictsDataSource = new BindingSource(typeof(MergeObject), (string)null);
+
+            //    thing.ConflictsDGV = new DataGridView()
+            //    {
+            //        AllowUserToAddRows = false,
+            //        AllowUserToDeleteRows = false,
+            //        AllowUserToOrderColumns = false,
+            //        AllowUserToResizeColumns = false,
+            //        AllowUserToResizeRows = false,
+            //        AutoGenerateColumns = false,
+            //        Dock = DockStyle.Fill
+            //    };
+            //    thing.ConflictsDGV.DataSource = thing.ConflictsDataSource;
+
+            //    thing.ConflictsDGV.Columns.AddRange(BuildDGVColumns());
+
+            //    tp.Controls.Add(thing.ConflictsDGV);
+
+            //    _TH_conflicts.TabPages.Add(tp);
+            //    tp.ResumeLayout();
+            //}
+
+            //foreach (ViewDataLink thing in _viewDataLinks)
+            //{
+            //    TabPage tp = new TabPage(Text = thing.CmdBldr.ClientTableName);
+            //    tp.SuspendLayout();
+
+            //    thing.MatchDataSource = new BindingSource(typeof(MergeObject), (string)null);
+
+            //    thing.MatchDGV = new DataGridView()
+            //    {
+            //        AllowUserToAddRows = false,
+            //        AllowUserToDeleteRows = false,
+            //        AllowUserToOrderColumns = false,
+            //        AllowUserToResizeColumns = false,
+            //        AllowUserToResizeRows = false,
+            //        AutoGenerateColumns = false,
+            //        Dock = DockStyle.Fill
+            //    };
+            //    thing.MatchDGV.DataSource = thing.MatchDataSource;
+            //    thing.MatchDGV.Columns.AddRange(BuildDGVColumns());
+
+            //    tp.Controls.Add(thing.MatchDGV);
+
+            //    _TH_matches.TabPages.Add(tp);
+            //    tp.ResumeLayout();
+            //}
+
+            //foreach (ViewDataLink thing in _viewDataLinks)
+            //{
+            //    TabPage tp = new TabPage(Text = thing.CmdBldr.ClientTableName);
+            //    tp.SuspendLayout();
+
+            //    thing.NewDataSource = new BindingSource(typeof(MergeObject), (string)null);
+
+            //    thing.NewDGV = new DataGridView()
+            //    {
+            //        AllowUserToAddRows = false,
+            //        AllowUserToDeleteRows = false,
+            //        AllowUserToOrderColumns = false,
+            //        AllowUserToResizeColumns = false,
+            //        AllowUserToResizeRows = false,
+            //        AutoGenerateColumns = false,
+            //        Dock = DockStyle.Fill,
+            //        DataSource = thing.NewDataSource
+            //    };
+            //    thing.NewDGV.Columns.AddRange(BuildDGVColumns());
+
+            //    tp.Controls.Add(thing.NewDGV);
+
+            //    _TH_additions.TabPages.Add(tp);
+            //    tp.ResumeLayout();
+            //}
 
             //foreach (ViewDataLink thing in _viewDataLinks)
             //{
@@ -174,53 +233,49 @@ namespace CruiseManager.WinForms.Components
             //}
         }
 
-        public void UpdateView()
+        protected DataGridViewColumn[] BuildDGVColumns()
         {
-            foreach (ViewDataLink link in _viewDataLinks)
-            {
-                link.ConflictsDataSource.DataSource = this.ViewPresenter.ListConflicts(link.CmdBldr);
-            }
+            DataGridViewColumn[] cols = {
+                new DataGridViewTextBoxColumn(){ DataPropertyName = "MergeRowID", HeaderText = "Merge Track ID", ReadOnly = true },
+                new DataGridViewTextBoxColumn(){ DataPropertyName = "SiblingRecords", HeaderText = "SiblingRecords", ReadOnly = true },
+                new DataGridViewTextBoxColumn(){ DataPropertyName = "NaturalSiblings", HeaderText = "NaturalSiblings", ReadOnly = true },
+                new DataGridViewTextBoxColumn(){ DataPropertyName = "MatchRowID", HeaderText = "Full Match", ReadOnly = true },
+                new DataGridViewTextBoxColumn(){ DataPropertyName = "PartialMatch", HeaderText = "PartialMatch", ReadOnly = true },
+                new DataGridViewTextBoxColumn(){ DataPropertyName = "ComponentRowID", HeaderText = "Component Row ID", ReadOnly = true },
+                new DataGridViewTextBoxColumn(){ DataPropertyName = "ComponentID", HeaderText = "Component File Number", ReadOnly = true},
+                new DataGridViewTextBoxColumn(){ DataPropertyName = "GUIDMatch", HeaderText = "GUIDMatch", ReadOnly = true},
+                new DataGridViewTextBoxColumn(){ DataPropertyName = "RowIDMatch", HeaderText = "RowIDMatch", ReadOnly = true},
+                new DataGridViewTextBoxColumn(){ DataPropertyName = "NaturalMatch", HeaderText = "NaturalMatch", ReadOnly = true},
+                new DataGridViewTextBoxColumn(){ DataPropertyName = "MasterRowVersion", HeaderText = "MasterRowVersion", ReadOnly = true},
+                new DataGridViewTextBoxColumn(){ DataPropertyName = "ComponentRowVersion", HeaderText = "ComponentRowVersion", ReadOnly = true},
+                //new DataGridViewTextBoxColumn(){ DataPropertyName = "ComponentConflict", HeaderText = "ComponentConflict", ReadOnly = true},
+                //new DataGridViewTextBoxColumn(){ DataPropertyName = "ComponentConflictFileID", HeaderText = "ComponentConflictFileID", ReadOnly = true},
+                //new DataGridViewTextBoxColumn(){ DataPropertyName = "MatchConflict", HeaderText = "MatchConflict", ReadOnly = true}
+            };
+            return cols;
         }
 
-        private bool _matchesLoaded = false;
-
-        private void _TP_matches_Enter(object sender, EventArgs e)
+        private void _cancelButton_Click(object sender, EventArgs e)
         {
-            if (!_matchesLoaded)
+            ViewModel.Cancel();
+        }
+
+        private async void _goButton_Click(object sender, EventArgs e)
+        {
+            _goButton.Enabled = false;
+            _cancelButton.Enabled = true;
+            var (result, exception) = await ViewModel.RunMerge();
+            _cancelButton.Enabled = false;
+
+            if (result)
+            { MessageBox.Show("Done"); }
+            else
             {
-                foreach (ViewDataLink link in _viewDataLinks)
+                if(exception != null)
                 {
-                    link.MatchDataSource.DataSource = this.ViewPresenter.ListMatches(link.CmdBldr);
+                    MessageBox.Show(exception.Message);
                 }
-                _matchesLoaded = true;
             }
         }
-
-        private bool _newLoaded = false;
-
-        private void _TP_new_Enter(object sender, EventArgs e)
-        {
-            if (!_newLoaded)
-            {
-                foreach (ViewDataLink link in _viewDataLinks)
-                {
-                    link.NewDataSource.DataSource = this.ViewPresenter.ListNew(link.CmdBldr);
-                }
-                _newLoaded = true;
-            }
-        }
-
-        //private bool _deletedLoaded = false;
-        //private void _TP_deletions_Enter(object sender, EventArgs e)
-        //{
-        //    if (!_deletedLoaded)
-        //    {
-        //        foreach (ViewDataLink link in _viewDataLinks)
-        //        {
-        //            link.DeletedDataSource.DataSource = this.Presenter.ListDeleted(link.CmdBldr);
-        //        }
-        //        _deletedLoaded = true;
-        //    }
-        //}
     }
 }
