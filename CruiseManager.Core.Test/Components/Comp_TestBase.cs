@@ -1,21 +1,24 @@
 ﻿using CruiseDAL;
+using CruiseDAL.DataObjects;
 using CruiseDAL.V2.Models;
+using CruiseManager.Core.Components;
 using CruiseManager.Test;
 using FluentAssertions;
 using FMSC.ORM.Core;
-using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace CruiseManager.Core.Test.Components
+namespace CruiseManager.Test.Components
 {
     public class Comp_TestBase : TestBase
     {
+        public string ComponentsTestFilesDir => Path.Combine(TestFilesDir, "Components");
+
         protected CuttingUnit[] Units { get; set; }
         protected Stratum[] Strata { get; set; }
         protected CuttingUnitStratum[] UnitStrata { get; set; }
@@ -27,10 +30,11 @@ namespace CruiseManager.Core.Test.Components
         public Stratum[] NonPlotStrata { get; set; }
         public CountTree[] CountTrees { get; set; }
 
+        public TestMergeLogWriter TestMergeLogWriter { get; }
 
         public Comp_TestBase(ITestOutputHelper output) : base(output)
         {
-
+            TestMergeLogWriter = new TestMergeLogWriter(output);
         }
 
         //        protected void CreateCruiseDatabase(DbConnection connection)
@@ -133,20 +137,35 @@ namespace CruiseManager.Core.Test.Components
         //            { connection.Insert(sgtdv); }
         //        }
 
-        [Fact]
-        public void TestCreateCruiseDatabase()
-        {
-            using (var database = new DAL())
-            {
-                var connection = database.OpenConnection();
+        //[Theory]
+        //[InlineData(1)]
+        //[InlineData(2)]
+        //public void MakeFiles_Test(int numComps)
+        //{
+        //    var (master, comps) = MakeFiles("MakeFiles", numComps);
 
-                CreateCruiseDatabase(connection);
+        //    comps.Should().HaveCount(numComps);
 
-                ValidateCreateDatabase(database);
+        //    ValidateCreateDatabase(master);
 
-            }
+        //    foreach (var comp in comps)
+        //    {
+        //        ValidateCreateDatabase(comp);
+        //    }
+        //}
 
-        }
+        //[Fact]
+        //public void TestCreateCruiseDatabase()
+        //{
+        //    using (var database = new DAL())
+        //    {
+        //        var connection = database.OpenConnection();
+
+        //        CreateCruiseDatabase(connection);
+
+        //        ValidateCreateDatabase(database);
+        //    }
+        //}
 
         protected void ValidateCreateDatabase(DAL database)
         {
@@ -289,7 +308,6 @@ namespace CruiseManager.Core.Test.Components
                         })
                     };
                 }
-
             }).SelectMany(x => x).SelectMany(x => x).ToArray();
 
             foreach (var ct in CountTrees)
@@ -303,7 +321,7 @@ namespace CruiseManager.Core.Test.Components
 
                 var tally_CN = connection.ExecuteScalar<int?>($"SELECT Tally_CN FROM Tally WHERE Description = '{ctDescription}';");
 
-                if(tally_CN.HasValue == false)
+                if (tally_CN.HasValue == false)
                 {
                     tally_CN = (int?)connection.Insert(new Tally()
                     {
@@ -316,6 +334,60 @@ namespace CruiseManager.Core.Test.Components
 
                 connection.Insert(ct);
             }
+        }
+
+        protected (DAL master, IEnumerable<DAL> comps) MakeFiles([CallerMemberName] string baseFileName = null, int numComponents = 1)
+        {
+            var masterPath = GetCleanFile(baseFileName + ".m.cruise");
+            Output.WriteLine($"masterPath: {masterPath}");
+
+            var masterDB = new DAL(masterPath, true);
+            var masterConn = masterDB.OpenConnection();
+            CreateCruiseDatabase(masterConn);
+
+            var components = new List<DAL>();
+            foreach (var i in Enumerable.Range(1, numComponents))
+            {
+                var compPath = GetCleanFile(baseFileName + ".1.cruise");
+                var compInfo = new ComponentDO() { Component_CN = 1 };
+
+                CreateComponentPresenter.CreateComponent(masterDB, 1, compInfo, compPath);
+
+                components.Add(new DAL(compPath));
+            }
+
+            return (masterDB, components);
+        }
+
+        protected (DAL master, IEnumerable<ComponentFile> comps) FindFiles(string baseFileName)
+        {
+            var masterPath = Path.Combine(ComponentsTestFilesDir, baseFileName);
+            var searchDir = Path.GetDirectoryName(masterPath);
+
+            Output.WriteLine($"masterPath: {masterPath}");
+
+            var master = new DAL(masterPath);
+            var components = new List<ComponentFile>();
+
+            var allComponents = master.From<ComponentFile>().Read().ToArray();
+
+            foreach (ComponentFile comp in allComponents)
+            {
+                comp.FullPath = System.IO.Path.Combine(searchDir, comp.FileName);
+
+                if (MergeComponentsPresenter.InitializeComponent(comp))//try to initialize component, if initialization fails add to missing file list
+                {
+                    components.Add(comp);
+                }
+                else
+                {
+                    Output.WriteLine($"Component Not Found: {comp.FullPath}");
+                }
+            }
+
+            return (master, components);
+
+
         }
     }
 }

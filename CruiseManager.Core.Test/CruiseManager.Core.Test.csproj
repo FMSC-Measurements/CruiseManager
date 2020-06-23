@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup Label="Build Config">
+    <RootNamespace>CruiseManager.Test</RootNamespace>
     <TargetFramework>net461</TargetFramework>
     <Platform>Any Cpu</Platform>
     <UserSecretsId>5fd8872d-7e52-4edf-8cbd-9e4bd85a492a</UserSecretsId>

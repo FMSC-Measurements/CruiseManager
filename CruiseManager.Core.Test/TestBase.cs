@@ -1,7 +1,9 @@
 ﻿using CruiseDAL;
 using CruiseManager.Core.App;
 using Moq;
+using System;
 using System.IO;
+using System.Reflection;
 using Xunit.Abstractions;
 
 namespace CruiseManager.Test
@@ -15,6 +17,8 @@ namespace CruiseManager.Test
 
         protected IApplicationController AppController => AppControllerMock.Object;
         protected IUserSettings UserSettings => UserSettingsMock.Object;
+
+        public string TestFilesDir { get; }
 
         public TestBase(ITestOutputHelper output)
         {
@@ -30,7 +34,11 @@ namespace CruiseManager.Test
             AppControllerMock
                 .Setup(x => x.UserSettings)
                 .Returns(() => UserSettings);
-            
+
+            var codeBaseUri = new Uri(Assembly.GetExecutingAssembly().CodeBase).AbsolutePath;
+            var codeBasePath = Uri.UnescapeDataString(codeBaseUri);
+            var codeBaseDir = System.IO.Path.GetDirectoryName(codeBasePath);
+            TestFilesDir = Path.Combine(codeBaseDir, "TestFiles");
         }
 
         public string TestTempPath

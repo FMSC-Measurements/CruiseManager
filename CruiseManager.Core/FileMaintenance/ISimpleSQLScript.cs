@@ -5,7 +5,9 @@ namespace CruiseManager.Core.FileMaintenance
 {
     public interface ISimpleSQLScript
     {
-        String Description { get; }
+        string Name { get; }
+
+        string Description { get; }
 
         bool CheckCanExecute(DAL database);
 

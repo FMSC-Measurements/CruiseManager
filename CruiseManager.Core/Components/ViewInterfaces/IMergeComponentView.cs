@@ -7,12 +7,8 @@ namespace CruiseManager.Core.Components.ViewInterfaces
     {
         new MergeComponentsPresenter ViewPresenter { get; set; }
 
-        void UpdateMergeInfoView();
+        void ShowMergeInfoView();
 
-        void ShowPremergeReport();
-
-        void HandleWorkerStatusChanged();
-
-        void HandleProgressChanged(Object sender, WorkerProgressChangedEventArgs e);
+        void ShowPreMergeReport();
     }
 }

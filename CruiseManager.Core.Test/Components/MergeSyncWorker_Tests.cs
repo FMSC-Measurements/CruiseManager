@@ -1,87 +1,46 @@
-﻿using CruiseDAL;
-using CruiseDAL.DataObjects;
+﻿using CruiseDAL.DataObjects;
 using CruiseDAL.V2.Models;
 using CruiseManager.Core.Components;
 using FluentAssertions;
-using System.Collections.Generic;
+using System;
 using System.Linq;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace CruiseManager.Core.Test.Components
+namespace CruiseManager.Test.Components
 {
     public class MergeSyncWorker_Tests : Comp_TestBase
     {
+        private const string TESTMERGENEWCOUNTS2_MASTER = "Good\\testMergeNewCounts2\\12345 testMergeNewCountTrees TS.M.cruise";
+
         public MergeSyncWorker_Tests(ITestOutputHelper output) : base(output)
         {
         }
 
-        protected (DAL master, IEnumerable<DAL> comps) MakeFiles(string baseFileName, int numComponents = 1)
+        
+
+        [Fact]
+        public void SyncDesign_Test()
         {
-            var masterPath = GetCleanFile(baseFileName + ".m.cruise");
-            Output.WriteLine($"masterPath: {masterPath}");
+            var (master, comps) = MakeFiles();
 
-            var masterDB = new DAL(masterPath, true);
-            var masterConn = masterDB.OpenConnection();
-            CreateCruiseDatabase(masterConn);
+            var compVMs = comps.Select((x, i) => { return new ComponentFile() { Database = x, Component_CN = i }; })
+                .ToArray();
+            var commandBuilders = MergeComponentsPresenter.MakeCommandBuilders(master)
+                .ToDictionary(x => x.ClientTableName);
 
-            var components = new List<DAL>();
-            foreach (var i in Enumerable.Range(1, numComponents))
-            {
-                var compPath = GetCleanFile(baseFileName + ".1.cruise");
-                var compInfo = new ComponentDO() { Component_CN = 1 };
-
-                CreateComponentPresenter.CreateComponent(masterDB, 1, compInfo, compPath);
-
-                components.Add(new DAL(compPath));
-            }
-
-            return (masterDB, components);
-        }
-
-        [Theory]
-        [InlineData(1)]
-        [InlineData(2)]
-        public void Test_MakeFiles(int numComps)
-        {
-            var (master, comps) = MakeFiles("MakeFiles", numComps);
-
-            comps.Should().HaveCount(numComps);
-
-            ValidateCreateDatabase(master);
-
-            foreach (var comp in comps)
-            {
-                ValidateCreateDatabase(comp);
-            }
+            MergeSyncWorker.SyncDesign(master, compVMs, new System.Threading.CancellationToken(), null, TestMergeLogWriter);
         }
 
         [Fact]
-        public void Test_SyncDesign()
+        public void SyncDesign_Test_PullTreeDefaults()
         {
-            var (master, comps) = MakeFiles("MakeFiles");
+            var (master, comps) = MakeFiles(numComponents: 2);
 
-            var compVMs = comps.Select((x, i) => { return new ComponentFileVM() { Database = x, Component_CN = i }; })
+            var compVMs = comps.Select((x, i) => { return new ComponentFile() { Database = x, Component_CN = i }; })
                 .ToArray();
-            var commandBuilders = MergeComponentsPresenter.InitializeMergeTableCommandBuilders(master)
+            var commandBuilders = MergeComponentsPresenter.MakeCommandBuilders(master)
                 .ToDictionary(x => x.ClientTableName);
-            var worker = new MergeSyncWorker(master, compVMs, commandBuilders);
-            worker.ProgressChanged += WriteProgressChangedToOutput;
-
-            worker.SyncDesign();
-        }
-
-        [Fact]
-        public void Test_SyncDesign_PullTreeDefaults()
-        {
-            var (master, comps) = MakeFiles("MakeFiles", 2);
-
-            var compVMs = comps.Select((x, i) => { return new ComponentFileVM() { Database = x, Component_CN = i }; })
-                .ToArray();
-            var commandBuilders = MergeComponentsPresenter.InitializeMergeTableCommandBuilders(master)
-                .ToDictionary(x => x.ClientTableName);
-            var worker = new MergeSyncWorker(master, compVMs, commandBuilders);
-            worker.ProgressChanged += WriteProgressChangedToOutput;
 
             var comp1 = comps.First();
             var comp1TDV1 = new TreeDefaultValue()
@@ -93,7 +52,12 @@ namespace CruiseManager.Core.Test.Components
             };
             comp1.Insert(comp1TDV1);
 
-            worker.SyncDesign();
+            MergeSyncWorker.SyncDesign(
+                master,
+                compVMs,
+                new System.Threading.CancellationToken(),
+                (IProgress<int>)null,
+                TestMergeLogWriter);
 
             var mastTDV1 = master.From<TreeDefaultValue>().Where($"Species = 'nsp1'").Query().FirstOrDefault();
 
@@ -119,16 +83,12 @@ namespace CruiseManager.Core.Test.Components
         }
 
         [Fact]
-        public void Test_SyncDesign_PullTreeDefaults_master_has_cn_conflict()
+        public void SyncDesign_Test_PullTreeDefaults_master_has_cn_conflict()
         {
-            var (master, comps) = MakeFiles("MakeFiles", 2);
+            var (master, comps) = MakeFiles(numComponents: 2);
 
-            var compVMs = comps.Select((x, i) => { return new ComponentFileVM() { Database = x, Component_CN = i }; })
+            var compVMs = comps.Select((x, i) => { return new ComponentFile() { Database = x, Component_CN = i }; })
                 .ToArray();
-            var commandBuilders = MergeComponentsPresenter.InitializeMergeTableCommandBuilders(master)
-                .ToDictionary(x => x.ClientTableName);
-            var worker = new MergeSyncWorker(master, compVMs, commandBuilders);
-            worker.ProgressChanged += WriteProgressChangedToOutput;
 
             var comp1 = comps.First();
             var comp1TDV1 = new TreeDefaultValue()
@@ -149,7 +109,12 @@ namespace CruiseManager.Core.Test.Components
             };
             master.Insert(mastTDV2);
 
-            worker.SyncDesign();
+            MergeSyncWorker.SyncDesign(
+                master,
+                compVMs,
+                new System.Threading.CancellationToken(),
+                (IProgress<int>)null,
+                TestMergeLogWriter);
 
             var mastTDV1 = master.From<TreeDefaultValue>().Where($"Species = 'nsp1'").Query().FirstOrDefault();
 
@@ -177,16 +142,12 @@ namespace CruiseManager.Core.Test.Components
         }
 
         [Fact]
-        public void TestSyncDesign_PullCountTree()
+        public void SyncDesign_Test_PullCountTree()
         {
-            var (master, comps) = MakeFiles("MakeFiles", 2);
+            var (master, comps) = MakeFiles(numComponents: 2);
 
-            var compVMs = comps.Select((x, i) => { return new ComponentFileVM() { Database = x, Component_CN = i }; })
+            var compVMs = comps.Select((x, i) => { return new ComponentFile() { Database = x, Component_CN = i }; })
                 .ToArray();
-            var commandBuilders = MergeComponentsPresenter.InitializeMergeTableCommandBuilders(master)
-                .ToDictionary(x => x.ClientTableName);
-            var worker = new MergeSyncWorker(master, compVMs, commandBuilders);
-            worker.ProgressChanged += WriteProgressChangedToOutput;
 
             var comp1 = comps.First();
 
@@ -199,17 +160,20 @@ namespace CruiseManager.Core.Test.Components
             };
             comp1.Insert(comp1Sg1, keyValue: 1000);
 
-
-
             var compCt1 = new CountTree()
             {
                 CuttingUnit_CN = 1,
                 SampleGroup_CN = 1000,
-                Tally_CN  = 1,
+                Tally_CN = 1,
             };
             comp1.Insert(compCt1);
 
-            worker.SyncDesign();
+            MergeSyncWorker.SyncDesign(
+                master,
+                compVMs,
+                new System.Threading.CancellationToken(),
+                (IProgress<int>)null,
+                TestMergeLogWriter);
 
             var mastCt1 = master.From<CountTree>()
                 .Join("SampleGroup", "USING (SampleGroup_CN)")
@@ -218,16 +182,12 @@ namespace CruiseManager.Core.Test.Components
         }
 
         [Fact]
-        public void Test_SyncDesign_PullSamplegroups()
+        public void SyncDesign_Test_PullSamplegroups()
         {
-            var (master, comps) = MakeFiles("MakeFiles", 2);
+            var (master, comps) = MakeFiles(numComponents: 2);
 
-            var compVMs = comps.Select((x, i) => { return new ComponentFileVM() { Database = x, Component_CN = i }; })
+            var compVMs = comps.Select((x, i) => { return new ComponentFile() { Database = x, Component_CN = i }; })
                 .ToArray();
-            var commandBuilders = MergeComponentsPresenter.InitializeMergeTableCommandBuilders(master)
-                .ToDictionary(x => x.ClientTableName);
-            var worker = new MergeSyncWorker(master, compVMs, commandBuilders);
-            worker.ProgressChanged += WriteProgressChangedToOutput;
 
             var comp1 = comps.First();
 
@@ -241,7 +201,12 @@ namespace CruiseManager.Core.Test.Components
             };
             comp1.Insert(comp1Sg1, keyValue: 1000);
 
-            worker.SyncDesign();
+            MergeSyncWorker.SyncDesign(
+                master,
+                compVMs,
+                new System.Threading.CancellationToken(),
+                (IProgress<int>)null,
+                TestMergeLogWriter);
 
             var mastSg1 = master.From<SampleGroup>().Where("Code = @p1").Query("nsg1").FirstOrDefault();
 
@@ -254,16 +219,12 @@ namespace CruiseManager.Core.Test.Components
         }
 
         [Fact]
-        public void Test_SyncDesign_PullSamplegroups_with_cn_conflict()
+        public void SyncDesign_Test_PullSamplegroups_with_cn_conflict()
         {
-            var (master, comps) = MakeFiles("MakeFiles", 2);
+            var (master, comps) = MakeFiles(numComponents: 2);
 
-            var compVMs = comps.Select((x, i) => { return new ComponentFileVM() { Database = x, Component_CN = i }; })
+            var compVMs = comps.Select((x, i) => { return new ComponentFile() { Database = x, Component_CN = i }; })
                 .ToArray();
-            var commandBuilders = MergeComponentsPresenter.InitializeMergeTableCommandBuilders(master)
-                .ToDictionary(x => x.ClientTableName);
-            var worker = new MergeSyncWorker(master, compVMs, commandBuilders);
-            worker.ProgressChanged += WriteProgressChangedToOutput;
 
             var comp1 = comps.First();
 
@@ -289,7 +250,12 @@ namespace CruiseManager.Core.Test.Components
             };
             master.Insert(mastSg2, keyValue: 1000);
 
-            worker.SyncDesign();
+            MergeSyncWorker.SyncDesign(
+                master,
+                compVMs,
+                new System.Threading.CancellationToken(),
+                (IProgress<int>)null,
+                TestMergeLogWriter);
 
             var mastSg1 = master.From<SampleGroup>().Where("Code = @p1").Query("nsg1").FirstOrDefault();
 
@@ -316,16 +282,12 @@ namespace CruiseManager.Core.Test.Components
         }
 
         [Fact]
-        public void Test_SyncDesign_PushStratum()
+        public void SyncDesign_Test_PushStratum()
         {
-            var (master, comps) = MakeFiles("MakeFiles", 2);
+            var (master, comps) = MakeFiles(numComponents: 2);
 
-            var compVMs = comps.Select((x, i) => { return new ComponentFileVM() { Database = x, Component_CN = i }; })
+            var compVMs = comps.Select((x, i) => { return new ComponentFile() { Database = x, Component_CN = i }; })
                 .ToArray();
-            var commandBuilders = MergeComponentsPresenter.InitializeMergeTableCommandBuilders(master)
-                .ToDictionary(x => x.ClientTableName);
-            var worker = new MergeSyncWorker(master, compVMs, commandBuilders);
-            worker.ProgressChanged += WriteProgressChangedToOutput;
 
             var mastSt1 = new Stratum()
             {
@@ -334,25 +296,25 @@ namespace CruiseManager.Core.Test.Components
             };
             master.Insert(mastSt1, keyValue: 1000);
 
-            worker.SyncDesign();
+            MergeSyncWorker.SyncDesign(
+                master,
+                compVMs,
+                new System.Threading.CancellationToken(),
+                (IProgress<int>)null,
+                TestMergeLogWriter);
 
             var comp1 = comps.First();
             var compSt1 = comp1.From<Stratum>().Where("Code = @p1").Query(mastSt1.Code).Single();
             compSt1.Should().NotBeNull();
-
         }
 
         [Fact]
-        public void Test_SyncDesign_PushStratum_with_cn_conflict()
+        public void SyncDesign_Test_PushStratum_with_cn_conflict()
         {
-            var (master, comps) = MakeFiles("MakeFiles", 2);
+            var (master, comps) = MakeFiles(numComponents: 2);
 
-            var compVMs = comps.Select((x, i) => { return new ComponentFileVM() { Database = x, Component_CN = i }; })
+            var compVMs = comps.Select((x, i) => { return new ComponentFile() { Database = x, Component_CN = i }; })
                 .ToArray();
-            var commandBuilders = MergeComponentsPresenter.InitializeMergeTableCommandBuilders(master)
-                .ToDictionary(x => x.ClientTableName);
-            var worker = new MergeSyncWorker(master, compVMs, commandBuilders);
-            worker.ProgressChanged += WriteProgressChangedToOutput;
 
             var comp1 = comps.First();
 
@@ -370,18 +332,51 @@ namespace CruiseManager.Core.Test.Components
             };
             comp1.Insert(compSt2, keyValue: 1000);
 
-            worker.SyncDesign();
+            MergeSyncWorker.SyncDesign(
+                master,
+                compVMs,
+                new System.Threading.CancellationToken(),
+                (IProgress<int>)null,
+                TestMergeLogWriter);
 
             var compSt1 = comp1.From<Stratum>().Where("Code = @p1").Query(mastSt1.Code).Single();
             compSt1.Should().NotBeNull();
             compSt1.Stratum_CN.Should().Be(mastSt1.Stratum_CN);
-
         }
 
-
-        private void WriteProgressChangedToOutput(object sender, WorkerProgressChangedEventArgs ea)
+        [Fact]
+        // test merging new tally setup added to component one
+        // after merge there should be new samplegroups and tally setup in master and component 2
+        public void PerformMergeTest_newCountTree2()
         {
-            Output.WriteLine(ea.Message);
+            var masterPath = TESTMERGENEWCOUNTS2_MASTER;
+            var numComps = 2;
+
+            var (master, components) = FindFiles(masterPath);
+            using (master)
+            {
+                var commandBuilders = MergeComponentsPresenter.MakeCommandBuilders(master);
+                var commandBuilderDict = commandBuilders.ToDictionary(x => x.ClientTableName);
+                var mergeLog = new TestMergeLogWriter(Output);
+
+                PrepareMergeWorker.DoWork(master, components, commandBuilders, new System.Threading.CancellationToken(), (IProgress<int>)null, TestMergeLogWriter);
+
+                MergeSyncWorker.DoMerge(master, components, commandBuilderDict, new System.Threading.CancellationToken(),
+                    (IProgress<int>)null, 
+                    TestMergeLogWriter);
+
+                var comp1 = components.ElementAt(0);
+                var comp2 = components.ElementAt(1);
+
+                comp2.Database.From<CountTreeDO>().Where("SampleGroup_CN > 1").Query().ToArray();
+
+                var comp1CtCount = comp1.Database.ExecuteScalar<int>("SELECT count(*) FROM CountTree;");
+                var comp2CtCount = comp2.Database.ExecuteScalar<int>("SELECT count(*) FROM CountTree;");
+                var masterCtCount = master.ExecuteScalar<int>("SELECT count(*) FROM CountTree WHERE Component_CN IS NULL;");
+
+                masterCtCount.Should().Be(comp1CtCount);
+                comp2CtCount.Should().Be(comp1CtCount);
+            }
         }
     }
 }
