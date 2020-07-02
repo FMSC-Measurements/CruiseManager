@@ -246,7 +246,7 @@ namespace CruiseManager.WinForms.Components
                 new DataGridViewTextBoxColumn(){ DataPropertyName = "GUIDMatch", HeaderText = "GUIDMatch", ReadOnly = true},
                 new DataGridViewTextBoxColumn(){ DataPropertyName = "RowIDMatch", HeaderText = "RowIDMatch", ReadOnly = true},
                 new DataGridViewTextBoxColumn(){ DataPropertyName = "NaturalMatch", HeaderText = "NaturalMatch", ReadOnly = true},
-                new DataGridViewTextBoxColumn(){ DataPropertyName = "MasterRowVersion", HeaderText = "MasterRowVersion", ReadOnly = true},
+                new DataGridViewTextBoxColumn(){ DataPropertyName = "ParentRowVersion", HeaderText = "MasterRowVersion", ReadOnly = true},
                 new DataGridViewTextBoxColumn(){ DataPropertyName = "ComponentRowVersion", HeaderText = "ComponentRowVersion", ReadOnly = true},
                 //new DataGridViewTextBoxColumn(){ DataPropertyName = "ComponentConflict", HeaderText = "ComponentConflict", ReadOnly = true},
                 //new DataGridViewTextBoxColumn(){ DataPropertyName = "ComponentConflictFileID", HeaderText = "ComponentConflictFileID", ReadOnly = true},
