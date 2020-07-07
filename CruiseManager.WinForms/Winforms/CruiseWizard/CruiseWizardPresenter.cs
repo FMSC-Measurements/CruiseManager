@@ -736,78 +736,82 @@ namespace CruiseManager.WinForms.CruiseWizard
         //override for call by ParameterizedThreadStart
         private void CopyTemplateData(object obj)
         {
-            CopyTemplateData((DAL)obj);
+            var database = _database;
+            var isRecon = Sale.Purpose == "Recon";
+
+            CopyTemplateData((DAL)obj, database, isRecon, out var treeDefaults);
+            TreeDefaults = treeDefaults.ToList();
         }
 
-        protected void CopyTemplateData(DAL templateDB)
+        public static void CopyTemplateData(DAL templateDB, DAL database, bool isRecon, out IEnumerable<TreeDefaultValueDO> treeDefaults)
         {
-            _database.BeginTransaction();
+            database.BeginTransaction();
             try
             {
                 foreach (TreeDefaultValueDO tdv in templateDB.From<TreeDefaultValueDO>().Query())
                 {
-                    _database.Insert(tdv, option: OnConflictOption.Replace);
+                    database.Insert(tdv, option: OnConflictOption.Replace);
                 }
 
                 foreach (TreeAuditValueDO tav in templateDB.From<TreeAuditValueDO>().Query())
                 {
-                    _database.Insert(tav, option: OnConflictOption.Replace);
+                    database.Insert(tav, option: OnConflictOption.Replace);
                 }
 
                 foreach (TreeDefaultValueTreeAuditValueDO map in templateDB.From<TreeDefaultValueTreeAuditValueDO>().Query())
                 {
-                    _database.Insert(map, option: OnConflictOption.Replace);
+                    database.Insert(map, option: OnConflictOption.Replace);
                 }
 
                 foreach (ReportsDO rpt in templateDB.From<ReportsDO>().Query())
                 {
-                    _database.Insert(rpt, option: OnConflictOption.Replace);
+                    database.Insert(rpt, option: OnConflictOption.Replace);
                 }
 
                 var crusemethods = templateDB.From<CruiseMethodsDO>();
-                if (Sale.Purpose == "Recon")
+                if (isRecon)
                 {
                     crusemethods.Where("Code = 'FIX' OR Code = 'PNT'");
                 }
 
                 foreach (CruiseMethodsDO cm in crusemethods.Query())
                 {
-                    _database.Insert(cm, option: OnConflictOption.Ignore);
+                    database.Insert(cm, option: OnConflictOption.Ignore);
                 }
 
                 foreach (VolumeEquationDO ve in templateDB.From<VolumeEquationDO>().Query())
                 {
-                    _database.Insert(ve, option: OnConflictOption.Ignore);
+                    database.Insert(ve, option: OnConflictOption.Ignore);
                 }
 
                 foreach (TreeFieldSetupDefaultDO tf in templateDB.From<TreeFieldSetupDefaultDO>().Query())
                 {
-                    _database.Insert(tf, option: OnConflictOption.Ignore);
+                    database.Insert(tf, option: OnConflictOption.Ignore);
                 }
 
                 foreach (LogFieldSetupDefaultDO lf in templateDB.From<LogFieldSetupDefaultDO>().Query())
                 {
-                    _database.Insert(lf, option: OnConflictOption.Ignore);
+                    database.Insert(lf, option: OnConflictOption.Ignore);
                 }
 
                 foreach (var lga in templateDB.From<LogGradeAuditRuleDO>().Query())
                 {
-                    _database.Insert(lga);
+                    database.Insert(lga);
                 }
 
                 foreach (var lm in templateDB.From<LogMatrixDO>().Query())
                 {
-                    _database.Insert(lm, option: OnConflictOption.Ignore);
+                    database.Insert(lm, option: OnConflictOption.Ignore);
                 }
-                _database.CommitTransaction();
+                database.CommitTransaction();
             }
             catch
             {
-                _database.RollbackTransaction();
+                database.RollbackTransaction();
                 throw;
             }
 
-            TreeDefaults = _database.From<TreeDefaultValueDO>().Read().ToList();
+            treeDefaults = database.From<TreeDefaultValueDO>().Read().ToArray();
         }
 
         /// <summary>

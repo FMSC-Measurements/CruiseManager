@@ -1,27 +1,42 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Reflection;
 using Xunit.Abstractions;
 
 namespace CruiseManager.WinForms.Test
 {
     public abstract class TestBase
     {
-        protected readonly ITestOutputHelper Output;
-        private string _testTempPath;
+        protected ITestOutputHelper Output { get; }
+        public string TestFilesDir { get; }
+        public string ProjectOutputDir { get; }
+        public string TestTempPath { get; }
 
         public TestBase(ITestOutputHelper output)
         {
             Output = output;
 
-            var testTempPath = TestTempPath;
+            var testTempPath = TestTempPath =
+                Path.Combine(Path.GetTempPath(), "TestTemp", this.GetType().FullName);
+
             TouchDir(testTempPath);
+
+            var codeBaseUri = new Uri(Assembly.GetExecutingAssembly().CodeBase).AbsolutePath;
+            var codeBasePath = Uri.UnescapeDataString(codeBaseUri);
+            var projectOutputDir = ProjectOutputDir = System.IO.Path.GetDirectoryName(codeBasePath);
+            TestFilesDir = Path.Combine(projectOutputDir, "TestFiles");
         }
 
-        public string TestTempPath
+        public string GetCleanFile(string fileName)
         {
-            get
+            var filePath = Path.Combine(TestTempPath, fileName);
+
+            if (File.Exists(filePath))
             {
-                return _testTempPath ?? (_testTempPath = Path.Combine(Path.GetTempPath(), "TestTemp", this.GetType().FullName));
+                File.Delete(filePath);
             }
+
+            return filePath;
         }
 
         public void TouchDir(string dir)
