@@ -370,7 +370,7 @@
             this._goButton.Name = "_goButton";
             this._goButton.Size = new System.Drawing.Size(75, 40);
             this._goButton.TabIndex = 0;
-            this._goButton.Text = "Action";
+            this._goButton.Text = "Check Files";
             this._goButton.UseVisualStyleBackColor = true;
             this._goButton.Click += new System.EventHandler(this._goButton_Click);
             // 

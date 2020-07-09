@@ -59,13 +59,26 @@ namespace CruiseManager.WinForms.Components
             _progressMessageTB.Text = e;
         }
 
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            var hasErrors = ViewModel.HasConflicts;
+            if(hasErrors)
+            {
+                MessageBox.Show("Unable to Merge. Files have Conflicts, RecID Conflicts, or Partial Matches. Plese resolve before Merging.");
+            }
+        }
+
         protected void InitializeReportTabs(IEnumerable<PreMergeTableReport> reports)
         {
             foreach(var report in reports)
             {
-                var tableTabHost = new TabControl();
+                var tableTabHost = new TabControl()
+                {
+                    Dock = DockStyle.Fill
+                };
 
-                var errorsDGV = new DataGridView()
+                var conflictsDGV = new DataGridView()
                 {
                     AllowUserToAddRows = false,
                     AllowUserToDeleteRows = false,
@@ -74,13 +87,87 @@ namespace CruiseManager.WinForms.Components
                     AllowUserToResizeRows = false,
                     AutoGenerateColumns = false,
                     Dock = DockStyle.Fill,
-                    DataSource = report.Errors,
+                    DataSource = report.Conflicts,
                 };
-                errorsDGV.Columns.AddRange(BuildDGVColumns());
+                conflictsDGV.Columns.AddRange(BuildDGVColumns());
 
-                var errorsPage = new TabPage() { Text = "Errors" };
-                errorsPage.Controls.Add(errorsDGV);
-                tableTabHost.TabPages.Add(errorsPage);
+                var conflictsTB = new TextBox()
+                {
+                    AutoSize = true,
+                    Multiline = true,
+                    WordWrap = true,
+                    ReadOnly = true,
+                    Height = 70,
+                    Dock = DockStyle.Bottom,
+                    Text = @"Conflicts listed below are due to records with the same identifying values i.e. Tree Number, Plot Number, Log Number 
+existing in more than one component or already existing in the parent file. You can track down the conflicting record using the 'ComponentRowID' which will match the 'RecIC' on your Field Data"
+                };
+
+                var conflictsPage = new TabPage() { Text = "Conflicts" };
+                conflictsPage.Controls.Add(conflictsDGV);
+                conflictsPage.Controls.Add(conflictsTB);
+                tableTabHost.TabPages.Add(conflictsPage);
+
+                var recIDConflictsDGV = new DataGridView()
+                {
+                    AllowUserToAddRows = false,
+                    AllowUserToDeleteRows = false,
+                    AllowUserToOrderColumns = false,
+                    AllowUserToResizeColumns = false,
+                    AllowUserToResizeRows = false,
+                    AutoGenerateColumns = false,
+                    Dock = DockStyle.Fill,
+                    DataSource = report.RecordIDConflict,
+                };
+                conflictsDGV.Columns.AddRange(BuildDGVColumns());
+
+                var recIDConflictsTB = new TextBox()
+                {
+                    AutoSize = true,
+                    Multiline = true,
+                    WordWrap = true,
+                    ReadOnly = true,
+                    Height = 70,
+                    Dock = DockStyle.Bottom,
+                    Text = @"RecID Conflicts listed below are due to records with the same RecID in more than one component. When components are created they are given an range of RecID values they can use. RecID conflicts can not be resolved by the user. 
+Please contact FMSC for support."
+                };
+
+                var recIDConflictsPage = new TabPage() { Text = "RecID Conflicts" };
+                recIDConflictsPage.Controls.Add(recIDConflictsDGV);
+                recIDConflictsPage.Controls.Add(recIDConflictsTB);
+                tableTabHost.TabPages.Add(recIDConflictsPage);
+
+                var partialMatchDGV = new DataGridView()
+                {
+                    AllowUserToAddRows = false,
+                    AllowUserToDeleteRows = false,
+                    AllowUserToOrderColumns = false,
+                    AllowUserToResizeColumns = false,
+                    AllowUserToResizeRows = false,
+                    AutoGenerateColumns = false,
+                    Dock = DockStyle.Fill,
+                    DataSource = report.PartialMatch,
+                };
+                partialMatchDGV.Columns.AddRange(BuildDGVColumns());
+
+                var partialMatchTB = new TextBox()
+                {
+                    AutoSize = true,
+                    Multiline = true,
+                    WordWrap = true,
+                    ReadOnly = true,
+                    Height = 70,
+                    Dock = DockStyle.Bottom,
+                    Text = @"Partial Matches listed above are wernt able to fully match with an existing record in the parent. 
+Partial matches are typicaly due to deleting a record from a component and readding it to a different or the same component without deleting the original from the parent. 
+Another cause could be changing the Tree Number, Plot Number or Log Number on a record when record GUID values are unable to match. To minimize GUID non-matches make sure to use the latest version of Cruise Manager and FScruiser and run a merge before changing Tree Number, Plot Number, or Log Numbers",
+                };
+
+                var partialMatchPage = new TabPage() { Text = "Partial Matchs" };
+                partialMatchPage.Controls.Add(partialMatchDGV);
+                partialMatchPage.Controls.Add(partialMatchTB);
+                tableTabHost.TabPages.Add(partialMatchPage);
 
                 var matchesDGV = new DataGridView()
                 {
@@ -237,17 +324,17 @@ namespace CruiseManager.WinForms.Components
         {
             DataGridViewColumn[] cols = {
                 new DataGridViewTextBoxColumn(){ DataPropertyName = "MergeRowID", HeaderText = "Merge Track ID", ReadOnly = true },
-                new DataGridViewTextBoxColumn(){ DataPropertyName = "SiblingRecords", HeaderText = "SiblingRecords", ReadOnly = true },
-                new DataGridViewTextBoxColumn(){ DataPropertyName = "NaturalSiblings", HeaderText = "NaturalSiblings", ReadOnly = true },
+                new DataGridViewTextBoxColumn(){ DataPropertyName = "SiblingRecords", HeaderText = "RecID Conflicts\r\n(by Merge Track ID)", ReadOnly = true },
+                new DataGridViewTextBoxColumn(){ DataPropertyName = "NaturalSiblings", HeaderText = "ID Value Conflicts\r\n(by Merge Track ID)", ReadOnly = true },
                 new DataGridViewTextBoxColumn(){ DataPropertyName = "MatchRowID", HeaderText = "Full Match", ReadOnly = true },
-                new DataGridViewTextBoxColumn(){ DataPropertyName = "PartialMatch", HeaderText = "PartialMatch", ReadOnly = true },
-                new DataGridViewTextBoxColumn(){ DataPropertyName = "ComponentRowID", HeaderText = "Component Row ID", ReadOnly = true },
+                new DataGridViewTextBoxColumn(){ DataPropertyName = "PartialMatch", HeaderText = "Partial Match", ReadOnly = true },
+                new DataGridViewTextBoxColumn(){ DataPropertyName = "ComponentRowID", HeaderText = "Component RecID", ReadOnly = true },
                 new DataGridViewTextBoxColumn(){ DataPropertyName = "ComponentID", HeaderText = "Component File Number", ReadOnly = true},
                 new DataGridViewTextBoxColumn(){ DataPropertyName = "GUIDMatch", HeaderText = "GUIDMatch", ReadOnly = true},
-                new DataGridViewTextBoxColumn(){ DataPropertyName = "RowIDMatch", HeaderText = "RowIDMatch", ReadOnly = true},
-                new DataGridViewTextBoxColumn(){ DataPropertyName = "NaturalMatch", HeaderText = "NaturalMatch", ReadOnly = true},
-                new DataGridViewTextBoxColumn(){ DataPropertyName = "ParentRowVersion", HeaderText = "MasterRowVersion", ReadOnly = true},
-                new DataGridViewTextBoxColumn(){ DataPropertyName = "ComponentRowVersion", HeaderText = "ComponentRowVersion", ReadOnly = true},
+                new DataGridViewTextBoxColumn(){ DataPropertyName = "RowIDMatch", HeaderText = "RecID Match", ReadOnly = true},
+                new DataGridViewTextBoxColumn(){ DataPropertyName = "NaturalMatch", HeaderText = "Identifying Value Match", ReadOnly = true},
+                new DataGridViewTextBoxColumn(){ DataPropertyName = "ParentRowVersion", HeaderText = "Master Record Version", ReadOnly = true},
+                new DataGridViewTextBoxColumn(){ DataPropertyName = "ComponentRowVersion", HeaderText = "Component Record Version", ReadOnly = true},
                 //new DataGridViewTextBoxColumn(){ DataPropertyName = "ComponentConflict", HeaderText = "ComponentConflict", ReadOnly = true},
                 //new DataGridViewTextBoxColumn(){ DataPropertyName = "ComponentConflictFileID", HeaderText = "ComponentConflictFileID", ReadOnly = true},
                 //new DataGridViewTextBoxColumn(){ DataPropertyName = "MatchConflict", HeaderText = "MatchConflict", ReadOnly = true}

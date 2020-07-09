@@ -41,15 +41,6 @@ namespace CruiseManager.Core.Components
         [IgnoreField]
         public Exception MergeException { get; set; }
 
-
-        public void ResetCounts()
-        {
-            _treeCount = null;
-            _logCount = null;
-            _stemCount = null;
-            _plotCount = null;
-        }
-
         private long? _treeCount;
         private long? _logCount;
         private long? _stemCount;
