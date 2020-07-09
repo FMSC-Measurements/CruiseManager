@@ -10,7 +10,11 @@ namespace CruiseManager.Core.Components
     {
         public string TableName { get; set; }
 
-        public IEnumerable<MergeObject> Errors { get; set; }
+        public IEnumerable<MergeObject> Conflicts { get; set; }
+
+        public IEnumerable<MergeObject> RecordIDConflict { get; set; }
+
+        public IEnumerable<MergeObject> PartialMatch { get; set; }
 
         public IEnumerable<MergeObject> Matches { get; set; }
 

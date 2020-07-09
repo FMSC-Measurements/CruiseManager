@@ -20,11 +20,15 @@ namespace CruiseManager.Test
 
         public string TestFilesDir { get; }
 
+        public string ProjectOutputDir { get; }
+
         public TestBase(ITestOutputHelper output)
         {
             Output = output;
 
-            var testTempPath = TestTempPath;
+            var testTempPath = TestTempPath = 
+                Path.Combine(Path.GetTempPath(), "TestTemp", this.GetType().FullName);
+
             TouchDir(testTempPath);
 
             UserSettingsMock = new Mock<IUserSettings>();
@@ -37,17 +41,11 @@ namespace CruiseManager.Test
 
             var codeBaseUri = new Uri(Assembly.GetExecutingAssembly().CodeBase).AbsolutePath;
             var codeBasePath = Uri.UnescapeDataString(codeBaseUri);
-            var codeBaseDir = System.IO.Path.GetDirectoryName(codeBasePath);
-            TestFilesDir = Path.Combine(codeBaseDir, "TestFiles");
+            var projectOutputDir = ProjectOutputDir = System.IO.Path.GetDirectoryName(codeBasePath);
+            TestFilesDir = Path.Combine(projectOutputDir, "TestFiles");
         }
 
-        public string TestTempPath
-        {
-            get
-            {
-                return _testTempPath ?? (_testTempPath = Path.Combine(Path.GetTempPath(), "TestTemp", this.GetType().FullName));
-            }
-        }
+        public string TestTempPath { get; }
 
         public string GetCleanFile(string fileName)
         {

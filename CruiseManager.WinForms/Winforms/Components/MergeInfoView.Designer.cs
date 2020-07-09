@@ -43,12 +43,12 @@
             this.fullPathDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this._BS_ComponentFiles = new System.Windows.Forms.BindingSource(this.components);
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.@__totalTreeRecLBL = new System.Windows.Forms.Label();
-            this.@__dateLastMergeLBL = new System.Windows.Forms.Label();
-            this.@__numComLBL = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.@__numComLBL = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.@__dateLastMergeLBL = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.@__totalTreeRecLBL = new System.Windows.Forms.Label();
             this.@__searchBTN = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -79,7 +79,7 @@
             componentFilesPanel.Margin = new System.Windows.Forms.Padding(0);
             componentFilesPanel.Name = "componentFilesPanel";
             componentFilesPanel.Padding = new System.Windows.Forms.Padding(3);
-            componentFilesPanel.Size = new System.Drawing.Size(528, 373);
+            componentFilesPanel.Size = new System.Drawing.Size(556, 373);
             componentFilesPanel.TabIndex = 2;
             // 
             // _Components_GV
@@ -102,64 +102,81 @@
             this._Components_GV.Location = new System.Drawing.Point(3, 3);
             this._Components_GV.Name = "_Components_GV";
             this._Components_GV.ReadOnly = true;
-            this._Components_GV.Size = new System.Drawing.Size(522, 367);
+            this._Components_GV.RowHeadersWidth = 62;
+            this._Components_GV.Size = new System.Drawing.Size(550, 367);
             this._Components_GV.TabIndex = 1;
             // 
             // fileNameDataGridViewTextBoxColumn
             // 
             this.fileNameDataGridViewTextBoxColumn.DataPropertyName = "FileName";
             this.fileNameDataGridViewTextBoxColumn.HeaderText = "File Name";
+            this.fileNameDataGridViewTextBoxColumn.MinimumWidth = 8;
             this.fileNameDataGridViewTextBoxColumn.Name = "fileNameDataGridViewTextBoxColumn";
             this.fileNameDataGridViewTextBoxColumn.ReadOnly = true;
+            this.fileNameDataGridViewTextBoxColumn.Width = 150;
             // 
             // treeCountDataGridViewTextBoxColumn
             // 
             this.treeCountDataGridViewTextBoxColumn.DataPropertyName = "TreeCount";
             this.treeCountDataGridViewTextBoxColumn.HeaderText = "Total Trees";
+            this.treeCountDataGridViewTextBoxColumn.MinimumWidth = 8;
             this.treeCountDataGridViewTextBoxColumn.Name = "treeCountDataGridViewTextBoxColumn";
             this.treeCountDataGridViewTextBoxColumn.ReadOnly = true;
+            this.treeCountDataGridViewTextBoxColumn.Width = 150;
             // 
             // LogCount
             // 
             this.LogCount.DataPropertyName = "LogCount";
             this.LogCount.HeaderText = "Total Logs";
+            this.LogCount.MinimumWidth = 8;
             this.LogCount.Name = "LogCount";
             this.LogCount.ReadOnly = true;
+            this.LogCount.Width = 150;
             // 
             // PlotCount
             // 
             this.PlotCount.DataPropertyName = "PlotCount";
             this.PlotCount.HeaderText = "Total Plots";
+            this.PlotCount.MinimumWidth = 8;
             this.PlotCount.Name = "PlotCount";
             this.PlotCount.ReadOnly = true;
+            this.PlotCount.Width = 150;
             // 
             // StemCount
             // 
             this.StemCount.DataPropertyName = "StemCount";
             this.StemCount.HeaderText = "Total Stems";
+            this.StemCount.MinimumWidth = 8;
             this.StemCount.Name = "StemCount";
             this.StemCount.ReadOnly = true;
+            this.StemCount.Width = 150;
             // 
             // errorsDataGridViewTextBoxColumn
             // 
             this.errorsDataGridViewTextBoxColumn.DataPropertyName = "Errors";
             this.errorsDataGridViewTextBoxColumn.HeaderText = "Errors";
+            this.errorsDataGridViewTextBoxColumn.MinimumWidth = 8;
             this.errorsDataGridViewTextBoxColumn.Name = "errorsDataGridViewTextBoxColumn";
             this.errorsDataGridViewTextBoxColumn.ReadOnly = true;
+            this.errorsDataGridViewTextBoxColumn.Width = 150;
             // 
             // componentCNDataGridViewTextBoxColumn
             // 
             this.componentCNDataGridViewTextBoxColumn.DataPropertyName = "Component_CN";
             this.componentCNDataGridViewTextBoxColumn.HeaderText = "Component ID #";
+            this.componentCNDataGridViewTextBoxColumn.MinimumWidth = 8;
             this.componentCNDataGridViewTextBoxColumn.Name = "componentCNDataGridViewTextBoxColumn";
             this.componentCNDataGridViewTextBoxColumn.ReadOnly = true;
+            this.componentCNDataGridViewTextBoxColumn.Width = 150;
             // 
             // fullPathDataGridViewTextBoxColumn
             // 
             this.fullPathDataGridViewTextBoxColumn.DataPropertyName = "FullPath";
             this.fullPathDataGridViewTextBoxColumn.HeaderText = "FullPath";
+            this.fullPathDataGridViewTextBoxColumn.MinimumWidth = 8;
             this.fullPathDataGridViewTextBoxColumn.Name = "fullPathDataGridViewTextBoxColumn";
             this.fullPathDataGridViewTextBoxColumn.ReadOnly = true;
+            this.fullPathDataGridViewTextBoxColumn.Width = 150;
             // 
             // _BS_ComponentFiles
             // 
@@ -169,11 +186,11 @@
             // 
             _masterInfoPanel.Controls.Add(groupBox1);
             _masterInfoPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            _masterInfoPanel.Location = new System.Drawing.Point(528, 46);
+            _masterInfoPanel.Location = new System.Drawing.Point(556, 46);
             _masterInfoPanel.Margin = new System.Windows.Forms.Padding(0);
             _masterInfoPanel.Name = "_masterInfoPanel";
             _masterInfoPanel.Padding = new System.Windows.Forms.Padding(3);
-            _masterInfoPanel.Size = new System.Drawing.Size(185, 373);
+            _masterInfoPanel.Size = new System.Drawing.Size(157, 373);
             _masterInfoPanel.TabIndex = 3;
             // 
             // groupBox1
@@ -183,10 +200,10 @@
             groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             groupBox1.Location = new System.Drawing.Point(3, 3);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new System.Drawing.Size(179, 367);
+            groupBox1.Size = new System.Drawing.Size(151, 367);
             groupBox1.TabIndex = 1;
             groupBox1.TabStop = false;
-            groupBox1.Text = "Master File Info";
+            groupBox1.Text = "Parent File Info";
             // 
             // flowLayoutPanel1
             // 
@@ -198,75 +215,75 @@
             this.flowLayoutPanel1.Controls.Add(this.label4);
             this.flowLayoutPanel1.Controls.Add(this.@__totalTreeRecLBL);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 18);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 25);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(173, 346);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(145, 339);
             this.flowLayoutPanel1.TabIndex = 6;
-            // 
-            // __totalTreeRecLBL
-            // 
-            this.@__totalTreeRecLBL.AutoSize = true;
-            this.flowLayoutPanel1.SetFlowBreak(this.@__totalTreeRecLBL, true);
-            this.@__totalTreeRecLBL.Location = new System.Drawing.Point(109, 39);
-            this.@__totalTreeRecLBL.Name = "__totalTreeRecLBL";
-            this.@__totalTreeRecLBL.Size = new System.Drawing.Size(52, 13);
-            this.@__totalTreeRecLBL.TabIndex = 5;
-            this.@__totalTreeRecLBL.Text = "###,###";
-            // 
-            // __dateLastMergeLBL
-            // 
-            this.@__dateLastMergeLBL.AutoSize = true;
-            this.flowLayoutPanel1.SetFlowBreak(this.@__dateLastMergeLBL, true);
-            this.@__dateLastMergeLBL.Location = new System.Drawing.Point(3, 26);
-            this.@__dateLastMergeLBL.Name = "__dateLastMergeLBL";
-            this.@__dateLastMergeLBL.Size = new System.Drawing.Size(71, 13);
-            this.@__dateLastMergeLBL.TabIndex = 3;
-            this.@__dateLastMergeLBL.Text = "##/##/####";
-            // 
-            // __numComLBL
-            // 
-            this.@__numComLBL.AutoSize = true;
-            this.flowLayoutPanel1.SetFlowBreak(this.@__numComLBL, true);
-            this.@__numComLBL.Location = new System.Drawing.Point(142, 0);
-            this.@__numComLBL.Name = "__numComLBL";
-            this.@__numComLBL.Size = new System.Drawing.Size(21, 13);
-            this.@__numComLBL.TabIndex = 1;
-            this.@__numComLBL.Text = "##";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(133, 13);
+            this.label1.Size = new System.Drawing.Size(108, 46);
             this.label1.TabIndex = 0;
             this.label1.Text = "Number Of Components";
+            // 
+            // __numComLBL
+            // 
+            this.@__numComLBL.AutoSize = true;
+            this.flowLayoutPanel1.SetFlowBreak(this.@__numComLBL, true);
+            this.@__numComLBL.Location = new System.Drawing.Point(3, 46);
+            this.@__numComLBL.Name = "__numComLBL";
+            this.@__numComLBL.Size = new System.Drawing.Size(30, 23);
+            this.@__numComLBL.TabIndex = 1;
+            this.@__numComLBL.Text = "##";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 13);
+            this.label2.Location = new System.Drawing.Point(3, 69);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(106, 13);
+            this.label2.Size = new System.Drawing.Size(109, 46);
             this.label2.TabIndex = 2;
             this.label2.Text = "Date Of Last Merge";
+            // 
+            // __dateLastMergeLBL
+            // 
+            this.@__dateLastMergeLBL.AutoSize = true;
+            this.flowLayoutPanel1.SetFlowBreak(this.@__dateLastMergeLBL, true);
+            this.@__dateLastMergeLBL.Location = new System.Drawing.Point(3, 115);
+            this.@__dateLastMergeLBL.Name = "__dateLastMergeLBL";
+            this.@__dateLastMergeLBL.Size = new System.Drawing.Size(104, 23);
+            this.@__dateLastMergeLBL.TabIndex = 3;
+            this.@__dateLastMergeLBL.Text = "##/##/####";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 39);
+            this.label4.Location = new System.Drawing.Point(3, 138);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(100, 13);
+            this.label4.Size = new System.Drawing.Size(88, 46);
             this.label4.TabIndex = 4;
             this.label4.Text = "Total Tree Records";
+            // 
+            // __totalTreeRecLBL
+            // 
+            this.@__totalTreeRecLBL.AutoSize = true;
+            this.flowLayoutPanel1.SetFlowBreak(this.@__totalTreeRecLBL, true);
+            this.@__totalTreeRecLBL.Location = new System.Drawing.Point(3, 184);
+            this.@__totalTreeRecLBL.Name = "__totalTreeRecLBL";
+            this.@__totalTreeRecLBL.Size = new System.Drawing.Size(74, 23);
+            this.@__totalTreeRecLBL.TabIndex = 5;
+            this.@__totalTreeRecLBL.Text = "###,###";
             // 
             // __searchBTN
             // 
             this.@__searchBTN.AutoSize = true;
             this.@__searchBTN.Dock = System.Windows.Forms.DockStyle.Left;
-            this.@__searchBTN.Location = new System.Drawing.Point(163, 3);
+            this.@__searchBTN.Location = new System.Drawing.Point(245, 3);
             this.@__searchBTN.Name = "__searchBTN";
-            this.@__searchBTN.Size = new System.Drawing.Size(76, 40);
+            this.@__searchBTN.Size = new System.Drawing.Size(106, 40);
             this.@__searchBTN.TabIndex = 2;
             this.@__searchBTN.Text = "Refresh List";
             this.@__searchBTN.UseVisualStyleBackColor = true;
@@ -279,7 +296,7 @@
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(3, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(154, 46);
+            this.label5.Size = new System.Drawing.Size(236, 46);
             this.label5.TabIndex = 3;
             this.label5.Text = "Component Files";
             // 
@@ -322,16 +339,16 @@
             this.@__progressBar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.@__progressBar.Location = new System.Drawing.Point(75, 0);
             this.@__progressBar.Name = "__progressBar";
-            this.@__progressBar.Size = new System.Drawing.Size(557, 18);
+            this.@__progressBar.Size = new System.Drawing.Size(557, 11);
             this.@__progressBar.TabIndex = 2;
             // 
             // _progressMessageTB
             // 
             this._progressMessageTB.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this._progressMessageTB.Location = new System.Drawing.Point(75, 18);
+            this._progressMessageTB.Location = new System.Drawing.Point(75, 11);
             this._progressMessageTB.Name = "_progressMessageTB";
             this._progressMessageTB.ReadOnly = true;
-            this._progressMessageTB.Size = new System.Drawing.Size(557, 22);
+            this._progressMessageTB.Size = new System.Drawing.Size(557, 29);
             this._progressMessageTB.TabIndex = 3;
             // 
             // _cancelButton
@@ -353,13 +370,13 @@
             this._goButton.Name = "_goButton";
             this._goButton.Size = new System.Drawing.Size(75, 40);
             this._goButton.TabIndex = 0;
-            this._goButton.Text = "Action";
+            this._goButton.Text = "Check Files";
             this._goButton.UseVisualStyleBackColor = true;
             this._goButton.Click += new System.EventHandler(this._goButton_Click);
             // 
             // MergeInfoView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = global::CruiseManager.Properties.Settings.Default.AppFont;

@@ -113,7 +113,7 @@ namespace CruiseManager.Core.Components
             {
                 new TreeMergeTableCommandBuilder(master),
                 new LogMergeTableCommandBuilder(master),
-                new StemMergeTableCommandBuilder(master),
+                //new StemMergeTableCommandBuilder(master),
                 new PlotMergeTableCommandBuilder(master),
             };
         }
@@ -128,7 +128,7 @@ namespace CruiseManager.Core.Components
         {
             System.Diagnostics.Debug.Assert(MasterDB != null);
 
-            var allComponents = MasterDB.From<ComponentFile>().Read().ToArray();
+            var allComponents = MasterDB.From<ComponentFile>().Query().ToArray();
             var activeComponents = new List<ComponentFile>();
             var missingComponents = new List<ComponentFile>();
 
@@ -153,8 +153,6 @@ namespace CruiseManager.Core.Components
 
         public static bool InitializeComponent(ComponentFile comp)
         {
-            comp.ResetCounts();
-
             var filePath = comp.FullPath;
             if (!System.IO.File.Exists(filePath))
             {
@@ -209,6 +207,7 @@ namespace CruiseManager.Core.Components
             var prepareException = prepareTask.Exception;
             if (prepareException == null)
             {
+                IsPrepared = true;
                 return (true, null);
             }
             else
@@ -253,7 +252,9 @@ namespace CruiseManager.Core.Components
                 return new PreMergeTableReport()
                 {
                     TableName = x.ClientTableName,
-                    Errors = ListConflicts(x),
+                    Conflicts = ListConflicts(x),
+                    PartialMatch = ListPartialMatches(x),
+                    RecordIDConflict = ListRecordIDConflicts(x),
                     Matches = ListMatches(x),
                     Additions = ListNew(x),
                 };
@@ -267,7 +268,17 @@ namespace CruiseManager.Core.Components
 
         public IEnumerable<MergeObject> ListConflicts(MergeTableCommandBuilder cmdBldr)
         {
-            return MasterDB.Query<MergeObject>("SELECT * FROM " + cmdBldr.MergeTableName + cmdBldr.FindConflictsFilter + ";", (object[])null).ToArray();
+            return MasterDB.Query<MergeObject>("SELECT * FROM " + cmdBldr.MergeTableName + cmdBldr.FindConflictFilter + ";", (object[])null).ToArray();
+        }
+
+        public IEnumerable<MergeObject> ListPartialMatches(MergeTableCommandBuilder cmdBldr)
+        {
+            return MasterDB.Query<MergeObject>("SELECT * FROM " + cmdBldr.MergeTableName + cmdBldr.FindPartialMatchFilter + ";", (object[])null).ToArray();
+        }
+
+        public IEnumerable<MergeObject> ListRecordIDConflicts(MergeTableCommandBuilder cmdBldr)
+        {
+            return MasterDB.Query<MergeObject>("SELECT * FROM " + cmdBldr.MergeTableName + cmdBldr.FindRecordIDConflictFilter + ";", (object[])null).ToArray();
         }
 
         public IEnumerable<MergeObject> ListMatches(MergeTableCommandBuilder cmdBldr)
@@ -290,7 +301,7 @@ namespace CruiseManager.Core.Components
             long totalConflicts = 0;
             foreach (MergeTableCommandBuilder cmdBldr in this.CommandBuilders.Values)
             {
-                totalConflicts += MasterDB.GetRowCount(cmdBldr.MergeTableName, cmdBldr.FindConflictsFilter);
+                totalConflicts += MasterDB.GetRowCount(cmdBldr.MergeTableName, cmdBldr.FindAllErrorFilter);
             }
 
             return (int)totalConflicts;

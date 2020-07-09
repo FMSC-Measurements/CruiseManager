@@ -243,7 +243,7 @@ namespace CruiseManager.Core.Components
             }
         }
 
-        public string FindConflictsFilter
+        public string FindAllErrorFilter
         {
             get
             {
@@ -258,6 +258,14 @@ namespace CruiseManager.Core.Components
                 return filter;
             }
         }
+
+        public string FindPartialMatchFilter => " WHERE (MatchRowID IS NULL AND PartialMatch IS NOT NULL)";
+
+        public string FindConflictFilter => (RecordsUniqueAccrossComponents) ? " WHERE NaturalSiblings IS NOT NULL"
+            : "";
+
+        public string FindRecordIDConflictFilter => (RecordsUniqueAccrossComponents) ? " WHERE SiblingRecords IS NOT NULL"
+            : "";
 
         public string FindNewRecords =>
                 " WHERE ComponentRowID IS NOT NULL " +

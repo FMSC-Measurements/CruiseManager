@@ -38,7 +38,7 @@ namespace CruiseManager.Core.Models
                 {
                     _fieldsArray = _fields.Split(',');
                 }
-                return _fieldsArray;
+                return _fieldsArray ?? new string[0];
             }
         }
 

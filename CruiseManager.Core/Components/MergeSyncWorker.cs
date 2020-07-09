@@ -257,7 +257,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
             var plotCmdBldr = commandBuilders["Plot"];
             var treeCmdBldr = commandBuilders["Tree"];
             var logCmdBldr = commandBuilders["Log"];
-            var stemCmdBldr = commandBuilders["Stem"];
+            //var stemCmdBldr = commandBuilders["Stem"];
 
             log?.StartJob();
 
@@ -275,8 +275,8 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                 cancellation.ThrowIfCancellationRequested();
                 PushComponentLogUpdates(master, comp, logCmdBldr, progress, log);
 
-                cancellation.ThrowIfCancellationRequested();
-                PushComponentStemUpdates(master, comp, stemCmdBldr, progress, log);
+                //cancellation.ThrowIfCancellationRequested();
+                //PushComponentStemUpdates(master, comp, stemCmdBldr, progress, log);
             }
             log?.EndJob();
 
@@ -287,7 +287,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
             var plotCommandBuilder = commandBuilders["Plot"];
             var treeCmdBldr = commandBuilders["Tree"];
             var logCmdBldr = commandBuilders["Log"];
-            var stemCmdBldr = commandBuilders["Stem"];
+            //var stemCmdBldr = commandBuilders["Stem"];
 
             log?.StartJob();
 
@@ -310,9 +310,9 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                 PullMasterLogUpdates(master, comp, logCmdBldr, progress, log);
                 cancellation.ThrowIfCancellationRequested();
 
-                PullNewStemRecords(master, comp, stemCmdBldr, progress, log);
-                PullMasterStemUpdates(master, comp, stemCmdBldr, progress, log);
-                cancellation.ThrowIfCancellationRequested();
+                //PullNewStemRecords(master, comp, stemCmdBldr, progress, log);
+                //PullMasterStemUpdates(master, comp, stemCmdBldr, progress, log);
+                //cancellation.ThrowIfCancellationRequested();
             }
 
             log?.EndJob();
