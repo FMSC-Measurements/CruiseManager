@@ -14,7 +14,7 @@ namespace CruiseManager.Test.Components
         }
 
         private const string REDSQUIRT_MASTER = "Bad\\RedSquirt.M.cruise";
-        private const string VALENTINE_MASTER = "Good\\Valentine.M.cruise";
+        private const string HAYWIRELAKE_MASTER = "Good\\41125HaywireLakeTS_2Strata_08212019\\41125HaywireLakeTS_2Strata_08212019.1.cruise";
         private const string GOOSEFOOTE_MASTER = "Good\\GooseFoote_7_16\\GooseFoote.M.cruise";
         private const string TESTMERGENEWCOUNTS_MASTER = "Good\\testMergeNewCounts\\testMergeNewCounts.M.cruise";
         private const string TESTMAXCOMPONENTS_MASTER = "Good\\testMaxComponents\\12345 testMergeMaxComponents TS.M.cruise";
@@ -27,7 +27,7 @@ namespace CruiseManager.Test.Components
 
         [Theory]
         [InlineData(REDSQUIRT_MASTER, 3)]
-        [InlineData(VALENTINE_MASTER, 2)]
+        [InlineData(HAYWIRELAKE_MASTER, 2)]
         [InlineData(GOOSEFOOTE_MASTER, 3)]
         [InlineData(TESTMERGENEWCOUNTS_MASTER, 2)]
         public void Ctor_Test(string masterPath, int numComps)
@@ -66,11 +66,42 @@ namespace CruiseManager.Test.Components
 
         [Theory]
         [InlineData(REDSQUIRT_MASTER, 3)]
-        [InlineData(VALENTINE_MASTER, 2)]
+        [InlineData(GOOSEFOOTE_MASTER, 3)]
+        [InlineData(HAYWIRELAKE_MASTER, 2)]
+        [InlineData(TESTMERGENEWCOUNTS_MASTER, 2)]
+        [InlineData(TESTMAXCOMPONENTS_MASTER, 21)]
+        public void RunPreMerge_Test(string masterPath, int numComps)
+        {
+            using (var master = GetMaster(masterPath))
+            {
+                var appControllerMock = AppControllerMock;
+                appControllerMock.Setup(x => x.Database)
+                .Returns(master);
+
+                var cmPresenter = new MergeComponentsPresenter(appControllerMock.Object);
+
+                cmPresenter.FindComponents(System.IO.Path.GetDirectoryName(master.Path));
+                cmPresenter.MissingComponents.Should().HaveCount(0);
+                cmPresenter.NumComponents.Should().Be(numComps);
+                cmPresenter.IsPrepared.Should().BeFalse();
+
+                cmPresenter.RunPreMerge().Wait();
+                cmPresenter.IsPrepared.Should().BeTrue();
+
+                if (masterPath.StartsWith("Good\\"))
+                {
+                    cmPresenter.GetNumConflicts().Should().Be(0);
+                    cmPresenter.HasConflicts.Should().BeFalse();
+                }
+            }
+        }
+
+        [Theory]
+        [InlineData(HAYWIRELAKE_MASTER, 2)]
         [InlineData(GOOSEFOOTE_MASTER, 3)]
         [InlineData(TESTMERGENEWCOUNTS_MASTER, 2)]
         [InlineData(TESTMAXCOMPONENTS_MASTER, 21)]
-        public void RunAsync_Test(string masterPath, int numComps)
+        public void RunMerge_Test(string masterPath, int numComps)
         {
             using (var master = GetMaster(masterPath))
             {
@@ -84,13 +115,13 @@ namespace CruiseManager.Test.Components
                 cmPresenter.MissingComponents.Should().HaveCount(0);
                 cmPresenter.NumComponents.Should().Be(numComps);
 
-                cmPresenter.CanRun.Should().BeTrue();
-                cmPresenter.RunAsync().Wait();
 
-                if (masterPath.StartsWith("Good\\"))
-                {
-                    cmPresenter.GetNumConflicts().Should().Be(0);
-                }
+                cmPresenter.RunPreMerge().Wait();
+
+                cmPresenter.GetNumConflicts().Should().Be(0);
+                cmPresenter.HasConflicts.Should().BeFalse();
+
+                cmPresenter.RunMerge().Wait();
             }
         }
 
