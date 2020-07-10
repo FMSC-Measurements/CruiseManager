@@ -196,6 +196,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this._filterOnlyErrorsCB = new System.Windows.Forms.CheckBox();
             label1 = new System.Windows.Forms.Label();
             label5 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
@@ -257,7 +258,7 @@
             label5.AutoSize = true;
             label5.Location = new System.Drawing.Point(4, 64);
             label5.Name = "label5";
-            label5.Size = new System.Drawing.Size(116, 13);
+            label5.Size = new System.Drawing.Size(117, 13);
             label5.TabIndex = 2;
             label5.Text = "Tree Default / Species";
             // 
@@ -440,6 +441,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.Control;
+            this.panel1.Controls.Add(this._filterOnlyErrorsCB);
             this.panel1.Controls.Add(this.groupBox2);
             this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -695,7 +697,7 @@
             this.treeNumberDataGridViewTextBoxColumn.HeaderText = "Tree";
             this.treeNumberDataGridViewTextBoxColumn.Name = "treeNumberDataGridViewTextBoxColumn";
             this.treeNumberDataGridViewTextBoxColumn.ToolTipText = "Tree Number";
-            this.treeNumberDataGridViewTextBoxColumn.Width = 52;
+            this.treeNumberDataGridViewTextBoxColumn.Width = 53;
             // 
             // sampleGroupDataGridViewTextBoxColumn
             // 
@@ -753,7 +755,7 @@
             this.dBHDataGridViewTextBoxColumn.HeaderText = "DBH";
             this.dBHDataGridViewTextBoxColumn.Name = "dBHDataGridViewTextBoxColumn";
             this.dBHDataGridViewTextBoxColumn.ToolTipText = "Diameter Breast Height";
-            this.dBHDataGridViewTextBoxColumn.Width = 55;
+            this.dBHDataGridViewTextBoxColumn.Width = 54;
             // 
             // dRCDataGridViewTextBoxColumn
             // 
@@ -771,7 +773,7 @@
             this.totalHeightDataGridViewTextBoxColumn.HeaderText = "Total Ht";
             this.totalHeightDataGridViewTextBoxColumn.Name = "totalHeightDataGridViewTextBoxColumn";
             this.totalHeightDataGridViewTextBoxColumn.ToolTipText = "Total Tree Height";
-            this.totalHeightDataGridViewTextBoxColumn.Width = 71;
+            this.totalHeightDataGridViewTextBoxColumn.Width = 72;
             // 
             // merchHeightPrimaryDataGridViewTextBoxColumn
             // 
@@ -809,7 +811,7 @@
             this.treeDefaultValueDataGridViewTextBoxColumn.HeaderText = "TreeDefaultValue";
             this.treeDefaultValueDataGridViewTextBoxColumn.Name = "treeDefaultValueDataGridViewTextBoxColumn";
             this.treeDefaultValueDataGridViewTextBoxColumn.ToolTipText = "Tree Default Value (Species/LiveDead/Product)";
-            this.treeDefaultValueDataGridViewTextBoxColumn.Width = 118;
+            this.treeDefaultValueDataGridViewTextBoxColumn.Width = 119;
             // 
             // kPIDataGridViewTextBoxColumn
             // 
@@ -827,7 +829,7 @@
             this.sTMDataGridViewTextBoxColumn.HeaderText = "STM";
             this.sTMDataGridViewTextBoxColumn.Name = "sTMDataGridViewTextBoxColumn";
             this.sTMDataGridViewTextBoxColumn.ToolTipText = "Sure To Measure";
-            this.sTMDataGridViewTextBoxColumn.Width = 53;
+            this.sTMDataGridViewTextBoxColumn.Width = 54;
             // 
             // seenDefectPrimaryDataGridViewTextBoxColumn
             // 
@@ -906,7 +908,7 @@
             this.topDIBPrimaryDataGridViewTextBoxColumn.HeaderText = "TopD P";
             this.topDIBPrimaryDataGridViewTextBoxColumn.Name = "topDIBPrimaryDataGridViewTextBoxColumn";
             this.topDIBPrimaryDataGridViewTextBoxColumn.ToolTipText = "Minimum Top Diameter Primary Product";
-            this.topDIBPrimaryDataGridViewTextBoxColumn.Width = 67;
+            this.topDIBPrimaryDataGridViewTextBoxColumn.Width = 68;
             // 
             // topDIBSecondaryDataGridViewTextBoxColumn
             // 
@@ -915,7 +917,7 @@
             this.topDIBSecondaryDataGridViewTextBoxColumn.HeaderText = "TopD S";
             this.topDIBSecondaryDataGridViewTextBoxColumn.Name = "topDIBSecondaryDataGridViewTextBoxColumn";
             this.topDIBSecondaryDataGridViewTextBoxColumn.ToolTipText = "Minimum Top Diameter Secondary Product";
-            this.topDIBSecondaryDataGridViewTextBoxColumn.Width = 67;
+            this.topDIBSecondaryDataGridViewTextBoxColumn.Width = 68;
             // 
             // heightToFirstLiveLimbDataGridViewTextBoxColumn
             // 
@@ -1040,7 +1042,7 @@
             this.treeFactorDataGridViewTextBoxColumn.Name = "treeFactorDataGridViewTextBoxColumn";
             this.treeFactorDataGridViewTextBoxColumn.ReadOnly = true;
             this.treeFactorDataGridViewTextBoxColumn.ToolTipText = "Calculated Tree Factor";
-            this.treeFactorDataGridViewTextBoxColumn.Width = 69;
+            this.treeFactorDataGridViewTextBoxColumn.Width = 70;
             // 
             // pointFactorDataGridViewTextBoxColumn
             // 
@@ -1103,7 +1105,7 @@
             this.createdByDataGridViewTextBoxColumn.HeaderText = "CreatedBy";
             this.createdByDataGridViewTextBoxColumn.Name = "createdByDataGridViewTextBoxColumn";
             this.createdByDataGridViewTextBoxColumn.ReadOnly = true;
-            this.createdByDataGridViewTextBoxColumn.Width = 84;
+            this.createdByDataGridViewTextBoxColumn.Width = 83;
             // 
             // createdDateDataGridViewTextBoxColumn
             // 
@@ -1121,7 +1123,7 @@
             this.modifiedByDataGridViewTextBoxColumn.HeaderText = "ModifiedBy";
             this.modifiedByDataGridViewTextBoxColumn.Name = "modifiedByDataGridViewTextBoxColumn";
             this.modifiedByDataGridViewTextBoxColumn.ReadOnly = true;
-            this.modifiedByDataGridViewTextBoxColumn.Width = 91;
+            this.modifiedByDataGridViewTextBoxColumn.Width = 90;
             // 
             // modifiedDateDataGridViewTextBoxColumn
             // 
@@ -1234,7 +1236,7 @@
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
             this.dataGridViewTextBoxColumn1.ToolTipText = "Tree Data Reference Number";
-            this.dataGridViewTextBoxColumn1.Width = 84;
+            this.dataGridViewTextBoxColumn1.Width = 85;
             // 
             // CUCode
             // 
@@ -1350,7 +1352,7 @@
             this.grossBoardFootDataGridViewTextBoxColumn.HeaderText = "Gross Bdft";
             this.grossBoardFootDataGridViewTextBoxColumn.Name = "grossBoardFootDataGridViewTextBoxColumn";
             this.grossBoardFootDataGridViewTextBoxColumn.ToolTipText = "Gross Board Foot Volume";
-            this.grossBoardFootDataGridViewTextBoxColumn.Width = 86;
+            this.grossBoardFootDataGridViewTextBoxColumn.Width = 85;
             // 
             // netBoardFootDataGridViewTextBoxColumn
             // 
@@ -1359,7 +1361,7 @@
             this.netBoardFootDataGridViewTextBoxColumn.HeaderText = "Net Bdft";
             this.netBoardFootDataGridViewTextBoxColumn.Name = "netBoardFootDataGridViewTextBoxColumn";
             this.netBoardFootDataGridViewTextBoxColumn.ToolTipText = "Net Board Foot Volume";
-            this.netBoardFootDataGridViewTextBoxColumn.Width = 75;
+            this.netBoardFootDataGridViewTextBoxColumn.Width = 74;
             // 
             // grossCubicFootDataGridViewTextBoxColumn
             // 
@@ -1384,7 +1386,7 @@
             this.boardFootRemovedDataGridViewTextBoxColumn.HeaderText = "Bdft Rem";
             this.boardFootRemovedDataGridViewTextBoxColumn.Name = "boardFootRemovedDataGridViewTextBoxColumn";
             this.boardFootRemovedDataGridViewTextBoxColumn.ToolTipText = "Percent of Board Foot Volume Removed";
-            this.boardFootRemovedDataGridViewTextBoxColumn.Width = 79;
+            this.boardFootRemovedDataGridViewTextBoxColumn.Width = 78;
             // 
             // cubicFootRemovedDataGridViewTextBoxColumn
             // 
@@ -1402,7 +1404,7 @@
             this.dIBClassDataGridViewTextBoxColumn.HeaderText = "DIBClass";
             this.dIBClassDataGridViewTextBoxColumn.Name = "dIBClassDataGridViewTextBoxColumn";
             this.dIBClassDataGridViewTextBoxColumn.ToolTipText = "Diameter Class (inside bark)";
-            this.dIBClassDataGridViewTextBoxColumn.Width = 76;
+            this.dIBClassDataGridViewTextBoxColumn.Width = 75;
             // 
             // barkThicknessDataGridViewTextBoxColumn
             // 
@@ -1855,9 +1857,20 @@
             // exportToolStripMenuItem1
             // 
             this.exportToolStripMenuItem1.Name = "exportToolStripMenuItem1";
-            this.exportToolStripMenuItem1.Size = new System.Drawing.Size(107, 22);
+            this.exportToolStripMenuItem1.Size = new System.Drawing.Size(108, 22);
             this.exportToolStripMenuItem1.Text = "Export";
             this.exportToolStripMenuItem1.Click += new System.EventHandler(this.exportToolStripMenuItem1_Click);
+            // 
+            // _filterOnlyErrorsCB
+            // 
+            this._filterOnlyErrorsCB.AutoSize = true;
+            this._filterOnlyErrorsCB.Location = new System.Drawing.Point(7, 427);
+            this._filterOnlyErrorsCB.Name = "_filterOnlyErrorsCB";
+            this._filterOnlyErrorsCB.Size = new System.Drawing.Size(129, 30);
+            this._filterOnlyErrorsCB.TabIndex = 2;
+            this._filterOnlyErrorsCB.Text = "Only Show Records \r\nWith Errors";
+            this._filterOnlyErrorsCB.UseVisualStyleBackColor = true;
+            this._filterOnlyErrorsCB.CheckedChanged += new System.EventHandler(this._filterOnlyErrorsCB_CheckedChanged);
             // 
             // DataEditorView
             // 
@@ -1884,6 +1897,7 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TreeDefaultBindingSource)).EndInit();
@@ -2070,5 +2084,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn createdDateDataGridViewTextBoxColumn3;
         private System.Windows.Forms.DataGridViewTextBoxColumn modifiedByDataGridViewTextBoxColumn3;
         private System.Windows.Forms.DataGridViewTextBoxColumn modifiedDateDataGridViewTextBoxColumn3;
+        private System.Windows.Forms.CheckBox _filterOnlyErrorsCB;
     }
 }

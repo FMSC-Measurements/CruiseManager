@@ -277,6 +277,21 @@ namespace CruiseManager.WinForms.DataEditor
             }
         }
 
+        private bool _filterOnlyErrors = false;
+
+        public bool FilterOnlyErrors 
+        {
+            get => _filterOnlyErrors;
+            set
+            {
+                if (_filterOnlyErrors != value)
+                {
+                    _filterOnlyErrors = value;
+                    PopulateData();
+                }
+            }
+        }
+
         public static object RowCount { get; private set; }
 
         #endregion filter selections
@@ -430,14 +445,21 @@ namespace CruiseManager.WinForms.DataEditor
         {
             if (DesignMode == true) { return; }
 
+            var unit = CuttingUnitFilter;
+            var stratum = StratumFilter;
+            var sampleGroup = SampleGroupFilter;
+            var tdv = TreeDefaultValueFilter;
+            var onlyErrors = FilterOnlyErrors;
+
+
             //populate tree, log, plot, and count lists with selected unit, stratum, samplegroup, and defaults, if given
-            var treeList = new FMSC.Utility.Collections.SortableBindingList<TreeVM>(ReadTrees(CuttingUnitFilter, StratumFilter, SampleGroupFilter, TreeDefaultValueFilter));
+            var treeList = new FMSC.Utility.Collections.SortableBindingList<TreeVM>(ReadTrees(unit, stratum, sampleGroup, tdv, onlyErrors));
             treeList.SetPropertyComparer("TreeDefaultValue", new TreeDefaultSpeciesComparer());
             treeList.SetPropertyComparer("SampleGroup", new SampleGroupCodeComparer());
             Trees = treeList;
 
-            Logs = new FMSC.Utility.Collections.SortableBindingList<LogVM>(ReadLogs(CuttingUnitFilter, StratumFilter, SampleGroupFilter, TreeDefaultValueFilter));
-            Plots = new FMSC.Utility.Collections.SortableBindingList<PlotDO>(ReadPlots(CuttingUnitFilter, StratumFilter));
+            Logs = new FMSC.Utility.Collections.SortableBindingList<LogVM>(ReadLogs(unit, stratum, sampleGroup, tdv, onlyErrors));
+            Plots = new FMSC.Utility.Collections.SortableBindingList<PlotDO>(ReadPlots(unit, stratum, onlyErrors));
             var countList = new FMSC.Utility.Collections.SortableBindingList<CountVM>(ReadCounts(CuttingUnitFilter, StratumFilter, SampleGroupFilter));
             countList.SetPropertyComparer("Component", new ComponentComparer());
             Counts = countList;
@@ -480,7 +502,8 @@ namespace CruiseManager.WinForms.DataEditor
             {
                 tree.PurgeErrorList();
 
-                var treeFields = tree.Stratum.FieldsArray;
+                var stratum = tree.Stratum;
+                var treeFields = stratum.FieldsArray;
                 if (treeFields == null || treeFields.Length == 0) { continue; }
 
                 if (!tree.Validate(tree.Stratum.FieldsArray))
@@ -492,7 +515,7 @@ namespace CruiseManager.WinForms.DataEditor
 
         #region read methods
 
-        public List<TreeVM> ReadTrees(CuttingUnitDO cu, StratumDO st, SampleGroupDO sg, TreeDefaultValueDO tdv)
+        public List<TreeVM> ReadTrees(CuttingUnitDO cu, StratumDO st, SampleGroupDO sg, TreeDefaultValueDO tdv, bool onlyErrors)
         {
             var selectionList = new List<string>();
             var selectionArgs = new List<string>();
@@ -522,15 +545,19 @@ namespace CruiseManager.WinForms.DataEditor
             {
                 var selection = String.Join(" AND ", selectionList.ToArray());
                 return Database.From<TreeVM>()
-                    .Where(selection).OrderBy("TreeNumber", "Plot_CN").Read(selectionArgs.ToArray<Object>()).ToList();
+                    .Where(selection).OrderBy("TreeNumber", "Plot_CN").Read(selectionArgs.ToArray<Object>())
+                    .Where(x => !onlyErrors || string.IsNullOrEmpty(x.Error) == false)
+                    .ToList();
             }
             else
             {
-                return Database.From<TreeVM>().OrderBy("TreeNumber", "Plot_CN").Read().ToList();
+                return Database.From<TreeVM>().OrderBy("TreeNumber", "Plot_CN").Read()
+                    .Where(x => !onlyErrors || string.IsNullOrEmpty(x.Error) == false)
+                    .ToList();
             }
         }
 
-        public List<LogVM> ReadLogs(CuttingUnitDO cu, StratumDO st, SampleGroupDO sg, TreeDefaultValueDO tdv)
+        public List<LogVM> ReadLogs(CuttingUnitDO cu, StratumDO st, SampleGroupDO sg, TreeDefaultValueDO tdv, bool onlyErrors)
         {
             var selectionList = new List<string>();
             var selectionArgs = new List<string>();
@@ -559,15 +586,19 @@ namespace CruiseManager.WinForms.DataEditor
             {
                 var selection = String.Join(" AND ", selectionList.ToArray());
                 //return DAL.Read<LogDO>(CruiseDAL.Schema.LOG._NAME, "INNER JOIN Tree USING Tree_CN " + selection, selectionArgs.ToArray());
-                return Database.From<LogVM>().Where(selection).Read(selectionArgs.ToArray<object>()).ToList();
+                return Database.From<LogVM>().Where(selection).Read(selectionArgs.ToArray<object>())
+                    .Where(x => !onlyErrors || string.IsNullOrEmpty(x.Error) == false)
+                    .ToList();
             }
             else
             {
-                return Database.From<LogVM>().Read().ToList();
+                return Database.From<LogVM>().Read()
+                    .Where(x => !onlyErrors || string.IsNullOrEmpty(x.Error) == false)
+                    .ToList();
             }
         }
 
-        public List<PlotDO> ReadPlots(CuttingUnitDO cu, StratumDO st)
+        public List<PlotDO> ReadPlots(CuttingUnitDO cu, StratumDO st, bool onlyErrors)
         {
             var selectionList = new List<string>();
             var selectionArgs = new List<string>();
@@ -586,11 +617,15 @@ namespace CruiseManager.WinForms.DataEditor
             if (selectionList.Count > 0)
             {
                 var selection = String.Join(" AND ", selectionList.ToArray());
-                return Database.From<PlotDO>().Where(selection).Read(selectionArgs.ToArray<object>()).ToList();
+                return Database.From<PlotDO>().Where(selection).Read(selectionArgs.ToArray<object>())
+                    .Where(x => !onlyErrors || string.IsNullOrEmpty(x.Error) == false)
+                    .ToList();
             }
             else
             {
-                return Database.From<PlotDO>().Read().ToList();
+                return Database.From<PlotDO>().Read()
+                    .Where(x => !onlyErrors || string.IsNullOrEmpty(x.Error) == false)
+                    .ToList();
             }
         }
 
@@ -1127,6 +1162,12 @@ namespace CruiseManager.WinForms.DataEditor
         }
 
         #endregion context menu
+
+        private void _filterOnlyErrorsCB_CheckedChanged(object sender, EventArgs e)
+        {
+            var cb = (CheckBox)sender;
+            FilterOnlyErrors = cb.Checked;
+        }
 
         public bool AskYesNo(String message, String caption, MessageBoxIcon icon)
         {
