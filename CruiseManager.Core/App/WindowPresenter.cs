@@ -1,7 +1,9 @@
-﻿using CruiseDAL.DataObjects;
+﻿using CruiseDAL;
+using CruiseDAL.DataObjects;
 using CruiseManager.Core.CommandModel;
 using CruiseManager.Core.Models;
 using CruiseManager.Core.ViewInterfaces;
+using CruiseManager.Core.ViewModel;
 using System;
 using System.Collections.Generic;
 
@@ -50,38 +52,48 @@ namespace CruiseManager.Core.App
 
         public void ShowCruiseLandingLayout()
         {
-            if (this.ApplicationController.MainWindow.InvokeRequired)
+            var appController = ApplicationController;
+            var mainWindow = appController.MainWindow;
+            if (mainWindow.InvokeRequired)
             {
-                this.ApplicationController.MainWindow.Invoke((Action)this.ShowCruiseLandingLayout);
+                mainWindow.Invoke((Action)this.ShowCruiseLandingLayout);
             }
             else
             {
-                this.ApplicationController.MainWindow.ClearActiveView();
-                this.ApplicationController.MainWindow.Text = System.IO.Path.GetFileName(this.ApplicationController.Database.Path);
+                mainWindow.ClearActiveView();
 
-                if (this.cruiseNavCommands == null)
-                {
-                    this.InitializeCruiseNavOptions();
-                }
+                var database = appController.Database;
+                mainWindow.Text = System.IO.Path.GetFileName(appController.Database.Path);
 
-                this.ApplicationController.MainWindow.SetNavCommands(this.cruiseNavCommands);
-                this.ShowCustomizeCruiseLayout();
+                var navOptions = MakeCruiseNavOptions(appController, database);
+                mainWindow.SetNavCommands(navOptions);
+                ShowCustomizeCruiseLayout();
             }
         }
 
-        private BindableCommand[] cruiseNavCommands;
-
-        private void InitializeCruiseNavOptions()
+        private IEnumerable<BindableCommand> MakeCruiseNavOptions(INavigationService navService, DAL database)
         {
-            this.cruiseNavCommands = new BindableCommand[]
+            var dbType = database.CruiseFileType;
+
+            var commands = new List<BindableCommand>()
             {
-                new BindableActionCommand( "Design Wizard", this.ShowEditWizard),
-                new ViewNavigateCommand(this.ApplicationController, "Edit Design", typeof(EditDesign.ViewInterfaces.IEditDesignView)),
-                new ViewNavigateCommand(this.ApplicationController,"Customize", typeof(Core.CruiseCustomize.ViewInterfaces.ICruiseCustomizeContainerView)),
-                new BindableActionCommand("Field Data", this.ShowDataEditor),
-                new ViewNavigateCommand(this.ApplicationController,"Create Component Files", typeof(Components.ViewInterfaces.ICreateComponentView)),
-                new ViewNavigateCommand(this.ApplicationController,"Merge Component Files", typeof(Components.ViewInterfaces.IMergeComponentView))
+                new BindableActionCommand( "Design Wizard", ShowEditWizard),
+                new ViewNavigateCommand(navService, "Edit Design", typeof(EditDesign.ViewInterfaces.IEditDesignView)),
+                new ViewNavigateCommand(navService,"Customize", typeof(Core.CruiseCustomize.ViewInterfaces.ICruiseCustomizeContainerView)),
+                new BindableActionCommand("Field Data", ShowDataEditor),
             };
+
+            if (dbType == CruiseDAL.CruiseFileType.Cruise || dbType == CruiseDAL.CruiseFileType.Master)
+            {
+                commands.Add(new ViewNavigateCommand(navService, "Create Component Files", typeof(Components.ViewInterfaces.ICreateComponentView)));
+            }
+
+            if (dbType == CruiseDAL.CruiseFileType.Master)
+            {
+                commands.Add(new ViewNavigateCommand(navService, "Merge Component Files", typeof(Components.ViewInterfaces.IMergeComponentView)));
+            }
+
+            return commands;
         }
 
         public void ShowCreateComponentsLayout()
