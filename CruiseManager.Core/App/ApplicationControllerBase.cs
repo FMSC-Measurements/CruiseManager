@@ -2,6 +2,7 @@
 using CruiseDAL.DataObjects;
 using CruiseManager.Core.CommandModel;
 using CruiseManager.Core.Constants;
+using CruiseManager.Core.FileMaintenance;
 using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core.ViewModel;
 using Microsoft.AppCenter.Analytics;
@@ -64,10 +65,18 @@ namespace CruiseManager.Core.App
             {
                 String directroy = System.IO.Path.GetDirectoryName(filePath);
                 UserSettings.CruiseSaveLocation = directroy;
+
+                var fixMismatchSp = new FixMismatchSpeciesScript();
+                if (fixMismatchSp.CheckCanExecute(database))
+                {
+                    fixMismatchSp.Execute(database);
+                }
+
                 if (database.HasCruiseErrors(out var errors))
                 {
                     this.ActiveView.ShowMessage(String.Join("\r\n", errors), null);
                 }
+
                 WindowPresenter.ShowCruiseLandingLayout();
             }
             else if (database.CruiseFileType.HasFlag(CruiseFileType.Template))
