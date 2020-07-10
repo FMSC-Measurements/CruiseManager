@@ -558,7 +558,10 @@ namespace CruiseManager.Core.EditDesign
 
             foreach (SampleGroupDO sg in DataContext.DeletedSampleGroups)
             {
-                SampleGroupDO.RecutsiveDeleteSampleGroup(sg);
+                if (sg.IsPersisted)
+                {
+                    SampleGroupDO.RecutsiveDeleteSampleGroup(sg);
+                }
             }
 
             DataContext.DeletedSampleGroups.Clear();
@@ -580,7 +583,10 @@ namespace CruiseManager.Core.EditDesign
 
             foreach (StratumDO st in DataContext.DeletedStrata)
             {
-                StratumDO.RecursiveDeleteStratum(st);
+                if (st.IsPersisted)
+                {
+                    StratumDO.RecursiveDeleteStratum(st);
+                }
             }
             DataContext.DeletedStrata.Clear();
         }
@@ -594,8 +600,11 @@ namespace CruiseManager.Core.EditDesign
 
             foreach (TreeDefaultValueDO tdv in DataContext.DeletedTreeDefaults)
             {
-                Database.Execute("DELETE FROM SampleGroupTreeDefaultValue WHERE TreeDefaultValue_CN = @p1", tdv.TreeDefaultValue_CN);
-                tdv.Delete();
+                if (tdv.IsPersisted)
+                {
+                    Database.Execute("DELETE FROM SampleGroupTreeDefaultValue WHERE TreeDefaultValue_CN = @p1", tdv.TreeDefaultValue_CN);
+                    tdv.Delete();
+                }
             }
 
             DataContext.DeletedTreeDefaults.Clear();
@@ -610,7 +619,10 @@ namespace CruiseManager.Core.EditDesign
 
             foreach (CuttingUnitDO unit in DataContext.DeletedCuttingUnits)
             {
-                CuttingUnitDO.RecursiveDelete(unit);
+                if (unit.IsPersisted)
+                {
+                    CuttingUnitDO.RecursiveDelete(unit);
+                }
             }
             DataContext.DeletedCuttingUnits.Clear();
         }

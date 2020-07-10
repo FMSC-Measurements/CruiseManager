@@ -5,9 +5,15 @@ using System;
 
 namespace CruiseManager.Core.Components
 {
-    public class ComponentFileVM : ComponentDO
+    [Table("Component")]
+    public class ComponentFile
     {
-        //public String FileName { get; set; }
+        [Field]
+        public long? Component_CN { get; set; }
+
+        [Field]
+        public virtual string FileName { get; set; }
+
         [IgnoreField]
         public String FullPath { get; set; }
 
@@ -15,73 +21,25 @@ namespace CruiseManager.Core.Components
         public DAL Database { get; set; }
 
         [IgnoreField]
-        public String DBAlias { get; set; }
-
-        //public int Edits { get; set; }
-        //public string LastMod { get; set; }
-        //public int Warnings { get; set; }
-        [IgnoreField]
         public string Errors { get; set; }
 
         [IgnoreField]
-        public long? TreeCount
-        {
-            get
-            {
-                if (_treeCount == null && this.Database != null)
-                {
-                    _treeCount = this.Database.GetRowCount("Tree", null);
-                }
-                return _treeCount;
-            }
-        }
+        public long? TreeCount { get; set; }
 
         [IgnoreField]
-        public long? LogCount
-        {
-            get
-            {
-                if (_logCount == null && this.Database != null)
-                {
-                    _logCount = this.Database.GetRowCount("Log", null);
-                }
-                return _logCount;
-            }
-        }
+        public long? LogCount { get; set; }
 
         [IgnoreField]
-        public long? PlotCount
-        {
-            get
-            {
-                if (_plotCount == null && this.Database != null)
-                {
-                    _plotCount = this.Database.GetRowCount("Plot", null);
-                }
-                return _plotCount;
-            }
-        }
+        public long? PlotCount { get; set; }
 
         [IgnoreField]
-        public long? StemCount
-        {
-            get
-            {
-                if (_stemCount == null && this.Database != null)
-                {
-                    _stemCount = this.Database.GetRowCount("Stem", null);
-                }
-                return _stemCount;
-            }
-        }
+        public long? StemCount { get; set; }
 
-        public void ResetCounts()
-        {
-            _treeCount = null;
-            _logCount = null;
-            _stemCount = null;
-            _plotCount = null;
-        }
+        [IgnoreField]
+        public bool HasMergeError { get; set; }
+
+        [IgnoreField]
+        public Exception MergeException { get; set; }
 
         private long? _treeCount;
         private long? _logCount;

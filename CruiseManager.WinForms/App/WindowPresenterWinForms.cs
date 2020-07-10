@@ -8,6 +8,7 @@ using CruiseManager.Utility;
 using CruiseManager.WinForms.CruiseWizard;
 using CruiseManager.WinForms.DataEditor;
 using CruiseManager.WinForms.TemplateEditor;
+using FMSC.ORM.Core;
 using Microsoft.AppCenter.Analytics;
 using System;
 using System.Collections.Generic;
@@ -196,6 +197,11 @@ namespace CruiseManager.WinForms.App
             return this.ShowAddTreeDefault(newTDV);
         }
 
+        public static void RealignTreeSpecies(Datastore datastore, long treeDefaultValue_CN)
+        {
+            datastore.Execute("UPDATE Tree AS t SET Species = (SELECT Species FROM TreeDefaultValue AS tdv WHERE t.TreeDefaultValue_CN = @p1) WHERE t.TreeDefaultValue_CN = @p1;", treeDefaultValue_CN);
+        }
+
         public override void ShowEditTreeDefault(TreeDefaultValueDO tdv)
         {
             TreeDefaultValueDO temp = new TreeDefaultValueDO(tdv);
@@ -210,6 +216,8 @@ namespace CruiseManager.WinForms.App
                         {
                             tdv.SetValues(temp);
                             tdv.Save();
+
+                            RealignTreeSpecies(tdv.DAL, tdv.TreeDefaultValue_CN.Value);
                         }
                         catch (FMSC.ORM.UniqueConstraintException ex)
                         {

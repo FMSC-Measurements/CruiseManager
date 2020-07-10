@@ -9,16 +9,18 @@ namespace CruiseManager.WinForms.App
     {
         public bool Handel(Exception e)
         {
-            Crashes.TrackError(e);
+            
 
             if (e is FMSC.ORM.ReadOnlyException)
             {
                 MessageBox.Show("File is Read Only");
+                Crashes.TrackError(e);
                 return true;
             }
             if (e is System.IO.IOException)
             {
                 MessageBox.Show($"File Error {e.GetType().Name}");
+                Crashes.TrackError(e);
                 return true;
             }     
             if (e is UserFacingException)
@@ -32,6 +34,13 @@ namespace CruiseManager.WinForms.App
             {
                 //WindowPresenter.Instance.ShowMessage("Record Already Exists", null);
                 MessageBox.Show("Record Already Exists");
+                Crashes.TrackError(e);
+                return true;
+            }
+            else if (e is FMSC.ORM.ConstraintException)
+            {
+                MessageBox.Show(e.Message, "Database Check Failed");
+                Crashes.TrackError(e);
                 return true;
             }
             else

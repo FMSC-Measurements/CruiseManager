@@ -1,339 +1,482 @@
 ﻿using Backpack.SqlBuilder;
 using CruiseDAL;
 using CruiseDAL.DataObjects;
-using FMSC.ORM.Core.SQL;
+using CruiseManager.Core.Components.CommandBuilders;
+using FMSC.ORM.EntityModel.Support;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace CruiseManager.Core.Components
 {
     /*
  *
-- push cutting unit inserts : TBT
-- push cutting unit updates : N
-- push stratum inserts : TBT
-- push stratum updates : N
-- push new cutting unit/stratm mappings : TBT
-- push removed cutting unit/stratm mappings : TBT
-- push samplegroups inserts : TBT
-- push samplegroup updates : N
-- pull samplegroups inserts : TBT
-- pull samplegroup updates : N
-- match samplegroups : N
-- push tree defaults inserts : TBT
-- push tree default updates : N
-- pull tree defaults inserts : TBT
-- pull tree default updates : N
-- match new tree defaults : N
-- push new tree default/sg mappings : TBT
-- push removed tree default/sg mappings : N
-- pull new tree default/sg mappings : TBT
+ * Y = implemented, N = not implimented, NP =  not planned
+ * - push cutting unit inserts : Y
+ * - push cutting unit updates : N
+ * - push stratum inserts : Y
+ * - push stratum updates : N
+ * - push new cutting unit/stratm mappings : Y
+ * - push removed cutting unit/stratm mappings : Y
+ * - push samplegroups inserts : Y
+ * - push samplegroup updates : N
+ * - pull samplegroups inserts : Y
+ * - pull samplegroup updates : N
+ * - match samplegroups : N
+ * - push tree defaults inserts : Y
+ * - push tree default updates : N
+ * - pull tree defaults inserts : Y
+ * - pull tree default updates : N
+ * - match new tree defaults : N
+ * - push new tree default/sg mappings : Y
+ * - push removed tree default/sg mappings : N
+ * - pull new tree default/sg mappings : Y
 
-- pull count tree inserts : TBT
-- pull count tree updates : TBT
-- push count tree inserts : NP
-- push count tree updates : NP
+ * - pull count tree inserts : Y
+ * - pull count tree updates : Y
+ * - push count tree inserts : NP
+ * - push count tree updates : NP
 
-- pull plot inserts : TBT
-- pull plot updates : TBT
-- push plot inserts : NP
-- push plot updates : TBT
+ * - pull plot inserts : Y
+ * - pull plot updates : Y
+ * - push plot inserts : NP
+ * - push plot updates : Y
 
-- pull tree inserts : TBT
-- pull tree updates : TBT
-- push tree inserts : NP
-- push tree updates : TBT
+ * - pull tree inserts : Y
+ * - pull tree updates : Y
+ * - push tree inserts : NP
+ * - push tree updates : Y
 
-- pull stem inserts : TBT
-- pull stem updates : TBT
-- push stem inserts : NP
-- push stem updates : TBT
+ * - pull stem inserts : Y
+ * - pull stem updates : Y
+ * - push stem inserts : NP
+ * - push stem updates : Y
 
-- pull lot inserts : TBT
-- pull log updates : TBT
-- push log inserts : NP
-- push log updates : TBT
+ * - pull lot inserts : Y
+ * - pull log updates : Y
+ * - push log inserts : NP
+ * - push log updates : Y
  * */
 
-    public class MergeSyncWorker : IWorker
+    public class MergeSyncWorker
     {
-        public MergeSyncWorker(MergeComponentsPresenter controller)
-        {
-            this.MergePresenter = controller;
-            this.Master = controller.MasterDB;
-            this.Components = controller.ActiveComponents;
+        public const string COMP_ALIAS = "comp";
 
-            System.Diagnostics.Debug.Assert(this.Master != null);
-            System.Diagnostics.Debug.Assert(this.Components != null);
+        #region move methods
+
+        private static void MoveUnit(DAL database, string dbAlias, long fromUnit_CN, long toUnit_CN)
+        {
+            database.Execute(
+$@"UPDATE {dbAlias}.CuttingUnit SET CuttingUnit_CN = @p1 WHERE CuttingUnit_CN = @p2;
+UPDATE {dbAlias}.CuttingUnitStratum SET CuttingUnit_CN = @p1 WHERE CuttingUnit_CN = @p2;
+UPDATE {dbAlias}.Plot SET CuttingUnit_CN = @p1 WHERE CuttingUnit_CN = @p2;
+UPDATE {dbAlias}.Tree SET CuttingUnit_CN = @p1 WHERE CuttingUnit_CN = @p2;
+UPDATE {dbAlias}.CountTree SET CuttingUnit_CN = @p1 WHERE CuttingUnit_CN = @p2;", toUnit_CN, fromUnit_CN);
         }
 
-        public IList<ComponentFileVM> Components { get; private set; }
-        public DAL Master { get; private set; }
-        public MergeComponentsPresenter MergePresenter { get; set; }
-        private IDictionary<String, MergeTableCommandBuilder> CommandBuilders { get { return this.MergePresenter.CommandBuilders; } }
+        private static void MoveSt(DAL database, string dbAlias, long fromSt_CN, long toSt_CN)
+        {
+            database.Execute(
+$@"UPDATE {dbAlias}.Stratum SET Stratum_CN = @p1 WHERE Stratum_CN = @p2;
+UPDATE {dbAlias}.SampleGroup SET Stratum_CN = @p1 WHERE Stratum_CN = @p2;
+UPDATE {dbAlias}.Plot SET Stratum_CN = @p1 WHERE Stratum_CN = @p2;
+UPDATE {dbAlias}.CuttingUnitStratum SET Stratum_CN = @p1 WHERE Stratum_CN = @p2;
+UPDATE {dbAlias}.Tree SET Stratum_CN = @p1 WHERE Stratum_CN = @p2;
+UPDATE {dbAlias}.FixCNTTallyClass SET Stratum_CN = @p1 WHERE Stratum_CN = @p2;
+UPDATE {dbAlias}.StratumStats SET Stratum_CN = @p1 WHERE Stratum_CN = @p2;", toSt_CN, fromSt_CN);
+        }
+
+        private static void MoveSg(DAL database, string dbAlias, long fromSG_CN, long toSG_CN)
+        {
+            database.Execute(
+$@"UPDATE {dbAlias}.SampleGroup SET SampleGroup_CN = @p1 WHERE SampleGroup_CN = @p2;
+UPDATE {dbAlias}.SampleGroupTreeDefaultValue SET SampleGroup_CN = @p1 WHERE SampleGroup_CN = @p2;
+UPDATE {dbAlias}.CountTree SET SampleGroup_CN = @p1 WHERE SampleGroup_CN = @p2;
+UPDATE {dbAlias}.Tree SET SampleGroup_CN = @p1 WHERE SampleGroup_CN = @p2;
+UPDATE {dbAlias}.SamplerState SET SampleGroup_CN = @p1 WHERE SampleGroup_CN = @p2;
+UPDATE {dbAlias}.FixCNTTallyPopulation SET SampleGroup_CN = @p1 WHERE SampleGroup_CN = @p2;", toSG_CN, fromSG_CN);
+        }
+
+        public static void MoveTDV(DAL database, string dbAlias, long fromTDV_CN, long toTDV_CN)
+        {
+            database.Execute(
+$@"UPDATE {dbAlias}.TreeDefaultValue SET TreeDefaultValue_CN = @p1 WHERE TreeDefaultValue_CN = @p2;
+UPDATE {dbAlias}.SampleGroupTreeDefaultValue SET TreeDefaultValue_CN = @p1 WHERE TreeDefaultValue_CN = @p2;
+UPDATE {dbAlias}.CountTree SET TreeDefaultValue_CN = @p1 WHERE TreeDefaultValue_CN = @p2;
+UPDATE {dbAlias}.Tree SET TreeDefaultValue_CN = @p1 WHERE TreeDefaultValue_CN = @p2;
+UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeDefaultValue_CN = @p2;", toTDV_CN, fromTDV_CN);
+        }
+
+        #endregion move methods
 
         #region core
 
-        public void PullDesignChanges()
+        public static void SyncDesign(DAL master, IEnumerable<ComponentFile> components, CancellationToken cancellation, IProgress<int> progress, IMergeLog log)
         {
-            foreach (ComponentFileVM comp in Components)
+            foreach (var comp in components)
             {
-                PullTreeDefaultInserts(comp);
-                PullNewSampleGroups(comp);
-                PullNewSampleGroupTreeDefaults(comp);
-                PullNewTallyTable(comp);
-                PullCountTreeChanges(comp);
+                cancellation.ThrowIfCancellationRequested();
+
+                try
+                {
+                    PullDesignChanges(master, comp, progress, log);
+                }
+                catch (Exception e)
+                {
+                    comp.MergeException = e;
+                }
+            }
+
+            foreach (var comp in components)
+            {
+                cancellation.ThrowIfCancellationRequested();
+                if (comp.HasMergeError)
+                { continue; }
+
+                try
+                {
+                    PushDesignChanges(master, comp, progress, log);
+                }
+                catch (Exception e)
+                {
+                    comp.MergeException = e;
+                }
             }
         }
 
-        public void PushDesignChanges()
+        public static void PullDesignChanges(DAL master, ComponentFile comp, IProgress<int> progress, IMergeLog log)
         {
-            foreach (ComponentFileVM comp in Components)
-            {
-                PushNewUnitRecords(comp);
-                PushNewStratumRecords(comp);
-                PushUnitStratumChanges(comp);
-                PushNewSampleGroups(comp);
-                PushTreeDefaultInserts(comp);
-                PushSampleGroupTreeDefaultInserts(comp);
-                PushNewCountTrees(comp);
-                //TODO push count tree table changes
-            }
-        }
-
-        public void SyncFieldData()
-        {
-            StartTransactionAll();
+            log?.PostStatus($"Start Pull Design Component {comp.Component_CN}");
+            AttachComponent(master, comp.Database);
+            master.BeginTransaction();
             try
             {
-                this._workInCurrentJob += (int)this.CountTotalMergeWork();
+                PullTreeDefault(master, progress, log);
+                PullSampleGroup(master, progress, log);
+                PullSampleGroupTreeDefault(master, progress, log);
+                PullTally(master, progress, log);
+                PullCountTree(master, comp.Component_CN.Value, progress, log);
 
-                UpdateMaster();
-                UpdateComponents();
-
-                this.NotifyProgressChanged(this._progressInCurrentJob, true, "Done", null);
-                this.EndTransactionAll();
+                master.CommitTransaction();
+                log?.PostStatus($"Pull Design Component {comp.Component_CN} Done");
             }
-            catch
+            catch (Exception e)
             {
-                this.CancelTransactionAll();
-                throw;
-            }
-        }
-
-        public void UpdateComponents()
-        {
-            foreach (ComponentFileVM comp in Components)
-            {
-                PushComponentPlotUpdates(comp);
-                PushComponentTreeUpdates(comp);
-                PushComponentLogUpdates(comp);
-                PushComponentStemUpdates(comp);
-            }
-        }
-
-        public void UpdateMaster()
-        {
-            foreach (ComponentFileVM comp in Components)
-            {
-                PullNewPlotRecords(comp);
-                PullMasterPlotUpdates(comp);
-
-                PullNewTreeRecords(comp);
-                PullMasterTreeUpdates(comp);
-
-                PullNewLogRecords(comp);
-                PullMasterLogUpdates(comp);
-
-                PullNewStemRecords(comp);
-                PullMasterStemUpdates(comp);
-            }
-        }
-
-        private void SyncDesign()
-        {
-            AttachAll();
-            Master.BeginTransaction();
-            try
-            {
-                PullDesignChanges();
-                PushDesignChanges();
-                Master.CommitTransaction();
-            }
-            catch
-            {
-                Master.RollbackTransaction();
+                master.RollbackTransaction();
+                log?.PostStatus($"Pull Design Component {comp.Component_CN} Failed");
                 throw;
             }
             finally
             {
-                DetachAll();
+                DetachComponent(master);
             }
+        }
+
+        public static void PushDesignChanges(DAL master, ComponentFile comp, IProgress<int> progress, IMergeLog log)
+        {
+            log?.PostStatus($"Start Push Design Component {comp.Component_CN}");
+            AttachComponent(master, comp.Database);
+            master.BeginTransaction();
+            try
+            {
+                PushCuttingUnit(master, progress, log);
+                PushStratum(master, progress, log);
+                PushCuttingUnitStratum(master, progress, log);
+                PushSampleGroup(master, progress, log);
+                PushTreeDefault(master, progress, log);
+                PushSampleGroupTreeDefault(master, progress, log);
+                PushCountTrees(master, comp.Component_CN.Value, progress, log);
+
+                master.CommitTransaction();
+                log?.PostStatus($"Pull Design Component {comp.Component_CN} Done");
+            }
+            catch (Exception e)
+            {
+                master.RollbackTransaction();
+                log?.PostStatus($"Pull Design Component {comp.Component_CN} Failed");
+                throw;
+            }
+            finally
+            {
+                DetachComponent(master);
+            }
+        }
+
+        public static void SyncFieldData(DAL master, IEnumerable<ComponentFile> components, IDictionary<string, MergeTableCommandBuilder> commandBuilders, CancellationToken cancellation, IProgress<int> progress, IMergeLog log)
+        {
+            BeginTransactionAll();
+            try
+            {
+                UpdateMaster(master, components, commandBuilders, cancellation, progress, log);
+                UpdateComponents(master, components, commandBuilders, cancellation, progress, log);
+
+                CommitTransactionAll();
+            }
+            catch
+            {
+                RollbackTransactionAll();
+                throw;
+            }
+
+            void BeginTransactionAll()
+            {
+                master.BeginTransaction();
+                foreach (var comp in components)
+                {
+                    comp.Database.BeginTransaction();
+                }
+            }
+
+            void RollbackTransactionAll()
+            {
+                master.RollbackTransaction();
+                foreach (var comp in components)
+                {
+                    comp.Database.RollbackTransaction();
+                }
+            }
+
+            void CommitTransactionAll()
+            {
+                master.CommitTransaction();
+                foreach (var comp in components)
+                {
+                    comp.Database.CommitTransaction();
+                }
+            }
+        }
+
+        public static void UpdateComponents(DAL master, IEnumerable<ComponentFile> components, IDictionary<string, MergeTableCommandBuilder> commandBuilders, CancellationToken cancellation, IProgress<int> progress, IMergeLog log)
+        {
+            var plotCmdBldr = commandBuilders["Plot"];
+            var treeCmdBldr = commandBuilders["Tree"];
+            var logCmdBldr = commandBuilders["Log"];
+            //var stemCmdBldr = commandBuilders["Stem"];
+
+            log?.StartJob();
+
+            foreach (var comp in components)
+            {
+                if (comp.HasMergeError == true)
+                { continue; }
+
+                cancellation.ThrowIfCancellationRequested();
+                PushComponentPlotUpdates(master, comp, plotCmdBldr, progress, log);
+
+                cancellation.ThrowIfCancellationRequested();
+                PushComponentTreeUpdates(master, comp, treeCmdBldr, progress, log);
+
+                cancellation.ThrowIfCancellationRequested();
+                PushComponentLogUpdates(master, comp, logCmdBldr, progress, log);
+
+                //cancellation.ThrowIfCancellationRequested();
+                //PushComponentStemUpdates(master, comp, stemCmdBldr, progress, log);
+            }
+            log?.EndJob();
+
+        }
+
+        public static void UpdateMaster(DAL master, IEnumerable<ComponentFile> components, IDictionary<string, MergeTableCommandBuilder> commandBuilders, CancellationToken cancellation, IProgress<int> progress, IMergeLog log)
+        {
+            var plotCommandBuilder = commandBuilders["Plot"];
+            var treeCmdBldr = commandBuilders["Tree"];
+            var logCmdBldr = commandBuilders["Log"];
+            //var stemCmdBldr = commandBuilders["Stem"];
+
+            log?.StartJob();
+
+            foreach (var comp in components)
+            {
+                if (comp.HasMergeError == true)
+                { continue; }
+
+                cancellation.ThrowIfCancellationRequested();
+
+                PullNewPlotRecords(master, comp, plotCommandBuilder, progress, log);
+                PullMasterPlotUpdates(master, comp, plotCommandBuilder, progress, log);
+                cancellation.ThrowIfCancellationRequested();
+
+                PullNewTreeRecords(master, comp, treeCmdBldr, progress, log);
+                PullMasterTreeUpdates(master, comp, treeCmdBldr, progress, log);
+                cancellation.ThrowIfCancellationRequested();
+
+                PullNewLogRecords(master, comp, logCmdBldr, progress, log);
+                PullMasterLogUpdates(master, comp, logCmdBldr, progress, log);
+                cancellation.ThrowIfCancellationRequested();
+
+                //PullNewStemRecords(master, comp, stemCmdBldr, progress, log);
+                //PullMasterStemUpdates(master, comp, stemCmdBldr, progress, log);
+                //cancellation.ThrowIfCancellationRequested();
+            }
+
+            log?.EndJob();
         }
 
         #endregion core
 
         #region transaction and attach
 
-        private void AttachAll()
+        private static void AttachComponent(DAL master, DAL comp)
         {
-            foreach (ComponentFileVM comp in this.Components)
-            {
-                string alias = "comp" + comp.Component_CN.Value.ToString();
-                comp.DBAlias = alias;
-                Master.AttachDB(comp.Database, alias);
-            }
+            master.AttachDB(comp, COMP_ALIAS);
         }
 
-        private void DetachAll()
+        private static void DetachComponent(DAL master)
         {
-            foreach (ComponentFileVM comp in this.Components)
-            {
-                Master.DetachDB(comp.DBAlias);
-            }
+            master.DetachDB(COMP_ALIAS);
         }
 
-        private void CancelTransactionAll()
-        {
-            this.Master.RollbackTransaction();
-            foreach (ComponentFileVM comp in this.Components)
-            {
-                comp.Database.RollbackTransaction();
-            }
-        }
-
-        private void EndTransactionAll()
-        {
-            Master.CommitTransaction();
-            foreach (ComponentFileVM comp in this.Components)
-            {
-                comp.Database.CommitTransaction();
-            }
-        }
-
-        private void StartTransactionAll()
-        {
-            this.Master.BeginTransaction();
-            foreach (ComponentFileVM comp in this.Components)
-            {
-                comp.Database.BeginTransaction();
-            }
-        }
+        
 
         #endregion transaction and attach
 
         #region pull new records
 
-        public void PullNew(MergeTableCommandBuilder cmdBldr, ComponentFileVM comp)
-        {
-            StartJob("Pull New From " + cmdBldr.ClientTableName);
-            List<MergeObject> mergeRecords = cmdBldr.ListNewRecords(Master, comp);
+        //public void PullNew(MergeTableCommandBuilder cmdBldr, ComponentFileVM comp)
+        //{
+        //    StartJob("Pull New From " + cmdBldr.ClientTableName);
+        //    var mergeRecords = cmdBldr.ListNewRecords(Master, comp);
 
+        //    foreach (MergeObject mRec in mergeRecords)
+        //    {
+        //        CheckWorkerStatus();
+        //        DataObject newFromComp = cmdBldr.ReadSingleRow(comp.Database, mRec.ComponentRowID.Value);
+        //        Master.Insert(newFromComp, option: OnConflictOption.Fail);
+        //        ResetComponentRowVersion(comp.Database, mRec.ComponentRowID.Value, cmdBldr);
+        //    }
+
+        //    EndJob("Pull New From " + cmdBldr.ClientTableName);
+        //}
+
+        public static void PullNewLogRecords(DAL master, ComponentFile comp, MergeTableCommandBuilder logCmdBldr, IProgress<int> progress, IMergeLog log)
+        {
+            log?.StartJob();
+
+            var mergeRecords = logCmdBldr.ListNewRecords(master, comp);
+            var unitsOfWork = mergeRecords.Count();
+            var i = 0;
+            var compDB = comp.Database;
             foreach (MergeObject mRec in mergeRecords)
             {
-                CheckWorkerStatus();
-                DataObject newFromComp = cmdBldr.ReadSingleRow(comp.Database, mRec.ComponentRowID.Value);
-                Master.Insert(newFromComp, OnConflictOption.Fail);
-                this.ResetComponentRowVersion(comp, mRec.ComponentRowID.Value, cmdBldr);
-            }
-
-            EndJob();
-        }
-
-        public void PullNewLogRecords(ComponentFileVM comp)
-        {
-            StartJob("Add New Logs");
-            MergeTableCommandBuilder cmdBldr = this.CommandBuilders["Log"];
-            List<MergeObject> mergeRecords = cmdBldr.ListNewRecords(Master, comp);
-
-            foreach (MergeObject mRec in mergeRecords)
-            {
-                CheckWorkerStatus();
-                LogDO log = comp.Database.From<LogDO>()
+                LogDO logRec = compDB.From<LogDO>()
                     .Where("rowid = @p1").Query(mRec.ComponentRowID).FirstOrDefault();
-                Master.Insert(log, OnConflictOption.Fail);
-                this.ResetComponentRowVersion(comp, mRec.ComponentRowID.Value, cmdBldr);
-                IncrementProgress();
+                master.Insert(logRec, option: OnConflictOption.Fail);
+                ResetComponentRowVersion(compDB, mRec.ComponentRowID.Value, logCmdBldr);
+                progress?.Report((++i * 100) / unitsOfWork);
             }
 
-            EndJob();
+            log?.EndJob();
         }
 
-        public void PullNewPlotRecords(ComponentFileVM comp)
+        public static void PullNewPlotRecords(DAL master, ComponentFile comp, MergeTableCommandBuilder plotCmdBldr, IProgress<int> progress, IMergeLog log)
         {
-            StartJob("Add Plots");
-            MergeTableCommandBuilder cmdBldr = this.CommandBuilders["Plot"];
-            List<MergeObject> mergeRecords = cmdBldr.ListNewRecords(Master, comp);
+            log?.StartJob();
 
+            var mergeRecords = plotCmdBldr.ListNewRecords(master, comp);
+            var unitsOfWork = mergeRecords.Count();
+            var i = 0;
             foreach (MergeObject mRec in mergeRecords)
             {
-                CheckWorkerStatus();
                 PlotDO plot = comp.Database.From<PlotDO>()
                     .Where("rowid = @p1").Query(mRec.ComponentRowID).FirstOrDefault();
 
-                Master.Insert(plot, OnConflictOption.Fail);
-                this.ResetComponentRowVersion(comp, mRec.ComponentRowID.Value, cmdBldr);
-                IncrementProgress();
+                master.Insert(plot, option: OnConflictOption.Fail);
+                ResetComponentRowVersion(comp.Database, mRec.ComponentRowID.Value, plotCmdBldr);
+                progress?.Report((++i * 100) / unitsOfWork);
             }
-            EndJob();
+            log?.EndJob();
         }
 
-        public void PullNewStemRecords(ComponentFileVM comp)
+        public static void PullNewStemRecords(DAL master, ComponentFile comp, MergeTableCommandBuilder stemCmdBldr, IProgress<int> progress, IMergeLog log)
         {
-            StartJob("Add New Stems");
-            MergeTableCommandBuilder cmdBldr = this.CommandBuilders["Stem"];
-            List<MergeObject> mergeRecords = cmdBldr.ListNewRecords(Master, comp);
+            log?.StartJob();
+
+            var mergeRecords = stemCmdBldr.ListNewRecords(master, comp);
+            var unitsOfWork = mergeRecords.Count();
+            var i = 0;
 
             foreach (MergeObject mRec in mergeRecords)
             {
-                CheckWorkerStatus();
                 StemDO stem = comp.Database.From<StemDO>()
                     .Where("rowid = @p1").Query(mRec.ComponentRowID).FirstOrDefault();
 
-                Master.Insert(stem, OnConflictOption.Fail);
-                this.ResetComponentRowVersion(comp, mRec.ComponentRowID.Value, cmdBldr);
-                IncrementProgress();
+                master.Insert(stem, option: OnConflictOption.Fail);
+                ResetComponentRowVersion(comp.Database, mRec.ComponentRowID.Value, stemCmdBldr);
+                progress?.Report((++i * 100) / unitsOfWork);
             }
 
-            EndJob();
+            log?.EndJob();
         }
 
-        public void PullNewTreeRecords(ComponentFileVM comp)
+        public static void PullNewTreeRecords(DAL master, ComponentFile comp, MergeTableCommandBuilder treeCmdBldr, IProgress<int> progress, IMergeLog log)
         {
-            StartJob("Add New Trees");
-            MergeTableCommandBuilder cmdBldr = this.CommandBuilders["Tree"];
-            List<MergeObject> mergeRecords = cmdBldr.ListNewRecords(Master, comp);
+            log?.StartJob();
+            var mergeRecords = treeCmdBldr.ListNewRecords(master, comp);
+            var unitsOfWork = mergeRecords.Count();
+            var i = 0;
 
             foreach (MergeObject mRec in mergeRecords)
             {
-                CheckWorkerStatus();
                 TreeDO tree = comp.Database.From<TreeDO>()
                     .Where("rowid = @p1").Query(mRec.ComponentRowID).FirstOrDefault();
-                Master.Insert(tree, OnConflictOption.Fail);
-                this.ResetComponentRowVersion(comp, mRec.ComponentRowID.Value, cmdBldr);
-                IncrementProgress();
+                master.Insert(tree, option: OnConflictOption.Fail);
+                ResetComponentRowVersion(comp.Database, mRec.ComponentRowID.Value, treeCmdBldr);
+                progress?.Report((++i * 100) / unitsOfWork);
             }
 
-            EndJob();
+            log?.EndJob();
         }
 
         #endregion pull new records
 
         #region pull new design records
 
-        public void PullCountTreeChanges(ComponentFileVM comp)
+        public static void PullTally(DAL master, IProgress<int> progress = null, IMergeLog log = null)
         {
-            StartJob("Add New CountTree Records");
-            var compCounts = comp.Database.From<CountTreeDO>().Query();
+            log?.StartJob();
+            var compTallies = master.From<TallyDO>(new TableOrSubQuery($"{COMP_ALIAS}.Tally")).Query();
+
+            foreach (TallyDO tally in compTallies)
+            {
+                TallyDO match = master.From<TallyDO>()
+                    .Where("HotKey = @p1 AND Description = @p2")
+                    .Query(tally.Hotkey, tally.Description).FirstOrDefault();
+
+                if (match == null)
+                {
+                    match = new TallyDO()
+                    {
+                        Hotkey = tally.Hotkey,
+                        Description = tally.Description,
+                    };
+                    master.Insert(match);
+                    log?.PostStatus($"Added Tally {match.Tally_CN}");
+                }
+            }
+            log?.EndJob();
+        }
+
+        public static void PullCountTree(DAL master, long component_cn, IProgress<int> progress = null, IMergeLog log = null)
+        {
+            log?.StartJob();
+            var compCounts = master.From<CountTreeDO>(new TableOrSubQuery($"{COMP_ALIAS}.CountTree")).Query().ToArray();
+
+            var unitsOfWork = compCounts.Length;
+            var i = 0;
             foreach (CountTreeDO count in compCounts)
             {
-                CheckWorkerStatus();
-                CountTreeDO match = Master.From<CountTreeDO>()
+                var compTally = master.From<TallyDO>(new TableOrSubQuery($"{COMP_ALIAS}.Tally"))
+                    .Where("Tally_CN = @p1")
+                    .Query(count.Tally_CN).FirstOrDefault();
+
+                // try to read component count tree record from master
+                CountTreeDO match = master.From<CountTreeDO>()
                     .Where("SampleGroup_CN = @p1 " +
                     "AND ifnull(TreeDefaultValue_CN, 0) = ifnull(@p2, 0) " +
                     "AND CuttingUnit_CN = @p3 " +
@@ -341,706 +484,795 @@ namespace CruiseManager.Core.Components
                     .Query(count.SampleGroup_CN,
                     count.TreeDefaultValue_CN,
                     count.CuttingUnit_CN,
-                    comp.Component_CN).FirstOrDefault();
+                    component_cn).FirstOrDefault();
                 //use component cn from component record because component cn is not set when record is created by FScruiser
 
                 if (match != null)
                 {
+                    // update component count tree data
                     match.TreeCount = count.TreeCount;
                     match.SumKPI = count.SumKPI;
-                    match.Save();
+                    master.Update(match);
                 }
                 else
                 {
-                    TallyDO tally = count.Tally;
-                    TallyDO masterTally = Master.From<TallyDO>().Where("HotKey = @p1")
-                        .Query(tally.Hotkey).FirstOrDefault();
+                    // attempt to create a component count tree record in the master
+
+                    // see if tally table entry exists matching the description and hotkey
+                    TallyDO tally = master.Query<TallyDO>($"SELECT * FROM {COMP_ALIAS}.Tally WHERE Tally_CN = {count.Tally_CN};").FirstOrDefault();
+
+                    TallyDO masterTally = master.From<TallyDO>().Where("Description = @p1 AND HotKey = @p2")
+                        .Query(tally.Description, tally.Hotkey).FirstOrDefault();
+
+                    // if not create one
                     if (masterTally == null)
                     {
-                        //TODO unsupported
+                        masterTally = new TallyDO()
+                        {
+                            Description = tally.Description,
+                            Hotkey = tally.Hotkey,
+                        };
+                        master.Insert(masterTally);
+                        log?.PostStatus($"Tally added :{masterTally.Tally_CN}");
                     }
-                    else
+
+                    var newCount = new CountTreeDO()
                     {
-                        count.Tally_CN = masterTally.Tally_CN;
-                    }
-                    if (count.Component_CN == null)
-                    {
-                        count.Component_CN = comp.Component_CN;
-                        //Master.Execute("UPDATE " + comp.DBAlias + ".CountTree Set Component_CN = ? WHERE CountTree_CN = ?;", comp.Component_CN, count.CountTree_CN);
-                    }
-                    Master.Insert(count, null, OnConflictOption.Fail);
+                        CuttingUnit_CN = count.CuttingUnit_CN,
+                        SampleGroup_CN = count.SampleGroup_CN,
+                        TreeDefaultValue_CN = count.TreeDefaultValue_CN,
+                        SumKPI = count.SumKPI,
+                        TreeCount = count.TreeCount,
+                        Component_CN = count.Component_CN ?? component_cn,
+                        Tally_CN = masterTally.Tally_CN,
+                    };
+                    master.Insert(newCount, option: OnConflictOption.Fail);
+                    log?.PostStatus($"CountTree added :{newCount.CountTree_CN}");
                 }
+
+                // see if there is a master count tree record match our count tree record
+                // is is important because it is posible to add populations in fscruiser
+                // and if a new tally setup was done to the component but not the master
+                // we will need a master count tree record to push the new tally setup out to the other components
+                var masterMatch = master.From<CountTreeDO>()
+                    .Where("SampleGroup_CN = @p1 " +
+                    "AND ifnull(TreeDefaultValue_CN, 0) = ifnull(@p2, 0) " +
+                    "AND CuttingUnit_CN = @p3 " +
+                    "AND Component_CN IS NULL")
+                    .Query(count.SampleGroup_CN,
+                    count.TreeDefaultValue_CN,
+                    count.CuttingUnit_CN).FirstOrDefault();
+
+                if (masterMatch == null)
+                {
+                    TallyDO tally = master.Query<TallyDO>($"SELECT * FROM {COMP_ALIAS}.Tally WHERE Tally_CN = {count.Tally_CN};").FirstOrDefault();
+
+                    TallyDO masterTally = master.From<TallyDO>().Where("Description = @p1 AND HotKey = @p2")
+                        .Query(tally.Description, tally.Hotkey).FirstOrDefault();
+
+                    if (masterTally == null)
+                    {
+                        masterTally = new TallyDO()
+                        {
+                            Description = tally.Description,
+                            Hotkey = tally.Hotkey,
+                        };
+                        master.Insert(masterTally);
+                        log?.PostStatus($"Tally added :{masterTally.Tally_CN}");
+                    }
+
+                    masterMatch = new CountTreeDO()
+                    {
+                        Component_CN = null,
+                        TreeCount = 0,
+                        SumKPI = 0,
+
+                        CuttingUnit_CN = count.CuttingUnit_CN,
+                        SampleGroup_CN = count.SampleGroup_CN,
+                        TreeDefaultValue_CN = count.TreeDefaultValue_CN,
+                        Tally_CN = masterTally.Tally_CN,
+                    };
+
+                    master.Insert(masterMatch, option: OnConflictOption.Fail, keyValue: null);
+                    log?.PostStatus($"Master CountTree added :{masterMatch.CountTree_CN}");
+                }
+
+                progress?.Report((++i * 100) / unitsOfWork);
             }
-            EndJob();
+            log?.EndJob();
         }
 
-        public void PullNewSampleGroups(ComponentFileVM comp)
+        public static void PullSampleGroup(DAL master, IProgress<int> progress = null, IMergeLog log = null)
         {
-            StartJob("Add New Sample Groups");
+            log?.StartJob();
 
-            var compSGList = comp.Database.From<SampleGroupDO>().Query();
+            var compSGList = master.From<SampleGroupDO>(new TableOrSubQuery(COMP_ALIAS + ".SampleGroup"))
+                .Query().ToArray();
+            var unitsOfWork = compSGList.Length;
+            var i = 0;
             foreach (SampleGroupDO sg in compSGList)
             {
-                SampleGroupDO match = Master.From<SampleGroupDO>()
+                SampleGroupDO match = master.From<SampleGroupDO>()
                     .Where("Code = @p1 AND Stratum_CN = @p2")
                     .Query(sg.Code, sg.Stratum_CN).FirstOrDefault();
 
                 if (match == null)
                 {
-                    SampleGroupDO newSG = new SampleGroupDO(Master);
-                    newSG.SuspendEvents();
-                    newSG.SetValues(sg);
-                    newSG.Stratum_CN = sg.Stratum_CN;
-                    newSG.ResumeEvents();
+                    var newSG = new SampleGroupDO()
+                    {
+                        Code = sg.Code,
+                        Stratum_CN = sg.Stratum_CN,
+                        BigBAF = sg.BigBAF,
+                        BiomassProduct = sg.BiomassProduct,
+                        CreatedBy = sg.CreatedBy,
+                        CreatedDate = sg.CreatedDate,
+                        CutLeave = sg.CutLeave,
+                        DefaultLiveDead = sg.DefaultLiveDead,
+                        Description = sg.Description,
+                        InsuranceFrequency = sg.InsuranceFrequency,
+                        KZ = sg.KZ,
+                        MaxKPI = sg.MaxKPI,
+                        MinKPI = sg.MinKPI,
+                        PrimaryProduct = sg.PrimaryProduct,
+                        SampleSelectorType = sg.SampleSelectorType,
+                        SamplingFrequency = sg.SamplingFrequency,
+                        SecondaryProduct = sg.SecondaryProduct,
+                        SmallFPS = sg.SmallFPS,
+                        TallyMethod = sg.TallyMethod,
+                        UOM = sg.UOM,
+                    };
 
-                    newSG.Save();
+                    var newSG_CN = (master.ExecuteScalar<int>($"SELECT count(*) FROM SampleGroup WHERE SampleGroup_CN = @p1;", sg.SampleGroup_CN) == 0)
+                        ? sg.SampleGroup_CN
+                        : (long?)null;
+
+                    master.Insert(newSG, keyValue: newSG_CN);
                     match = newSG;
+                    log?.PostStatus($"Sample Group added :{newSG.SampleGroup_CN}");
                 }
                 if (sg.SampleGroup_CN != match.SampleGroup_CN)
                 {
-                    comp.Database.Execute("UPDATE SampleGroup SET SampleGroup_CN = @p1 WHERE SampleGroup_CN = @p2;", match.SampleGroup_CN, sg.SampleGroup_CN);
+                    var matchSG_CN = match.SampleGroup_CN.Value;
+                    var compSG_CN = sg.SampleGroup_CN.Value;
+
+                    // check comp and if there already has a SG with the CN of our match
+                    if (master.ExecuteScalar<int>($"SELECT count(*) FROM {COMP_ALIAS}.SampleGroup WHERE SampleGroup_CN = @p1;", matchSG_CN)
+                        > 0)
+                    {
+                        // to resolve the CN conflict we are going to move the conflicting record to the end of our table
+                        var newSG_CN = master.ExecuteScalar<int>($"SELECT seq + 1 FROM {COMP_ALIAS}.sqlite_sequence WHERE name = 'SampleGroup';");
+
+                        // we also need to find the DO of the sample group we are displacing 
+                        // so that we can update its CN value to the new CN
+                        var toMoveSG = compSGList.Single(x => x.SampleGroup_CN == matchSG_CN);
+                        toMoveSG.SampleGroup_CN = newSG_CN;
+
+                        MoveSg(master, COMP_ALIAS, matchSG_CN, newSG_CN);
+                        log?.PostStatus($"Sample Group swap :{matchSG_CN} -> {newSG_CN}");
+                    }
+
+                    // finaly move the comp SG CN value to match the master
+                    MoveSg(master, COMP_ALIAS, compSG_CN, matchSG_CN);
+                    log?.PostStatus($"Sample Group mismatch resolved :{compSG_CN} -> {matchSG_CN}");
                 }
+
+                progress?.Report((++i * 100) / unitsOfWork);
             }
 
-            EndJob();
+            log?.EndJob();
         }
 
-        public void PullNewSampleGroupTreeDefaults(ComponentFileVM comp)
+        public static void PullSampleGroupTreeDefault(DAL master, IProgress<int> progress = null, IMergeLog log = null)
         {
-            StartJob("Update Sample Group Species Mappings");
+            log?.StartJob();
 
-            int? rowsAffected = Master.Execute("INSERT OR IGNORE INTO main.SampleGroupTreeDefaultValue " +
-                "SELECT * FROM " + comp.DBAlias + ".SampleGroupTreeDefaultValue;");
+            int? rowsAffected = master.Execute("INSERT OR IGNORE INTO main.SampleGroupTreeDefaultValue " +
+                "SELECT * FROM " + COMP_ALIAS + ".SampleGroupTreeDefaultValue;");
 
-            PostStatus(rowsAffected.GetValueOrDefault(0).ToString() + " Rows Affected");
+            log?.PostStatus(rowsAffected.GetValueOrDefault(0).ToString() + " Rows Affected");
 
-            EndJob();
+            log?.EndJob();
         }
 
-        public void PullNewTallyTable(ComponentFileVM comp)
+        public static void PullTreeDefault(DAL master, IProgress<int> progress = null, IMergeLog log = null)
         {
-            StartJob("Add New CountTree Records");
-            var compTallies = comp.Database.From<TallyDO>().Read();
+            log?.StartJob();
+            var compTreeDefaults = master.From<TreeDefaultValueDO>(new TableOrSubQuery(COMP_ALIAS + ".TreeDefaultValue"))
+                .Query().ToArray();
+            var unitsOfWork = compTreeDefaults.Length;
 
-            foreach (TallyDO tally in compTallies)
+            var i = 0;
+            foreach (var tdv in compTreeDefaults)
             {
-                CheckWorkerStatus();
-                TallyDO match = Master.From<TallyDO>()
-                    .Where("HotKey = @p1 AND Description = @p2")
-                    .Read(tally.Hotkey, tally.Description).FirstOrDefault();
+                var match = master.From<TreeDefaultValueDO>().Where("Species = @p1 AND PrimaryProduct = @p2 AND LiveDead = @p3")
+                    .Query(tdv.Species, tdv.PrimaryProduct, tdv.LiveDead).FirstOrDefault();
 
                 if (match == null)
                 {
-                    match = new TallyDO(Master);
-                    match.Hotkey = tally.Hotkey;
-                    match.Description = tally.Description;
-                    match.Save();
-                }
-            }
-        }
+                    var newTDV = new TreeDefaultValueDO(master);
+                    newTDV.SetValues(tdv);
+                    master.Insert(newTDV, option: OnConflictOption.Fail);
 
-        public void PullTreeDefaultInserts(ComponentFileVM comp)
-        {
-            StartJob("Pull TreeDefault Inserts");
-            var compTreeDefaults = comp.Database.From<TreeDefaultValueDO>().Query();
-            foreach (TreeDefaultValueDO tdv in compTreeDefaults)
-            {
-                CheckWorkerStatus();
-                bool hasMatch = 0 < Master.GetRowCount("TreeDefaultValue",
-                    "WHERE Species = @p1 AND PrimaryProduct = @p2 AND LiveDead = @p3",
-                    tdv.Species, tdv.PrimaryProduct, tdv.LiveDead);
-                if (!hasMatch)
+                    match = newTDV;
+                    log.PostStatus($"TDV added :{newTDV.TreeDefaultValue_CN}");
+                }
+
+                if (tdv.TreeDefaultValue_CN != match.TreeDefaultValue_CN)
                 {
-                    if (Master.GetRowCount("TreeDefaultValue", "WHERE TreeDefaultValue_CN = @p1", tdv.TreeDefaultValue_CN) == 0)
+                    var matchTDV_CN = match.TreeDefaultValue_CN.Value;
+                    var compTDB_CN = tdv.TreeDefaultValue_CN.Value;
+
+                    if (master.ExecuteScalar<int>($"SELECT count(*) FROM {COMP_ALIAS}.TreeDefaultValue WHERE TreeDefaultValue_CN = @p1;", matchTDV_CN)
+                        > 0)
                     {
-                        Master.Insert(tdv, OnConflictOption.Fail);
+                        // move the conflicting comp TDV to a new CN
+                        var newTDV_CN = master.ExecuteScalar<int>($"SELECT seq + 1 FROM {COMP_ALIAS}.sqlite_sequence WHERE name = 'TreeDefaultValue';");
+
+                        var toMoveTDV = compTreeDefaults.FirstOrDefault(x => x.TreeDefaultValue_CN == matchTDV_CN);
+                        if (toMoveTDV != null)
+                        {
+                            toMoveTDV.TreeDefaultValue_CN = newTDV_CN;
+                        }
+
+                        MoveTDV(master, COMP_ALIAS, matchTDV_CN, newTDV_CN);
+                        log.PostStatus($"TDV swap :{matchTDV_CN} -> {newTDV_CN}");
                     }
-                    else
-                    {
-                        throw new NotImplementedException("TreeDefaultValue row conflict condition not implemented");
-                        //Master.Insert(tdv, false, OnConflictOption.Fail);
-                        //tdv.Save();
-                    }
+
+                    // move component tdv to match the master tdv
+                    MoveTDV(master, COMP_ALIAS, compTDB_CN, matchTDV_CN);
+                    log.PostStatus($"TDV mismatch resolved :{compTDB_CN} -> {matchTDV_CN}");
                 }
+
+                progress?.Report((++i * 100) / unitsOfWork);
             }
 
-            EndJob();
+            log.EndJob();
         }
 
         #endregion pull new design records
 
         #region push new design records
 
-        public void PushNewCountTrees(ComponentFileVM comp)
+        public static void PushCountTrees(DAL master, long component_cn, IProgress<int> progress, IMergeLog log)
         {
-            StartJob("Push New Count Tree Records");
+            log?.StartJob();
 
-            var countTrees = Master.Query<CountTreeDO>("SELECT * FROM main.CountTree WHERE Component_CN IS NULL;").ToArray();
-
-            foreach(var ct in countTrees)
+            var countTrees = master.Query<CountTreeDO>("SELECT * FROM main.CountTree WHERE Component_CN IS NULL;").ToArray();
+            var unitsOfWork = countTrees.Length;
+            var i = 0;
+            foreach (var ct in countTrees)
             {
-                var match = Master.Query<CountTreeDO>(
-                    $"SELECT * FROM {comp.DBAlias}.CountTree " +
-                        "WHERE CuttingUnit_CN = @p1 " +
-                        "AND SampleGroup_CN = @p2 " +
-                        "AND ifnull(TreeDefaultValue_CN, 0) == ifnull(@p3, 0);", 
-                    ct.CuttingUnit_CN, ct.SampleGroup_CN, ct.TreeDefaultValue_CN)
+                var mastCN = ct.CountTree_CN;
+
+                var match = master.From<CountTreeDO>(new TableOrSubQuery($"{COMP_ALIAS}.CountTree"))
+                    .Where("CuttingUnit_CN = @p1 AND SampleGroup_CN = @p2 AND ifnull(TreeDefaultValue_CN, 0) == ifnull(@p3, 0)")
+                    .Query(ct.CuttingUnit_CN, ct.SampleGroup_CN, ct.TreeDefaultValue_CN)
                     .FirstOrDefault();
 
-                if(match == null)
+                if (match == null)
                 {
                     // see if component has matching tally record
-                    var tallyMatch = Master.Query<TallyDO>($"SELECT * FROM {comp.DBAlias}.Tally WHERE Tally_CN = @p1;", ct.Tally_CN).FirstOrDefault();
+                    var tallyMatch = master.Query<TallyDO>($"SELECT * FROM {COMP_ALIAS}.Tally WHERE Tally_CN = @p1;", ct.Tally_CN).FirstOrDefault();
 
-                    if(tallyMatch == null)
+                    if (tallyMatch == null)
                     {
                         // get the full tally record from the master
-                        var masterTally = Master.Query<TallyDO>("SELECT * FROM main.Tally WHERE Tally_CN = @p1;", ct.Tally_CN).FirstOrDefault();
+                        var masterTally = master.Query<TallyDO>("SELECT * FROM main.Tally WHERE Tally_CN = @p1;", ct.Tally_CN).FirstOrDefault();
 
                         // insert tally record into the component
-                        Master.Execute2($"INSERT INTO {comp.DBAlias}.Tally ( " +
-                            "Tally_CN, Description, HotKey, IndicatorType, IndicatorValue " +
-                            ") VALUES (" +
-                            "@Tally_CN, @Description, @Hotkey, @IndicatorType, @IndicatorValue);",
-                            new
-                            {
-                                masterTally.Tally_CN,
-                                masterTally.Description,
-                                masterTally.Hotkey,
-                                masterTally.IndicatorType,
-                                masterTally.IndicatorValue,
-                            });
+                        var newTally = new TallyDO()
+                        {
+                            Description = masterTally.Description,
+                            Hotkey = masterTally.Hotkey,
+                        };
+
+                        var tally_CN = master.Insert(newTally, tableName: $"{COMP_ALIAS}.Tally");
+                        tallyMatch = newTally;
+
+                        log?.PostStatus($"Tally added :{tally_CN}");
                     }
 
+                    var newCt = new CountTreeDO()
+                    {
+                        CuttingUnit_CN = ct.CuttingUnit_CN,
+                        SampleGroup_CN = ct.SampleGroup_CN,
+                        TreeDefaultValue_CN = ct.TreeDefaultValue_CN,
+                        Tally_CN = tallyMatch.Tally_CN,
+                        Component_CN = component_cn,
+                    };
+
                     // insert the count tree record into the component
-                    Master.Execute2($"INSERT INTO {comp.DBAlias}.CountTree " +
-                        $"(CuttingUnit_CN, SampleGroup_CN, TreeDefaultValue_CN, Tally_CN, Component_CN) " +
-                        $"VALUES " +
-                        $"(@CuttingUnit_CN, @SampleGroup_CN, @TreeDefaultValue_CN, @Tally_CN, @Component_CN);",
-                        new
-                        {
-                            ct.CuttingUnit_CN,
-                            ct.SampleGroup_CN,
-                            ct.TreeDefaultValue_CN,
-                            ct.Tally_CN,
-                            comp.Component_CN,
-                        });
+                    var newCt_cn = master.Insert(newCt, tableName: $"{COMP_ALIAS}.CountTree");
+                    log?.PostStatus($"CountTree added :{newCt_cn}");
+
                 }
+                progress?.Report((++i * 100) / unitsOfWork);
             }
+            log?.EndJob();
         }
 
-        public void PushNewSampleGroups(ComponentFileVM comp)
+        public static void PushSampleGroup(DAL master, IProgress<int> progress, IMergeLog log)
         {
-            StartJob("Push New SampleGroup Records");
+            var compSGEntDisc = new EntityDescription(typeof(SampleGroupDO));
+            compSGEntDisc.Source = new TableOrSubQuery($"{COMP_ALIAS}.SampleGroup");
 
-            int? rowsAffected = Master.Execute("INSERT OR IGNORE INTO " + comp.DBAlias + ".SampleGroup " +
-                "SELECT * FROM main.SampleGroup;");
+            log?.StartJob();
 
-            PostStatus(rowsAffected.GetValueOrDefault(0).ToString() + " Rows Affected");
-            EndJob();
+            var sampleGroups = master.From<SampleGroupDO>().Query().ToArray();
+            var unitsOfWork = sampleGroups.Length;
+            var i = 0;
+            foreach (var sg in sampleGroups)
+            {
+                var mastCN = sg.SampleGroup_CN;
+
+                var match = master.From<SampleGroupDO>(new TableOrSubQuery($"{COMP_ALIAS}.SampleGroup"))
+                    .Where("Code = @p1 AND Stratum_CN = @p2").Query(sg.Code, sg.Stratum_CN).FirstOrDefault();
+
+                if (match == null)
+                {
+                    var newSG = new SampleGroupDO()
+                    {
+                        Code = sg.Code,
+                        Stratum_CN = sg.Stratum_CN,
+                        BigBAF = sg.BigBAF,
+                        BiomassProduct = sg.BiomassProduct,
+                        CreatedBy = sg.CreatedBy,
+                        CreatedDate = sg.CreatedDate,
+                        CutLeave = sg.CutLeave,
+                        DefaultLiveDead = sg.DefaultLiveDead,
+                        Description = sg.Description,
+                        InsuranceFrequency = sg.InsuranceFrequency,
+                        KZ = sg.KZ,
+                        MaxKPI = sg.MaxKPI,
+                        MinKPI = sg.MinKPI,
+                        PrimaryProduct = sg.PrimaryProduct,
+                        SampleSelectorType = sg.SampleSelectorType,
+                        SamplingFrequency = sg.SamplingFrequency,
+                        SecondaryProduct = sg.SecondaryProduct,
+                        SmallFPS = sg.SmallFPS,
+                        TallyMethod = sg.TallyMethod,
+                        UOM = sg.UOM,
+                    };
+
+                    var sg_cn = (master.ExecuteScalar<int>($"SELECT count(*) FROM {COMP_ALIAS}.SampleGroup WHERE SampleGroup_CN = @p1", mastCN) == 0)
+                        ? mastCN
+                        : (long?)null;
+
+                    var newSG_CN = master.Insert(newSG, tableName: $"{COMP_ALIAS}.SampleGroup", keyValue: sg_cn);
+                    match = newSG;
+                    log?.PostStatus($"SampleGroup added :{newSG_CN}");
+                }
+
+                var matchCN = match.SampleGroup_CN;
+                if (matchCN != mastCN)
+                {
+                    if (master.ExecuteScalar<int>($"SELECT count(*) FROM {COMP_ALIAS}.SampleGroup WHERE SampleGroup_CN = @p1", mastCN) > 0)
+                    {
+                        var nextSg_CN = master.ExecuteScalar<long>($"SELECT seq + 1 FROM {COMP_ALIAS}.sqlite_sequence WHERE name = 'SampleGroup';");
+
+                        MoveSg(master, COMP_ALIAS, mastCN.Value, nextSg_CN);
+                        log?.PostStatus($"SampleGroup swap :{mastCN} => {nextSg_CN}");
+                    }
+
+                    MoveSg(master, COMP_ALIAS, matchCN.Value, mastCN.Value);
+                    log?.PostStatus($"SampleGroup mismatch resolved :{matchCN} => {mastCN}");
+                }
+
+                progress?.Report((++i * 100) / unitsOfWork);
+            }
+
+            log?.EndJob();
         }
 
-        public void PushNewStratumRecords(ComponentFileVM comp)
+        public static void PushStratum(DAL master, IProgress<int> progress, IMergeLog log)
         {
-            StartJob("Add New Strata");
+            log?.StartJob();
+            var strata = master.From<StratumDO>().Query().ToArray();
+            var unitsOfWork = strata.Length;
+            var i = 0;
 
-            int? rowsAffected = Master.Execute("INSERT OR IGNORE INTO " + comp.DBAlias + ".Stratum " +
-                "SELECT * FROM main.Stratum;");
+            foreach (var st in strata)
+            {
+                var mastCN = st.Stratum_CN;
+                var match = master.Query<StratumDO>($"SELECT * FROM {COMP_ALIAS}.Stratum WHERE Code = @p1;", st.Code).FirstOrDefault();
 
-            PostStatus(rowsAffected.GetValueOrDefault(0).ToString() + " Rows Affected");
+                if (match == null)
+                {
+                    var newSt = new StratumDO()
+                    {
+                        Code = st.Code,
+                        BasalAreaFactor = st.BasalAreaFactor,
+                        CreatedBy = st.CreatedBy,
+                        CreatedDate = st.CreatedDate,
+                        Description = st.Description,
+                        FBSCode = st.FBSCode,
+                        FixedPlotSize = st.FixedPlotSize,
+                        Hotkey = st.Hotkey,
+                        KZ3PPNT = st.KZ3PPNT,
+                        Method = st.Method,
+                        Month = st.Month,
+                        SamplingFrequency = st.SamplingFrequency,
+                        VolumeFactor = st.VolumeFactor,
+                        Year = st.Year,
+                        YieldComponent = st.YieldComponent,
+                    };
 
-            EndJob();
+                    // if we can try to give the stratum the same cn value otherwise we will fix it later
+                    var st_cn = (master.ExecuteScalar<int>($"SELECT count(*) FROM {COMP_ALIAS}.Stratum WHERE Stratum_CN = @p1", mastCN) == 0)
+                        ? mastCN
+                        : (long?)null;
+                    master.Insert(newSt, $"{COMP_ALIAS}.Stratum", keyValue: st_cn);
+                    match = newSt;
+
+                    log?.PostStatus($"Stratum added :{st_cn}");
+                }
+
+                var matchCN = match.Stratum_CN;
+                if (match.Stratum_CN != mastCN)
+                {
+                    if (master.ExecuteScalar<int>($"SELECT count(*) FROM {COMP_ALIAS}.Stratum WHERE Stratum_CN = @p1", st.Stratum_CN) > 0)
+                    {
+                        var nextSt_CN = master.ExecuteScalar<long>($"SELECT seq + 1 FROM {COMP_ALIAS}.sqlite_sequence WHERE name = 'Stratum';");
+
+                        MoveSt(master, COMP_ALIAS, mastCN.Value, nextSt_CN);
+                        log?.PostStatus($"Stratum swap :{mastCN} => {nextSt_CN}");
+                    }
+
+                    MoveSt(master, COMP_ALIAS, matchCN.Value, mastCN.Value);
+                    log?.PostStatus($"Stratum mismatch resolved :{matchCN} => {mastCN}");
+                }
+
+                progress?.Report((++i * 100) / unitsOfWork);
+            }
+
+            log?.EndJob();
         }
 
-        public void PushNewUnitRecords(ComponentFileVM comp)
+        public static void PushCuttingUnit(DAL master, IProgress<int> progress, IMergeLog log)
         {
-            StartJob("Add New Units");
+            log?.StartJob();
 
-            int? rowsAffected = Master.Execute("INSERT OR IGNORE INTO " + comp.DBAlias + ".CuttingUnit " +
-                "SELECT * FROM main.CuttingUnit;");
+            var units = master.From<CuttingUnitDO>().Query().ToArray();
+            var unitsOfWork = units.Length;
+            var i = 0;
+            foreach (var unit in units)
+            {
+                var mastCN = unit.CuttingUnit_CN;
+                var match = master.From<CuttingUnitDO>(new TableOrSubQuery($"{COMP_ALIAS}.CuttingUnit"))
+                    .Where("Code = @p1").Query(unit.Code).FirstOrDefault();
 
-            EndJob();
+                if (match == null)
+                {
+                    var newUnit = new CuttingUnitDO()
+                    {
+                        Code = unit.Code,
+                        Area = unit.Area,
+                        CreatedBy = unit.CreatedBy,
+                        CreatedDate = unit.CreatedDate,
+                        Description = unit.Description,
+                        LoggingMethod = unit.LoggingMethod,
+                        PaymentUnit = unit.PaymentUnit,
+                        Rx = unit.Rx,
+                    };
+
+                    var unit_CN = (master.ExecuteScalar<int>($"SELECT count(*) FROM {COMP_ALIAS}.CuttingUnit WHERE CuttingUnit_CN = @p1;", mastCN) == 0)
+                        ? mastCN
+                        : (long?)null;
+
+                    master.Insert(newUnit, tableName: $"{COMP_ALIAS}.CuttingUnit", keyValue: unit_CN);
+
+                    match = newUnit;
+                    log?.PostStatus($"Unit added :{unit_CN}");
+                }
+
+                var matchCN = match.CuttingUnit_CN;
+                if (matchCN != mastCN)
+                {
+                    if (master.ExecuteScalar<int>($"SELECT count(*) FROM {COMP_ALIAS}.CuttingUnit WHERE CuttingUnit_CN = @p1;", mastCN) > 0)
+                    {
+                        var nextCu_CN = master.ExecuteScalar<long>($"SELECT seq + 1 FROM {COMP_ALIAS}.sqlite_sequence WHERE name = 'CuttingUnit';");
+
+                        MoveUnit(master, COMP_ALIAS, mastCN.Value, nextCu_CN);
+                        log?.PostStatus($"Unit swap :{mastCN} -> {nextCu_CN}");
+                    }
+                    MoveUnit(master, COMP_ALIAS, matchCN.Value, mastCN.Value);
+                    log?.PostStatus($"Unit mismatch resolved :{matchCN} -> {mastCN}");
+                }
+
+                progress?.Report((++i * 100) / unitsOfWork);
+            }
+
+            log?.EndJob();
         }
 
-        public void PushSampleGroupTreeDefaultInserts(ComponentFileVM comp)
+        public static void PushSampleGroupTreeDefault(DAL master, IProgress<int> progress, IMergeLog log)
         {
-            StartJob("Push SampleGroupTreeDefault Inserts");
+            log?.StartJob();
 
-            int? rowsAffected = Master.Execute("INSERT OR IGNORE INTO " + comp.DBAlias + ".SampleGroupTreeDefaultValue " +
+            int? rowsAffected = master.Execute("INSERT OR IGNORE INTO " + COMP_ALIAS + ".SampleGroupTreeDefaultValue " +
                 "SELECT * FROM main.SampleGroupTreeDefaultValue;");
 
-            PostStatus(rowsAffected.GetValueOrDefault(0).ToString() + " Rows Affected");
-            EndJob();
+            log?.PostStatus(rowsAffected.GetValueOrDefault(0).ToString() + " Rows Affected");
+            log?.EndJob();
         }
 
-        public void PushTreeDefaultInserts(ComponentFileVM comp)
+        public static void PushTreeDefault(DAL master, IProgress<int> progress, IMergeLog log)
         {
-            StartJob("Push TreeDefaultValue Inserts");
+            log?.StartJob();
 
-            int? rowsAffected = Master.Execute("INSERT OR IGNORE INTO " + comp.DBAlias + ".TreeDefaultValue " +
-                "SELECT * FROM main.TreeDefaultValue;");
+            var tdvs = master.From<TreeDefaultValueDO>().Query().ToArray();
+            var unitsOfWork = tdvs.Length;
+            var i = 0;
 
-            PostStatus(rowsAffected.GetValueOrDefault(0).ToString() + " Rows Affected");
-            EndJob();
+            foreach (var tdv in tdvs)
+            {
+                var mastCN = tdv.TreeDefaultValue_CN.Value;
+                var match = master.From<TreeDefaultValueDO>(new TableOrSubQuery($"{COMP_ALIAS}.TreeDefaultValue"))
+                    .Where("Species = @p1 AND PrimaryProduct = @p2 AND LiveDead = @p3")
+                    .Query(tdv.Species, tdv.PrimaryProduct, tdv.LiveDead).FirstOrDefault();
+
+                if (match == null)
+                {
+                    var newTDV = new TreeDefaultValueDO()
+                    {
+                        Species = tdv.Species,
+                        PrimaryProduct = tdv.PrimaryProduct,
+                        LiveDead = tdv.LiveDead,
+                        AverageZ = tdv.AverageZ,
+                        BarkThicknessRatio = tdv.BarkThicknessRatio,
+                        ContractSpecies = tdv.ContractSpecies,
+                        CreatedBy = tdv.CreatedBy,
+                        CreatedDate = tdv.CreatedDate,
+                        CullPrimary = tdv.CullPrimary,
+                        CullSecondary = tdv.CullSecondary,
+                        FIAcode = tdv.FIAcode,
+                        FormClass = tdv.FormClass,
+                        HiddenPrimary = tdv.HiddenPrimary,
+                        HiddenSecondary = tdv.HiddenSecondary,
+                        MerchHeightLogLength = tdv.MerchHeightLogLength,
+                        MerchHeightType = tdv.MerchHeightType,
+                        Recoverable = tdv.Recoverable,
+                        ReferenceHeightPercent = tdv.ReferenceHeightPercent,
+                        TreeGrade = tdv.TreeGrade,
+                    };
+
+                    var tdv_CN = (master.ExecuteScalar<int>($"SELECT count(*) FROM {COMP_ALIAS}.TreeDefaultValue WHERE TreeDefaultValue_CN = @p1;", mastCN) == 0)
+                        ? tdv.TreeDefaultValue_CN
+                        : (long?)null;
+
+                    master.Insert(newTDV, tableName: $"{COMP_ALIAS}.TreeDefaultValue", keyValue: tdv_CN);
+                    match = newTDV;
+                    log?.PostStatus($"TDV added :{tdv_CN}");
+                }
+
+                var matchCN = match.TreeDefaultValue_CN.Value;
+                if (matchCN != mastCN)
+                {
+                    if (master.ExecuteScalar<int>($"SELECT count(*) FROM {COMP_ALIAS}.TreeDefaultValue WHERE TreeDefaultValue_CN = @p1;", tdv.TreeDefaultValue_CN) > 0)
+                    {
+                        var nextTDV_CN = master.ExecuteScalar<long>($"SELECT seq + 1 FROM {COMP_ALIAS}.sqlite_sequence WHERE name = 'TreeDefaultValue';");
+
+                        MoveTDV(master, COMP_ALIAS, mastCN, nextTDV_CN);
+                        log?.PostStatus($"TDV swap :{mastCN} -> {nextTDV_CN}");
+                    }
+
+                    MoveTDV(master, COMP_ALIAS, matchCN, mastCN);
+                    log?.PostStatus($"TDV missmatch resolved :{matchCN} -> {mastCN}");
+                }
+
+                progress?.Report((++i * 100) / unitsOfWork);
+            }
+
+            log?.EndJob();
         }
 
-        public void PushUnitStratumChanges(ComponentFileVM comp)
+        public static void PushCuttingUnitStratum(DAL master, IProgress<int> progress, IMergeLog log)
         {
-            StartJob("Update Component Unit Strata Mappings");
+            log?.StartJob();
 
-            int? rowsAffected = Master.Execute("DELETE FROM " + comp.DBAlias + ".CuttingUnitStratum; " +
-                "INSERT OR IGNORE INTO " + comp.DBAlias + ".CuttingUnitStratum " +
+            int? rowsAffected = master.Execute("DELETE FROM " + COMP_ALIAS + ".CuttingUnitStratum; " +
+                "INSERT OR IGNORE INTO " + COMP_ALIAS + ".CuttingUnitStratum " +
                 "SELECT * FROM main.CuttingUnitStratum;");
 
-            PostStatus(rowsAffected.GetValueOrDefault(0).ToString() + " Rows Affected");
-            EndJob();
+            log?.PostStatus(rowsAffected.GetValueOrDefault(0).ToString() + " Rows Affected");
+            log?.EndJob();
         }
 
         #endregion push new design records
 
         #region Pull field data updates
 
-        public void PullMasterLogUpdates(ComponentFileVM comp)
+        public static void PullMasterLogUpdates(DAL master, ComponentFile comp, MergeTableCommandBuilder treeCmdBldr, IProgress<int> progress, IMergeLog log)
         {
-            StartJob("Update Master Logs");
-            MergeTableCommandBuilder cmdBldr = this.CommandBuilders["Log"];
-            List<MergeObject> pullList = cmdBldr.ListMasterUpdates(Master, comp);
+            log?.StartJob();
+
+            var pullList = treeCmdBldr.ListMasterUpdates(master, comp);
+            var unitsOfWork = pullList.Count();
+            var i = 0;
 
             foreach (MergeObject mRec in pullList)
             {
-                CheckWorkerStatus();
                 long matchRowid = mRec.MatchRowID.Value;
-                LogDO log = comp.Database.From<LogDO>()
+                LogDO logRec = comp.Database.From<LogDO>()
                     .Where("Log_CN = @p1")
                     .Read(mRec.ComponentRowID).FirstOrDefault();
-                Master.Update(log, matchRowid, OnConflictOption.Fail);
-                this.ResetRowVersion(comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
-                IncrementProgress();
+                master.Update(logRec, keyValue: matchRowid, option: OnConflictOption.Fail);
+                ResetRowVersion(master, comp, matchRowid, mRec.ComponentRowID.Value, treeCmdBldr);
+                progress?.Report((++i * 100) / unitsOfWork);
             }
-
-            EndJob();
+            log?.EndJob();
         }
 
-        public void PullMasterPlotUpdates(ComponentFileVM comp)
+        public static void PullMasterPlotUpdates(DAL master, ComponentFile comp, MergeTableCommandBuilder plotCmdBldr, IProgress<int> progress, IMergeLog log)
         {
-            StartJob("Update Master Plots");
-            MergeTableCommandBuilder cmdBldr = this.CommandBuilders["Plot"];
-            List<MergeObject> pullList = cmdBldr.ListMasterUpdates(Master, comp);
+            log?.StartJob();
+            var pullList = plotCmdBldr.ListMasterUpdates(master, comp);
+            var unitsOfWork = pullList.Count();
+            var i = 0;
             foreach (MergeObject mRec in pullList)
             {
-                CheckWorkerStatus();
                 long matchRowid = mRec.MatchRowID.Value;
                 var plot = comp.Database.From<PlotDO>()
                     .Where("Plot_CN = @p1").Read(mRec.ComponentRowID).FirstOrDefault();
 
-                Master.Update(plot, matchRowid, OnConflictOption.Fail);
-                this.ResetRowVersion(comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
-                IncrementProgress();
+                master.Update(plot, keyValue: matchRowid, option: OnConflictOption.Fail);
+                ResetRowVersion(master, comp, matchRowid, mRec.ComponentRowID.Value, plotCmdBldr);
+                progress.Report((++i * 100) / unitsOfWork);
             }
 
-            EndJob();
+            log?.EndJob();
         }
 
-        public void PullMasterStemUpdates(ComponentFileVM comp)
+        public static void PullMasterStemUpdates(DAL master, ComponentFile comp, MergeTableCommandBuilder stemCmdBldr, IProgress<int> progress, IMergeLog log)
         {
-            StartJob("Update Master Stems");
-            MergeTableCommandBuilder cmdBldr = this.CommandBuilders["Stem"];
-            List<MergeObject> pullList = cmdBldr.ListMasterUpdates(Master, comp);
+            log?.StartJob();
 
+            var pullList = stemCmdBldr.ListMasterUpdates(master, comp);
+            var unitsOfWork = pullList.Count();
+            var i = 0;
             foreach (MergeObject mRec in pullList)
             {
-                CheckWorkerStatus();
                 long matchRowid = mRec.MatchRowID.Value;
                 StemDO stem = comp.Database.From<StemDO>()
                     .Where("Stem_CN = @p1")
                     .Read(mRec.ComponentRowID).FirstOrDefault();
 
-                Master.Update(stem, matchRowid, OnConflictOption.Fail);
-                this.ResetRowVersion(comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
-                IncrementProgress();
+                master.Update(stem, keyValue: matchRowid, option: OnConflictOption.Fail);
+                ResetRowVersion(master, comp, matchRowid, mRec.ComponentRowID.Value, stemCmdBldr);
+                progress?.Report((++i * 100) / unitsOfWork);
             }
 
-            EndJob();
+            log?.EndJob();
         }
 
-        public void PullMasterTreeUpdates(ComponentFileVM comp)
+        public static void PullMasterTreeUpdates(DAL master, ComponentFile comp, MergeTableCommandBuilder treeCmdBldr, IProgress<int> progress, IMergeLog log)
         {
-            StartJob("Update Master Trees");
-            MergeTableCommandBuilder cmdBldr = this.CommandBuilders["Tree"];
-            List<MergeObject> pullList = cmdBldr.ListMasterUpdates(Master, comp);
+            log?.StartJob();
+            var pullList = treeCmdBldr.ListMasterUpdates(master, comp);
+            var unitsOfWork = pullList.Count();
+            var i = 0;
 
             foreach (MergeObject mRec in pullList)
             {
-                CheckWorkerStatus();
                 long matchRowid = mRec.MatchRowID.Value;
                 TreeDO tree = comp.Database.From<TreeDO>().Where("rowid = @p1")
                     .Query(mRec.ComponentRowID).FirstOrDefault();
-                Master.Update(tree, matchRowid, OnConflictOption.Fail);
-                this.ResetRowVersion(comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
-                IncrementProgress();
+                master.Update(tree, keyValue: matchRowid, option: OnConflictOption.Fail);
+                ResetRowVersion(master, comp, matchRowid, mRec.ComponentRowID.Value, treeCmdBldr);
+                progress?.Report((++i * 100) / unitsOfWork);
             }
 
-            EndJob();
+            log?.EndJob();
         }
 
         #endregion Pull field data updates
 
         #region push field data updates
 
-        public void PushComponentLogUpdates(ComponentFileVM comp)
+        public static void PushComponentLogUpdates(DAL master, ComponentFile comp, MergeTableCommandBuilder cmdBldr, IProgress<int> progress, IMergeLog log)
         {
-            StartJob("Update Component Logs");
-            MergeTableCommandBuilder cmdBldr = this.CommandBuilders["Log"];
-            List<MergeObject> pushList = cmdBldr.ListComponentUpdates(Master, comp);
+            log?.StartJob();
+
+            var pushList = cmdBldr.ListComponentUpdates(master, comp);
+            var unitsOfWork = pushList.Count();
+            var i = 0;
             foreach (MergeObject mRec in pushList)
             {
-                CheckWorkerStatus();
                 long matchRowid = mRec.MatchRowID.Value;
-                LogDO log = Master.From<LogDO>()
+                LogDO logRec = master.From<LogDO>()
                     .Where("Log_CN = @p1").Read(matchRowid).FirstOrDefault();
 
-                comp.Database.Update(log, mRec.ComponentRowID.Value, OnConflictOption.Fail);
-                this.ResetRowVersion(comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
-                IncrementProgress();
+                comp.Database.Update(logRec, keyValue: mRec.ComponentRowID.Value, option: OnConflictOption.Fail);
+                ResetRowVersion(master, comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
+                progress?.Report((++i * 100) / unitsOfWork);
             }
-            EndJob();
+            log?.EndJob();
         }
 
-        public void PushComponentPlotUpdates(ComponentFileVM comp)
+        public static void PushComponentPlotUpdates(DAL master, ComponentFile comp, MergeTableCommandBuilder cmdBldr, IProgress<int> progress, IMergeLog log)
         {
-            StartJob("Update Component Plots");
-            MergeTableCommandBuilder cmdBldr = this.CommandBuilders["Plot"];
-            List<MergeObject> pushList = cmdBldr.ListComponentUpdates(Master, comp);
+            log?.StartJob();
+
+            var pushList = cmdBldr.ListComponentUpdates(master, comp);
+            var unitsOfWork = pushList.Count();
+            var i = 0;
             foreach (MergeObject mRec in pushList)
             {
-                CheckWorkerStatus();
                 long matchRowid = mRec.MatchRowID.Value;
-                PlotDO plot = Master.From<PlotDO>()
+                PlotDO plot = master.From<PlotDO>()
                     .Where("Plot_CN = @p1").Read(matchRowid).FirstOrDefault();
 
-                comp.Database.Update(plot, mRec.ComponentRowID.Value, OnConflictOption.Fail);
-                this.ResetRowVersion(comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
-                IncrementProgress();
+                comp.Database.Update(plot, keyValue: mRec.ComponentRowID.Value, option: OnConflictOption.Fail);
+                ResetRowVersion(master, comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
+                progress?.Report((++i * 100) / unitsOfWork);
             }
 
-            EndJob();
+            log?.EndJob();
         }
 
-        public void PushComponentStemUpdates(ComponentFileVM comp)
+        public static void PushComponentStemUpdates(DAL master, ComponentFile comp, MergeTableCommandBuilder cmdBldr, IProgress<int> progress, IMergeLog log)
         {
-            StartJob("Update Component Stems");
-            MergeTableCommandBuilder cmdBldr = this.CommandBuilders["Stem"];
-            List<MergeObject> pushList = cmdBldr.ListComponentUpdates(Master, comp);
+            log?.StartJob();
+            var pushList = cmdBldr.ListComponentUpdates(master, comp);
+            var unitsOfWork = pushList.Count();
+            var i = 0;
             foreach (MergeObject mRec in pushList)
             {
-                CheckWorkerStatus();
                 long matchRowid = mRec.MatchRowID.Value;
-                StemDO stem = Master.From<StemDO>()
+                StemDO stem = master.From<StemDO>()
                     .Where("Stem_CN = @p1").Read(matchRowid).FirstOrDefault();
 
-                comp.Database.Update(stem, mRec.ComponentRowID.Value, OnConflictOption.Fail);
-                this.ResetRowVersion(comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
-                IncrementProgress();
+                comp.Database.Update(stem, keyValue: mRec.ComponentRowID.Value, option: OnConflictOption.Fail);
+                ResetRowVersion(master, comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
+                progress?.Report((++i * 100) / unitsOfWork);
             }
 
-            EndJob();
+            log?.EndJob();
         }
 
-        public void PushComponentTreeUpdates(ComponentFileVM comp)
+        public static void PushComponentTreeUpdates(DAL master, ComponentFile comp, MergeTableCommandBuilder cmdBldr,  IProgress<int> progress, IMergeLog log)
         {
-            StartJob("Update Component Trees");
-            MergeTableCommandBuilder cmdBldr = this.CommandBuilders["Tree"];
-            List<MergeObject> pushList = cmdBldr.ListComponentUpdates(Master, comp);
+            log?.StartJob();
+
+            var pushList = cmdBldr.ListComponentUpdates(master, comp);
+            var unitsOfWork = pushList.Count();
+            var i = 0;
             foreach (MergeObject mRec in pushList)
             {
-                CheckWorkerStatus();
                 long matchRowid = mRec.MatchRowID.Value;
-                TreeDO tree = Master.From<TreeDO>().Where("Tree_CN = @p1")
+                TreeDO tree = master.From<TreeDO>().Where("Tree_CN = @p1")
                     .Read(matchRowid).FirstOrDefault();
                 //TODO need to handle condition where MasterRowID is different from ComponentRowID
-                comp.Database.Update(tree, mRec.ComponentRowID.Value, OnConflictOption.Fail);
-                this.ResetRowVersion(comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
-                IncrementProgress();
+                comp.Database.Update(tree, keyValue: mRec.ComponentRowID.Value, option: OnConflictOption.Fail);
+                ResetRowVersion(master, comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
+                progress?.Report((++i * 100) / unitsOfWork);
             }
-            EndJob();
+            log?.EndJob();
         }
 
         #endregion push field data updates
 
-        private void ResetComponentRowVersion(ComponentFileVM comp, long componentRowID, MergeTableCommandBuilder commBldr)
+        private static void ResetComponentRowVersion(DAL comp, long componentRowID, MergeTableCommandBuilder commBldr)
         {
-            comp.Database.Execute("UPDATE " + commBldr.ClientTableName + " SET RowVersion = 0 WHERE RowID = @p1;", componentRowID);
+            comp.Execute("UPDATE " + commBldr.ClientTableName + " SET RowVersion = 0 WHERE RowID = @p1;", componentRowID);
         }
 
-        private void ResetRowVersion(ComponentFileVM comp, long masterRowID, long componentRowID, MergeTableCommandBuilder commBldr)
+        private static void ResetRowVersion(DAL master, ComponentFile comp, long masterRowID, long componentRowID, MergeTableCommandBuilder commBldr)
         {
-            Master.Execute("UPDATE " + commBldr.ClientTableName + " SET RowVersion = 0 WHERE RowID = @p1;", masterRowID);
-            ResetComponentRowVersion(comp, componentRowID, commBldr);
+            master.Execute("UPDATE " + commBldr.ClientTableName + " SET RowVersion = 0 WHERE RowID = @p1;", masterRowID);
+            ResetComponentRowVersion(comp.Database, componentRowID, commBldr);
         }
 
-        #region Calculate work
 
-        public long CountAddRecordActions()
+        public static Task DoMergeAsync(DAL master, IEnumerable<ComponentFile> components, IDictionary<string, MergeTableCommandBuilder> commandBuilders, CancellationToken cancellation, IProgress<int> progress, IMergeLog log)
         {
-            long total = 0;
-            foreach (MergeTableCommandBuilder cmdBldr in this.CommandBuilders.Values)
-            {
-                total += CountAddRecordActions(cmdBldr);
-            }
-            return total;
-            //long total = CountAddRecordActions("Tree");
-            //total += CountAddRecordActions("Log");
-            //total += CountAddRecordActions("Stem");
-            //total += CountAddRecordActions("Plot");
-            //return total;
+            return Task.Run(() => DoMerge(master, components, commandBuilders, cancellation, progress, log));
         }
 
-        //public long CountUpdateComponentActions(MergeTableCommandBuilder cmdBldr)
-        //{
-        //    return Master.GetRowCount(cmdBldr.MergeTableName, cmdBldr.FindMasterToCompUpdates);
-        //}
-        public long CountAddRecordActions(MergeTableCommandBuilder cmdBldr)
+        public static void DoMerge(DAL master, IEnumerable<ComponentFile> components, IDictionary<string, MergeTableCommandBuilder> commandBuilders, CancellationToken cancellation, IProgress<int> progress, IMergeLog log)
         {
-            return Master.GetRowCount(cmdBldr.MergeTableName, cmdBldr.FindNewRecords);
+            SyncDesign(master, components, cancellation, progress, log);
+            SyncFieldData(master, components, commandBuilders, cancellation, progress, log);
         }
-
-        public long CountUpdateActions()
-        {
-            long total = 0;
-            foreach (MergeTableCommandBuilder cmdBldr in this.CommandBuilders.Values)
-            {
-                total += CountUpdateActions(cmdBldr);
-            }
-            return total;
-            //long total = CountUpdateMasterActions("Tree");
-            //total += CountUpdateMasterActions("Log");
-            //total += CountUpdateMasterActions("Stem");
-            //total += CountUpdateMasterActions("Plot");
-            //return total;
-        }
-
-        public long CountUpdateActions(MergeTableCommandBuilder cmdBldr)
-        {
-            return Master.GetRowCount(cmdBldr.MergeTableName, "WHERE " + cmdBldr.FindMatchesBase);
-        }
-
-        private long CountTotalMergeWork()
-        {
-            long total = CountUpdateActions();
-            //total += CountUpdateComponentActions();
-            total += CountAddRecordActions();
-            return total;
-        }
-
-        //public long CountUpdateComponentActions()
-        //{
-        //    long total = 0;
-        //    foreach (MergeTableCommandBuilder cmdBldr in this.CommandBuilders.Values)
-        //    {
-        //        total += CountUpdateComponentActions(cmdBldr);
-        //    }
-        //    return total;
-        //    //long total = CountUpdateComponentActions("Tree");
-        //    //total += CountUpdateComponentActions("Log");
-        //    //total += CountUpdateComponentActions("Stem");
-        //    //total += CountUpdateComponentActions("Plot");
-        //    //return total;
-        //}
-
-        #endregion Calculate work
-
-        #region Job Mgmt
-
-        private string _currentJobName;
-        //private Stopwatch _stopwatch;
-
-        private void EndJob()
-        {
-            //if (_stopwatch != null)
-            //{
-            //    _stopwatch.Stop();
-            //    Debug.WriteLine("Ended job component " + _currentJobName + " in " + _stopwatch.ElapsedMilliseconds + "mSec");
-            //}
-            this.PostStatus(_currentJobName + ": done");
-            _currentJobName = null;
-        }
-
-        private void StartJob(string name)
-        {
-            //if (_stopwatch != null) { _stopwatch.Stop(); }
-            //_stopwatch = Stopwatch.StartNew();
-            _currentJobName = name;
-            this.PostStatus(name);
-            Debug.WriteLine("Started job component " + name);
-        }
-
-        #endregion Job Mgmt
-
-        #region IWorker Members
-
-        private bool _isCanceled;
-        private bool _isDone;
-        private int _progressInCurrentJob;
-        private Thread _thread;
-        private object _threadLock = new object();
-        private int _workInCurrentJob;
-
-        public event EventHandler<WorkerProgressChangedEventArgs> ProgressChanged;
-
-        public string ActionName { get { return "Merge"; } }
-
-        public bool IsCanceled
-        {
-            get
-            {
-                lock (_threadLock)
-                {
-                    return _isCanceled;
-                }
-            }
-            private set
-            {
-                lock (_threadLock)
-                {
-                    _isCanceled = value;
-                }
-            }
-        }
-
-        public bool IsDone
-        {
-            get
-            {
-                lock (_threadLock)
-                {
-                    return _isDone;
-                }
-            }
-            private set
-            {
-                lock (_threadLock)
-                {
-                    _isDone = value;
-                }
-            }
-        }
-
-        public bool IsWorking
-        {
-            get
-            {
-                if (_thread == null) { return false; }
-                return _thread.IsAlive;
-            }
-        }
-
-        public void BeginWork()
-        {
-            if (_thread != null && _thread.IsAlive)
-            {
-                throw new InvalidOperationException("Cancel or wait for current job to finish before starting again");
-            }
-
-            ThreadStart ts = new ThreadStart(this.DoWork);
-            this._thread = new Thread(ts)
-            {
-                IsBackground = true,
-                Name = "MergeSyncWorker"
-            };
-            this._thread.Start();
-        }
-
-        public void Cancel()
-        {
-            if (this._thread != null)
-            {
-                this.IsCanceled = true;
-                if (!this._thread.Join(1000))
-                {
-                    this._thread.Abort();
-                }
-            }
-        }
-
-        public void DoWork()
-        {
-            try
-            {
-                Analytics.TrackEvent(AnalyticsEvents.MERGE_START,
-                    new Dictionary<string, string>()
-                    {
-                        {"numComponents", Components.Count.ToString() },
-                    });
-
-                this.SyncDesign();
-                this.SyncFieldData();
-                Analytics.TrackEvent(AnalyticsEvents.MERGE_DONE);
-            }
-            catch (CancelWorkerException e)
-            {
-                Analytics.TrackEvent(AnalyticsEvents.MERGE_CANCEL);
-                this.NotifyProgressChanged(0, false, "Canceleled", e);
-                throw;
-            }
-            catch (Exception e)
-            {
-                Analytics.TrackEvent(AnalyticsEvents.MERGE_FAIL);
-                Crashes.TrackError(e);
-                this.NotifyProgressChanged(0, false, "Error:" + e.Message, e);
-                throw;
-            }
-        }
-
-        public bool Wait()
-        {
-            if (this._thread != null)
-            {
-                this._thread.Join();
-            }
-            return this.IsDone;
-        }
-
-        protected void IncrementProgress()
-        {
-            this._progressInCurrentJob++;
-            this.NotifyProgressChanged(this._progressInCurrentJob, false, null, null);
-        }
-
-        protected void NotifyProgressChanged(int workDone, bool isDone, String message, Exception error)
-        {
-            if (isDone)
-            {
-                this.IsDone = true;
-            }
-            if (this.ProgressChanged != null)
-            {
-                int percentDone = CalcPercentDone(workDone);
-                WorkerProgressChangedEventArgs e = new WorkerProgressChangedEventArgs(percentDone)
-                {
-                    IsDone = isDone,
-                    Error = error,
-                    Message = message
-                };
-                this.ProgressChanged(this, e);
-            }
-        }
-
-        protected void PostStatus(string message)
-        {
-            this.NotifyProgressChanged(this._progressInCurrentJob, false, message, null);
-        }
-
-        private int CalcPercentDone(int workDone)
-        {
-            return (_workInCurrentJob <= 0) ? 0 : (int)(100 * (float)workDone / _workInCurrentJob);
-        }
-
-        private void CheckWorkerStatus()
-        {
-            if (this.IsCanceled)
-            { throw new CancelWorkerException(); }
-        }
-
-        #endregion IWorker Members
     }
 }

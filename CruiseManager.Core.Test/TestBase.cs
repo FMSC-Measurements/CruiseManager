@@ -1,7 +1,9 @@
 ﻿using CruiseDAL;
 using CruiseManager.Core.App;
 using Moq;
+using System;
 using System.IO;
+using System.Reflection;
 using Xunit.Abstractions;
 
 namespace CruiseManager.Test
@@ -16,11 +18,17 @@ namespace CruiseManager.Test
         protected IApplicationController AppController => AppControllerMock.Object;
         protected IUserSettings UserSettings => UserSettingsMock.Object;
 
+        public string TestFilesDir { get; }
+
+        public string ProjectOutputDir { get; }
+
         public TestBase(ITestOutputHelper output)
         {
             Output = output;
 
-            var testTempPath = TestTempPath;
+            var testTempPath = TestTempPath = 
+                Path.Combine(Path.GetTempPath(), "TestTemp", this.GetType().FullName);
+
             TouchDir(testTempPath);
 
             UserSettingsMock = new Mock<IUserSettings>();
@@ -30,15 +38,25 @@ namespace CruiseManager.Test
             AppControllerMock
                 .Setup(x => x.UserSettings)
                 .Returns(() => UserSettings);
-            
+
+            var codeBaseUri = new Uri(Assembly.GetExecutingAssembly().CodeBase).AbsolutePath;
+            var codeBasePath = Uri.UnescapeDataString(codeBaseUri);
+            var projectOutputDir = ProjectOutputDir = System.IO.Path.GetDirectoryName(codeBasePath);
+            TestFilesDir = Path.Combine(projectOutputDir, "TestFiles");
         }
 
-        public string TestTempPath
+        public string TestTempPath { get; }
+
+        public string GetCleanFile(string fileName)
         {
-            get
+            var filePath = Path.Combine(TestTempPath, fileName);
+
+            if(File.Exists(filePath))
             {
-                return _testTempPath ?? (_testTempPath = Path.Combine(Path.GetTempPath(), "TestTemp", this.GetType().FullName));
+                File.Delete(filePath);
             }
+
+            return filePath;
         }
 
         public void TouchDir(string dir)

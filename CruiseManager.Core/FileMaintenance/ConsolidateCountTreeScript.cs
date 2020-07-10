@@ -4,13 +4,9 @@ namespace CruiseManager.Core.FileMaintenance
 {
     public class ConsolidateCountTreeScript : ISimpleSQLScript
     {
-        public string Description
-        {
-            get
-            {
-                return "Removes Duplicate Entries in the count tree table by combining their tree counts and kpi totals";
-            }
-        }
+        public string Name => "Consolidate Count Trees";
+
+        public string Description => "Removes Duplicate Entries in the count tree table by combining their tree counts and kpi totals";
 
         public bool CheckCanExecute(DAL database)
         {

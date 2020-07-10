@@ -4,11 +4,12 @@
   </PropertyGroup>
 	<ItemGroup>
 	  <None Remove="TestFiles\**\*" />
-	</ItemGroup>
-	<ItemGroup>
 	  <Content Include="TestFiles\**\*">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </Content>
+    <Content Include="..\Template Files\*.cut" LinkBase="TemplateFiles">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
 	</ItemGroup>
 
 

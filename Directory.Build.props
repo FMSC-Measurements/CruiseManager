@@ -1,10 +1,16 @@
 <Project>
   <PropertyGroup Label="Properties">
-    <Version>2020.03.16</Version>
+    <Version>2020.07.10</Version>
     
     <PlatformTarget>AnyCPU</PlatformTarget>
     <TargetFramework>net461</TargetFramework>
   </PropertyGroup>
+  
+   <!-- when targeting net461 SqlitePCL.Raw cant find e_sqlite3 becuase of xunit's shadow coppy feature
+  see https://github.com/reactiveui/Akavache/pull/496 and https://github.com/xunit/xunit/issues/1198 -->
+  <ItemGroup Condition="$(IsTestProject) == 'true' AND $(TargetFramework) == 'net461'">
+    <Content Include="$(MSBuildThisFileDirectory)xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 
   <PropertyGroup Label="Package Info">
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>

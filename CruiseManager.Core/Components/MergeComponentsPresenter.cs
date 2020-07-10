@@ -1,11 +1,15 @@
 ﻿using CruiseDAL;
-using CruiseDAL.DataObjects;
 using CruiseManager.Core.App;
+using CruiseManager.Core.Components.CommandBuilders;
 using CruiseManager.Core.Components.ViewInterfaces;
 using CruiseManager.Core.ViewModel;
+using Microsoft.AppCenter.Crashes;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CruiseManager.Core.Components
 {
@@ -14,22 +18,26 @@ namespace CruiseManager.Core.Components
     /// </summary>
     public class MergeComponentsPresenter : Presentor
     {
+        private long _masterTreeCount;
+        private string _lastMergeDate;
+
+        private bool _isInitialized;
+        private bool _isPrepared;
+        private bool _hasPrepareErrors;
+
         #region Properties
 
         public Dictionary<String, MergeTableCommandBuilder> CommandBuilders { get; protected set; } = new Dictionary<string, MergeTableCommandBuilder>();
 
-        public new IMergeComponentView View
-        {
-            get { return (IMergeComponentView)base.View; }
-            set { base.View = value; }
-        }
+
+        public CancellationTokenSource CancellationSource { get; } = new CancellationTokenSource();
 
         public DAL MasterDB => ApplicationController?.Database;
-        public List<ComponentFileVM> ActiveComponents { get; set; }
-        public List<ComponentFileVM> MissingComponents { get; set; }
-        public List<ComponentFileVM> AllComponents { get; set; }
+        public IEnumerable<ComponentFile> ActiveComponents { get; set; }
+        public IEnumerable<ComponentFile> MissingComponents { get; set; }
+        public IEnumerable<ComponentFile> AllComponents { get; set; }
 
-        int _numComponents;
+        private int _numComponents;
 
         public int NumComponents
         {
@@ -40,15 +48,11 @@ namespace CruiseManager.Core.Components
             }
         }
 
-        private long _masterTreeCount;
-
         public long MasterTreeCount
         {
             get { return _masterTreeCount; }
             set { SetValue(value, ref _masterTreeCount); }
         }
-
-        private string _lastMergeDate;
 
         public string LastMergeDate
         {
@@ -56,76 +60,36 @@ namespace CruiseManager.Core.Components
             set { SetValue(value, ref _lastMergeDate); }
         }
 
-        #region CurrentWorker
+        public MergeLog MergeLog { get; } = new MergeLog();
 
-        private IWorker _currentWorker;
+        public Progress<int> Progress { get; } = new Progress<int>();
 
-        public IWorker CurrentWorker
+        public bool IsPrepared
         {
-            get
-            {
-                return _currentWorker;
-            }
-            private set
-            {
-                OnCurrentWorkerChanging();
-                _currentWorker = value;
-                OnCurrentWorkerChanged();
-            }
+            get => _isPrepared;
+            protected set => SetValue(value, ref _isPrepared);
         }
 
-        private void OnCurrentWorkerChanging()
-        {
-            var currentWorker = CurrentWorker;
-            if (currentWorker != null)
-            {
-                currentWorker.ProgressChanged -= this.CurrentWorker_ProgressChanged;
-            }
-        }
+        public bool HasConflicts => IsPrepared && (GetNumConflicts() > 0);
 
-        private void OnCurrentWorkerChanged()
-        {
-            var currentWorker = CurrentWorker;
-            if (currentWorker != null)
-            {
-                currentWorker.ProgressChanged += this.CurrentWorker_ProgressChanged;
-            }
-            CurrentWorker_ProgressChanged(currentWorker, new WorkerProgressChangedEventArgs());
-        }
-
-        private void CurrentWorker_ProgressChanged(Object sender, WorkerProgressChangedEventArgs e)
-        {
-            if (View != null)
-            {
-                View.HandleProgressChanged(sender, e);
-            }
-        }
-
-        #endregion CurrentWorker
-
-        public bool IsWorkerReady
-        {
-            get
-            {
-                if (_currentWorker == null) { return false; }
-                return !(_currentWorker.IsWorking || _currentWorker.IsDone);
-            }
-        }
+        public bool CanMerge => IsPrepared && !HasConflicts;
 
         #endregion Properties
 
         public MergeComponentsPresenter(IApplicationController applicationController)
             : base(applicationController)
         {
-            Initialize(applicationController.Database);
-            InitializeMergeTableCommandBuilders();
-
-            this.CurrentWorker = new PrepareMergeWorker(this);
-            this.CurrentWorker.ProgressChanged += this.HandelPrepareProgressChanged;
+            var master = applicationController.Database;
+            Initialize(master);
         }
 
-        void Initialize(DAL master)
+        private void Initialize(DAL master)
         {
+            foreach (var cmd in MakeCommandBuilders(master))
+            {
+                CommandBuilders.Add(cmd.ClientTableName, cmd);
+            }
+
             try
             {
                 var value = master.ReadGlobalValue("Comp", "ChildComponents");
@@ -136,71 +100,22 @@ namespace CruiseManager.Core.Components
                 NumComponents = 0;
             }
 
-            MasterTreeCount = MasterDB.GetRowCount("Tree", null, null);
+            MasterTreeCount = master.GetRowCount("Tree", null, null);
+
+            FindComponents();
 
             LastMergeDate = String.Empty;
         }
 
-        /// <summary>
-        /// Initializes some configuration information for each table that we will be merging
-        /// Note there are some tables that we aren't setting up because we will be merging
-        /// them using a more hands on method in the MergeSyncWorker
-        /// </summary>
-        private void InitializeMergeTableCommandBuilders()
+        public static IEnumerable<MergeTableCommandBuilder> MakeCommandBuilders(DAL master)
         {
-            AddCommandBuilder(new MergeTableCommandBuilder(this.MasterDB, "Tree")
+            return new MergeTableCommandBuilder[]
             {
-                DoGUIDMatch = true,
-                DoKeyMatch = true,
-                DoNaturalMatch = true,
-                MergeChangesFromComponent = true,
-                MergeChangesFromMaster = true,
-                RecordsUniqueAccrossComponents = true,
-                MergeNewFromComponent = true,
-                MergeNewFromMaster = false,
-                MergeDeletionsFromComponent = false
-            });
-            AddCommandBuilder(new MergeTableCommandBuilder(this.MasterDB, "Log")
-            {
-                DoGUIDMatch = true,
-                DoKeyMatch = true,
-                DoNaturalMatch = true,
-                MergeChangesFromComponent = true,
-                MergeChangesFromMaster = true,
-                RecordsUniqueAccrossComponents = true,
-                MergeNewFromComponent = true,
-                MergeNewFromMaster = false,
-                MergeDeletionsFromComponent = false
-            });
-            AddCommandBuilder(new MergeTableCommandBuilder(this.MasterDB, "Stem")
-            {
-                DoGUIDMatch = true,
-                DoKeyMatch = true,
-                DoNaturalMatch = true,
-                MergeChangesFromComponent = true,
-                MergeChangesFromMaster = true,
-                RecordsUniqueAccrossComponents = true,
-                MergeNewFromComponent = true,
-                MergeNewFromMaster = false,
-                MergeDeletionsFromComponent = false
-            });
-            AddCommandBuilder(new MergeTableCommandBuilder(this.MasterDB, "Plot")
-            {
-                DoGUIDMatch = true,
-                DoKeyMatch = true,
-                DoNaturalMatch = true,
-                MergeChangesFromComponent = true,
-                MergeChangesFromMaster = true,
-                RecordsUniqueAccrossComponents = true,
-                MergeNewFromComponent = true,
-                MergeNewFromMaster = false,
-                MergeDeletionsFromComponent = false
-            });
-        }
-
-        void AddCommandBuilder(MergeTableCommandBuilder cmd)
-        {
-            CommandBuilders.Add(cmd.ClientTableName, cmd);
+                new TreeMergeTableCommandBuilder(master),
+                new LogMergeTableCommandBuilder(master),
+                //new StemMergeTableCommandBuilder(master),
+                new PlotMergeTableCommandBuilder(master),
+            };
         }
 
         public void FindComponents()
@@ -212,57 +127,60 @@ namespace CruiseManager.Core.Components
         public void FindComponents(string searchDir)
         {
             System.Diagnostics.Debug.Assert(MasterDB != null);
-            MissingComponents = new List<ComponentFileVM>();
-            ActiveComponents = new List<ComponentFileVM>();
-            AllComponents = this.MasterDB.From<ComponentFileVM>().Read().ToList();
 
-            foreach (ComponentFileVM comp in this.AllComponents)
+            var allComponents = MasterDB.From<ComponentFile>().Query().ToArray();
+            var activeComponents = new List<ComponentFile>();
+            var missingComponents = new List<ComponentFile>();
+
+            foreach (ComponentFile comp in allComponents)
             {
                 comp.FullPath = System.IO.Path.Combine(searchDir, comp.FileName);
 
                 if (InitializeComponent(comp))//try to initialize component, if initialization fails add to missing file list
                 {
-                    this.ActiveComponents.Add(comp);
+                    activeComponents.Add(comp);
                 }
                 else
                 {
-                    this.MissingComponents.Add(comp);
+                    missingComponents.Add(comp);
                 }
             }
 
-            if (View != null)
-            { this.View.UpdateMergeInfoView(); }
+            AllComponents = allComponents;
+            ActiveComponents = activeComponents;
+            MissingComponents = missingComponents;
         }
 
-        private bool InitializeComponent(ComponentFileVM comp)
+        public static bool InitializeComponent(ComponentFile comp)
         {
-            comp.ResetCounts();
-            if (!System.IO.File.Exists(comp.FullPath))
+            var filePath = comp.FullPath;
+            if (!System.IO.File.Exists(filePath))
             {
                 comp.Errors = "File not found";
                 return false;
             }
 
+            if (File.GetAttributes(filePath).HasFlag(FileAttributes.ReadOnly))
+            {
+                comp.Errors = "File is Read Only";
+                return false;
+            }
+
             try
             {
-                comp.Database = new DAL(comp.FullPath);
+                var compDB = new DAL(filePath);
 
-                String[] errors;
-                if (comp.Database.HasCruiseErrors(out errors))
+                if (compDB.HasCruiseErrors(out var errors))
                 {
                     comp.Errors += string.Join("\r\n", errors);
-                    //TODO return false?
                 }
 
-                //older files may not have GUIDs on records
-                //check for and assign GUIDs to records that don't have them
-                if (UpdateMasterWorker.HasUnassignedGUIDs(comp.Database))
-                {
-                    UpdateMasterWorker.AssignGuids(comp.Database);
-                }
+                comp.TreeCount = compDB.ExecuteScalar<long?>("SELECT count(*) FROM Tree;");
+                comp.LogCount = compDB.ExecuteScalar<long?>("SELECT count(*) FROM Log;");
+                comp.PlotCount = compDB.ExecuteScalar<long?>("SELECT count(*) FROM Plot;");
+                comp.StemCount = compDB.ExecuteScalar<long?>("SELECT count(*) FROM Stem;");
 
-                //TODO anyway to test if file is readonly ?
-
+                comp.Database = compDB;
                 return true;
             }
             catch (Exception e)
@@ -272,61 +190,110 @@ namespace CruiseManager.Core.Components
             }
         }
 
-        //private static string GetLastMergeDate(DAL dataBase)
-        //{
-        //    GlobalsDO globalData = dataBase.ReadSingleRow<GlobalsDO>("Globals", "WHERE Block = 'Comp' AND Key = 'LastMerge'");
-
-        //    if (globalData != null)
-        //    {
-        //        return globalData.Value;
-        //    }
-        //    return string.Empty;
-        //}
-
-        //private static void SetLastMergeDate(DAL db, string dateStr)
-        //{
-        //    db.WriteGlobalValue("Comp", "LastMerge", dateStr);
-        //}
-
-        //TODO remove unused method
-        private int GetCountSum(CountTreeDO masterCopy)
+        public async Task<(bool, Exception)> RunPreMerge()
         {
-            int countSum = 0;
-            foreach (ComponentFileVM comp in this.ActiveComponents)
+            var master = MasterDB;
+            var components = ActiveComponents;
+            var progress = Progress;
+            var log = MergeLog;
+
+            var prepareTask = PrepareMergeWorker.DoWorkAsync(master, components, CommandBuilders.Values,
+                                                             CancellationSource.Token, progress, log);
+
+            await prepareTask;
+            if (prepareTask.IsCanceled)
+            { return (false, null); }
+
+            var prepareException = prepareTask.Exception;
+            if (prepareException == null)
             {
-                var compCount = comp.Database.From<CountTreeDO>()
-                    .Where("CountTree_CN = @p1").Read(masterCopy.CountTree_CN).FirstOrDefault();
-
-                countSum += (int)compCount.TreeCount;
+                IsPrepared = true;
+                return (true, null);
             }
-            return countSum;
+            else
+            {
+                Crashes.TrackError(prepareException, null, log.ToErrorAttachmentLog());
+                return (false, prepareException);
+            }
         }
 
-        public List<MergeObject> ListConflicts(String clientTableName)
+        public async Task<(bool, Exception)> RunMerge()
         {
-            System.Diagnostics.Debug.Assert(this.CommandBuilders.ContainsKey(clientTableName));
-            MergeTableCommandBuilder cmdBldr = this.CommandBuilders[clientTableName];
-            return this.ListConflicts(cmdBldr);
+            var master = MasterDB;
+            var components = ActiveComponents;
+            var progress = Progress;
+            var log = MergeLog;
+
+            var processTask = MergeSyncWorker.DoMergeAsync(
+                master, components, CommandBuilders, CancellationSource.Token,
+                progress, log);
+
+            await processTask;
+            if (processTask.IsCanceled)
+            { return (false, null); }
+
+            var processExceptions = processTask.Exception;
+
+            if (processExceptions == null)
+            {
+                return (true, null);
+            }
+            else
+            {
+                Crashes.TrackError(processExceptions, null, log.ToErrorAttachmentLog());
+                return (false, processExceptions);
+            }
         }
 
-        public List<MergeObject> ListConflicts(MergeTableCommandBuilder cmdBldr)
+        public IEnumerable<PreMergeTableReport> GetPreMergeReports()
         {
-            return this.MasterDB.Query<MergeObject>("SELECT * FROM " + cmdBldr.MergeTableName + cmdBldr.FindConflictsFilter + ";", (object[])null).ToList();
+            return CommandBuilders.Values.Select(x =>
+            {
+                return new PreMergeTableReport()
+                {
+                    TableName = x.ClientTableName,
+                    Conflicts = ListConflicts(x),
+                    PartialMatch = ListPartialMatches(x),
+                    RecordIDConflict = ListRecordIDConflicts(x),
+                    Matches = ListMatches(x),
+                    Additions = ListNew(x),
+                };
+            }).ToArray();
         }
 
-        public List<MergeObject> ListMatches(MergeTableCommandBuilder cmdBldr)
+        public void Cancel()
         {
-            return this.MasterDB.Query<MergeObject>("SELECT * FROM " + cmdBldr.MergeTableName + " WHERE " + cmdBldr.FindMatchesBase + ";", (object[])null).ToList();
+            CancellationSource?.Cancel();
         }
 
-        public List<MergeObject> ListNew(MergeTableCommandBuilder cmdBldr)
+        public IEnumerable<MergeObject> ListConflicts(MergeTableCommandBuilder cmdBldr)
         {
-            return this.MasterDB.Query<MergeObject>("SELECT * FROM " + cmdBldr.MergeTableName + cmdBldr.FindNewRecords + ";", (object[])null).ToList();
+            return MasterDB.Query<MergeObject>("SELECT * FROM " + cmdBldr.MergeTableName + cmdBldr.FindConflictFilter + ";", (object[])null).ToArray();
         }
 
-        public List<MergeObject> ListDeleted(MergeTableCommandBuilder cmdBldr)
+        public IEnumerable<MergeObject> ListPartialMatches(MergeTableCommandBuilder cmdBldr)
         {
-            return this.MasterDB.Query<MergeObject>("SELECT * FROM " + cmdBldr.MergeTableName + " WHERE IsDeleted = 1;", (object[])null).ToList();
+            return MasterDB.Query<MergeObject>("SELECT * FROM " + cmdBldr.MergeTableName + cmdBldr.FindPartialMatchFilter + ";", (object[])null).ToArray();
+        }
+
+        public IEnumerable<MergeObject> ListRecordIDConflicts(MergeTableCommandBuilder cmdBldr)
+        {
+            return MasterDB.Query<MergeObject>("SELECT * FROM " + cmdBldr.MergeTableName + cmdBldr.FindRecordIDConflictFilter + ";", (object[])null).ToArray();
+        }
+
+        public IEnumerable<MergeObject> ListMatches(MergeTableCommandBuilder cmdBldr)
+        {
+            return MasterDB.Query<MergeObject>("SELECT * FROM " + cmdBldr.MergeTableName + " WHERE " + cmdBldr.FindMatchesBase + ";", (object[])null).ToArray();
+        }
+
+        public IEnumerable<MergeObject> ListNew(MergeTableCommandBuilder cmdBldr)
+        {
+            return MasterDB.Query<MergeObject>("SELECT * FROM " + cmdBldr.MergeTableName + cmdBldr.FindNewRecords + ";", (object[])null).ToArray();
+        }
+
+        public IEnumerable<MergeObject> ListDeleted(MergeTableCommandBuilder cmdBldr)
+        {
+            return MasterDB.Query<MergeObject>("SELECT * FROM " + cmdBldr.MergeTableName + " WHERE IsDeleted = 1;", (object[])null).ToArray();
         }
 
         public int GetNumConflicts()
@@ -334,27 +301,10 @@ namespace CruiseManager.Core.Components
             long totalConflicts = 0;
             foreach (MergeTableCommandBuilder cmdBldr in this.CommandBuilders.Values)
             {
-                totalConflicts += MasterDB.GetRowCount(cmdBldr.MergeTableName, cmdBldr.FindConflictsFilter);
+                totalConflicts += MasterDB.GetRowCount(cmdBldr.MergeTableName, cmdBldr.FindAllErrorFilter);
             }
 
             return (int)totalConflicts;
-        }
-
-        private void HandelPrepareProgressChanged(Object sender, WorkerProgressChangedEventArgs e)
-        {
-            if (e.IsDone)
-            {
-                View.ShowPremergeReport();
-                if (GetNumConflicts() == 0)
-                {
-                    this.CurrentWorker = new MergeSyncWorker(this);
-                }
-                else
-                {
-                    this.View.ShowMessage("Conflicts/Errors found\r\n Please Resolve Before Continuing", null);
-                    //System.Windows.Forms.MessageBox.Show("Conflicts/Errors found\r\n Please Resolve Before Continuing");
-                }
-            }
         }
 
         public string ExplaneMergeRecord(MergeObject mRec)
@@ -391,7 +341,7 @@ namespace CruiseManager.Core.Components
         {
             base.OnViewLoad(e);
 
-            this.FindComponents();
+            FindComponents();
         }
 
         #endregion Presenter Members
@@ -406,7 +356,7 @@ namespace CruiseManager.Core.Components
             {
                 if (this.ActiveComponents != null)
                 {
-                    foreach (ComponentFileVM comp in this.ActiveComponents)
+                    foreach (ComponentFile comp in this.ActiveComponents)
                     {
                         if (comp.Database != null)
                         {

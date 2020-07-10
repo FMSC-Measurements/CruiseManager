@@ -158,7 +158,7 @@ namespace CruiseManager.Core.Components
             View.HideProgressBar();
         }
 
-        protected void CreateComponent(DAL masterDAL, int compNum, ComponentDO compInfo, String compPath)
+        public static void CreateComponent(DAL masterDAL, int compNum, ComponentDO compInfo, String compPath)
         {
             //copy master to create component file
             masterDAL.CopyTo(compPath);
@@ -195,7 +195,7 @@ namespace CruiseManager.Core.Components
             }
         }
 
-        private static void SetRowIDs(int fileNum, DAL fileDB)
+        public static void SetRowIDs(int fileNum, DAL fileDB)
         {
             //Set the starting rowID for each component
             fileDB.SetTableAutoIncrementStart("Tree", GetComponentRowIDStart(fileNum));
