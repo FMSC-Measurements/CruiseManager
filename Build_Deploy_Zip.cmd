@@ -17,7 +17,7 @@ IF NOT DEFINED verStamp (SET verStamp=%date:~10,4%%date:~4,2%%date:~7,2%)
 
 set outFile=%parent%InnoSetupFiles\Output\CruiseManager_%verStamp%.zip
 
-cd .\CruiseManager.WinForms\bin\Release\net451
+cd .\CruiseManager.WinForms\bin\Release\net461
 
 call %zip% a -tzip -spf %outFile%  CruiseManager.exe CruiseManager.exe.config STPinfo.setup x86\*.dll x64\*.dll *.dll Sounds\*
 
