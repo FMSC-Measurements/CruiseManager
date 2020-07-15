@@ -1,6 +1,7 @@
 ﻿using CruiseManager.Core.App;
 using Microsoft.AppCenter.Crashes;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.App
@@ -27,6 +28,12 @@ namespace CruiseManager.WinForms.App
             {
                 //WindowPresenter.Instance.ShowMessage(e.Message, null);
                 //return true;
+                Microsoft.AppCenter.Analytics.Analytics.TrackEvent("UserFacingException",
+                    new Dictionary<string, string>()
+                    {
+                        {"Message", e.Message},
+                    });
+
                 MessageBox.Show(e.Message);
                 return true;
             }
