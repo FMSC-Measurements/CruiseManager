@@ -6,8 +6,7 @@ using System.Collections.Generic;
 
 namespace CruiseManager.Core.Models
 {
-    [EntitySource(SourceName = "Stratum"
-        , JoinCommands = "JOIN (Select Stratum_CN, group_concat(Field) AS Fields From TreeFieldSetup GROUP BY Stratum_cn) USING (Stratum_CN)")]
+    [Table("Stratum")]
     public class StratumVM : StratumDO
     {
         private string _fields;
@@ -16,7 +15,7 @@ namespace CruiseManager.Core.Models
         [IgnoreField]
         public IList<SampleGroupDO> SampleGroups { get; set; }
 
-        [Field(Alias = "Fields", PersistanceFlags = PersistanceFlags.Never)]
+        [Field(Alias = "Fields", SQLExpression = "(Select group_concat(Field) From TreeFieldSetup AS TFS WHERE TFS.Stratum_CN = Stratum.Stratum_CN)", PersistanceFlags = PersistanceFlags.Never)]
         public string Fields
         {
             get { return _fields; }
