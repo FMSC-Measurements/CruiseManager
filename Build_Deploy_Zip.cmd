@@ -19,7 +19,7 @@ set outFile=%parent%InnoSetupFiles\Output\CruiseManager_%verStamp%.zip
 
 cd .\CruiseManager.WinForms\bin\Release\net461
 
-call %zip% a -tzip -spf %outFile%  CruiseManager.exe CruiseManager.exe.config STPinfo.setup x86\*.dll x64\*.dll *.dll Sounds\*
+call %zip% a -tzip -spf %outFile%  CruiseManager.exe CruiseManager.exe.config STPinfo\*.xml runtimes\win-x86\native\*.dll runtimes\win-x64\native\*.dll *.dll Sounds\*
 
 ::if invoked from windows explorer, pause
 IF "%interactive%"=="0" PAUSE
