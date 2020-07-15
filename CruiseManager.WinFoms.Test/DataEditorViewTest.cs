@@ -29,7 +29,7 @@ namespace CruiseManager.WinForms.Test
                 var sg = new SampleGroupDO() { rowID = 1 };
                 var tdv = new TreeDefaultValueDO() { rowID = 1 };
 
-                var trees = target.ReadTrees(cu, st, sg, tdv);
+                var trees = target.ReadTrees(cu, st, sg, tdv, false);
 
                 trees.Should().NotBeNullOrEmpty();
             }
@@ -47,7 +47,7 @@ namespace CruiseManager.WinForms.Test
                 var cu = new CuttingUnitDO() { rowID = 1 };
                 var st = new StratumDO() { rowID = 1 };
 
-                var plots = target.ReadPlots(cu, st);
+                var plots = target.ReadPlots(cu, st, false);
 
                 plots.Should().NotBeNullOrEmpty();
             }
@@ -67,7 +67,7 @@ namespace CruiseManager.WinForms.Test
                 var sg = new SampleGroupDO() { rowID = 1 };
                 var tdv = new TreeDefaultValueDO() { rowID = 1 };
 
-                var logs = target.ReadLogs(cu, st, sg, tdv);
+                var logs = target.ReadLogs(cu, st, sg, tdv, false);
 
                 logs.Should().NotBeNullOrEmpty();
             }
