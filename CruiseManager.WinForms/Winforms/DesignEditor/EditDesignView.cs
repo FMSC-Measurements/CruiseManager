@@ -407,7 +407,7 @@ namespace CruiseManager.WinForms.EditDesign
             catch (Exception ex)
             {
                 this.ExceptionHandler.Handel(ex);
-                e.Cancel = false;
+                e.Cancel = true;
             }
         }
 
