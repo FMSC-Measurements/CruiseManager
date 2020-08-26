@@ -166,7 +166,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                 master.CommitTransaction();
                 log?.PostStatus($"Pull Design Component {comp.Component_CN} Done");
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 master.RollbackTransaction();
                 log?.PostStatus($"Pull Design Component {comp.Component_CN} Failed");
@@ -196,7 +196,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                 master.CommitTransaction();
                 log?.PostStatus($"Pull Design Component {comp.Component_CN} Done");
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 master.RollbackTransaction();
                 log?.PostStatus($"Pull Design Component {comp.Component_CN} Failed");

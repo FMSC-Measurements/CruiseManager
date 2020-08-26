@@ -12,7 +12,7 @@ using System.Text;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    [EntitySource(SourceName = "SampleGroup")]
+    [Table("SampleGroup")]
     public class TallySetupSampleGroup : DataObject_Base
     {
         bool _hasTallyEdits;

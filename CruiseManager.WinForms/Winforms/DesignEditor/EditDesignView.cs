@@ -63,7 +63,7 @@ namespace CruiseManager.WinForms.EditDesign
             secondaryProductDataGridViewTextBoxColumn.DataSource = ViewPresenter.SecondaryProductCodes.ToList();
         }
 
-        public void EndEdits()
+        public override void EndEdits()
         {
             //force focus away from any control that has focus,
             //causing any control that has edited data to commit its data

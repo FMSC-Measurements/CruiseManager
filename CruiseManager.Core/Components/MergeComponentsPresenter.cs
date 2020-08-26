@@ -20,10 +20,7 @@ namespace CruiseManager.Core.Components
     {
         private long _masterTreeCount;
         private string _lastMergeDate;
-
-        private bool _isInitialized;
         private bool _isPrepared;
-        private bool _hasPrepareErrors;
 
         #region Properties
 
