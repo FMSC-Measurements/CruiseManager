@@ -7,6 +7,7 @@ using CruiseManager.Core.Models;
 using CruiseManager.Core.SetupModels;
 using CruiseManager.Core.ViewModel;
 using FMSC.ORM.Core;
+using Microsoft.AppCenter.Crashes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,7 +21,7 @@ namespace CruiseManager.Core.EditDesign
         public DesignEditorStratum _SampleGroups_SelectedStrata;
         private DesignEditorStratum _anyStratumOption;
         private CuttingUnitDO _anyUnitOption;
-        List<ProductCode> _productCodes;
+        private List<ProductCode> _productCodes;
 
         public DesignEditorPresentor(IApplicationController applicationController)
         {
@@ -511,7 +512,7 @@ namespace CruiseManager.Core.EditDesign
             this.LoadSetup();
         }
 
-        void OnTreeDefaultsChanged(bool error)
+        private void OnTreeDefaultsChanged(bool error)
         {
             View.UpdateSampleGroupTDVs(DataContext.AllTreeDefaults);
         }
@@ -535,25 +536,58 @@ namespace CruiseManager.Core.EditDesign
             catch (FMSC.ORM.UniqueConstraintException ex)
             {
                 Database.RollbackTransaction();
+                Crashes.TrackError(ex);
                 throw new UserFacingException("Duplicate Entry Error", ex);
+            }
+            catch (UserFacingException)
+            {
+                Database.RollbackTransaction();
+                throw;
             }
             catch (Exception ex)
             {
                 Database.RollbackTransaction();
+                Crashes.TrackError(ex);
                 throw new UserFacingException("Error saving data, please check for errors and try saving again", ex);
             }
         }
 
         private void SaveSampleGroups()
         {
+            var db = Database;
             foreach (SampleGroupDO sg in DataContext.AllSampleGroups)
             {
+                var isNewSg = (sg.IsPersisted == false);
                 if (sg.Code == "<blank>")
                 {
                     sg.Code = " ";
                 }
                 sg.Save();
-                sg.TreeDefaultValues.Save();
+                var sg_cn = sg.SampleGroup_CN.Value;
+
+                var tdvCollection = sg.TreeDefaultValues;
+
+                if (!isNewSg)
+                {
+                    foreach (var tdv in tdvCollection.ToBeDeleted)
+                    {
+                        if (tdv.IsPersisted == false) { continue; }
+
+                        var tdv_cn = tdv.TreeDefaultValue_CN.Value;
+                        var treeCount = db.ExecuteScalar<int>("SELECT ifnull(sum(TreeCount), 0) FROM CountTree WHERE SampleGroup_CN = @p1 AND TreeDefaultValue_CN = @p2;",
+                            sg_cn, tdv_cn);
+                        if (treeCount > 0)
+                        {
+                            throw new UserFacingException($"Could Not Remove Tree Default from Sample Group {sg.Code} because it has tree counts");
+                        }
+                        else
+                        {
+                            db.Execute("DELETE FROM CountTree WHERE SampleGroup_CN = @p1 AND TreeDefaultValue_CN =  @p2", sg_cn, tdv_cn);
+                        }
+                    }
+                }
+
+                tdvCollection.Save();
             }
 
             foreach (SampleGroupDO sg in DataContext.DeletedSampleGroups)
@@ -645,7 +679,7 @@ namespace CruiseManager.Core.EditDesign
             }
 
             StringBuilder validationErrorBuilder = new StringBuilder();
-            bool rtnVal = true; 
+            bool rtnVal = true;
             if (!this.ValidateData(ref validationErrorBuilder))
             {
                 this.View.ShowErrorMessage("Validation Errors Found",
