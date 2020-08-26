@@ -446,7 +446,7 @@ namespace CruiseManager.Core.CruiseCustomize
                 }
                 else
                 {
-                    db.Execute("UPDATE CountTree Set Tally_CN = @p1 WHERE SampleGroup_CN = @p2 AND TreeDefaultValue_CN = @p3;", tally.Tally_CN, sg_cn, tdv_cn);
+                    db.Execute("UPDATE CountTree Set Tally_CN = @p1 WHERE SampleGroup_CN = @p2 AND TreeDefaultValue_CN = @p3;", persistedTally.Tally_CN, sg_cn, tdv_cn);
                 }
 
             }
