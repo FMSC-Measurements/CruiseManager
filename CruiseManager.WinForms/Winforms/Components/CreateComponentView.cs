@@ -53,7 +53,7 @@ namespace CruiseManager.WinForms.Components
             this.__progressBar.PerformStep();
         }
 
-        public void EndEdits()
+        public override void EndEdits()
         {
             //nothing to do
         }

@@ -8,7 +8,7 @@ using System.Text;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    [EntitySource(SourceName = "Stratum")]
+    [Table("Stratum")]
     public class TallySetupStratum : TallySetupStratum_Base
     {
         public override bool HasChangesToSave

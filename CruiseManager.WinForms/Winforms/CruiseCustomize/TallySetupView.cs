@@ -55,7 +55,7 @@ namespace CruiseManager.WinForms.CruiseCustomize
             }
         }
 
-        public void EndEdits()
+        public override void EndEdits()
         {
             TallyEditPanel.EndEdits();
         }

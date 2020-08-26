@@ -4,6 +4,7 @@ using CruiseDAL.Schema;
 using CruiseManager.Core.App;
 using FMSC.ORM.EntityModel;
 using FMSC.ORM.EntityModel.Attributes;
+using Microsoft.AppCenter.Crashes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ using System.Text;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    [EntitySource(SourceName = "SampleGroup")]
+    [Table("SampleGroup")]
     public class TallySetupSampleGroup : DataObject_Base
     {
         bool _hasTallyEdits;
@@ -309,12 +310,6 @@ namespace CruiseManager.Core.CruiseCustomize
         {
             try
             {
-                //if ((sgVM.TallyMethod & TallyMode.Locked) != TallyMode.Locked)
-                //{
-                //    string delCommand = String.Format("DELETE FROM CountTree WHERE SampleGroup_CN = {0}", sgVM.SampleGroup_CN);
-                //    Controller.Database.Execute(delCommand); //cleaned any existing count records.
-                //}
-
                 if (TallyMethod.HasFlag(TallyMode.BySampleGroup))
                 {
                     SaveTallyBySampleGroup();
@@ -328,6 +323,7 @@ namespace CruiseManager.Core.CruiseCustomize
             }
             catch (Exception e)
             {
+                Crashes.TrackError(e);
                 errorBuilder.Append($"{e.GetType().Name}: failed to setup tallies for SampleGroup({Code} ) in Stratum ({Stratum.Code})");
                 return false;
             }
@@ -340,109 +336,121 @@ namespace CruiseManager.Core.CruiseCustomize
 
         private void SaveTallyBySampleGroup()
         {
-            //this.Database.BeginTransaction();
-            try
+            var db = DAL;
+            var sg_cn = SampleGroup_CN;
+
+            var hasTallyBySp = db.ExecuteScalar<int>("SELECT count(*) FROM CountTree WHERE SampleGroup_CN = @p1 AND TreeDefaultValue_CN IS NOT NULL;", sg_cn) > 0;
+            if(hasTallyBySp)
             {
-                if (!IsTallyModeLocked)
+                var numTrees = db.ExecuteScalar<int>("SELECT count(*) FROM Tree WHERE SampleGroup_CN = @p1;", sg_cn);
+                var treeCount = db.ExecuteScalar<int>("SELECT ifnull(sum(TreeCount), 0) FROM CountTree WHERE SampleGroup_CN = @p1 AND TreeDefaultValue_CN IS NOT NULL;", sg_cn);
+                if (numTrees == 0 && treeCount == 0)
                 {
-                    //remove any possible tally by species records
-                    string command = "DELETE FROM CountTree WHERE SampleGroup_CN = @p1 AND ifnull(TreeDefaultValue_CN, 0) != 0;";
-                    DAL.Execute(command, SampleGroup_CN);
-
-                    string user = DAL.User;
-                    String makeCountsCommand = String.Format(@"INSERT  OR Ignore INTO CountTree (CuttingUnit_CN, SampleGroup_CN,  CreatedBy)
-                            Select CuttingUnitStratum.CuttingUnit_CN, SampleGroup.SampleGroup_CN,  '{0}' AS CreatedBy
-                            From SampleGroup
-                            INNER JOIN CuttingUnitStratum
-                            ON SampleGroup.Stratum_CN = CuttingUnitStratum.Stratum_CN
-                            WHERE SampleGroup.SampleGroup_CN = {1};", user, SampleGroup_CN);
-
-                    DAL.Execute(makeCountsCommand);
+                    db.Execute("DELETE FROM CountTree WHERE SampleGroup_CN = @p1 AND TreeDefaultValue_CN IS NOT NULL;", sg_cn);
                 }
-                TallyVM tally = DAL.From<TallyVM>()
-                    .Where("Description = @p1 AND HotKey = @p2")
-                    .Query(SgTallie.Description, SgTallie.Hotkey)
-                    .FirstOrDefault();
-
-                if (tally == null)
+                else
                 {
-                    tally = new TallyVM(DAL)
-                    {
-                        Description = SgTallie.Description
-                        ,
-                        Hotkey = SgTallie.Hotkey
-                    };
-
-                    //tally = sgVM.SgTallie;
-                    tally.Save();
+                    // should not be possible. UI prevents changing tally type if trees exist.
+                    throw new UserFacingException("Can not remove tally by species setup because of trees or tree counts exist");
                 }
-
-                String setTallyCommand = String.Format("UPDATE CountTree Set Tally_CN = {0} WHERE SampleGroup_CN = {1};",
-                    tally.Tally_CN, SampleGroup_CN);
-
-                DAL.Execute(setTallyCommand);
-
-                //this.Database.EndTransaction();
             }
-            catch (Exception)
+
+            TallyVM tally = DAL.From<TallyVM>()
+                .Where("Description = @p1 AND HotKey = @p2")
+                .Query(SgTallie.Description, SgTallie.Hotkey)
+                .FirstOrDefault();
+
+            if (tally == null)
             {
-                //this.Database.CancelTransaction();
-                throw;
+                tally = new TallyVM(DAL)
+                {
+                    Description = SgTallie.Description,
+                    Hotkey = SgTallie.Hotkey,
+                };
+                db.Insert(tally);
             }
+
+            var countTreeExists = db.ExecuteScalar<int>("SELECT count(*) FROM CountTree WHERE SampleGroup_CN = @p1 AND TreeDefaultValue_CN IS NULL;", sg_cn) > 0;
+            if (countTreeExists)
+            {
+                db.Execute("UPDATE CountTree Set Tally_CN = @p1 WHERE SampleGroup_CN = @p2;", tally.Tally_CN, sg_cn);
+            }
+            else
+            {
+                var user = db.User;
+                db.Execute(
+@"INSERT OR IGNORE INTO CountTree (CuttingUnit_CN, SampleGroup_CN, Tally_CN, CreatedBy)
+    Select cust.CuttingUnit_CN, sg.SampleGroup_CN, @p2, @p3 AS CreatedBy
+    From CuttingUnitStratum AS cust
+    JOIN Stratum AS st USING (Stratum_CN)
+    JOIN SampleGroup AS sg USING (Stratum_CN)
+    WHERE sg.SampleGroup_CN = @p1;", sg_cn, tally.Tally_CN, user);
+            }
+            
         }
 
         private void SaveTallyBySpecies()
         {
-            //this.Database.BeginTransaction();
-            try
+            var db = DAL;
+            var sg_cn = SampleGroup_CN;
+
+            var hasTallyBySg = db.ExecuteScalar<int>("SELECT count(*) FROM CountTree WHERE SampleGroup_CN = @p1 AND TreeDefaultValue_CN IS NULL;", sg_cn) > 0;
+            if (hasTallyBySg)
             {
-                if (!IsTallyModeLocked)
+                var numTrees = db.ExecuteScalar<int>("SELECT count(*) FROM Tree WHERE SampleGroup_CN = @p1;", sg_cn);
+                var treeCount = db.ExecuteScalar<int>("SELECT ifnull(sum(TreeCount), 0) FROM CountTree WHERE SampleGroup_CN = @p1 AND TreeDefaultValue_CN IS NULL;", sg_cn);
+                if (numTrees == 0 && treeCount == 0)
                 {
-                    //remove any preexisting tally by sg entries
-                    string command = "DELETE FROM CountTree WHERE SampleGroup_CN = @p1 AND ifnull(TreeDefaultValue_CN, 0) = 0;";
-                    DAL.Execute(command, SampleGroup_CN);
-
-                    string user = DAL.User;
-                    String makeCountsCommand = String.Format(@"INSERT  OR IGNORE INTO CountTree (CuttingUnit_CN, SampleGroup_CN, TreeDefaultValue_CN, CreatedBy)
-                        Select CuttingUnitStratum.CuttingUnit_CN, SampleGroup.SampleGroup_CN, SampleGroupTreeDefaultValue.TreeDefaultValue_CN, '{0}' AS CreatedBy
-                        From SampleGroup
-                        INNER JOIN CuttingUnitStratum
-                        ON SampleGroup.Stratum_CN = CuttingUnitStratum.Stratum_CN
-                        INNER JOIN SampleGroupTreeDefaultValue
-                        ON SampleGroupTreeDefaultValue.SampleGroup_CN = SampleGroup.SampleGroup_CN
-                        WHERE SampleGroup.SampleGroup_CN = {1};",
-                            user, SampleGroup_CN);
-
-                    DAL.Execute(makeCountsCommand);
+                    db.Execute("DELETE FROM CountTree WHERE SampleGroup_CN = @p1 AND TreeDefaultValue_CN IS NULL;", sg_cn);
                 }
-                foreach (KeyValuePair<TreeDefaultValueDO, TallyVM> pair in Tallies)
+                else
                 {
-                    TallyVM tally = DAL.From<TallyVM>()
-                        .Where("Description = @p1 AND HotKey = @p2")
-                        .Query(pair.Value.Description, pair.Value.Hotkey)
-                        .FirstOrDefault();
+                    // should not be possible. UI prevents changing tally type if trees exist.
+                    throw new UserFacingException("Can not remove tally by sample group setup because of trees or tree counts exist");
+                }
+            }
 
-                    if (tally == null)
+
+            string user = db.User;
+            foreach (KeyValuePair<TreeDefaultValueDO, TallyVM> pair in Tallies)
+            {
+                var tally = pair.Value;
+
+                var persistedTally = DAL.From<TallyVM>()
+                    .Where("Description = @p1 AND HotKey = @p2")
+                    .Query(tally.Description, tally.Hotkey)
+                    .FirstOrDefault();
+
+                if (persistedTally == null)
+                {
+                    persistedTally = new TallyVM(db)
                     {
-                        tally = new TallyVM(DAL) { Description = pair.Value.Description, Hotkey = pair.Value.Hotkey };
-                        //tally = pair.Value;
-                        //tally.DAL = Controller.Database;
-                        tally.Save();
-                    }
-
-                    string setTallyCommand = String.Format("UPDATE CountTree Set Tally_CN = {0} WHERE SampleGroup_CN = {1} AND TreeDefaultValue_CN = {2}",
-                        tally.Tally_CN, SampleGroup_CN, pair.Key.TreeDefaultValue_CN);
-
-                    DAL.Execute(setTallyCommand);
+                        Description = tally.Description,
+                        Hotkey = tally.Hotkey
+                    };
+                    db.Insert(persistedTally);
                 }
 
-                //this.Database.EndTransaction();
+                var tdv_cn = pair.Key.TreeDefaultValue_CN.Value;
+                var countTreeExists = db.ExecuteScalar<int>("SELECT count(*) FROM CountTree WHERE SampleGroup_CN = @p1 AND TreeDefaultValue_CN = @p2;", sg_cn, tdv_cn) > 0;
+
+                if (countTreeExists == false)
+                {
+                    db.Execute(
+@"INSERT OR IGNORE INTO CountTree (CuttingUnit_CN, SampleGroup_CN, TreeDefaultValue_CN, Tally_CN, CreatedBy)
+    Select cust.CuttingUnit_CN, sg.SampleGroup_CN, @p2, @p3, @p4 AS CreatedBy
+    From CuttingUnitStratum AS cust
+    JOIN Stratum AS st USING (Stratum_CN)
+    JOIN SampleGroup AS sg USING (Stratum_CN)
+    WHERE sg.SampleGroup_CN = @p1;", sg_cn, tdv_cn, persistedTally.Tally_CN, user);
+                }
+                else
+                {
+                    db.Execute("UPDATE CountTree Set Tally_CN = @p1 WHERE SampleGroup_CN = @p2 AND TreeDefaultValue_CN = @p3;", persistedTally.Tally_CN, sg_cn, tdv_cn);
+                }
+
             }
-            catch (Exception)
-            {
-                //this.Database.CancelTransaction();
-                throw;
-            }
+
         }
     }
 }

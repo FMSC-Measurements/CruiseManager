@@ -135,8 +135,8 @@ namespace CruiseManager.WinForms.App
                 saveFileDialog.Filter = "Cruise files(*.cruise)|*.cruise";
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    string fileName = saveFileDialog.FileName;
-                    string dir = System.IO.Path.GetDirectoryName(fileName);
+                    string userPath = saveFileDialog.FileName;
+                    string dir = System.IO.Path.GetDirectoryName(userPath);
                     ApplicationController.UserSettings.CruiseSaveLocation = dir;
 
                     if (createSaleFolder)
@@ -146,9 +146,9 @@ namespace CruiseManager.WinForms.App
                         {
                             System.IO.Directory.CreateDirectory(dir);
                         }
-                        else { return dir + System.IO.Path.GetFileName(saveFileDialog.FileName); }
+                        return dir + System.IO.Path.GetFileName(userPath);
                     }
-                    return saveFileDialog.FileName;
+                    return userPath;
                 }
                 return null;
             }

@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    [EntitySource(SourceName = "Stratum")]
+    [Table("Stratum")]
     public abstract class TallySetupStratum_Base : DataObject_Base
     {
         #region Persisted Members

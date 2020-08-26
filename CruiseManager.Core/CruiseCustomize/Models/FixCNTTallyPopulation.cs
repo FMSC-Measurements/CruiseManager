@@ -8,7 +8,7 @@ using System.Text;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    [EntitySource(SourceName = "FixCNTTallyPopulation")]
+    [Table("FixCNTTallyPopulation")]
     public class FixCNTTallyPopulation : DataObject_Base
     {
         #region Persisted Members

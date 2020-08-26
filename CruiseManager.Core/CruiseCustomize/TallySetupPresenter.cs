@@ -169,13 +169,17 @@ namespace CruiseManager.Core.CruiseCustomize
 
         private bool SaveTallies(ref StringBuilder errorBuilder)
         {
+            
             if (!_isInitialized) { return true; }
             bool success = true;
+            var db = Database;
 
-            this.Database.BeginTransaction();
+            db.BeginTransaction();
             try
             {
-                this.Database.Execute(
+                // because the count tree table doesn't have a unique constraint 
+                // that actualy works as intended we need to create a trigger that checks 
+                db.Execute(
 @"CREATE TEMP TRIGGER IF NOT EXISTS IgnoreConflictsOnCountTree
 BEFORE INSERT
 ON CountTree
@@ -188,20 +192,19 @@ WHEN Exists
 )
 BEGIN
 SELECT RAISE(IGNORE);
-END;"
-                    );
+END;");
 
                 foreach (TallySetupStratum_Base stratum in TallySetupStrata)
                 {
-                    stratum.SaveTallySetup(ref errorBuilder);
+                    success = stratum.SaveTallySetup(ref errorBuilder) && success;
                 }
 
-                this.Database.CommitTransaction();
+                db.CommitTransaction();
                 return success;
             }
             catch (Exception e)
             {
-                this.Database.RollbackTransaction();
+                db.RollbackTransaction();
                 throw e;
             }
         }

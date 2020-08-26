@@ -4,7 +4,7 @@ using FMSC.ORM.EntityModel.Attributes;
 
 namespace CruiseManager.Core.CruiseCustomize
 {
-    [EntitySource(SourceName = "Tally")]
+    [Table("Tally")]
     public class TallyVM : TallyDO
     {
         public TallyVM() : base()

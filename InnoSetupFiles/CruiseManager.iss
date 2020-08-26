@@ -3,10 +3,10 @@
 ; #defines require the ISPP add-on: http://sourceforge.net/projects/ispp/
 #define APP "Cruise Manager"
 ;
-#define VERSION "2020.03.16"
+#define VERSION "2020.08.25"
 ;version format for setup file name
-#define SETUPVERSION "20200316";  
-#define SPECIALTAG "pre"
+#define SETUPVERSION "20200825";  
+#define SPECIALTAG ""
 #define BASEURL "http://www.fs.fed.us/fmsc/measure"
 #define ORGANIZATION "U.S. Forest Service, Forest Management Service Center"
 #define EXEName "CruiseManager.exe"
@@ -74,8 +74,6 @@ Source: "..\CruiseManager.WinForms\bin\Release\net461\CruiseManager.exe"; DestDi
 Source: "..\CruiseManager.WinForms\bin\Release\net461\CruiseManager.exe.config"; DestDir: {app}; Flags: ignoreversion;
 Source: "..\CruiseManager.WinForms\bin\Release\net461\*.dll"; DestDir: {app}; Flags: ignoreversion;
 Source: "..\CruiseManager.WinForms\bin\Release\net461\STPinfo\*.xml"; DestDir: {app}\STPinfo; Flags: ignoreversion;
-Source: "..\CruiseManager.WinForms\bin\Release\net461\x64\*.dll"; DestDir: {app}\x64; Flags: ignoreversion;
-Source: "..\CruiseManager.WinForms\bin\Release\net461\x86\*.dll"; DestDir: {app}\x86; Flags: ignoreversion;
 Source: "..\CruiseManager.WinForms\bin\Release\net461\runtimes\win-x64\native\*.dll"; DestDir: {app}\runtimes\win-x64\native; Flags: ignoreversion;
 Source: "..\CruiseManager.WinForms\bin\Release\net461\runtimes\win-x86\native\*.dll"; DestDir: {app}\runtimes\win-x86\native; Flags: ignoreversion;
 Source: "..\Documentation\CruiseManagerUserGuide.docx";DestName: CruiseManagerUserGuide_{#SETUPVERSION}.docx; DestDir: {app}; Flags: ignoreversion

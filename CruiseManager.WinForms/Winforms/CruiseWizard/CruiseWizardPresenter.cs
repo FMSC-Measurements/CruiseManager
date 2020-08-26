@@ -291,9 +291,7 @@ namespace CruiseManager.WinForms.CruiseWizard
             catch (Exception)
             {
                 MessageBox.Show("Error: Couldn't open template");
-            }
-            finally
-            {
+
                 if (_templateDatabase != null)
                 {
                     _templateDatabase.Dispose();

@@ -34,7 +34,8 @@ namespace CruiseManager.WinForms.App
         {
             get
             {
-                return _data.RecentFiles;
+                return _data.RecentFiles.Where(x => File.Exists(x))
+                    .ToArray();
             }
             protected set { _data.RecentFiles = value; }
         }

@@ -40,10 +40,5 @@ namespace CruiseManager.Core.Components
 
         [IgnoreField]
         public Exception MergeException { get; set; }
-
-        private long? _treeCount;
-        private long? _logCount;
-        private long? _stemCount;
-        private long? _plotCount;
     }
 }

@@ -8,7 +8,7 @@ namespace CruiseManager.Core.CruiseCustomize
 {
     public enum FixCNTTallyField { Unknown, DBH, TotalHeight };
 
-    [EntitySource(SourceName = "FixCNTTallyClass")]
+    [Table("FixCNTTallyClass")]
     public class FixCNTTallyClass : DataObject_Base
     {
         public static readonly string[] FIXCNT_FIELD_NAMES = { "DBH", "TotalHeight", "DRC" };
