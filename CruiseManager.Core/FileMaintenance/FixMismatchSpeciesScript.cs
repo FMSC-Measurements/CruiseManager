@@ -15,18 +15,19 @@ namespace CruiseManager.Core.FileMaintenance
 
         public bool CheckCanExecute(DAL database)
         {
-            return database.ExecuteScalar<int>("select count(*) from tree as t join treedefaultvalue as tdv using (treedefaultvalue_cn) WHERE t.species != tdv.species;") > 0;
+            var result = database.ExecuteScalar<int>("SELECT count(*) FROM Tree AS t join TreeDefaultValue AS tdv USING (TreeDefaultValue_cn) WHERE t.Species != tdv.Species;"); 
+            return result > 0;
         }
 
         public void Execute(DAL database)
         {
             database.Execute(
-@"update tree as t 
-set species = (select species from treedefaultvalue as tdv where t.treedefaultvalue_cn = tdv.treedefaultvalue_cn) 
-where tree_cn in (
-	select tree_cn from tree as t 
-	join treedefaultvalue as tdv using (treedefaultvalue_cn)
-	where t.species != tdv.species);");
+@"UPDATE Tree AS t 
+SET Species = (SELECT Species FROM TreeDefaultValue AS tdv WHERE t.TreeDefaultValue_cn = tdv.TreeDefaultValue_cn) 
+WHERE Tree_CN IN (
+	SELECT Tree_CN FROM Tree AS t 
+	JOIN TreeDefaultValue AS tdv USING (TreeDefaultValue_CN)
+	WHERE t.Species != tdv.Species);");
         }
     }
 }
