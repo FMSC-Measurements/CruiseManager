@@ -160,6 +160,7 @@ procedure CurStepChanged(CurStep: TSetupStep);
 var
   UsersPath: String;
   DocumentsPath: String;
+  DesktopPath: String;
   UserTemplatesPath: String;
   CopyTemplateIfExists: Boolean;
   UserDirFindRec: TFindRec;
@@ -179,7 +180,7 @@ begin
       if FindFirst(UsersPath + '*', UserDirFindRec) then
       begin
         try
-          repeat
+          repeat  
             { Just directories and ignore Public, All Users, and Default User. All Users and Default User are symbolic links that we don't care about }
             if (UserDirFindRec.Attributes and FILE_ATTRIBUTE_DIRECTORY <> 0) and (UserDirFindRec.Name <> 'Public') and (UserDirFindRec.Name <> 'All Users') and (UserDirFindRec.Name <> 'Default User') then
             begin
@@ -190,7 +191,18 @@ begin
                 UserTemplatesPath := DocumentsPath + '\CruiseFiles\Templates\';
                 CopyFiles(TemplateSrcPath, '*.cut', UserTemplatesPath, CopyTemplateIfExists);
               end;       { end if force dir }
-            end;         { end check user dir exists }
+
+              { delete any desktop icons left behind in the user's desktop folder }
+              { note we arn't deleting from the Public\Desktop where the All Users desktop icon is located }
+              DesktopPath := UsersPath + UserDirFindRec.Name + '\Desktop\';
+              if DirExists(DesktopPath) then
+              begin
+                if DeleteFile(DesktopPath + 'Cruise Manager.lnk') then begin
+                  Log('File Deleted ' + DesktopPath + 'Cruise Manager.lnk');
+                end else
+                  Log('File Not Deleted ' + DesktopPath + 'Cruise Manager.lnk');
+              end;       {end if desktop exists }
+            end;         { end check user dir exists }     
           until not FindNext(UserDirFindRec);
         finally
           FindClose(UserDirFindRec);
