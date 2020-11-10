@@ -3,6 +3,7 @@ using CruiseDAL.DataObjects;
 using CruiseManager.Core.CommandModel;
 using CruiseManager.Core.Constants;
 using CruiseManager.Core.FileMaintenance;
+using CruiseManager.Core.Validation;
 using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core.ViewModel;
 using Microsoft.AppCenter.Analytics;
@@ -72,7 +73,7 @@ namespace CruiseManager.Core.App
                     fixMismatchSp.Execute(database);
                 }
 
-                if (database.HasCruiseErrors(out var errors))
+                if (DatabaseValidator.HasCruiseErrors(database, out var errors))
                 {
                     this.ActiveView.ShowMessage(String.Join("\r\n", errors), null);
                 }

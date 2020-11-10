@@ -2,6 +2,7 @@
 using CruiseManager.Core.App;
 using CruiseManager.Core.Components.CommandBuilders;
 using CruiseManager.Core.Components.ViewInterfaces;
+using CruiseManager.Core.Validation;
 using CruiseManager.Core.ViewModel;
 using Microsoft.AppCenter.Crashes;
 using System;
@@ -167,7 +168,7 @@ namespace CruiseManager.Core.Components
             {
                 var compDB = new DAL(filePath);
 
-                if (compDB.HasCruiseErrors(out var errors))
+                if (DatabaseValidator.HasCruiseErrors(compDB, out var errors))
                 {
                     comp.Errors += string.Join("\r\n", errors);
                 }
