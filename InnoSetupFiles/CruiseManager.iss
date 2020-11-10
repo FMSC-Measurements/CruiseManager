@@ -3,9 +3,9 @@
 ; #defines require the ISPP add-on: http://sourceforge.net/projects/ispp/
 #define APP "Cruise Manager"
 ;
-#define VERSION "2020.08.25"
+#define VERSION "2020.11.10"
 ;version format for setup file name
-#define SETUPVERSION "20200825";  
+#define SETUPVERSION "20201110";  
 #define SPECIALTAG ""
 #define BASEURL "http://www.fs.fed.us/fmsc/measure"
 #define ORGANIZATION "U.S. Forest Service, Forest Management Service Center"
@@ -36,7 +36,7 @@ AppPublisherURL={#BASEURL}
 AppSupportURL={#BASEURL}/support.shtml
 AppUpdatesURL={#BASEURL}/cruising/index.shtml
 
-DefaultDirName={pf32}\FMSC\{#APP}
+DefaultDirName={autopf}\FMSC\{#APP}
 DefaultGroupName=FMSC\{#APP}
 
 ;specifies the file version on the setup exe
@@ -46,15 +46,15 @@ Compression=lzma
 ;causes all files to be compressed together
 ;this is less effecent if some files don't need to be installed 
 SolidCompression=yes
-PrivilegesRequired=admin
-;causes installer to notify windows that environment variables have been changed
-ChangesEnvironment=yes
 ;notifys windows that file associations have changed when installer exits
 ChangesAssociations=yes
 
 ;dont allow program to be installed on network drives
 AllowUNCPath=no
 AllowNetworkDrive=no
+
+PrivilegesRequired=lowest
+PrivilegesRequiredOverridesAllowed=dialog
 
 
 OutputBaseFilename=CruiseManager_Setup
@@ -63,10 +63,13 @@ OutputManifestFile=Setup-Manifest.txt
 
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons};
-Name: overwriteTemplates; Description: "Replace Existing Template Files"; GroupDescription: "Template Files"; Flags: checkedonce;  
-Name: associateCruiseFileTypes; Description: "Associate Cruise (.cruise) Files with Cruise Manager"; GroupDescription: "Associate File Types"; Flags: checkedonce;
-Name: associateCutFileTypes; Description: "Associate Cruise Template (.cut) Files with Cruise Manager"; GroupDescription: "Associate File Types"; Flags: checkedonce;
+Name: deployTemplates; Description: "Templates"; GroupDescription: "Template Files"; Flags: checkablealone
+Name: deployTemplates/overwriteTemplates; Description: "Recopy existing template files"; GroupDescription: "Template Files"; Flags: unchecked dontinheritcheck;  
+Name: associateCruiseFileTypes; Description: "Associate Cruise (.cruise) Files with Cruise Manager"; GroupDescription: "Associate File Types";
+Name: associateCutFileTypes; Description: "Associate Cruise Template (.cut) Files with Cruise Manager"; GroupDescription: "Associate File Types";
 
+[Dirs]
+Name: "{app}\Templates"; Flags: deleteafterinstall;
 
 [Files]
 ; need to update the paths below after the solution files and folders are updated.
@@ -76,48 +79,135 @@ Source: "..\CruiseManager.WinForms\bin\Release\net461\*.dll"; DestDir: {app}; Fl
 Source: "..\CruiseManager.WinForms\bin\Release\net461\STPinfo\*.xml"; DestDir: {app}\STPinfo; Flags: ignoreversion;
 Source: "..\CruiseManager.WinForms\bin\Release\net461\runtimes\win-x64\native\*.dll"; DestDir: {app}\runtimes\win-x64\native; Flags: ignoreversion;
 Source: "..\CruiseManager.WinForms\bin\Release\net461\runtimes\win-x86\native\*.dll"; DestDir: {app}\runtimes\win-x86\native; Flags: ignoreversion;
-Source: "..\Documentation\CruiseManagerUserGuide.docx";DestName: CruiseManagerUserGuide_{#SETUPVERSION}.docx; DestDir: {app}; Flags: ignoreversion
-Source: "..\Template Files\*.cut"; DestDir: {userdocs}\CruiseFiles\Templates; Flags: ignoreversion; Tasks: overwriteTemplates;
-Source: "..\Template Files\*.cut"; DestDir: {userdocs}\CruiseFiles\Templates; Flags: onlyifdoesntexist; Tasks: not overwriteTemplates;
+Source: "..\Documentation\CruiseManagerUserGuide.docx";DestName: CruiseManagerUserGuide_{#SETUPVERSION}.docx; DestDir: {app}; Flags: ignoreversion;
+Source: "..\Template Files\*.cut"; DestDir: {app}\Templates; Flags: ignoreversion deleteafterinstall;
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
 Name: {group}\{#APP}; Filename: {app}\{#EXEName}
 Name: {group}\Cruise Manager User Guide; Filename: {app}\CruiseManagerUserGuide_{#SETUPVERSION}.docx
-Name: {userdesktop}\{#APP}; Filename: {app}\{#EXEName}; Tasks: desktopicon
+Name: {autodesktop}\{#APP}; Filename: {app}\{#EXEName}; Tasks: desktopicon
 
 [Run]
 Filename: "{app}\{#EXEName}"; Description: "{cm:LaunchProgram,Cruise Manager}"; Flags: nowait postinstall skipifsilent
 
 [Registry]
-;Register app path
-Root: HKLM; Subkey: SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\{#EXEName}; ValueType: string; ValueData: "{app}\{#EXEName}"; Flags: uninsdeletevalue; Tasks: associateCruiseFileTypes or associateCutFileTypes;
 
-; Register cruise file
-Root: HKCR; SubKey: .cruise; ValueType: string; ValueData: NCS.CruiseFile; Flags: uninsdeletekey; Tasks: associateCruiseFileTypes;
-Root: HKCR; SubKey: NCS.CruiseFile; ValueType: string; ValueData: Cruise File; Flags: uninsdeletekey; Tasks: associateCruiseFileTypes;
-Root: HKCR; SubKey: NCS.CruiseFile\Shell\Open\Command; ValueType: string; ValueData: """{app}\{#EXEName}"" ""%1"""; Flags: uninsdeletevalue; Tasks: associateCruiseFileTypes;
-; NEED NEW FILE ICONS Root: HKCR; Subkey: NCS.CruiseFile\DefaultIcon; ValueType: string; ValueData: {app}\crz1.ico; Flags: uninsdeletevalue; Tasks: associateCruiseFileTypes;
+Root: HKA; Subkey: "Software\Classes\Applications\CruiseManager.exe\SupportedTypes"; ValueType: string; ValueName: ".cruise"; ValueData: ""; Flags: uninsdeletevalue; Tasks: associateCruiseFileTypes;
+Root: HKA; Subkey: "Software\Classes\Applications\CruiseManager.exe\SupportedTypes"; ValueType: string; ValueName: ".cut"; ValueData: ""; Flags: uninsdeletevalue; Tasks: associateCutFileTypes;
 
-; Register setup file
-Root: HKCR; SubKey: .cut; ValueType: string; ValueData: NCS.TemplateFile; Flags: uninsdeletekey;  Tasks: associateCutFileTypes;
-Root: HKCR; SubKey: NCS.TemplateFile; ValueType: string; ValueData: Cruise Template File; Flags: uninsdeletekey;  Tasks: associateCutFileTypes;
-Root: HKCR; SubKey: NCS.TemplateFile\Shell\Open\Command; ValueType: string; ValueData: """{app}\{#EXEName}"" ""%1"""; Flags: uninsdeletevalue; Tasks: associateCutFileTypes;
-; NEED NEW FILE ICONS Root: HKCR; Subkey: NCS.SetupFile\DefaultIcon; ValueType: string; ValueData: {app}\stp1.ico; Flags: uninsdeletevalue; Tasks: associateFileTypes;
+; NCS.CruiseFile is the internal unique name for the file type assocation for the .cruise extention
+Root: HKA; Subkey: "Software\Classes\.cruise"; ValueType: string; ValueName: ""; ValueData: "NCS.CruiseFile"; Flags: uninsdeletevalue; Tasks: associateCruiseFileTypes;
+Root: HKA; Subkey: "Software\Classes\.cruise\OpenWithProgids"; ValueType: string; ValueName: "NCS.CruiseFile"; ValueData: ""; Flags: uninsdeletevalue; Tasks: associateCruiseFileTypes;
+Root: HKA; Subkey: "Software\Classes\NCS.CruiseFile"; ValueType: string; ValueName: ""; ValueData: "Cruise File V2"; Flags: uninsdeletevalue; Tasks: associateCruiseFileTypes;
+; the ',0' in ValueData tells Explorer to use the first icon from CruiseManager.exe
+Root: HKA; Subkey: "Software\Classes\NCS.CruiseFile\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#EXEName},0"; Flags: uninsdeletevalue; Tasks: associateCruiseFileTypes;
+Root: HKA; Subkey: "Software\Classes\NCS.CruiseFile\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#EXEName}"" ""%1"""; Flags: uninsdeletevalue; Tasks: associateCruiseFileTypes;
 
-; Modify OpenWithList and FileExts for cruise (Requires admin privledges.)
-; If user doesn't have admin privledges, setup simply skips these registry changes.
-Root: HKCU; SubKey: Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.cruise; ValueName: Application; ValueType: string; ValueData: " "; Flags: uninsdeletevalue; Tasks: associateCruiseFileTypes;
-Root: HKCU; SubKey: Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.cruise\OpenWithList; ValueName: a; ValueType: string; ValueData: {#EXEName}; Flags: uninsdeletevalue; Tasks: associateCruiseFileTypes;
-Root: HKCU; SubKey: Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.cruise\OpenWithList; ValueName: b; ValueType: string; ValueData: " "; Flags: uninsdeletevalue; Tasks: associateCruiseFileTypes;
-Root: HKCU; SubKey: Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.cruise\OpenWithList; ValueName: c; ValueType: string; ValueData: " "; Flags: uninsdeletevalue; Tasks: associateCruiseFileTypes;
-Root: HKCU; SubKey: Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.cruise\OpenWithList; ValueName: MRUList ValueType: string; ValueData: a; Flags: uninsdeletevalue;  Tasks: associateCruiseFileTypes;
+; register cruise template files
+Root: HKA; Subkey: "Software\Classes\.cut"; ValueType: string; ValueName: ""; ValueData: "NCS.TemplateFile"; Flags: uninsdeletevalue; Tasks: associateCutFileTypes;
+Root: HKA; Subkey: "Software\Classes\.cut\OpenWithProgids"; ValueType: string; ValueName: "NCS.TemplateFile"; ValueData: ""; Flags: uninsdeletevalue; Tasks: associateCutFileTypes;
+Root: HKA; Subkey: "Software\Classes\NCS.TemplateFile"; ValueType: string; ValueName: ""; ValueData: "Cruise Template File V2"; Flags: uninsdeletevalue; Tasks: associateCutFileTypes;
+Root: HKA; Subkey: "Software\Classes\NCS.TemplateFile\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#EXEName},0"; Flags: uninsdeletevalue; Tasks: associateCutFileTypes;
+Root: HKA; Subkey: "Software\Classes\NCS.TemplateFile\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#EXEName}"" ""%1"""; Flags: uninsdeletevalue; Tasks: associateCutFileTypes;
 
-; Modify OpenWithList and FileExts for stp (Require admin privledges.)
-; If user doesn't have admin privledges, setup simply skips these registry changes.
-Root: HKCU; SubKey: Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.cut; ValueName: Application; ValueType: string; ValueData: " "; Flags: uninsdeletevalue; Tasks: associateCutFileTypes;
-Root: HKCU; SubKey: Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.cut\OpenWithList; ValueName: a; ValueType: string; ValueData: {#EXEName}; Flags: uninsdeletevalue; Tasks: associateCutFileTypes;
-Root: HKCU; SubKey: Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.cut\OpenWithList; ValueName: b; ValueType: string; ValueData: " "; Flags: uninsdeletevalue; Tasks: associateCutFileTypes;
-Root: HKCU; SubKey: Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.cut\OpenWithList; ValueName: c; ValueType: string; ValueData: " "; Flags: uninsdeletevalue; Tasks: associateCutFileTypes;
-Root: HKCU; SubKey: Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.cut\OpenWithList; ValueName: MRUList ValueType: string; ValueData: a; Flags: uninsdeletevalue; Tasks: associateCutFileTypes;
+
+[Code]
+
+function ShouldSkipPage(PageID: Integer): Boolean;
+begin
+  Log('ShouldSkipPage(' + IntToStr(PageID) + ') called');
+  { Skip wpSelectDir page if admin install; show all others }
+  case PageID of
+    wpSelectDir:
+      Result := IsAdminInstallMode();
+  else
+    Result := False;
+  end;
+end;
+
+procedure CopyFiles(srcDir: String; pattern: String; destDir: String; overwrite: Boolean);
+var 
+  FindRec: TFindRec;
+begin
+  if ForceDirectories(destDir) then
+  begin {itterate cut files in the app template dir and copy them to users documents dir }
+    if FindFirst(srcDir + '*.cut', FindRec) then
+    begin
+      try
+        repeat
+          Log('Copy ' + srcDir + FindRec.Name + ' -> ' + destDir + FindRec.Name);
+          if FileCopy(srcDir + FindRec.Name, destDir + FindRec.Name, not overwrite) then
+          begin
+            Log('File Copyed ' + srcDir + FindRec.Name + ' -> ' + destDir + FindRec.Name);
+          end else
+          begin
+            Log('File NOT Copyed ' + srcDir + FindRec.Name + ' -> ' + destDir + FindRec.Name);
+          end;
+        until not FindNext(FindRec);
+      finally
+        FindClose(FindRec);
+      end; { end try }
+    end;   { end file copy loop }   
+  end else { end if force dir }
+  begin
+    Log('Error Creating Dir ' + destDir);
+  end;
+end;
+
+procedure CurStepChanged(CurStep: TSetupStep);
+var
+  UsersPath: String;
+  CommonDesktopShortPath: String;
+  DocumentsPath: String;
+  UserTemplatesPath: String;
+  CopyTemplateIfExists: Boolean;
+  UserDirFindRec: TFindRec;
+  TemplateSrcPath: String;
+  TemplatesFindRec: TFindRec;
+  ShortcutsCount: Integer;
+begin
+  { Once the files are installed }
+  if (CurStep = ssPostInstall) and WizardIsTaskSelected('deployTemplates') then
+  begin
+    Log('Copying Templates');
+    TemplateSrcPath := ExpandConstant('{app}') + '\Templates\';
+    if IsAdminInstallMode() then
+    begin
+      UsersPath := ExpandConstant('{%HOMEDRIVE|C:}') + '\Users\';
+      Log(Format('Users Path [%s]', [UsersPath]));
+
+      { Iterate all users }
+      if FindFirst(UsersPath + '*', UserDirFindRec) then
+      begin
+        try
+          repeat
+            { Just directories and ignore Public, All Users, and Default User. All Users and Default User are symbolic links that we don't care about }
+            if (UserDirFindRec.Attributes and FILE_ATTRIBUTE_DIRECTORY <> 0) and (UserDirFindRec.Name <> 'Public') and (UserDirFindRec.Name <> 'All Users') and (UserDirFindRec.Name <> 'Default User') then
+            begin
+              DocumentsPath := UsersPath + UserDirFindRec.Name + '\Documents';
+              Log('UserProfile ' + UsersPath + UserDirFindRec.Name);
+              if DirExists(DocumentsPath) then
+              begin
+                UserTemplatesPath := DocumentsPath + '\CruiseFiles\Templates\';
+                CopyFiles(TemplateSrcPath, '*.cut', UserTemplatesPath, CopyTemplateIfExists);
+              end;       { end if force dir }
+            end;         { end check user dir exists }
+          until not FindNext(UserDirFindRec);
+        finally
+          FindClose(UserDirFindRec);
+        end;
+      end else
+      begin
+        Log(Format('Error listing User dirs [%s]', [UsersPath]));
+      end;
+    end else {end is admin mode}
+    begin
+      CopyFiles(TemplateSrcPath, '*.cut', ExpandConstant('{userdocs}') + '\CruiseFiles\Templates\', CopyTemplateIfExists); 
+    end;
+    
+  end; {end if is templates component selected }
+end;
+
+

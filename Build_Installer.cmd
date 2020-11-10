@@ -31,7 +31,7 @@ IF NOT EXIST %innoSetupPath% (
 	EXIT /B 1)
 	
 
-%innoSetupPath% /dAPP_VERSION=%appVer% /F"CruiseManager_Setup_%verStamp%" "./InnoSetupFiles/CruiseManager.iss" 
+%innoSetupPath% /dAPP_VERSION=%appVer% "./InnoSetupFiles/CruiseManager.iss" 
 
 ::End Boilderplate
 ::if invoked from windows explorer, pause
