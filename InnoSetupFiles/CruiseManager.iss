@@ -57,8 +57,8 @@ PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
 
 
-OutputBaseFilename=CruiseManager_Setup
-;OutputBaseFilename=CruiseManager_Setup_{#SETUPVERSION}
+;OutputBaseFilename=CruiseManager_Setup
+OutputBaseFilename=CruiseManager_Setup_{#SETUPVERSION}
 OutputManifestFile=Setup-Manifest.txt
 
 [Tasks]
@@ -159,14 +159,11 @@ end;
 procedure CurStepChanged(CurStep: TSetupStep);
 var
   UsersPath: String;
-  CommonDesktopShortPath: String;
   DocumentsPath: String;
   UserTemplatesPath: String;
   CopyTemplateIfExists: Boolean;
   UserDirFindRec: TFindRec;
   TemplateSrcPath: String;
-  TemplatesFindRec: TFindRec;
-  ShortcutsCount: Integer;
 begin
   { Once the files are installed }
   if (CurStep = ssPostInstall) and WizardIsTaskSelected('deployTemplates') then
