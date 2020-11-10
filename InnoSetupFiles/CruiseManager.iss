@@ -94,6 +94,8 @@ Filename: "{app}\{#EXEName}"; Description: "{cm:LaunchProgram,Cruise Manager}"; 
 
 [Registry]
 
+Root: HKLM; Subkey: SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\{#EXEName}; ValueType: none; Flags: deletekey noerror;
+
 Root: HKA; Subkey: "Software\Classes\Applications\CruiseManager.exe\SupportedTypes"; ValueType: string; ValueName: ".cruise"; ValueData: ""; Flags: uninsdeletevalue; Tasks: associateCruiseFileTypes;
 Root: HKA; Subkey: "Software\Classes\Applications\CruiseManager.exe\SupportedTypes"; ValueType: string; ValueName: ".cut"; ValueData: ""; Flags: uninsdeletevalue; Tasks: associateCutFileTypes;
 
