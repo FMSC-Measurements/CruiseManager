@@ -16,10 +16,14 @@ SET zip="%parent%tools\zip.cmd"
 IF NOT DEFINED verStamp (SET verStamp=%date:~10,4%%date:~4,2%%date:~7,2%)
 
 set outFile=%parent%InnoSetupFiles\Output\CruiseManager_%verStamp%.zip
+set templatesFile=%parent%InnoSetupFiles\Output\Templates_%verStamp%.zip
 
-cd .\CruiseManager.WinForms\bin\Release\net461
+cd %parent%CruiseManager.WinForms\bin\Release\net461
 
 call %zip% a -tzip -spf %outFile%  CruiseManager.exe CruiseManager.exe.config STPinfo\*.xml runtimes\win-x86\native\*.dll runtimes\win-x64\native\*.dll *.dll Sounds\*
+
+cd %parent%Template Files
+call %zip% a -tzip -spf %templatesFile%  *.cut
 
 ::if invoked from windows explorer, pause
 IF "%interactive%"=="0" PAUSE
