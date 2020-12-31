@@ -5,8 +5,11 @@ using CruiseManager.Utility;
 using CruiseManager.WinForms.Components;
 using CruiseManager.WinForms.Dashboard;
 using CruiseManager.WinForms.EditDesign;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using Ninject;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.App
@@ -72,6 +75,7 @@ namespace CruiseManager.WinForms.App
                 _converter = new COConverter();
                 _convertedFilePath = System.IO.Path.ChangeExtension(filePath, Strings.CRUISE_FILE_EXTENTION);
 
+                Analytics.TrackEvent("COConvert_Start", new Dictionary<string, string>() { { "Path", filePath } });
                 _converter.BenginConvert(filePath, _convertedFilePath, null, HandleConvertDone);
                 return;
             }
@@ -79,15 +83,24 @@ namespace CruiseManager.WinForms.App
 
         private void HandleConvertDone(IAsyncResult result)
         {
-            if (_converter.EndConvert(result))
+            try
             {
-                base.InitializeDAL(_convertedFilePath);
-                this.AppState.AddRecentFile(_convertedFilePath);
-                this.WindowPresenter.ShowCruiseLandingLayout();
+                if (_converter.EndConvert(result))
+                {
+                    Analytics.TrackEvent("COConvert_Done", new Dictionary<string, string>() { { "Path", _convertedFilePath} });
+                    base.InitializeDAL(_convertedFilePath);
+                    this.AppState.AddRecentFile(_convertedFilePath);
+                    this.WindowPresenter.ShowCruiseLandingLayout();
+                }
+                else
+                {
+                    this.ActiveView.ShowMessage("error unable to convert file");//TODO better error messages
+                }
             }
-            else
+            catch(System.IO.FileNotFoundException e)
             {
-                this.ActiveView.ShowMessage("error unable to convert file");//TODO better error messages
+                Crashes.TrackError(e);
+                MessageBox.Show(e.Message);
             }
 
             _convertedFilePath = null;
