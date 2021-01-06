@@ -129,13 +129,14 @@ begin
   end;
 end;
 
+{ copys files matching pattern from srcDir to destDir }
 procedure CopyFiles(srcDir: String; pattern: String; destDir: String; overwrite: Boolean);
 var 
   FindRec: TFindRec;
 begin
   if ForceDirectories(destDir) then
-  begin {itterate cut files in the app template dir and copy them to users documents dir }
-    if FindFirst(srcDir + '*.cut', FindRec) then
+  begin {itterate files in srcDir and copy them to destDir }
+    if FindFirst(srcDir + pattern, FindRec) then
     begin
       try
         repeat
@@ -184,6 +185,7 @@ begin
         try
           repeat  
             { Just directories and ignore Public, All Users, and Default User. All Users and Default User are symbolic links that we don't care about }
+
             if (UserDirFindRec.Attributes and FILE_ATTRIBUTE_DIRECTORY <> 0) and (UserDirFindRec.Name <> 'Public') and (UserDirFindRec.Name <> 'All Users') and (UserDirFindRec.Name <> 'Default User') then
             begin
               DocumentsPath := UsersPath + UserDirFindRec.Name + '\Documents';
@@ -196,6 +198,7 @@ begin
 
               { delete any desktop icons left behind in the user's desktop folder }
               { note we arn't deleting from the Public\Desktop where the All Users desktop icon is located }
+
               DesktopPath := UsersPath + UserDirFindRec.Name + '\Desktop\';
               if DirExists(DesktopPath) then
               begin
