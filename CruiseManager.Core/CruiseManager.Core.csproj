@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="CruiseDAL.V2" Version="2.7.0.69" />
+    <PackageReference Include="CruiseDAL.V2" Version="2.7.1.72" />
     <PackageReference Include="FMSC.Sampling" Version="2.0.1" />
     <PackageReference Include="Microsoft.AppCenter.Analytics" Version="3.3.0" />
     <PackageReference Include="Microsoft.AppCenter.Crashes" Version="3.3.0" />
