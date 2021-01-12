@@ -52,6 +52,7 @@ namespace CruiseManager.WinForms.App
             }
             else
             {
+                Crashes.TrackError(e);
                 return false;
             }
         }

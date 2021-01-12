@@ -3,9 +3,9 @@
 ; #defines require the ISPP add-on: http://sourceforge.net/projects/ispp/
 #define APP "Cruise Manager"
 ;
-#define VERSION "2020.11.10"
+#define VERSION "2020.01.06"
 ;version format for setup file name
-#define SETUPVERSION "20201110";  
+#define SETUPVERSION "20210106";  
 #define SPECIALTAG ""
 #define BASEURL "http://www.fs.fed.us/fmsc/measure"
 #define ORGANIZATION "U.S. Forest Service, Forest Management Service Center"
@@ -94,6 +94,8 @@ Filename: "{app}\{#EXEName}"; Description: "{cm:LaunchProgram,Cruise Manager}"; 
 
 [Registry]
 
+Root: HKLM; Subkey: SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\{#EXEName}; ValueType: none; Flags: deletekey noerror;
+
 Root: HKA; Subkey: "Software\Classes\Applications\CruiseManager.exe\SupportedTypes"; ValueType: string; ValueName: ".cruise"; ValueData: ""; Flags: uninsdeletevalue; Tasks: associateCruiseFileTypes;
 Root: HKA; Subkey: "Software\Classes\Applications\CruiseManager.exe\SupportedTypes"; ValueType: string; ValueName: ".cut"; ValueData: ""; Flags: uninsdeletevalue; Tasks: associateCutFileTypes;
 
@@ -127,13 +129,14 @@ begin
   end;
 end;
 
+{ copys files matching pattern from srcDir to destDir }
 procedure CopyFiles(srcDir: String; pattern: String; destDir: String; overwrite: Boolean);
 var 
   FindRec: TFindRec;
 begin
   if ForceDirectories(destDir) then
-  begin {itterate cut files in the app template dir and copy them to users documents dir }
-    if FindFirst(srcDir + '*.cut', FindRec) then
+  begin {itterate files in srcDir and copy them to destDir }
+    if FindFirst(srcDir + pattern, FindRec) then
     begin
       try
         repeat
@@ -182,6 +185,7 @@ begin
         try
           repeat  
             { Just directories and ignore Public, All Users, and Default User. All Users and Default User are symbolic links that we don't care about }
+
             if (UserDirFindRec.Attributes and FILE_ATTRIBUTE_DIRECTORY <> 0) and (UserDirFindRec.Name <> 'Public') and (UserDirFindRec.Name <> 'All Users') and (UserDirFindRec.Name <> 'Default User') then
             begin
               DocumentsPath := UsersPath + UserDirFindRec.Name + '\Documents';
@@ -194,6 +198,7 @@ begin
 
               { delete any desktop icons left behind in the user's desktop folder }
               { note we arn't deleting from the Public\Desktop where the All Users desktop icon is located }
+
               DesktopPath := UsersPath + UserDirFindRec.Name + '\Desktop\';
               if DirExists(DesktopPath) then
               begin

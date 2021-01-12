@@ -90,8 +90,10 @@ namespace CruiseManager.Core.Components
 
             try
             {
-                var value = master.ReadGlobalValue("Comp", "ChildComponents");
-                NumComponents = Convert.ToInt32(value);
+                //var value = master.ReadGlobalValue("Comp", "ChildComponents");
+                //NumComponents = Convert.ToInt32(value);
+                NumComponents = (int)master.GetRowCount("Component", null);
+
             }
             catch
             {

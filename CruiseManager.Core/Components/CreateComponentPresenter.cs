@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace CruiseManager.Core.Components
 {
@@ -233,25 +234,27 @@ namespace CruiseManager.Core.Components
             return compList;
         }
 
-        protected static int GetComponentRowIDStart(int compNum)
+        public static int GetComponentRowIDStart(int compNum)
         {
             return compNum * ROWID_SPACING;
         }
 
-        private static string GetCompFileName(string masterFileName, int compNum)
+        public static string GetCompFileName(string masterFileName, int compNum)
         {
-            return masterFileName.Replace(".M.cruise", String.Format(".{0}.cruise", compNum));
+            return Regex.Replace(masterFileName, ".m.cruise", $".{compNum}.cruise", RegexOptions.IgnoreCase);
         }
 
-        private static string GetSaveDir(string parentPath)
+        public static string GetSaveDir(string parentPath)
         {
             return System.IO.Path.GetDirectoryName(parentPath);
         }
 
-        private static string GetMasterPath(string parentPath)
+        public static string GetMasterPath(string parentPath)
         {
-            if (parentPath.Contains(".M.cruise")) { return parentPath; }
-            return parentPath.Replace(".cruise", ".M.cruise");
+            parentPath = parentPath.Trim();
+            if(Regex.IsMatch(parentPath, ".m.cruise$", RegexOptions.IgnoreCase)) { return parentPath; }
+            //if (parentPath.EndsWith(".m.cruise", StringComparison.InvariantCultureIgnoreCase)) { return parentPath; }
+            return Regex.Replace(parentPath, ".cruise$", ".M.cruise", RegexOptions.IgnoreCase);
         }
 
         #region Presentor Members
