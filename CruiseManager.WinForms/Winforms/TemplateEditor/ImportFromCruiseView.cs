@@ -73,7 +73,7 @@ namespace CruiseManager.WinForms.TemplateEditor
                 {
                     foreach (var volEq in _copyFromDB.From<VolumeEquationDO>().Query())
                     {
-                        this.ApplicationController.Database.Insert(volEq, option: OnConflictOption.Ignore, keyValue: null);
+                        this.ApplicationController.Database.Insert(volEq, option: OnConflictOption.Ignore, persistKeyvalue: false);
                     }
                     this.ApplicationController.Database.CommitTransaction();
                 }
@@ -85,7 +85,7 @@ namespace CruiseManager.WinForms.TemplateEditor
 
             foreach (TreeDefaultValueDO tdv in TreeDefaultsToCopy)
             {
-                ApplicationController.Database.Insert(tdv, option: OnConflictOption.Ignore, keyValue: null);
+                ApplicationController.Database.Insert(tdv, option: OnConflictOption.Ignore, persistKeyvalue: false);
             }
         }
 

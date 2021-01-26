@@ -7,12 +7,14 @@ using CruiseManager.Core.Validation;
 using CruiseManager.Core.ViewInterfaces;
 using CruiseManager.Core.ViewModel;
 using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using Ninject;
 using Ninject.Modules;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 
 namespace CruiseManager.Core.App
 {
@@ -75,7 +77,25 @@ namespace CruiseManager.Core.App
 
                 if (DatabaseValidator.HasCruiseErrors(database, out var errors))
                 {
-                    this.ActiveView.ShowMessage(String.Join("\r\n", errors), null);
+                    var errorMessage = String.Join("\r\n", errors);
+                    var errorData = new Dictionary<string, string>() { { "errorMessage", errorMessage} };
+
+                    try
+                    {
+                        if (database.HasForeignKeyErrors())
+                        {
+                            var fkc = String.Join(",", database.QueryGeneric("PRAGMA foreign_key_check")
+                                .Select(x => "{\r\n" + x.ToString() + "}")
+                                .ToArray());
+                            errorData.Add("foreign_key_check", fkc);
+                        }
+                    }
+                    catch { }
+
+                    Crashes.TrackError(new Exception("Cruise_Errors"), errorData);
+                    //Analytics.TrackEvent("Cruise_Errors", errorData);
+
+                    this.ActiveView.ShowMessage(errorMessage, null);
                 }
 
                 WindowPresenter.ShowCruiseLandingLayout();

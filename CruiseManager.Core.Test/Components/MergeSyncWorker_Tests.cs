@@ -35,14 +35,14 @@ namespace CruiseManager.Test.Components
         [Fact]
         public void SyncDesign_Test_PullTreeDefaults()
         {
-            var (master, comps) = MakeFiles(numComponents: 2);
+            var (master, compDbs) = MakeFiles(numComponents: 2);
 
-            var compVMs = comps.Select((x, i) => { return new ComponentFile() { Database = x, Component_CN = i }; })
+            var components = compDbs.Select((x, i) => { return new ComponentFile() { Database = x, Component_CN = i }; })
                 .ToArray();
             var commandBuilders = MergeComponentsPresenter.MakeCommandBuilders(master)
                 .ToDictionary(x => x.ClientTableName);
 
-            var comp1 = comps.First();
+            var comp1 = compDbs.First();
             var comp1TDV1 = new TreeDefaultValue()
             {
                 TreeDefaultValue_CN = 1000,
@@ -54,7 +54,7 @@ namespace CruiseManager.Test.Components
 
             MergeSyncWorker.SyncDesign(
                 master,
-                compVMs,
+                components,
                 new System.Threading.CancellationToken(),
                 (IProgress<int>)null,
                 TestMergeLogWriter);
@@ -68,7 +68,7 @@ namespace CruiseManager.Test.Components
             // the synced tdv should have the same cn value
             mastTDV1.TreeDefaultValue_CN.Should().Be(comp1TDV1.TreeDefaultValue_CN);
 
-            var comp2 = comps.ElementAt(1);
+            var comp2 = compDbs.ElementAt(1);
             var comp2TDV1 = comp2.From<TreeDefaultValue>().Where("Species = 'nsp1'").Query().FirstOrDefault();
 
             ValidateTDVSame(comp2TDV1, comp2TDV1);
@@ -284,9 +284,9 @@ namespace CruiseManager.Test.Components
         [Fact]
         public void SyncDesign_Test_PushStratum()
         {
-            var (master, comps) = MakeFiles(numComponents: 2);
+            var (master, compDbs) = MakeFiles(numComponents: 2);
 
-            var compVMs = comps.Select((x, i) => { return new ComponentFile() { Database = x, Component_CN = i }; })
+            var components = compDbs.Select((x, i) => { return new ComponentFile() { Database = x, Component_CN = i }; })
                 .ToArray();
 
             var mastSt1 = new Stratum()
@@ -298,25 +298,26 @@ namespace CruiseManager.Test.Components
 
             MergeSyncWorker.SyncDesign(
                 master,
-                compVMs,
+                components,
                 new System.Threading.CancellationToken(),
                 (IProgress<int>)null,
                 TestMergeLogWriter);
 
-            var comp1 = comps.First();
+            var comp1 = compDbs.First();
             var compSt1 = comp1.From<Stratum>().Where("Code = @p1").Query(mastSt1.Code).Single();
             compSt1.Should().NotBeNull();
+            compSt1.Stratum_CN.Should().Be(mastSt1.Stratum_CN);
         }
 
         [Fact]
         public void SyncDesign_Test_PushStratum_with_cn_conflict()
         {
-            var (master, comps) = MakeFiles(numComponents: 2);
+            var (master, compDbs) = MakeFiles(numComponents: 2);
 
-            var compVMs = comps.Select((x, i) => { return new ComponentFile() { Database = x, Component_CN = i }; })
+            var components = compDbs.Select((x, i) => { return new ComponentFile() { Database = x, Component_CN = i }; })
                 .ToArray();
 
-            var comp1 = comps.First();
+            var comp1 = compDbs.First();
 
             var mastSt1 = new Stratum()
             {
@@ -334,7 +335,7 @@ namespace CruiseManager.Test.Components
 
             MergeSyncWorker.SyncDesign(
                 master,
-                compVMs,
+                components,
                 new System.Threading.CancellationToken(),
                 (IProgress<int>)null,
                 TestMergeLogWriter);
@@ -343,6 +344,89 @@ namespace CruiseManager.Test.Components
             compSt1.Should().NotBeNull();
             compSt1.Stratum_CN.Should().Be(mastSt1.Stratum_CN);
         }
+
+        [Fact]
+        public void SyncFieldData_Pull_Plots_Insert()
+        {
+            var cancelation = new System.Threading.CancellationToken();
+            var (master, compDbs, components, commandBuilders) = Setup();
+
+            var comp1 = compDbs.First();
+            var newPlot = new Plot()
+            {
+                Stratum_CN = 1,
+                CuttingUnit_CN = 1,
+                PlotNumber = 1,
+                Plot_GUID = Guid.NewGuid().ToString().ToUpper(),
+            };
+            comp1.Insert(newPlot);
+
+            PrepareMergeWorker.DoWork(
+                master,
+                components,
+                commandBuilders.Values,
+                cancelation,
+                (IProgress<int>)null,
+                TestMergeLogWriter);
+
+            MergeSyncWorker.SyncFieldData(
+               master,
+               components,
+               commandBuilders,
+               cancelation,
+               (IProgress<int>)null,
+               TestMergeLogWriter);
+
+            var masterNewPlot = master.From<Plot>().Query().First();
+
+            newPlot.Plot_CN.Should().Be(masterNewPlot.Plot_CN);
+            newPlot.Stratum_CN.Should().Be(masterNewPlot.Stratum_CN);
+            newPlot.CuttingUnit_CN.Should().Be(masterNewPlot.CuttingUnit_CN);
+            newPlot.Plot_GUID.Should().Be(masterNewPlot.Plot_GUID);
+        }
+
+        [Fact]
+        public void SyncFieldData_Pull_Tree_Insert()
+        {
+            var cancelation = new System.Threading.CancellationToken();
+            var (master, compDbs, components, commandBuilders) = Setup();
+
+            var comp1 = compDbs.First();
+            var newTree = new Tree()
+            {
+                Stratum_CN = 1,
+                CuttingUnit_CN = 1,
+                SampleGroup_CN = 1,
+                Tree_GUID = Guid.NewGuid().ToString().ToUpper(),
+                TreeNumber = 1,
+            };
+            comp1.Insert(newTree);
+
+            PrepareMergeWorker.DoWork(
+                master,
+                components,
+                commandBuilders.Values,
+                cancelation,
+                (IProgress<int>)null,
+                TestMergeLogWriter);
+
+            MergeSyncWorker.SyncFieldData(
+               master,
+               components,
+               commandBuilders,
+               cancelation,
+               (IProgress<int>)null,
+               TestMergeLogWriter);
+
+            var masterNewTree = master.From<Tree>().Query().First();
+
+            newTree.Tree_CN.Should().Be(masterNewTree.Tree_CN);
+            newTree.CuttingUnit_CN.Should().Be(masterNewTree.CuttingUnit_CN);
+            newTree.Stratum_CN.Should().Be(masterNewTree.Stratum_CN);
+            newTree.SampleGroup_CN.Should().Be(masterNewTree.SampleGroup_CN);
+            newTree.Tree_GUID.Should().Be(masterNewTree.Tree_GUID);
+        }
+
 
         [Fact]
         // test merging new tally setup added to component one
