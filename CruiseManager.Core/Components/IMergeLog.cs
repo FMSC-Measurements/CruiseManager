@@ -14,7 +14,7 @@ namespace CruiseManager.Core.Components
         {
             //if (_stopwatch != null) { _stopwatch.Stop(); }
             //_stopwatch = Stopwatch.StartNew();
-            @this.PostStatus("Starting" + name);
+            @this.PostStatus("Starting " + name);
             Debug.WriteLine("Started job component " + name);
         }
 

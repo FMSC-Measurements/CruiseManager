@@ -336,6 +336,19 @@ namespace CruiseManager.Test.Components
             }
         }
 
+        protected (DAL master, IEnumerable<DAL> compDbs, IEnumerable<ComponentFile> components, Dictionary<string, MergeTableCommandBuilder> commandBuilders ) 
+            Setup([CallerMemberName] string baseFileName = null, int numComponents = 1)
+        {
+            var (master, compDbs) = MakeFiles(baseFileName: baseFileName, numComponents: 2);
+
+            var components = compDbs.Select((x, i) => { return new ComponentFile() { Database = x, Component_CN = i }; })
+                .ToArray();
+            var commandBuilders = MergeComponentsPresenter.MakeCommandBuilders(master)
+                .ToDictionary(x => x.ClientTableName);
+
+            return (master, compDbs, components, commandBuilders);
+        }
+
         protected (DAL master, IEnumerable<DAL> comps) MakeFiles([CallerMemberName] string baseFileName = null, int numComponents = 1)
         {
             var masterPath = GetCleanFile(baseFileName + ".m.cruise");
@@ -348,10 +361,10 @@ namespace CruiseManager.Test.Components
             var components = new List<DAL>();
             foreach (var i in Enumerable.Range(1, numComponents))
             {
-                var compPath = GetCleanFile(baseFileName + ".1.cruise");
-                var compInfo = new ComponentDO() { Component_CN = 1 };
+                var compPath = GetCleanFile(baseFileName + $".{i}.cruise");
+                var compInfo = new ComponentDO() { Component_CN = i };
 
-                CreateComponentPresenter.CreateComponent(masterDB, 1, compInfo, compPath);
+                CreateComponentPresenter.CreateComponent(masterDB, i, compInfo, compPath);
 
                 components.Add(new DAL(compPath));
             }

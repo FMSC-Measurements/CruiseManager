@@ -68,6 +68,8 @@ namespace CruiseManager.Core.Components
     {
         public const string COMP_ALIAS = "comp";
 
+        public static bool FixMismatchedCNsOnUpdate { get; set; }
+
         #region move methods
 
         private static void MoveUnit(DAL database, string dbAlias, long fromUnit_CN, long toUnit_CN)
@@ -455,7 +457,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                         Hotkey = tally.Hotkey,
                         Description = tally.Description,
                     };
-                    master.Insert(match);
+                    master.Insert(match, persistKeyvalue: false);
                     log?.PostStatus($"Added Tally {match.Tally_CN}");
                 }
             }
@@ -512,7 +514,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                             Description = tally.Description,
                             Hotkey = tally.Hotkey,
                         };
-                        master.Insert(masterTally);
+                        master.Insert(masterTally, persistKeyvalue: false);
                         log?.PostStatus($"Tally added :{masterTally.Tally_CN}");
                     }
 
@@ -526,7 +528,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                         Component_CN = count.Component_CN ?? component_cn,
                         Tally_CN = masterTally.Tally_CN,
                     };
-                    master.Insert(newCount, option: OnConflictOption.Fail);
+                    master.Insert(newCount, option: OnConflictOption.Fail, persistKeyvalue: false);
                     log?.PostStatus($"CountTree added :{newCount.CountTree_CN}");
                 }
 
@@ -557,7 +559,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                             Description = tally.Description,
                             Hotkey = tally.Hotkey,
                         };
-                        master.Insert(masterTally);
+                        master.Insert(masterTally, persistKeyvalue: false);
                         log?.PostStatus($"Tally added :{masterTally.Tally_CN}");
                     }
 
@@ -573,7 +575,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                         Tally_CN = masterTally.Tally_CN,
                     };
 
-                    master.Insert(masterMatch, option: OnConflictOption.Fail, keyValue: null);
+                    master.Insert(masterMatch, option: OnConflictOption.Fail, persistKeyvalue: false);
                     log?.PostStatus($"Master CountTree added :{masterMatch.CountTree_CN}");
                 }
 
@@ -626,7 +628,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                         ? sg.SampleGroup_CN
                         : (long?)null;
 
-                    master.Insert(newSG, keyValue: newSG_CN);
+                    master.Insert(newSG, keyValue: newSG_CN, persistKeyvalue: newSG_CN != null);
                     match = newSG;
                     log?.PostStatus($"Sample Group added :{newSG.SampleGroup_CN}");
                 }
@@ -691,7 +693,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                 {
                     var newTDV = new TreeDefaultValueDO(master);
                     newTDV.SetValues(tdv);
-                    master.Insert(newTDV, option: OnConflictOption.Fail);
+                    master.Insert(newTDV, option: OnConflictOption.Fail, persistKeyvalue: false);
 
                     match = newTDV;
                     log.PostStatus($"TDV added :{newTDV.TreeDefaultValue_CN}");
@@ -766,7 +768,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                             Hotkey = masterTally.Hotkey,
                         };
 
-                        var tally_CN = master.Insert(newTally, tableName: $"{COMP_ALIAS}.Tally");
+                        var tally_CN = master.Insert(newTally, tableName: $"{COMP_ALIAS}.Tally", persistKeyvalue: false);
                         tallyMatch = newTally;
 
                         log?.PostStatus($"Tally added :{tally_CN}");
@@ -782,7 +784,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                     };
 
                     // insert the count tree record into the component
-                    var newCt_cn = master.Insert(newCt, tableName: $"{COMP_ALIAS}.CountTree");
+                    var newCt_cn = master.Insert(newCt, tableName: $"{COMP_ALIAS}.CountTree", persistKeyvalue: false);
                     log?.PostStatus($"CountTree added :{newCt_cn}");
 
                 }
@@ -834,11 +836,13 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                         UOM = sg.UOM,
                     };
 
+                    // check to see if component has sg_cn if not give sg the same cn as master, 
+                    // otherwise allow component to auto generate cn
                     var sg_cn = (master.ExecuteScalar<int>($"SELECT count(*) FROM {COMP_ALIAS}.SampleGroup WHERE SampleGroup_CN = @p1", mastCN) == 0)
                         ? mastCN
                         : (long?)null;
 
-                    var newSG_CN = master.Insert(newSG, tableName: $"{COMP_ALIAS}.SampleGroup", keyValue: sg_cn);
+                    var newSG_CN = master.Insert(newSG, tableName: $"{COMP_ALIAS}.SampleGroup", keyValue: sg_cn, persistKeyvalue: sg_cn != null);
                     match = newSG;
                     log?.PostStatus($"SampleGroup added :{newSG_CN}");
                 }
@@ -901,7 +905,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                     var st_cn = (master.ExecuteScalar<int>($"SELECT count(*) FROM {COMP_ALIAS}.Stratum WHERE Stratum_CN = @p1", mastCN) == 0)
                         ? mastCN
                         : (long?)null;
-                    master.Insert(newSt, $"{COMP_ALIAS}.Stratum", keyValue: st_cn);
+                    master.Insert(newSt, $"{COMP_ALIAS}.Stratum", keyValue: st_cn, persistKeyvalue: st_cn != null);
                     match = newSt;
 
                     log?.PostStatus($"Stratum added :{st_cn}");
@@ -959,7 +963,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                         ? mastCN
                         : (long?)null;
 
-                    master.Insert(newUnit, tableName: $"{COMP_ALIAS}.CuttingUnit", keyValue: unit_CN);
+                    master.Insert(newUnit, tableName: $"{COMP_ALIAS}.CuttingUnit", keyValue: unit_CN, persistKeyvalue: unit_CN != null);
 
                     match = newUnit;
                     log?.PostStatus($"Unit added :{unit_CN}");
@@ -1040,7 +1044,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                         ? tdv.TreeDefaultValue_CN
                         : (long?)null;
 
-                    master.Insert(newTDV, tableName: $"{COMP_ALIAS}.TreeDefaultValue", keyValue: tdv_CN);
+                    master.Insert(newTDV, tableName: $"{COMP_ALIAS}.TreeDefaultValue", keyValue: tdv_CN, persistKeyvalue: tdv_CN != null);
                     match = newTDV;
                     log?.PostStatus($"TDV added :{tdv_CN}");
                 }
@@ -1093,11 +1097,19 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
             foreach (MergeObject mRec in pullList)
             {
                 long matchRowid = mRec.MatchRowID.Value;
+                long compRowID = mRec.ComponentRowID.Value;
+
                 LogDO logRec = comp.Database.From<LogDO>()
                     .Where("Log_CN = @p1")
-                    .Read(mRec.ComponentRowID).FirstOrDefault();
+                    .Read(compRowID).FirstOrDefault();
                 master.Update(logRec, keyValue: matchRowid, option: OnConflictOption.Fail);
-                ResetRowVersion(master, comp, matchRowid, mRec.ComponentRowID.Value, treeCmdBldr);
+                ResetRowVersion(master, comp, matchRowid, compRowID, treeCmdBldr);
+
+                //if (FixMismatchedCNsOnUpdate && compRowID != matchRowid)
+                //{
+                //    master.Execute("UPDATE Log SET Log_CN = @p1 WHERE Log_CN = @p2;", compRowID, matchRowid);
+                //}
+
                 progress?.Report((++i * 100) / unitsOfWork);
             }
             log?.EndJob();
@@ -1112,11 +1124,19 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
             foreach (MergeObject mRec in pullList)
             {
                 long matchRowid = mRec.MatchRowID.Value;
+                long compRowID = mRec.ComponentRowID.Value;
+
                 var plot = comp.Database.From<PlotDO>()
-                    .Where("Plot_CN = @p1").Read(mRec.ComponentRowID).FirstOrDefault();
+                    .Where("Plot_CN = @p1").Read(compRowID).FirstOrDefault();
 
                 master.Update(plot, keyValue: matchRowid, option: OnConflictOption.Fail);
-                ResetRowVersion(master, comp, matchRowid, mRec.ComponentRowID.Value, plotCmdBldr);
+                ResetRowVersion(master, comp, matchRowid, compRowID, plotCmdBldr);
+
+                //if (FixMismatchedCNsOnUpdate && compRowID != matchRowid)
+                //{
+                //    master.Execute("UPDATE Plot SET Plot_CN = @p1 WHERE Plot_CN = @p2;", compRowID, matchRowid);
+                //}
+
                 progress.Report((++i * 100) / unitsOfWork);
             }
 
@@ -1133,12 +1153,19 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
             foreach (MergeObject mRec in pullList)
             {
                 long matchRowid = mRec.MatchRowID.Value;
+                long compRowID = mRec.ComponentRowID.Value;
                 StemDO stem = comp.Database.From<StemDO>()
                     .Where("Stem_CN = @p1")
-                    .Read(mRec.ComponentRowID).FirstOrDefault();
+                    .Read(compRowID).FirstOrDefault();
 
                 master.Update(stem, keyValue: matchRowid, option: OnConflictOption.Fail);
-                ResetRowVersion(master, comp, matchRowid, mRec.ComponentRowID.Value, stemCmdBldr);
+                ResetRowVersion(master, comp, matchRowid, compRowID, stemCmdBldr);
+
+                //if (FixMismatchedCNsOnUpdate && compRowID != matchRowid)
+                //{
+                //    master.Execute("UPDATE Stem SET Stem_CN = @p1 WHERE Stem_CN = @p2;", compRowID, matchRowid);
+                //}
+
                 progress?.Report((++i * 100) / unitsOfWork);
             }
 
@@ -1155,10 +1182,17 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
             foreach (MergeObject mRec in pullList)
             {
                 long matchRowid = mRec.MatchRowID.Value;
+                long compRowID = mRec.ComponentRowID.Value;
                 TreeDO tree = comp.Database.From<TreeDO>().Where("rowid = @p1")
-                    .Query(mRec.ComponentRowID).FirstOrDefault();
+                    .Query(compRowID).FirstOrDefault();
                 master.Update(tree, keyValue: matchRowid, option: OnConflictOption.Fail);
-                ResetRowVersion(master, comp, matchRowid, mRec.ComponentRowID.Value, treeCmdBldr);
+                ResetRowVersion(master, comp, matchRowid, compRowID, treeCmdBldr);
+
+                //if(FixMismatchedCNsOnUpdate && compRowID != matchRowid)
+                //{
+                //    master.Execute("UPDATE Tree SET Tree_CN = @p1 WHERE Tree_CN = @p2;", compRowID, matchRowid);
+                //}
+
                 progress?.Report((++i * 100) / unitsOfWork);
             }
 
@@ -1242,7 +1276,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                 long matchRowid = mRec.MatchRowID.Value;
                 TreeDO tree = master.From<TreeDO>().Where("Tree_CN = @p1")
                     .Read(matchRowid).FirstOrDefault();
-                //TODO need to handle condition where MasterRowID is different from ComponentRowID
+
                 comp.Database.Update(tree, keyValue: mRec.ComponentRowID.Value, option: OnConflictOption.Fail);
                 ResetRowVersion(master, comp, matchRowid, mRec.ComponentRowID.Value, cmdBldr);
                 progress?.Report((++i * 100) / unitsOfWork);
@@ -1273,6 +1307,56 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
         {
             SyncDesign(master, components, cancellation, progress, log);
             SyncFieldData(master, components, commandBuilders, cancellation, progress, log);
+            FixMismatchCNs(master, commandBuilders, cancellation, progress, log);
+        }
+
+        private static void FixMismatchCNs(DAL master, IDictionary<string, MergeTableCommandBuilder> commandBuilders, CancellationToken cancellation, IProgress<int> progress, IMergeLog log)
+        {
+            var str = master.ReadGlobalValue("merge", "FixMismatchedCNsOnUpdate");
+            log.PostStatus($"FixMismatchedCNsOnUpdate = {str}");
+            var fixMismatchedCNsOnUpdate = (str == null || str != "false") ? true : false;
+            if (fixMismatchedCNsOnUpdate)
+            {
+                log.StartJob("FixMismatchedCNs");
+                master.BeginTransaction();
+                try
+                {
+
+                    foreach (var cmdBldr in commandBuilders.Values)
+                    {
+                        log.StartJob("FixMismatchedCNs:" + cmdBldr.ClientTableName);
+
+                        var matches = master.Query<MergeObject>("SELECT * FROM " + cmdBldr.MergeTableName + " WHERE " + cmdBldr.FindMatchesBase + ";", (object[])null).ToArray();
+                        var numMatches = matches.Length;
+
+                        foreach (var (match, i) in matches.Select((x, i) => (x, i)))
+                        {
+                            cancellation.ThrowIfCancellationRequested();
+
+                            var masterRowID = match.MatchRowID.Value;
+                            var componentRowID = match.ComponentRowID.Value;
+                            if (masterRowID != componentRowID)
+                            {
+                                var pkFieldName = cmdBldr.ClientPrimaryKey.Name;
+                                master.Execute($"UPDATE {cmdBldr.ClientTableName} SET {pkFieldName} =  @p1 WHERE {pkFieldName} = @p2;",
+                                    componentRowID, masterRowID);
+                            }
+                            progress.Report((100 * i) / numMatches);
+                        }
+
+                        log.EndJob("FixMismatchedCNs:" + cmdBldr.ClientTableName);
+                    }
+                    master.CommitTransaction();
+                    log.EndJob("FixMismatchedCNs");
+                }
+                catch
+                {
+                    master.RollbackTransaction();
+                    throw;
+                }
+
+                
+            }
         }
     }
 }
