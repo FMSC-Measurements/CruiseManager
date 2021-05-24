@@ -199,7 +199,7 @@ namespace CruiseManager.WinForms.App
 
         public static void RealignTreeSpecies(Datastore datastore, long treeDefaultValue_CN)
         {
-            datastore.Execute("UPDATE Tree AS t SET Species = (SELECT Species FROM TreeDefaultValue AS tdv WHERE t.TreeDefaultValue_CN = @p1) WHERE t.TreeDefaultValue_CN = @p1;", treeDefaultValue_CN);
+            datastore.Execute("UPDATE Tree AS t SET Species = (SELECT Species FROM TreeDefaultValue AS tdv WHERE tdv.TreeDefaultValue_CN = @p1) WHERE t.TreeDefaultValue_CN = @p1;", treeDefaultValue_CN);
         }
 
         public override void ShowEditTreeDefault(TreeDefaultValueDO tdv)
