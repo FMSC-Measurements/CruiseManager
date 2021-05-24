@@ -25,7 +25,10 @@ EXIT /B 1
 )
 
 SET innoSetupPath="%localappdata%\Programs\Inno Setup 6\ISCC.exe"
-IF NOT EXIST %innoSetupPath% ( 
+IF NOT EXIST %innoSetupPath% (
+	SET innoSetupPath="%ProgramFiles(x86)%\Inno Setup 6\ISCC.exe")
+
+IF NOT EXIST %innoSetupPath% (
 	ECHO "inno setup not found"
 	IF "%interactive%"=="0" PAUSE
 	EXIT /B 1)
