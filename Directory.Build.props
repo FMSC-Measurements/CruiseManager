@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup Label="Properties">
-    <Version>2021.01.26</Version>
+    <Version>2021.05.24</Version>
     
     <PlatformTarget>AnyCPU</PlatformTarget>
     <TargetFramework>net461</TargetFramework>
