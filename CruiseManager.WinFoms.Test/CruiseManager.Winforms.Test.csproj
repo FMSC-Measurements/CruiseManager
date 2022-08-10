@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup Label="Build Config">
-		<TargetFramework>net461</TargetFramework>
+		<TargetFramework>net462</TargetFramework>
   </PropertyGroup>
 	<ItemGroup>
 	  <None Remove="TestFiles\**\*" />
