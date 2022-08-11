@@ -489,6 +489,12 @@ namespace CruiseManager.WinForms.CruiseWizard
 
         public void ShowCuttingUnits()
         {
+            if(string.IsNullOrEmpty(Sale.DefaultUOM))
+            {
+                MessageBox.Show(View, "Please enter a UOM");
+                return;
+            }
+
             try
             {
                 Sale.Save(OnConflictOption.Replace);
