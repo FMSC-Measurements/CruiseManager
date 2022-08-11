@@ -4,9 +4,9 @@
 #define MsBuildOutputDir "..\CruiseManager.WinForms\bin\Release\net462"
 #define APP "Cruise Manager"
 ;
-#define VERSION "2021.05.24.1"
+#define VERSION "2022.08.11"
 ;version format for setup file name
-#define SETUPVERSION "202105241";  
+#define SETUPVERSION "20220811";  
 #define SPECIALTAG ""
 #define BASEURL "https://www.fs.fed.us/forestmanagement/products/measurement"
 #define ORGANIZATION "U.S. Forest Service, Forest Management Service Center"
@@ -79,7 +79,7 @@ Source: "{#MsBuildOutputDir}\CruiseManager.exe.config"; DestDir: {app}; Flags: i
 Source: "{#MsBuildOutputDir}\*.dll"; DestDir: {app}; Flags: ignoreversion;
 Source: "{#MsBuildOutputDir}\STPinfo\*.xml"; DestDir: {app}\STPinfo; Flags: ignoreversion;
 Source: "{#MsBuildOutputDir}\runtimes\win-x64\native\*.dll"; DestDir: {app}\runtimes\win-x64\native; Flags: ignoreversion;
-Source: "{#MsBuildOutputDir}\net461\runtimes\win-x86\native\*.dll"; DestDir: {app}\runtimes\win-x86\native; Flags: ignoreversion;
+Source: "{#MsBuildOutputDir}\runtimes\win-x86\native\*.dll"; DestDir: {app}\runtimes\win-x86\native; Flags: ignoreversion;
 Source: "..\Documentation\CruiseManagerUserGuide.docx";DestName: CruiseManagerUserGuide_{#SETUPVERSION}.docx; DestDir: {app}; Flags: ignoreversion;
 Source: "..\Template Files\*.cut"; DestDir: {app}\Templates; Flags: ignoreversion deleteafterinstall;
 
