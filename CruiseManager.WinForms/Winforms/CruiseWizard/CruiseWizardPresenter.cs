@@ -164,7 +164,8 @@ namespace CruiseManager.WinForms.CruiseWizard
             get
             {
                 yield return ProductCode.Empty;
-                foreach (var pc in ProductCodes)
+                var productCodes = ProductCodes;
+                foreach (var pc in productCodes)
                 {
                     yield return pc;
                 }

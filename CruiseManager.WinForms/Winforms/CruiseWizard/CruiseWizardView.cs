@@ -4,6 +4,7 @@ using CruiseManager.Core.SetupModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.CruiseWizard
@@ -68,6 +69,7 @@ namespace CruiseManager.WinForms.CruiseWizard
 
             sampleGroupPage = new SampleGroupPage("SampleGroups", this) { Dock = DockStyle.Fill };
             pageHost.Add(sampleGroupPage);
+            
         }
 
         #endregion Initialization Methods
@@ -108,8 +110,8 @@ namespace CruiseManager.WinForms.CruiseWizard
 
         public void UpdateProduectCodes(IList<ProductCode> list)
         {
-            sampleGroupPage.PrimaryProductBindingSource.DataSource = list;
-            sampleGroupPage.SecondaryProductBindingSource.DataSource = list;
+            sampleGroupPage.PrimaryProductBindingSource.DataSource = Presenter.ProductCodes;
+            sampleGroupPage.SecondaryProductBindingSource.DataSource = Presenter.SecondaryProductCodes.ToList();
         }
 
         public void UpdateLoggingMethods(IList<LoggingMethod> list)
