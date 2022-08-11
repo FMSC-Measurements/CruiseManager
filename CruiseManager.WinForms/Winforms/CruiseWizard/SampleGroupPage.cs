@@ -107,10 +107,10 @@ namespace CruiseManager.WinForms.CruiseWizard
 
         #region Initialization Methods
 
-        private void InitializeBindings()
+        protected void InitializeBindings()
         {
-            PrimaryProductBindingSource.DataSource = Presenter.ProductCodes;
-            SecondaryProductBindingSource.DataSource = Presenter.SecondaryProductCodes.ToList();
+            //PrimaryProductBindingSource.DataSource = Presenter.ProductCodes;
+            //SecondaryProductBindingSource.DataSource = Presenter.SecondaryProductCodes.ToList();
             UOMBindingSource.DataSource = Presenter.UOMCodes;
             //TreeDefaultBindingSource.DataSource = Presenter.TreeDefaults;
             StratumBindingSource.DataSource = Presenter.Strata;
@@ -147,6 +147,7 @@ namespace CruiseManager.WinForms.CruiseWizard
                 IList<SampleGroupDO> sgList = CurrentStratum.SampleGroups;
                 if (sgList != null)
                 {
+                    SampleGroupBindingSource.EndEdit();
                     SampleGroupBindingSource.DataSource = sgList;
                 }
                 if (SampleGroupBindingSource.Count == 0)

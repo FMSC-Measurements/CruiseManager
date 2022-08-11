@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup Label="Build Config">
     <RootNamespace>CruiseManager.Test</RootNamespace>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net462</TargetFramework>
     <Platform>Any Cpu</Platform>
     <UserSecretsId>5fd8872d-7e52-4edf-8cbd-9e4bd85a492a</UserSecretsId>
   </PropertyGroup>
@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CruiseDAL.V2.Models" Version="2.7.0.*" />
+    <PackageReference Include="CruiseDAL.V2.Models" Version="2.7.4.108" />
     <PackageReference Include="Moq" Version="4.13.1" />
     <PackageReference Include="xunit.analyzers" Version="0.10.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
@@ -30,6 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CruiseManager.Core\CruiseManager.Core.csproj"/>
+    <ProjectReference Include="..\CruiseManager.Core\CruiseManager.Core.csproj" />
   </ItemGroup>
 </Project>

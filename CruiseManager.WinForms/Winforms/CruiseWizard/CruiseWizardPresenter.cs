@@ -164,7 +164,8 @@ namespace CruiseManager.WinForms.CruiseWizard
             get
             {
                 yield return ProductCode.Empty;
-                foreach (var pc in ProductCodes)
+                var productCodes = ProductCodes;
+                foreach (var pc in productCodes)
                 {
                     yield return pc;
                 }
@@ -488,6 +489,12 @@ namespace CruiseManager.WinForms.CruiseWizard
 
         public void ShowCuttingUnits()
         {
+            if(string.IsNullOrEmpty(Sale.DefaultUOM))
+            {
+                MessageBox.Show(View, "Please enter a UOM");
+                return;
+            }
+
             try
             {
                 Sale.Save(OnConflictOption.Replace);
