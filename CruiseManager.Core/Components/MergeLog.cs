@@ -29,7 +29,7 @@ namespace CruiseManager.Core.Components
         {
             _logEntries.Add(message);
             var changedEvent = LogChanged;
-            if(changedEvent != null)
+            if (changedEvent != null)
             {
                 _syncContext.Post(InvokeLogChanged, message);
             }
@@ -50,22 +50,24 @@ namespace CruiseManager.Core.Components
             }
             return sb.ToString();
         }
+    }
 
-        public byte[] ToBytes()
+    public static class MergeLogExtentions
+    {
+        public static byte[] ToBytes(this IMergeLog @this)
         {
-            var text = ToString();
+            var text = @this.ToString();
             return Encoding.ASCII.GetBytes(text);
         }
 
-        public ErrorAttachmentLog ToErrorAttachmentLog()
+        public static ErrorAttachmentLog ToErrorAttachmentLog(this IMergeLog @this)
         {
-            var bytes = ToBytes();
+            var bytes = @this.ToBytes();
             return new ErrorAttachmentLog()
             {
                 ContentType = "text/plain",
                 Data = bytes,
             };
         }
-
     }
 }

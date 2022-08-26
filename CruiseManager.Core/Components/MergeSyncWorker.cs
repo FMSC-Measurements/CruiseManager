@@ -133,6 +133,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                 }
                 catch (Exception e)
                 {
+                    Crashes.TrackError(e, null, log.ToErrorAttachmentLog());
                     comp.MergeException = e;
                 }
             }
@@ -140,7 +141,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
             foreach (var comp in components)
             {
                 cancellation.ThrowIfCancellationRequested();
-                if (comp.HasMergeError)
+                if (comp.MergeException != null)
                 { continue; }
 
                 try
@@ -149,6 +150,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                 }
                 catch (Exception e)
                 {
+                    Crashes.TrackError(e, null, log.ToErrorAttachmentLog());
                     comp.MergeException = e;
                 }
             }
@@ -267,7 +269,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
 
             foreach (var comp in components)
             {
-                if (comp.HasMergeError == true)
+                if (comp.MergeException != null)
                 { continue; }
 
                 cancellation.ThrowIfCancellationRequested();
@@ -297,7 +299,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
 
             foreach (var comp in components)
             {
-                if (comp.HasMergeError == true)
+                if (comp.MergeException != null)
                 { continue; }
 
                 cancellation.ThrowIfCancellationRequested();
@@ -688,8 +690,15 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
             var i = 0;
             foreach (var tdv in compTreeDefaults)
             {
-                var match = master.From<TreeDefaultValueDO>().Where("Species = @p1 AND PrimaryProduct = @p2 AND LiveDead = @p3")
-                    .Query(tdv.Species, tdv.PrimaryProduct, tdv.LiveDead).FirstOrDefault();
+                // because tree default values can contain multiple records with the same Sp, PProd, LD
+                // we need to check for all matches
+                var matches = master.From<TreeDefaultValueDO>().Where("Species = @p1 AND PrimaryProduct = @p2 AND LiveDead = @p3")
+                    .Query(tdv.Species, tdv.PrimaryProduct, tdv.LiveDead).ToArray();
+
+                // try to get a match with the same TreeDefaultValue_CN
+                // otherwise 
+                var match = matches.FirstOrDefault(x => x.TreeDefaultValue_CN == tdv.TreeDefaultValue_CN) ??
+                     matches.FirstOrDefault();
 
                 if (match == null)
                 {

@@ -36,9 +36,6 @@ namespace CruiseManager.Core.Components
         public long? StemCount { get; set; }
 
         [IgnoreField]
-        public bool HasMergeError { get; set; }
-
-        [IgnoreField]
         public Exception MergeException { get; set; }
     }
 }

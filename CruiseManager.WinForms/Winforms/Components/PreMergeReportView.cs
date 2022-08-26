@@ -358,9 +358,11 @@ Another cause could be changing the Tree Number, Plot Number or Log Number on a 
             { MessageBox.Show("Done"); }
             else
             {
-                if(exception != null)
+                MessageBox.Show("Merged Failed", "Error");
+
+                if (exception != null)
                 {
-                    MessageBox.Show(exception.Message);
+                    _progressMessageTB.Text = exception.Message;
                 }
             }
         }
