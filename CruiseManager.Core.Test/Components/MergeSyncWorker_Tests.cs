@@ -64,10 +64,6 @@ namespace CruiseManager.Test.Components
             mastTDV1.Should().NotBeNull();
             ValidateTDVSame(mastTDV1, comp1TDV1);
 
-            // because there should be no conflict with the CN values between the master and the component
-            // the synced tdv should have the same cn value
-            mastTDV1.TreeDefaultValue_CN.Should().Be(comp1TDV1.TreeDefaultValue_CN);
-
             var comp2 = compDbs.ElementAt(1);
             var comp2TDV1 = comp2.From<TreeDefaultValue>().Where("Species = 'nsp1'").Query().FirstOrDefault();
 

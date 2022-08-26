@@ -107,6 +107,8 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET SampleGroup_CN = @p1 WHERE SampleGrou
 
         public static void MoveTDV(DAL database, string dbAlias, long fromTDV_CN, long toTDV_CN)
         {
+            var tdvs = database.Query<TreeDefaultValueDO>($"select * from {dbAlias}.TreeDefaultValue;").ToArray();
+
             database.Execute(
 $@"UPDATE {dbAlias}.TreeDefaultValue SET TreeDefaultValue_CN = @p1 WHERE TreeDefaultValue_CN = @p2;
 UPDATE {dbAlias}.SampleGroupTreeDefaultValue SET TreeDefaultValue_CN = @p1 WHERE TreeDefaultValue_CN = @p2;
@@ -131,6 +133,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                 }
                 catch (Exception e)
                 {
+                    Crashes.TrackError(e, null, log.ToErrorAttachmentLog());
                     comp.MergeException = e;
                 }
             }
@@ -138,7 +141,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
             foreach (var comp in components)
             {
                 cancellation.ThrowIfCancellationRequested();
-                if (comp.HasMergeError)
+                if (comp.MergeException != null)
                 { continue; }
 
                 try
@@ -147,6 +150,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                 }
                 catch (Exception e)
                 {
+                    Crashes.TrackError(e, null, log.ToErrorAttachmentLog());
                     comp.MergeException = e;
                 }
             }
@@ -265,7 +269,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
 
             foreach (var comp in components)
             {
-                if (comp.HasMergeError == true)
+                if (comp.MergeException != null)
                 { continue; }
 
                 cancellation.ThrowIfCancellationRequested();
@@ -295,7 +299,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
 
             foreach (var comp in components)
             {
-                if (comp.HasMergeError == true)
+                if (comp.MergeException != null)
                 { continue; }
 
                 cancellation.ThrowIfCancellationRequested();
@@ -533,7 +537,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                 }
 
                 // see if there is a master count tree record match our count tree record
-                // is is important because it is posible to add populations in fscruiser
+                // is is important because it is possible to add populations in fscruiser
                 // and if a new tally setup was done to the component but not the master
                 // we will need a master count tree record to push the new tally setup out to the other components
                 var masterMatch = master.From<CountTreeDO>()
@@ -642,7 +646,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                         > 0)
                     {
                         // to resolve the CN conflict we are going to move the conflicting record to the end of our table
-                        var newSG_CN = master.ExecuteScalar<int>($"SELECT seq + 1 FROM {COMP_ALIAS}.sqlite_sequence WHERE name = 'SampleGroup';");
+                        var newSG_CN = master.ExecuteScalar<int>($"SELECT max(SampleGroup_CN) + 1 FROM {COMP_ALIAS}.SampleGroup;");
 
                         // we also need to find the DO of the sample group we are displacing 
                         // so that we can update its CN value to the new CN
@@ -686,8 +690,15 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
             var i = 0;
             foreach (var tdv in compTreeDefaults)
             {
-                var match = master.From<TreeDefaultValueDO>().Where("Species = @p1 AND PrimaryProduct = @p2 AND LiveDead = @p3")
-                    .Query(tdv.Species, tdv.PrimaryProduct, tdv.LiveDead).FirstOrDefault();
+                // because tree default values can contain multiple records with the same Sp, PProd, LD
+                // we need to check for all matches
+                var matches = master.From<TreeDefaultValueDO>().Where("Species = @p1 AND PrimaryProduct = @p2 AND LiveDead = @p3")
+                    .Query(tdv.Species, tdv.PrimaryProduct, tdv.LiveDead).ToArray();
+
+                // try to get a match with the same TreeDefaultValue_CN
+                // otherwise 
+                var match = matches.FirstOrDefault(x => x.TreeDefaultValue_CN == tdv.TreeDefaultValue_CN) ??
+                     matches.FirstOrDefault();
 
                 if (match == null)
                 {
@@ -708,7 +719,9 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                         > 0)
                     {
                         // move the conflicting comp TDV to a new CN
-                        var newTDV_CN = master.ExecuteScalar<int>($"SELECT seq + 1 FROM {COMP_ALIAS}.sqlite_sequence WHERE name = 'TreeDefaultValue';");
+                        // previously we were getting the next cn by querying the sqlite_sequence table, however this method is not reliable
+                        // because sqlite_sequence only gets updated when INSERT commands are used. See: https://www.sqlite.org/autoinc.html
+                        var newTDV_CN = master.ExecuteScalar<int>($"SELECT max(TreeDefaultValue_CN) + 1 FROM {COMP_ALIAS}.TreeDefaultValue;");
 
                         var toMoveTDV = compTreeDefaults.FirstOrDefault(x => x.TreeDefaultValue_CN == matchTDV_CN);
                         if (toMoveTDV != null)
@@ -852,7 +865,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                 {
                     if (master.ExecuteScalar<int>($"SELECT count(*) FROM {COMP_ALIAS}.SampleGroup WHERE SampleGroup_CN = @p1", mastCN) > 0)
                     {
-                        var nextSg_CN = master.ExecuteScalar<long>($"SELECT seq + 1 FROM {COMP_ALIAS}.sqlite_sequence WHERE name = 'SampleGroup';");
+                        var nextSg_CN = master.ExecuteScalar<long>($"SELECT max(SampleGroup_CN) + 1 FROM {COMP_ALIAS}.SampleGroup;");
 
                         MoveSg(master, COMP_ALIAS, mastCN.Value, nextSg_CN);
                         log?.PostStatus($"SampleGroup swap :{mastCN} => {nextSg_CN}");
@@ -916,7 +929,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                 {
                     if (master.ExecuteScalar<int>($"SELECT count(*) FROM {COMP_ALIAS}.Stratum WHERE Stratum_CN = @p1", st.Stratum_CN) > 0)
                     {
-                        var nextSt_CN = master.ExecuteScalar<long>($"SELECT seq + 1 FROM {COMP_ALIAS}.sqlite_sequence WHERE name = 'Stratum';");
+                        var nextSt_CN = master.ExecuteScalar<long>($"SELECT max(Stratum_CN) + 1 FROM {COMP_ALIAS}.Stratum;");
 
                         MoveSt(master, COMP_ALIAS, mastCN.Value, nextSt_CN);
                         log?.PostStatus($"Stratum swap :{mastCN} => {nextSt_CN}");
@@ -974,7 +987,7 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                 {
                     if (master.ExecuteScalar<int>($"SELECT count(*) FROM {COMP_ALIAS}.CuttingUnit WHERE CuttingUnit_CN = @p1;", mastCN) > 0)
                     {
-                        var nextCu_CN = master.ExecuteScalar<long>($"SELECT seq + 1 FROM {COMP_ALIAS}.sqlite_sequence WHERE name = 'CuttingUnit';");
+                        var nextCu_CN = master.ExecuteScalar<long>($"SELECT max(CuttingUnit_CN) + 1 FROM {COMP_ALIAS}.CuttingUnit;");
 
                         MoveUnit(master, COMP_ALIAS, mastCN.Value, nextCu_CN);
                         log?.PostStatus($"Unit swap :{mastCN} -> {nextCu_CN}");
@@ -1054,14 +1067,14 @@ UPDATE {dbAlias}.FixCNTTallyPopulation SET TreeDefaultValue_CN = @p1 WHERE TreeD
                 {
                     if (master.ExecuteScalar<int>($"SELECT count(*) FROM {COMP_ALIAS}.TreeDefaultValue WHERE TreeDefaultValue_CN = @p1;", tdv.TreeDefaultValue_CN) > 0)
                     {
-                        var nextTDV_CN = master.ExecuteScalar<long>($"SELECT seq + 1 FROM {COMP_ALIAS}.sqlite_sequence WHERE name = 'TreeDefaultValue';");
+                        var nextTDV_CN = master.ExecuteScalar<long>($"SELECT max(TreeDefaultValue_CN) + 1 FROM {COMP_ALIAS}.TreeDefaultValue;");
 
                         MoveTDV(master, COMP_ALIAS, mastCN, nextTDV_CN);
                         log?.PostStatus($"TDV swap :{mastCN} -> {nextTDV_CN}");
                     }
 
                     MoveTDV(master, COMP_ALIAS, matchCN, mastCN);
-                    log?.PostStatus($"TDV missmatch resolved :{matchCN} -> {mastCN}");
+                    log?.PostStatus($"TDV mismatch resolved :{matchCN} -> {mastCN}");
                 }
 
                 progress?.Report((++i * 100) / unitsOfWork);

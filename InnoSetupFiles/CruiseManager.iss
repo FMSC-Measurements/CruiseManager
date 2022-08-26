@@ -4,9 +4,9 @@
 #define MsBuildOutputDir "..\CruiseManager.WinForms\bin\Release\net462"
 #define APP "Cruise Manager"
 ;
-#define VERSION "2022.08.11"
+#define VERSION "2022.08.26"
 ;version format for setup file name
-#define SETUPVERSION "20220811";  
+#define SETUPVERSION "20220826";  
 #define SPECIALTAG ""
 #define BASEURL "https://www.fs.fed.us/forestmanagement/products/measurement"
 #define ORGANIZATION "U.S. Forest Service, Forest Management Service Center"

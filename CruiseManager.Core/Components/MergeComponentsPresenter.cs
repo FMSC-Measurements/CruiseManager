@@ -232,17 +232,20 @@ namespace CruiseManager.Core.Components
             if (processTask.IsCanceled)
             { return (false, null); }
 
-            var processExceptions = processTask.Exception;
 
-            if (processExceptions == null)
-            {
-                return (true, null);
-            }
-            else
+            var processExceptions = processTask.Exception;
+            if (processExceptions != null)
             {
                 Crashes.TrackError(processExceptions, null, log.ToErrorAttachmentLog());
                 return (false, processExceptions);
             }
+
+            if(components.Any(x => x.MergeException != null))
+            {
+                return (false, components.First(x => x.MergeException != null).MergeException);
+            }
+
+            return (true, null);
         }
 
         public IEnumerable<PreMergeTableReport> GetPreMergeReports()
