@@ -1,12 +1,12 @@
 <Project>
   <PropertyGroup Label="Properties">
-    <Version>2021.08.26</Version>
+    <Version>2021.08.31</Version>
     
     <PlatformTarget>AnyCPU</PlatformTarget>
     <TargetFramework>net462</TargetFramework>
   </PropertyGroup>
   
-   <!-- when targeting net462 SqlitePCL.Raw cant find e_sqlite3 becuase of xunit's shadow coppy feature
+   <!-- when targeting net462 SqlitePCL.Raw cant find e_sqlite3 because of xunit's shadow copy feature
   see https://github.com/reactiveui/Akavache/pull/496 and https://github.com/xunit/xunit/issues/1198 -->
   <ItemGroup Condition="$(IsTestProject) == 'true' AND $(TargetFramework) == 'net462'">
     <Content Include="$(MSBuildThisFileDirectory)xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
