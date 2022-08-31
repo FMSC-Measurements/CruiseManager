@@ -68,7 +68,6 @@ namespace CruiseManager.Test.Components
             var comp2TDV1 = comp2.From<TreeDefaultValue>().Where("Species = 'nsp1'").Query().FirstOrDefault();
 
             ValidateTDVSame(comp2TDV1, comp2TDV1);
-            comp2TDV1.TreeDefaultValue_CN.Should().Be(comp1TDV1.TreeDefaultValue_CN);
 
             void ValidateTDVSame(TreeDefaultValue tdv1, TreeDefaultValue tdv2)
             {
