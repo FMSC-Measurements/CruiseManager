@@ -12,6 +12,7 @@ using FMSC.ORM.Core;
 using Microsoft.AppCenter.Analytics;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace CruiseManager.WinForms.App
@@ -126,32 +127,47 @@ namespace CruiseManager.WinForms.App
             using (var saveFileDialog = new System.Windows.Forms.SaveFileDialog())
             {
                 var purposeShort = Strings.PURPOSE_SHORT_MAP.GetValueOrDefault(sale.Purpose, string.Empty);
+                var saleNumber = SanitizePathPart(sale.SaleNumber);
+                var saleName = SanitizePathPart(sale.Name);
 
                 saveFileDialog.AutoUpgradeEnabled = true;
                 saveFileDialog.CustomPlaces.Add(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\CruiseFiles");
                 saveFileDialog.InitialDirectory = ApplicationController.UserSettings.CruiseSaveLocation;
                 saveFileDialog.DefaultExt = "cruise";
-                saveFileDialog.FileName = $"{ sale.SaleNumber} {sale.Name} {purposeShort}.cruise";
+                saveFileDialog.FileName = $"{saleNumber} {saleName} {purposeShort}.cruise";
                 saveFileDialog.Filter = "Cruise files(*.cruise)|*.cruise";
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    string userPath = saveFileDialog.FileName;
-                    string dir = System.IO.Path.GetDirectoryName(userPath);
+                    string userSelectedPath = saveFileDialog.FileName;
+                    string dir = System.IO.Path.GetDirectoryName(userSelectedPath);
                     ApplicationController.UserSettings.CruiseSaveLocation = dir;
 
                     if (createSaleFolder)
                     {
-                        dir += $"\\{sale.SaleNumber}{sale.Name}\\";
-                        if (!System.IO.Directory.Exists(dir))
+                        try
                         {
-                            System.IO.Directory.CreateDirectory(dir);
+                            dir += $"\\{saleNumber}{saleName}\\";
+                            if (!System.IO.Directory.Exists(dir))
+                            {
+                                System.IO.Directory.CreateDirectory(dir);
+                            }
+                            return dir + System.IO.Path.GetFileName(userSelectedPath);
                         }
-                        return dir + System.IO.Path.GetFileName(userPath);
+                        catch
+                        {
+                            //do nothing, continue to return userSelectedPath
+                        }
                     }
-                    return userPath;
+                    return userSelectedPath;
                 }
                 return null;
             }
+        }
+
+        private static readonly Regex SAMITICE_INVALIDCHARS_REGEX = new Regex(@"[^\d\w ]", RegexOptions.None, TimeSpan.FromMilliseconds(10)); // match all non alpha numeric or space characters
+        public static string SanitizePathPart(string part)
+        {
+            return SAMITICE_INVALIDCHARS_REGEX.Replace(part.Trim(), "");// remove all characters that match
         }
 
         public override void ShowAboutDialog()
@@ -270,16 +286,10 @@ namespace CruiseManager.WinForms.App
                     }
                     else
                     {
-                        tempfile.Dispose();
-                        if (System.IO.File.Exists(destPath))
-                        {
-                            System.IO.File.Replace(tempfile.Path, destPath, null);
-                        }
-                        else
-                        {
-                            System.IO.File.Move(tempfile.Path, destPath);
-                        }
-                        this.ApplicationController.Database = new DAL(destPath);
+                        var fileExists = System.IO.File.Exists(destPath);
+                        tempfile.CopyAs(destPath, fileExists);
+
+                        this.ApplicationController.Database = tempfile;
                     }
 
                     this.ShowCruiseLandingLayout();
